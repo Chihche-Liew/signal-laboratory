@@ -1,0 +1,44 @@
+[
+  {
+    "generation": 0,
+    "target_name": "DebtCovenantAccrualOverhang",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "This is essentially Sloan's accrual anomaly conditioned on book leverage \u2014 a well-documented refinement (accruals are stronger among levered/constrained firms) \u2014 and the conditioner is internally redundant since debt/assets and \u2212equity/assets are near-mechanical complements, so the SUMRANK adds almost no information beyond a single leverage rank."
+  },
+  {
+    "generation": 0,
+    "target_name": "LiquiditySqueezeInventoryReceivableBuild",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "Sign inconsistency: Compustat `recch` and `invch` are cash-flow-statement \"decrease (increase)\" items, so a receivable/inventory *build* makes ADD(recch, invch) *negative*, meaning the expression's natural direction is the opposite of the stated hypothesis and the expected negative sign."
+  },
+  {
+    "generation": 0,
+    "target_name": "CashBurnHiddenByAccruals",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "The conditioner is mechanically nested in the base signal \u2014 `oancf` enters both RATIO(SUB(ib,oancf),at) and NEG(RATIO(oancf,at)) \u2014 so the \"interaction\" largely reduces to a monotone re-weighting of low-cash-flow firms rather than an independent conditioning state, and what remains is the standard accrual anomaly."
+  },
+  {
+    "generation": 0,
+    "target_name": "LossStateLeveredAccrualFlag",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "The hard loss-firm INDICATOR zeroes out the majority of the cross-section, leaving a degenerate signal with a huge point mass at zero and unstable, low-coverage portfolio composition, and the underlying claim (accrual mispricing concentrated in loss/distressed firms) is already established in the earnings-quality literature."
+  },
+  {
+    "generation": 0,
+    "target_name": "RetainedDeficitAccrualDeterioration",
+    "verdict": "accept",
+    "score": 3,
+    "rationale": "The first-difference of accrual intensity is a genuinely different construct from the level-based accrual anomaly and pairing it with an accumulated-deficit life-cycle state is defensible, though the `oancf` term reappearing in the conditioner creates partial mechanical overlap that should be replaced with a cleaner distress proxy."
+  },
+  {
+    "generation": 0,
+    "target_name": "FragileEquityAccrualInstability",
+    "verdict": "accept",
+    "score": 3,
+    "rationale": "Accrual *volatility* interacted with balance-sheet fragility is the most differentiated proposal here and is not a direct restatement of the level accrual anomaly, but the five-period VOL on annual data is estimated from very few observations (coverage/noise risk) and the SUMRANK conditioner is near-duplicative since lt/at and \u2212ceq/at are nearly the same variable."
+  }
+]

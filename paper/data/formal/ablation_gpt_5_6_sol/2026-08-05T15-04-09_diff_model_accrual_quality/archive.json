@@ -1,0 +1,3154 @@
+{
+  "pair": "accrual_quality",
+  "evaluated": [
+    {
+      "name": "Clean Working-Capital Margin",
+      "expression": "MUL(RANK(NEG(ABS(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), at)))), RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 5), VOL(RATIO(SUB(sale, cogs), sale), 5))))",
+      "hypothesis": "Stable, persistent gross margins are most credible when they require little noncash working-capital accumulation.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel penalizes large changes in noncash current assets net of nondebt current liabilities. Its interaction with volatility-adjusted gross margin distinguishes durable operating economics from margins supported by receivable, inventory, or other working-capital accounting effects.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.5091228878113743,
+      "ls_alpha": 0.025775130399212275,
+      "ls_talpha": 3.0949264532134273,
+      "ls_sharpe": 0.11130986446159123,
+      "coverage": 0.11058910276888331,
+      "error": null
+    },
+    {
+      "name": "Demand-Accrual Volatility Alignment",
+      "expression": "RANK(NEG(MAX(RANK(VOL(RATIO(revt, at), 3)), RANK(SUB(VOL(RATIO(ADD(ABS(recch), ABS(invch)), at), 3), VOL(RATIO(revt, at), 3))))))",
+      "hypothesis": "Stable revenue is most credible when receivable and inventory accrual activity is also stable and does not fluctuate more than the underlying demand process.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel penalizes unstable revenue productivity, while the second isolates excess volatility in receivable and inventory adjustments relative to revenue volatility. The maximum makes either unstable demand or disproportionate operating-accrual noise sufficient to weaken the signal, distinguishing durable operations from working-capital timing effects.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.056616017195753,
+      "ls_alpha": 0.010747606355564368,
+      "ls_talpha": 1.0244918936530325,
+      "ls_sharpe": 0.2052277040511103,
+      "coverage": 0.06901715910244695,
+      "error": null
+    },
+    {
+      "name": "Retained Earnings Accrual Efficiency",
+      "expression": "RANK(WINSOR(RATIO(TREND(RATIO(re, at), 5), MA(ABS(RATIO(DELTA(wcap, 1), at)), 3)), 1))",
+      "hypothesis": "Firms that accumulate retained earnings without requiring large recurring working-capital accruals should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator captures persistent internal capital accumulation, while the denominator measures the working-capital accrual burden needed to produce it. A high ratio identifies retained performance that is comparatively cash-efficient rather than generated through expanding noncash operating balances.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2742368748197872,
+      "ls_alpha": -0.009376083963092925,
+      "ls_talpha": -1.0086735767113675,
+      "ls_sharpe": -0.07626991993918968,
+      "coverage": 0.10203152975788059,
+      "error": null
+    },
+    {
+      "name": "Leveraged Opaque-Accrual Penalty",
+      "expression": "RANK(NEG(MIN(RANK(MA(RATIO(ADD(ABS(txach), ABS(aoloch)), at), 3)), RANK(RATIO(ADD(dltt, dlc), at)))))",
+      "hypothesis": "Firms with both high leverage and persistent opaque tax-and-other accrual adjustments should earn lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "High debt creates stronger incentives to preserve reported performance or covenant capacity, while large miscellaneous accrual adjustments provide accounting flexibility. The conjunctive penalty becomes severe only when both financing pressure and opaque accrual activity are elevated, isolating their interaction from a generic leverage or accrual effect.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.9532316518369736,
+      "ls_alpha": 0.01667647024046193,
+      "ls_talpha": 1.328324428139591,
+      "ls_sharpe": -0.008727221630791733,
+      "coverage": 0.07020295073495968,
+      "error": null
+    },
+    {
+      "name": "Smooth-Earnings Accrual Spike",
+      "expression": "RANK(NEG(MIN(RANK(TS_RANK(ABS(RATIO(DELTA(wcap, 1), at)), 3)), RANK(NEG(VOL(RATIO(ni, at), 3))))))",
+      "hypothesis": "Firms should underperform when working-capital accruals spike relative to their own history while reported earnings remain unusually smooth.",
+      "expected_sign": "positive",
+      "reasoning": "The temporal rank identifies an accrual spike rather than rewarding a persistently low average accrual level, while the second channel identifies smooth earnings. The high-high penalty targets episodes in which working capital may be used to suppress visible earnings variation, and it avoids the zero-score mass created by a binary profitability gate.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.86495453308875,
+      "ls_alpha": -0.005722217719679696,
+      "ls_talpha": -0.7050778699769361,
+      "ls_sharpe": -0.09341082062221706,
+      "coverage": 0.13342988269206482,
+      "error": null
+    },
+    {
+      "name": "Realized Retained Earnings",
+      "expression": "RANK(NEG(WINSOR(SUB(TREND(RATIO(re, at), 5), MAX(TREND(RATIO(che, at), 5), TREND(RATIO(sale, at), 5))), 1)))",
+      "hypothesis": "Retained earnings accumulation should predict higher returns when it is corroborated by either cash accumulation or improving sales productivity.",
+      "expected_sign": "positive",
+      "reasoning": "The signal penalizes retained earnings growth that outruns both cash realization and real-side operating progress, which is more suggestive of accounting accumulation than productive reinvestment. Allowing the stronger of cash or sales confirmation avoids penalizing firms that deploy cash into operations and uses broadly reported balance-sheet and revenue items rather than sparse tax data.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.2806147469394556,
+      "ls_alpha": 0.011026864987581578,
+      "ls_talpha": 1.0471586662277006,
+      "ls_sharpe": 0.20762342647571147,
+      "coverage": 0.11819413179663323,
+      "error": null
+    },
+    {
+      "name": "Receivable-Revenue Acceleration Match",
+      "expression": "RANK(NEG(WINSOR(ABS(SUB(ACCEL(RATIO(NEG(recch), at)), ACCEL(RATIO(sale, at)))), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when acceleration in receivable investment closely tracks acceleration in sales rather than running ahead of it.",
+      "expected_sign": "positive",
+      "reasoning": "Negated recch approximates receivable investment, so a mismatch with sales acceleration can reveal channel stuffing, premature revenue recognition, or deteriorating collection quality. This signed change-of-change mechanism replaces the degenerate depreciation comparison and tests timing alignment rather than another low-noise-by-stable-profitability template.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.7292120679712034,
+      "ls_alpha": 0.005954509373173589,
+      "ls_talpha": 0.5069349057949156,
+      "ls_sharpe": 0.01639186080054666,
+      "coverage": 0.06466423482388951,
+      "error": null
+    },
+    {
+      "name": "Retained Earnings Clean-Build Bottleneck",
+      "expression": "MIN(RANK(TREND(RATIO(re, at), 5)), RANK(NEG(MA(ABS(RATIO(DELTA(wcap, 1), at)), 3))))",
+      "hypothesis": "Firms should earn higher returns when retained earnings accumulate persistently without recurring working-capital accrual investment.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum approximates a conjunctive double sort, requiring both retained earnings growth and clean working-capital conversion. It repairs the unstable small-denominator ratio used previously, which produced a positive cross-sectional slope but a negative long-short alpha, while preserving the underlying internal-capital-formation mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.5730772521091663,
+      "ls_alpha": -0.017030774914225173,
+      "ls_talpha": -1.7284925855924924,
+      "ls_sharpe": -0.056077895178629676,
+      "coverage": 0.10203400617618726,
+      "error": null
+    },
+    {
+      "name": "Debt-Adjusted Cash Retention",
+      "expression": "MIN(RANK(TREND(RATIO(re, at), 5)), RANK(SUB(TREND(RATIO(che, at), 5), TREND(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Persistent retained earnings should predict higher returns when accompanied by cash accumulation that is not financed by increasing debt.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings provide the reported-performance channel, while debt-adjusted cash growth tests whether that performance is realized as internally generated liquidity. The conjunctive score improves on an unsupported-retained-earnings gap by requiring positive confirmation from both cumulative earnings and financing-adjusted cash accumulation.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.730850849938247,
+      "ls_alpha": -0.015923577086234417,
+      "ls_talpha": -1.4299996831447925,
+      "ls_sharpe": -0.07512189878301963,
+      "coverage": 0.11785027079634183,
+      "error": null
+    },
+    {
+      "name": "Receivable-Neutral Earnings Durability",
+      "expression": "RANK(SUB(MA(RATIO(ADD(ni, recch), at), 3), VOL(RATIO(ADD(ni, recch), at), 3)))",
+      "hypothesis": "Firms with high and stable earnings after removing the receivable-accrual contribution should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Under the cash-flow-statement convention, recch offsets the receivable component embedded in net income, so ADD(ni, recch) approximates earnings after receivable cash conversion. Measuring the persistence and stability of this adjusted earnings stream replaces the prior window tweak with a direct redefinition of quality based on cash realization.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.053102641302144,
+      "ls_alpha": 0.016825104618196137,
+      "ls_talpha": 1.3857432013719675,
+      "ls_sharpe": 0.2167558574894158,
+      "coverage": 0.07418946828822537,
+      "error": null
+    },
+    {
+      "name": "Opaque Accrual Reversal Load",
+      "expression": "RANK(NEG(WINSOR(RATIO(ABS(TS_SUM(RATIO(aoloch, at), 3)), TS_SUM(ABS(RATIO(ni, at)), 3)), 1)))",
+      "hypothesis": "Persistent same-direction other accrual adjustments relative to the scale of reported earnings should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Temporary accruals should reverse, so summing signed other-accrual adjustments allows genuine reversals to cancel while persistent accounting flows accumulate. Scaling by cumulative earnings magnitude creates a continuous accounting-noise load without reusing leverage or collapsing the long portfolio into a generic low-leverage sort.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.6412301899936979,
+      "ls_alpha": -0.031072737257183083,
+      "ls_talpha": -2.2219474830288544,
+      "ls_sharpe": -0.2243380748836456,
+      "coverage": 0.09120545439386772,
+      "error": null
+    },
+    {
+      "name": "Supplier-Neutral Cash-Profit Persistence",
+      "expression": "TS_SUM(MUL(INDICATOR(RATIO(ni, at), 0), SIGN(RATIO(SUB(oancf, apalch), at))), 3)",
+      "hypothesis": "Repeated reported profits should predict higher returns when operating cash flow remains positive after removing cash support from changes in accounts payable and accrued liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Each profitable period receives a positive contribution if supplier-financing-adjusted cash flow is positive and a negative contribution if the profit lacks adjusted cash backing. Nonprofitable periods are neutral, so the construction contrasts cash-confirmed and supplier-funded profit persistence without forcing a screened-out group into an extreme portfolio leg.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.5770179580706363,
+      "ls_alpha": 0.008803266272526113,
+      "ls_talpha": 0.6375420828374087,
+      "ls_sharpe": 0.19498647044489933,
+      "coverage": 0.06831256650214994,
+      "error": null
+    },
+    {
+      "name": "Cash-Converted Margin Improvement",
+      "expression": "MIN(RANK(TREND(RATIO(SUB(sale, cogs), sale), 5)), RANK(NEG(MA(RATIO(DELTA(wcap, 1), sale), 3))))",
+      "hypothesis": "Improving gross margins should predict higher returns when they are accompanied by low working-capital investment relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Cross-sectional ranks place margin improvement and working-capital accruals on a common scale, eliminating domination by the unbounded working-capital ratio. Using the working-capital change rather than its sign-unstable level focuses the second channel on incremental cash absorption, while the minimum requires both margin improvement and clean cash conversion.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.009337391258178,
+      "ls_alpha": -0.03074111204252019,
+      "ls_talpha": -3.0018294437785134,
+      "ls_sharpe": -0.07610064816870077,
+      "coverage": 0.1029967653849551,
+      "error": null
+    },
+    {
+      "name": "Supplier-Neutral Book-Cash Agreement",
+      "expression": "MIN(RANK(SUB(MA(RATIO(SUB(oancf, apalch), at), 3), VOL(RATIO(SUB(oancf, apalch), at), 3))), RANK(NEG(ABS(SUB(MA(RATIO(ni, at), 3), MA(RATIO(SUB(oancf, apalch), at), 3))))))",
+      "hypothesis": "Reported earnings should predict higher returns when supplier-financing-adjusted operating cash flow is both durable and closely aligned with book income.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting apalch removes cash support obtained from increasing accounts payable and accrued liabilities. The continuous bottleneck replaces the prior discrete sign count, requiring stable adjusted cash generation and book-cash agreement while avoiding a large mass of tied observations.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.9347769936542872,
+      "ls_alpha": -0.01150120915692089,
+      "ls_talpha": -0.9048619217516669,
+      "ls_sharpe": 0.015915214030327713,
+      "coverage": 0.057249270901176874,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Profit Rescue Count",
+      "expression": "TS_SUM(MUL(INDICATOR(RATIO(ni, at), 0), INDICATOR(NEG(RATIO(SUB(ni, SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1)))), at)), 0)), 5)",
+      "hypothesis": "Firms should earn lower subsequent returns when positive reported income repeatedly becomes negative after removing noncash working-capital accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The signal counts threshold-crossing episodes in which working-capital accruals effectively rescue the firm from reporting an economic loss. This targets benchmark-sensitive accounting noise rather than the standalone level of accruals or profitability, with repeated episodes indicating a more persistent reporting problem.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.41329548878361744,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.11327472683042396,
+      "error": null
+    },
+    {
+      "name": "Margin Improvement Funding Test",
+      "expression": "MUL(IND_ZSCORE(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, those requiring less noncash working-capital investment should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signed accrual measure rewards working-capital releases and penalizes investment rather than treating both as costs. Industry standardization centers the accrual score, so firms without margin improvement receive a neutral zero while improving-margin firms are ordered by whether their gains convert into cash.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.4016271098091986,
+      "ls_alpha": 0.019054130532761546,
+      "ls_talpha": 2.4444459593329193,
+      "ls_sharpe": 0.2543406869377884,
+      "coverage": 0.10971869332613521,
+      "error": null
+    },
+    {
+      "name": "Receivable Reversal-Adjusted Earnings",
+      "expression": "RANK(WINSOR(SUB(SUB(MA(RATIO(ni, at), 3), VOL(RATIO(ni, at), 3)), MA(ABS(ADD(RATIO(recch, at), LAG(RATIO(recch, at), 1))), 3)), 1))",
+      "hypothesis": "High and stable earnings should predict higher returns when receivable accruals subsequently reverse rather than persist in the same direction.",
+      "expected_sign": "positive",
+      "reasoning": "Temporary receivable accruals should approximately offset across adjacent periods, whereas repeated same-direction changes indicate delayed realization or continuing revenue-recognition pressure. The signal deducts recurring nonreversal from volatility-adjusted earnings instead of reconstructing the published cash-based operating-profitability measure.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.9317730781350722,
+      "ls_alpha": 0.007981663099626501,
+      "ls_talpha": 0.672161632187499,
+      "ls_sharpe": 0.16456382051449162,
+      "coverage": 0.07450743008039279,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Revenue Growth Congruence",
+      "expression": "RANK(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when growth in recognized depreciation remains aligned with growth in the operating scale supported by sales.",
+      "expected_sign": "positive",
+      "reasoning": "Large persistent divergence can indicate unstable depreciation estimates, acquisition-related accounting effects, or asset economics that reported sales do not support. This construction treats depreciation as a valid expense and tests its consistency with operating activity rather than incorrectly removing its add-back from cash flow.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.9538608688319419,
+      "ls_alpha": -0.024791234981516676,
+      "ls_talpha": -1.84264852875679,
+      "ls_sharpe": -0.052767210614760314,
+      "coverage": 0.11434046376711102,
+      "error": null
+    },
+    {
+      "name": "Revenue-Decline Opaque Accrual Screen",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(TS_SUM(RATIO(aoloch, at), 3)))), INDICATOR(NEG(TREND(RATIO(revt, at), 3)), 0))",
+      "hypothesis": "Among firms with declining revenue productivity, lower persistent other-accrual activity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Declining revenue removes the real-growth justification for sustained opaque operating adjustments, making those accruals more likely to represent accounting noise. The centered accrual score keeps firms without revenue deterioration neutral and directly compares low- versus high-accrual firms only inside the economically relevant weak-demand condition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.629004353896419,
+      "ls_alpha": -0.010022583667684737,
+      "ls_talpha": -0.8974379019853073,
+      "ls_sharpe": -0.09267723185717533,
+      "coverage": 0.07756245320601242,
+      "error": null
+    },
+    {
+      "name": "Expansion-Gated Depreciation Congruence",
+      "expression": "MUL(IND_ZSCORE(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1))), INDICATOR(TREND(RATIO(sale, at), 3), 0))",
+      "hypothesis": "Among firms with improving sales productivity, depreciation growth that remains aligned with sales growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier unconditional congruence score could favor firms where depreciation and sales were merely contracting together, contaminating its long portfolio despite a positive cross-sectional slope. The expansion gate removes matched contractions, while the centered alignment score orders only firms for which depreciation consistency has a positive operating-growth interpretation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.606813539613442,
+      "ls_alpha": 0.013195315251345326,
+      "ls_talpha": 0.8340407178512035,
+      "ls_sharpe": 0.09754477715157825,
+      "coverage": 0.10483112065357632,
+      "error": null
+    },
+    {
+      "name": "Persistent-Profit Accrual Concentration",
+      "expression": "MUL(IND_ZSCORE(NEG(WINSOR(RATIO(MAX(ABS(recch), ABS(invch)), ADD(ABS(recch), ABS(invch))), 1))), INDICATOR(TS_MIN(RATIO(ni, at), 3), 0))",
+      "hypothesis": "Among firms profitable in every recent period, earnings supported by a balanced operating-accrual mix should predict higher returns than earnings dominated by either receivables or inventory.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel measures concentration rather than reconstructing cash operating profitability or simply rewarding low total accruals. The profitability-floor gate asks whether persistent earnings are disproportionately dependent on one accounting channel, while the centered score leaves firms failing the persistence condition neutral.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.09478853419490546,
+      "ls_alpha": 0.0019034125426578663,
+      "ls_talpha": 0.20212848930802138,
+      "ls_sharpe": -0.0003551939389173042,
+      "coverage": 0.07517080063429328,
+      "error": null
+    },
+    {
+      "name": "Post-Margin Receivable Realization",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ADD(RATIO(recch, at), LAG(RATIO(recch, at), 1))))), INDICATOR(LAG(DELTA(RATIO(SUB(sale, cogs), sale), 1), 1), 0))",
+      "hypothesis": "Following a gross-margin improvement, firms should earn higher subsequent returns when the associated receivable accrual reverses rather than persists.",
+      "expected_sign": "positive",
+      "reasoning": "Adjacent-period receivable adjustments should offset when prior accrued sales are subsequently collected, so their sum measures failure to realize the earlier accrual. Conditioning on a lagged margin event turns the signal into a post-reporting realization test rather than a contemporaneous sort on the signed receivables accrual.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.3040478736310885,
+      "ls_alpha": -0.006431577159863705,
+      "ls_talpha": -0.4659411820307014,
+      "ls_sharpe": -0.10174570133769649,
+      "coverage": 0.06626735453312499,
+      "error": null
+    },
+    {
+      "name": "Hidden Trade-Credit Churn",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(RATIO(SUB(ADD(ABS(recch), ABS(apalch)), ABS(ADD(recch, apalch))), sale), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(SUB(sale, cogs), sale), 3))), 0))",
+      "hypothesis": "Among firms with smooth gross margins, lower offsetting activity between customer and supplier accruals should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gross receivable and payable adjustments can offset in net cash flow, concealing substantial trade-credit churn behind apparently stable performance. Subtracting the absolute net adjustment from gross absolute activity isolates this hidden offsetting component, while the smooth-margin condition focuses the test on potential accounting stabilization.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.5234580603900073,
+      "ls_alpha": -0.03839802740924997,
+      "ls_talpha": -2.3658682379828884,
+      "ls_sharpe": -0.2127667884508945,
+      "coverage": 0.059652376907564385,
+      "error": null
+    },
+    {
+      "name": "Smooth-Margin Nonworking Accrual Residual",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(ABS(SUB(RATIO(SUB(ni, oancf), at), RATIO(DELTA(wcap, 1), at))), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(SUB(sale, cogs), sale), 3))), 0))",
+      "hypothesis": "Among firms with smooth gross margins, a small persistent residual between total accruals and working-capital accruals should predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The residual isolates accrual activity outside ordinary working-capital movements instead of sorting directly on the standard working-capital anomaly. Conditioning on smooth margins tests whether apparent operating stability is supported by routine cash-conversion mechanics or by less transparent nonworking accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.8268790791529228,
+      "ls_alpha": -0.0552994881587275,
+      "ls_talpha": -4.0462519648638615,
+      "ls_sharpe": -0.255359230481561,
+      "coverage": 0.07123829995534192,
+      "error": null
+    },
+    {
+      "name": "Stable-Demand Accrual Noise Screen",
+      "expression": "MUL(IND_ZSCORE(NEG(VOL(RATIO(ADD(ABS(recch), ABS(invch)), at), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(revt, at), 3))), 0))",
+      "hypothesis": "Among firms with stable demand, lower volatility in receivable and inventory accrual activity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The demand-volatility indicator defines the economic subset, and the centered accrual-volatility score orders firms only within that condition. This avoids subtracting incomparable raw volatilities, prevents revenue volatility from dominating the signal, and directly tests whether stable demand is accompanied by stable operating accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.1043006717780486,
+      "ls_alpha": 0.005865279150910882,
+      "ls_talpha": 0.42429648096850753,
+      "ls_sharpe": 0.09453781336266703,
+      "coverage": 0.06896205879512343,
+      "error": null
+    },
+    {
+      "name": "Margin-Decline Working-Capital Dislocation",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ACCEL(RATIO(wcap, sale))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with deteriorating gross margins, lower acceleration in working-capital intensity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Margin deterioration is especially concerning when accompanied by a sharp change of change in working-capital needs, which can indicate inventory, collection, or payment-policy disruption. Using absolute acceleration avoids treating distress-driven working-capital liquidation as favorable and tests instability rather than the published accrual level.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.7155883322089718,
+      "ls_alpha": 0.017246366915062136,
+      "ls_talpha": 1.2785320347719467,
+      "ls_sharpe": 0.2278806317828163,
+      "coverage": 0.10127720242325786,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Supported Margin Improvement",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(TREND(RATIO(dpc, sale), 3)))",
+      "hypothesis": "Gross-margin improvement should predict higher returns when it is not accompanied by a declining depreciation charge relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing the expansion gate with a ranked margin-change channel removes the growth exposure that may have produced a strong Fama-MacBeth slope but weak FF5 alpha. The second channel tests conservative expense recognition: apparent margin gains are less credible when depreciation intensity is simultaneously being reduced.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.463525789914236,
+      "ls_alpha": 0.011931974893264696,
+      "ls_talpha": 1.2453893375440142,
+      "ls_sharpe": 0.21145843348067508,
+      "coverage": 0.10159201710049388,
+      "error": null
+    },
+    {
+      "name": "Verified Working-Capital Harvest",
+      "expression": "MUL(ZSCORE(MIN(RANK(LAG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale), 1)), RANK(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, prior working-capital investment should be favorable only when it reverses into a current working-capital release.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum explicitly requires both a prior-period buildup and a current-period release, rather than rewarding the lagged accrual magnitude additively. Centering the verified reversal score before applying the margin gate keeps other firms neutral and distinguishes temporary investment realization from persistent high accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.3425627567049427,
+      "ls_alpha": -0.009420310904815044,
+      "ls_talpha": -1.1753271687781046,
+      "ls_sharpe": 0.030914209898066942,
+      "coverage": 0.10048763771981307,
+      "error": null
+    },
+    {
+      "name": "Self-Funded Trade Margin Gains",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(RATIO(recch, sale)), RANK(NEG(RATIO(apalch, sale))))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, simultaneous receivable collection and limited reliance on payable growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Positive recch indicates customer cash realization, while positive apalch supplies cash through increased supplier financing; the latter is therefore treated as a funding dependency rather than mislabeled as a cash cost. Rank normalization makes the two trade-credit channels commensurable, and the minimum requires both customer collection and supplier independence.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.0642390236128545,
+      "ls_alpha": -0.0008238513148352373,
+      "ls_talpha": -0.07787671675587089,
+      "ls_sharpe": 0.1278348837301637,
+      "coverage": 0.05528567755217607,
+      "error": null
+    },
+    {
+      "name": "Dual Margin Cash Confirmation",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(DELTA(RATIO(SUB(oancf, apalch), sale), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when gross margins and supplier-neutral operating cash margins improve together.",
+      "expected_sign": "positive",
+      "reasoning": "One channel measures improvement in reported operating economics, while the other measures improvement in cash generation after removing support from payable accruals. The conjunctive rank structure tests simultaneous book-and-cash confirmation rather than combining a profitability floor with another standalone cash-flow trend.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.2190640334074592,
+      "ls_alpha": -0.007986833979996995,
+      "ls_talpha": -0.6069994929501102,
+      "ls_sharpe": -0.08109121891674806,
+      "coverage": 0.05394093081960366,
+      "error": null
+    },
+    {
+      "name": "Smooth-Earnings Supplier-Funded Inventory",
+      "expression": "MUL(ZSCORE(NEG(MIN(RANK(RATIO(NEG(invch), cogs)), RANK(RATIO(apalch, cogs))))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, inventory buildup financed by increasing accounts payable should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Negated invch captures inventory investment, while positive apalch captures supplier financing; their high-high conjunction identifies inventory accumulation whose cash burden is hidden by stretched payment terms. The centered negative penalty orders firms within the smooth-earnings condition and replaces another demand-volatility variant with a distinct financing-of-accruals mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.03298463810256188,
+      "ls_alpha": 0.009255506629116865,
+      "ls_talpha": 0.7931853250218609,
+      "ls_sharpe": 0.03397471103775266,
+      "coverage": 0.05403874934271731,
+      "error": null
+    },
+    {
+      "name": "Two-Sided Margin Accounting Confirmation",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))), RANK(TREND(RATIO(dpc, sale), 3)))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, low working-capital investment and nondeclining depreciation intensity should jointly predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital investment tests whether the margin gain consumes cash, while the depreciation channel tests whether the gain is being created by reducing expense recognition. Requiring both confirmations combines the strongest portfolio-performing margin-funding mechanism with the depreciation channel\u2019s cross-sectional strength.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": NaN,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.004527614953274114,
+      "error": "Insufficient coverage: 0.5%"
+    },
+    {
+      "name": "Cash-Efficient Depreciation Congruence",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1))), RANK(NEG(ABS(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), at)))))), INDICATOR(TREND(RATIO(sale, at), 3), 0))",
+      "hypothesis": "Among expanding firms, depreciation growth congruence should predict higher returns when expansion also requires little noncash working-capital accrual.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation congruence alone generated strong Fama-MacBeth evidence but weak long-short alpha, consistent with its extremes retaining generic expansion exposure. The added working-capital bottleneck requires expansion to be both accounting-consistent and cash-efficient, which should improve abnormal-return separation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.7546219219136088,
+      "ls_alpha": -0.005715811677701982,
+      "ls_talpha": -0.6007726554928426,
+      "ls_sharpe": 0.09156103157129881,
+      "coverage": 0.0940251661883052,
+      "error": null
+    },
+    {
+      "name": "Quiet-Margin Working-Capital Dislocation",
+      "expression": "RANK(NEG(MUL(RANK(ABS(ACCEL(RATIO(wcap, sale)))), RANK(NEG(ABS(DELTA(RATIO(SUB(sale, cogs), sale), 1)))))))",
+      "hypothesis": "Large working-capital dislocations should predict lower returns when reported gross margins change very little.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel identifies sharp changes in working-capital intensity, while the second is large only when margins appear unusually quiet. Their high-high interaction targets hidden balance-sheet instability behind smooth reported performance without combining separately normalized margin regimes or loading mechanically on a margin-direction dummy.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.4890827864691796,
+      "ls_alpha": -0.000988458038361675,
+      "ls_talpha": -0.1479984892412875,
+      "ls_sharpe": 0.1638280018379816,
+      "coverage": 0.10141572707228748,
+      "error": null
+    },
+    {
+      "name": "Margin-Decline Depreciation Stability",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(TREND(RATIO(dpc, sale), 3)))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, a stable depreciation charge relative to sales should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Operating deterioration creates incentives to alter depreciation assumptions to soften reported weakness, so instability in depreciation intensity is more informative in this state. This replaces the leverage overlay with a directly attributable expense-recognition mechanism and does not reward either sharp depreciation cuts or distress-driven increases.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.6497038185595916,
+      "ls_alpha": 0.013490618686552503,
+      "ls_talpha": 1.207137751051169,
+      "ls_sharpe": 0.22199765573277383,
+      "coverage": 0.10148816230775771,
+      "error": null
+    },
+    {
+      "name": "Persistent-Profit Trade-Credit Trap",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(MA(RATIO(apalch, sale), 3)), RANK(MA(RATIO(NEG(recch), sale), 3))))), INDICATOR(TS_MIN(RATIO(ni, at), 3), 0))",
+      "hypothesis": "Among persistently profitable firms, simultaneous receivable buildup and reliance on increasing payables should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Payable growth supplies cash, but when it persistently finances receivable growth it indicates that reported profits remain trapped in customer credit and require supplier support. The high-high penalty has an ex-ante cash-cycle interpretation and does not reward gross trade-credit churn based on a prior backtest sign reversal.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.41591429544939534,
+      "ls_alpha": 0.0018674165459661007,
+      "ls_talpha": 0.13207471523456174,
+      "ls_sharpe": -0.042465719955999924,
+      "coverage": 0.06462734650952967,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Stripped Nonworking Accrual Quality",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(ABS(RATIO(SUB(ADD(SUB(ni, oancf), dpc), DELTA(wcap, 1)), at)), 3))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, lower nonworking accrual residuals after explicitly removing depreciation should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding dpc back to the total-accrual measure removes the mechanical depreciation component before subtracting working-capital accruals, leaving a cleaner residual of other noncash adjustments. The margin-improvement condition tests whether favorable operating news is supported without opaque nonworking accruals rather than inadvertently sorting on capital intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.938964523866411,
+      "ls_alpha": -0.05737328599354542,
+      "ls_talpha": -3.061668105994521,
+      "ls_sharpe": -0.2459997421299209,
+      "coverage": 0.07036417588513381,
+      "error": null
+    },
+    {
+      "name": "Margin-Down Dual Accounting Stability",
+      "expression": "MUL(ZSCORE(SUMRANK(NEG(ABS(ACCEL(RATIO(wcap, sale)))), NEG(ABS(TREND(RATIO(dpc, sale), 3))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, stability in both working-capital intensity and depreciation policy should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital acceleration captures balance-sheet dislocation, while depreciation-intensity drift captures expense-recognition instability during operating stress. Combining the two directly extends the separately positive margin-decline mechanisms without introducing a generic leverage characteristic.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.6928524700760357,
+      "ls_alpha": -0.016040967006179175,
+      "ls_talpha": -1.530875532698363,
+      "ls_sharpe": -0.001116611843872505,
+      "coverage": 0.0911744991650343,
+      "error": null
+    },
+    {
+      "name": "Core-Cash Margin Co-Stability",
+      "expression": "RANK(NEG(MAX(RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)), RANK(VOL(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 3)))))",
+      "hypothesis": "Firms should earn higher subsequent returns when both reported gross margins and working-capital-neutral operating cash margins are stable.",
+      "expected_sign": "positive",
+      "reasoning": "Adding the working-capital change back to operating cash flow removes short-term cash-conversion timing and approximates the underlying operating cash margin. The maximum imposes a weakest-link test, so smooth book margins do not qualify when core cash economics remain unstable.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.8088573694146436,
+      "ls_alpha": -0.041366021231696685,
+      "ls_talpha": -3.404329221587353,
+      "ls_sharpe": -0.23560903073892162,
+      "coverage": 0.0637044679539089,
+      "error": null
+    },
+    {
+      "name": "Working-Capital-Neutral Margin Alignment",
+      "expression": "RANK(NEG(WINSOR(MA(ABS(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1))), 3), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when changes in reported gross margins remain aligned with changes in working-capital-neutral operating cash margins.",
+      "expected_sign": "positive",
+      "reasoning": "The signal compares two commensurately scaled margin changes after removing working-capital timing from the cash-flow channel. Persistent disagreement identifies reported operating improvements or declines that are not corroborated by underlying cash economics.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.949978341180787,
+      "ls_alpha": -0.033798767289812466,
+      "ls_talpha": -3.0544474893513316,
+      "ls_sharpe": -0.10255687131368604,
+      "coverage": 0.06390526420494178,
+      "error": null
+    },
+    {
+      "name": "Asset-Release Margin Funding Quality",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(NEG(SUB(DELTA(act, 1), DELTA(che, 1))), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale)), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, cash conversion driven by noncash current-asset release rather than nondebt current-liability growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "A low net working-capital accrual can arise either from collecting or liquidating noncash current assets, or from stretching suppliers and other current creditors. The expression separates those sources, rewarding asset-side realization and liability paydown while penalizing creditor-funded margin improvement.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.9811575115230218,
+      "ls_alpha": -0.02231727424531108,
+      "ls_talpha": -2.3783091783848263,
+      "ls_sharpe": 0.04507726054150798,
+      "coverage": 0.10971869332613521,
+      "error": null
+    },
+    {
+      "name": "Margin-Decline Working-Capital Squeeze",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale)), RANK(RATIO(SUB(DELTA(lct, 1), DELTA(dlc, 1)), sale))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, simultaneous noncash current-asset accumulation and nondebt current-liability growth should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The high-high conjunction identifies firms whose deteriorating operations both trap resources in noncash current assets and increasingly rely on current creditors for financing. This source-specific squeeze mechanism differs from sorting on the level or volatility of aggregate working-capital accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.499018802812451,
+      "ls_alpha": -0.014961419121914565,
+      "ls_talpha": -2.145810583608878,
+      "ls_sharpe": -0.010635702389156851,
+      "coverage": 0.10971869332613521,
+      "error": null
+    },
+    {
+      "name": "Persistent Book-Over-Cash Margin Drift",
+      "expression": "RANK(WINSOR(MA(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)), 3), 1))",
+      "hypothesis": "Firms should earn lower subsequent returns when reported gross-margin changes persistently exceed changes in working-capital-neutral operating cash margins.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the working-capital change back to operating cash flow removes short-term cash-conversion timing before comparing it with reported margin dynamics. Unlike an absolute alignment score or a dual-improvement bottleneck, this signed signal isolates the economically suspicious direction in which book performance repeatedly outruns core cash performance.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.7481143593727703,
+      "ls_alpha": 0.011481651843284549,
+      "ls_talpha": 0.8384672332682505,
+      "ls_sharpe": 0.1516883424295063,
+      "coverage": 0.06390526420494178,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Conservative Margin Gains",
+      "expression": "MUL(IND_ZSCORE(TREND(RATIO(dpc, sale), 3)), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, nondeclining depreciation intensity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the directional expense-recognition mechanism that produced aligned evidence in the earlier depreciation-supported margin signal. Margin gains are more credible when they are not accompanied by a reduction in depreciation charges relative to operating scale.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.8077687336452285,
+      "ls_alpha": 0.002968292132171512,
+      "ls_talpha": 0.27380908439285745,
+      "ls_sharpe": -0.05915087620521395,
+      "coverage": 0.10148816230775771,
+      "error": null
+    },
+    {
+      "name": "Accrual-Light Margin Inflection",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ACCEL(RATIO(wcap, sale))))), INDICATOR(ACCEL(RATIO(SUB(sale, cogs), sale)), 0))",
+      "hypothesis": "Positive margin inflections should predict higher returns when they occur without a sharp acceleration or liquidation in working-capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Margin acceleration identifies an early operating recovery rather than another current-level margin-improvement screen. Low absolute working-capital acceleration distinguishes a genuine operating inflection from one created by aggressive balance-sheet investment or distress-driven liquidation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.6757179817738135,
+      "ls_alpha": -0.008522308407018057,
+      "ls_talpha": -0.6350526426706933,
+      "ls_sharpe": -0.008792542698670854,
+      "coverage": 0.10124377077611775,
+      "error": null
+    },
+    {
+      "name": "Growth-Confirmed Asset-Release Funding",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(NEG(SUB(DELTA(act, 1), DELTA(che, 1))), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale)), MUL(INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0), INDICATOR(GROWTH(sale, 1), 0)))",
+      "hypothesis": "Among firms with both margin improvement and sales growth, current-asset realization with limited reliance on current-liability growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior negative long-short alpha may reflect extreme asset releases by shrinking firms whose margins improved through retrenchment rather than durable operations. Requiring actual sales growth removes that liquidation channel and tests asset-side cash realization only when the underlying business is expanding.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.8853588331671363,
+      "ls_alpha": -0.008758872747125722,
+      "ls_talpha": -1.0195445773305674,
+      "ls_sharpe": 0.10426835662595946,
+      "coverage": 0.10971869332613521,
+      "error": null
+    },
+    {
+      "name": "Contraction-Confirmed Working-Capital Squeeze",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale)), RANK(RATIO(SUB(DELTA(lct, 1), DELTA(dlc, 1)), sale))))), MUL(INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0), INDICATOR(NEG(GROWTH(sale, 1)), 0)))",
+      "hypothesis": "When both sales and gross margins are declining, simultaneous noncash current-asset accumulation and current-liability growth should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital buildup during margin decline can represent productive expansion when sales are still growing, potentially explaining the earlier positive-slope but negative-alpha conflict. Restricting the squeeze mechanism to actual sales contraction isolates firms trapping cash in current assets while increasingly relying on creditors despite shrinking operations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.19381502482747676,
+      "ls_alpha": 0.016751953160711458,
+      "ls_talpha": 0.9364848009075203,
+      "ls_sharpe": 0.09664028935058246,
+      "coverage": 0.10971869332613521,
+      "error": null
+    },
+    {
+      "name": "Smooth-Earnings Cash-to-Accrual Substitution",
+      "expression": "MUL(ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), at)), RANK(NEG(RATIO(DELTA(che, 1), at)))))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, simultaneous cash depletion and accumulation of noncash current assets should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The high-high conjunction identifies a balance-sheet substitution in which liquid cash is replaced by receivables, inventory, or other noncash current assets while reported income remains unusually stable. This is a distinct cash-composition mechanism rather than another depreciation-policy signal or aggregate working-capital accrual sort.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.6406960873055942,
+      "ls_alpha": 0.042021516384390376,
+      "ls_talpha": 4.223873758588992,
+      "ls_sharpe": 0.2584989814394037,
+      "coverage": 0.11295243130621986,
+      "error": null
+    },
+    {
+      "name": "Smooth-Earnings Noncash-Asset Share Drift",
+      "expression": "MUL(IND_ZSCORE(NEG(GROWTH(RATIO(SUB(act, che), act), 1))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, growth in the noncash share of current assets should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This stock-composition formulation measures whether current assets are shifting away from cash toward receivables, inventory, and other accrual assets, rather than relying on the conjunction of two flow changes. It provides a broader-coverage test of the same economic mechanism while producing a continuous ordering that may strengthen cross-sectional evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.400553226342126,
+      "ls_alpha": -0.007507497497512521,
+      "ls_talpha": -0.6911343943002751,
+      "ls_sharpe": 0.018545910061036733,
+      "coverage": 0.1127288829619944,
+      "error": null
+    },
+    {
+      "name": "Smooth-Earnings Accrual Lock-In",
+      "expression": "RANK(NEG(MUL(TS_RANK(RATIO(SUB(act, che), act), 5), RANK(NEG(VOL(RATIO(ni, at), 3))))))",
+      "hypothesis": "Firms should earn lower subsequent returns when smooth earnings coincide with a noncash current-asset share near the top of the firm\u2019s own historical range.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the extra profitability filter with a continuous interaction between earnings smoothness and an accrual-balance-sheet state. A persistently elevated noncash asset share indicates accrual lock-in rather than a one-period cash-to-accrual flow, while firms with volatile earnings do not receive the same penalty.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.8610102697439117,
+      "ls_alpha": 0.0028491011596422557,
+      "ls_talpha": 0.30225223495328485,
+      "ls_sharpe": 0.02969813341144765,
+      "coverage": 0.11321725328888987,
+      "error": null
+    },
+    {
+      "name": "Margin-Cash Composition Volatility Wedge",
+      "expression": "RANK(NEG(MUL(RANK(VOL(RATIO(che, act), 5)), RANK(NEG(VOL(RATIO(SUB(sale, cogs), sale), 5))))))",
+      "hypothesis": "Firms should earn lower subsequent returns when stable gross margins coexist with a volatile cash share of current assets.",
+      "expected_sign": "positive",
+      "reasoning": "The signal tests a volatility wedge rather than smoothing the original substitution flows through time. Large liquidity-composition fluctuations behind smooth operating margins suggest that balance-sheet timing or reclassification, rather than stable cash economics, is supporting reported performance.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.8311804244951502,
+      "ls_alpha": -0.0014571799323393254,
+      "ls_talpha": -0.16494416835978296,
+      "ls_sharpe": 0.09930768433796235,
+      "coverage": 0.11217225635552122,
+      "error": null
+    },
+    {
+      "name": "Durable-Margin Cash-Share Floor",
+      "expression": "MIN(RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 5), VOL(RATIO(SUB(sale, cogs), sale), 5))), TS_RANK(RATIO(che, act), 5))",
+      "hypothesis": "Durable gross margins should predict higher returns when the firm\u2019s cash share of current assets is also high relative to its own history.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-share state is continuous, so the construction does not discard information through a hard margin-quality gate. The bottleneck requires both persistent operating economics and historically strong liquidity composition, replacing the prior flow-substitution screen with a stock-based corroboration mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.9653723629408855,
+      "ls_alpha": 0.03880437827752895,
+      "ls_talpha": 3.394964622032386,
+      "ls_sharpe": 0.12377333733808411,
+      "coverage": 0.11163141691575307,
+      "error": null
+    },
+    {
+      "name": "Margin-Gain Liquid-Asset Confirmation",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(DELTA(RATIO(che, act), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when gross-margin improvement is accompanied by an increasing cash share of current assets.",
+      "expected_sign": "positive",
+      "reasoning": "Both channels are continuous, similarly scaled changes, avoiding another binary gate applied to the archived substitution score. A rising cash share provides balance-sheet confirmation that the margin gain is improving liquidity composition rather than being absorbed by receivables, inventory, or other current accrual assets.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.6388210291529584,
+      "ls_alpha": 0.0076385121188901894,
+      "ls_talpha": 1.0079421694541717,
+      "ls_sharpe": 0.15403593487995854,
+      "coverage": 0.11058559450961553,
+      "error": null
+    },
+    {
+      "name": "Persistent Profit Liquidity Floor",
+      "expression": "MIN(RANK(TS_MIN(RATIO(ni, at), 3)), RANK(TS_MIN(RATIO(che, act), 3)))",
+      "hypothesis": "Firms should earn higher subsequent returns when both profitability and the cash share of current assets remain strong even in their weakest recent periods.",
+      "expected_sign": "positive",
+      "reasoning": "The dual downside floor focuses on durable cash-backed quality rather than blending two signals that share the same current-asset-change term. It requires persistent reported earnings and persistent liquidity simultaneously, reducing sensitivity to one-period accrual movements or temporary cash spikes.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.2537253719075268,
+      "ls_alpha": 0.03806864396361369,
+      "ls_talpha": 3.8793136669763535,
+      "ls_sharpe": 0.16238072101360704,
+      "coverage": 0.12462637038798045,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Stable Cash Backing Ratio",
+      "expression": "RANK(WINSOR(RATIO(SUB(MA(RATIO(oancf, at), 5), VOL(RATIO(oancf, at), 5)), MA(ABS(RATIO(SUB(ib, oancf), at)), 3)), 1))",
+      "hypothesis": "Firms with stable, persistently positive operating cash returns per unit of recurring accrual burden should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is a volatility-discounted measure of persistent cash profitability, while the denominator measures the typical magnitude of the book-to-cash earnings gap. The ratio directly tests whether reported performance has a durable cash foundation rather than merely combining standalone cash flow and accrual rankings.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Clean Working-Capital Margin",
+      "expression": "MUL(RANK(NEG(ABS(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), at)))), RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 5), VOL(RATIO(SUB(sale, cogs), sale), 5))))",
+      "hypothesis": "Stable, persistent gross margins are most credible when they require little noncash working-capital accumulation.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel penalizes large changes in noncash current assets net of nondebt current liabilities. Its interaction with volatility-adjusted gross margin distinguishes durable operating economics from margins supported by receivable, inventory, or other working-capital accounting effects.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Book Stability Bottleneck",
+      "expression": "MIN(RANK(NEG(MA(ABS(RATIO(SUB(ib, oancf), at)), 3))), RANK(NEG(MAX(VOL(RATIO(ib, at), 5), ABS(SUB(VOL(RATIO(ib, at), 5), VOL(RATIO(oancf, at), 5)))))))",
+      "hypothesis": "Firms should earn higher subsequent returns when accrual burdens are low and stable reported earnings are corroborated by similarly stable cash flows.",
+      "expected_sign": "positive",
+      "reasoning": "The quality channel penalizes both earnings volatility and a large mismatch between earnings and cash-flow volatility, which can reveal artificial accounting smoothing. The minimum operator imposes a weakest-link structure: a firm cannot score highly unless both its accrual burden and its cash-book stability diagnostics are favorable.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Enabled Smoothing Penalty",
+      "expression": "NEG(MIN(RANK(MA(ABS(RATIO(SUB(ib, oancf), at)), 3)), RANK(SUB(VOL(RATIO(oancf, at), 5), VOL(RATIO(ib, at), 5)))))",
+      "hypothesis": "Firms should underperform when a high recurring accrual burden coincides with operating cash flows that are substantially more volatile than reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The directional volatility wedge identifies cases in which accruals may be smoothing volatile cash performance rather than simply rewarding low earnings volatility. The minimum creates a high-high conjunction: the penalty becomes severe only when both accrual reliance and the cash-versus-book smoothing wedge are elevated, limiting contamination from either standalone anomaly.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Neutralized Persistent-Profit Accrual Screen",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(ABS(RATIO(SUB(ib, oancf), at)), 3))), INDICATOR(TS_SUM(INDICATOR(RATIO(ib, at), 0), 5), 3))",
+      "hypothesis": "Among firms profitable in at least four of the past five periods, lower recurring accrual intensity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Industry-standardizing the accrual score produces positive and negative values, so firms failing the profitability screen receive a neutral score of zero instead of being forced into the short leg. The return spread therefore contrasts low- and high-accrual firms within the persistent-profit condition while reducing industry-driven portfolio composition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit Cash-Backing Persistence",
+      "expression": "TS_SUM(MUL(INDICATOR(RATIO(ib, at), 0), SIGN(RATIO(oancf, at))), 5)",
+      "hypothesis": "Repeated reported profits accompanied by positive operating cash flow should predict higher returns than repeated profits accompanied by operating cash losses.",
+      "expected_sign": "positive",
+      "reasoning": "Each profitable period contributes positively when cash flow confirms the profit and negatively when the reported profit lacks even directional cash backing; unprofitable periods contribute zero. This categorical persistence mechanism is distinct from the continuous Sloan accrual spread and directly targets repeated paper-profit episodes without assigning all nonprofitable firms to an extreme portfolio leg.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Demand-Accrual Volatility Alignment",
+      "expression": "RANK(NEG(MAX(RANK(VOL(RATIO(revt, at), 3)), RANK(SUB(VOL(RATIO(ADD(ABS(recch), ABS(invch)), at), 3), VOL(RATIO(revt, at), 3))))))",
+      "hypothesis": "Stable revenue is most credible when receivable and inventory accrual activity is also stable and does not fluctuate more than the underlying demand process.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel penalizes unstable revenue productivity, while the second isolates excess volatility in receivable and inventory adjustments relative to revenue volatility. The maximum makes either unstable demand or disproportionate operating-accrual noise sufficient to weaken the signal, distinguishing durable operations from working-capital timing effects.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained Earnings Accrual Efficiency",
+      "expression": "RANK(WINSOR(RATIO(TREND(RATIO(re, at), 5), MA(ABS(RATIO(DELTA(wcap, 1), at)), 3)), 1))",
+      "hypothesis": "Firms that accumulate retained earnings without requiring large recurring working-capital accruals should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator captures persistent internal capital accumulation, while the denominator measures the working-capital accrual burden needed to produce it. A high ratio identifies retained performance that is comparatively cash-efficient rather than generated through expanding noncash operating balances.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Leveraged Opaque-Accrual Penalty",
+      "expression": "RANK(NEG(MIN(RANK(MA(RATIO(ADD(ABS(txach), ABS(aoloch)), at), 3)), RANK(RATIO(ADD(dltt, dlc), at)))))",
+      "hypothesis": "Firms with both high leverage and persistent opaque tax-and-other accrual adjustments should earn lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "High debt creates stronger incentives to preserve reported performance or covenant capacity, while large miscellaneous accrual adjustments provide accounting flexibility. The conjunctive penalty becomes severe only when both financing pressure and opaque accrual activity are elevated, isolating their interaction from a generic leverage or accrual effect.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Earnings Accrual Spike",
+      "expression": "RANK(NEG(MIN(RANK(TS_RANK(ABS(RATIO(DELTA(wcap, 1), at)), 3)), RANK(NEG(VOL(RATIO(ni, at), 3))))))",
+      "hypothesis": "Firms should underperform when working-capital accruals spike relative to their own history while reported earnings remain unusually smooth.",
+      "expected_sign": "positive",
+      "reasoning": "The temporal rank identifies an accrual spike rather than rewarding a persistently low average accrual level, while the second channel identifies smooth earnings. The high-high penalty targets episodes in which working capital may be used to suppress visible earnings variation, and it avoids the zero-score mass created by a binary profitability gate.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Realized Retained Earnings",
+      "expression": "RANK(NEG(WINSOR(SUB(TREND(RATIO(re, at), 5), MAX(TREND(RATIO(che, at), 5), TREND(RATIO(sale, at), 5))), 1)))",
+      "hypothesis": "Retained earnings accumulation should predict higher returns when it is corroborated by either cash accumulation or improving sales productivity.",
+      "expected_sign": "positive",
+      "reasoning": "The signal penalizes retained earnings growth that outruns both cash realization and real-side operating progress, which is more suggestive of accounting accumulation than productive reinvestment. Allowing the stronger of cash or sales confirmation avoids penalizing firms that deploy cash into operations and uses broadly reported balance-sheet and revenue items rather than sparse tax data.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Receivable-Revenue Acceleration Match",
+      "expression": "RANK(NEG(WINSOR(ABS(SUB(ACCEL(RATIO(NEG(recch), at)), ACCEL(RATIO(sale, at)))), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when acceleration in receivable investment closely tracks acceleration in sales rather than running ahead of it.",
+      "expected_sign": "positive",
+      "reasoning": "Negated recch approximates receivable investment, so a mismatch with sales acceleration can reveal channel stuffing, premature revenue recognition, or deteriorating collection quality. This signed change-of-change mechanism replaces the degenerate depreciation comparison and tests timing alignment rather than another low-noise-by-stable-profitability template.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained Earnings Clean-Build Bottleneck",
+      "expression": "MIN(RANK(TREND(RATIO(re, at), 5)), RANK(NEG(MA(ABS(RATIO(DELTA(wcap, 1), at)), 3))))",
+      "hypothesis": "Firms should earn higher returns when retained earnings accumulate persistently without recurring working-capital accrual investment.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum approximates a conjunctive double sort, requiring both retained earnings growth and clean working-capital conversion. It repairs the unstable small-denominator ratio used previously, which produced a positive cross-sectional slope but a negative long-short alpha, while preserving the underlying internal-capital-formation mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Adjusted Cash Retention",
+      "expression": "MIN(RANK(TREND(RATIO(re, at), 5)), RANK(SUB(TREND(RATIO(che, at), 5), TREND(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Persistent retained earnings should predict higher returns when accompanied by cash accumulation that is not financed by increasing debt.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings provide the reported-performance channel, while debt-adjusted cash growth tests whether that performance is realized as internally generated liquidity. The conjunctive score improves on an unsupported-retained-earnings gap by requiring positive confirmation from both cumulative earnings and financing-adjusted cash accumulation.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Receivable-Neutral Earnings Durability",
+      "expression": "RANK(SUB(MA(RATIO(ADD(ni, recch), at), 3), VOL(RATIO(ADD(ni, recch), at), 3)))",
+      "hypothesis": "Firms with high and stable earnings after removing the receivable-accrual contribution should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Under the cash-flow-statement convention, recch offsets the receivable component embedded in net income, so ADD(ni, recch) approximates earnings after receivable cash conversion. Measuring the persistence and stability of this adjusted earnings stream replaces the prior window tweak with a direct redefinition of quality based on cash realization.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Opaque Accrual Reversal Load",
+      "expression": "RANK(NEG(WINSOR(RATIO(ABS(TS_SUM(RATIO(aoloch, at), 3)), TS_SUM(ABS(RATIO(ni, at)), 3)), 1)))",
+      "hypothesis": "Persistent same-direction other accrual adjustments relative to the scale of reported earnings should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Temporary accruals should reverse, so summing signed other-accrual adjustments allows genuine reversals to cancel while persistent accounting flows accumulate. Scaling by cumulative earnings magnitude creates a continuous accounting-noise load without reusing leverage or collapsing the long portfolio into a generic low-leverage sort.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Supplier-Neutral Cash-Profit Persistence",
+      "expression": "TS_SUM(MUL(INDICATOR(RATIO(ni, at), 0), SIGN(RATIO(SUB(oancf, apalch), at))), 3)",
+      "hypothesis": "Repeated reported profits should predict higher returns when operating cash flow remains positive after removing cash support from changes in accounts payable and accrued liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Each profitable period receives a positive contribution if supplier-financing-adjusted cash flow is positive and a negative contribution if the profit lacks adjusted cash backing. Nonprofitable periods are neutral, so the construction contrasts cash-confirmed and supplier-funded profit persistence without forcing a screened-out group into an extreme portfolio leg.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Converted Margin Improvement",
+      "expression": "MIN(RANK(TREND(RATIO(SUB(sale, cogs), sale), 5)), RANK(NEG(MA(RATIO(DELTA(wcap, 1), sale), 3))))",
+      "hypothesis": "Improving gross margins should predict higher returns when they are accompanied by low working-capital investment relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Cross-sectional ranks place margin improvement and working-capital accruals on a common scale, eliminating domination by the unbounded working-capital ratio. Using the working-capital change rather than its sign-unstable level focuses the second channel on incremental cash absorption, while the minimum requires both margin improvement and clean cash conversion.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Supplier-Neutral Book-Cash Agreement",
+      "expression": "MIN(RANK(SUB(MA(RATIO(SUB(oancf, apalch), at), 3), VOL(RATIO(SUB(oancf, apalch), at), 3))), RANK(NEG(ABS(SUB(MA(RATIO(ni, at), 3), MA(RATIO(SUB(oancf, apalch), at), 3))))))",
+      "hypothesis": "Reported earnings should predict higher returns when supplier-financing-adjusted operating cash flow is both durable and closely aligned with book income.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting apalch removes cash support obtained from increasing accounts payable and accrued liabilities. The continuous bottleneck replaces the prior discrete sign count, requiring stable adjusted cash generation and book-cash agreement while avoiding a large mass of tied observations.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Profit Rescue Count",
+      "expression": "TS_SUM(MUL(INDICATOR(RATIO(ni, at), 0), INDICATOR(NEG(RATIO(SUB(ni, SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1)))), at)), 0)), 5)",
+      "hypothesis": "Firms should earn lower subsequent returns when positive reported income repeatedly becomes negative after removing noncash working-capital accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The signal counts threshold-crossing episodes in which working-capital accruals effectively rescue the firm from reporting an economic loss. This targets benchmark-sensitive accounting noise rather than the standalone level of accruals or profitability, with repeated episodes indicating a more persistent reporting problem.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Improvement Funding Test",
+      "expression": "MUL(IND_ZSCORE(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, those requiring less noncash working-capital investment should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signed accrual measure rewards working-capital releases and penalizes investment rather than treating both as costs. Industry standardization centers the accrual score, so firms without margin improvement receive a neutral zero while improving-margin firms are ordered by whether their gains convert into cash.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Receivable Reversal-Adjusted Earnings",
+      "expression": "RANK(WINSOR(SUB(SUB(MA(RATIO(ni, at), 3), VOL(RATIO(ni, at), 3)), MA(ABS(ADD(RATIO(recch, at), LAG(RATIO(recch, at), 1))), 3)), 1))",
+      "hypothesis": "High and stable earnings should predict higher returns when receivable accruals subsequently reverse rather than persist in the same direction.",
+      "expected_sign": "positive",
+      "reasoning": "Temporary receivable accruals should approximately offset across adjacent periods, whereas repeated same-direction changes indicate delayed realization or continuing revenue-recognition pressure. The signal deducts recurring nonreversal from volatility-adjusted earnings instead of reconstructing the published cash-based operating-profitability measure.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Revenue Growth Congruence",
+      "expression": "RANK(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when growth in recognized depreciation remains aligned with growth in the operating scale supported by sales.",
+      "expected_sign": "positive",
+      "reasoning": "Large persistent divergence can indicate unstable depreciation estimates, acquisition-related accounting effects, or asset economics that reported sales do not support. This construction treats depreciation as a valid expense and tests its consistency with operating activity rather than incorrectly removing its add-back from cash flow.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Revenue-Decline Opaque Accrual Screen",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(TS_SUM(RATIO(aoloch, at), 3)))), INDICATOR(NEG(TREND(RATIO(revt, at), 3)), 0))",
+      "hypothesis": "Among firms with declining revenue productivity, lower persistent other-accrual activity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Declining revenue removes the real-growth justification for sustained opaque operating adjustments, making those accruals more likely to represent accounting noise. The centered accrual score keeps firms without revenue deterioration neutral and directly compares low- versus high-accrual firms only inside the economically relevant weak-demand condition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Expansion-Gated Depreciation Congruence",
+      "expression": "MUL(IND_ZSCORE(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1))), INDICATOR(TREND(RATIO(sale, at), 3), 0))",
+      "hypothesis": "Among firms with improving sales productivity, depreciation growth that remains aligned with sales growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier unconditional congruence score could favor firms where depreciation and sales were merely contracting together, contaminating its long portfolio despite a positive cross-sectional slope. The expansion gate removes matched contractions, while the centered alignment score orders only firms for which depreciation consistency has a positive operating-growth interpretation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent-Profit Accrual Concentration",
+      "expression": "MUL(IND_ZSCORE(NEG(WINSOR(RATIO(MAX(ABS(recch), ABS(invch)), ADD(ABS(recch), ABS(invch))), 1))), INDICATOR(TS_MIN(RATIO(ni, at), 3), 0))",
+      "hypothesis": "Among firms profitable in every recent period, earnings supported by a balanced operating-accrual mix should predict higher returns than earnings dominated by either receivables or inventory.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel measures concentration rather than reconstructing cash operating profitability or simply rewarding low total accruals. The profitability-floor gate asks whether persistent earnings are disproportionately dependent on one accounting channel, while the centered score leaves firms failing the persistence condition neutral.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Margin Receivable Realization",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ADD(RATIO(recch, at), LAG(RATIO(recch, at), 1))))), INDICATOR(LAG(DELTA(RATIO(SUB(sale, cogs), sale), 1), 1), 0))",
+      "hypothesis": "Following a gross-margin improvement, firms should earn higher subsequent returns when the associated receivable accrual reverses rather than persists.",
+      "expected_sign": "positive",
+      "reasoning": "Adjacent-period receivable adjustments should offset when prior accrued sales are subsequently collected, so their sum measures failure to realize the earlier accrual. Conditioning on a lagged margin event turns the signal into a post-reporting realization test rather than a contemporaneous sort on the signed receivables accrual.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Trade-Credit Churn",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(RATIO(SUB(ADD(ABS(recch), ABS(apalch)), ABS(ADD(recch, apalch))), sale), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(SUB(sale, cogs), sale), 3))), 0))",
+      "hypothesis": "Among firms with smooth gross margins, lower offsetting activity between customer and supplier accruals should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gross receivable and payable adjustments can offset in net cash flow, concealing substantial trade-credit churn behind apparently stable performance. Subtracting the absolute net adjustment from gross absolute activity isolates this hidden offsetting component, while the smooth-margin condition focuses the test on potential accounting stabilization.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Margin Nonworking Accrual Residual",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(ABS(SUB(RATIO(SUB(ni, oancf), at), RATIO(DELTA(wcap, 1), at))), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(SUB(sale, cogs), sale), 3))), 0))",
+      "hypothesis": "Among firms with smooth gross margins, a small persistent residual between total accruals and working-capital accruals should predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The residual isolates accrual activity outside ordinary working-capital movements instead of sorting directly on the standard working-capital anomaly. Conditioning on smooth margins tests whether apparent operating stability is supported by routine cash-conversion mechanics or by less transparent nonworking accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable-Demand Accrual Noise Screen",
+      "expression": "MUL(IND_ZSCORE(NEG(VOL(RATIO(ADD(ABS(recch), ABS(invch)), at), 3))), INDICATOR(NEG(ZSCORE(VOL(RATIO(revt, at), 3))), 0))",
+      "hypothesis": "Among firms with stable demand, lower volatility in receivable and inventory accrual activity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The demand-volatility indicator defines the economic subset, and the centered accrual-volatility score orders firms only within that condition. This avoids subtracting incomparable raw volatilities, prevents revenue volatility from dominating the signal, and directly tests whether stable demand is accompanied by stable operating accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Decline Working-Capital Dislocation",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ACCEL(RATIO(wcap, sale))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with deteriorating gross margins, lower acceleration in working-capital intensity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Margin deterioration is especially concerning when accompanied by a sharp change of change in working-capital needs, which can indicate inventory, collection, or payment-policy disruption. Using absolute acceleration avoids treating distress-driven working-capital liquidation as favorable and tests instability rather than the published accrual level.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Supported Margin Improvement",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(TREND(RATIO(dpc, sale), 3)))",
+      "hypothesis": "Gross-margin improvement should predict higher returns when it is not accompanied by a declining depreciation charge relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing the expansion gate with a ranked margin-change channel removes the growth exposure that may have produced a strong Fama-MacBeth slope but weak FF5 alpha. The second channel tests conservative expense recognition: apparent margin gains are less credible when depreciation intensity is simultaneously being reduced.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Verified Working-Capital Harvest",
+      "expression": "MUL(ZSCORE(MIN(RANK(LAG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale), 1)), RANK(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, prior working-capital investment should be favorable only when it reverses into a current working-capital release.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum explicitly requires both a prior-period buildup and a current-period release, rather than rewarding the lagged accrual magnitude additively. Centering the verified reversal score before applying the margin gate keeps other firms neutral and distinguishes temporary investment realization from persistent high accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded Trade Margin Gains",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(RATIO(recch, sale)), RANK(NEG(RATIO(apalch, sale))))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, simultaneous receivable collection and limited reliance on payable growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Positive recch indicates customer cash realization, while positive apalch supplies cash through increased supplier financing; the latter is therefore treated as a funding dependency rather than mislabeled as a cash cost. Rank normalization makes the two trade-credit channels commensurable, and the minimum requires both customer collection and supplier independence.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Margin Cash Confirmation",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(DELTA(RATIO(SUB(oancf, apalch), sale), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when gross margins and supplier-neutral operating cash margins improve together.",
+      "expected_sign": "positive",
+      "reasoning": "One channel measures improvement in reported operating economics, while the other measures improvement in cash generation after removing support from payable accruals. The conjunctive rank structure tests simultaneous book-and-cash confirmation rather than combining a profitability floor with another standalone cash-flow trend.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Earnings Supplier-Funded Inventory",
+      "expression": "MUL(ZSCORE(NEG(MIN(RANK(RATIO(NEG(invch), cogs)), RANK(RATIO(apalch, cogs))))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, inventory buildup financed by increasing accounts payable should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Negated invch captures inventory investment, while positive apalch captures supplier financing; their high-high conjunction identifies inventory accumulation whose cash burden is hidden by stretched payment terms. The centered negative penalty orders firms within the smooth-earnings condition and replaces another demand-volatility variant with a distinct financing-of-accruals mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Two-Sided Margin Accounting Confirmation",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(NEG(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale))), RANK(TREND(RATIO(dpc, sale), 3)))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, low working-capital investment and nondeclining depreciation intensity should jointly predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital investment tests whether the margin gain consumes cash, while the depreciation channel tests whether the gain is being created by reducing expense recognition. Requiring both confirmations combines the strongest portfolio-performing margin-funding mechanism with the depreciation channel\u2019s cross-sectional strength.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Efficient Depreciation Congruence",
+      "expression": "MUL(IND_ZSCORE(MIN(RANK(NEG(WINSOR(MA(ABS(SUB(GROWTH(dpc, 1), GROWTH(sale, 1))), 3), 1))), RANK(NEG(ABS(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), at)))))), INDICATOR(TREND(RATIO(sale, at), 3), 0))",
+      "hypothesis": "Among expanding firms, depreciation growth congruence should predict higher returns when expansion also requires little noncash working-capital accrual.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation congruence alone generated strong Fama-MacBeth evidence but weak long-short alpha, consistent with its extremes retaining generic expansion exposure. The added working-capital bottleneck requires expansion to be both accounting-consistent and cash-efficient, which should improve abnormal-return separation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Quiet-Margin Working-Capital Dislocation",
+      "expression": "RANK(NEG(MUL(RANK(ABS(ACCEL(RATIO(wcap, sale)))), RANK(NEG(ABS(DELTA(RATIO(SUB(sale, cogs), sale), 1)))))))",
+      "hypothesis": "Large working-capital dislocations should predict lower returns when reported gross margins change very little.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel identifies sharp changes in working-capital intensity, while the second is large only when margins appear unusually quiet. Their high-high interaction targets hidden balance-sheet instability behind smooth reported performance without combining separately normalized margin regimes or loading mechanically on a margin-direction dummy.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Decline Depreciation Stability",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(TREND(RATIO(dpc, sale), 3)))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, a stable depreciation charge relative to sales should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Operating deterioration creates incentives to alter depreciation assumptions to soften reported weakness, so instability in depreciation intensity is more informative in this state. This replaces the leverage overlay with a directly attributable expense-recognition mechanism and does not reward either sharp depreciation cuts or distress-driven increases.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent-Profit Trade-Credit Trap",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(MA(RATIO(apalch, sale), 3)), RANK(MA(RATIO(NEG(recch), sale), 3))))), INDICATOR(TS_MIN(RATIO(ni, at), 3), 0))",
+      "hypothesis": "Among persistently profitable firms, simultaneous receivable buildup and reliance on increasing payables should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Payable growth supplies cash, but when it persistently finances receivable growth it indicates that reported profits remain trapped in customer credit and require supplier support. The high-high penalty has an ex-ante cash-cycle interpretation and does not reward gross trade-credit churn based on a prior backtest sign reversal.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Stripped Nonworking Accrual Quality",
+      "expression": "MUL(IND_ZSCORE(NEG(MA(ABS(RATIO(SUB(ADD(SUB(ni, oancf), dpc), DELTA(wcap, 1)), at)), 3))), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, lower nonworking accrual residuals after explicitly removing depreciation should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding dpc back to the total-accrual measure removes the mechanical depreciation component before subtracting working-capital accruals, leaving a cleaner residual of other noncash adjustments. The margin-improvement condition tests whether favorable operating news is supported without opaque nonworking accruals rather than inadvertently sorting on capital intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Down Dual Accounting Stability",
+      "expression": "MUL(ZSCORE(SUMRANK(NEG(ABS(ACCEL(RATIO(wcap, sale)))), NEG(ABS(TREND(RATIO(dpc, sale), 3))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, stability in both working-capital intensity and depreciation policy should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital acceleration captures balance-sheet dislocation, while depreciation-intensity drift captures expense-recognition instability during operating stress. Combining the two directly extends the separately positive margin-decline mechanisms without introducing a generic leverage characteristic.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Core-Cash Margin Co-Stability",
+      "expression": "RANK(NEG(MAX(RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)), RANK(VOL(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 3)))))",
+      "hypothesis": "Firms should earn higher subsequent returns when both reported gross margins and working-capital-neutral operating cash margins are stable.",
+      "expected_sign": "positive",
+      "reasoning": "Adding the working-capital change back to operating cash flow removes short-term cash-conversion timing and approximates the underlying operating cash margin. The maximum imposes a weakest-link test, so smooth book margins do not qualify when core cash economics remain unstable.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital-Neutral Margin Alignment",
+      "expression": "RANK(NEG(WINSOR(MA(ABS(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1))), 3), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when changes in reported gross margins remain aligned with changes in working-capital-neutral operating cash margins.",
+      "expected_sign": "positive",
+      "reasoning": "The signal compares two commensurately scaled margin changes after removing working-capital timing from the cash-flow channel. Persistent disagreement identifies reported operating improvements or declines that are not corroborated by underlying cash economics.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Asset-Release Margin Funding Quality",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(NEG(SUB(DELTA(act, 1), DELTA(che, 1))), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale)), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, cash conversion driven by noncash current-asset release rather than nondebt current-liability growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "A low net working-capital accrual can arise either from collecting or liquidating noncash current assets, or from stretching suppliers and other current creditors. The expression separates those sources, rewarding asset-side realization and liability paydown while penalizing creditor-funded margin improvement.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Decline Working-Capital Squeeze",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale)), RANK(RATIO(SUB(DELTA(lct, 1), DELTA(dlc, 1)), sale))))), INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0))",
+      "hypothesis": "Among firms with declining gross margins, simultaneous noncash current-asset accumulation and nondebt current-liability growth should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The high-high conjunction identifies firms whose deteriorating operations both trap resources in noncash current assets and increasingly rely on current creditors for financing. This source-specific squeeze mechanism differs from sorting on the level or volatility of aggregate working-capital accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Book-Over-Cash Margin Drift",
+      "expression": "RANK(WINSOR(MA(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)), 3), 1))",
+      "hypothesis": "Firms should earn lower subsequent returns when reported gross-margin changes persistently exceed changes in working-capital-neutral operating cash margins.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the working-capital change back to operating cash flow removes short-term cash-conversion timing before comparing it with reported margin dynamics. Unlike an absolute alignment score or a dual-improvement bottleneck, this signed signal isolates the economically suspicious direction in which book performance repeatedly outruns core cash performance.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Conservative Margin Gains",
+      "expression": "MUL(IND_ZSCORE(TREND(RATIO(dpc, sale), 3)), INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0))",
+      "hypothesis": "Among firms with improving gross margins, nondeclining depreciation intensity should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the directional expense-recognition mechanism that produced aligned evidence in the earlier depreciation-supported margin signal. Margin gains are more credible when they are not accompanied by a reduction in depreciation charges relative to operating scale.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Light Margin Inflection",
+      "expression": "MUL(IND_ZSCORE(NEG(ABS(ACCEL(RATIO(wcap, sale))))), INDICATOR(ACCEL(RATIO(SUB(sale, cogs), sale)), 0))",
+      "hypothesis": "Positive margin inflections should predict higher returns when they occur without a sharp acceleration or liquidation in working-capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Margin acceleration identifies an early operating recovery rather than another current-level margin-improvement screen. Low absolute working-capital acceleration distinguishes a genuine operating inflection from one created by aggressive balance-sheet investment or distress-driven liquidation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Creditor-Independent Durable Margins",
+      "expression": "MUL(IND_ZSCORE(NEG(RATIO(SUB(DELTA(lct, 1), DELTA(dlc, 1)), sale))), INDICATOR(ZSCORE(SUB(MA(RATIO(SUB(sale, cogs), sale), 5), VOL(RATIO(SUB(sale, cogs), sale), 5))), 0))",
+      "hypothesis": "Among firms with above-average durable gross margins, lower growth in nondebt current liabilities should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The quality condition selects firms whose margin level is high relative to its own instability, while the accrual channel tests whether that durability depends on stretching suppliers and other current creditors. Isolating the liability side distinguishes creditor-independent cash quality from the aggregate working-capital magnitude used by the original winner.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Growth-Confirmed Asset-Release Funding",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(NEG(SUB(DELTA(act, 1), DELTA(che, 1))), SUB(DELTA(lct, 1), DELTA(dlc, 1))), sale)), MUL(INDICATOR(DELTA(RATIO(SUB(sale, cogs), sale), 1), 0), INDICATOR(GROWTH(sale, 1), 0)))",
+      "hypothesis": "Among firms with both margin improvement and sales growth, current-asset realization with limited reliance on current-liability growth should predict higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior negative long-short alpha may reflect extreme asset releases by shrinking firms whose margins improved through retrenchment rather than durable operations. Requiring actual sales growth removes that liquidation channel and tests asset-side cash realization only when the underlying business is expanding.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Contraction-Confirmed Working-Capital Squeeze",
+      "expression": "MUL(IND_ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale)), RANK(RATIO(SUB(DELTA(lct, 1), DELTA(dlc, 1)), sale))))), MUL(INDICATOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 0), INDICATOR(NEG(GROWTH(sale, 1)), 0)))",
+      "hypothesis": "When both sales and gross margins are declining, simultaneous noncash current-asset accumulation and current-liability growth should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Working-capital buildup during margin decline can represent productive expansion when sales are still growing, potentially explaining the earlier positive-slope but negative-alpha conflict. Restricting the squeeze mechanism to actual sales contraction isolates firms trapping cash in current assets while increasingly relying on creditors despite shrinking operations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Earnings Cash-to-Accrual Substitution",
+      "expression": "MUL(ZSCORE(NEG(MIN(RANK(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), at)), RANK(NEG(RATIO(DELTA(che, 1), at)))))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, simultaneous cash depletion and accumulation of noncash current assets should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The high-high conjunction identifies a balance-sheet substitution in which liquid cash is replaced by receivables, inventory, or other noncash current assets while reported income remains unusually stable. This is a distinct cash-composition mechanism rather than another depreciation-policy signal or aggregate working-capital accrual sort.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Earnings Noncash-Asset Share Drift",
+      "expression": "MUL(IND_ZSCORE(NEG(GROWTH(RATIO(SUB(act, che), act), 1))), INDICATOR(NEG(ZSCORE(VOL(RATIO(ni, at), 3))), 0))",
+      "hypothesis": "Among firms with smooth earnings, growth in the noncash share of current assets should predict lower subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This stock-composition formulation measures whether current assets are shifting away from cash toward receivables, inventory, and other accrual assets, rather than relying on the conjunction of two flow changes. It provides a broader-coverage test of the same economic mechanism while producing a continuous ordering that may strengthen cross-sectional evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Smooth-Earnings Accrual Lock-In",
+      "expression": "RANK(NEG(MUL(TS_RANK(RATIO(SUB(act, che), act), 5), RANK(NEG(VOL(RATIO(ni, at), 3))))))",
+      "hypothesis": "Firms should earn lower subsequent returns when smooth earnings coincide with a noncash current-asset share near the top of the firm\u2019s own historical range.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the extra profitability filter with a continuous interaction between earnings smoothness and an accrual-balance-sheet state. A persistently elevated noncash asset share indicates accrual lock-in rather than a one-period cash-to-accrual flow, while firms with volatile earnings do not receive the same penalty.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Cash Composition Volatility Wedge",
+      "expression": "RANK(NEG(MUL(RANK(VOL(RATIO(che, act), 5)), RANK(NEG(VOL(RATIO(SUB(sale, cogs), sale), 5))))))",
+      "hypothesis": "Firms should earn lower subsequent returns when stable gross margins coexist with a volatile cash share of current assets.",
+      "expected_sign": "positive",
+      "reasoning": "The signal tests a volatility wedge rather than smoothing the original substitution flows through time. Large liquidity-composition fluctuations behind smooth operating margins suggest that balance-sheet timing or reclassification, rather than stable cash economics, is supporting reported performance.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Durable-Margin Cash-Share Floor",
+      "expression": "MIN(RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 5), VOL(RATIO(SUB(sale, cogs), sale), 5))), TS_RANK(RATIO(che, act), 5))",
+      "hypothesis": "Durable gross margins should predict higher returns when the firm\u2019s cash share of current assets is also high relative to its own history.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-share state is continuous, so the construction does not discard information through a hard margin-quality gate. The bottleneck requires both persistent operating economics and historically strong liquidity composition, replacing the prior flow-substitution screen with a stock-based corroboration mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Gain Liquid-Asset Confirmation",
+      "expression": "MIN(RANK(DELTA(RATIO(SUB(sale, cogs), sale), 1)), RANK(DELTA(RATIO(che, act), 1)))",
+      "hypothesis": "Firms should earn higher subsequent returns when gross-margin improvement is accompanied by an increasing cash share of current assets.",
+      "expected_sign": "positive",
+      "reasoning": "Both channels are continuous, similarly scaled changes, avoiding another binary gate applied to the archived substitution score. A rising cash share provides balance-sheet confirmation that the margin gain is improving liquidity composition rather than being absorbed by receivables, inventory, or other current accrual assets.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Profit Liquidity Floor",
+      "expression": "MIN(RANK(TS_MIN(RATIO(ni, at), 3)), RANK(TS_MIN(RATIO(che, act), 3)))",
+      "hypothesis": "Firms should earn higher subsequent returns when both profitability and the cash share of current assets remain strong even in their weakest recent periods.",
+      "expected_sign": "positive",
+      "reasoning": "The dual downside floor focuses on durable cash-backed quality rather than blending two signals that share the same current-asset-change term. It requires persistent reported earnings and persistent liquidity simultaneously, reducing sensitivity to one-period accrual movements or temporary cash spikes.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Accrual-Earnings Durability Product",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the product of two canonical published anomalies \u2014 accrual quality/|accruals| (Sloan; Francis et al.) and stable ROA profitability (Novy-Marx; earnings-volatility literature) \u2014 combined by the most generic possible operator (rank multiplication), so it adds little beyond a standard quality composite and its interaction is not identified against the two additive main effects."
+    },
+    {
+      "generation": 0,
+      "target_name": "Persistent-Profit Accrual Gate",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The gate is mis-constructed for the stated hypothesis: multiplying a non-negative rank by a 0/1 indicator assigns score 0 to all firms failing the persistent-profit screen, dumping them into the extreme short leg rather than excluding or neutralizing them, so the tested portfolio is dominated by the gate itself rather than by conditional accrual information."
+    },
+    {
+      "generation": 0,
+      "target_name": "Clean Working-Capital Margin",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It leans on two well-known effects (working-capital accruals and gross profitability), but uses a genuinely distinct data footprint (act/che/lct/dlc, sale\u2212cogs) and a defensible credibility mechanism \u2014 margins unaccompanied by working-capital accumulation \u2014 that is not a simple restatement of either parent anomaly."
+    },
+    {
+      "generation": 0,
+      "target_name": "Conservative Cash-Profit Persistence",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Signed accruals times cash-flow profitability is close to a direct rediscovery of the Sloan accrual anomaly conditioned on operating profitability, and it is nearly redundant with the Accrual-Earnings Durability Product in this same batch (abs vs. signed accruals, oancf vs. ib), so it adds no independent information."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cash-Book Stability Bottleneck",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The earnings-vs-cash-flow volatility mismatch as a smoothing detector plus a weakest-link MIN aggregation is the most original construction in the batch and is sign-coherent, but note that accruals are mechanically ib\u2212oancf so the two channels may be highly collinear, which would make the bottleneck structure inert."
+    },
+    {
+      "generation": 1,
+      "target_name": "Neutral Persistent-Profit Working Capital",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-specification of the archived Clean Working-Capital Margin signal (magnitude of working-capital accruals interacted with an earnings-quality/persistence screen) that mainly swaps the margin-stability leg for a profitability-count indicator and RANK for IND_ZSCORE, and the 0/1 multiplier also dumps a large ties-at-zero mass into the middle of the sort."
+    },
+    {
+      "generation": 1,
+      "target_name": "Tax-Clean Margin Durability",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The construction is internally coherent, but it reuses the archived \"low accrual noise \u00d7 stable margin\" weakest-link template with only a line-item substitution, and the tax leg edges into the well-documented tax-expense/book-tax-difference anomalies while relying on sparsely and inconsistently reported txp."
+    },
+    {
+      "generation": 1,
+      "target_name": "Demand-Accrual Volatility Alignment",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The excess volatility of receivable/inventory adjustments relative to demand volatility is a genuinely distinct construct rather than a repackaged accrual level, though three-period VOL estimates are very noisy, the sign conventions of recch/invch are handled only by absolute value, and the revenue-stability leg overlaps with known earnings-volatility effects."
+    },
+    {
+      "generation": 1,
+      "target_name": "Depreciation-Consistent Asset Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "dpc and dp are near-identical for the vast majority of firms, so the first leg is a mostly-degenerate mass at zero dominated by data idiosyncrasies, leaving the MIN effectively driven by stable asset turnover \u2014 a known profitability/DuPont characteristic \u2014 inside an already-tested template."
+    },
+    {
+      "generation": 1,
+      "target_name": "Retained Earnings Accrual Efficiency",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The hypothesis and expression align (cash-efficient internal capital accumulation), but dividing a trend by a small nonnegative accrual denominator makes the ratio highly unstable and likely denominator-dominated even after 1% winsorization, so a scaled difference or double-sort would be a cleaner test of the same idea."
+    },
+    {
+      "generation": 1,
+      "target_name": "Leveraged Opaque-Accrual Penalty",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The conjunctive MIN correctly implements the stated \"both high leverage and opaque accruals\" penalty with a sign that matches the expression's direction, and the financing-pressure \u00d7 accounting-flexibility interaction is economically distinct from a standalone leverage or accrual effect, with the main risk being coverage of txach/aoloch."
+    },
+    {
+      "generation": 2,
+      "target_name": "Three-Year Clean Working-Capital Margin",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archive's Clean Working-Capital Margin with the only change being the MA/VOL window shortened from 5 to 3 \u2014 a purely cosmetic parameter tweak of an already-evaluated signal rather than a substantive mechanism change."
+    },
+    {
+      "generation": 2,
+      "target_name": "Retained Earnings Clean-Build Bottleneck",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing the unstable small-denominator ratio with a rank-space conjunctive MIN is a defensible functional-form repair that is internally consistent (both components are \"good\" states, so positive sign is correct), though it recycles the same two ingredients as the prior weak signal and is only marginally novel."
+    },
+    {
+      "generation": 2,
+      "target_name": "Accounting-Slack Solvency Bottleneck",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived Leveraged Opaque-Accrual Penalty with MIN flipped to MAX on identical inputs \u2014 a single-operator variant whose long leg collapses toward low-leverage, low-accrual firms and therefore largely re-tests the well-known leverage/accrual quality effects rather than a new interaction."
+    },
+    {
+      "generation": 2,
+      "target_name": "Inventory-Cost Absorption Gap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Inventory growth measured against realized throughput is essentially the published Abarbanell\u2013Bushee inventory-versus-sales fundamental signal and the Thomas\u2013Zhang inventory-change anomaly, so the trend-window wrapper does not make it a genuinely new cross-theme mechanism."
+    },
+    {
+      "generation": 2,
+      "target_name": "Margin-to-Working-Capital Trend Spread",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Subtracting raw trends of two ratios with wildly different scales (gross margin bounded near [0,1] versus wcap/sale, which is unbounded and sign-unstable) means the composite will be dominated by the working-capital-intensity trend, reducing it to a noisy proxy for the known working-capital-accrual/NOA-growth anomaly rather than the stated margin-versus-capital comparison."
+    },
+    {
+      "generation": 2,
+      "target_name": "Debt-Adjusted Cash Retention",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conjunctive design is internally consistent, the two trend components are commensurably scaled by assets, and requiring debt-financing-adjusted cash confirmation of retained-earnings growth is a substantively different test from the prior MAX-based \"corroboration\" gap, though it overlaps partly with known external-financing anomalies."
+    },
+    {
+      "generation": 3,
+      "target_name": "Accrual-Charged Margin Durability",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This recombines the exact two ingredients of the archive's generation-0 winner (working-capital accrual magnitude and mean-minus-vol gross margin) into a single ratio, and the ABS() charge penalizes working-capital *releases* \u2014 cash-generating events \u2014 which contradicts the stated logic of charging for working-capital *investment*."
+    },
+    {
+      "generation": 3,
+      "target_name": "Operating-Accrual-Neutral Earnings Floor",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The sign conventions are handled correctly and the TS_MIN \"floor\" is a mild twist, but ni+recch+invch scaled by assets is essentially cash-based operating profitability (Ball et al. 2016), a well-published anomaly, and it is also a close aggregator variant of the archive's Receivable-Neutral Earnings Durability."
+    },
+    {
+      "generation": 3,
+      "target_name": "Supplier-Neutral Book-Cash Agreement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and a genuine structural improvement over the prior discrete sign-count version, though the second leg (|NI \u2212 adjusted CF|) is close to a standard absolute-accruals quality measure and apalch/oancf availability will keep coverage thin."
+    },
+    {
+      "generation": 3,
+      "target_name": "Depreciation-Neutral Cash Margin",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The stated rationale is economically confused \u2014 depreciation is a genuine noncash charge, so subtracting dpc from oancf simply walks back toward accrual earnings, making the signal a stable-earnings-margin measure (close to known profitability/earnings-stability anomalies) rather than a test of cash-flow quality."
+    },
+    {
+      "generation": 3,
+      "target_name": "Working-Capital Profit Rescue Count",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The threshold-crossing/benchmark-beating mechanism is coherent and the expected negative sign matches the expression, but the 0\u20135 integer output creates heavy ties and coarse portfolio sorts of the kind that already produced weak results for the archive's discrete count signal, and it overlaps substantially with the classic accruals anomaly."
+    },
+    {
+      "generation": 3,
+      "target_name": "Growth-Validated Other Accruals",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The MIN bottleneck does not implement the stated conditional hypothesis (the short leg pools low-accrual firms with declining-revenue firms rather than high-accrual/low-growth firms), and the positive expected sign leans on an in-sample sign flip from a prior archive result while embedding a revenue-trend leg whose own return direction is ambiguous."
+    },
+    {
+      "generation": 4,
+      "target_name": "Continuous Cash-Backed Profit Cushion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Net income minus noncash working-capital accruals scaled by assets is essentially cash-based operating profitability (Sloan accruals plus Ball et al. cash profitability), so despite the internally consistent profit gate this is a repackaging of two of the best-known published anomalies rather than a cross-theme discovery."
+    },
+    {
+      "generation": 4,
+      "target_name": "Expansion-Gated Depreciation Congruence",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The depreciation-versus-sales growth congruence construct is not a standard published anomaly and the expansion gate is a substantively motivated response to the archived signal's FMB/alpha sign conflict (matched contractions polluting the long leg), though the prior alpha was reliably negative at t=-1.8 so the gate may reorder rather than repair the spread."
+    },
+    {
+      "generation": 4,
+      "target_name": "Receivable-Funded Margin Screen",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Once the gate is applied the payoff variable is simply the signed receivables accrual scaled by sales, i.e. the receivables component of the Sloan accrual anomaly, and the margin-improvement indicator is too thin an interaction to make it a distinct mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "Debt-Neutral Cash Confirmation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "\u0394cash minus \u0394total-debt over assets is close to the established net-external-financing/debt-issuance anomaly, and the archive already tested the same cash-net-of-debt confirmation channel (Debt-Adjusted Cash Retention, fmb 0.73, alpha -0.016) with only the gating variable changed here."
+    },
+    {
+      "generation": 4,
+      "target_name": "Growth-Supported Working-Capital Efficiency",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archived Cash-Converted Margin Improvement (same NEG(\u0394wcap/sale) payoff, gate swapped from margin trend to revenue-productivity trend and MIN swapped for an indicator product), and the underlying payoff is the working-capital accrual anomaly itself, so the prior FMB/alpha sign conflict is unlikely to be diagnosed by this change."
+    },
+    {
+      "generation": 4,
+      "target_name": "Pure Demand-Accrual Volatility Gap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expression is literally the inner subexpression of the archived Demand-Accrual Volatility Alignment signal, and it is internally inconsistent because VOL(revt/at) is an order of magnitude larger than VOL((|recch|+|invch|)/at), so after NEG the score is dominated by and increasing in revenue volatility \u2014 the opposite of the stated stability hypothesis."
+    },
+    {
+      "generation": 5,
+      "target_name": "Expansion Depreciation-Policy Stability",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This keeps the identical sales-productivity gate from the archived \"Expansion-Gated Depreciation Congruence\" and swaps one depreciation-policy-consistency measure for a highly correlated one (|\u0394dpc\u2212\u0394sale| \u2192 VOL(dpc/sale)), which is closer to a cosmetic re-parameterization than a diagnosis of why that signal's alpha was insignificant despite a 4.6 t-stat."
+    },
+    {
+      "generation": 5,
+      "target_name": "Margin-Gain Working-Capital Harvest",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expression is the archived \"Margin Improvement Funding Test\" (low current WC accrual, margin-up gate) plus a positively-weighted lagged WC accrual level, which rewards firms that previously accumulated large working-capital accruals \u2014 the opposite of the well-documented accrual anomaly \u2014 so the \"harvesting\" story does not match what the formula computes."
+    },
+    {
+      "generation": 5,
+      "target_name": "Trade-Financing-Adjusted Margin Change",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The framing is confused (subtracting apalch\u2212recch penalizes payable growth *and* receivable growth, so it is an accrual-quality penalty, not a \"cash-conversion adjustment,\" since rising payables supply cash) and it subtracts a flow level from a first difference with no scale normalization, so the ranked signal will be dominated by a plain net trade-accrual sort already well covered by the published accrual anomaly."
+    },
+    {
+      "generation": 5,
+      "target_name": "Margin-Decline Working-Capital Dislocation",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Conditioning on margin deterioration and measuring second-difference instability (rather than the level) of working-capital intensity is a coherent, non-redundant instability test that uses the complementary half of the sample from the archive's margin-improvement gates and correctly avoids rewarding distress-driven liquidation."
+    },
+    {
+      "generation": 5,
+      "target_name": "Persistent-Profit Supplier-Neutral Cash Trend",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This simply bolts together two existing archive components \u2014 the TS_MIN(ni/at) profitability floor from \"Persistent-Profit Accrual Concentration\" and the (oancf\u2212apalch)/at construct from \"Supplier-Neutral Cash-Profit Persistence\" \u2014 recasting the latter's sign count as a 3-period trend, and both parents already showed weak evidence, so the incremental information content is thin and close to a cash-flow-improvement/profitability-trend rediscovery."
+    },
+    {
+      "generation": 5,
+      "target_name": "Demand-Normalized Accrual Stability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the third pass at the same construct (gen-1 \"Demand-Accrual Volatility Alignment\" and gen-4 \"Stable-Demand Accrual Noise Screen\"), changing only the accrual scaler (at \u2192 revt), the demand-stability proxy, and the combination operator back to a MIN bottleneck already tried in gen 1."
+    },
+    {
+      "generation": 6,
+      "target_name": "Two-Sided Margin Accounting Confirmation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression is internally consistent with the stated hypothesis and the sign is correct, but it is only the MIN-intersection of two already-archived margin-improvement-conditioned signals, so it is an incremental conjunction (with further coverage loss) rather than a new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Margin-Regime Working-Capital Quality",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The disjoint-branch regime switch is a reasonable coverage-expanding idea, but because each branch's IND_ZSCORE is computed over the full cross-section on differently-shaped variables (signed accruals vs. a nonnegative |ACCEL| term), the union will carry a mean level shift between regimes, so the composite risks loading on the margin-improvement dummy itself rather than on working-capital quality."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Efficient Depreciation Congruence",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The refinement is motivated by a specific, correctly-read diagnostic (strong FMB but weak alpha on the expansion-gated congruence signal, implying generic expansion exposure in the tails), and the added |\u0394WC|/at bottleneck matches the hypothesis' \"little noncash accrual\" wording and plausibly attacks the diagnosed problem."
+    },
+    {
+      "generation": 6,
+      "target_name": "Leveraged Margin-Decline Accrual Stress",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Multiplying a weak archived signal by book leverage grafts a well-known distress/leverage characteristic that FF5 (via HML/CMA) and the prior failed Leveraged Opaque-Accrual Penalty already speak to, and the rank-product form makes it hard to attribute any result to the claimed working-capital-stress mechanism rather than to leverage alone."
+    },
+    {
+      "generation": 6,
+      "target_name": "Expansion-Validated Trade-Credit Activity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially a sign reversal of the archived Hidden Trade-Credit Churn signal rationalized after the fact by its negative alpha, and the swapped gate does not supply an independent ex-ante reason why gross offsetting AR/AP churn should be *rewarded*, so it reads as fitting to a prior backtest sign."
+    },
+    {
+      "generation": 6,
+      "target_name": "Depreciation-Mismatch Nonworking Accrual Screen",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The core term (ni\u2212oancf)/at \u2212 \u0394wcap/at is mechanically dominated by depreciation and amortization, so penalizing its absolute value is largely a low-capital-intensity screen rather than an opacity screen, which makes the hypothesis inconsistent with what the expression computes and makes the depreciation-mismatch gate partly redundant with the signal itself."
+    },
+    {
+      "generation": 7,
+      "target_name": "Margin-Up Dual Accounting Score",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The hypothesis is verbatim identical to the archived \"Two-Sided Margin Accounting Confirmation\" and the only change is swapping the nested MIN for SUMRANK plus ZSCORE for IND_ZSCORE \u2014 a legitimate coverage repair of a signal that never evaluated, but still an aggregation-operator variant of an existing proposal rather than a new mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Margin-Down Dual Accounting Stability",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sign-consistent and internally coherent (both terms are NEG(ABS(.)) stability measures under a genuine margin-decline gate), but it is essentially a rank-sum of two already-tested archive signals whose individual evidence was weak in both FMB and alpha, so the expected marginal information is limited."
+    },
+    {
+      "generation": 7,
+      "target_name": "Core-Cash Margin Co-Stability",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The add-back of DELTA(wcap) to oancf is economically correct and the weakest-link MAX construction is well-formed, but the signal is ultimately a dual fundamental-volatility score and therefore sits close to the known earnings-volatility/smoothness anomaly, so incremental content over that literature is the main risk."
+    },
+    {
+      "generation": 7,
+      "target_name": "Persistent-Margin Working-Capital Stability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The first leg is the exact margin-persistence term from the generation-0 \"Clean Working-Capital Margin,\" and replacing ABS(working-capital accrual level) with VOL(working-capital accrual) and MUL with MIN is a near-substitute recombination of that same signal rather than a substantively different mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Working-Capital-Neutral Margin Alignment",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Directionally consistent and a genuine congruence test, though the two margins are not truly commensurate (gross margin excludes SG&A/tax while the cash margin does not), so divergence will partly reflect operating-expense dynamics rather than accounting corroboration, and the symmetric ABS penalizes favorable cash outperformance as well."
+    },
+    {
+      "generation": 7,
+      "target_name": "Dual Operating Margin Improvement",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Dual Margin Cash Confirmation\" with (oancf - apalch) replaced by (oancf + DELTA(wcap)) and no other change, i.e., a cosmetic input substitution on a construct that already produced a weak FMB slope and a negative FF5 alpha."
+    },
+    {
+      "generation": 8,
+      "target_name": "Bounded Asset-Release Funding Quality",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Asset-Release Margin Funding Quality\" with IND_ZSCORE swapped for ZSCORE(IND_RANK) \u2014 a purely cosmetic robustification that the objective explicitly discourages as a response to FMB/alpha sign disagreement, and rank-bounding alone will not explain why the long-short alpha was reliably negative (t = -2.38) while the slope was strongly positive."
+    },
+    {
+      "generation": 8,
+      "target_name": "Either-Side Margin-Decline Funding Stress",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Switching MIN to MAX in the archived \"Margin-Decline Working-Capital Squeeze\" is a mechanical aggregation tweak on an identical variable set and gate, and it offers no diagnosis of that signal's contradictory negative alpha (t = -2.15) despite a positive slope."
+    },
+    {
+      "generation": 8,
+      "target_name": "Depreciation-Conservative Margin Gains",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and a legitimate isolation of the depreciation-recognition channel from the archived \"Depreciation-Supported Margin Improvement\" (replacing the margin rank with a clean gate), though it is a thin single-variable signal whose economics compete with the well-known negative asset-growth/capital-intensity effect embedded in a rising dpc/sale trend."
+    },
+    {
+      "generation": 8,
+      "target_name": "Depreciation-Cut Deterioration Warning",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Sign-consistent but gratuitously double-negated (NEG(trend) with a negative expected sign is just the trend with a positive sign), and it exhausts the same single variable as proposal #3 on the complementary gate while overlapping heavily with the archived \"Margin-Decline Depreciation Stability.\""
+    },
+    {
+      "generation": 8,
+      "target_name": "Accrual-Light Margin Inflection",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The acceleration-based gate is an economically distinct conditioning variable (operating inflection rather than level improvement) and the expression matches the stated sign, but it is the third gate variant applied to the already-tested |ACCEL(wcap/sale)| core, so the incremental information content is modest."
+    },
+    {
+      "generation": 8,
+      "target_name": "Creditor-Independent Durable Margins",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally coherent and the cleanest decomposition in this batch (liability-side accrual channel conditioned on a durable-margin gate), but the reviewer should note that penalizing nondebt current-liability growth runs opposite to the sign implied for operating-liability accruals in the standard Sloan accrual anomaly, so the mechanism needs to survive an accruals control."
+    },
+    {
+      "generation": 9,
+      "target_name": "Profitable Smooth-Earnings Cash Substitution",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived gen-8 \"Smooth-Earnings Cash-to-Accrual Substitution\" signal with one extra profitability indicator bolted on \u2014 a cosmetic sample filter rather than a new mechanism, and it will mostly trim coverage of an already-narrow qualifying set."
+    },
+    {
+      "generation": 9,
+      "target_name": "Persistent Cash-to-Accrual Migration",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally consistent and the persistence idea is defensible, but three-period smoothing of both legs of the identical archived winner is a standard time-averaging tweak, not a substantively different construct."
+    },
+    {
+      "generation": 9,
+      "target_name": "Smooth-Earnings Noncash-Asset Share Drift",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Replacing the two-flow conjunction with a stock-composition drift measure is a genuinely different construction of the mechanism with better continuity and coverage, though reviewers should watch that it does not collapse into a mechanical change-in-cash / asset-growth proxy."
+    },
+    {
+      "generation": 9,
+      "target_name": "Durable-Margin Cash-to-Accrual Screen",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Swapping the earnings-smoothness gate for the durable-margin gate is economically coherent and the sign logic is correct, but it is a conditioning-variable substitution on an existing winner rather than a new economic channel, and the hard indicator gate again discards continuous information."
+    },
+    {
+      "generation": 9,
+      "target_name": "Margin-Gain Cash-to-Accrual Screen",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Another gate swap on the same substitution score, and the margin-improvement indicator combined with a working-capital funding score is very close to the already-archived \"Margin Improvement Funding Test,\" so incremental information content is likely small."
+    },
+    {
+      "generation": 9,
+      "target_name": "Two-Layer Margin Cash Conversion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a linear blend of two archived signals whose components share the same dominant term (DELTA(act) \u2212 DELTA(che)), so it double-counts a single accrual channel and functions as an ensemble rather than a testable new hypothesis."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Stable Cash Backing Ratio",
+      "metadata": {
+        "normalized_expression": "rank(winsor(ratio(sub(ma(ratio(oancf,at),5),vol(ratio(oancf,at),5)),ma(abs(ratio(sub(ib,oancf),at)),3)),1))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Clean Working-Capital Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(abs(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),at)))),rank(sub(ma(ratio(sub(sale,cogs),sale),5),vol(ratio(sub(sale,cogs),sale),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Book Stability Bottleneck",
+      "metadata": {
+        "normalized_expression": "min(rank(neg(ma(abs(ratio(sub(ib,oancf),at)),3))),rank(neg(max(vol(ratio(ib,at),5),abs(sub(vol(ratio(ib,at),5),vol(ratio(oancf,at),5)))))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Accrual-Enabled Smoothing Penalty",
+      "metadata": {
+        "normalized_expression": "neg(min(rank(ma(abs(ratio(sub(ib,oancf),at)),3)),rank(sub(vol(ratio(oancf,at),5),vol(ratio(ib,at),5)))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Neutralized Persistent-Profit Accrual Screen",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ma(abs(ratio(sub(ib,oancf),at)),3))),indicator(ts_sum(indicator(ratio(ib,at),0),5),3))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Profit Cash-Backing Persistence",
+      "metadata": {
+        "normalized_expression": "ts_sum(mul(indicator(ratio(ib,at),0),sign(ratio(oancf,at))),5)",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Demand-Accrual Volatility Alignment",
+      "metadata": {
+        "normalized_expression": "rank(neg(max(rank(vol(ratio(revt,at),3)),rank(sub(vol(ratio(add(abs(recch),abs(invch)),at),3),vol(ratio(revt,at),3))))))",
+        "variables": [
+          "at",
+          "invch",
+          "recch",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained Earnings Accrual Efficiency",
+      "metadata": {
+        "normalized_expression": "rank(winsor(ratio(trend(ratio(re,at),5),ma(abs(ratio(delta(wcap,1),at)),3)),1))",
+        "variables": [
+          "at",
+          "re",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Leveraged Opaque-Accrual Penalty",
+      "metadata": {
+        "normalized_expression": "rank(neg(min(rank(ma(ratio(add(abs(txach),abs(aoloch)),at),3)),rank(ratio(add(dltt,dlc),at)))))",
+        "variables": [
+          "aoloch",
+          "at",
+          "dlc",
+          "dltt",
+          "txach"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Earnings Accrual Spike",
+      "metadata": {
+        "normalized_expression": "rank(neg(min(rank(ts_rank(abs(ratio(delta(wcap,1),at)),3)),rank(neg(vol(ratio(ni,at),3))))))",
+        "variables": [
+          "at",
+          "ni",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Realized Retained Earnings",
+      "metadata": {
+        "normalized_expression": "rank(neg(winsor(sub(trend(ratio(re,at),5),max(trend(ratio(che,at),5),trend(ratio(sale,at),5))),1)))",
+        "variables": [
+          "at",
+          "che",
+          "re",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Receivable-Revenue Acceleration Match",
+      "metadata": {
+        "normalized_expression": "rank(neg(winsor(abs(sub(accel(ratio(neg(recch),at)),accel(ratio(sale,at)))),1)))",
+        "variables": [
+          "at",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained Earnings Clean-Build Bottleneck",
+      "metadata": {
+        "normalized_expression": "min(rank(trend(ratio(re,at),5)),rank(neg(ma(abs(ratio(delta(wcap,1),at)),3))))",
+        "variables": [
+          "at",
+          "re",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Adjusted Cash Retention",
+      "metadata": {
+        "normalized_expression": "min(rank(trend(ratio(re,at),5)),rank(sub(trend(ratio(che,at),5),trend(ratio(add(dltt,dlc),at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dltt",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Receivable-Neutral Earnings Durability",
+      "metadata": {
+        "normalized_expression": "rank(sub(ma(ratio(add(ni,recch),at),3),vol(ratio(add(ni,recch),at),3)))",
+        "variables": [
+          "at",
+          "ni",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Opaque Accrual Reversal Load",
+      "metadata": {
+        "normalized_expression": "rank(neg(winsor(ratio(abs(ts_sum(ratio(aoloch,at),3)),ts_sum(abs(ratio(ni,at)),3)),1)))",
+        "variables": [
+          "aoloch",
+          "at",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Supplier-Neutral Cash-Profit Persistence",
+      "metadata": {
+        "normalized_expression": "ts_sum(mul(indicator(ratio(ni,at),0),sign(ratio(sub(oancf,apalch),at))),3)",
+        "variables": [
+          "apalch",
+          "at",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Converted Margin Improvement",
+      "metadata": {
+        "normalized_expression": "min(rank(trend(ratio(sub(sale,cogs),sale),5)),rank(neg(ma(ratio(delta(wcap,1),sale),3))))",
+        "variables": [
+          "cogs",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Supplier-Neutral Book-Cash Agreement",
+      "metadata": {
+        "normalized_expression": "min(rank(sub(ma(ratio(sub(oancf,apalch),at),3),vol(ratio(sub(oancf,apalch),at),3))),rank(neg(abs(sub(ma(ratio(ni,at),3),ma(ratio(sub(oancf,apalch),at),3))))))",
+        "variables": [
+          "apalch",
+          "at",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Profit Rescue Count",
+      "metadata": {
+        "normalized_expression": "ts_sum(mul(indicator(ratio(ni,at),0),indicator(neg(ratio(sub(ni,sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1)))),at)),0)),5)",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Improvement Funding Test",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),sale))),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Receivable Reversal-Adjusted Earnings",
+      "metadata": {
+        "normalized_expression": "rank(winsor(sub(sub(ma(ratio(ni,at),3),vol(ratio(ni,at),3)),ma(abs(add(ratio(recch,at),lag(ratio(recch,at),1))),3)),1))",
+        "variables": [
+          "at",
+          "ni",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Revenue Growth Congruence",
+      "metadata": {
+        "normalized_expression": "rank(neg(winsor(ma(abs(sub(growth(dpc,1),growth(sale,1))),3),1)))",
+        "variables": [
+          "dpc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Revenue-Decline Opaque Accrual Screen",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(abs(ts_sum(ratio(aoloch,at),3)))),indicator(neg(trend(ratio(revt,at),3)),0))",
+        "variables": [
+          "aoloch",
+          "at",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expansion-Gated Depreciation Congruence",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(winsor(ma(abs(sub(growth(dpc,1),growth(sale,1))),3),1))),indicator(trend(ratio(sale,at),3),0))",
+        "variables": [
+          "at",
+          "dpc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent-Profit Accrual Concentration",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(winsor(ratio(max(abs(recch),abs(invch)),add(abs(recch),abs(invch))),1))),indicator(ts_min(ratio(ni,at),3),0))",
+        "variables": [
+          "at",
+          "invch",
+          "ni",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Margin Receivable Realization",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(abs(add(ratio(recch,at),lag(ratio(recch,at),1))))),indicator(lag(delta(ratio(sub(sale,cogs),sale),1),1),0))",
+        "variables": [
+          "at",
+          "cogs",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Trade-Credit Churn",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ma(ratio(sub(add(abs(recch),abs(apalch)),abs(add(recch,apalch))),sale),3))),indicator(neg(zscore(vol(ratio(sub(sale,cogs),sale),3))),0))",
+        "variables": [
+          "apalch",
+          "cogs",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Margin Nonworking Accrual Residual",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ma(abs(sub(ratio(sub(ni,oancf),at),ratio(delta(wcap,1),at))),3))),indicator(neg(zscore(vol(ratio(sub(sale,cogs),sale),3))),0))",
+        "variables": [
+          "at",
+          "cogs",
+          "ni",
+          "oancf",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable-Demand Accrual Noise Screen",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(vol(ratio(add(abs(recch),abs(invch)),at),3))),indicator(neg(zscore(vol(ratio(revt,at),3))),0))",
+        "variables": [
+          "at",
+          "invch",
+          "recch",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Decline Working-Capital Dislocation",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(abs(accel(ratio(wcap,sale))))),indicator(neg(delta(ratio(sub(sale,cogs),sale),1)),0))",
+        "variables": [
+          "cogs",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Supported Margin Improvement",
+      "metadata": {
+        "normalized_expression": "min(rank(delta(ratio(sub(sale,cogs),sale),1)),rank(trend(ratio(dpc,sale),3)))",
+        "variables": [
+          "cogs",
+          "dpc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Verified Working-Capital Harvest",
+      "metadata": {
+        "normalized_expression": "mul(zscore(min(rank(lag(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),sale),1)),rank(neg(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),sale))))),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded Trade Margin Gains",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(min(rank(ratio(recch,sale)),rank(neg(ratio(apalch,sale))))),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "apalch",
+          "cogs",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Margin Cash Confirmation",
+      "metadata": {
+        "normalized_expression": "min(rank(delta(ratio(sub(sale,cogs),sale),1)),rank(delta(ratio(sub(oancf,apalch),sale),1)))",
+        "variables": [
+          "apalch",
+          "cogs",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Earnings Supplier-Funded Inventory",
+      "metadata": {
+        "normalized_expression": "mul(zscore(neg(min(rank(ratio(neg(invch),cogs)),rank(ratio(apalch,cogs))))),indicator(neg(zscore(vol(ratio(ni,at),3))),0))",
+        "variables": [
+          "apalch",
+          "at",
+          "cogs",
+          "invch",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Two-Sided Margin Accounting Confirmation",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(min(rank(neg(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),sale))),rank(trend(ratio(dpc,sale),3)))),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "dpc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Efficient Depreciation Congruence",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(min(rank(neg(winsor(ma(abs(sub(growth(dpc,1),growth(sale,1))),3),1))),rank(neg(abs(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),at)))))),indicator(trend(ratio(sale,at),3),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dpc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Quiet-Margin Working-Capital Dislocation",
+      "metadata": {
+        "normalized_expression": "rank(neg(mul(rank(abs(accel(ratio(wcap,sale)))),rank(neg(abs(delta(ratio(sub(sale,cogs),sale),1)))))))",
+        "variables": [
+          "cogs",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Decline Depreciation Stability",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(abs(trend(ratio(dpc,sale),3)))),indicator(neg(delta(ratio(sub(sale,cogs),sale),1)),0))",
+        "variables": [
+          "cogs",
+          "dpc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent-Profit Trade-Credit Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(min(rank(ma(ratio(apalch,sale),3)),rank(ma(ratio(neg(recch),sale),3))))),indicator(ts_min(ratio(ni,at),3),0))",
+        "variables": [
+          "apalch",
+          "at",
+          "ni",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Stripped Nonworking Accrual Quality",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ma(abs(ratio(sub(add(sub(ni,oancf),dpc),delta(wcap,1)),at)),3))),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "at",
+          "cogs",
+          "dpc",
+          "ni",
+          "oancf",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Down Dual Accounting Stability",
+      "metadata": {
+        "normalized_expression": "mul(zscore(sumrank(neg(abs(accel(ratio(wcap,sale)))),neg(abs(trend(ratio(dpc,sale),3))))),indicator(neg(delta(ratio(sub(sale,cogs),sale),1)),0))",
+        "variables": [
+          "cogs",
+          "dpc",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Core-Cash Margin Co-Stability",
+      "metadata": {
+        "normalized_expression": "rank(neg(max(rank(vol(ratio(sub(sale,cogs),sale),3)),rank(vol(ratio(add(oancf,delta(wcap,1)),sale),3)))))",
+        "variables": [
+          "cogs",
+          "oancf",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital-Neutral Margin Alignment",
+      "metadata": {
+        "normalized_expression": "rank(neg(winsor(ma(abs(sub(delta(ratio(sub(sale,cogs),sale),1),delta(ratio(add(oancf,delta(wcap,1)),sale),1))),3),1)))",
+        "variables": [
+          "cogs",
+          "oancf",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asset-Release Margin Funding Quality",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(neg(sub(delta(act,1),delta(che,1))),sub(delta(lct,1),delta(dlc,1))),sale)),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Decline Working-Capital Squeeze",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(min(rank(ratio(sub(delta(act,1),delta(che,1)),sale)),rank(ratio(sub(delta(lct,1),delta(dlc,1)),sale))))),indicator(neg(delta(ratio(sub(sale,cogs),sale),1)),0))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Book-Over-Cash Margin Drift",
+      "metadata": {
+        "normalized_expression": "rank(winsor(ma(sub(delta(ratio(sub(sale,cogs),sale),1),delta(ratio(add(oancf,delta(wcap,1)),sale),1)),3),1))",
+        "variables": [
+          "cogs",
+          "oancf",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Conservative Margin Gains",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(trend(ratio(dpc,sale),3)),indicator(delta(ratio(sub(sale,cogs),sale),1),0))",
+        "variables": [
+          "cogs",
+          "dpc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual-Light Margin Inflection",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(abs(accel(ratio(wcap,sale))))),indicator(accel(ratio(sub(sale,cogs),sale)),0))",
+        "variables": [
+          "cogs",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Creditor-Independent Durable Margins",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ratio(sub(delta(lct,1),delta(dlc,1)),sale))),indicator(zscore(sub(ma(ratio(sub(sale,cogs),sale),5),vol(ratio(sub(sale,cogs),sale),5))),0))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Growth-Confirmed Asset-Release Funding",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(neg(sub(delta(act,1),delta(che,1))),sub(delta(lct,1),delta(dlc,1))),sale)),mul(indicator(delta(ratio(sub(sale,cogs),sale),1),0),indicator(growth(sale,1),0)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Contraction-Confirmed Working-Capital Squeeze",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(min(rank(ratio(sub(delta(act,1),delta(che,1)),sale)),rank(ratio(sub(delta(lct,1),delta(dlc,1)),sale))))),mul(indicator(neg(delta(ratio(sub(sale,cogs),sale),1)),0),indicator(neg(growth(sale,1)),0)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Earnings Cash-to-Accrual Substitution",
+      "metadata": {
+        "normalized_expression": "mul(zscore(neg(min(rank(ratio(sub(delta(act,1),delta(che,1)),at)),rank(neg(ratio(delta(che,1),at)))))),indicator(neg(zscore(vol(ratio(ni,at),3))),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Earnings Noncash-Asset Share Drift",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(growth(ratio(sub(act,che),act),1))),indicator(neg(zscore(vol(ratio(ni,at),3))),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smooth-Earnings Accrual Lock-In",
+      "metadata": {
+        "normalized_expression": "rank(neg(mul(ts_rank(ratio(sub(act,che),act),5),rank(neg(vol(ratio(ni,at),3))))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Cash Composition Volatility Wedge",
+      "metadata": {
+        "normalized_expression": "rank(neg(mul(rank(vol(ratio(che,act),5)),rank(neg(vol(ratio(sub(sale,cogs),sale),5))))))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Durable-Margin Cash-Share Floor",
+      "metadata": {
+        "normalized_expression": "min(rank(sub(ma(ratio(sub(sale,cogs),sale),5),vol(ratio(sub(sale,cogs),sale),5))),ts_rank(ratio(che,act),5))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Gain Liquid-Asset Confirmation",
+      "metadata": {
+        "normalized_expression": "min(rank(delta(ratio(sub(sale,cogs),sale),1)),rank(delta(ratio(che,act),1)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Profit Liquidity Floor",
+      "metadata": {
+        "normalized_expression": "min(rank(ts_min(ratio(ni,at),3)),rank(ts_min(ratio(che,act),3)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "ni"
+        ]
+      }
+    }
+  ]
+}

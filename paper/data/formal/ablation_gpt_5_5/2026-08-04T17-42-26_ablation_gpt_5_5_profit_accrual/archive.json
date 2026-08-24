@@ -1,0 +1,3233 @@
+{
+  "pair": "profit_accrual",
+  "evaluated": [
+    {
+      "name": "Clean Operating Profit Trend",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, at), 3)), IND_RANK(NEG(RATIO(DELTA(wcap, 1), at))))",
+      "hypothesis": "Improving operating profitability is more return-predictive when it is not financed by rising working capital accruals.",
+      "expected_sign": "positive",
+      "reasoning": "A positive operating-profit trend is more credible if it does not require firms to build receivables, inventory, or other working-capital balances. This interaction separates genuine margin or efficiency improvement from accrual-driven earnings expansion.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.7815575279709193,
+      "ls_alpha": -0.006476470442568197,
+      "ls_talpha": -0.8217059370970308,
+      "ls_sharpe": 0.0870814813535486,
+      "coverage": 0.10350675277998592,
+      "error": null
+    },
+    {
+      "name": "Gross Profit Collection Quality",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_ZSCORE(WINSOR(RATIO(ADD(recch, invch), at), 1)))",
+      "hypothesis": "Gross profitability is more durable when receivable and inventory movements support cash flow rather than absorb it.",
+      "expected_sign": "positive",
+      "reasoning": "Because recch and invch are cash-flow-statement impacts, higher values indicate receivable collection or inventory release, while negative values indicate working-capital buildup. The signal avoids reconstructing cash operating profitability and instead tests whether gross profits are validated by collection and inventory discipline.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.651277525166643,
+      "ls_alpha": 0.002085839557309596,
+      "ls_talpha": 0.18003867768370968,
+      "ls_sharpe": 0.0929670994902469,
+      "coverage": 0.07712294054862572,
+      "error": null
+    },
+    {
+      "name": "Persistent Profit Accrual Deterioration",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(TREND(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 3), 1)))",
+      "hypothesis": "Persistently profitable firms should underperform when their accrual intensity is trending upward.",
+      "expected_sign": "negative",
+      "reasoning": "A rising balance-sheet accrual trend indicates that an otherwise strong operating-profit record is becoming increasingly dependent on accounting working-capital expansion. Using a trend rather than second differences reduces measurement noise while still targeting deterioration in earnings quality.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.066472153928791,
+      "ls_alpha": 8.320661792844854e-05,
+      "ls_talpha": 0.007885956590022565,
+      "ls_sharpe": -0.027886785759156377,
+      "coverage": 0.08623925544007191,
+      "error": null
+    },
+    {
+      "name": "Stable Accrual EBITDA Confirmation",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(SUMRANK(NEG(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1)), NEG(WINSOR(VOL(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 3), 1)))))",
+      "hypothesis": "Persistent EBITDA profitability should earn stronger abnormal returns when accruals are both low and stable.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg smooths EBITDA to emphasize durable operating performance rather than a one-year spike. The accrual leg combines low accrual intensity with low accrual volatility, aiming to identify firms whose profits repeatedly convert into cash rather than depending on unstable accounting adjustments.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.5345812765674736,
+      "ls_alpha": 0.01660627847354742,
+      "ls_talpha": 1.745734542502937,
+      "ls_sharpe": 0.16177999438400423,
+      "coverage": 0.0955865479306636,
+      "error": null
+    },
+    {
+      "name": "Margin Expansion Asset Discipline",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Operating margin improvement is more durable when it is not accompanied by noncash current-asset buildup.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the generic operating-profitability \u00d7 Sloan-accrual product with a more specific mechanism: margin expansion is credible only if receivables, inventory, and other noncash current assets are not expanding faster than sales. Scaling by sales ties the accrual leg to the revenue base that generates the margin, avoiding redundant industry normalization and reducing exposure to a pure asset-scaled accrual anomaly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 5.598622303712785,
+      "ls_alpha": 0.0010930213635350697,
+      "ls_talpha": 0.14373220526497604,
+      "ls_sharpe": 0.2080178562734397,
+      "coverage": 0.10074198651672779,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Inventory Overhang",
+      "expression": "MUL(IND_RANK(GROWTH(RATIO(SUB(revt, cogs), sale), 1)), IND_ZSCORE(WINSOR(RATIO(NEG(invch), at), 1)))",
+      "hypothesis": "Gross-margin improvement should reverse when it coincides with inventory cash absorption.",
+      "expected_sign": "negative",
+      "reasoning": "The signal focuses on margin expansion rather than the level of gross profitability, and isolates inventory buildup rather than repeating the earlier receivables-plus-inventory collection leg. Because invch is a cash-flow-statement impact, NEG(invch) identifies inventory accumulation; high scores therefore capture firms whose improving gross margins may reflect overproduction, cost capitalization, or demand weakness that has not yet hit earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.7369219078550668,
+      "ls_alpha": -0.013852231960663555,
+      "ls_talpha": -1.2120711834055942,
+      "ls_sharpe": -0.1592958246962947,
+      "coverage": 0.0749478713946445,
+      "error": null
+    },
+    {
+      "name": "Pretax Profit Receivable Slippage",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(NEG(recch), sale), 1)))",
+      "hypothesis": "High pretax margins should underperform when they are paired with receivable buildup rather than customer cash collection.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the ambiguous tax-payable channel and instead tests whether reported pretax profitability is being converted into cash from customers. Since recch is negative when receivables rise, NEG(recch) captures collection slippage; the interaction targets profitable firms whose earnings may be pulled forward through accrual revenue recognition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.7355438256491946,
+      "ls_alpha": 0.0122930061400861,
+      "ls_talpha": 0.9004078066323576,
+      "ls_sharpe": 0.05503008369359314,
+      "coverage": 0.0811869493580711,
+      "error": null
+    },
+    {
+      "name": "Depreciation Shortfall Profit",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(dpc, 1), at)), 1)))",
+      "hypothesis": "High operating profitability is less credible when depreciation and amortization charges are falling.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cosmetic R&D add-back with a distinct long-term accrual mechanism: earnings can be inflated when depreciation expense is reduced through useful-life or residual-value assumptions. High scores identify firms with strong operating income alongside a depreciation shortfall, where profitability may be temporarily boosted by accounting estimates rather than durable cash economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.8354196758133813,
+      "ls_alpha": -0.022974724246318565,
+      "ls_talpha": -1.929039056876813,
+      "ls_sharpe": -0.07446245549395661,
+      "coverage": 0.11487604081797748,
+      "error": null
+    },
+    {
+      "name": "Margin Trend Collection Confirmation",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(WINSOR(TREND(RATIO(recch, sale), 3), 1)))",
+      "hypothesis": "Operating margin improvement should predict stronger returns when receivable cash-flow effects are also improving.",
+      "expected_sign": "positive",
+      "reasoning": "The prior margin-expansion direction showed strong cross-sectional evidence but weak portfolio alpha, so this narrows the accrual test to customer collection quality rather than broad noncash-current-asset growth. Because recch is a cash-flow-statement impact, an improving recch trend indicates that margin gains are being validated by collections rather than by receivable buildup.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.8590305747500927,
+      "ls_alpha": -0.03281458430390934,
+      "ls_talpha": -1.9861144550803362,
+      "ls_sharpe": -0.37867685898966896,
+      "coverage": 0.06330437162123677,
+      "error": null
+    },
+    {
+      "name": "Historical Depreciation Shortfall Profit",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_ZSCORE(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "High operating profitability should underperform when depreciation charges are unusually low relative to the firm\u2019s own history.",
+      "expected_sign": "negative",
+      "reasoning": "This revisits the depreciation-shortfall mechanism using a historical state rather than a noisy one-year change. High scores identify firms with strong reported operating income while depreciation and amortization charges sit near historical lows, consistent with accounting-estimate support that may later reverse.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.9371236329503945,
+      "ls_alpha": -0.02276255210455816,
+      "ls_talpha": -2.3661589663911355,
+      "ls_sharpe": -0.46601247551571395,
+      "coverage": 0.1154780684267397,
+      "error": null
+    },
+    {
+      "name": "Persistent Profit Other Accrual Drag",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(RATIO(NEG(ADD(txach, aoloch)), at), 1)))",
+      "hypothesis": "Persistent operating profitability should underperform when other tax and operating accrual items absorb cash.",
+      "expected_sign": "negative",
+      "reasoning": "This explores an accrual channel outside the standard receivable-inventory-payable construction. High scores capture otherwise profitable firms whose cash flow is weakened by other operating-asset or tax-related accrual absorption, suggesting that reported profits are less cash-backed than they appear.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.5046673705429275,
+      "ls_alpha": -0.025452523304374627,
+      "ls_talpha": -2.1656100090753507,
+      "ls_sharpe": -0.13814349690335911,
+      "coverage": 0.06485631201880097,
+      "error": null
+    },
+    {
+      "name": "EBITDA Working Capital Release",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(SUMRANK(NEG(WINSOR(RATIO(wcap, at), 1)), NEG(WINSOR(RATIO(DELTA(wcap, 1), at), 1)))))",
+      "hypothesis": "Persistent EBITDA profitability should predict stronger returns when working-capital investment is low and falling.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the noisy 3-period volatility proxy with a more interpretable accrual state: profitable firms with lean and declining working capital are less dependent on noncash current assets. Including both level and change avoids dropping the accrual-intensity component that likely mattered in the stronger prior EBITDA result.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.6086882047594986,
+      "ls_alpha": -0.03436854238816017,
+      "ls_talpha": -3.590838173376931,
+      "ls_sharpe": -0.12644607963262391,
+      "coverage": 0.11359428797608111,
+      "error": null
+    },
+    {
+      "name": "Supplier Financed Gross Margin Confirmation",
+      "expression": "MUL(IND_RANK(TREND(RATIO(SUB(revt, cogs), sale), 3)), IND_ZSCORE(WINSOR(RATIO(apalch, cogs), 1)))",
+      "hypothesis": "Gross-margin improvement is more credible when supplier payables and accrued liabilities provide cash-flow confirmation rather than cash absorption.",
+      "expected_sign": "positive",
+      "reasoning": "This corrects the sign conflict by treating positive apalch as a favorable negative-accrual component, consistent with working-capital accrual evidence. Scaling by cost of goods sold links the payable accrual to the supplier cost base, while the profitability leg focuses on margin improvement rather than a generic gross-profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.012891054135586819,
+      "ls_alpha": 0.021215158213216977,
+      "ls_talpha": 1.8465689223440662,
+      "ls_sharpe": 0.2547771960009208,
+      "coverage": 0.05290073194670417,
+      "error": null
+    },
+    {
+      "name": "Profitable Growth Inventory Overhang",
+      "expression": "MUL(IND_RANK(SUMRANK(GROWTH(sale, 1), RATIO(oiadp, sale))), IND_ZSCORE(WINSOR(RATIO(NEG(invch), sale), 1)))",
+      "hypothesis": "Firms with strong sales growth and high operating margins should underperform when growth is accompanied by inventory accumulation.",
+      "expected_sign": "negative",
+      "reasoning": "The profitability-growth leg is monotone because sales growth and operating margin are combined with SUMRANK rather than multiplied raw, avoiding high scores from negative-growth loss firms. The accrual leg shifts away from receivable pull-forward and instead tests whether apparently profitable growth is building inventory that may later require markdowns or production cuts.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.2704494912796327,
+      "ls_alpha": -0.018430592170984857,
+      "ls_talpha": -1.6521532184787366,
+      "ls_sharpe": -0.26482643104741466,
+      "coverage": 0.07494978030042256,
+      "error": null
+    },
+    {
+      "name": "Margin Expansion Depreciation Shortfall",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "Operating margin improvement should underperform when it coincides with unusually low depreciation charges.",
+      "expected_sign": "negative",
+      "reasoning": "Margin expansion can be mechanically boosted if depreciation expense is depressed by accounting estimates or asset-age effects. Conditioning the profitability trend on firm-specific depreciation shortfall targets cases where apparent operating improvement may be accounting-supported rather than cash-supported.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.777671845224986,
+      "ls_alpha": -0.022526869226555772,
+      "ls_talpha": -2.3070843726447072,
+      "ls_sharpe": -0.42648140035628673,
+      "coverage": 0.103515162283819,
+      "error": null
+    },
+    {
+      "name": "Quality Anchored Margin Expansion",
+      "expression": "MUL(IND_RANK(SUMRANK(TREND(RATIO(oiadp, sale), 3), MA(RATIO(oibdp, at), 3))), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Margin expansion should predict stronger returns when it occurs at already profitable firms and is not accompanied by noncash current-asset buildup.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier margin-discipline signal had strong cross-sectional evidence but weak portfolio alpha, possibly because margin trends alone included fragile or low-profitability improvers. This version anchors the margin trend with smoothed operating profitability and then rewards firms whose improvement is not tied up in receivables, inventory, or other noncash current assets.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.361040838933836,
+      "ls_alpha": -0.002261498899644908,
+      "ls_talpha": -0.28836391758567137,
+      "ls_sharpe": 0.1952031149053212,
+      "coverage": 0.10069741098720765,
+      "error": null
+    },
+    {
+      "name": "Historical Accrual Extreme Profit Trap",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(TS_RANK(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 5)))",
+      "hypothesis": "Persistently profitable firms should underperform when balance-sheet accrual intensity is unusually high relative to their own history.",
+      "expected_sign": "negative",
+      "reasoning": "Rather than using a noisy short trend in accruals, this asks whether the current accrual burden is near a firm-specific extreme. High profitability paired with historically elevated accrual intensity suggests earnings quality has deteriorated in a way that may reverse.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.0292026954497304,
+      "ls_alpha": -0.011137692578243109,
+      "ls_talpha": -1.363935979628008,
+      "ls_sharpe": -0.11533829210416871,
+      "coverage": 0.09591101032088603,
+      "error": null
+    },
+    {
+      "name": "Other Accrual Profit Inflection",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(RATIO(NEG(ADD(txach, aoloch)), at), 1)))",
+      "hypothesis": "Improving operating profitability should underperform when the improvement is accompanied by cash absorption in tax and other operating accrual accounts.",
+      "expected_sign": "negative",
+      "reasoning": "The residual other-accrual channel showed stronger portfolio evidence than many standard working-capital channels, but level profitability may be too broad. This version focuses on profit inflections, where tax and other operating accrual absorption is more likely to indicate that the improvement is accounting-supported and vulnerable to reversal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.2935605840155328,
+      "ls_alpha": -0.027977903383281426,
+      "ls_talpha": -2.4196768189837297,
+      "ls_sharpe": -0.18784004250148778,
+      "coverage": 0.053700460283615935,
+      "error": null
+    },
+    {
+      "name": "Depreciation Covered Margin",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_ZSCORE(WINSOR(RATIO(dpc, sale), 1)))",
+      "hypothesis": "High operating margins are more credible when they remain high despite a meaningful depreciation and amortization burden.",
+      "expected_sign": "positive",
+      "reasoning": "This is not an order-reversing transform of the historical depreciation-shortfall signal; it tests whether current after-depreciation profitability survives conservative expense recognition. Firms with strong operating margins and high depreciation charges are less likely to owe their profitability to temporarily depressed depreciation assumptions.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.36003196395010123,
+      "ls_alpha": -0.003327950017213196,
+      "ls_talpha": -0.34536765384516055,
+      "ls_sharpe": -0.11109512698605334,
+      "coverage": 0.12531976751384938,
+      "error": null
+    },
+    {
+      "name": "EBITDA Low Working Capital Intensity",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(NEG(TS_RANK(RATIO(wcap, sale), 5))))",
+      "hypothesis": "Persistent EBITDA profitability should predict stronger returns when the firm requires unusually little working capital relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior sparse cash-flow-statement component stack and drops the noisy short-window volatility template. A low firm-specific working-capital-to-sales state indicates that EBITDA is being generated without heavy accrual investment in the operating cycle, improving the credibility of reported profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.720177804354895,
+      "ls_alpha": -0.001121442921219606,
+      "ls_talpha": -0.13430839284773102,
+      "ls_sharpe": 0.04169439873366438,
+      "coverage": 0.1116965260803994,
+      "error": null
+    },
+    {
+      "name": "Profit Peak Depreciation Shortfall",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oiadp, at), 5)), IND_RANK(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability is near a firm-specific high while depreciation charges are near a firm-specific low.",
+      "expected_sign": "negative",
+      "reasoning": "The strongest prior evidence came from depreciation shortfall, but this version focuses on the coincidence of a profit peak and an accounting-expense trough. The signal is high only when both conditions hold, targeting cases where unusually strong reported profitability may be mechanically boosted by temporarily low depreciation and amortization.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.6238510667513084,
+      "ls_alpha": -0.0035800662494046348,
+      "ls_talpha": -0.3670875977965119,
+      "ls_sharpe": -0.11916035381656993,
+      "coverage": 0.1155984326748537,
+      "error": null
+    },
+    {
+      "name": "Accrual Spike Profit Peak",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oibdp, at), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability and balance-sheet accrual intensity are simultaneously near firm-specific highs.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the accrual-extreme idea by requiring the accrual spike to coincide with a profitability peak, rather than merely conditioning average profitability on high accruals. The MIN structure creates a clearer bad-earnings-quality long leg for a negative signal: high scores require both strong reported profits and historically aggressive accrual intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.0008677745322648361,
+      "ls_alpha": 0.011087492948406587,
+      "ls_talpha": 1.3294783207733316,
+      "ls_sharpe": 0.1784100634400146,
+      "coverage": 0.09610675055120944,
+      "error": null
+    },
+    {
+      "name": "Profit Peak Working Capital Stretch",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oibdp, sale), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(wcap, sale), 1), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability is near a firm-specific high while working-capital intensity is also near a firm-specific high.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the generic EBITDA \u00d7 low-Sloan-accrual pairing with an operating-cycle stretch mechanism. High profitability is less credible when it requires unusually heavy working capital per dollar of sales, suggesting cash is tied up in receivables, inventory, or other current operating accounts rather than being freely generated.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.7761002725266917,
+      "ls_alpha": -0.0030664980289566903,
+      "ls_talpha": -0.3523466995571163,
+      "ls_sharpe": -0.08763594974687218,
+      "coverage": 0.11176158365299767,
+      "error": null
+    },
+    {
+      "name": "Margin Expansion Operating Liability Support",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), sale), 1)))",
+      "hypothesis": "Operating margin expansion should predict stronger returns when it is accompanied by rising non-debt operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the already-tested noncash-current-asset growth leg and focuses on the liability side of accruals. Rising operating current liabilities, excluding debt and tax payables, are a cash-preserving negative-accrual component, so margin gains backed by supplier or accrued-expense financing may be more cash-confirmed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.395668055472365,
+      "ls_alpha": 0.023459770180794398,
+      "ls_talpha": 2.287971609933944,
+      "ls_sharpe": 0.08114768965264622,
+      "coverage": 0.09570928541298815,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Supplier Credit Confirmation",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(SUB(revt, cogs), sale), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), cogs), 1), 5)))",
+      "hypothesis": "Gross-margin peaks are more credible when supplier and operating-liability financing is also unusually favorable.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeatedly weak inventory-overhang leg and instead tests whether high gross profitability is supported by favorable operating-credit terms. Scaling the non-debt operating-liability change by COGS links the accrual confirmation directly to the supplier cost base behind gross margin.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.041442982105625324,
+      "ls_alpha": 0.018818420805752654,
+      "ls_talpha": 2.1064391181858455,
+      "ls_sharpe": 0.0724769186677004,
+      "coverage": 0.09552020055686393,
+      "error": null
+    },
+    {
+      "name": "Cost Cut Working Capital Trap",
+      "expression": "MUL(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_ZSCORE(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1)))",
+      "hypothesis": "Apparent profitability improvement from falling SG&A intensity should underperform when noncash current assets are rising relative to sales.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sparse tax-and-other-accrual channel with a broader, higher-coverage operating accrual mechanism. Cost cuts can temporarily lift margins, but if receivables, inventory, and other noncash current assets are simultaneously building, the improvement may reflect weak cash conversion or underinvestment rather than durable profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -5.361281215332436,
+      "ls_alpha": -0.001532079327237694,
+      "ls_talpha": -0.17985418903250835,
+      "ls_sharpe": -0.2518951947990394,
+      "coverage": 0.08773857194861927,
+      "error": null
+    },
+    {
+      "name": "Taxable Profit Confirmation",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(DELTA(txp, 1), at), 1)))",
+      "hypothesis": "High pretax margins should predict stronger returns when rising tax payables corroborate taxable income.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the earlier tax-payable sign issue by treating increases in tax payables as external confirmation of current taxable profitability rather than as contamination. The signal favors firms whose reported pretax profits are accompanied by tax obligations, reducing concern that margins are purely book-accrual artifacts.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.33888511957219924,
+      "ls_alpha": -0.00046525781561152814,
+      "ls_talpha": -0.05559137551303144,
+      "ls_sharpe": -0.1211642077647488,
+      "coverage": 0.1115071832640349,
+      "error": null
+    },
+    {
+      "name": "Noncash Asset Profit Productivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(oiadp, sale), RATIO(SUB(act, che), sale)), 1))",
+      "hypothesis": "Operating margins are more durable when they are generated with little noncash current-asset intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This drops the repeatedly reused depreciation-change and depreciation-trough legs entirely. The signal tests a direct operating-cycle productivity mechanism: profits are more cash-credible when each dollar of receivables, inventory, and other noncash current assets supports more operating income.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.0664171696901885,
+      "ls_alpha": 0.013489333324363445,
+      "ls_talpha": 1.4404461907308468,
+      "ls_sharpe": 0.014033433908769185,
+      "coverage": 0.12160880308924929,
+      "error": null
+    },
+    {
+      "name": "Supplier Stripped Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(SUB(oancf, apalch), invch), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when cash flow remains strong after removing supplier-financing and inventory-release effects.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the balance-sheet accrual ceiling with a cash-confirmation test that excludes two potentially temporary working-capital cash sources. The MIN structure requires both reported operating profitability and supplier-stripped cash generation, so high scores are not just generic cash-based profitability or a standalone accrual measure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.0026416599663426,
+      "ls_alpha": 0.01196318088724756,
+      "ls_talpha": 0.9809237501038391,
+      "ls_sharpe": 0.20225403128224778,
+      "coverage": 0.05978037677879063,
+      "error": null
+    },
+    {
+      "name": "Receivable Settled Cost Efficiency",
+      "expression": "MUL(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_ZSCORE(WINSOR(RATIO(recch, sale), 1)))",
+      "hypothesis": "SG&A efficiency gains are more credible when customer collections are favorable rather than receivables building.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the operating-liability sign relabeling and instead links a specific profitability-improvement channel to customer cash realization. Falling SG&A intensity can signal real operating discipline, but it is more durable when sales are being collected in cash rather than converted into receivables.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.4821087295537096,
+      "ls_alpha": -0.023791085332723387,
+      "ls_talpha": -1.4372910621384343,
+      "ls_sharpe": -0.22546393841925663,
+      "coverage": 0.05788767090381839,
+      "error": null
+    },
+    {
+      "name": "Lagged Accrual Profit Reversal",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(LAG(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 1)))",
+      "hypothesis": "Currently profitable firms should underperform when their profitability follows a prior balance-sheet accrual buildup.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the overused depreciation-trough leg and tests a timing-based reversal mechanism. Prior accrual investment can temporarily support reported earnings, so high current profitability is less credible if it arrives after a lagged accrual spike that may now unwind.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.9181662331414784,
+      "ls_alpha": -0.006897418480305036,
+      "ls_talpha": -0.8610679636041977,
+      "ls_sharpe": -0.10914718675854469,
+      "coverage": 0.0960531980053276,
+      "error": null
+    },
+    {
+      "name": "Gross Profit Working Capital Productivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(SUB(revt, cogs), sale), RATIO(wcap, sale)), 1))",
+      "hypothesis": "Gross profitability should predict stronger returns when it requires little working-capital investment relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated depreciation-trough pairing with a gross-profit operating-cycle efficiency measure. A high gross margin is more credible when it is not tied to heavy working-capital balances, indicating that the firm\u2019s basic product economics convert into cash more efficiently.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.000856762683469,
+      "ls_alpha": 0.006657932975405722,
+      "ls_talpha": 0.7882006487488931,
+      "ls_sharpe": 0.1417181071339756,
+      "coverage": 0.12232572618903162,
+      "error": null
+    },
+    {
+      "name": "Liability Stripped Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(oancf, DELTA(SUB(SUB(lct, dlc), txp), 1)), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when operating cash flow remains strong after removing support from rising operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Increases in non-debt operating current liabilities can temporarily inflate operating cash flow through supplier financing or accrued expenses. This signal requires reported profitability and cash generation net of that liability support, aiming to identify profits backed by customer cash rather than by stretching payables or accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.3696997716094774,
+      "ls_alpha": 0.03117082548411757,
+      "ls_talpha": 2.437122364670622,
+      "ls_sharpe": 0.2731403071424643,
+      "coverage": 0.07139075445734658,
+      "error": null
+    },
+    {
+      "name": "Operating Margin Working Capital Turnover",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(RATIO(sale, SUB(act, che)), 1)))",
+      "hypothesis": "Operating margins should be more durable when firms generate sales with little noncash current-asset investment.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the ratio-cancellation issue by combining margin and noncash-current-asset turnover after separate ranking, rather than forming a raw ratio of ratios. High scores require both strong profitability per dollar of sales and efficient use of receivables, inventory, and other noncash current assets.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.2344914890692436,
+      "ls_alpha": 0.02348618871020669,
+      "ls_talpha": 2.6489186650063625,
+      "ls_sharpe": 0.23649327017442234,
+      "coverage": 0.12173618385589886,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Lean Operating Cycle",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(NEG(TS_RANK(WINSOR(RATIO(SUB(act, che), sale), 1), 5))))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when noncash current assets are unusually low relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the algebraic collapse into gross profit divided by noncash current assets by requiring two distinct conditions: sustained gross profitability and a lean operating-cycle balance sheet. The firm-relative accrual leg asks whether profitability is being generated without unusually heavy receivable or inventory investment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.412705845014759,
+      "ls_alpha": 0.024104769754421648,
+      "ls_talpha": 2.632615346804331,
+      "ls_sharpe": 0.24087565014632123,
+      "coverage": 0.11114939241076846,
+      "error": null
+    },
+    {
+      "name": "Persistent Accrual Reliance Profit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(TS_SUM(INDICATOR(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 0), 5)))",
+      "hypothesis": "Persistently profitable firms should underperform when they repeatedly report positive balance-sheet accruals.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the failed lagged-spike crossing and tests a different mechanism: recurring accrual reliance rather than a single extreme accrual event. A profitable firm that repeatedly needs positive accruals to support earnings is more likely to have profits that reverse or disappoint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.8271732082380296,
+      "ls_alpha": -0.00038209563500004847,
+      "ls_talpha": -0.04130482334406504,
+      "ls_sharpe": -0.05843405274375606,
+      "coverage": 0.10778775774355367,
+      "error": null
+    },
+    {
+      "name": "Pretax Tax Accrual Drag",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(NEG(txach), at), 1)))",
+      "hypothesis": "High pretax margins should underperform when tax-related accrual cash-flow effects are negative.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the already-tested tax-payable confirmation channel and instead asks whether profitable firms show tax-accrual cash absorption. High reported pretax profitability is less credible when the tax accrual component points to cash-flow drag rather than taxable-income confirmation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.6307852244236005,
+      "ls_alpha": 0.002967367336855406,
+      "ls_talpha": 0.2839141083186763,
+      "ls_sharpe": 0.035153761821225336,
+      "coverage": 0.06300503455841747,
+      "error": null
+    },
+    {
+      "name": "Customer Supplier Accrual Mismatch",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, sale)), IND_ZSCORE(WINSOR(RATIO(SUB(NEG(recch), apalch), sale), 1)))",
+      "hypothesis": "High operating margins should underperform when receivable buildup is not offset by supplier financing.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the repeatedly sparse other-accrual channel with a more explicit operating-cycle mismatch. Since recch is negative when receivables rise and apalch is positive when payables provide financing, high scores identify profitable firms whose customer cash collection is weak without compensating supplier-credit support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.9246367414934037,
+      "ls_alpha": 0.002110627422970795,
+      "ls_talpha": 0.19357639466014084,
+      "ls_sharpe": -0.13001358785293504,
+      "coverage": 0.06010241434275446,
+      "error": null
+    },
+    {
+      "name": "Working Capital Neutral Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(SUB(act, che), 1)), DELTA(SUB(SUB(lct, dlc), txp), 1)), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when cash generation remains strong after neutralizing both noncash current-asset liquidation and operating-liability financing.",
+      "expected_sign": "positive",
+      "reasoning": "This extends the liability-stripped cash-profit mechanism by also removing cash-flow boosts from shrinking receivables, inventory, and other noncash current assets. The signal seeks firms whose profitability is backed by core cash economics rather than by temporary working-capital releases or stretched operating liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.955758737514877,
+      "ls_alpha": 0.024475319633027983,
+      "ls_talpha": 1.9363273172736,
+      "ls_sharpe": 0.2749845479787701,
+      "coverage": 0.07105318768691798,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Current Asset Discipline",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(NEG(WINSOR(DELTA(RATIO(SUB(act, che), sale), 1), 1))))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when noncash current assets are not rising relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether strong product economics remain cash-efficient as the operating cycle evolves. Gross profitability is more credible when receivables, inventory, and other noncash current assets are stable or falling relative to the revenue base instead of absorbing cash.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.457654892469187,
+      "ls_alpha": 0.038098887899181935,
+      "ls_talpha": 3.8344220716030653,
+      "ls_sharpe": 0.36436473665956665,
+      "coverage": 0.1106102039165381,
+      "error": null
+    },
+    {
+      "name": "SG&A Efficiency Lean Cycle",
+      "expression": "MIN(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_RANK(WINSOR(RATIO(sale, SUB(act, che)), 1)))",
+      "hypothesis": "Profitability improvement from falling SG&A intensity should be more durable when the firm also runs a lean noncash working-capital cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Cost efficiency can be genuine operating discipline or merely temporary underinvestment. Requiring high noncash-current-asset turnover helps separate scalable cost improvement from firms whose reported efficiency is paired with weak cash conversion in receivables and inventory.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.059691637187598,
+      "ls_alpha": 0.011970249131192453,
+      "ls_talpha": 1.3220173132779622,
+      "ls_sharpe": 0.10270397662446062,
+      "coverage": 0.08787549724415916,
+      "error": null
+    },
+    {
+      "name": "Cash Conversion Cycle Margin",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(SUMRANK(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1)), WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), sale), 1))))",
+      "hypothesis": "High operating margins should earn stronger returns when the cash conversion cycle is improving through lower noncash current assets and higher operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "The asset and liability sides of working capital have produced different cross-sectional and portfolio behavior, so this combines them into a single cash-conversion mechanism. Margins are more cash-backed when noncash current assets are not absorbing sales proceeds and operating liabilities provide normal trade-credit support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.849940023948248,
+      "ls_alpha": 0.02784947556416081,
+      "ls_talpha": 2.8349653533063326,
+      "ls_sharpe": 0.2121745863561147,
+      "coverage": 0.10467216555351663,
+      "error": null
+    },
+    {
+      "name": "Margin Turnover Deterioration Trap",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(sale, SUB(act, che)), 1), 1))))",
+      "hypothesis": "High operating-margin firms should underperform when noncash-current-asset turnover is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "A profitable firm whose sales generated per dollar of noncash current assets is falling may be accumulating receivables, inventory, or other accrual assets behind the reported margin. This targets a reversal channel distinct from simply having a low turnover level: the deterioration itself signals weakening cash conversion.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.47879573955242,
+      "ls_alpha": -0.023338897697928112,
+      "ls_talpha": -2.6967470706597854,
+      "ls_sharpe": -0.42890043637853276,
+      "coverage": 0.11093755546145166,
+      "error": null
+    },
+    {
+      "name": "Margin Turnover Improvement Confirmation",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(DELTA(RATIO(sale, SUB(act, che)), 1), 1)))",
+      "hypothesis": "High operating margins should predict stronger returns when noncash-current-asset turnover is improving.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a smoothed restatement of the turnover-level interaction; it tests the change in operating-cycle efficiency. High margins are more credible when the firm is generating more sales per dollar of receivables, inventory, and other noncash current assets, indicating improving cash conversion rather than a static lean balance sheet.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.430069561171472,
+      "ls_alpha": 0.016449198934178032,
+      "ls_talpha": 1.5619107110854589,
+      "ls_sharpe": 0.22933732950856375,
+      "coverage": 0.11106823811917681,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Neutral Cash Confirmation",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(SUB(act, che), 1)), DELTA(SUB(SUB(lct, dlc), txp), 1)), sale), 1)))",
+      "hypothesis": "Persistent gross profitability should predict stronger returns when cash generation remains strong after neutralizing working-capital releases and liability financing.",
+      "expected_sign": "positive",
+      "reasoning": "The cash leg adds back noncash current-asset investment and subtracts operating-liability increases, reducing the chance that cash flow is temporarily flattered by inventory liquidation, receivable collection, or stretched payables. The interaction asks whether strong product economics are backed by cash earnings independent of working-capital timing.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.4889566834589583,
+      "ls_alpha": 0.023615781867103974,
+      "ls_talpha": 2.072556251293289,
+      "ls_sharpe": 0.1157931722249042,
+      "coverage": 0.06954695784393117,
+      "error": null
+    },
+    {
+      "name": "Operating Margin Trade Credit Coverage",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(NEG(WINSOR(RATIO(SUB(act, che), SUB(SUB(lct, dlc), txp)), 1))))",
+      "hypothesis": "High operating margins should predict stronger returns when noncash current assets are well covered by operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the already-tested noncash-current-asset change and turnover channels by focusing on the stock balance between accrual assets and trade/accrued operating liabilities. Profits are more cash-credible when receivables, inventory, and other noncash current assets are not large relative to the operating liabilities that finance the cycle.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.1639819501305393,
+      "ls_alpha": 0.024046624418544674,
+      "ls_talpha": 3.0446467182415375,
+      "ls_sharpe": 0.18749753451103976,
+      "coverage": 0.1156899053760565,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Net Working Capital Neutral Cash",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when operating cash generation remains strong after neutralizing net working-capital timing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior cash-conversion-cycle recombination with a direct cash-cover test: adding the change in working capital removes temporary cash boosts from working-capital release and restores cash suppressed by working-capital investment. The interaction asks whether durable product economics are backed by cash before working-capital timing effects.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.6211647553424156,
+      "ls_alpha": 0.023231304732898906,
+      "ls_talpha": 2.045225596274023,
+      "ls_sharpe": 0.07642519434533863,
+      "coverage": 0.0711664322324003,
+      "error": null
+    },
+    {
+      "name": "Short Term Debt Funded Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(RATIO(DELTA(dlc, 1), at), 1)))",
+      "hypothesis": "Profitable firms should underperform when current debt is rising, suggesting reported profits are not funding the operating cycle internally.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids another working-capital-overhang variant and tests a different cash-backing failure: firms can look profitable while plugging cash needs with short-term borrowing. High scores identify firms with strong operating profitability but deteriorating near-term financing reliance, a configuration more likely to reverse or disappoint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.050510589985504,
+      "ls_alpha": -0.011729403241685872,
+      "ls_talpha": -1.6861756808198822,
+      "ls_sharpe": -0.20739496881925842,
+      "coverage": 0.13101852195798838,
+      "error": null
+    },
+    {
+      "name": "Cost Discipline Neutral Cash Cover",
+      "expression": "MIN(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_RANK(WINSOR(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)))",
+      "hypothesis": "SG&A efficiency gains should predict stronger returns when they are accompanied by strong working-capital-neutral cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the already-tested SG&A trend \u00d7 current-asset-discipline pair with a cash confirmation mechanism. Falling SG&A intensity is more likely to be real operating efficiency when cash flow remains strong after removing net working-capital timing effects, rather than merely reflecting accrual-supported sales or underinvestment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.138828267801624,
+      "ls_alpha": 0.0019161654116224072,
+      "ls_talpha": 0.17433287882996923,
+      "ls_sharpe": -0.08341615824261277,
+      "coverage": 0.05619684471288819,
+      "error": null
+    },
+    {
+      "name": "Net Profit Self Funded Cash Cover",
+      "expression": "MIN(IND_RANK(RATIO(ni, at)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(wcap, 1)), DELTA(dlc, 1)), at), 1)))",
+      "hypothesis": "Bottom-line profitability should predict stronger returns when cash generation is strong after neutralizing working-capital timing and short-term debt funding.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the interest-burden tweak and instead tests whether net profits are internally cash-funded. High scores require accounting profitability plus cash generation that is not explained by working-capital release or rising current debt, making the interaction closer to durable cash-backed earnings quality.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.731214282109998,
+      "ls_alpha": 0.021253189047497265,
+      "ls_talpha": 1.7204623139775355,
+      "ls_sharpe": 0.177678985396483,
+      "coverage": 0.07274045402653234,
+      "error": null
+    },
+    {
+      "name": "Cash Cycle Weak Link Margin Trap",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), MAX(IND_ZSCORE(WINSOR(RATIO(SUB(act, che), sale), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(SUB(lct, dlc), txp), sale), 1)))))",
+      "hypothesis": "High operating-margin firms should underperform when either noncash current assets are high or operating current liabilities are unusually low.",
+      "expected_sign": "negative",
+      "reasoning": "The MAX structure targets the weakest side of the cash-conversion cycle rather than averaging asset and liability effects that may offset. High reported margins are less credible if the operating cycle shows either heavy accrual-asset investment or little trade-credit support.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.3086763483217218,
+      "ls_alpha": -0.02229273522464521,
+      "ls_talpha": -2.647665441754528,
+      "ls_sharpe": -0.07573623086502797,
+      "coverage": 0.11553590311261017,
+      "error": null
+    },
+    {
+      "name": "Debt Funded Working Capital Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(dlc, 1), at), 1), WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Profitable firms should underperform when noncash current-asset buildup is accompanied by rising current debt.",
+      "expected_sign": "negative",
+      "reasoning": "This extends the short-term-debt funding channel by requiring that debt reliance coincide with accrual investment in the operating cycle. Profits are less cash-backed when receivables, inventory, or other noncash current assets expand while the firm also borrows short term to fund liquidity needs.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -5.532525112486489,
+      "ls_alpha": -0.008343492876044568,
+      "ls_talpha": -1.389224107021335,
+      "ls_sharpe": -0.3421023425742565,
+      "coverage": 0.1103226298406755,
+      "error": null
+    },
+    {
+      "name": "Repeated Current Asset Discipline Profit",
+      "expression": "MIN(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(TS_SUM(INDICATOR(NEG(WINSOR(DELTA(RATIO(SUB(act, che), sale), 1), 1)), 0), 5)))",
+      "hypothesis": "Persistent operating profitability should be more durable when noncash current-asset intensity repeatedly declines rather than periodically expanding.",
+      "expected_sign": "positive",
+      "reasoning": "A single clean working-capital observation can be temporary, but repeated discipline suggests the firm consistently converts operations into cash without building accrual assets. The count-based accrual leg separates durable profitable firms from those that periodically need receivable or inventory expansion to sustain earnings.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.058012365580143,
+      "ls_alpha": 0.015351138445830841,
+      "ls_talpha": 1.8769840636404456,
+      "ls_sharpe": 0.19958086608737752,
+      "coverage": 0.11220078675809603,
+      "error": null
+    },
+    {
+      "name": "Net Cash Retention Margin",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(RATIO(SUB(DELTA(che, 1), DELTA(dlc, 1)), sale), 1)))",
+      "hypothesis": "High operating margins should predict stronger returns when firms retain cash net of short-term borrowing.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from trade-credit coverage and working-capital-turnover restatements by testing whether profitable operations actually increase cash without relying on current debt. Strong margins are more credible when they translate into net cash balance growth rather than being offset by liquidity strain.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.5366075941794364,
+      "ls_alpha": 0.026960429865677066,
+      "ls_talpha": 3.4698792026318834,
+      "ls_sharpe": 0.11882874932609012,
+      "coverage": 0.12924375550487152,
+      "error": null
+    },
+    {
+      "name": "Accrual Asset Cash Drain Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(RATIO(SUB(DELTA(SUB(act, che), 1), DELTA(che, 1)), at), 1)))",
+      "hypothesis": "Profitable firms should underperform when noncash current assets rise while cash balances fail to keep pace.",
+      "expected_sign": "negative",
+      "reasoning": "This is not another self-funded cash-flow rescaling; it focuses on balance-sheet liquidity migration from cash into receivables, inventory, and other noncash current assets. High reported profitability is less credible when the operating cycle is absorbing liquidity into accrual assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.3882319498344518,
+      "ls_alpha": -0.026960394330467635,
+      "ls_talpha": -3.2263275277797687,
+      "ls_sharpe": -0.23860552670693705,
+      "coverage": 0.11268549404957955,
+      "error": null
+    },
+    {
+      "name": "Gross Margin Floor Cash Cushion",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(che, SUB(act, che)), 1)))",
+      "hypothesis": "Durable gross profitability should predict stronger returns when cash balances provide a cushion against noncash current assets.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the trade-credit reciprocal with a distinct cash-cushion mechanism. A firm with a strong gross-margin floor and ample cash relative to receivables, inventory, and other noncash current assets is less likely to have profitability dependent on fragile accrual balances.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.275561495601267,
+      "ls_alpha": 0.047934925554200196,
+      "ls_talpha": 4.2185195245769105,
+      "ls_sharpe": 0.2088210557688975,
+      "coverage": 0.12225153682392749,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Clean Operating Profit Trend",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, at), 3)), IND_RANK(NEG(RATIO(DELTA(wcap, 1), at))))",
+      "hypothesis": "Improving operating profitability is more return-predictive when it is not financed by rising working capital accruals.",
+      "expected_sign": "positive",
+      "reasoning": "A positive operating-profit trend is more credible if it does not require firms to build receivables, inventory, or other working-capital balances. This interaction separates genuine margin or efficiency improvement from accrual-driven earnings expansion.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Durable EBITDA Low Accrual Noise",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), SUMRANK(NEG(MA(RATIO(SUB(ib, oancf), at), 3)), NEG(VOL(RATIO(SUB(ib, oancf), at), 5))))",
+      "hypothesis": "Persistent EBITDA profitability earns a higher return premium when the earnings-cash-flow gap is both low and stable.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothed EBITDA captures durable operating profitability rather than a one-period spike. Pairing it with low average accruals and low accrual volatility favors firms whose profits are repeatedly converted into cash instead of fluctuating accounting adjustments.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Conversion Profitability Interaction",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(NEG(RATIO(SUB(ib, oancf), at)), 1)))",
+      "hypothesis": "Operating profitability is more return-predictive when the earnings-cash-flow gap is low rather than accrual-heavy.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the binary CFO gate with a continuous accrual-quality term, avoiding a large zero mass and preserving clean cross-sectional sorting. The centered accrual component makes high-accrual profitable firms score poorly, while low-profit firms are muted rather than dominating the short leg.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Rising Accrual Reliance",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(DELTA(RATIO(SUB(ib, oancf), at), 1), 1)))",
+      "hypothesis": "Persistently profitable firms should underperform when their profitability is increasingly dependent on accruals rather than cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual term is scaled by assets, not by profitability, avoiding denominator explosions around near-zero profits. Using the change in accrual intensity focuses on deterioration in earnings quality among profitable firms, rather than simply repackaging the unconditional accruals anomaly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Profit Collection Quality",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_ZSCORE(WINSOR(RATIO(ADD(recch, invch), at), 1)))",
+      "hypothesis": "Gross profitability is more durable when receivable and inventory movements support cash flow rather than absorb it.",
+      "expected_sign": "positive",
+      "reasoning": "Because recch and invch are cash-flow-statement impacts, higher values indicate receivable collection or inventory release, while negative values indicate working-capital buildup. The signal avoids reconstructing cash operating profitability and instead tests whether gross profits are validated by collection and inventory discipline.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Accrual-Fueled ROA Surge",
+      "expression": "MUL(IND_RANK(TREND(RATIO(ib, at), 3)), IND_ZSCORE(WINSOR(TREND(RATIO(SUB(ib, oancf), at), 3), 1)))",
+      "hypothesis": "Firms with improving ROA should underperform when the improvement is accompanied by a rising accrual component.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing second differences with three-period trends reduces measurement noise while preserving the earnings-surge mechanism. The centered accrual-trend leg gives the highest scores to firms with improving profitability and worsening accrual quality, while clean profitability improvers receive low scores.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Profit Accrual Deterioration",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(TREND(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 3), 1)))",
+      "hypothesis": "Persistently profitable firms should underperform when their accrual intensity is trending upward.",
+      "expected_sign": "negative",
+      "reasoning": "A rising balance-sheet accrual trend indicates that an otherwise strong operating-profit record is becoming increasingly dependent on accounting working-capital expansion. Using a trend rather than second differences reduces measurement noise while still targeting deterioration in earnings quality.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Accrual EBITDA Confirmation",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(SUMRANK(NEG(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1)), NEG(WINSOR(VOL(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 3), 1)))))",
+      "hypothesis": "Persistent EBITDA profitability should earn stronger abnormal returns when accruals are both low and stable.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg smooths EBITDA to emphasize durable operating performance rather than a one-year spike. The accrual leg combines low accrual intensity with low accrual volatility, aiming to identify firms whose profits repeatedly convert into cash rather than depending on unstable accounting adjustments.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Expansion Asset Discipline",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Operating margin improvement is more durable when it is not accompanied by noncash current-asset buildup.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the generic operating-profitability \u00d7 Sloan-accrual product with a more specific mechanism: margin expansion is credible only if receivables, inventory, and other noncash current assets are not expanding faster than sales. Scaling by sales ties the accrual leg to the revenue base that generates the margin, avoiding redundant industry normalization and reducing exposure to a pure asset-scaled accrual anomaly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Inventory Overhang",
+      "expression": "MUL(IND_RANK(GROWTH(RATIO(SUB(revt, cogs), sale), 1)), IND_ZSCORE(WINSOR(RATIO(NEG(invch), at), 1)))",
+      "hypothesis": "Gross-margin improvement should reverse when it coincides with inventory cash absorption.",
+      "expected_sign": "negative",
+      "reasoning": "The signal focuses on margin expansion rather than the level of gross profitability, and isolates inventory buildup rather than repeating the earlier receivables-plus-inventory collection leg. Because invch is a cash-flow-statement impact, NEG(invch) identifies inventory accumulation; high scores therefore capture firms whose improving gross margins may reflect overproduction, cost capitalization, or demand weakness that has not yet hit earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Pretax Profit Receivable Slippage",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(NEG(recch), sale), 1)))",
+      "hypothesis": "High pretax margins should underperform when they are paired with receivable buildup rather than customer cash collection.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the ambiguous tax-payable channel and instead tests whether reported pretax profitability is being converted into cash from customers. Since recch is negative when receivables rise, NEG(recch) captures collection slippage; the interaction targets profitable firms whose earnings may be pulled forward through accrual revenue recognition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation Shortfall Profit",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(dpc, 1), at)), 1)))",
+      "hypothesis": "High operating profitability is less credible when depreciation and amortization charges are falling.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cosmetic R&D add-back with a distinct long-term accrual mechanism: earnings can be inflated when depreciation expense is reduced through useful-life or residual-value assumptions. High scores identify firms with strong operating income alongside a depreciation shortfall, where profitability may be temporarily boosted by accounting estimates rather than durable cash economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Trend Collection Confirmation",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(WINSOR(TREND(RATIO(recch, sale), 3), 1)))",
+      "hypothesis": "Operating margin improvement should predict stronger returns when receivable cash-flow effects are also improving.",
+      "expected_sign": "positive",
+      "reasoning": "The prior margin-expansion direction showed strong cross-sectional evidence but weak portfolio alpha, so this narrows the accrual test to customer collection quality rather than broad noncash-current-asset growth. Because recch is a cash-flow-statement impact, an improving recch trend indicates that margin gains are being validated by collections rather than by receivable buildup.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Historical Depreciation Shortfall Profit",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_ZSCORE(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "High operating profitability should underperform when depreciation charges are unusually low relative to the firm\u2019s own history.",
+      "expected_sign": "negative",
+      "reasoning": "This revisits the depreciation-shortfall mechanism using a historical state rather than a noisy one-year change. High scores identify firms with strong reported operating income while depreciation and amortization charges sit near historical lows, consistent with accounting-estimate support that may later reverse.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Profit Other Accrual Drag",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(RATIO(NEG(ADD(txach, aoloch)), at), 1)))",
+      "hypothesis": "Persistent operating profitability should underperform when other tax and operating accrual items absorb cash.",
+      "expected_sign": "negative",
+      "reasoning": "This explores an accrual channel outside the standard receivable-inventory-payable construction. High scores capture otherwise profitable firms whose cash flow is weakened by other operating-asset or tax-related accrual absorption, suggesting that reported profits are less cash-backed than they appear.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EBITDA Working Capital Release",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(SUMRANK(NEG(WINSOR(RATIO(wcap, at), 1)), NEG(WINSOR(RATIO(DELTA(wcap, 1), at), 1)))))",
+      "hypothesis": "Persistent EBITDA profitability should predict stronger returns when working-capital investment is low and falling.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the noisy 3-period volatility proxy with a more interpretable accrual state: profitable firms with lean and declining working capital are less dependent on noncash current assets. Including both level and change avoids dropping the accrual-intensity component that likely mattered in the stronger prior EBITDA result.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Supplier Financed Gross Margin Confirmation",
+      "expression": "MUL(IND_RANK(TREND(RATIO(SUB(revt, cogs), sale), 3)), IND_ZSCORE(WINSOR(RATIO(apalch, cogs), 1)))",
+      "hypothesis": "Gross-margin improvement is more credible when supplier payables and accrued liabilities provide cash-flow confirmation rather than cash absorption.",
+      "expected_sign": "positive",
+      "reasoning": "This corrects the sign conflict by treating positive apalch as a favorable negative-accrual component, consistent with working-capital accrual evidence. Scaling by cost of goods sold links the payable accrual to the supplier cost base, while the profitability leg focuses on margin improvement rather than a generic gross-profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Growth Inventory Overhang",
+      "expression": "MUL(IND_RANK(SUMRANK(GROWTH(sale, 1), RATIO(oiadp, sale))), IND_ZSCORE(WINSOR(RATIO(NEG(invch), sale), 1)))",
+      "hypothesis": "Firms with strong sales growth and high operating margins should underperform when growth is accompanied by inventory accumulation.",
+      "expected_sign": "negative",
+      "reasoning": "The profitability-growth leg is monotone because sales growth and operating margin are combined with SUMRANK rather than multiplied raw, avoiding high scores from negative-growth loss firms. The accrual leg shifts away from receivable pull-forward and instead tests whether apparently profitable growth is building inventory that may later require markdowns or production cuts.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Expansion Depreciation Shortfall",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "Operating margin improvement should underperform when it coincides with unusually low depreciation charges.",
+      "expected_sign": "negative",
+      "reasoning": "Margin expansion can be mechanically boosted if depreciation expense is depressed by accounting estimates or asset-age effects. Conditioning the profitability trend on firm-specific depreciation shortfall targets cases where apparent operating improvement may be accounting-supported rather than cash-supported.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Quality Anchored Margin Expansion",
+      "expression": "MUL(IND_RANK(SUMRANK(TREND(RATIO(oiadp, sale), 3), MA(RATIO(oibdp, at), 3))), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Margin expansion should predict stronger returns when it occurs at already profitable firms and is not accompanied by noncash current-asset buildup.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier margin-discipline signal had strong cross-sectional evidence but weak portfolio alpha, possibly because margin trends alone included fragile or low-profitability improvers. This version anchors the margin trend with smoothed operating profitability and then rewards firms whose improvement is not tied up in receivables, inventory, or other noncash current assets.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Historical Accrual Extreme Profit Trap",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(TS_RANK(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 5)))",
+      "hypothesis": "Persistently profitable firms should underperform when balance-sheet accrual intensity is unusually high relative to their own history.",
+      "expected_sign": "negative",
+      "reasoning": "Rather than using a noisy short trend in accruals, this asks whether the current accrual burden is near a firm-specific extreme. High profitability paired with historically elevated accrual intensity suggests earnings quality has deteriorated in a way that may reverse.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Other Accrual Profit Inflection",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oibdp, at), 3)), IND_ZSCORE(WINSOR(RATIO(NEG(ADD(txach, aoloch)), at), 1)))",
+      "hypothesis": "Improving operating profitability should underperform when the improvement is accompanied by cash absorption in tax and other operating accrual accounts.",
+      "expected_sign": "negative",
+      "reasoning": "The residual other-accrual channel showed stronger portfolio evidence than many standard working-capital channels, but level profitability may be too broad. This version focuses on profit inflections, where tax and other operating accrual absorption is more likely to indicate that the improvement is accounting-supported and vulnerable to reversal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation Covered Margin",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_ZSCORE(WINSOR(RATIO(dpc, sale), 1)))",
+      "hypothesis": "High operating margins are more credible when they remain high despite a meaningful depreciation and amortization burden.",
+      "expected_sign": "positive",
+      "reasoning": "This is not an order-reversing transform of the historical depreciation-shortfall signal; it tests whether current after-depreciation profitability survives conservative expense recognition. Firms with strong operating margins and high depreciation charges are less likely to owe their profitability to temporarily depressed depreciation assumptions.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EBITDA Low Working Capital Intensity",
+      "expression": "MUL(IND_RANK(MA(RATIO(ebitda, at), 3)), IND_ZSCORE(NEG(TS_RANK(RATIO(wcap, sale), 5))))",
+      "hypothesis": "Persistent EBITDA profitability should predict stronger returns when the firm requires unusually little working capital relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior sparse cash-flow-statement component stack and drops the noisy short-window volatility template. A low firm-specific working-capital-to-sales state indicates that EBITDA is being generated without heavy accrual investment in the operating cycle, improving the credibility of reported profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit Peak Depreciation Shortfall",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oiadp, at), 5)), IND_RANK(TS_RANK(NEG(RATIO(dpc, at)), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability is near a firm-specific high while depreciation charges are near a firm-specific low.",
+      "expected_sign": "negative",
+      "reasoning": "The strongest prior evidence came from depreciation shortfall, but this version focuses on the coincidence of a profit peak and an accounting-expense trough. The signal is high only when both conditions hold, targeting cases where unusually strong reported profitability may be mechanically boosted by temporarily low depreciation and amortization.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual Spike Profit Peak",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oibdp, at), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability and balance-sheet accrual intensity are simultaneously near firm-specific highs.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the accrual-extreme idea by requiring the accrual spike to coincide with a profitability peak, rather than merely conditioning average profitability on high accruals. The MIN structure creates a clearer bad-earnings-quality long leg for a negative signal: high scores require both strong reported profits and historically aggressive accrual intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit Peak Working Capital Stretch",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(oibdp, sale), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(wcap, sale), 1), 5)))",
+      "hypothesis": "Firms should underperform when operating profitability is near a firm-specific high while working-capital intensity is also near a firm-specific high.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the generic EBITDA \u00d7 low-Sloan-accrual pairing with an operating-cycle stretch mechanism. High profitability is less credible when it requires unusually heavy working capital per dollar of sales, suggesting cash is tied up in receivables, inventory, or other current operating accounts rather than being freely generated.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Expansion Operating Liability Support",
+      "expression": "MUL(IND_RANK(TREND(RATIO(oiadp, sale), 3)), IND_ZSCORE(WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), sale), 1)))",
+      "hypothesis": "Operating margin expansion should predict stronger returns when it is accompanied by rising non-debt operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the already-tested noncash-current-asset growth leg and focuses on the liability side of accruals. Rising operating current liabilities, excluding debt and tax payables, are a cash-preserving negative-accrual component, so margin gains backed by supplier or accrued-expense financing may be more cash-confirmed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Supplier Credit Confirmation",
+      "expression": "MIN(IND_RANK(TS_RANK(RATIO(SUB(revt, cogs), sale), 5)), IND_RANK(TS_RANK(WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), cogs), 1), 5)))",
+      "hypothesis": "Gross-margin peaks are more credible when supplier and operating-liability financing is also unusually favorable.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeatedly weak inventory-overhang leg and instead tests whether high gross profitability is supported by favorable operating-credit terms. Scaling the non-debt operating-liability change by COGS links the accrual confirmation directly to the supplier cost base behind gross margin.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Cost Cut Working Capital Trap",
+      "expression": "MUL(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_ZSCORE(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1)))",
+      "hypothesis": "Apparent profitability improvement from falling SG&A intensity should underperform when noncash current assets are rising relative to sales.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sparse tax-and-other-accrual channel with a broader, higher-coverage operating accrual mechanism. Cost cuts can temporarily lift margins, but if receivables, inventory, and other noncash current assets are simultaneously building, the improvement may reflect weak cash conversion or underinvestment rather than durable profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Taxable Profit Confirmation",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(DELTA(txp, 1), at), 1)))",
+      "hypothesis": "High pretax margins should predict stronger returns when rising tax payables corroborate taxable income.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the earlier tax-payable sign issue by treating increases in tax payables as external confirmation of current taxable profitability rather than as contamination. The signal favors firms whose reported pretax profits are accompanied by tax obligations, reducing concern that margins are purely book-accrual artifacts.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Noncash Asset Profit Productivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(oiadp, sale), RATIO(SUB(act, che), sale)), 1))",
+      "hypothesis": "Operating margins are more durable when they are generated with little noncash current-asset intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This drops the repeatedly reused depreciation-change and depreciation-trough legs entirely. The signal tests a direct operating-cycle productivity mechanism: profits are more cash-credible when each dollar of receivables, inventory, and other noncash current assets supports more operating income.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Supplier Stripped Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(SUB(oancf, apalch), invch), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when cash flow remains strong after removing supplier-financing and inventory-release effects.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the balance-sheet accrual ceiling with a cash-confirmation test that excludes two potentially temporary working-capital cash sources. The MIN structure requires both reported operating profitability and supplier-stripped cash generation, so high scores are not just generic cash-based profitability or a standalone accrual measure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Receivable Settled Cost Efficiency",
+      "expression": "MUL(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_ZSCORE(WINSOR(RATIO(recch, sale), 1)))",
+      "hypothesis": "SG&A efficiency gains are more credible when customer collections are favorable rather than receivables building.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the operating-liability sign relabeling and instead links a specific profitability-improvement channel to customer cash realization. Falling SG&A intensity can signal real operating discipline, but it is more durable when sales are being collected in cash rather than converted into receivables.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Accrual Profit Reversal",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(LAG(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 1)))",
+      "hypothesis": "Currently profitable firms should underperform when their profitability follows a prior balance-sheet accrual buildup.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the overused depreciation-trough leg and tests a timing-based reversal mechanism. Prior accrual investment can temporarily support reported earnings, so high current profitability is less credible if it arrives after a lagged accrual spike that may now unwind.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Profit Working Capital Productivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(SUB(revt, cogs), sale), RATIO(wcap, sale)), 1))",
+      "hypothesis": "Gross profitability should predict stronger returns when it requires little working-capital investment relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated depreciation-trough pairing with a gross-profit operating-cycle efficiency measure. A high gross margin is more credible when it is not tied to heavy working-capital balances, indicating that the firm\u2019s basic product economics convert into cash more efficiently.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability Stripped Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(oancf, DELTA(SUB(SUB(lct, dlc), txp), 1)), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when operating cash flow remains strong after removing support from rising operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Increases in non-debt operating current liabilities can temporarily inflate operating cash flow through supplier financing or accrued expenses. This signal requires reported profitability and cash generation net of that liability support, aiming to identify profits backed by customer cash rather than by stretching payables or accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Margin Working Capital Turnover",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(RATIO(sale, SUB(act, che)), 1)))",
+      "hypothesis": "Operating margins should be more durable when firms generate sales with little noncash current-asset investment.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the ratio-cancellation issue by combining margin and noncash-current-asset turnover after separate ranking, rather than forming a raw ratio of ratios. High scores require both strong profitability per dollar of sales and efficient use of receivables, inventory, and other noncash current assets.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Lean Operating Cycle",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(NEG(TS_RANK(WINSOR(RATIO(SUB(act, che), sale), 1), 5))))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when noncash current assets are unusually low relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the algebraic collapse into gross profit divided by noncash current assets by requiring two distinct conditions: sustained gross profitability and a lean operating-cycle balance sheet. The firm-relative accrual leg asks whether profitability is being generated without unusually heavy receivable or inventory investment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Accrual Reliance Profit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_ZSCORE(TS_SUM(INDICATOR(WINSOR(RATIO(ADD(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), DELTA(lct, 1)), SUB(ADD(DELTA(dlc, 1), DELTA(txp, 1)), dp)), at), 1), 0), 5)))",
+      "hypothesis": "Persistently profitable firms should underperform when they repeatedly report positive balance-sheet accruals.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the failed lagged-spike crossing and tests a different mechanism: recurring accrual reliance rather than a single extreme accrual event. A profitable firm that repeatedly needs positive accruals to support earnings is more likely to have profits that reverse or disappoint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Pretax Tax Accrual Drag",
+      "expression": "MUL(IND_RANK(RATIO(pi, sale)), IND_ZSCORE(WINSOR(RATIO(NEG(txach), at), 1)))",
+      "hypothesis": "High pretax margins should underperform when tax-related accrual cash-flow effects are negative.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the already-tested tax-payable confirmation channel and instead asks whether profitable firms show tax-accrual cash absorption. High reported pretax profitability is less credible when the tax accrual component points to cash-flow drag rather than taxable-income confirmation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Customer Supplier Accrual Mismatch",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, sale)), IND_ZSCORE(WINSOR(RATIO(SUB(NEG(recch), apalch), sale), 1)))",
+      "hypothesis": "High operating margins should underperform when receivable buildup is not offset by supplier financing.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the repeatedly sparse other-accrual channel with a more explicit operating-cycle mismatch. Since recch is negative when receivables rise and apalch is positive when payables provide financing, high scores identify profitable firms whose customer cash collection is weak without compensating supplier-credit support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Working Capital Neutral Cash Profit",
+      "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(SUB(act, che), 1)), DELTA(SUB(SUB(lct, dlc), txp), 1)), at), 1)))",
+      "hypothesis": "High operating profitability should predict stronger returns when cash generation remains strong after neutralizing both noncash current-asset liquidation and operating-liability financing.",
+      "expected_sign": "positive",
+      "reasoning": "This extends the liability-stripped cash-profit mechanism by also removing cash-flow boosts from shrinking receivables, inventory, and other noncash current assets. The signal seeks firms whose profitability is backed by core cash economics rather than by temporary working-capital releases or stretched operating liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Current Asset Discipline",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(NEG(WINSOR(DELTA(RATIO(SUB(act, che), sale), 1), 1))))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when noncash current assets are not rising relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether strong product economics remain cash-efficient as the operating cycle evolves. Gross profitability is more credible when receivables, inventory, and other noncash current assets are stable or falling relative to the revenue base instead of absorbing cash.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SG&A Efficiency Lean Cycle",
+      "expression": "MIN(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_RANK(WINSOR(RATIO(sale, SUB(act, che)), 1)))",
+      "hypothesis": "Profitability improvement from falling SG&A intensity should be more durable when the firm also runs a lean noncash working-capital cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Cost efficiency can be genuine operating discipline or merely temporary underinvestment. Requiring high noncash-current-asset turnover helps separate scalable cost improvement from firms whose reported efficiency is paired with weak cash conversion in receivables and inventory.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Conversion Cycle Margin",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(SUMRANK(NEG(WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1)), WINSOR(RATIO(DELTA(SUB(SUB(lct, dlc), txp), 1), sale), 1))))",
+      "hypothesis": "High operating margins should earn stronger returns when the cash conversion cycle is improving through lower noncash current assets and higher operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "The asset and liability sides of working capital have produced different cross-sectional and portfolio behavior, so this combines them into a single cash-conversion mechanism. Margins are more cash-backed when noncash current assets are not absorbing sales proceeds and operating liabilities provide normal trade-credit support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Turnover Deterioration Trap",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(sale, SUB(act, che)), 1), 1))))",
+      "hypothesis": "High operating-margin firms should underperform when noncash-current-asset turnover is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "A profitable firm whose sales generated per dollar of noncash current assets is falling may be accumulating receivables, inventory, or other accrual assets behind the reported margin. This targets a reversal channel distinct from simply having a low turnover level: the deterioration itself signals weakening cash conversion.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Turnover Improvement Confirmation",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(DELTA(RATIO(sale, SUB(act, che)), 1), 1)))",
+      "hypothesis": "High operating margins should predict stronger returns when noncash-current-asset turnover is improving.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a smoothed restatement of the turnover-level interaction; it tests the change in operating-cycle efficiency. High margins are more credible when the firm is generating more sales per dollar of receivables, inventory, and other noncash current assets, indicating improving cash conversion rather than a static lean balance sheet.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Neutral Cash Confirmation",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(SUB(act, che), 1)), DELTA(SUB(SUB(lct, dlc), txp), 1)), sale), 1)))",
+      "hypothesis": "Persistent gross profitability should predict stronger returns when cash generation remains strong after neutralizing working-capital releases and liability financing.",
+      "expected_sign": "positive",
+      "reasoning": "The cash leg adds back noncash current-asset investment and subtracts operating-liability increases, reducing the chance that cash flow is temporarily flattered by inventory liquidation, receivable collection, or stretched payables. The interaction asks whether strong product economics are backed by cash earnings independent of working-capital timing.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Margin Trade Credit Coverage",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(NEG(WINSOR(RATIO(SUB(act, che), SUB(SUB(lct, dlc), txp)), 1))))",
+      "hypothesis": "High operating margins should predict stronger returns when noncash current assets are well covered by operating current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the already-tested noncash-current-asset change and turnover channels by focusing on the stock balance between accrual assets and trade/accrued operating liabilities. Profits are more cash-credible when receivables, inventory, and other noncash current assets are not large relative to the operating liabilities that finance the cycle.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Net Working Capital Neutral Cash",
+      "expression": "MIN(IND_RANK(MA(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)))",
+      "hypothesis": "Persistent gross margins should predict stronger returns when operating cash generation remains strong after neutralizing net working-capital timing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior cash-conversion-cycle recombination with a direct cash-cover test: adding the change in working capital removes temporary cash boosts from working-capital release and restores cash suppressed by working-capital investment. The interaction asks whether durable product economics are backed by cash before working-capital timing effects.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Short Term Debt Funded Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(RATIO(DELTA(dlc, 1), at), 1)))",
+      "hypothesis": "Profitable firms should underperform when current debt is rising, suggesting reported profits are not funding the operating cycle internally.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids another working-capital-overhang variant and tests a different cash-backing failure: firms can look profitable while plugging cash needs with short-term borrowing. High scores identify firms with strong operating profitability but deteriorating near-term financing reliance, a configuration more likely to reverse or disappoint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Cost Discipline Neutral Cash Cover",
+      "expression": "MIN(IND_RANK(NEG(TREND(RATIO(xsga, sale), 3))), IND_RANK(WINSOR(RATIO(ADD(oancf, DELTA(wcap, 1)), sale), 1)))",
+      "hypothesis": "SG&A efficiency gains should predict stronger returns when they are accompanied by strong working-capital-neutral cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the already-tested SG&A trend \u00d7 current-asset-discipline pair with a cash confirmation mechanism. Falling SG&A intensity is more likely to be real operating efficiency when cash flow remains strong after removing net working-capital timing effects, rather than merely reflecting accrual-supported sales or underinvestment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Net Profit Self Funded Cash Cover",
+      "expression": "MIN(IND_RANK(RATIO(ni, at)), IND_RANK(WINSOR(RATIO(SUB(ADD(oancf, DELTA(wcap, 1)), DELTA(dlc, 1)), at), 1)))",
+      "hypothesis": "Bottom-line profitability should predict stronger returns when cash generation is strong after neutralizing working-capital timing and short-term debt funding.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the interest-burden tweak and instead tests whether net profits are internally cash-funded. High scores require accounting profitability plus cash generation that is not explained by working-capital release or rising current debt, making the interaction closer to durable cash-backed earnings quality.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Cycle Weak Link Margin Trap",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), MAX(IND_ZSCORE(WINSOR(RATIO(SUB(act, che), sale), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(SUB(lct, dlc), txp), sale), 1)))))",
+      "hypothesis": "High operating-margin firms should underperform when either noncash current assets are high or operating current liabilities are unusually low.",
+      "expected_sign": "negative",
+      "reasoning": "The MAX structure targets the weakest side of the cash-conversion cycle rather than averaging asset and liability effects that may offset. High reported margins are less credible if the operating cycle shows either heavy accrual-asset investment or little trade-credit support.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt Funded Working Capital Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(dlc, 1), at), 1), WINSOR(RATIO(DELTA(SUB(act, che), 1), sale), 1))))",
+      "hypothesis": "Profitable firms should underperform when noncash current-asset buildup is accompanied by rising current debt.",
+      "expected_sign": "negative",
+      "reasoning": "This extends the short-term-debt funding channel by requiring that debt reliance coincide with accrual investment in the operating cycle. Profits are less cash-backed when receivables, inventory, or other noncash current assets expand while the firm also borrows short term to fund liquidity needs.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Repeated Current Asset Discipline Profit",
+      "expression": "MIN(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(TS_SUM(INDICATOR(NEG(WINSOR(DELTA(RATIO(SUB(act, che), sale), 1), 1)), 0), 5)))",
+      "hypothesis": "Persistent operating profitability should be more durable when noncash current-asset intensity repeatedly declines rather than periodically expanding.",
+      "expected_sign": "positive",
+      "reasoning": "A single clean working-capital observation can be temporary, but repeated discipline suggests the firm consistently converts operations into cash without building accrual assets. The count-based accrual leg separates durable profitable firms from those that periodically need receivable or inventory expansion to sustain earnings.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Net Cash Retention Margin",
+      "expression": "MIN(IND_RANK(RATIO(oiadp, sale)), IND_RANK(WINSOR(RATIO(SUB(DELTA(che, 1), DELTA(dlc, 1)), sale), 1)))",
+      "hypothesis": "High operating margins should predict stronger returns when firms retain cash net of short-term borrowing.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from trade-credit coverage and working-capital-turnover restatements by testing whether profitable operations actually increase cash without relying on current debt. Strong margins are more credible when they translate into net cash balance growth rather than being offset by liquidity strain.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual Asset Cash Drain Profit Trap",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_ZSCORE(WINSOR(RATIO(SUB(DELTA(SUB(act, che), 1), DELTA(che, 1)), at), 1)))",
+      "hypothesis": "Profitable firms should underperform when noncash current assets rise while cash balances fail to keep pace.",
+      "expected_sign": "negative",
+      "reasoning": "This is not another self-funded cash-flow rescaling; it focuses on balance-sheet liquidity migration from cash into receivables, inventory, and other noncash current assets. High reported profitability is less credible when the operating cycle is absorbing liquidity into accrual assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Margin Floor Cash Cushion",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), sale), 3)), IND_RANK(WINSOR(RATIO(che, SUB(act, che)), 1)))",
+      "hypothesis": "Durable gross profitability should predict stronger returns when cash balances provide a cushion against noncash current assets.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the trade-credit reciprocal with a distinct cash-cushion mechanism. A firm with a strong gross-margin floor and ample cash relative to receivables, inventory, and other noncash current assets is less likely to have profitability dependent on fragile accrual balances.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "accruals",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "CFO Confirmation Gate",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially cash-based operating profitability (Ball-Gerakos-Linnainmaa-Nikolaev) in crude binary form, and the INDICATOR gate collapses roughly half the universe to exactly zero, creating a huge mass point that destroys clean quantile sorting and makes the short leg an uninterpretable mix of unprofitable and merely cash-unconfirmed firms."
+    },
+    {
+      "generation": 0,
+      "target_name": "Accrual Share Profit Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The double ratio scaled by ABS(oibdp/at) explodes for near-zero-profitability firms so the accrual-share rank is dominated by a denominator artifact rather than accrual intensity, and stripped of that noise the signal is just the accruals anomaly conditioned on profitability."
+    },
+    {
+      "generation": 0,
+      "target_name": "Gross Profit Channel-Stuffing Filter",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It reconstructs cash-based operating profitability almost line-for-line (gross profit less receivable/inventory build plus payables), and the sign is likely inverted because Compustat recch/invch/apalch are cash-flow-statement impacts (negative when receivables/inventory rise), so NEG(...) rewards exactly the working-capital buildup the hypothesis wants to penalize."
+    },
+    {
+      "generation": 0,
+      "target_name": "Clean Operating Profit Trend",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning a profitability *trend* rather than a level on working-capital accrual financing is a defensible and reasonably clean AND-gate that is not a direct restatement of Sloan or of cash-based profitability, though it remains a composite of two well-known ingredients and the rank-product's low end conflates deteriorating-profit firms with high-accrual firms."
+    },
+    {
+      "generation": 0,
+      "target_name": "Durable EBITDA Low Accrual Noise",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The accrual-volatility ingredient adds a genuinely distinct earnings-quality dimension beyond accrual level, but the three-way composite with a 5-year VOL window makes attribution difficult and will cut coverage, so it needs an ablation against the simpler MA-profitability \u00d7 low-accrual version to justify itself."
+    },
+    {
+      "generation": 0,
+      "target_name": "Accrual-Fueled Earnings Acceleration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Multiplying two second differences of annual accounting data compounds measurement noise, and the rank product is near zero whenever either component is low, so the \"long\" leg pools decelerating-earnings firms with clean-accrual growers and the tested spread will not isolate the stated accrual-fueled-surge mechanism."
+    },
+    {
+      "generation": 1,
+      "target_name": "Industry Clean Operating Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the product of two canonical published anomalies (operating profitability and Sloan balance-sheet accruals) with no novel conditioning mechanism, and the IND_RANK(IND_ADJ(...)) double industry normalization is redundant, making the profitability leg a near-monotone transform of itself."
+    },
+    {
+      "generation": 1,
+      "target_name": "Persistent Profit Accrual Deterioration",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The trend-in-accruals conditioning leg is a defensible earnings-quality deterioration measure and the sign convention is internally consistent (profitability enters only as a magnitude scaler), though it remains a close relative of the archive's accrual-gated profitability signal and the 3-period TREND on differenced balance-sheet items will be noisy."
+    },
+    {
+      "generation": 1,
+      "target_name": "Gross Profit Working Capital Absorption",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "Up to a symmetric winsorization, IND_ZSCORE of the negated ratio equals minus the archive's leg, so with the expected sign also flipped this is the identical already-tested \"Gross Profit Collection Quality\" signal (fmb_tstat 0.65) relabeled rather than a new hypothesis."
+    },
+    {
+      "generation": 1,
+      "target_name": "Pretax Profit Tax Payable Confirmation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The conditioning variable is economically thin and arguably signed backwards \u2014 rising taxes payable often reflects genuinely high current taxable income, which the tax-based earnings-quality literature treats as confirming rather than contaminating reported profits \u2014 and \u0394txp is already a component of the working-capital accrual measures used elsewhere in this batch."
+    },
+    {
+      "generation": 1,
+      "target_name": "Intangible Adjusted Clean Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is proposal 1 with R&D added back to the numerator, i.e., a cosmetic variant layering a second known adjustment (intangible-adjusted profitability) onto the same accruals interaction, and COALESCE(xrd,0) additionally conflates true zero R&D with non-reporters."
+    },
+    {
+      "generation": 1,
+      "target_name": "Stable Accrual EBITDA Confirmation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning smoothed profitability on both the level and the volatility of accruals is the most substantively differentiated idea in the batch and internally coherent, but the 3-period VOL of twice-differenced balance-sheet items will be noisy and the stacked lag requirements risk pushing coverage below the archive's already thin ~10%."
+    },
+    {
+      "generation": 2,
+      "target_name": "EBITDA Working Capital Stability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is largely a stripped-down variant of the archive's \"Stable Accrual EBITDA Confirmation\" \u2014 VOL(wcap/at,3) is mechanically close to the accrual-volatility leg already tested \u2014 and it drops the accrual-level component that most plausibly drove that result, while a 3-observation VOL is a very noisy stability proxy."
+    },
+    {
+      "generation": 2,
+      "target_name": "Margin Trend Collection Confirmation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The recch sign convention is handled correctly and the narrowing from broad noncash-current-asset growth to collections is a defensible diagnosis of the prior alpha/t-stat divergence, though trending an already-differenced cash-flow item over only three years is double-differencing that will be dominated by noise."
+    },
+    {
+      "generation": 2,
+      "target_name": "Gross Profit Supplier Financing Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expected sign contradicts the natural accrual-channel direction the rest of this program relies on \u2014 rising payables (apalch > 0) is a *negative* working-capital accrual, which the accrual anomaly says predicts *higher* future returns \u2014 so the hypothesis is at odds with the mechanism it claims to extend."
+    },
+    {
+      "generation": 2,
+      "target_name": "Historical Depreciation Shortfall Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent (TS_RANK of NEG(dpc/at) genuinely peaks when depreciation is at a historical low) and a substantive re-specification rather than a cosmetic tweak of the prior version, but it closely echoes the published Beneish DEPI earnings-quality construct and low dpc/at is heavily confounded with the capex/asset-age cycle."
+    },
+    {
+      "generation": 2,
+      "target_name": "Persistent Profit Other Accrual Drag",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Signs are coherent and the \"other/tax accrual\" channel is a genuinely under-tested residual component relative to the receivable-inventory-payable constructions already in the archive, though txach and aoloch are sparsely populated and coverage is likely to fall below the already-thin ~0.08-0.10 baseline."
+    },
+    {
+      "generation": 2,
+      "target_name": "Profitable Growth Receivable Pullforward",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It is close to a rediscovery of the archive's \"Pretax Profit Receivable Slippage\" (and of the well-known sales-growth/Beneish-DSRI receivable-quality anomalies), and the MUL(GROWTH(sale), oiadp/sale) construction is non-monotone \u2014 negative margins times negative growth produce high scores \u2014 so the first leg does not compute the \"profitable growth\" the hypothesis describes."
+    },
+    {
+      "generation": 3,
+      "target_name": "Conservative Depreciation Profit",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "Since TS_RANK(NEG(x),5) is an exact order-reversing affine transform of TS_RANK(x,5) and IND_ZSCORE is linear, this expression is essentially minus one times the archived \"Historical Depreciation Shortfall Profit\" with the expected sign flipped \u2014 a pure relabeling that adds no new information."
+    },
+    {
+      "generation": 3,
+      "target_name": "Margin Expansion Depreciation Shortfall",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Substituting a three-year margin trend for the level profitability leg is a genuine (if incremental) test of whether the depreciation-shortfall channel generalizes, though the reviewer should be aware that low firm-relative dpc/at largely proxies recent asset growth, so any result may be a repackaged investment/asset-growth anomaly rather than an earnings-quality effect."
+    },
+    {
+      "generation": 3,
+      "target_name": "Quality Anchored Margin Expansion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The diagnosis (strong FMB slope but null alpha from fragile low-profitability improvers) is coherent and the profitability anchor is a defensible fix, but it is close to a bolt-on variant of \"Margin Expansion Asset Discipline\" and any alpha may simply reflect the well-known profitability and working-capital-accrual anomalies being combined."
+    },
+    {
+      "generation": 3,
+      "target_name": "Historical Accrual Extreme Profit Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing the noisy accrual trend with a firm-relative accrual extreme is a sensible, internally consistent reformulation that is distinct from the cross-sectional level/volatility version already tested, though it remains a profitability-conditioned accrual anomaly and risks rediscovering that well-documented effect."
+    },
+    {
+      "generation": 3,
+      "target_name": "Cash Impact EBITDA Consistency",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This reuses the exact SUMRANK(level, NEG(vol)) \u00d7 MA(ebitda/at) template of the archived best signal with cash-flow-statement legs whose individual versions already tested near zero (recch+invch fmb 0.651, apalch fmb -0.013), and stacking three sparse CFS items compounds the coverage problem the objective warns about."
+    },
+    {
+      "generation": 3,
+      "target_name": "Other Accrual Profit Inflection",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The sign conventions and conditional structure are internally consistent and shifting from level to inflection profitability is a legitimate follow-up on the one channel that produced reliable portfolio alpha, but it is a modest level-to-trend swap and the archive's repeated failures of three-year trend legs temper expectations."
+    },
+    {
+      "generation": 4,
+      "target_name": "Clean EBITDA AND Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-direct rediscovery of the archive's \"Stable Accrual EBITDA Confirmation\" (persistent EBITDA \u00d7 low balance-sheet accruals) with only the volatility leg dropped and MUL swapped for MIN, and at base it is the well-known profitability \u00d7 Sloan-accruals pairing rather than a new mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "Profit Peak Depreciation Shortfall",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conjunctive requirement that both profitability be at a firm-specific high and depreciation at a firm-specific low is a genuine (if incremental) sharpening of the archive's depreciation-shortfall result, with expression, sign, and hypothesis all internally consistent, though it remains close to the Abarbanell-Bushee depreciation fundamental signal."
+    },
+    {
+      "generation": 4,
+      "target_name": "Margin Expansion Noncash Asset Surge",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the sign-flipped \"Margin Expansion Asset Discipline\" from the archive with noncash-current-asset growth rescaled as a growth differential instead of a sales-scaled delta \u2014 a monotone re-parameterization of the same information rather than the \"sharper reversal mechanism\" the reasoning claims."
+    },
+    {
+      "generation": 4,
+      "target_name": "Gross Margin Peak Inventory Overhang",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The inventory-cash-absorption leg (correctly signed via NEG(invch)) has now been permuted twice in the archive with consistently weak evidence, and swapping the margin leg from growth to a 5-year TS_RANK while changing the deflator from `at` to `sale` is too small a change to justify a third pass."
+    },
+    {
+      "generation": 4,
+      "target_name": "Other Accrual Profitable Improver Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This mechanically unions the two already-tested other-accrual signals (\"Persistent Profit Other Accrual Drag\" and \"Other Accrual Profit Inflection\") by SUMRANK-ing their profitability legs, and since both parents had essentially zero cross-sectional slope (-0.5, -0.3), averaging them offers no economic reason to fix the fmb weakness while inheriting sub-7% coverage."
+    },
+    {
+      "generation": 4,
+      "target_name": "Accrual Spike Profit Peak",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing cross-sectional profitability level with a within-firm profitability peak and requiring conjunctive extremity via MIN is a substantively different timing-based framing of the accrual trap than the archive's \"Historical Accrual Extreme Profit Trap,\" and the sign and construction are coherent, though it still lives close to the classic Sloan accrual anomaly."
+    },
+    {
+      "generation": 5,
+      "target_name": "Depreciation Drop Margin Surge",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-scaling of the already-tested \"Depreciation Shortfall Profit\" (\u0394dpc leg) and \"Margin Expansion Depreciation Shortfall\" pairings \u2014 swapping margin level for a one-year margin change and `at` for `sale` denominators does not constitute a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Accrual Ceiling Profit Quality",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_MAX of the accrual series over three years is close to a mean-plus-volatility composite, making this a near-mechanical reformulation of the archived \"Stable Accrual EBITDA Confirmation\" (and the sign-flip of \"Historical Accrual Extreme Profit Trap\") rather than a distinct test."
+    },
+    {
+      "generation": 5,
+      "target_name": "Operating Liability Paydown Profit Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "MUL(margin, NEG(\u0394oplib)) with an expected negative sign is algebraically the same hypothesis as the archived \"Margin Expansion Operating Liability Support\" (MUL(margin trend, \u0394oplib), expected positive), so the \"sign repair\" is a relabeling, not a new economic claim, and it inherits that signal's unresolved FMB/alpha conflict."
+    },
+    {
+      "generation": 5,
+      "target_name": "Cost Cut Depreciation Trough",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the third pairing of the identical TS_RANK(NEG(dpc/at),5) leg, and the archive's two prior pairings produced nearly identical alphas (-0.023, t\u2248-2.3) with very different partners, strongly indicating a depreciation-trough main effect rather than any incremental interaction from the SG&A leg."
+    },
+    {
+      "generation": 5,
+      "target_name": "Gross Margin Depreciation Trough",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Same objection: a fourth partner for the already heavily reused depreciation-trough leg whose archived results are essentially invariant to the profitability leg, so the COGS-depreciation story is untested by this construction and would be better isolated by testing the depreciation leg standalone first."
+    },
+    {
+      "generation": 5,
+      "target_name": "Taxable Profit Confirmation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The book-tax confirmation mechanism is the least duplicative proposal here and has genuine support in the earnings-quality literature, but note that \u0394txp enters the standard Sloan accrual with a positive sign, so the expected positive sign directly opposes the accrual anomaly and the mismatched scalars (pi/sale vs \u0394txp/at) weaken the interaction's interpretation."
+    },
+    {
+      "generation": 6,
+      "target_name": "Industry Noncash Asset Profit Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-wrapping of the archive's \"Noncash Asset Profit Productivity\" \u2014 IND_ADJ nested inside IND_ZSCORE is a redundant double industry demeaning that leaves the cross-sectional ranking essentially unchanged, and the ratio-of-ratios collapses to plain oiadp/(act\u2212che), so the \"per dollar of sales\" framing in the hypothesis is not what the expression computes."
+    },
+    {
+      "generation": 6,
+      "target_name": "Smoothed Gross Noncash Asset Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The nested ratio algebraically reduces to gross profit divided by noncash current assets (sale cancels), making it a smoothed hybrid of two already-tested archive productivity signals and a close cousin of published gross-profitability-scaled measures, with no new economic mechanism beyond changing the denominator from wcap to act\u2212che."
+    },
+    {
+      "generation": 6,
+      "target_name": "Profit Peak After Accrual Spike",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical crossing of two already-failed archive signals (\"Accrual Spike Profit Peak\", fmb \u2248 0 with wrong-signed alpha, and \"Lagged Accrual Profit Reversal\", fmb \u22121.9), and inserting a one-year LAG into the same TS_RANK gate is a variant rather than a diagnosis of why the interaction produced no cross-sectional slope."
+    },
+    {
+      "generation": 6,
+      "target_name": "Tax Confirmed Pretax ROA",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The archive's \"Taxable Profit Confirmation\" tested the identical \u0394txp confirmation mechanism and produced essentially nothing (fmb 0.34, alpha \u2248 0), and swapping the margin denominator to assets and MUL to MIN is a cosmetic reparameterization whose high leg is largely just ROA, a well-known profitability anomaly."
+    },
+    {
+      "generation": 6,
+      "target_name": "Liability Stripped Cash Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Although conceptually adjacent to the archive's \"Supplier Stripped Cash Profit\", replacing sparse cash-flow-statement items (apalch, invch, coverage 0.060) with balance-sheet changes in non-debt operating current liabilities is a coherent, coverage-motivated reconstruction with a correctly signed and internally consistent expression, so it is worth one test \u2014 but if the resulting alpha again lacks reliability, this channel should be retired rather than re-parameterized."
+    },
+    {
+      "generation": 6,
+      "target_name": "Other Accrual Profit Peak Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the third variant of the same txach+aoloch channel (after \"Persistent Profit Other Accrual Drag\" and \"Other Accrual Profit Inflection\"), both of which showed alpha with near-zero Fama-MacBeth slopes on sparse coverage (~0.05\u20130.065), strongly suggesting the abnormal return comes from the standalone other-accrual main effect rather than any profitability interaction, so changing the gate to a TS_RANK peak is unlikely to be diagnostic."
+    },
+    {
+      "generation": 7,
+      "target_name": "Working Capital Neutral Cash Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The stripping algebra is internally correct (adding \u0394 noncash CA removes liquidation boosts, subtracting \u0394 operating liabilities removes stretch financing) and the sign is coherent, but neutralizing both working-capital legs turns leg two into something close to accrual-free cash earnings, which is highly collinear with the oibdp/at leg and risks degenerating the MIN interaction into a plain profitability sort."
+    },
+    {
+      "generation": 7,
+      "target_name": "Persistent Margin Working Capital Turnover",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic MA(3) smoothing of the already-evaluated \"Operating Margin Working Capital Turnover\" (fmb 3.23, ls_talpha 2.65) with the same two legs and same mechanism, so it is a near-rediscovery rather than a substantive refinement."
+    },
+    {
+      "generation": 7,
+      "target_name": "Gross Margin Current Asset Discipline",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Substituting the change in noncash-current-asset intensity for the archived level/TS_RANK leg is a genuine flow-vs-stock distinction and the sign is consistent, but it sits close to both \"Gross Margin Lean Operating Cycle\" and \"Margin Expansion Asset Discipline\" and therefore offers only modest incremental information."
+    },
+    {
+      "generation": 7,
+      "target_name": "SG&A Efficiency Lean Cycle",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The construction is internally consistent (NEG of SG&A-intensity trend correctly encodes cost discipline as a high value) and the lean-cycle conditioner is a fresh pairing, though the SG&A-trend leg has repeatedly delivered null or wrong-signed portfolio evidence in this archive, so prior odds are unfavorable."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash Conversion Cycle Margin",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is the most substantively motivated proposal \u2014 it explicitly reconciles the conflicting asset-side and liability-side working-capital legs into a single coherent cash-conversion conditioner with correct signs \u2014 though the liability leg's previously negative Fama-MacBeth slope against a positive prior means the two SUMRANK components may partially offset in the cross-section."
+    },
+    {
+      "generation": 7,
+      "target_name": "Margin Turnover Deterioration Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sign and construction line up (high margin times falling turnover yields a large positive signal expected to predict negatively) and the deterioration channel is distinct from the turnover-level signal, but the first difference of an unbounded sale/(act\u2212che) ratio is a noisy, scale-unstable quantity that 1% winsorization may not adequately tame."
+    },
+    {
+      "generation": 8,
+      "target_name": "Operating Margin Current Asset Discipline",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-mechanical rediscovery of two archived signals \u2014 the second leg is identical to \"Gross Margin Current Asset Discipline\" and the pairing with oiadp/sale is economically the same as \"Margin Turnover Improvement Confirmation\" (NEG delta of WC/sales versus delta of sales/WC is a monotone reciprocal restatement), so it offers no new information channel."
+    },
+    {
+      "generation": 8,
+      "target_name": "Gross Margin Cash Conversion Cycle",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally coherent and well-specified, but it is essentially \"Cash Conversion Cycle Margin\" (gen 7) with the profitability leg swapped from operating margin to persistent gross margin and the liability change deflated by cogs instead of sales \u2014 a recombination of two archived legs rather than a substantively new mechanism, and the untested cogs deflator is the only real innovation."
+    },
+    {
+      "generation": 8,
+      "target_name": "Operating Margin Working Capital Overhang",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The negative-side working-capital-overhang channel is already covered by \"Margin Turnover Deterioration Trap\" (fmb \u22123.48, alpha \u22120.023) and \"Profit Peak Working Capital Stretch,\" and the MIN construction is poorly suited to a negative expected sign because the long (low-signal) leg pools low-margin firms with disciplined-working-capital firms, making the spread economically ambiguous."
+    },
+    {
+      "generation": 8,
+      "target_name": "Gross Margin Neutral Cash Confirmation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Derivative in that both legs appear separately in the archive, but pairing persistent gross margin with a genuinely cash-flow-based (oancf) working-capital-neutralized confirmation is a different information source than the balance-sheet-change discipline legs, and the sign and construction are internally consistent \u2014 though coverage will be constrained by oancf availability."
+    },
+    {
+      "generation": 8,
+      "target_name": "Cost Discipline Current Asset Discipline",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The exact ingredient pair (SG&A intensity trend \u00d7 noncash current-asset intensity change) was already tested as \"Cost Cut Working Capital Trap\" (MUL, negative sign, ls_talpha \u22120.18) and \"SG&A Efficiency Lean Cycle\" (MIN, positive sign, ls_talpha 1.32), so this is a cosmetic re-encoding rather than a new hypothesis."
+    },
+    {
+      "generation": 8,
+      "target_name": "Finance Cost Covered Lean Cycle",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is \"Operating Margin Working Capital Turnover\" (ls_alpha 0.023, t 2.65) with oiadp replaced by oibdp\u2212xint, a trivial numerator tweak that mainly injects a leverage/interest-burden tilt rather than testing a distinct economic channel, and the hypothesis offers no reason to expect the interest deduction to add information beyond known leverage effects."
+    },
+    {
+      "generation": 9,
+      "target_name": "Trade Credit Coverage Improvement",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the level-to-change restatement of the already-tested \"Operating Margin Trade Credit Coverage\" (and overlaps heavily with \"Gross Margin Current Asset Discipline\" and \"Margin Turnover Improvement Confirmation\"), i.e. a cosmetic first-difference variant rather than a new mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Cash Cycle Weak Link Margin Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The MAX \"weakest-link\" aggregation is a genuinely different functional form from the archive's SUMRANK cash-cycle composites and the sign logic of the MUL construct is internally consistent, though the two legs are mechanically correlated so MAX may add little beyond the average."
+    },
+    {
+      "generation": 9,
+      "target_name": "Debt Funded Working Capital Profit Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It joins two previously tested legs (short-term-debt funding and noncash current-asset buildup) into a conjunctive funding-gap story that plausibly diagnoses why the debt-funded trap had a weak alpha, though it is incremental and mixes at- and sale-scaled inputs inside the SUMRANK."
+    },
+    {
+      "generation": 9,
+      "target_name": "Self Funded Operating Margin",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is \"Net Profit Self Funded Cash Cover\" with the profitability leg swapped from ni/at to oiadp/sale and the cash leg rescaled by sales \u2014 a cosmetic re-scaling of an already-evaluated signal with no new economic content."
+    },
+    {
+      "generation": 9,
+      "target_name": "Gross Margin Trade Credit Buffer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The second leg is the (monotone) reciprocal of the archived \"Operating Margin Trade Credit Coverage\" liability-coverage leg and the first leg is the archive's standard MA gross-margin block, so this is a recombination of two tested components rather than a new test."
+    },
+    {
+      "generation": 9,
+      "target_name": "Repeated Current Asset Discipline Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Count-based persistence of working-capital discipline is a defensible new angle distinct from the archive's single-period flow legs, but the 0\u20135 discrete leg will create massive ties that dominate the MIN and the 5-year window will shrink coverage, so temper expectations for the portfolio leg."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 1 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_accrual"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Clean Operating Profit Trend",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oiadp,at),3)),ind_rank(neg(ratio(delta(wcap,1),at))))",
+        "variables": [
+          "at",
+          "oiadp",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Durable EBITDA Low Accrual Noise",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(ebitda,at),3)),sumrank(neg(ma(ratio(sub(ib,oancf),at),3)),neg(vol(ratio(sub(ib,oancf),at),5))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash Conversion Profitability Interaction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_zscore(winsor(neg(ratio(sub(ib,oancf),at)),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "oibdp"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Profitable Rising Accrual Reliance",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_zscore(winsor(delta(ratio(sub(ib,oancf),at),1),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "oibdp"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Profit Collection Quality",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(revt,cogs),at)),ind_zscore(winsor(ratio(add(recch,invch),at),1)))",
+        "variables": [
+          "at",
+          "cogs",
+          "invch",
+          "recch",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Smoothed Accrual-Fueled ROA Surge",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(ib,at),3)),ind_zscore(winsor(trend(ratio(sub(ib,oancf),at),3),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Profit Accrual Deterioration",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_zscore(winsor(trend(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),3),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Accrual EBITDA Confirmation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(ebitda,at),3)),ind_zscore(sumrank(neg(winsor(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),1)),neg(winsor(vol(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),3),1)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ebitda",
+          "lct",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Expansion Asset Discipline",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oiadp,sale),3)),ind_zscore(neg(winsor(ratio(delta(sub(act,che),1),sale),1))))",
+        "variables": [
+          "act",
+          "che",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Inventory Overhang",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(growth(ratio(sub(revt,cogs),sale),1)),ind_zscore(winsor(ratio(neg(invch),at),1)))",
+        "variables": [
+          "at",
+          "cogs",
+          "invch",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pretax Profit Receivable Slippage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(pi,sale)),ind_zscore(winsor(ratio(neg(recch),sale),1)))",
+        "variables": [
+          "pi",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation Shortfall Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,at)),ind_zscore(winsor(neg(ratio(delta(dpc,1),at)),1)))",
+        "variables": [
+          "at",
+          "dpc",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Trend Collection Confirmation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oiadp,sale),3)),ind_zscore(winsor(trend(ratio(recch,sale),3),1)))",
+        "variables": [
+          "oiadp",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Historical Depreciation Shortfall Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,at)),ind_zscore(ts_rank(neg(ratio(dpc,at)),5)))",
+        "variables": [
+          "at",
+          "dpc",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Profit Other Accrual Drag",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_zscore(winsor(ratio(neg(add(txach,aoloch)),at),1)))",
+        "variables": [
+          "aoloch",
+          "at",
+          "oibdp",
+          "txach"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBITDA Working Capital Release",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(ebitda,at),3)),ind_zscore(sumrank(neg(winsor(ratio(wcap,at),1)),neg(winsor(ratio(delta(wcap,1),at),1)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Supplier Financed Gross Margin Confirmation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(sub(revt,cogs),sale),3)),ind_zscore(winsor(ratio(apalch,cogs),1)))",
+        "variables": [
+          "apalch",
+          "cogs",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Growth Inventory Overhang",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(sumrank(growth(sale,1),ratio(oiadp,sale))),ind_zscore(winsor(ratio(neg(invch),sale),1)))",
+        "variables": [
+          "invch",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Expansion Depreciation Shortfall",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oiadp,sale),3)),ind_zscore(ts_rank(neg(ratio(dpc,at)),5)))",
+        "variables": [
+          "at",
+          "dpc",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Quality Anchored Margin Expansion",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(sumrank(trend(ratio(oiadp,sale),3),ma(ratio(oibdp,at),3))),ind_zscore(neg(winsor(ratio(delta(sub(act,che),1),sale),1))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "oiadp",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Historical Accrual Extreme Profit Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_zscore(ts_rank(winsor(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),1),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Other Accrual Profit Inflection",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oibdp,at),3)),ind_zscore(winsor(ratio(neg(add(txach,aoloch)),at),1)))",
+        "variables": [
+          "aoloch",
+          "at",
+          "oibdp",
+          "txach"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation Covered Margin",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,sale)),ind_zscore(winsor(ratio(dpc,sale),1)))",
+        "variables": [
+          "dpc",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBITDA Low Working Capital Intensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(ebitda,at),3)),ind_zscore(neg(ts_rank(ratio(wcap,sale),5))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit Peak Depreciation Shortfall",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_rank(ratio(oiadp,at),5)),ind_rank(ts_rank(neg(ratio(dpc,at)),5)))",
+        "variables": [
+          "at",
+          "dpc",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual Spike Profit Peak",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_rank(ratio(oibdp,at),5)),ind_rank(ts_rank(winsor(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),1),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit Peak Working Capital Stretch",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_rank(ratio(oibdp,sale),5)),ind_rank(ts_rank(winsor(ratio(wcap,sale),1),5)))",
+        "variables": [
+          "oibdp",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Expansion Operating Liability Support",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(oiadp,sale),3)),ind_zscore(winsor(ratio(delta(sub(sub(lct,dlc),txp),1),sale),1)))",
+        "variables": [
+          "dlc",
+          "lct",
+          "oiadp",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Supplier Credit Confirmation",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_rank(ratio(sub(revt,cogs),sale),5)),ind_rank(ts_rank(winsor(ratio(delta(sub(sub(lct,dlc),txp),1),cogs),1),5)))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "revt",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cost Cut Working Capital Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(trend(ratio(xsga,sale),3))),ind_zscore(winsor(ratio(delta(sub(act,che),1),sale),1)))",
+        "variables": [
+          "act",
+          "che",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Taxable Profit Confirmation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(pi,sale)),ind_zscore(winsor(ratio(delta(txp,1),at),1)))",
+        "variables": [
+          "at",
+          "pi",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Noncash Asset Profit Productivity",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ratio(oiadp,sale),ratio(sub(act,che),sale)),1))",
+        "variables": [
+          "act",
+          "che",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Supplier Stripped Cash Profit",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oibdp,at)),ind_rank(winsor(ratio(sub(sub(oancf,apalch),invch),at),1)))",
+        "variables": [
+          "apalch",
+          "at",
+          "invch",
+          "oancf",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Receivable Settled Cost Efficiency",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(trend(ratio(xsga,sale),3))),ind_zscore(winsor(ratio(recch,sale),1)))",
+        "variables": [
+          "recch",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Accrual Profit Reversal",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_zscore(winsor(lag(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),1),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Profit Working Capital Productivity",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ratio(sub(revt,cogs),sale),ratio(wcap,sale)),1))",
+        "variables": [
+          "cogs",
+          "revt",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability Stripped Cash Profit",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oibdp,at)),ind_rank(winsor(ratio(sub(oancf,delta(sub(sub(lct,dlc),txp),1)),at),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "lct",
+          "oancf",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Margin Working Capital Turnover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oiadp,sale)),ind_rank(winsor(ratio(sale,sub(act,che)),1)))",
+        "variables": [
+          "act",
+          "che",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Lean Operating Cycle",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(sub(revt,cogs),sale),3)),ind_rank(neg(ts_rank(winsor(ratio(sub(act,che),sale),1),5))))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Accrual Reliance Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_zscore(ts_sum(indicator(winsor(ratio(add(sub(sub(delta(act,1),delta(che,1)),delta(lct,1)),sub(add(delta(dlc,1),delta(txp,1)),dp)),at),1),0),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pretax Tax Accrual Drag",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(pi,sale)),ind_zscore(winsor(ratio(neg(txach),at),1)))",
+        "variables": [
+          "at",
+          "pi",
+          "sale",
+          "txach"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Customer Supplier Accrual Mismatch",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,sale)),ind_zscore(winsor(ratio(sub(neg(recch),apalch),sale),1)))",
+        "variables": [
+          "apalch",
+          "oibdp",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working Capital Neutral Cash Profit",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oibdp,at)),ind_rank(winsor(ratio(sub(add(oancf,delta(sub(act,che),1)),delta(sub(sub(lct,dlc),txp),1)),at),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "oancf",
+          "oibdp",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Current Asset Discipline",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(sub(revt,cogs),sale),3)),ind_rank(neg(winsor(delta(ratio(sub(act,che),sale),1),1))))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SG&A Efficiency Lean Cycle",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(neg(trend(ratio(xsga,sale),3))),ind_rank(winsor(ratio(sale,sub(act,che)),1)))",
+        "variables": [
+          "act",
+          "che",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Conversion Cycle Margin",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oiadp,sale)),ind_rank(sumrank(neg(winsor(ratio(delta(sub(act,che),1),sale),1)),winsor(ratio(delta(sub(sub(lct,dlc),txp),1),sale),1))))",
+        "variables": [
+          "act",
+          "che",
+          "dlc",
+          "lct",
+          "oiadp",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Turnover Deterioration Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,sale)),ind_zscore(neg(winsor(delta(ratio(sale,sub(act,che)),1),1))))",
+        "variables": [
+          "act",
+          "che",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Turnover Improvement Confirmation",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oiadp,sale)),ind_rank(winsor(delta(ratio(sale,sub(act,che)),1),1)))",
+        "variables": [
+          "act",
+          "che",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Neutral Cash Confirmation",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(sub(revt,cogs),sale),3)),ind_rank(winsor(ratio(sub(add(oancf,delta(sub(act,che),1)),delta(sub(sub(lct,dlc),txp),1)),sale),1)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "oancf",
+          "revt",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Margin Trade Credit Coverage",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oiadp,sale)),ind_rank(neg(winsor(ratio(sub(act,che),sub(sub(lct,dlc),txp)),1))))",
+        "variables": [
+          "act",
+          "che",
+          "dlc",
+          "lct",
+          "oiadp",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Net Working Capital Neutral Cash",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(sub(revt,cogs),sale),3)),ind_rank(winsor(ratio(add(oancf,delta(wcap,1)),sale),1)))",
+        "variables": [
+          "cogs",
+          "oancf",
+          "revt",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short Term Debt Funded Profit Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_zscore(winsor(ratio(delta(dlc,1),at),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cost Discipline Neutral Cash Cover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(neg(trend(ratio(xsga,sale),3))),ind_rank(winsor(ratio(add(oancf,delta(wcap,1)),sale),1)))",
+        "variables": [
+          "oancf",
+          "sale",
+          "wcap",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net Profit Self Funded Cash Cover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(ni,at)),ind_rank(winsor(ratio(sub(add(oancf,delta(wcap,1)),delta(dlc,1)),at),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "ni",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Cycle Weak Link Margin Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,sale)),max(ind_zscore(winsor(ratio(sub(act,che),sale),1)),ind_zscore(neg(winsor(ratio(sub(sub(lct,dlc),txp),sale),1)))))",
+        "variables": [
+          "act",
+          "che",
+          "dlc",
+          "lct",
+          "oiadp",
+          "sale",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt Funded Working Capital Profit Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_zscore(sumrank(winsor(ratio(delta(dlc,1),at),1),winsor(ratio(delta(sub(act,che),1),sale),1))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Repeated Current Asset Discipline Profit",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(ts_sum(indicator(neg(winsor(delta(ratio(sub(act,che),sale),1),1)),0),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net Cash Retention Margin",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(oiadp,sale)),ind_rank(winsor(ratio(sub(delta(che,1),delta(dlc,1)),sale),1)))",
+        "variables": [
+          "che",
+          "dlc",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual Asset Cash Drain Profit Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_zscore(winsor(ratio(sub(delta(sub(act,che),1),delta(che,1)),at),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Margin Floor Cash Cushion",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(revt,cogs),sale),3)),ind_rank(winsor(ratio(che,sub(act,che)),1)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "revt",
+          "sale"
+        ]
+      }
+    }
+  ]
+}

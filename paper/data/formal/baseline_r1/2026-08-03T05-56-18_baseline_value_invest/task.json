@@ -1,0 +1,85 @@
+{
+  "task_id": "cross_theme:value_invest",
+  "task_type": "cross_theme",
+  "objective": {
+    "title": "Valuation x Investment signal discovery",
+    "description": "Discover symbolic equity-return signals that use both themes (valuation and investment) for Valuation x Investment. The signal should capture an interaction beyond an isolated single-theme effect. Economic story: Cheap firms that also avoid aggressive investment can be underappreciated disciplined capital allocators, while expensive aggressive investors may be overvalued growth stories. The task is to combine price expectations with investment discipline."
+  },
+  "constraints": [
+    {
+      "kind": "must_use_theme",
+      "value": "valuation"
+    },
+    {
+      "kind": "must_use_theme",
+      "value": "investment"
+    },
+    {
+      "kind": "exclude_financials",
+      "value": "true"
+    },
+    {
+      "kind": "exclude_microcap",
+      "value": "true"
+    }
+  ],
+  "output_schema": {
+    "required_fields": [
+      "name",
+      "expression",
+      "hypothesis",
+      "expected_sign",
+      "reasoning",
+      "interaction_type"
+    ],
+    "allowed_expected_signs": [
+      "positive",
+      "negative"
+    ],
+    "allowed_interaction_types": [
+      "composite",
+      "conditional",
+      "ratio",
+      "novel"
+    ]
+  },
+  "evaluation_protocol": {
+    "evaluator_type": "signal_agent",
+    "primary_metric": "fmb_tstat",
+    "success_threshold": 1.96,
+    "require_expected_sign_match": true,
+    "alpha_factor_model": 5
+  },
+  "success_criteria": {
+    "min_abs_tstat": 1.96,
+    "require_expected_sign_match": true,
+    "min_coverage": 0.0
+  },
+  "novelty_policy": {
+    "reject_exact_expression_duplicates": true,
+    "reject_normalized_expression_duplicates": true
+  },
+  "metadata": {
+    "pair_name": "value_invest",
+    "theme_a": "valuation",
+    "theme_b": "investment",
+    "reference_library": "canonical_single_theme_reference",
+    "interaction_label": "Valuation x Investment",
+    "economic_story": "Cheap firms that also avoid aggressive investment can be underappreciated disciplined capital allocators, while expensive aggressive investors may be overvalued growth stories. The task is to combine price expectations with investment discipline.",
+    "example_interactions": [
+      "Cheap disciplined investor",
+      "Value with low asset growth",
+      "Investment-adjusted value",
+      "Expensive empire-builder short signal"
+    ],
+    "exclude_financials": true,
+    "exclude_microcap": true,
+    "sample_filters": [
+      "exclude_financials",
+      "exclude_microcap"
+    ],
+    "mode": "default",
+    "seed_prompt": null,
+    "guidance_scope": "none"
+  }
+}

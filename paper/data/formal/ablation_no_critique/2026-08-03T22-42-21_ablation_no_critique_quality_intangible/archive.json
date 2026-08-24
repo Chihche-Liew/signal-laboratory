@@ -1,0 +1,2765 @@
+{
+  "pair": "quality_intangible",
+  "evaluated": [
+    {
+      "name": "Stability-Weighted Intangible Intensity",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), NEG(VOL(RATIO(ib, at), 5)))",
+      "hypothesis": "Intangible spending is rewarded only when the firm's earnings stream is stable enough to sustain and monetize it; intensity plus low ROA volatility identifies durable intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "Investors under-react to intangible investment because its payoff is uncertain, but that uncertainty is far smaller for firms whose realized ROA is highly stable across five years. Ranking intangible intensity jointly with earnings stability isolates credible, repeatable intangible capital formation rather than speculative spending spikes. Unreported R&D/advertising is economically a zero outlay, so COALESCE to zero is the correct convention.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.1416550259684874,
+      "ls_alpha": 0.042068687549393476,
+      "ls_talpha": 2.8293536355575677,
+      "ls_sharpe": 0.11811245505745586,
+      "coverage": 0.1334699697134041,
+      "error": null
+    },
+    {
+      "name": "Cash-Covered Innovation Intensity",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "R&D intensity is credible when operating cash flow comfortably covers total liabilities; innovation financed from internal cash is durable, whereas innovation at cash-poor, liability-heavy firms is optional and easily abandoned.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative form makes the payoff to intangible intensity increase in balance-sheet cash coverage, so the signal is near zero for high-R&D firms with weak cash generation and for cash-rich firms that do not innovate. Three-year smoothing of coverage removes transitory cash-flow noise and focuses on a persistent funding state. This is an explicit conditional interaction, not a standalone R&D or cash-flow effect.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.975406885267868,
+      "ls_alpha": 0.0459254244570986,
+      "ls_talpha": 3.116657419614914,
+      "ls_sharpe": 0.5294868105408864,
+      "coverage": 0.09111403328471299,
+      "error": null
+    },
+    {
+      "name": "Accrual-Backed Goodwill Overhang",
+      "expression": "MUL(RATIO(COALESCE(gdwl, 0), at), INDICATOR(SUB(ib, oancf), 0))",
+      "hypothesis": "Acquired intangibles (goodwill) predict poor returns specifically at firms whose earnings exceed operating cash flow, i.e., where reported profits are accrual-driven and impairment risk is unrecognized.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill alone is a weak, noisy predictor; its return drag concentrates in firms that simultaneously fail the cash-conversion quality test, since these are the acquirers most likely facing future write-downs and earnings reversals. The indicator switches the goodwill exposure on only in the low-quality state, creating a genuine conditional interaction rather than a single-theme goodwill effect. Firms without reported goodwill economically have zero goodwill.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.9542611631013929,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Persistent Innovator With Improving Returns",
+      "expression": "SUMRANK(TS_COUNT(xrd, 5), TREND(RATIO(ib, at), 5))",
+      "hypothesis": "Firms that report R&D continuously over five years and whose ROA is on a rising trend are converting a committed innovation program into realized earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "Reporting persistence, not level, captures commitment to an innovation program, while the five-year ROA trend verifies that the program is actually paying off \u2014 neither channel alone distinguishes durable intangible productivity. The joint rank rewards sustained innovators with demonstrable profitability improvement and penalizes sporadic spenders and stagnant incumbents. This is a persistence-times-trajectory interaction that no single-theme variable can express.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.390104948174015,
+      "ls_alpha": 0.03571352408382922,
+      "ls_talpha": 3.6662049267534194,
+      "ls_sharpe": 0.18676562264550384,
+      "coverage": 0.12205600296179629,
+      "error": null
+    },
+    {
+      "name": "Self-Funded Knowledge Investment",
+      "expression": "SUB(RANK(RATIO(TS_SUM(xrd, 3), at)), RANK(GROWTH(ADD(dltt, dlc), 1)))",
+      "hypothesis": "Cumulative R&D that is not accompanied by rising debt reflects internally financed, self-sustaining intangible investment; the same R&D funded by expanding leverage carries refinancing risk and is more likely to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "The spread between intangible-investment rank and debt-growth rank isolates the financing quality of innovation, which is a balance-sheet dimension that R&D intensity alone ignores. High scorers accumulate knowledge capital while deleveraging or holding debt flat, a combination associated with resilient future earnings; low scorers are leverage-financed spenders vulnerable to credit shocks. The differencing form deliberately creates a novel funding-source interaction between the two themes.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.7168505324826322,
+      "ls_alpha": 0.008640980119526253,
+      "ls_talpha": 1.0374339377364596,
+      "ls_sharpe": 0.024206124750999522,
+      "coverage": 0.05516500375177374,
+      "error": null
+    },
+    {
+      "name": "Knowledge Stock Meets Cash Coverage",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Accumulated five-year R&D capital, not the single-year outlay, is the economically relevant intangible stock; its value is realized only where operating cash flow covers total liabilities, so debt-service capacity protects the knowledge base from forced disinvestment.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the gen-0 winner \u2014 replacing the annual R&D flow with the cumulative knowledge stock \u2014 while holding the multiplicative rank interaction and the cash-coverage conditioner fixed. If the stock version improves both the FMB slope and the FF5 alpha, the mispricing is about un-capitalized intangible capital rather than about this year's spending decision. Unreported R&D is economically zero spending, justifying COALESCE.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.934689612376807,
+      "ls_alpha": 0.046377403115714776,
+      "ls_talpha": 3.2213052764466723,
+      "ls_sharpe": 0.5536640427538204,
+      "coverage": 0.09111403328471299,
+      "error": null
+    },
+    {
+      "name": "Industry-Neutral Innovation On Cash Coverage",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "R&D intensity is overwhelmingly an industry attribute; within-industry relative innovation intensity, conditioned on firm-level cash coverage, is the part that carries information about durable intangible productivity rather than sector membership.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner may partly reflect a static tilt toward pharma/tech, which FF5 does not fully absorb and which makes portfolio composition unstable; industry-ranking the intangible leg removes that tilt and tests whether the interaction survives as a genuine firm-level effect. A comparable or higher t-alpha with a better Sharpe would indicate the mechanism is firm-specific; a collapse would tell us the effect is a sector bet. This is a clean, single-change diagnostic on the strongest archive result.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.695710603727751,
+      "ls_alpha": 0.039872194193877955,
+      "ls_talpha": 3.0616165366454906,
+      "ls_sharpe": 0.41502304888922276,
+      "coverage": 0.0911128466676077,
+      "error": null
+    },
+    {
+      "name": "Continuous Goodwill-Accrual Overhang",
+      "expression": "MUL(RANK(RATIO(COALESCE(gdwl, 0), at)), RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Acquired intangibles destroy value specifically where reported earnings run ahead of operating cash flow: such firms have bought growth that is validated only by accruals and face future impairments and earnings reversals.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the gen-0 failure, where the binary INDICATOR gate collapsed most firms to exactly zero and left an undefined long-short spread; replacing the gate with a continuous accrual rank produces a smoothly distributed score and well-populated extreme portfolios. The product is high only for firms that are jointly goodwill-heavy and accrual-heavy, which is the precise conditional the story requires. Firms reporting no goodwill genuinely carry zero acquired-intangible overhang.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.4800099769849425,
+      "ls_alpha": -0.03354609785199629,
+      "ls_talpha": -2.1692781083242467,
+      "ls_sharpe": -0.1852520999645322,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Intangible Spending With Stable Cash Generation",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), RANK(NEG(VOL(RATIO(oancf, at), 5))))",
+      "hypothesis": "What makes intangible investment credible is the predictability of the cash flow funding it, not merely its level; firms combining heavy R&D plus advertising with low five-year cash-flow volatility can sustain intangible programs across the cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 tested intangible intensity against earnings (ib) volatility in an additive SUMRANK form and got a weak Sharpe of 0.118, whereas the multiplicative cash-level form scored 0.53 \u2014 this proposal separates the two confounded choices by using the multiplicative form with a cash-flow stability conditioner. Cash-flow volatility is less contaminated by accrual noise and one-off write-offs than ROA volatility, so it should be a cleaner measure of funding durability. Including advertising broadens the intangible base and improves coverage relative to R&D alone.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.358335973125746,
+      "ls_alpha": 0.03963000640723528,
+      "ls_talpha": 2.419755723604637,
+      "ls_sharpe": 0.2761809323496618,
+      "coverage": 0.0814881437346204,
+      "error": null
+    },
+    {
+      "name": "Mature Self-Financed Innovator",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(RATIO(re, at)))",
+      "hypothesis": "Retained earnings relative to assets measures cumulative lifetime profitability and financial maturity; innovation undertaken by firms with a deep retained-earnings base is funded by proven past profits rather than by external capital or hope, and is therefore more likely to persist and pay off.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a quality channel absent from the archive \u2014 the stock of historical profitability rather than current cash flow or earnings volatility \u2014 which separates seasoned innovators from cash-burning young R&D firms that dominate the high-R&D tail. Because negative retained earnings flag accumulated losses, the rank conditioner naturally short-circuits the intangible signal exactly where it is least credible. It also tests whether the winning interaction is about liquidity (oancf) or about accumulated profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.3174659500648165,
+      "ls_alpha": 0.024472524782339446,
+      "ls_talpha": 2.104386098830496,
+      "ls_sharpe": 0.25071048058219253,
+      "coverage": 0.14376021006631023,
+      "error": null
+    },
+    {
+      "name": "Unlevered Knowledge Investment",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at)), RANK(NEG(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Intangible assets provide poor collateral, so leverage and knowledge investment are complements only in appearance; R&D-intensive firms with low debt burdens face no pressure to cut innovation in downturns and earn a durable productivity premium.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the failed Self-Funded Knowledge Investment signal, which differenced ranks (a form that already underperformed) and used noisy one-year debt growth with only 5.5% coverage; here the balance-sheet state is a stable leverage level and the combination is multiplicative, matching the archive's best-performing structure. The economic content is distinct from cash coverage: it is about debt-capacity fragility rather than current cash generation. Three-year cumulative R&D smooths lumpy program spending while retaining much broader coverage than five-year windows.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.5841946249342408,
+      "ls_alpha": 0.04370933074801863,
+      "ls_talpha": 3.8308000493523413,
+      "ls_sharpe": 0.19971748243408338,
+      "coverage": 0.14451990297393075,
+      "error": null
+    },
+    {
+      "name": "Funds-From-Operations Covered Innovation",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "The credibility of R&D spending depends on internally generated funds available to service obligations; funds from operations (income before extraordinary items plus depreciation and amortization) measures the same debt-service capacity as operating cash flow but is available for far more firm-years.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate coverage repair of the archive's best mechanism \u2014 every strong variant is stuck at 9.1% coverage because of the `oancf` reporting window, and the FFO proxy should roughly double usable observations while keeping the economic content identical. If fmb_tstat and t-alpha hold up at higher coverage, we gain both statistical power and confidence that the result is not confined to a narrow post-1988 sample; if they degrade, we learn the accrual-free cash measure is essential rather than incidental.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.131092559320164,
+      "ls_alpha": 0.030424004948334155,
+      "ls_talpha": 2.754329454962085,
+      "ls_sharpe": 0.29268920407390103,
+      "coverage": 0.14134049142044877,
+      "error": null
+    },
+    {
+      "name": "Doubly Gated Knowledge Capital",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), SUMRANK(MA(RATIO(oancf, lt), 3), RATIO(re, at)))",
+      "hypothesis": "Durable intangible productivity requires both current cash-servicing capacity and a deep stock of accumulated past profits; the two quality conditioners capture flow and stock financial strength and should jointly discriminate credible knowledge capital better than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "Cash coverage (fmb 4.94) and retained-earnings maturity (fmb 4.32) were the two best-performing conditioners in the archive but they measure distinct things \u2014 liquidity today versus proven lifetime profitability \u2014 so averaging their ranks inside the multiplicative gate should reduce conditioner noise without diluting the mechanism. This is a consolidation step, testing whether the quality leg is better represented as a composite state than as a single variable. The 5-year R&D stock is used because it marginally outperformed the annual flow in gen 1.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.060394047746346,
+      "ls_alpha": 0.029801856464951294,
+      "ls_talpha": 2.000778457856455,
+      "ls_sharpe": 0.2842892958795566,
+      "coverage": 0.09094904191503078,
+      "error": null
+    },
+    {
+      "name": "Innovation With A Profitability Floor",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "What protects an R&D program is not average profitability or low volatility but the worst-case earnings level: firms that stayed profitable even in their weakest of the last five years never face the distress that forces innovation budgets to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has tested cash-flow level, cash-flow volatility, retained earnings, and leverage as conditioners, but never a downside floor, which is the economically precise notion of \"R&D that will not be abandoned.\" TS_MIN of ROA is a one-sided quality measure that treats upside variation as harmless, unlike VOL, which penalized firms whose earnings rose sharply and delivered only a 0.276 Sharpe. It is parsimonious and mechanically distinct from the mean-based conditioners already in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.8908441697433407,
+      "ls_alpha": 0.03878161766148595,
+      "ls_talpha": 3.5983892257192927,
+      "ls_sharpe": 0.18051107649790904,
+      "coverage": 0.14607576436714717,
+      "error": null
+    },
+    {
+      "name": "Knowledge Capital Productivity Gated By Cash",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(COALESCE(intan, 0), TS_SUM(xrd, 5))), 1)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "The signal should reward intangible *productivity* \u2014 gross profit earned per dollar of accumulated knowledge and acquired intangible capital \u2014 rather than intangible *intensity*, with cash coverage confirming the profit is real.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive winner ranks firms on how much they spend on intangibles, which conflates commitment with waste; this proposal inverts the framing to ask how much gross profit the existing intangible base generates, which is the direct empirical counterpart of \"durable intangible productivity.\" Because intensity and productivity are near-reciprocal constructions, the result is genuinely informative either way: a positive alpha means efficiency dominates, a null means the premium is compensation for committed spending rather than realized output. Winsorization controls the small-denominator tail among light R&D reporters.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.345054370573222,
+      "ls_alpha": 0.030825841685453645,
+      "ls_talpha": 2.7066870818464435,
+      "ls_sharpe": 0.46172914389108954,
+      "coverage": 0.047169938840722556,
+      "error": null
+    },
+    {
+      "name": "Innovation Under Low Debt Service Burden",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at)), RANK(NEG(WINSOR(RATIO(ADD(dltt, dlc), ADD(ib, dp)), 1))))",
+      "hypothesis": "What threatens intangible programs is not the leverage ratio itself but the number of years of cash earnings required to repay debt; low debt-to-FFO means creditors exert no pressure to cut discretionary innovation spending.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs Unlevered Knowledge Investment, whose leverage-to-assets conditioner produced a strong t-alpha (3.83) but a near-zero FMB slope (0.58), a signature of a highly non-monotone score in which only the extremes carry information. Debt relative to cash earnings orders firms by an economically continuous distress-proximity scale and should restore a monotone cross-sectional slope while preserving the portfolio-level effect. Winsorization is necessary because the ratio explodes when FFO approaches zero.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.3985980730025041,
+      "ls_alpha": 0.042496169580102786,
+      "ls_talpha": 3.7297529781821015,
+      "ls_sharpe": 0.1472520465737834,
+      "coverage": 0.1401950963615637,
+      "error": null
+    },
+    {
+      "name": "Innovation Ramp From A Profitable Base",
+      "expression": "MUL(TS_RANK(RATIO(xrd, at), 5), RANK(MA(RATIO(ib, at), 3)))",
+      "hypothesis": "A firm escalating R&D intensity relative to its own five-year history is signalling private optimism about its opportunity set; that signal is credible only when the firm's own recent profitability is high enough to fund the escalation without external capital.",
+      "expected_sign": "positive",
+      "reasoning": "All archive signals score the intangible leg on a cross-sectional level, which is dominated by permanent industry and business-model differences; own-history position isolates the firm's innovation decision at the margin and is a genuinely different information channel. Interacting the ramp with sustained profitability separates confident, self-funded expansion from desperate spending by deteriorating firms, which is exactly the credibility condition in the economic story. Raw `xrd` is used so the own-history rank is computed only for genuine, continuous R&D reporters rather than degenerating to ties at zero.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.9003572968287048,
+      "ls_alpha": -0.00012721972084872926,
+      "ls_talpha": -0.013310582489194745,
+      "ls_sharpe": 0.05738763768038492,
+      "coverage": 0.061440196148839346,
+      "error": null
+    },
+    {
+      "name": "Innovation Gated By Cash Profitability",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The credibility gate on R&D may be simple cash profitability (cash flow per dollar of assets) rather than solvency-style coverage of total liabilities; if so, the mechanism is about the productivity of the asset base funding innovation, not about creditor pressure.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best signals all scale operating cash flow by total liabilities, which mixes a profitability signal with an inverse-leverage signal, and the separate leverage experiments showed that the leverage component is non-monotone and FMB-invisible. Rescaling by assets isolates the pure cash-profitability content of the gate at identical coverage, so a comparison with Cash-Covered Innovation Intensity cleanly attributes the 4.6% alpha to profitability or to solvency. This is a one-variable diagnostic on the most important open question in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.824868265131212,
+      "ls_alpha": 0.05256709464628301,
+      "ls_talpha": 3.7239697633439044,
+      "ls_sharpe": 0.6215908589848361,
+      "coverage": 0.09118321822115572,
+      "error": null
+    },
+    {
+      "name": "Cash Coverage With Accounting Fallback",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(COALESCE(oancf, ADD(ib, dp)), lt), 3)))",
+      "hypothesis": "Operating cash flow is the economically correct coverage measure, but where the cash-flow statement is unavailable, funds from operations is its closest accounting reconstruction; using it only as a fallback preserves the strong mechanism while extending the sample.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-2 showed that wholesale substitution of FFO for `oancf` bought coverage at a real cost in alpha and Sharpe, implying the true cash measure carries information that accruals destroy \u2014 but that is an argument for a hierarchical measurement convention, not for discarding the extra firm-years. COALESCE here encodes a defensible reporting convention (use reported cash flow; reconstruct it only when absent) rather than a blanket coverage patch. If alpha and t-alpha stay near the 4.6%/3.2 benchmark at roughly 14% coverage, this becomes the preferred consolidation base for later generations.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.761406789144695,
+      "ls_alpha": 0.03428389387188275,
+      "ls_talpha": 3.079886187039224,
+      "ls_sharpe": 0.3356439561916562,
+      "coverage": 0.14229122968201963,
+      "error": null
+    },
+    {
+      "name": "Organic Minus Acquired Intangibles On Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Internally generated knowledge capital and purchased intangibles have opposite return implications: the former is unrecorded and underpriced, the latter is recorded at acquisition cost and prone to impairment, so the intangible *mix* conditioned on cash quality is a sharper signal than intangible level.",
+      "expected_sign": "positive",
+      "reasoning": "The archive contains direct evidence for this asymmetry \u2014 organic R&D stocks gated by cash earn +4.6% alpha while goodwill-heavy accrual firms earn \u22123.4% \u2014 but no signal has yet exploited both sides in one score. Differencing the two intangible ranks before the cash gate builds a long-organic/short-acquired intangible portfolio among firms that all pass the same financial-strength filter, isolating the composition effect from the level effect. Both factors are bounded ranks, so the product stays monotone and avoids the sign pathologies of raw differencing.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.157218185822752,
+      "ls_alpha": 0.06562242406319935,
+      "ls_talpha": 4.588804318214592,
+      "ls_sharpe": 0.5765328670911598,
+      "coverage": 0.09111403328471299,
+      "error": null
+    },
+    {
+      "name": "Innovation With Conservative Accruals",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(NEG(RATIO(SUB(ib, oancf), at))))",
+      "hypothesis": "The relevant quality condition is that reported earnings are backed by cash rather than accruals: an R&D-intensive firm whose profits convert into cash is genuinely funding innovation, while one whose profits are accrual-driven is capitalizing optimism twice.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful gate so far measures the *level* of cash generation; this one measures its *quality* relative to reported earnings, which is a distinct construct and is exactly the accounting condition that separates credible from cosmetic profitability. It also completes a natural pair with the goodwill-accrual result, testing whether low accruals help innovators as much as high accruals hurt acquirers. Coverage matches the archive's cash-based signals, so results are directly comparable to the 4.6% benchmark.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.70631499521668,
+      "ls_alpha": 0.05721324423132145,
+      "ls_talpha": 3.7969546457896124,
+      "ls_sharpe": 0.4515095651246097,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Acquired Intangible Overhang Without Cash",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)), RANK(NEG(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Purchased intangibles are a liability rather than an asset when the acquirer lacks cash coverage: such firms have levered up to buy growth they cannot service, and face impairments, dilution, and forced divestiture.",
+      "expected_sign": "negative",
+      "reasoning": "The prior goodwill signal used an accrual conditioner and produced a reliable portfolio effect (\u22123.4%, t = \u22122.17) but no cross-sectional slope; replacing the accrual gate with the same cash-coverage gate that powers the archive's best long signal tests whether the mechanism is symmetric and should generate a monotone score across the whole cross-section. Broadening the intangible leg from goodwill alone to all balance-sheet intangibles increases the number of firms with non-zero exposure, which should further reduce the mass-at-zero problem that produced the gen-0 degenerate portfolio. A clean short leg is valuable in its own right and could be combined with the long mechanism later.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.7360574187669857,
+      "ls_alpha": -0.056417815098423856,
+      "ls_talpha": -4.015301425276934,
+      "ls_sharpe": -0.47988408640930297,
+      "coverage": 0.09111403328471299,
+      "error": null
+    },
+    {
+      "name": "Triple-Gated Durable Innovator",
+      "expression": "MUL(MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3))), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "Durable intangible productivity requires innovation intensity, current cash-servicing capacity, and a demonstrated floor under profitability; only firms clearing all three conditions have knowledge capital that survives a full cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Cash coverage (alpha 4.6%, Sharpe 0.55) and the five-year worst-case ROA floor (alpha 3.9%, t 3.60) are the two best-performing gates and they measure different things \u2014 liquidity now versus resilience in the trough \u2014 yet gen-2 showed that averaging conditioners with SUMRANK dilutes the signal. Multiplicative stacking preserves the conjunctive logic, keeping the score near zero unless every condition is met, which should concentrate the extreme portfolios on the intended firms. This directly tests whether the archive's conditioners are substitutes or complements, a decision needed before consolidating in later generations.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.914419330983122,
+      "ls_alpha": 0.04689913676821836,
+      "ls_talpha": 3.0101143249932143,
+      "ls_sharpe": 0.3739755387302175,
+      "coverage": 0.09111279507555965,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix On Cash Profitability",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Organic knowledge capital is underpriced and purchased intangibles are overpriced; the spread between them, conditioned on the firm's cash productivity of assets, isolates durable intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This combines the two independent gen-3 improvements \u2014 the organic-minus-acquired mix (alpha 6.6%, t 4.59) and the asset-scaled cash gate, which beat the liability-scaled gate on alpha, t-alpha and Sharpe when tested on a fixed intangible leg. Because each change was validated separately on the same 9.1% sample, their combination is the natural consolidation point and is directly comparable to both parents. If both effects are additive, this should be the archive's strongest signal on all four metrics simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.980666902676744,
+      "ls_alpha": 0.06524264540960173,
+      "ls_talpha": 4.757831621128574,
+      "ls_sharpe": 0.6118555137466329,
+      "coverage": 0.09118321822115572,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix With Cash Fallback Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(COALESCE(oancf, ADD(ib, dp)), at), 3)))",
+      "hypothesis": "The mix mechanism should hold across the full sample, not only in the post-cash-flow-statement era; reconstructing cash flow from funds from operations where it is unreported extends the test without changing the economics.",
+      "expected_sign": "positive",
+      "reasoning": "Every top signal is capped at 9.1% coverage purely because of `oancf` availability, and the gen-3 fallback test showed the convention preserves a strong slope (fmb 4.76) at 14.2% coverage though with some alpha decay. Applying the fallback to the far stronger mix signal tests whether the alpha decay was a property of the weak intangible leg or of the measurement substitution itself. A durable 5%-plus alpha at 14% coverage would be more investable than a 6.6% alpha on a third fewer observations.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.837479468104405,
+      "ls_alpha": 0.046010589346191524,
+      "ls_talpha": 4.236893560391585,
+      "ls_sharpe": 0.23195372512140497,
+      "coverage": 0.14270778387802155,
+      "error": null
+    },
+    {
+      "name": "Organic Share Of Intangible Capital",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(TS_SUM(COALESCE(xrd, 0), 5), COALESCE(intan, 0)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "What matters is the composition of a firm's intangible base \u2014 the fraction built internally rather than bought \u2014 because internally built capital reflects demonstrated innovation capability while purchased capital reflects a price paid to someone else.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 mix signal used a difference of two cross-sectional ranks, which is scale-free but conflates a firm with large offsetting intangible positions with one that has almost none; a within-firm share cleanly measures composition and is invariant to overall intangible size. Comparing this ratio construction against Signal 1's rank-difference construction on the same gate tells us whether the alpha comes from intangible *composition* or from being simultaneously high-R&D and low-goodwill. Firms with neither R&D nor recorded intangibles are legitimately undefined here, which keeps the score interpretable.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.338533943639927,
+      "ls_alpha": 0.04836069739895445,
+      "ls_talpha": 3.6096893836273987,
+      "ls_sharpe": 0.5383273074701266,
+      "coverage": 0.07358682157488648,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix With Profitability Floor",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "The intangible-mix premium requires only that the firm's profitability never collapsed; a five-year worst-case ROA floor is a sufficient credibility condition and is measurable for far more firms than operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the gate while holding the now-dominant intangible leg fixed, which separates the contribution of the mix from the contribution of the specific cash conditioner and simultaneously raises coverage to roughly 14.6%. The profitability floor was the best-performing wide-coverage gate in gen 2 (alpha 3.9%, t 3.60) despite a weak intangible leg, so pairing it with the strong leg is the highest-expected-value coverage experiment available. If alpha approaches the cash-gated version, the mechanism is robustly about intangible composition rather than about liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.4564331775850436,
+      "ls_alpha": 0.04291655514159326,
+      "ls_talpha": 3.957640068081835,
+      "ls_sharpe": 0.16924447797814235,
+      "coverage": 0.14607576436714717,
+      "error": null
+    },
+    {
+      "name": "Acquisitive Expansion Without Cash Support",
+      "expression": "MUL(RANK(RATIO(DELTA(COALESCE(gdwl, 0), 1), at)), RANK(NEG(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Recent goodwill additions \u2014 the flow of acquisitions \u2014 signal empire-building when made by firms with weak cash productivity, and predict subsequent impairments and negative abnormal returns more sharply than the accumulated goodwill stock.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's short leg so far uses the intangible *stock*, which is stale and reflects deals made many years ago; the annual change isolates the current management decision and should be more timely about impairment risk. Scaling the change by assets keeps it comparable across firm size, and pairing it with the same cash gate that powers the long side tests whether the timing of bad acquisitions is priced with a lag. This is a distinct economic channel \u2014 acquisition flow rather than intangible level \u2014 on the side of the trade where the archive already has reliable evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.8497907599835206,
+      "ls_alpha": -0.034762971915814275,
+      "ls_talpha": -2.954408996708146,
+      "ls_sharpe": -0.4527878802600865,
+      "coverage": 0.08431569752036235,
+      "error": null
+    },
+    {
+      "name": "Long Organic Short Acquired Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(oancf, at), 3)))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The two validated mechanisms \u2014 cash-backed organic innovation earning positive alpha and cash-starved acquired intangibles earning negative alpha \u2014 are economically distinct and should be combined into a single score rather than traded separately.",
+      "expected_sign": "positive",
+      "reasoning": "Signal 1 imposes a single common gate on a differenced intangible leg, which forces both sides to share the same conditioner; this construction instead builds each leg with its own economically correct gate (high cash for organic innovators, low cash for acquirers) and then differences the resulting ranks. Given the parents delivered +6.6% and \u22125.6% alpha with t-statistics above 4 in absolute value, an imperfectly correlated combination should raise both t-alpha and Sharpe even if the alpha magnitude sits between the two. Differencing ranks rather than raw scores keeps the composite bounded and avoids the scale pathologies that sank the gen-0 rank-difference attempt.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.877404214358509,
+      "ls_alpha": 0.05333522311858688,
+      "ls_talpha": 4.245057692156463,
+      "ls_sharpe": 0.5983018546259026,
+      "coverage": 0.09118321822115572,
+      "error": null
+    },
+    {
+      "name": "Mix With Full Acquired Intangible Leg",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Goodwill is the most impairment-prone component of purchased intangibles, so weighting it explicitly alongside other recorded intangibles should sharpen the short side of the mix.",
+      "expected_sign": "positive",
+      "reasoning": "The best long signal uses `intan` alone on the acquired leg, while the best short signal used `gdwl + intan` and produced \u22125.6% alpha with t = \u22124.02, so double-weighting goodwill within the recorded intangible base is the single most promising untested leg refinement. This is a one-variable change against the reigning benchmark, making attribution unambiguous. If it improves alpha and t-alpha, later generations should keep goodwill explicitly weighted.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.974003254448288,
+      "ls_alpha": 0.06546208629043831,
+      "ls_talpha": 4.683615590489663,
+      "ls_sharpe": 0.5819703757041772,
+      "coverage": 0.09118321822115572,
+      "error": null
+    },
+    {
+      "name": "Brand And Knowledge Capital Mix",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Advertising builds brand capital that is expensed exactly like R&D and equally invisible on the balance sheet; the organic intangible leg should therefore include accumulated advertising, not only research.",
+      "expected_sign": "positive",
+      "reasoning": "The organic leg is currently R&D-only, which mechanically excludes consumer-facing firms whose internally built intangible is brand rather than patents, and gen-0/gen-1 evidence showed adding `xad` broadened coverage without breaking the effect. Testing this alone, with the acquired leg and gate unchanged, determines whether the premium is specific to technological knowledge or general to self-created intangible capital. A gain here would materially widen the investable universe of the winning mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.390689222822806,
+      "ls_alpha": 0.05477833719133611,
+      "ls_talpha": 4.217772924232989,
+      "ls_sharpe": 0.6172978332479986,
+      "coverage": 0.09118321822115572,
+      "error": null
+    },
+    {
+      "name": "Mix Penalized By Acquisition Flow",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), SUMRANK(RATIO(COALESCE(intan, 0), at), RATIO(DELTA(COALESCE(gdwl, 0), 1), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Both the stock of purchased intangibles and the current-year flow of new acquisitions detract from intangible credibility, and the flow adds timely information about management's present capital-allocation choice.",
+      "expected_sign": "positive",
+      "reasoning": "Acquisition flow was independently validated in gen 4 as a short-side channel (fmb \u22122.85, t-alpha \u22122.95, Sharpe \u22120.45) and it is only weakly correlated with the stale goodwill stock, so averaging the two ranks should build a stronger negative pole without shrinking the long pole. Rank-averaging is used only within the acquired leg \u2014 where the two measures are economic substitutes \u2014 rather than across the quality gate, which is where SUMRANK previously diluted performance. This directly tests whether stock and flow measures of purchased intangibles are complements.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.450821530462261,
+      "ls_alpha": 0.04395048923157234,
+      "ls_talpha": 3.138658993135042,
+      "ls_sharpe": 0.4497511608958022,
+      "coverage": 0.08431569752036235,
+      "error": null
+    },
+    {
+      "name": "Industry-Neutral Intangible Mix",
+      "expression": "MUL(IND_RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "If the mix premium is a firm-level effect, it should survive ranking within industry; if it is mostly a structural long-technology/short-serial-acquirer sector bet, industry-neutralization will remove it.",
+      "expected_sign": "positive",
+      "reasoning": "R&D intensity and goodwill intensity are strongly and oppositely determined by industry, so the 6.5% alpha may partly be a persistent sector tilt that FF5 does not span and that would make portfolio composition static and crowded. The analogous gen-1 test on the simple R&D leg cost only modest performance (alpha 4.6% \u2192 4.0%), suggesting a firm-level core exists; running it on the far stronger mix leg is the decisive version of the test. A robust result here materially raises confidence in the mechanism ahead of final consolidation.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.958124974614034,
+      "ls_alpha": 0.04897569552964709,
+      "ls_talpha": 4.027809776900206,
+      "ls_sharpe": 0.49609663254859854,
+      "coverage": 0.09118203160405043,
+      "error": null
+    },
+    {
+      "name": "Weakest-Link Cash Durability Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "Credible intangible investment requires cash flow that is both high and dependable; the binding constraint is whichever condition is weaker, so the gate should be the minimum of the two ranks rather than their average or product.",
+      "expected_sign": "positive",
+      "reasoning": "Every previous attempt to combine two quality conditions used SUMRANK averaging, which diluted the signal (Doubly Gated: alpha 3.0%), or triple multiplication, which also underperformed; MIN implements a genuine weakest-link conjunction and is a structurally new way to express the credibility condition. Cash-flow level and cash-flow stability are conceptually independent \u2014 a firm can be highly profitable but erratic \u2014 and the story explicitly requires both. If MIN beats the level-only gate, the credibility condition is conjunctive and later refinements should use it.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.203943281253063,
+      "ls_alpha": 0.05880343060604436,
+      "ls_talpha": 4.265025687968083,
+      "ls_sharpe": 0.5029486427403929,
+      "coverage": 0.08148329408210317,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix On Improving Cash Productivity",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TREND(RATIO(oancf, at), 5)))",
+      "hypothesis": "Knowledge capital is validated by a rising path of cash productivity, not merely a high level: an improving trend is the observable evidence that past intangible investment is currently converting into cash.",
+      "expected_sign": "positive",
+      "reasoning": "All successful gates to date measure the level or floor of profitability, which tends to select mature, already-recognized firms; a five-year trend identifies firms where the intangible payoff is arriving now and is most likely to be under-extrapolated by investors. Trend-based quality already showed promise in gen 0 (t-alpha 3.67) despite a crude intangible leg, so pairing it with the dominant mix leg is the natural test of trajectory versus level. It is also economically the closest expression of \"durable intangible productivity\" as a realized outcome rather than a funding precondition.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.4256453352396035,
+      "ls_alpha": 0.049731725892376843,
+      "ls_talpha": 3.7344812452818137,
+      "ls_sharpe": 0.3663059055179567,
+      "coverage": 0.07280561478322672,
+      "error": null
+    },
+    {
+      "name": "Asset-Light Knowledge Mix On Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Knowledge capital should be measured relative to the tangible asset base it complements: a firm with a large research stock per dollar of hard assets is genuinely asset-light and its economic capital is most severely understated by accounting.",
+      "expected_sign": "positive",
+      "reasoning": "Every version to date scales the organic leg by total assets, which already contains recorded intangibles and therefore mechanically shrinks the organic score for exactly the acquisitive firms the signal wants to short, muddying the contrast between the two legs. Netting recorded intangibles out of the denominator makes the two legs cleanly orthogonal in construction \u2014 hidden capital per tangible dollar versus recorded intangibles per total dollar \u2014 and should widen the spread between the poles. The denominator stays positive for essentially all firms, so no rank pathologies are introduced.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.993012649793394,
+      "ls_alpha": 0.06611719260614071,
+      "ls_talpha": 4.8074375306109,
+      "ls_sharpe": 0.6155462677723679,
+      "coverage": 0.09118259911657904,
+      "error": null
+    },
+    {
+      "name": "Mix Gated By Cash Level And Accrual Quality",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Intangible investment is credible only if the firm both generates substantial cash and reports earnings that are backed by that cash; the binding condition is whichever of the two is weaker.",
+      "expected_sign": "positive",
+      "reasoning": "Cash level and accrual quality were separately validated as gates (alpha 5.3% and 5.7%, t-alpha 3.72 and 3.80) and are conceptually distinct \u2014 one is magnitude, the other is the earnings-to-cash reconciliation \u2014 while MIN was the only combination operator that preserved alpha in gen 5. This is the highest-expected-value stacking experiment remaining because the accrual gate's weak FMB slope (1.71) should be repaired by pairing it with a monotone cash-level rank inside MIN. If it clears the 6.5% benchmark on both alpha and t-alpha it becomes the consolidation candidate.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.9244185211270475,
+      "ls_alpha": 0.06839661928830734,
+      "ls_talpha": 4.7585552937957525,
+      "ls_sharpe": 0.5675886969450774,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Goodwill At Risk To Equity Without Cash",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Impairment risk is best measured against the equity it would destroy, not against total assets: when purchased intangibles exceed book equity and cash generation is weak, a write-down mechanically wipes out the shareholders' stated claim.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's short leg (alpha \u22125.6%, t \u22124.02) scales acquired intangibles by assets, which understates vulnerability for levered roll-ups whose equity is thin relative to the goodwill they carry; equity scaling is the standard solvency-relevant framing of impairment exposure. Because the long side of the trade is already strong, improving the short pole is the most direct route to a higher combined alpha in the final generations. Cash productivity is retained as the conditioner so results are directly comparable with the existing short signal.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.971227028828444,
+      "ls_alpha": -0.05068213242529469,
+      "ls_talpha": -4.148870578851196,
+      "ls_sharpe": -0.5388841979083564,
+      "coverage": 0.09117248707516012,
+      "error": null
+    },
+    {
+      "name": "Self-Created Intangibles With Durable Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "The full stock of self-created intangibles \u2014 research plus brand \u2014 is credible when cash generation is simultaneously high and stable, so both the intangible leg and the gate should be broadened to their validated best forms.",
+      "expected_sign": "positive",
+      "reasoning": "This stacks the two independently successful gen-5 refinements: the brand-inclusive organic leg (best slope, fmb 5.39, best Sharpe 0.617) and the weakest-link cash-durability gate (alpha 5.9%, t 4.27), which were each tested against the same baseline and address different weaknesses. Because the two changes act on different parts of the expression, their effects should be close to additive rather than redundant. This is the natural pre-final consolidation of the dominant family.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.414257225709118,
+      "ls_alpha": 0.04996431121982503,
+      "ls_talpha": 4.110040293949167,
+      "ls_sharpe": 0.5088788192525322,
+      "coverage": 0.08148329408210317,
+      "error": null
+    },
+    {
+      "name": "Innovation Budget Covered By Cash Flow",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(WINSOR(RATIO(MA(oancf, 3), MA(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3)), 1)))",
+      "hypothesis": "The economically exact credibility test is whether operating cash flow covers the intangible spending program itself: a firm whose cash flow is several times its annual R&D and advertising budget can sustain that program indefinitely without external finance.",
+      "expected_sign": "positive",
+      "reasoning": "All gates so far scale cash flow by an accounting base (assets, liabilities) that is unrelated to the intangible commitment being funded, whereas this ratio measures coverage of the actual outlay, which is what determines whether a program gets cut. It also creates informative tension with the long leg \u2014 heavy spenders need very strong cash flow to score well \u2014 so the signal selects firms with high intangible intensity *and* headroom, rather than either alone. Winsorization is required because the coverage ratio explodes for firms with negligible intangible budgets.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.437661028591401,
+      "ls_alpha": 0.047298947908836736,
+      "ls_talpha": 3.5072569250748282,
+      "ls_sharpe": 0.3742091525950144,
+      "coverage": 0.06067106189642463,
+      "error": null
+    },
+    {
+      "name": "Two-Pole Intangible Credibility Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The long pole (self-created intangibles backed by high, stable cash) and the short pole (purchased intangibles threatening thin equity at cash-poor firms) are distinct economic mechanisms and should each be built with its own correct gate before being combined.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-4 composite of separately gated poles already delivered t-alpha 4.25 with Sharpe 0.598 using first-generation leg definitions; rebuilding it with the brand-inclusive organic leg, the MIN durability gate, and the equity-scaled impairment leg should raise both poles simultaneously. Unlike Signal 4, which forces one shared conditioner onto a differenced intangible leg, this construction lets each side use the conditioner its own economics implies, which is why the two designs are worth carrying forward in parallel. Rank differencing keeps the composite bounded and avoids scale pathologies.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.657757545923058,
+      "ls_alpha": 0.05685613021235081,
+      "ls_talpha": 4.112274652174637,
+      "ls_sharpe": 0.6334015852193318,
+      "coverage": 0.08147111835876202,
+      "error": null
+    },
+    {
+      "name": "Asset-Light Mix On Cash And Accruals",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Hidden knowledge capital per tangible dollar, net of purchased intangibles, is credible precisely when cash generation is high and earnings are cash-backed; the weaker of those two conditions binds.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two independent gen-6 improvements \u2014 the asset-light organic denominator (best t-alpha 4.81 and Sharpe 0.616) and the MIN(cash, accrual) conjunctive gate (best alpha 6.8%) \u2014 which act on different parts of the expression and were each validated against the same baseline. Because neither change touched the other's component, the effects should be close to additive rather than redundant, making this the leading candidate for the final signal. Coverage is unchanged at roughly 9%, so any improvement is not a sparsity artifact.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.934876384605445,
+      "ls_alpha": 0.06871402205692094,
+      "ls_talpha": 4.8285216253783565,
+      "ls_sharpe": 0.5642985477319774,
+      "coverage": 0.09109324168934653,
+      "error": null
+    },
+    {
+      "name": "Hidden Capital Versus Equity At Risk",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Each intangible leg should be scaled by the base that makes it economically meaningful: unrecorded knowledge capital against tangible assets it leverages, and purchased intangibles against the book equity a write-down would destroy.",
+      "expected_sign": "positive",
+      "reasoning": "Equity scaling of acquired intangibles improved the standalone short pole from \u22125.6%/t \u22124.02 (asset-scaled) to a Sharpe of \u22120.539 with t \u22124.15 and a stronger slope, and asset-light scaling improved the long pole, but no signal has yet applied both scalings inside a single differenced leg. This tests whether the mix premium widens when each pole is measured against its own economically correct base, holding the best gate fixed. It is a single, well-motivated design change relative to Signal 1.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.579326051042511,
+      "ls_alpha": 0.06706424011886147,
+      "ls_talpha": 4.697088108676963,
+      "ls_sharpe": 0.5296421635681083,
+      "coverage": 0.09107879591589092,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix On A Cash Floor",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TS_MIN(RATIO(oancf, at), 5)))",
+      "hypothesis": "Durability is best evidenced by the worst year: a firm whose cash productivity never fell below a high level across five years can fund intangible investment through any environment.",
+      "expected_sign": "positive",
+      "reasoning": "The earnings-based floor (TS_MIN of ROA) preserved t-alpha but collapsed the Sharpe to 0.169, which I attribute to accounting write-offs and one-off charges contaminating the minimum of `ib`; the same construct built on operating cash flow should be far cleaner because cash flow is immune to non-cash charges. This is the one gate concept \u2014 a one-sided cash durability floor \u2014 that the archive has never tested, and it distinguishes \"never weak\" from \"high on average\" (MA) and \"not volatile\" (VOL). If it beats the MA gate, the mechanism is about downside resilience rather than average strength.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.603986064633227,
+      "ls_alpha": 0.060049106968058416,
+      "ls_talpha": 4.492786096028136,
+      "ls_sharpe": 0.5338498037488405,
+      "coverage": 0.09119219523751741,
+      "error": null
+    },
+    {
+      "name": "Triple Weakest-Link Credibility Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "Full credibility requires cash flow that is large, cash-backed in the accounting sense, and stable; a firm failing any one of the three should not be treated as a durable intangible producer.",
+      "expected_sign": "positive",
+      "reasoning": "All three conditions have been individually validated as gates (alpha 5.3%, 5.7%, 5.9% respectively), and MIN is the only combination operator in this archive that stacks conditions without dilution \u2014 unlike SUMRANK averaging (3.0%) or nested multiplication (4.7%). The risk is that a triple minimum makes the gate too restrictive and destabilizes the extreme portfolios, which the Sharpe and t-alpha will reveal directly. Testing it now settles how far the conjunctive logic extends before the final generation.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.484312034182164,
+      "ls_alpha": 0.06621537772820996,
+      "ls_talpha": 4.6416329813714725,
+      "ls_sharpe": 0.5200766202110595,
+      "coverage": 0.08141023974205627,
+      "error": null
+    },
+    {
+      "name": "Upgraded Two-Pole Credibility Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The long pole (asset-light hidden capital at cash-rich, low-accrual firms) and the short pole (purchased intangibles overhanging thin equity at cash-poor firms) are distinct mechanisms, and each performs best with its own gate rather than a shared one.",
+      "expected_sign": "positive",
+      "reasoning": "The separately-gated composite already holds the archive's best Sharpe (0.633) using older leg definitions, and this version rebuilds both poles with the gen-6 winners: asset-light scaling plus the MIN gate on the long side, equity-scaled impairment exposure on the short side. Because a differenced-leg design (Signal 1) forces one common conditioner while this design allows two, the pair jointly identifies whether the gate should be shared or pole-specific. Rank differencing keeps the composite bounded and stable.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.307327894638856,
+      "ls_alpha": 0.049186946865433574,
+      "ls_talpha": 3.8033908526286053,
+      "ls_sharpe": 0.5688385650693035,
+      "coverage": 0.09107879591589092,
+      "error": null
+    },
+    {
+      "name": "Intangible Mix With Liquidity Constraint",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(RATIO(act, lct))))",
+      "hypothesis": "Working-capital liquidity is the balance-sheet dimension of credibility: a firm whose current assets comfortably cover current liabilities will not raid its innovation budget to meet near-term obligations, even in a bad quarter.",
+      "expected_sign": "positive",
+      "reasoning": "The economic story names balance-sheet quality explicitly, but every attempt to capture it has used leverage or debt-service stocks, which produced strong t-alphas with near-zero FMB slopes because they are non-monotone; the current ratio is a smoother, more monotone measure of near-term financial slack. Pairing it with the proven cash gate inside MIN gives the balance-sheet channel its fairest test within the structure that is known to work. If it succeeds, the credibility condition is broader than cash generation alone.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.074474858858085,
+      "ls_alpha": 0.06767613517199557,
+      "ls_talpha": 4.412919074860081,
+      "ls_sharpe": 0.3867636131687868,
+      "coverage": 0.0791689263983715,
+      "error": null
+    },
+    {
+      "name": "Brand-Inclusive Asset-Light Mix",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The complete stock of self-created intangibles \u2014 research plus brand \u2014 measured per dollar of tangible assets is the sharpest available measure of hidden capital, and it is credible when cash productivity is high.",
+      "expected_sign": "positive",
+      "reasoning": "The two best-performing leg refinements have never been combined: brand inclusion produced the archive's best FMB slope and Sharpe, while asset-light scaling produced the best t-alpha, and each was validated separately against the same single-gate baseline. Because one change widens the economic definition of the numerator and the other corrects the denominator, they operate on different sources of measurement error and should be complementary. Keeping the simple MA cash gate preserves the Sharpe, which the stacked gates erode.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.3961079275748585,
+      "ls_alpha": 0.05593381352394968,
+      "ls_talpha": 4.329697494047415,
+      "ls_sharpe": 0.6200860359991319,
+      "coverage": 0.09118259911657904,
+      "error": null
+    },
+    {
+      "name": "Complete Hidden Capital On Cash And Accruals",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Maximum alpha should come from pairing the most complete measure of self-created intangible capital with the strongest credibility condition: cash generation that is both large and consistent with reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This is the direct alpha-maximizing combination of the three best validated components \u2014 brand-inclusive numerator, tangible-asset denominator, and the MIN(cash, accrual) gate that currently holds the record alpha of 6.9% with t 4.83. Running it alongside Signal 1 isolates exactly what the accrual condition adds once the intangible leg is fully specified, which is the key decision for the final generation. If alpha rises above 7% with t-alpha above 4.8 and Sharpe near 0.55, this becomes the headline signal.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.406033588308225,
+      "ls_alpha": 0.057475629436773264,
+      "ls_talpha": 4.4711959052762476,
+      "ls_sharpe": 0.5831677409951449,
+      "coverage": 0.09109324168934653,
+      "error": null
+    },
+    {
+      "name": "Asset-Light Mix On Five-Year Cash State",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 5)))",
+      "hypothesis": "Cash productivity is a slow-moving structural attribute; measuring it over five years rather than three identifies the firm's persistent state and reduces the rebalancing noise that a shorter window introduces.",
+      "expected_sign": "positive",
+      "reasoning": "The recurring cost of every gate refinement has been Sharpe, i.e. spread volatility driven by portfolio churn, and the gate horizon is the one lever that acts directly on churn rather than on the economic content. The five-year R&D stock is already slow-moving, so matching the gate's horizon to the leg's horizon should stabilize portfolio composition month to month while leaving the mechanism intact. If Sharpe rises above 0.62 with alpha near 6.6%, horizon matching is the correct final refinement rather than more conditioners.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.825345719939943,
+      "ls_alpha": 0.06450163967340211,
+      "ls_talpha": 4.635319060986382,
+      "ls_sharpe": 0.5910877236718347,
+      "coverage": 0.09119219523751741,
+      "error": null
+    },
+    {
+      "name": "Intangible Payback Versus Hidden Capital",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(WINSOR(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), MA(oancf, 3)), 1)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The right measure of acquired-intangible burden is how many years of operating cash flow the purchase price represents; a firm carrying ten years of cash flow in goodwill has paid for growth it may never deliver.",
+      "expected_sign": "positive",
+      "reasoning": "The short pole has been scaled by assets and by equity, but never by the cash flow that must ultimately justify the acquisition price, which is the economically exact payback framing and is more comparable across capital structures than either. Equity scaling already improved the standalone short signal (Sharpe \u22120.539, t \u22124.15), suggesting the scaling base matters, and cash-flow scaling extends that logic to a flow basis. Winsorization is essential because the payback ratio explodes for firms with near-zero cash flow.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.799831729978018,
+      "ls_alpha": 0.05893367165608494,
+      "ls_talpha": 4.32379890320513,
+      "ls_sharpe": 0.5293487444974205,
+      "coverage": 0.09117021702504567,
+      "error": null
+    },
+    {
+      "name": "Conjunctive Intangible Composition Gate",
+      "expression": "MUL(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(NEG(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "High hidden capital and low purchased intangibles are jointly necessary rather than mutually offsetting: a firm should score highly only if it both builds its own intangibles and has not bought them.",
+      "expected_sign": "positive",
+      "reasoning": "Every mix signal to date differences the two intangible ranks, which lets a very high organic score compensate for heavy goodwill, whereas the multiplicative form imposes a conjunction \u2014 exactly the structure that made MIN gating outperform SUMRANK averaging on the quality side. This is the last untested structural choice in the dominant family, and it distinguishes \"composition premium\" from \"joint-condition premium.\" If it beats the differenced version, the final signal should be built conjunctively on both legs and the gate.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.19366097554188,
+      "ls_alpha": 0.05920231401029785,
+      "ls_talpha": 3.873072545651606,
+      "ls_sharpe": 0.47256679642212895,
+      "coverage": 0.09109324168934653,
+      "error": null
+    },
+    {
+      "name": "Magnitude-Preserving Intangible Mix",
+      "expression": "MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Firms at the extremes of the intangible-composition spectrum are the most severely mispriced, so the score should preserve how far a firm sits from the crossover point rather than compressing everything into a uniform rank.",
+      "expected_sign": "positive",
+      "reasoning": "The outer RANK in every mix signal discards the magnitude of the organic-minus-acquired gap, which flattens the difference between a marginal case and an extreme one and may be why the FMB slope has plateaued near 5.0 despite rising alphas. Standardizing the differenced legs instead keeps that magnitude while remaining scale-free and symmetric, and it costs nothing in coverage. This is an operator-structure test whose result tells the final generation whether to score the mechanism ordinally or metrically.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.093367888592558,
+      "ls_alpha": 0.07191680485867541,
+      "ls_talpha": 4.997935724944229,
+      "ls_sharpe": 0.3556138130581443,
+      "coverage": 0.09118259911657904,
+      "error": null
+    },
+    {
+      "name": "Rank-Repaired Magnitude Mix On Cash",
+      "expression": "RANK(MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Distance from the crossover point between self-created and purchased intangible capital carries real information, and it should be combined with the cash gate before the score is made cross-sectionally uniform.",
+      "expected_sign": "positive",
+      "reasoning": "The magnitude-preserving mix delivered the archive's best alpha (7.2%) and t-alpha (5.00) but a near-zero FMB slope because the signed interaction term is strongly non-linear across the cross-section; ranking the completed product is a monotone transform that leaves the sorted portfolios and their alpha unchanged while giving the Fama-MacBeth regression a well-behaved uniform regressor. This is the single highest-value repair available, because it should reconcile the two forms of evidence rather than trade one for the other. If both fmb_tstat and t-alpha come in above 4.5, this is the run's best signal.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.093367888592558,
+      "ls_alpha": 0.07191680485867541,
+      "ls_talpha": 4.997935724944229,
+      "ls_sharpe": 0.3556138130581443,
+      "coverage": 0.09118259911657904,
+      "error": null
+    },
+    {
+      "name": "Rank-Repaired Magnitude Mix On Cash And Accruals",
+      "expression": "RANK(MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at))))))",
+      "hypothesis": "The magnitude-preserving mix should be gated by the strongest credibility condition \u2014 cash generation that is both large and reconciled with reported earnings \u2014 with the interaction ranked afterwards.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN(cash, accrual) gate independently added roughly 0.3 points of alpha over the single cash gate on the rank-scored mix, and the magnitude-preserving construction independently added 0.6 points, so combining them under the rank repair is the natural upper bound of the family. Comparing it to Signal 1 isolates whether the accrual condition still contributes once the mix score preserves tail magnitude. Coverage is unchanged at 9.1%, so any gain is not a sparsity artifact.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.9800247541809041,
+      "ls_alpha": 0.0647456500834576,
+      "ls_talpha": 4.634626015708171,
+      "ls_sharpe": 0.3464496914513612,
+      "coverage": 0.09109324168934653,
+      "error": null
+    },
+    {
+      "name": "Tail-Controlled Hidden Capital Interaction",
+      "expression": "RANK(MUL(SUB(ZSCORE(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0))), 2)), ZSCORE(WINSOR(RATIO(COALESCE(intan, 0), at), 2))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Magnitude information should come from the underlying intangible intensities themselves \u2014 winsorized to remove distressed micro-cap distortions \u2014 rather than from a difference of uniform ranks.",
+      "expected_sign": "positive",
+      "reasoning": "The magnitude-preserving variant gained alpha but lost Sharpe (0.356), which points to a handful of extreme-intensity firms dominating the long leg and making the monthly spread volatile; winsorizing each ratio at the 2% tails before standardizing keeps the economic scale while removing exactly those observations. This is the only proposal that attacks the spread-volatility problem at its source rather than through the gate, so it directly tests whether high alpha and a 0.6 Sharpe can coexist. Standardizing each leg separately also gives the two intangible poles comparable units, which a rank difference does not guarantee.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.3850245384800288,
+      "ls_alpha": 0.05843209238252715,
+      "ls_talpha": 3.8678485257984088,
+      "ls_sharpe": 0.3864631776959083,
+      "coverage": 0.09118259911657904,
+      "error": null
+    },
+    {
+      "name": "Complete Hidden Capital On Five-Year Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 5)))",
+      "hypothesis": "Matching the gate's measurement horizon to the five-year intangible stock identifies the firm's persistent cash-productivity state and minimizes portfolio churn, delivering the best risk-adjusted version of the mechanism.",
+      "expected_sign": "positive",
+      "reasoning": "The brand-inclusive asset-light leg produced the archive's best FMB slope (5.40) and near-best Sharpe (0.620), and lengthening the cash window to five years preserved alpha at 6.5% with t 4.64 on the R&D-only leg \u2014 the two stability-enhancing choices have never been combined. Because both act to slow the signal down, this is the natural candidate for the highest-Sharpe, most-implementable variant rather than the highest-alpha one. It also serves as the run's robustness anchor: same mechanism, slowest measurement, broadest intangible definition.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.173860165716546,
+      "ls_alpha": 0.05646135500724402,
+      "ls_talpha": 4.257718186750534,
+      "ls_sharpe": 0.6305009535469943,
+      "coverage": 0.09119219523751741,
+      "error": null
+    },
+    {
+      "name": "Mix On Industry-Relative Cash Productivity",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), IND_RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Cash productivity is only meaningful relative to industry norms \u2014 asset-heavy sectors structurally generate different cash-to-asset ratios \u2014 so the credibility gate, not the intangible leg, is what should be industry-neutralized.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-5 industry-neutralized the intangible leg and lost roughly a quarter of the alpha, but the reverse experiment was never run, and it is the economically better-motivated one: intangible composition is a genuine firm choice worth capturing in absolute terms, whereas cash margins are largely a technology constraint. If industry-relative gating improves alpha and Sharpe, the mechanism is about firms that are cash-strong *for their sector* funding hidden capital. This is the last untested conditioning dimension in the dominant family.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.005187332645058,
+      "ls_alpha": 0.06211018805571062,
+      "ls_talpha": 4.609489373901174,
+      "ls_sharpe": 0.5205992238079672,
+      "coverage": 0.09118141249947376,
+      "error": null
+    },
+    {
+      "name": "Dual-Definition Hidden Capital Ensemble",
+      "expression": "SUMRANK(MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at))))), MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "The two best-performing specifications differ in how intangible capital and impairment exposure are measured, and averaging their ranks should retain the shared economic signal while cancelling specification-specific measurement noise.",
+      "expected_sign": "positive",
+      "reasoning": "Across nine generations the alpha-maximizing configuration (R&D-only leg, asset scaling, MIN gate) and the slope- and Sharpe-maximizing configuration (brand-inclusive leg, equity-scaled impairment exposure, single cash gate) have consistently traded off against each other, which is the signature of independent measurement error around a common mechanism. Averaging their ranks is the standard remedy and should lift Sharpe above either parent while keeping alpha near 6.5% and the slope near 5.0. As the final proposal of the run, it prioritizes the balance the objective asks for \u2014 economically meaningful alpha with reliable statistics \u2014 over a single extreme metric.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.344861419433482,
+      "ls_alpha": 0.059786611923772416,
+      "ls_talpha": 4.440122706560772,
+      "ls_sharpe": 0.5552150109019107,
+      "coverage": 0.09107879591589092,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Stability-Weighted Intangible Intensity",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), NEG(VOL(RATIO(ib, at), 5)))",
+      "hypothesis": "Intangible spending is rewarded only when the firm's earnings stream is stable enough to sustain and monetize it; intensity plus low ROA volatility identifies durable intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "Investors under-react to intangible investment because its payoff is uncertain, but that uncertainty is far smaller for firms whose realized ROA is highly stable across five years. Ranking intangible intensity jointly with earnings stability isolates credible, repeatable intangible capital formation rather than speculative spending spikes. Unreported R&D/advertising is economically a zero outlay, so COALESCE to zero is the correct convention.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Covered Innovation Intensity",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "R&D intensity is credible when operating cash flow comfortably covers total liabilities; innovation financed from internal cash is durable, whereas innovation at cash-poor, liability-heavy firms is optional and easily abandoned.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative form makes the payoff to intangible intensity increase in balance-sheet cash coverage, so the signal is near zero for high-R&D firms with weak cash generation and for cash-rich firms that do not innovate. Three-year smoothing of coverage removes transitory cash-flow noise and focuses on a persistent funding state. This is an explicit conditional interaction, not a standalone R&D or cash-flow effect.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible-Augmented Gross Profitability",
+      "expression": "RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Capitalizing five years of R&D into the productive capital base yields a cleaner measure of true operating profitability; firms that earn high gross profit on intangible-inclusive capital have genuinely productive knowledge stocks.",
+      "expected_sign": "positive",
+      "reasoning": "Standard gross profitability mechanically flatters R&D-intensive firms because expensed R&D is missing from assets; adding the accumulated intangible stock to the denominator penalizes firms whose knowledge capital does not convert into gross margin. The surviving high scorers are those with demonstrated intangible productivity, which the market prices with a lag. The interaction is embedded in the ratio: a quality numerator over a jointly tangible-and-intangible capital base.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Backed Goodwill Overhang",
+      "expression": "MUL(RATIO(COALESCE(gdwl, 0), at), INDICATOR(SUB(ib, oancf), 0))",
+      "hypothesis": "Acquired intangibles (goodwill) predict poor returns specifically at firms whose earnings exceed operating cash flow, i.e., where reported profits are accrual-driven and impairment risk is unrecognized.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill alone is a weak, noisy predictor; its return drag concentrates in firms that simultaneously fail the cash-conversion quality test, since these are the acquirers most likely facing future write-downs and earnings reversals. The indicator switches the goodwill exposure on only in the low-quality state, creating a genuine conditional interaction rather than a single-theme goodwill effect. Firms without reported goodwill economically have zero goodwill.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Innovator With Improving Returns",
+      "expression": "SUMRANK(TS_COUNT(xrd, 5), TREND(RATIO(ib, at), 5))",
+      "hypothesis": "Firms that report R&D continuously over five years and whose ROA is on a rising trend are converting a committed innovation program into realized earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "Reporting persistence, not level, captures commitment to an innovation program, while the five-year ROA trend verifies that the program is actually paying off \u2014 neither channel alone distinguishes durable intangible productivity. The joint rank rewards sustained innovators with demonstrable profitability improvement and penalizes sporadic spenders and stagnant incumbents. This is a persistence-times-trajectory interaction that no single-theme variable can express.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded Knowledge Investment",
+      "expression": "SUB(RANK(RATIO(TS_SUM(xrd, 3), at)), RANK(GROWTH(ADD(dltt, dlc), 1)))",
+      "hypothesis": "Cumulative R&D that is not accompanied by rising debt reflects internally financed, self-sustaining intangible investment; the same R&D funded by expanding leverage carries refinancing risk and is more likely to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "The spread between intangible-investment rank and debt-growth rank isolates the financing quality of innovation, which is a balance-sheet dimension that R&D intensity alone ignores. High scorers accumulate knowledge capital while deleveraging or holding debt flat, a combination associated with resilient future earnings; low scorers are leverage-financed spenders vulnerable to credit shocks. The differencing form deliberately creates a novel funding-source interaction between the two themes.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Knowledge Stock Meets Cash Coverage",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Accumulated five-year R&D capital, not the single-year outlay, is the economically relevant intangible stock; its value is realized only where operating cash flow covers total liabilities, so debt-service capacity protects the knowledge base from forced disinvestment.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the gen-0 winner \u2014 replacing the annual R&D flow with the cumulative knowledge stock \u2014 while holding the multiplicative rank interaction and the cash-coverage conditioner fixed. If the stock version improves both the FMB slope and the FF5 alpha, the mispricing is about un-capitalized intangible capital rather than about this year's spending decision. Unreported R&D is economically zero spending, justifying COALESCE.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Neutral Innovation On Cash Coverage",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "R&D intensity is overwhelmingly an industry attribute; within-industry relative innovation intensity, conditioned on firm-level cash coverage, is the part that carries information about durable intangible productivity rather than sector membership.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner may partly reflect a static tilt toward pharma/tech, which FF5 does not fully absorb and which makes portfolio composition unstable; industry-ranking the intangible leg removes that tilt and tests whether the interaction survives as a genuine firm-level effect. A comparable or higher t-alpha with a better Sharpe would indicate the mechanism is firm-specific; a collapse would tell us the effect is a sector bet. This is a clean, single-change diagnostic on the strongest archive result.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Continuous Goodwill-Accrual Overhang",
+      "expression": "MUL(RANK(RATIO(COALESCE(gdwl, 0), at)), RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Acquired intangibles destroy value specifically where reported earnings run ahead of operating cash flow: such firms have bought growth that is validated only by accruals and face future impairments and earnings reversals.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the gen-0 failure, where the binary INDICATOR gate collapsed most firms to exactly zero and left an undefined long-short spread; replacing the gate with a continuous accrual rank produces a smoothly distributed score and well-populated extreme portfolios. The product is high only for firms that are jointly goodwill-heavy and accrual-heavy, which is the precise conditional the story requires. Firms reporting no goodwill genuinely carry zero acquired-intangible overhang.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Spending With Stable Cash Generation",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), RANK(NEG(VOL(RATIO(oancf, at), 5))))",
+      "hypothesis": "What makes intangible investment credible is the predictability of the cash flow funding it, not merely its level; firms combining heavy R&D plus advertising with low five-year cash-flow volatility can sustain intangible programs across the cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 tested intangible intensity against earnings (ib) volatility in an additive SUMRANK form and got a weak Sharpe of 0.118, whereas the multiplicative cash-level form scored 0.53 \u2014 this proposal separates the two confounded choices by using the multiplicative form with a cash-flow stability conditioner. Cash-flow volatility is less contaminated by accrual noise and one-off write-offs than ROA volatility, so it should be a cleaner measure of funding durability. Including advertising broadens the intangible base and improves coverage relative to R&D alone.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Mature Self-Financed Innovator",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(RATIO(re, at)))",
+      "hypothesis": "Retained earnings relative to assets measures cumulative lifetime profitability and financial maturity; innovation undertaken by firms with a deep retained-earnings base is funded by proven past profits rather than by external capital or hope, and is therefore more likely to persist and pay off.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a quality channel absent from the archive \u2014 the stock of historical profitability rather than current cash flow or earnings volatility \u2014 which separates seasoned innovators from cash-burning young R&D firms that dominate the high-R&D tail. Because negative retained earnings flag accumulated losses, the rank conditioner naturally short-circuits the intangible signal exactly where it is least credible. It also tests whether the winning interaction is about liquidity (oancf) or about accumulated profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Unlevered Knowledge Investment",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at)), RANK(NEG(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Intangible assets provide poor collateral, so leverage and knowledge investment are complements only in appearance; R&D-intensive firms with low debt burdens face no pressure to cut innovation in downturns and earn a durable productivity premium.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the failed Self-Funded Knowledge Investment signal, which differenced ranks (a form that already underperformed) and used noisy one-year debt growth with only 5.5% coverage; here the balance-sheet state is a stable leverage level and the combination is multiplicative, matching the archive's best-performing structure. The economic content is distinct from cash coverage: it is about debt-capacity fragility rather than current cash generation. Three-year cumulative R&D smooths lumpy program spending while retaining much broader coverage than five-year windows.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Funds-From-Operations Covered Innovation",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "The credibility of R&D spending depends on internally generated funds available to service obligations; funds from operations (income before extraordinary items plus depreciation and amortization) measures the same debt-service capacity as operating cash flow but is available for far more firm-years.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate coverage repair of the archive's best mechanism \u2014 every strong variant is stuck at 9.1% coverage because of the `oancf` reporting window, and the FFO proxy should roughly double usable observations while keeping the economic content identical. If fmb_tstat and t-alpha hold up at higher coverage, we gain both statistical power and confidence that the result is not confined to a narrow post-1988 sample; if they degrade, we learn the accrual-free cash measure is essential rather than incidental.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Doubly Gated Knowledge Capital",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), SUMRANK(MA(RATIO(oancf, lt), 3), RATIO(re, at)))",
+      "hypothesis": "Durable intangible productivity requires both current cash-servicing capacity and a deep stock of accumulated past profits; the two quality conditioners capture flow and stock financial strength and should jointly discriminate credible knowledge capital better than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "Cash coverage (fmb 4.94) and retained-earnings maturity (fmb 4.32) were the two best-performing conditioners in the archive but they measure distinct things \u2014 liquidity today versus proven lifetime profitability \u2014 so averaging their ranks inside the multiplicative gate should reduce conditioner noise without diluting the mechanism. This is a consolidation step, testing whether the quality leg is better represented as a composite state than as a single variable. The 5-year R&D stock is used because it marginally outperformed the annual flow in gen 1.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation With A Profitability Floor",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "What protects an R&D program is not average profitability or low volatility but the worst-case earnings level: firms that stayed profitable even in their weakest of the last five years never face the distress that forces innovation budgets to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has tested cash-flow level, cash-flow volatility, retained earnings, and leverage as conditioners, but never a downside floor, which is the economically precise notion of \"R&D that will not be abandoned.\" TS_MIN of ROA is a one-sided quality measure that treats upside variation as harmless, unlike VOL, which penalized firms whose earnings rose sharply and delivered only a 0.276 Sharpe. It is parsimonious and mechanically distinct from the mean-based conditioners already in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Knowledge Capital Productivity Gated By Cash",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(COALESCE(intan, 0), TS_SUM(xrd, 5))), 1)), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "The signal should reward intangible *productivity* \u2014 gross profit earned per dollar of accumulated knowledge and acquired intangible capital \u2014 rather than intangible *intensity*, with cash coverage confirming the profit is real.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive winner ranks firms on how much they spend on intangibles, which conflates commitment with waste; this proposal inverts the framing to ask how much gross profit the existing intangible base generates, which is the direct empirical counterpart of \"durable intangible productivity.\" Because intensity and productivity are near-reciprocal constructions, the result is genuinely informative either way: a positive alpha means efficiency dominates, a null means the premium is compensation for committed spending rather than realized output. Winsorization controls the small-denominator tail among light R&D reporters.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Under Low Debt Service Burden",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at)), RANK(NEG(WINSOR(RATIO(ADD(dltt, dlc), ADD(ib, dp)), 1))))",
+      "hypothesis": "What threatens intangible programs is not the leverage ratio itself but the number of years of cash earnings required to repay debt; low debt-to-FFO means creditors exert no pressure to cut discretionary innovation spending.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs Unlevered Knowledge Investment, whose leverage-to-assets conditioner produced a strong t-alpha (3.83) but a near-zero FMB slope (0.58), a signature of a highly non-monotone score in which only the extremes carry information. Debt relative to cash earnings orders firms by an economically continuous distress-proximity scale and should restore a monotone cross-sectional slope while preserving the portfolio-level effect. Winsorization is necessary because the ratio explodes when FFO approaches zero.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Ramp From A Profitable Base",
+      "expression": "MUL(TS_RANK(RATIO(xrd, at), 5), RANK(MA(RATIO(ib, at), 3)))",
+      "hypothesis": "A firm escalating R&D intensity relative to its own five-year history is signalling private optimism about its opportunity set; that signal is credible only when the firm's own recent profitability is high enough to fund the escalation without external capital.",
+      "expected_sign": "positive",
+      "reasoning": "All archive signals score the intangible leg on a cross-sectional level, which is dominated by permanent industry and business-model differences; own-history position isolates the firm's innovation decision at the margin and is a genuinely different information channel. Interacting the ramp with sustained profitability separates confident, self-funded expansion from desperate spending by deteriorating firms, which is exactly the credibility condition in the economic story. Raw `xrd` is used so the own-history rank is computed only for genuine, continuous R&D reporters rather than degenerating to ties at zero.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Gated By Cash Profitability",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The credibility gate on R&D may be simple cash profitability (cash flow per dollar of assets) rather than solvency-style coverage of total liabilities; if so, the mechanism is about the productivity of the asset base funding innovation, not about creditor pressure.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best signals all scale operating cash flow by total liabilities, which mixes a profitability signal with an inverse-leverage signal, and the separate leverage experiments showed that the leverage component is non-monotone and FMB-invisible. Rescaling by assets isolates the pure cash-profitability content of the gate at identical coverage, so a comparison with Cash-Covered Innovation Intensity cleanly attributes the 4.6% alpha to profitability or to solvency. This is a one-variable diagnostic on the most important open question in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Coverage With Accounting Fallback",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(COALESCE(oancf, ADD(ib, dp)), lt), 3)))",
+      "hypothesis": "Operating cash flow is the economically correct coverage measure, but where the cash-flow statement is unavailable, funds from operations is its closest accounting reconstruction; using it only as a fallback preserves the strong mechanism while extending the sample.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-2 showed that wholesale substitution of FFO for `oancf` bought coverage at a real cost in alpha and Sharpe, implying the true cash measure carries information that accruals destroy \u2014 but that is an argument for a hierarchical measurement convention, not for discarding the extra firm-years. COALESCE here encodes a defensible reporting convention (use reported cash flow; reconstruct it only when absent) rather than a blanket coverage patch. If alpha and t-alpha stay near the 4.6%/3.2 benchmark at roughly 14% coverage, this becomes the preferred consolidation base for later generations.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Minus Acquired Intangibles On Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Internally generated knowledge capital and purchased intangibles have opposite return implications: the former is unrecorded and underpriced, the latter is recorded at acquisition cost and prone to impairment, so the intangible *mix* conditioned on cash quality is a sharper signal than intangible level.",
+      "expected_sign": "positive",
+      "reasoning": "The archive contains direct evidence for this asymmetry \u2014 organic R&D stocks gated by cash earn +4.6% alpha while goodwill-heavy accrual firms earn \u22123.4% \u2014 but no signal has yet exploited both sides in one score. Differencing the two intangible ranks before the cash gate builds a long-organic/short-acquired intangible portfolio among firms that all pass the same financial-strength filter, isolating the composition effect from the level effect. Both factors are bounded ranks, so the product stays monotone and avoids the sign pathologies of raw differencing.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation With Conservative Accruals",
+      "expression": "MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(NEG(RATIO(SUB(ib, oancf), at))))",
+      "hypothesis": "The relevant quality condition is that reported earnings are backed by cash rather than accruals: an R&D-intensive firm whose profits convert into cash is genuinely funding innovation, while one whose profits are accrual-driven is capitalizing optimism twice.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful gate so far measures the *level* of cash generation; this one measures its *quality* relative to reported earnings, which is a distinct construct and is exactly the accounting condition that separates credible from cosmetic profitability. It also completes a natural pair with the goodwill-accrual result, testing whether low accruals help innovators as much as high accruals hurt acquirers. Coverage matches the archive's cash-based signals, so results are directly comparable to the 4.6% benchmark.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Acquired Intangible Overhang Without Cash",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)), RANK(NEG(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Purchased intangibles are a liability rather than an asset when the acquirer lacks cash coverage: such firms have levered up to buy growth they cannot service, and face impairments, dilution, and forced divestiture.",
+      "expected_sign": "negative",
+      "reasoning": "The prior goodwill signal used an accrual conditioner and produced a reliable portfolio effect (\u22123.4%, t = \u22122.17) but no cross-sectional slope; replacing the accrual gate with the same cash-coverage gate that powers the archive's best long signal tests whether the mechanism is symmetric and should generate a monotone score across the whole cross-section. Broadening the intangible leg from goodwill alone to all balance-sheet intangibles increases the number of firms with non-zero exposure, which should further reduce the mass-at-zero problem that produced the gen-0 degenerate portfolio. A clean short leg is valuable in its own right and could be combined with the long mechanism later.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Triple-Gated Durable Innovator",
+      "expression": "MUL(MUL(RANK(RATIO(COALESCE(xrd, 0), at)), RANK(MA(RATIO(oancf, lt), 3))), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "Durable intangible productivity requires innovation intensity, current cash-servicing capacity, and a demonstrated floor under profitability; only firms clearing all three conditions have knowledge capital that survives a full cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Cash coverage (alpha 4.6%, Sharpe 0.55) and the five-year worst-case ROA floor (alpha 3.9%, t 3.60) are the two best-performing gates and they measure different things \u2014 liquidity now versus resilience in the trough \u2014 yet gen-2 showed that averaging conditioners with SUMRANK dilutes the signal. Multiplicative stacking preserves the conjunctive logic, keeping the score near zero unless every condition is met, which should concentrate the extreme portfolios on the intended firms. This directly tests whether the archive's conditioners are substitutes or complements, a decision needed before consolidating in later generations.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix On Cash Profitability",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Organic knowledge capital is underpriced and purchased intangibles are overpriced; the spread between them, conditioned on the firm's cash productivity of assets, isolates durable intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This combines the two independent gen-3 improvements \u2014 the organic-minus-acquired mix (alpha 6.6%, t 4.59) and the asset-scaled cash gate, which beat the liability-scaled gate on alpha, t-alpha and Sharpe when tested on a fixed intangible leg. Because each change was validated separately on the same 9.1% sample, their combination is the natural consolidation point and is directly comparable to both parents. If both effects are additive, this should be the archive's strongest signal on all four metrics simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix With Cash Fallback Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(COALESCE(oancf, ADD(ib, dp)), at), 3)))",
+      "hypothesis": "The mix mechanism should hold across the full sample, not only in the post-cash-flow-statement era; reconstructing cash flow from funds from operations where it is unreported extends the test without changing the economics.",
+      "expected_sign": "positive",
+      "reasoning": "Every top signal is capped at 9.1% coverage purely because of `oancf` availability, and the gen-3 fallback test showed the convention preserves a strong slope (fmb 4.76) at 14.2% coverage though with some alpha decay. Applying the fallback to the far stronger mix signal tests whether the alpha decay was a property of the weak intangible leg or of the measurement substitution itself. A durable 5%-plus alpha at 14% coverage would be more investable than a 6.6% alpha on a third fewer observations.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Share Of Intangible Capital",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(TS_SUM(COALESCE(xrd, 0), 5), COALESCE(intan, 0)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "What matters is the composition of a firm's intangible base \u2014 the fraction built internally rather than bought \u2014 because internally built capital reflects demonstrated innovation capability while purchased capital reflects a price paid to someone else.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 mix signal used a difference of two cross-sectional ranks, which is scale-free but conflates a firm with large offsetting intangible positions with one that has almost none; a within-firm share cleanly measures composition and is invariant to overall intangible size. Comparing this ratio construction against Signal 1's rank-difference construction on the same gate tells us whether the alpha comes from intangible *composition* or from being simultaneously high-R&D and low-goodwill. Firms with neither R&D nor recorded intangibles are legitimately undefined here, which keeps the score interpretable.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix With Profitability Floor",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TS_MIN(RATIO(ib, at), 5)))",
+      "hypothesis": "The intangible-mix premium requires only that the firm's profitability never collapsed; a five-year worst-case ROA floor is a sufficient credibility condition and is measurable for far more firms than operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the gate while holding the now-dominant intangible leg fixed, which separates the contribution of the mix from the contribution of the specific cash conditioner and simultaneously raises coverage to roughly 14.6%. The profitability floor was the best-performing wide-coverage gate in gen 2 (alpha 3.9%, t 3.60) despite a weak intangible leg, so pairing it with the strong leg is the highest-expected-value coverage experiment available. If alpha approaches the cash-gated version, the mechanism is robustly about intangible composition rather than about liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Acquisitive Expansion Without Cash Support",
+      "expression": "MUL(RANK(RATIO(DELTA(COALESCE(gdwl, 0), 1), at)), RANK(NEG(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Recent goodwill additions \u2014 the flow of acquisitions \u2014 signal empire-building when made by firms with weak cash productivity, and predict subsequent impairments and negative abnormal returns more sharply than the accumulated goodwill stock.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's short leg so far uses the intangible *stock*, which is stale and reflects deals made many years ago; the annual change isolates the current management decision and should be more timely about impairment risk. Scaling the change by assets keeps it comparable across firm size, and pairing it with the same cash gate that powers the long side tests whether the timing of bad acquisitions is priced with a lag. This is a distinct economic channel \u2014 acquisition flow rather than intangible level \u2014 on the side of the trade where the archive already has reliable evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Long Organic Short Acquired Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(MA(RATIO(oancf, at), 3)))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The two validated mechanisms \u2014 cash-backed organic innovation earning positive alpha and cash-starved acquired intangibles earning negative alpha \u2014 are economically distinct and should be combined into a single score rather than traded separately.",
+      "expected_sign": "positive",
+      "reasoning": "Signal 1 imposes a single common gate on a differenced intangible leg, which forces both sides to share the same conditioner; this construction instead builds each leg with its own economically correct gate (high cash for organic innovators, low cash for acquirers) and then differences the resulting ranks. Given the parents delivered +6.6% and \u22125.6% alpha with t-statistics above 4 in absolute value, an imperfectly correlated combination should raise both t-alpha and Sharpe even if the alpha magnitude sits between the two. Differencing ranks rather than raw scores keeps the composite bounded and avoids the scale pathologies that sank the gen-0 rank-difference attempt.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Mix With Full Acquired Intangible Leg",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Goodwill is the most impairment-prone component of purchased intangibles, so weighting it explicitly alongside other recorded intangibles should sharpen the short side of the mix.",
+      "expected_sign": "positive",
+      "reasoning": "The best long signal uses `intan` alone on the acquired leg, while the best short signal used `gdwl + intan` and produced \u22125.6% alpha with t = \u22124.02, so double-weighting goodwill within the recorded intangible base is the single most promising untested leg refinement. This is a one-variable change against the reigning benchmark, making attribution unambiguous. If it improves alpha and t-alpha, later generations should keep goodwill explicitly weighted.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Brand And Knowledge Capital Mix",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Advertising builds brand capital that is expensed exactly like R&D and equally invisible on the balance sheet; the organic intangible leg should therefore include accumulated advertising, not only research.",
+      "expected_sign": "positive",
+      "reasoning": "The organic leg is currently R&D-only, which mechanically excludes consumer-facing firms whose internally built intangible is brand rather than patents, and gen-0/gen-1 evidence showed adding `xad` broadened coverage without breaking the effect. Testing this alone, with the acquired leg and gate unchanged, determines whether the premium is specific to technological knowledge or general to self-created intangible capital. A gain here would materially widen the investable universe of the winning mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Mix Penalized By Acquisition Flow",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), SUMRANK(RATIO(COALESCE(intan, 0), at), RATIO(DELTA(COALESCE(gdwl, 0), 1), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Both the stock of purchased intangibles and the current-year flow of new acquisitions detract from intangible credibility, and the flow adds timely information about management's present capital-allocation choice.",
+      "expected_sign": "positive",
+      "reasoning": "Acquisition flow was independently validated in gen 4 as a short-side channel (fmb \u22122.85, t-alpha \u22122.95, Sharpe \u22120.45) and it is only weakly correlated with the stale goodwill stock, so averaging the two ranks should build a stronger negative pole without shrinking the long pole. Rank-averaging is used only within the acquired leg \u2014 where the two measures are economic substitutes \u2014 rather than across the quality gate, which is where SUMRANK previously diluted performance. This directly tests whether stock and flow measures of purchased intangibles are complements.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Neutral Intangible Mix",
+      "expression": "MUL(IND_RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "If the mix premium is a firm-level effect, it should survive ranking within industry; if it is mostly a structural long-technology/short-serial-acquirer sector bet, industry-neutralization will remove it.",
+      "expected_sign": "positive",
+      "reasoning": "R&D intensity and goodwill intensity are strongly and oppositely determined by industry, so the 6.5% alpha may partly be a persistent sector tilt that FF5 does not span and that would make portfolio composition static and crowded. The analogous gen-1 test on the simple R&D leg cost only modest performance (alpha 4.6% \u2192 4.0%), suggesting a firm-level core exists; running it on the far stronger mix leg is the decisive version of the test. A robust result here materially raises confidence in the mechanism ahead of final consolidation.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest-Link Cash Durability Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "Credible intangible investment requires cash flow that is both high and dependable; the binding constraint is whichever condition is weaker, so the gate should be the minimum of the two ranks rather than their average or product.",
+      "expected_sign": "positive",
+      "reasoning": "Every previous attempt to combine two quality conditions used SUMRANK averaging, which diluted the signal (Doubly Gated: alpha 3.0%), or triple multiplication, which also underperformed; MIN implements a genuine weakest-link conjunction and is a structurally new way to express the credibility condition. Cash-flow level and cash-flow stability are conceptually independent \u2014 a firm can be highly profitable but erratic \u2014 and the story explicitly requires both. If MIN beats the level-only gate, the credibility condition is conjunctive and later refinements should use it.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix On Improving Cash Productivity",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TREND(RATIO(oancf, at), 5)))",
+      "hypothesis": "Knowledge capital is validated by a rising path of cash productivity, not merely a high level: an improving trend is the observable evidence that past intangible investment is currently converting into cash.",
+      "expected_sign": "positive",
+      "reasoning": "All successful gates to date measure the level or floor of profitability, which tends to select mature, already-recognized firms; a five-year trend identifies firms where the intangible payoff is arriving now and is most likely to be under-extrapolated by investors. Trend-based quality already showed promise in gen 0 (t-alpha 3.67) despite a crude intangible leg, so pairing it with the dominant mix leg is the natural test of trajectory versus level. It is also economically the closest expression of \"durable intangible productivity\" as a realized outcome rather than a funding precondition.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Asset-Light Knowledge Mix On Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Knowledge capital should be measured relative to the tangible asset base it complements: a firm with a large research stock per dollar of hard assets is genuinely asset-light and its economic capital is most severely understated by accounting.",
+      "expected_sign": "positive",
+      "reasoning": "Every version to date scales the organic leg by total assets, which already contains recorded intangibles and therefore mechanically shrinks the organic score for exactly the acquisitive firms the signal wants to short, muddying the contrast between the two legs. Netting recorded intangibles out of the denominator makes the two legs cleanly orthogonal in construction \u2014 hidden capital per tangible dollar versus recorded intangibles per total dollar \u2014 and should widen the spread between the poles. The denominator stays positive for essentially all firms, so no rank pathologies are introduced.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Mix Gated By Cash Level And Accrual Quality",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Intangible investment is credible only if the firm both generates substantial cash and reports earnings that are backed by that cash; the binding condition is whichever of the two is weaker.",
+      "expected_sign": "positive",
+      "reasoning": "Cash level and accrual quality were separately validated as gates (alpha 5.3% and 5.7%, t-alpha 3.72 and 3.80) and are conceptually distinct \u2014 one is magnitude, the other is the earnings-to-cash reconciliation \u2014 while MIN was the only combination operator that preserved alpha in gen 5. This is the highest-expected-value stacking experiment remaining because the accrual gate's weak FMB slope (1.71) should be repaired by pairing it with a monotone cash-level rank inside MIN. If it clears the 6.5% benchmark on both alpha and t-alpha it becomes the consolidation candidate.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill At Risk To Equity Without Cash",
+      "expression": "MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Impairment risk is best measured against the equity it would destroy, not against total assets: when purchased intangibles exceed book equity and cash generation is weak, a write-down mechanically wipes out the shareholders' stated claim.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's short leg (alpha \u22125.6%, t \u22124.02) scales acquired intangibles by assets, which understates vulnerability for levered roll-ups whose equity is thin relative to the goodwill they carry; equity scaling is the standard solvency-relevant framing of impairment exposure. Because the long side of the trade is already strong, improving the short pole is the most direct route to a higher combined alpha in the final generations. Cash productivity is retained as the conditioner so results are directly comparable with the existing short signal.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Created Intangibles With Durable Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "The full stock of self-created intangibles \u2014 research plus brand \u2014 is credible when cash generation is simultaneously high and stable, so both the intangible leg and the gate should be broadened to their validated best forms.",
+      "expected_sign": "positive",
+      "reasoning": "This stacks the two independently successful gen-5 refinements: the brand-inclusive organic leg (best slope, fmb 5.39, best Sharpe 0.617) and the weakest-link cash-durability gate (alpha 5.9%, t 4.27), which were each tested against the same baseline and address different weaknesses. Because the two changes act on different parts of the expression, their effects should be close to additive rather than redundant. This is the natural pre-final consolidation of the dominant family.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Budget Covered By Cash Flow",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(WINSOR(RATIO(MA(oancf, 3), MA(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3)), 1)))",
+      "hypothesis": "The economically exact credibility test is whether operating cash flow covers the intangible spending program itself: a firm whose cash flow is several times its annual R&D and advertising budget can sustain that program indefinitely without external finance.",
+      "expected_sign": "positive",
+      "reasoning": "All gates so far scale cash flow by an accounting base (assets, liabilities) that is unrelated to the intangible commitment being funded, whereas this ratio measures coverage of the actual outlay, which is what determines whether a program gets cut. It also creates informative tension with the long leg \u2014 heavy spenders need very strong cash flow to score well \u2014 so the signal selects firms with high intangible intensity *and* headroom, rather than either alone. Winsorization is required because the coverage ratio explodes for firms with negligible intangible budgets.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Two-Pole Intangible Credibility Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), at)), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(VOL(RATIO(oancf, at), 5)))))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The long pole (self-created intangibles backed by high, stable cash) and the short pole (purchased intangibles threatening thin equity at cash-poor firms) are distinct economic mechanisms and should each be built with its own correct gate before being combined.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-4 composite of separately gated poles already delivered t-alpha 4.25 with Sharpe 0.598 using first-generation leg definitions; rebuilding it with the brand-inclusive organic leg, the MIN durability gate, and the equity-scaled impairment leg should raise both poles simultaneously. Unlike Signal 4, which forces one shared conditioner onto a differenced intangible leg, this construction lets each side use the conditioner its own economics implies, which is why the two designs are worth carrying forward in parallel. Rank differencing keeps the composite bounded and avoids scale pathologies.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Asset-Light Mix On Cash And Accruals",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Hidden knowledge capital per tangible dollar, net of purchased intangibles, is credible precisely when cash generation is high and earnings are cash-backed; the weaker of those two conditions binds.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two independent gen-6 improvements \u2014 the asset-light organic denominator (best t-alpha 4.81 and Sharpe 0.616) and the MIN(cash, accrual) conjunctive gate (best alpha 6.8%) \u2014 which act on different parts of the expression and were each validated against the same baseline. Because neither change touched the other's component, the effects should be close to additive rather than redundant, making this the leading candidate for the final signal. Coverage is unchanged at roughly 9%, so any improvement is not a sparsity artifact.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Capital Versus Equity At Risk",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Each intangible leg should be scaled by the base that makes it economically meaningful: unrecorded knowledge capital against tangible assets it leverages, and purchased intangibles against the book equity a write-down would destroy.",
+      "expected_sign": "positive",
+      "reasoning": "Equity scaling of acquired intangibles improved the standalone short pole from \u22125.6%/t \u22124.02 (asset-scaled) to a Sharpe of \u22120.539 with t \u22124.15 and a stronger slope, and asset-light scaling improved the long pole, but no signal has yet applied both scalings inside a single differenced leg. This tests whether the mix premium widens when each pole is measured against its own economically correct base, holding the best gate fixed. It is a single, well-motivated design change relative to Signal 1.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix On A Cash Floor",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(TS_MIN(RATIO(oancf, at), 5)))",
+      "hypothesis": "Durability is best evidenced by the worst year: a firm whose cash productivity never fell below a high level across five years can fund intangible investment through any environment.",
+      "expected_sign": "positive",
+      "reasoning": "The earnings-based floor (TS_MIN of ROA) preserved t-alpha but collapsed the Sharpe to 0.169, which I attribute to accounting write-offs and one-off charges contaminating the minimum of `ib`; the same construct built on operating cash flow should be far cleaner because cash flow is immune to non-cash charges. This is the one gate concept \u2014 a one-sided cash durability floor \u2014 that the archive has never tested, and it distinguishes \"never weak\" from \"high on average\" (MA) and \"not volatile\" (VOL). If it beats the MA gate, the mechanism is about downside resilience rather than average strength.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Triple Weakest-Link Credibility Gate",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))), RANK(NEG(VOL(RATIO(oancf, at), 5)))))",
+      "hypothesis": "Full credibility requires cash flow that is large, cash-backed in the accounting sense, and stable; a firm failing any one of the three should not be treated as a durable intangible producer.",
+      "expected_sign": "positive",
+      "reasoning": "All three conditions have been individually validated as gates (alpha 5.3%, 5.7%, 5.9% respectively), and MIN is the only combination operator in this archive that stacks conditions without dilution \u2014 unlike SUMRANK averaging (3.0%) or nested multiplication (4.7%). The risk is that a triple minimum makes the gate too restrictive and destabilizes the extreme portfolios, which the Sharpe and t-alpha will reveal directly. Testing it now settles how far the conjunctive logic extends before the final generation.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Upgraded Two-Pole Credibility Composite",
+      "expression": "SUB(RANK(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))), RANK(MUL(RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)), RANK(NEG(MA(RATIO(oancf, at), 3))))))",
+      "hypothesis": "The long pole (asset-light hidden capital at cash-rich, low-accrual firms) and the short pole (purchased intangibles overhanging thin equity at cash-poor firms) are distinct mechanisms, and each performs best with its own gate rather than a shared one.",
+      "expected_sign": "positive",
+      "reasoning": "The separately-gated composite already holds the archive's best Sharpe (0.633) using older leg definitions, and this version rebuilds both poles with the gen-6 winners: asset-light scaling plus the MIN gate on the long side, equity-scaled impairment exposure on the short side. Because a differenced-leg design (Signal 1) forces one common conditioner while this design allows two, the pair jointly identifies whether the gate should be shared or pole-specific. Rank differencing keeps the composite bounded and stable.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Mix With Liquidity Constraint",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(RATIO(act, lct))))",
+      "hypothesis": "Working-capital liquidity is the balance-sheet dimension of credibility: a firm whose current assets comfortably cover current liabilities will not raid its innovation budget to meet near-term obligations, even in a bad quarter.",
+      "expected_sign": "positive",
+      "reasoning": "The economic story names balance-sheet quality explicitly, but every attempt to capture it has used leverage or debt-service stocks, which produced strong t-alphas with near-zero FMB slopes because they are non-monotone; the current ratio is a smoother, more monotone measure of near-term financial slack. Pairing it with the proven cash gate inside MIN gives the balance-sheet channel its fairest test within the structure that is known to work. If it succeeds, the credibility condition is broader than cash generation alone.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Brand-Inclusive Asset-Light Mix",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The complete stock of self-created intangibles \u2014 research plus brand \u2014 measured per dollar of tangible assets is the sharpest available measure of hidden capital, and it is credible when cash productivity is high.",
+      "expected_sign": "positive",
+      "reasoning": "The two best-performing leg refinements have never been combined: brand inclusion produced the archive's best FMB slope and Sharpe, while asset-light scaling produced the best t-alpha, and each was validated separately against the same single-gate baseline. Because one change widens the economic definition of the numerator and the other corrects the denominator, they operate on different sources of measurement error and should be complementary. Keeping the simple MA cash gate preserves the Sharpe, which the stacked gates erode.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Complete Hidden Capital On Cash And Accruals",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "Maximum alpha should come from pairing the most complete measure of self-created intangible capital with the strongest credibility condition: cash generation that is both large and consistent with reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This is the direct alpha-maximizing combination of the three best validated components \u2014 brand-inclusive numerator, tangible-asset denominator, and the MIN(cash, accrual) gate that currently holds the record alpha of 6.9% with t 4.83. Running it alongside Signal 1 isolates exactly what the accrual condition adds once the intangible leg is fully specified, which is the key decision for the final generation. If alpha rises above 7% with t-alpha above 4.8 and Sharpe near 0.55, this becomes the headline signal.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Asset-Light Mix On Five-Year Cash State",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 5)))",
+      "hypothesis": "Cash productivity is a slow-moving structural attribute; measuring it over five years rather than three identifies the firm's persistent state and reduces the rebalancing noise that a shorter window introduces.",
+      "expected_sign": "positive",
+      "reasoning": "The recurring cost of every gate refinement has been Sharpe, i.e. spread volatility driven by portfolio churn, and the gate horizon is the one lever that acts directly on churn rather than on the economic content. The five-year R&D stock is already slow-moving, so matching the gate's horizon to the leg's horizon should stabilize portfolio composition month to month while leaving the mechanism intact. If Sharpe rises above 0.62 with alpha near 6.6%, horizon matching is the correct final refinement rather than more conditioners.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Payback Versus Hidden Capital",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(WINSOR(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), MA(oancf, 3)), 1)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "The right measure of acquired-intangible burden is how many years of operating cash flow the purchase price represents; a firm carrying ten years of cash flow in goodwill has paid for growth it may never deliver.",
+      "expected_sign": "positive",
+      "reasoning": "The short pole has been scaled by assets and by equity, but never by the cash flow that must ultimately justify the acquisition price, which is the economically exact payback framing and is more comparable across capital structures than either. Equity scaling already improved the standalone short signal (Sharpe \u22120.539, t \u22124.15), suggesting the scaling base matters, and cash-flow scaling extends that logic to a flow basis. Winsorization is essential because the payback ratio explodes for firms with near-zero cash flow.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive Intangible Composition Gate",
+      "expression": "MUL(MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(NEG(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at)))))",
+      "hypothesis": "High hidden capital and low purchased intangibles are jointly necessary rather than mutually offsetting: a firm should score highly only if it both builds its own intangibles and has not bought them.",
+      "expected_sign": "positive",
+      "reasoning": "Every mix signal to date differences the two intangible ranks, which lets a very high organic score compensate for heavy goodwill, whereas the multiplicative form imposes a conjunction \u2014 exactly the structure that made MIN gating outperform SUMRANK averaging on the quality side. This is the last untested structural choice in the dominant family, and it distinguishes \"composition premium\" from \"joint-condition premium.\" If it beats the differenced version, the final signal should be built conjunctively on both legs and the gate.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Magnitude-Preserving Intangible Mix",
+      "expression": "MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Firms at the extremes of the intangible-composition spectrum are the most severely mispriced, so the score should preserve how far a firm sits from the crossover point rather than compressing everything into a uniform rank.",
+      "expected_sign": "positive",
+      "reasoning": "The outer RANK in every mix signal discards the magnitude of the organic-minus-acquired gap, which flattens the difference between a marginal case and an extreme one and may be why the FMB slope has plateaued near 5.0 despite rising alphas. Standardizing the differenced legs instead keeps that magnitude while remaining scale-free and symmetric, and it costs nothing in coverage. This is an operator-structure test whose result tells the final generation whether to score the mechanism ordinally or metrically.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Rank-Repaired Magnitude Mix On Cash",
+      "expression": "RANK(MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Distance from the crossover point between self-created and purchased intangible capital carries real information, and it should be combined with the cash gate before the score is made cross-sectionally uniform.",
+      "expected_sign": "positive",
+      "reasoning": "The magnitude-preserving mix delivered the archive's best alpha (7.2%) and t-alpha (5.00) but a near-zero FMB slope because the signed interaction term is strongly non-linear across the cross-section; ranking the completed product is a monotone transform that leaves the sorted portfolios and their alpha unchanged while giving the Fama-MacBeth regression a well-behaved uniform regressor. This is the single highest-value repair available, because it should reconcile the two forms of evidence rather than trade one for the other. If both fmb_tstat and t-alpha come in above 4.5, this is the run's best signal.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Rank-Repaired Magnitude Mix On Cash And Accruals",
+      "expression": "RANK(MUL(ZSCORE(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at))))))",
+      "hypothesis": "The magnitude-preserving mix should be gated by the strongest credibility condition \u2014 cash generation that is both large and reconciled with reported earnings \u2014 with the interaction ranked afterwards.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN(cash, accrual) gate independently added roughly 0.3 points of alpha over the single cash gate on the rank-scored mix, and the magnitude-preserving construction independently added 0.6 points, so combining them under the rank repair is the natural upper bound of the family. Comparing it to Signal 1 isolates whether the accrual condition still contributes once the mix score preserves tail magnitude. Coverage is unchanged at 9.1%, so any gain is not a sparsity artifact.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Tail-Controlled Hidden Capital Interaction",
+      "expression": "RANK(MUL(SUB(ZSCORE(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0))), 2)), ZSCORE(WINSOR(RATIO(COALESCE(intan, 0), at), 2))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "Magnitude information should come from the underlying intangible intensities themselves \u2014 winsorized to remove distressed micro-cap distortions \u2014 rather than from a difference of uniform ranks.",
+      "expected_sign": "positive",
+      "reasoning": "The magnitude-preserving variant gained alpha but lost Sharpe (0.356), which points to a handful of extreme-intensity firms dominating the long leg and making the monthly spread volatile; winsorizing each ratio at the 2% tails before standardizing keeps the economic scale while removing exactly those observations. This is the only proposal that attacks the spread-volatility problem at its source rather than through the gate, so it directly tests whether high alpha and a 0.6 Sharpe can coexist. Standardizing each leg separately also gives the two intangible poles comparable units, which a rank difference does not guarantee.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Complete Hidden Capital On Five-Year Cash",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), RANK(MA(RATIO(oancf, at), 5)))",
+      "hypothesis": "Matching the gate's measurement horizon to the five-year intangible stock identifies the firm's persistent cash-productivity state and minimizes portfolio churn, delivering the best risk-adjusted version of the mechanism.",
+      "expected_sign": "positive",
+      "reasoning": "The brand-inclusive asset-light leg produced the archive's best FMB slope (5.40) and near-best Sharpe (0.620), and lengthening the cash window to five years preserved alpha at 6.5% with t 4.64 on the R&D-only leg \u2014 the two stability-enhancing choices have never been combined. Because both act to slow the signal down, this is the natural candidate for the highest-Sharpe, most-implementable variant rather than the highest-alpha one. It also serves as the run's robustness anchor: same mechanism, slowest measurement, broadest intangible definition.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Mix On Industry-Relative Cash Productivity",
+      "expression": "MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), IND_RANK(MA(RATIO(oancf, at), 3)))",
+      "hypothesis": "Cash productivity is only meaningful relative to industry norms \u2014 asset-heavy sectors structurally generate different cash-to-asset ratios \u2014 so the credibility gate, not the intangible leg, is what should be industry-neutralized.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-5 industry-neutralized the intangible leg and lost roughly a quarter of the alpha, but the reverse experiment was never run, and it is the economically better-motivated one: intangible composition is a genuine firm choice worth capturing in absolute terms, whereas cash margins are largely a technology constraint. If industry-relative gating improves alpha and Sharpe, the mechanism is about firms that are cash-strong *for their sector* funding hidden capital. This is the last untested conditioning dimension in the dominant family.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual-Definition Hidden Capital Ensemble",
+      "expression": "SUMRANK(MUL(RANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(COALESCE(intan, 0), at)))), MIN(RANK(MA(RATIO(oancf, at), 3)), RANK(NEG(RATIO(SUB(ib, oancf), at))))), MUL(RANK(SUB(RANK(RATIO(ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)), SUB(at, COALESCE(intan, 0)))), RANK(RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), ceq)))), RANK(MA(RATIO(oancf, at), 3))))",
+      "hypothesis": "The two best-performing specifications differ in how intangible capital and impairment exposure are measured, and averaging their ranks should retain the shared economic signal while cancelling specification-specific measurement noise.",
+      "expected_sign": "positive",
+      "reasoning": "Across nine generations the alpha-maximizing configuration (R&D-only leg, asset scaling, MIN gate) and the slope- and Sharpe-maximizing configuration (brand-inclusive leg, equity-scaled impairment exposure, single cash gate) have consistently traded off against each other, which is the signature of independent measurement error around a common mechanism. Averaging their ranks is the standard remedy and should lift Sharpe above either parent while keeping alpha near 6.5% and the slope near 5.0. As the final proposal of the run, it prioritizes the balance the objective asks for \u2014 economically meaningful alpha with reliable statistics \u2014 over a single extreme metric.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:quality_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stability-Weighted Intangible Intensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at),neg(vol(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Covered Innovation Intensity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "at",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Intangible-Augmented Gross Profitability",
+      "metadata": {
+        "normalized_expression": "ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "at",
+          "cogs",
+          "revt",
+          "xrd"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual-Backed Goodwill Overhang",
+      "metadata": {
+        "normalized_expression": "mul(ratio(coalesce(gdwl,0),at),indicator(sub(ib,oancf),0))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Innovator With Improving Returns",
+      "metadata": {
+        "normalized_expression": "sumrank(ts_count(xrd,5),trend(ratio(ib,at),5))",
+        "variables": [
+          "at",
+          "ib",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded Knowledge Investment",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(ts_sum(xrd,3),at)),rank(growth(add(dltt,dlc),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Knowledge Stock Meets Cash Coverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "at",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Neutral Innovation On Cash Coverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(xrd,0),at)),rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "at",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Continuous Goodwill-Accrual Overhang",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(gdwl,0),at)),rank(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Spending With Stable Cash Generation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)),rank(neg(vol(ratio(oancf,at),5))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Mature Self-Financed Innovator",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "re",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Unlevered Knowledge Investment",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),at)),rank(neg(ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funds-From-Operations Covered Innovation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(ma(ratio(add(ib,dp),lt),3)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "lt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Doubly Gated Knowledge Capital",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),sumrank(ma(ratio(oancf,lt),3),ratio(re,at)))",
+        "variables": [
+          "at",
+          "lt",
+          "oancf",
+          "re",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation With A Profitability Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(ts_min(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Knowledge Capital Productivity Gated By Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(sub(revt,cogs),add(coalesce(intan,0),ts_sum(xrd,5))),1)),rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "cogs",
+          "intan",
+          "lt",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Under Low Debt Service Burden",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),at)),rank(neg(winsor(ratio(add(dltt,dlc),add(ib,dp)),1))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Ramp From A Profitable Base",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(xrd,at),5),rank(ma(ratio(ib,at),3)))",
+        "variables": [
+          "at",
+          "ib",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Gated By Cash Profitability",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Coverage With Accounting Fallback",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ma(ratio(coalesce(oancf,add(ib,dp)),lt),3)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Minus Acquired Intangibles On Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation With Conservative Accruals",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(coalesce(xrd,0),at)),rank(neg(ratio(sub(ib,oancf),at))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Acquired Intangible Overhang Without Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),at)),rank(neg(ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Triple-Gated Durable Innovator",
+      "metadata": {
+        "normalized_expression": "mul(mul(rank(ratio(coalesce(xrd,0),at)),rank(ma(ratio(oancf,lt),3))),rank(ts_min(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix On Cash Profitability",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix With Cash Fallback Gate",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(coalesce(oancf,add(ib,dp)),at),3)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Share Of Intangible Capital",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),add(ts_sum(coalesce(xrd,0),5),coalesce(intan,0)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix With Profitability Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(ts_min(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Acquisitive Expansion Without Cash Support",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(delta(coalesce(gdwl,0),1),at)),rank(neg(ma(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Long Organic Short Acquired Composite",
+      "metadata": {
+        "normalized_expression": "sub(rank(mul(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ma(ratio(oancf,at),3)))),rank(mul(rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),at)),rank(neg(ma(ratio(oancf,at),3))))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Mix With Full Acquired Intangible Leg",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Brand And Knowledge Capital Mix",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),at)),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Mix Penalized By Acquisition Flow",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),sumrank(ratio(coalesce(intan,0),at),ratio(delta(coalesce(gdwl,0),1),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Neutral Intangible Mix",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest-Link Cash Durability Gate",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(vol(ratio(oancf,at),5)))))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix On Improving Cash Productivity",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(trend(ratio(oancf,at),5)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asset-Light Knowledge Mix On Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Mix Gated By Cash Level And Accrual Quality",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill At Risk To Equity Without Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ceq)),rank(neg(ma(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Created Intangibles With Durable Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),at)),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(vol(ratio(oancf,at),5)))))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Budget Covered By Cash Flow",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(intan,0),at)))),rank(winsor(ratio(ma(oancf,3),ma(add(coalesce(xrd,0),coalesce(xad,0)),3)),1)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Two-Pole Intangible Credibility Composite",
+      "metadata": {
+        "normalized_expression": "sub(rank(mul(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),at)),min(rank(ma(ratio(oancf,at),3)),rank(neg(vol(ratio(oancf,at),5)))))),rank(mul(rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ceq)),rank(neg(ma(ratio(oancf,at),3))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asset-Light Mix On Cash And Accruals",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Capital Versus Equity At Risk",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ceq)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix On A Cash Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ts_min(ratio(oancf,at),5)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Triple Weakest-Link Credibility Gate",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))),rank(neg(vol(ratio(oancf,at),5)))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Upgraded Two-Pole Credibility Composite",
+      "metadata": {
+        "normalized_expression": "sub(rank(mul(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))),rank(mul(rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ceq)),rank(neg(ma(ratio(oancf,at),3))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Mix With Liquidity Constraint",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "at",
+          "intan",
+          "lct",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Brand-Inclusive Asset-Light Mix",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Complete Hidden Capital On Cash And Accruals",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asset-Light Mix On Five-Year Cash State",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),5)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Payback Versus Hidden Capital",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(winsor(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ma(oancf,3)),1)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive Intangible Composition Gate",
+      "metadata": {
+        "normalized_expression": "mul(mul(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(neg(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at)))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Magnitude-Preserving Intangible Mix",
+      "metadata": {
+        "normalized_expression": "mul(zscore(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rank-Repaired Magnitude Mix On Cash",
+      "metadata": {
+        "normalized_expression": "rank(mul(zscore(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rank-Repaired Magnitude Mix On Cash And Accruals",
+      "metadata": {
+        "normalized_expression": "rank(mul(zscore(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at))))))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Tail-Controlled Hidden Capital Interaction",
+      "metadata": {
+        "normalized_expression": "rank(mul(sub(zscore(winsor(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0))),2)),zscore(winsor(ratio(coalesce(intan,0),at),2))),rank(ma(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Complete Hidden Capital On Five-Year Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),rank(ma(ratio(oancf,at),5)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Mix On Industry-Relative Cash Productivity",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),ind_rank(ma(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual-Definition Hidden Capital Ensemble",
+      "metadata": {
+        "normalized_expression": "sumrank(mul(rank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),sub(at,coalesce(intan,0)))),rank(ratio(coalesce(intan,0),at)))),min(rank(ma(ratio(oancf,at),3)),rank(neg(ratio(sub(ib,oancf),at))))),mul(rank(sub(rank(ratio(add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)),sub(at,coalesce(intan,0)))),rank(ratio(add(coalesce(gdwl,0),coalesce(intan,0)),ceq)))),rank(ma(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    }
+  ]
+}

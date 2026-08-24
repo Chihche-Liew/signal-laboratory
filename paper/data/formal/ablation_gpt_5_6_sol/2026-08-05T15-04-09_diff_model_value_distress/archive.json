@@ -1,0 +1,3268 @@
+{
+  "pair": "value_distress",
+  "evaluated": [
+    {
+      "name": "Liquid Sales Bargain",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), at)))",
+      "hypothesis": "High sales-to-price firms outperform when their apparent cheapness is supported by a strong net working-capital position.",
+      "expected_sign": "positive",
+      "reasoning": "Sales yield captures inexpensive operating scale but does not reveal whether near-term obligations can be funded. Interacting it with asset-scaled net working capital favors liquid value firms and downweights sales-rich businesses facing acute payment pressure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.166414522388347,
+      "ls_alpha": -0.0065220413267323505,
+      "ls_talpha": -0.669346541031994,
+      "ls_sharpe": 0.40696797134229123,
+      "coverage": 0.12185309143679314,
+      "error": null
+    },
+    {
+      "name": "Continuously Health-Weighted Cash Yield",
+      "expression": "MUL(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1), RANK(RATIO(re, at)))",
+      "hypothesis": "Operating-cash-flow yield predicts higher returns more strongly as accumulated financial health improves.",
+      "expected_sign": "positive",
+      "reasoning": "The continuous retained-earnings weight preserves cash-yield variation across deficit firms instead of assigning them a common zero. Because retained earnings only scale the signed cash yield, firms with neutral cash yield receive no standalone retained-earnings score, reducing contamination from an isolated retained-earnings effect.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.678417369419975,
+      "ls_alpha": -0.021038241580027484,
+      "ls_talpha": -1.3660774495578405,
+      "ls_sharpe": 0.09694324538453644,
+      "coverage": 0.09075495263024516,
+      "error": null
+    },
+    {
+      "name": "Liability-Financed Cash Adjustment",
+      "expression": "WINSOR(RATIO(SUB(oancf, MAX(DELTA(lt, 1), SUB(at, at))), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Operating-cash-flow yield predicts higher returns when the reported cash generation is not accompanied by an expansion of total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Rising liabilities can support cash flow through supplier credit, deferred obligations, or new borrowing, making an apparently high cash yield less reassuring. Deducting only positive liability accumulation directly addresses the prior cash-yield signal\u2019s weak portfolio evidence without imposing a retained-earnings main effect.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.228390530244073,
+      "ls_alpha": 0.0064583989963346924,
+      "ls_talpha": 0.5009645342985399,
+      "ls_sharpe": 0.2627146389759518,
+      "coverage": 0.08375545947052526,
+      "error": null
+    },
+    {
+      "name": "Cash-Burning Sales Trap",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(NEG(RATIO(oancf, lct)), 1))",
+      "hypothesis": "High sales-to-price firms underperform when operations consume cash relative to current obligations.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier sales-value interaction had strong cross-sectional evidence but negative FF5 alpha, suggesting that some sales-cheap firms may carry an uncompensated distress exposure. This signal isolates that adverse branch by contrasting cash-burning sales bargains with cheap firms generating cash sufficient to support current claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.4865883140150544,
+      "ls_alpha": 0.014371662646480793,
+      "ls_talpha": 1.1843502246372561,
+      "ls_sharpe": -0.12212549264609121,
+      "coverage": 0.07929104477611941,
+      "error": null
+    },
+    {
+      "name": "Pretax Deterioration Asset Trap",
+      "expression": "MUL(RANK(RATIO(at, MUL(prcc_f, csho))), WINSOR(NEG(TREND(RATIO(pi, at), 5)), 1))",
+      "hypothesis": "Firms that look cheap relative to their asset base underperform when pretax operating profitability is trending downward.",
+      "expected_sign": "negative",
+      "reasoning": "Asset cheapness scales a signed deterioration measure rather than being combined with a positively ranked distress leg, resolving the earlier trap signal\u2019s sign ambiguity. High scores represent large apparent asset discounts accompanied by worsening pretax economics, while improving cheap firms receive negative scores.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.1636202724341671,
+      "ls_alpha": 0.0003431081209550697,
+      "ls_talpha": 0.028679260746279765,
+      "ls_sharpe": 0.09346720698149559,
+      "coverage": 0.119836409870343,
+      "error": null
+    },
+    {
+      "name": "Accumulated-Deficit Adjusted Book Value",
+      "expression": "WINSOR(RATIO(ceq, ADD(MUL(prcc_f, csho), MAX(NEG(re), SUB(at, at)))), 1)",
+      "hypothesis": "Book-equity cheapness predicts higher returns after imposing a continuous valuation penalty for accumulated deficits.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the profitability-like change in retained earnings with the stock of cumulative accounting losses, which measures unresolved historical distress rather than current ROA. The adjustment is active for the economically meaningful set of negative-retained-earnings firms and becomes larger with deficit severity, preventing their small market capitalizations from mechanically generating extreme value scores.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.9774468475347637,
+      "ls_alpha": -0.015666011669543088,
+      "ls_talpha": -1.8699616201347542,
+      "ls_sharpe": 0.20256187762883807,
+      "coverage": 0.14139574650391645,
+      "error": null
+    },
+    {
+      "name": "Tax-Corroborated Operating Bargain",
+      "expression": "MIN(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(RATIO(txt, ABS(pi))))",
+      "hypothesis": "High EBITDA-yield firms outperform when positive tax expense relative to pretax income corroborates the operating earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel now measures earnings corroboration rather than placing tax expense directly over market capitalization, avoiding a repackaged taxable-income yield. The minimum operator creates a bottleneck score that can be high only when both operating cheapness and tax confirmation are strong, so the distress modifier is not confined to a tiny insolvent subset.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.788357263894247,
+      "ls_alpha": -0.029826258016461726,
+      "ls_talpha": -2.510609722819944,
+      "ls_sharpe": 0.12297532003100674,
+      "coverage": 0.1417722652706271,
+      "error": null
+    },
+    {
+      "name": "Deleveraging-Backed Dividend Yield",
+      "expression": "MUL(WINSOR(RATIO(dvc, MUL(prcc_f, csho)), 1), WINSOR(NEG(RATIO(DELTA(lt, 1), at)), 1))",
+      "hypothesis": "High-dividend-yield firms that reduce their liability burden outperform high-yield firms whose payouts coincide with liability expansion.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing working-capital contraction removes the accrual-direction conflict identified by the critic. Dividend yield scales a signed solvency change, producing high scores for distributions accompanied by deleveraging and low scores for high payouts associated with growing obligations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.7321894333731589,
+      "ls_alpha": 0.009868034428627274,
+      "ls_talpha": 0.9819218624765352,
+      "ls_sharpe": -0.039348154941633066,
+      "coverage": 0.12979501653834694,
+      "error": null
+    },
+    {
+      "name": "Maturity-Extension Operating Value",
+      "expression": "MUL(IND_RANK(RATIO(ebitda, MUL(prcc_f, csho))), WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1))",
+      "hypothesis": "Industry-relative operating bargains outperform when the proportion of liabilities due in the short term is declining.",
+      "expected_sign": "positive",
+      "reasoning": "A falling short-term-debt share captures maturity extension or repayment rather than generic deleveraging. The signed maturity change distinguishes cheap firms actively reducing refinancing exposure from firms whose high EBITDA yield accompanies an increasingly fragile liability structure.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.1291863015042285,
+      "ls_alpha": 0.00976813175845253,
+      "ls_talpha": 1.2393411419691804,
+      "ls_sharpe": 0.16125171470119667,
+      "coverage": 0.1286178407778595,
+      "error": null
+    },
+    {
+      "name": "Downside Cash-Coverage Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(TS_MIN(RATIO(oancf, lct), 3), 1))",
+      "hypothesis": "Book-cheap firms outperform when their weakest recent operating-cash-flow coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the incremental net-debt-issuance refinement with a downside-resilience mechanism based on the firm\u2019s cash-coverage floor. Signed coverage preserves the distinction between cash-generating and cash-burning bargains, while the short window limits the coverage loss and instability of a long historical requirement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.4462952349122054,
+      "ls_alpha": -0.01079394415380142,
+      "ls_talpha": -0.8008046319735584,
+      "ls_sharpe": 0.033957618407113456,
+      "coverage": 0.07961292756393906,
+      "error": null
+    },
+    {
+      "name": "Post-Deleveraging Sales Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(NEG(RATIO(lt, TS_MAX(lt, 5)))))",
+      "hypothesis": "Sales-cheap firms outperform when total liabilities have retreated materially from their recent firm-specific peak.",
+      "expected_sign": "positive",
+      "reasoning": "The distress channel is now distance from a historical liability maximum rather than another working-capital level or industry transformation of the archived signal. This identifies discounted firms that have completed meaningful balance-sheet repair, while industry-relative sales yield reduces structural turnover differences across sectors.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.039600841148622,
+      "ls_alpha": -0.03274235703484668,
+      "ls_talpha": -2.6214843732118647,
+      "ls_sharpe": 0.14827139466071926,
+      "coverage": 0.14202449879357154,
+      "error": null
+    },
+    {
+      "name": "Noncash Asset Build Value Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(RATIO(DELTA(SUB(act, che), 1), at), 1))",
+      "hypothesis": "Book-cheap firms with rapid noncash current-asset accumulation subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Removing cash from current assets isolates accrual-like balance-sheet expansion rather than interpreting a rising current ratio as unambiguously healthy. The negative expected sign now aligns with the documented lower returns following working-capital accrual growth, with book cheapness concentrating the test among apparent value opportunities.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.7560446510424499,
+      "ls_alpha": -0.011068904824515509,
+      "ls_talpha": -1.0854496608785298,
+      "ls_sharpe": -0.06310710484792302,
+      "coverage": 0.10975119631641031,
+      "error": null
+    },
+    {
+      "name": "Cash-Corroborated Pretax Value",
+      "expression": "WINSOR(RATIO(MIN(oancf, pi), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms priced cheaply relative to the weaker of operating cash flow and pretax income subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum operator requires both cash generation and pretax profitability to support the valuation, sharply penalizing firms for which either measure is negative or weak. This removes the problematic effective-tax-rate construction and avoids rediscovering tax-expense surprise while retaining broad current-period coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.0202065065317283,
+      "ls_alpha": -0.028257832104509453,
+      "ls_talpha": -1.5472435880172684,
+      "ls_sharpe": 0.021522706485258863,
+      "coverage": 0.09090983195850844,
+      "error": null
+    },
+    {
+      "name": "Funding-Gap Residual Operating Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ebitda, MAX(SUB(lct, act), SUB(at, at))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high operating earnings relative to market value outperform after charging EBITDA for any current-liability funding gap.",
+      "expected_sign": "positive",
+      "reasoning": "The distress component is an operating-liquidity shortfall that directly reduces the earnings available to equity rather than a standalone leverage ratio. Because current liabilities exceed current assets for a substantial set of firms, the adjustment is economically active; industry ranking also limits distortions from sectors where negative working capital is a normal business model.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.155336593813147,
+      "ls_alpha": -0.0010347074227502152,
+      "ls_talpha": -0.09378162009924293,
+      "ls_sharpe": 0.246263094358662,
+      "coverage": 0.12170192673598987,
+      "error": null
+    },
+    {
+      "name": "Accelerating-Leverage Sales Trap",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(ACCEL(RATIO(lt, at)), 1))",
+      "hypothesis": "Sales-cheap firms underperform when their liability-to-asset ratio is accelerating.",
+      "expected_sign": "negative",
+      "reasoning": "Liability acceleration identifies an adverse solvency inflection rather than a high but stable leverage level or a standard one-period debt-issuance effect. Because the distress term is signed, sales cheapness amplifies worsening or improving leverage dynamics instead of contributing an unconditional positive value score.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.10822945415615791,
+      "ls_alpha": 0.0034746162212840955,
+      "ls_talpha": 0.3347519169789635,
+      "ls_sharpe": 0.03637025495447935,
+      "coverage": 0.11873822153542887,
+      "error": null
+    },
+    {
+      "name": "Earnings-Instability Value Trap",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(VOL(RATIO(pi, at), 3)))",
+      "hypothesis": "Book-cheap firms with unusually volatile pretax profitability relative to industry peers subsequently underperform stable cheap firms.",
+      "expected_sign": "negative",
+      "reasoning": "Profitability volatility captures uncertainty about whether book value can generate sustainable earnings, a distress mechanism distinct from loss levels, trends, leverage, and liquidity. Industry-standardizing volatility makes the distress term signed around zero, so book cheapness only emphasizes unusually unstable versus unusually stable firms rather than adding an independent value score.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.697726985610176,
+      "ls_alpha": 0.007474382141643852,
+      "ls_talpha": 0.8449942079681682,
+      "ls_sharpe": -0.1024525934231248,
+      "coverage": 0.12947978912472646,
+      "error": null
+    },
+    {
+      "name": "Pretax-Conversion Sales Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(pi, ABS(ebitda))))",
+      "hypothesis": "Sales-cheap firms outperform when an unusually large share of EBITDA survives depreciation, financing costs, and other pre-tax claims.",
+      "expected_sign": "positive",
+      "reasoning": "Pretax income relative to EBITDA measures the claim burden between operating earnings and shareholder-relevant profitability, replacing the archived working-capital accrual component. Industry standardization makes this condition signed around zero, so sales yield emphasizes above- versus below-industry pretax conversion rather than contributing an unconditional value tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.698308505103939,
+      "ls_alpha": -0.019990157767557564,
+      "ls_talpha": -1.989419359545295,
+      "ls_sharpe": 0.12966362130498071,
+      "coverage": 0.14164519405626588,
+      "error": null
+    },
+    {
+      "name": "Uncovered Maturity Residual Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ebitda, MUL(MAX(SUB(dlc, che), SUB(at, at)), RATIO(dlc, lct))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high operating earnings relative to market value outperform after charging earnings for uncovered short-term debt concentrated within current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior denominator tweak with a nonlinear refinancing charge: only short-term debt exceeding cash is penalized, and the penalty increases with debt\u2019s share of current liabilities. The resulting residual yield jointly measures operating cheapness and capacity to absorb a maturity wall rather than merely tracking a change in debt composition.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.331387246729255,
+      "ls_alpha": 0.0003516706489819655,
+      "ls_talpha": 0.03538367248437178,
+      "ls_sharpe": 0.2803033986656148,
+      "coverage": 0.1214266831596126,
+      "error": null
+    },
+    {
+      "name": "Cash-Runway Trend Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(TREND(RATIO(che, lct), 3), 1))",
+      "hypothesis": "Sales-cheap firms with improving cash coverage of current liabilities outperform cheap firms with deteriorating cash runways.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-coverage condition is now a signed trend, placing deteriorating cheap firms in the low-score portfolio instead of assigning every firm a nonnegative liquidity weight. Sales yield contributes no standalone score when the cash-runway trend is flat, directly addressing the unconditional-value dominance of the earlier construction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.8653912819047396,
+      "ls_alpha": -0.010539164808124729,
+      "ls_talpha": -1.171950893997632,
+      "ls_sharpe": -0.036800158772162965,
+      "coverage": 0.10191828521239828,
+      "error": null
+    },
+    {
+      "name": "Tax-Cash Funding Gap",
+      "expression": "WINSOR(RATIO(SUB(txt, oancf), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms whose reported tax burden exceeds operating cash generation by a large amount relative to equity value subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A high score identifies low-valued firms where tax expense is not supported by internally generated cash, consistent with accrual-backed earnings or emerging funding pressure. Unlike the dividend-deficit interaction, this mechanism applies broadly to payers and nonpayers and does not rely on a thin intersection of dividend distributions and accumulated deficits.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.6513800167466473,
+      "ls_alpha": 0.020810963151968065,
+      "ls_talpha": 1.4706172914467202,
+      "ls_sharpe": -0.11937980812218617,
+      "coverage": 0.09090075175805062,
+      "error": null
+    },
+    {
+      "name": "Current-Claim Concentration Trap",
+      "expression": "MUL(TS_RANK(RATIO(ebitda, MUL(prcc_f, csho)), 5), IND_ZSCORE(RATIO(lct, lt)))",
+      "hypothesis": "Firms that appear operationally cheap relative to their own history underperform when an unusually large share of liabilities consists of current claims.",
+      "expected_sign": "negative",
+      "reasoning": "Current-liability concentration captures a near-term maturity wall without relying on noisy changes in short-term debt or another net-leverage ratio. The industry-centered condition is signed, so historical cheapness amplifies unusually fragile versus unusually patient liability structures rather than producing a standalone value score.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.0539878688791051,
+      "ls_alpha": 0.017872269902381926,
+      "ls_talpha": 1.9796379928425103,
+      "ls_sharpe": 0.03589287098409429,
+      "coverage": 0.11107855652878795,
+      "error": null
+    },
+    {
+      "name": "Uncompensated Deficit Burden",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(NEG(re), at), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when their accumulated deficit is large relative to the sales-based valuation discount offered to investors.",
+      "expected_sign": "negative",
+      "reasoning": "Cheapness now acts as compensation in the denominator rather than as a strictly positive multiplier of an independent distress score. A firm receives a high trap score only when cumulative losses are severe relative to its sales yield, making this economically distinct from the failed post-deleveraging normalization variants.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.8040862274992872,
+      "ls_alpha": 0.01221704144458485,
+      "ls_talpha": 1.2906003164044337,
+      "ls_sharpe": 0.16391062395401243,
+      "coverage": 0.13858119391428456,
+      "error": null
+    },
+    {
+      "name": "Liability-Funded Earnings Spiral",
+      "expression": "MUL(TS_RANK(RATIO(sale, MUL(prcc_f, csho)), 5), WINSOR(MIN(NEG(RATIO(DELTA(pi, 1), at)), RATIO(DELTA(lt, 1), at)), 1))",
+      "hypothesis": "Historically sales-cheap firms underperform when pretax earnings are falling while liabilities are simultaneously increasing.",
+      "expected_sign": "negative",
+      "reasoning": "The minimum operator creates a conjunctive distress state that is strongly positive only when both earnings deterioration and liability expansion occur. This replaces the working-capital accrual channel with a financing spiral in which weakening operations are accompanied by growing creditor claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.6228734672033245,
+      "ls_alpha": -0.009406868512725677,
+      "ls_talpha": -0.81394923697221,
+      "ls_sharpe": -0.17393387286290823,
+      "coverage": 0.1287476463707677,
+      "error": null
+    },
+    {
+      "name": "Uncompensated Earnings Instability",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(VOL(RATIO(pi, at), 5), RATIO(at, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms with pretax-earnings instability that is large relative to their asset-based valuation discount subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the archived multiplicative instability signal, asset cheapness now lowers the score by compensating investors for a given amount of fundamental uncertainty. This directly targets the prior alpha disagreement: only instability not offset by a sufficiently large valuation discount receives a high trap score, while the longer window reduces volatility-estimation noise.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.7081512432411996,
+      "ls_alpha": 0.01392660260140776,
+      "ls_talpha": 1.3841215291837865,
+      "ls_sharpe": -0.07657583477587718,
+      "coverage": 0.1305375292939649,
+      "error": null
+    },
+    {
+      "name": "Dual-Cushion Recovery Value",
+      "expression": "MUL(TS_RANK(RATIO(ebitda, MUL(prcc_f, csho)), 5), WINSOR(MIN(RATIO(DELTA(che, 1), at), RATIO(DELTA(re, 1), at)), 1))",
+      "hypothesis": "Firms that are operationally cheap relative to their own history outperform when both cash reserves and retained earnings are rebuilding.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces another current-liability coverage trend with simultaneous repair of two distinct internal cushions: immediate liquidity and cumulative earned capital. The weakest-link minimum prevents profitability alone from driving the signal because a firm cannot score highly unless cash accumulation corroborates retained-earnings improvement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.3272945070457534,
+      "ls_alpha": 0.020303634590951712,
+      "ls_talpha": 2.180079610136398,
+      "ls_sharpe": 0.11751555964392212,
+      "coverage": 0.1264236309740496,
+      "error": null
+    },
+    {
+      "name": "Persistent Refinancing Burden",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(TS_SUM(RATIO(SUB(dlc, che), lct), 5), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when persistent short-term debt net of cash is large relative to both current claims and the sales-based valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "This measures the cumulative persistence of uncovered refinancing pressure rather than wrapping the prior one-period residual-yield formula in another normalization. Dividing by sales yield treats valuation cheapness as required compensation, while industry standardization limits structural differences in current-liability financing.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.550722996419545,
+      "ls_alpha": -0.04352655744280419,
+      "ls_talpha": -3.330881476604537,
+      "ls_sharpe": -0.058902052126619954,
+      "coverage": 0.12001749795901857,
+      "error": null
+    },
+    {
+      "name": "Market-Scaled Dual-Cushion Repair",
+      "expression": "WINSOR(RATIO(MIN(DELTA(che, 1), DELTA(re, 1)), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms with simultaneous cash and retained-earnings growth that is large relative to market value subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier dual-cushion signal produced the strongest jointly aligned positive evidence, including significant FF5 alpha, but only a moderate Fama-MacBeth slope. Scaling the weaker dollar improvement directly by market value integrates valuation into the repair yield and prevents either profitability or cash accumulation from generating a high score alone.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.9480212553458084,
+      "ls_alpha": 0.021568713380748866,
+      "ls_talpha": 2.3906727322744046,
+      "ls_sharpe": 0.08086217260914427,
+      "coverage": 0.12782894677103945,
+      "error": null
+    },
+    {
+      "name": "Loss-Confirmed Persistent Refinancing Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(TS_SUM(RATIO(SUB(dlc, che), lct), 5), RATIO(sale, MUL(prcc_f, csho))), 1)), IND_ZSCORE(NEG(RATIO(pi, at))))",
+      "hypothesis": "Firms with persistently uncovered short-term debt underperform when the refinancing burden is accompanied by unusually weak pretax profitability.",
+      "expected_sign": "negative",
+      "reasoning": "Persistent refinancing burden produced strongly negative FF5 alpha but a positive average Fama-MacBeth slope, suggesting that profitable borrowers may earn compensation while the loss-making tail is a trap. The signed minimum continuously requires both above-industry refinancing pressure and below-industry profitability, avoiding a sparse hard gate while targeting the economically adverse subgroup.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.03664887529628788,
+      "ls_alpha": -0.00048314927762342294,
+      "ls_talpha": -0.053401416163924034,
+      "ls_sharpe": 0.08606068477756824,
+      "coverage": 0.1200150215407119,
+      "error": null
+    },
+    {
+      "name": "Claim-Light Sales Recovery",
+      "expression": "WINSOR(RATIO(MIN(DELTA(sale, 1), NEG(DELTA(lct, 1))), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms with simultaneous sales growth and current-liability reduction that is large relative to market value subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This identifies operating expansion accompanied by near-term claim relief, rather than another static sales-yield and liquidity-level composite. The weakest-link construction excludes firms that increase sales by leaning more heavily on current creditors and directly values the joint turnaround relative to equity capitalization.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.47589888516583345,
+      "ls_alpha": 0.0216558920389651,
+      "ls_talpha": 2.039258989672114,
+      "ls_sharpe": -0.09840963596048917,
+      "coverage": 0.11219583392148268,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Reserve Depletion Trap",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(SUB(TS_MAX(che, 5), che), lct), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when cash reserves have fallen far below their recent peak relative to current claims and the sales-based valuation discount is insufficient compensation.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces earnings momentum and debt issuance with depletion of a pre-existing liquidity reserve, a distinct path into distress. Cash depletion is scaled by current obligations, while sales cheapness enters as compensation in the denominator, so a larger valuation discount reduces rather than mechanically amplifies the trap score.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.291407962248056,
+      "ls_alpha": 0.0006119642185049316,
+      "ls_talpha": 0.057605256959025845,
+      "ls_sharpe": -0.12266646840916609,
+      "coverage": 0.11968751521965418,
+      "error": null
+    },
+    {
+      "name": "Standardized Cash-Funded Maturity Repair",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1)))",
+      "hypothesis": "Firms outperform when both market-scaled cash accumulation and declining short-term debt concentration are unusually strong relative to industry peers.",
+      "expected_sign": "positive",
+      "reasoning": "Standardizing each leg before applying the minimum makes the cash-accumulation and maturity-repair channels commensurate. A high score now genuinely requires both improvements to be above their industry norms rather than being mechanically determined by the lower-dispersion cash term.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.047886907478273,
+      "ls_alpha": 0.019335627723066955,
+      "ls_talpha": 2.4472236506229237,
+      "ls_sharpe": 0.15090670471347664,
+      "coverage": 0.12842024323380608,
+      "error": null
+    },
+    {
+      "name": "Compensated Pretax Loss Floor",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(MAX(NEG(TS_MIN(RATIO(pi, at), 5)), SUB(RATIO(at, at), RATIO(at, at))), RATIO(at, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when the magnitude of their worst recent pretax loss is not compensated by a sufficiently large asset-based valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "The positive-part operator assigns zero downside burden to firms whose profitability floor remains positive, eliminating the prior sign reversal for healthy firms. Asset cheapness reduces the score only when an actual loss occurred, preserving the interpretation of valuation as compensation for downside distress.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.883086007741558,
+      "ls_alpha": 0.03326177223564278,
+      "ls_talpha": 2.515867766768392,
+      "ls_sharpe": 0.01823778145398532,
+      "coverage": 0.14044985789486283,
+      "error": null
+    },
+    {
+      "name": "Residual-Cash Dividend Value",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(dvc, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dvc), lct), 1)))",
+      "hypothesis": "High-dividend-yield firms outperform when operating cash flow remaining after dividends provides unusually strong coverage of current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield alone cannot distinguish durable value from a payout that worsens distress. The soft conjunction requires both an attractive payout valuation and positive residual-cash coverage, retaining continuous variation without a hard dividend-coverage gate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.1457276959664826,
+      "ls_alpha": 0.008551104497114092,
+      "ls_talpha": 0.5992123808989541,
+      "ls_sharpe": 0.11613156856390877,
+      "coverage": 0.07896188750952389,
+      "error": null
+    },
+    {
+      "name": "Deficit-Confirmed Cash Collapse",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), at)), 1)), IND_ZSCORE(WINSOR(RATIO(NEG(re), MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "Firms with deteriorating operating cash flow underperform when the decline is accompanied by a large accumulated deficit relative to equity value.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow deterioration can be transitory, while an accumulated deficit alone can already be reflected in price. Requiring both conditions isolates firms where current cash deterioration confirms that the historically impaired earnings base remains economically relevant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.8825305002793518,
+      "ls_alpha": -0.04289987954317082,
+      "ls_talpha": -3.1996249245119714,
+      "ls_sharpe": -0.3477036144645386,
+      "coverage": 0.08082111014530798,
+      "error": null
+    },
+    {
+      "name": "Revenue Value with Liquidity Floor",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(revt, MUL(prcc_f, csho)), 1)), IND_ZSCORE(TS_MIN(RATIO(wcap, at), 5)))",
+      "hypothesis": "Revenue-cheap firms outperform when their worst recent working-capital position remains strong relative to industry peers.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces retained-earnings change and current profitability with a downside liquidity-resilience mechanism. The standardized minimum requires both attractive revenue valuation and a strong multi-period working-capital floor, rather than re-aggregating the archived dual-cushion components.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.319855828631479,
+      "ls_alpha": -0.011039948992213769,
+      "ls_talpha": -0.9627524407056178,
+      "ls_sharpe": 0.12981696694520461,
+      "coverage": 0.12239000988090905,
+      "error": null
+    },
+    {
+      "name": "Current-Claim After-Tax Operating Yield",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), ADD(MUL(prcc_f, csho), lct)), 1))",
+      "hypothesis": "Firms with high operating earnings after positive tax expense relative to equity value and current claims subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the cash-accumulation and debt-maturity-change components of the archived repair signal. Positive tax expense is treated as a deduction from operating capacity, current liabilities are an always-active claim in the valuation base, and tax benefits cannot mechanically increase the score.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.70835434890154,
+      "ls_alpha": 0.011572610261971785,
+      "ls_talpha": 1.1852797765640453,
+      "ls_sharpe": 0.2673309884257346,
+      "coverage": 0.12257445145270825,
+      "error": null
+    },
+    {
+      "name": "Cash-Realized Sales Growth",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(sale, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(oancf, 1), lct), 1)))",
+      "hypothesis": "Firms outperform when market-scaled sales growth is accompanied by improving operating cash flow relative to current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This removes current-liability reduction, so the signal no longer relies on a balance-sheet change that mechanically raises working-capital accruals. The two commensurately standardized channels test whether growth priced cheaply by the market is being realized in cash rather than merely recorded as revenue.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.0598455886719123,
+      "ls_alpha": 0.010804262832234684,
+      "ls_talpha": 0.8530164840798629,
+      "ls_sharpe": 0.07593729648682845,
+      "coverage": 0.07050037889200092,
+      "error": null
+    },
+    {
+      "name": "Dual-Extreme Funding Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(TS_RANK(RATIO(lct, at), 5), RATIO(sale, MUL(prcc_f, csho))), 1)), IND_ZSCORE(NEG(TS_RANK(RATIO(oancf, at), 5))))",
+      "hypothesis": "Firms underperform when current-claim intensity is near its historical high while operating cash generation is near its historical low, after accounting for the sales valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sign-flipped cash-change and debt-maturity components with a joint distance-to-extremes state. A high score requires both unusually elevated current claims relative to the valuation cushion and unusually weak firm-specific cash generation, identifying a sustained funding squeeze rather than the mirror image of a repair signal.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.08045648032186,
+      "ls_alpha": -0.0029271943532070376,
+      "ls_talpha": -0.2586027190974676,
+      "ls_sharpe": -0.0955367788733801,
+      "coverage": 0.06911580309832949,
+      "error": null
+    },
+    {
+      "name": "Operating-Cash-Funded Maturity Repair",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1)))",
+      "hypothesis": "Firms outperform when improving operating cash generation accompanies a reduction in short-term debt concentration.",
+      "expected_sign": "positive",
+      "reasoning": "The archived maturity-repair winner used cash-stock accumulation, which can reflect asset sales or external financing. Requiring improvement in operating cash flow instead tests whether maturity extension is supported by the underlying business, while standardized legs preserve a valid soft conjunction.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.899193917189352,
+      "ls_alpha": 0.017751224456900843,
+      "ls_talpha": 1.344576870226384,
+      "ls_sharpe": 0.12585337758530707,
+      "coverage": 0.08055984801395379,
+      "error": null
+    },
+    {
+      "name": "Post-Payout Liquidity Residual",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(SUB(oancf, dvc), MAX(SUB(lct, act), SUB(at, at))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high post-dividend operating cash flow relative to market value outperform after charging for any current-liability funding gap.",
+      "expected_sign": "positive",
+      "reasoning": "The residual-cash dividend signal had useful cross-sectional evidence but risked sorting primarily on dividend-payer status. This integrated residual applies to payers and nonpayers, deducting both distributions and uncovered current claims before measuring the cash surplus available to equity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.353107586565608,
+      "ls_alpha": 0.017028542480644174,
+      "ls_talpha": 1.286551636369432,
+      "ls_sharpe": 0.25380079122984717,
+      "coverage": 0.07877914847531052,
+      "error": null
+    },
+    {
+      "name": "Cash-Realized After-Tax Operating Value",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "Firms outperform when high after-tax operating yield is corroborated by strong operating-cash-flow coverage of current claims.",
+      "expected_sign": "positive",
+      "reasoning": "The parent signal\u2019s strong cross-sectional slope but modest alpha suggests that accounting operating yield may not consistently translate into cash available to service near-term obligations. This construction replaces cosmetic smoothing with a commensurately standardized cash-realization condition, requiring both valuation and claim coverage to be strong.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.074067564589518,
+      "ls_alpha": 0.01976556063831353,
+      "ls_talpha": 1.7148677534662962,
+      "ls_sharpe": 0.19807293965293682,
+      "coverage": 0.07914952778830256,
+      "error": null
+    },
+    {
+      "name": "Persistent-Deficit Cash Collapse",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(TS_SUM(INDICATOR(NEG(re), 0), 5)))",
+      "hypothesis": "Firms with sharply deteriorating operating cash flow underperform when they have remained in an accumulated-deficit state for much of their recent history.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the magnitude of RE-to-market or RE-to-assets with the persistence of the deficit state, reducing direct exposure to the familiar retained-earnings value-quality ratio. A high score requires both a market-scaled cash-flow collapse and repeated historical evidence of impaired earned capital.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.2840233048827863,
+      "ls_alpha": 0.003208641454869274,
+      "ls_talpha": 0.32494620008216535,
+      "ls_sharpe": -0.12892981378541157,
+      "coverage": 0.08075218316910553,
+      "error": null
+    },
+    {
+      "name": "Cash-Supported Sales Expansion",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(sale, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, MAX(act, lct)), 1)))",
+      "hypothesis": "Firms outperform when market-scaled sales growth is supported by strong operating cash generation relative to their current balance-sheet footprint.",
+      "expected_sign": "positive",
+      "reasoning": "Operating cash flow is used without subtracting current-liability changes because it already incorporates working-capital effects. Scaling cash flow by the larger of current assets and current liabilities provides a conservative support test, while the standardized minimum requires both inexpensive growth and cash backing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.199416616639311,
+      "ls_alpha": 0.0058916075989859365,
+      "ls_talpha": 0.5560063898818826,
+      "ls_sharpe": 0.12016673951766342,
+      "coverage": 0.07252062030976691,
+      "error": null
+    },
+    {
+      "name": "Cash-Raising Asset Rationalization",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(at, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms with market-significant asset contraction outperform when the contraction is accompanied by cash accumulation relative to creditor claims.",
+      "expected_sign": "positive",
+      "reasoning": "The expected sign now aligns with evidence that asset contraction can predict higher returns, while cash accumulation distinguishes orderly asset monetization from destructive liquidation. A high score requires both a large asset-release yield and an improvement in liquidity relative to liabilities.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.3884837379676505,
+      "ls_alpha": 0.00939702810420693,
+      "ls_talpha": 1.0527876268870682,
+      "ls_sharpe": 0.0217669156786105,
+      "coverage": 0.12914480195670064,
+      "error": null
+    },
+    {
+      "name": "Deficit-Weighted Cash Deterioration",
+      "expression": "MUL(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho))), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Market-scaled operating-cash-flow deterioration predicts underperformance primarily among firms with weak accumulated earned capital.",
+      "expected_sign": "negative",
+      "reasoning": "The cash-collapse interaction generated the strongest negative FF5 alpha, but a direct RE-to-market leg risked carrying a standalone value-quality effect. Here retained earnings only weight the signed cash-flow-deterioration slope; when cash flow is unchanged, retained earnings contribute no signal by themselves.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.1946416970336668,
+      "ls_alpha": -0.014496767179112751,
+      "ls_talpha": -1.1314695673910136,
+      "ls_sharpe": -0.08112132262476413,
+      "coverage": 0.08082111014530798,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed Asset Productivity Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms outperform when asset-turnover improvement is large relative to asset valuation and is accompanied by cash accumulation relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes productive rationalization from the standalone asset-contraction anomaly by requiring improved sales generated per asset rather than shrinkage itself. Cash accumulation relative to creditor claims confirms that the efficiency gain is strengthening the distress cushion.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.9976016573825817,
+      "ls_alpha": 0.027229687502927678,
+      "ls_talpha": 2.9432643492373947,
+      "ls_sharpe": 0.14042606122256382,
+      "coverage": 0.1288585692740875,
+      "error": null
+    },
+    {
+      "name": "Uncovered-Claim After-Tax Yield",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), ADD(MUL(prcc_f, csho), MAX(SUB(lct, act), SUB(at, at)))), 1))",
+      "hypothesis": "Firms with high after-tax operating earnings relative to equity value and uncovered current claims subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Penalizing all current liabilities can misclassify firms whose operating current claims are fully backed by current assets, potentially weakening the parent signal\u2019s alpha. This integrated valuation base charges only the positive current funding gap, creating a substantively different distinction between normal operating float and genuine liquidity distress.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.159193007495602,
+      "ls_alpha": 0.024203717648985313,
+      "ls_talpha": 2.431885425483348,
+      "ls_sharpe": 0.3737550523901695,
+      "coverage": 0.12155875880263524,
+      "error": null
+    },
+    {
+      "name": "Deficit-Weighted Working-Capital Depletion",
+      "expression": "MUL(IND_ZSCORE(WINSOR(RATIO(SUB(TS_MAX(wcap, 5), wcap), MUL(prcc_f, csho)), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Firms underperform when their working-capital buffer has fallen substantially from its recent peak and accumulated earned capital is weak.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage post-payout cash-flow construction with a balance-sheet liquidity-depletion mechanism using broadly reported fields. Retained earnings only weight the signed depletion signal, so they contribute no standalone score when working capital remains near its normal level.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.7953600135582484,
+      "ls_alpha": -0.015040671937609287,
+      "ls_talpha": -1.7245811219687277,
+      "ls_sharpe": 0.09944689850049594,
+      "coverage": 0.12027421999014386,
+      "error": null
+    },
+    {
+      "name": "Current-Claim Payout Capacity Gap",
+      "expression": "IND_ZSCORE(WINSOR(MUL(RATIO(SUB(dvc, SUB(ebitda, MAX(txt, SUB(at, at)))), MUL(prcc_f, csho)), RANK(RATIO(lct, at))), 1))",
+      "hypothesis": "Firms underperform when distributions are large relative to after-tax operating capacity and the current-claim burden is high.",
+      "expected_sign": "negative",
+      "reasoning": "The signed numerator measures payout minus after-tax operating capacity, eliminating the opposing positive dividend-yield leg and the exact negation of residual cash coverage. Current liabilities only amplify that capacity gap, while EBITDA and tax expense provide substantially broader coverage than operating cash flow.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.739340114492142,
+      "ls_alpha": -0.013897695029925322,
+      "ls_talpha": -1.4458176353806789,
+      "ls_sharpe": -0.2730089944750428,
+      "coverage": 0.12246729476889652,
+      "error": null
+    },
+    {
+      "name": "Creditor-Funded Productivity Erosion",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lt, 1), at), 1)))",
+      "hypothesis": "Firms underperform when asset productivity deteriorates relative to valuation while creditor claims simultaneously expand.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the previously weak cash-collapse and current-claim-concentration components. A high score instead requires both declining sales generated per asset and liability growth, identifying creditor-funded operating erosion without relying on the disputed return sign of asset contraction itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.4941442085303307,
+      "ls_alpha": 0.015688923623605345,
+      "ls_talpha": 1.8171877416990712,
+      "ls_sharpe": -0.017291758327376897,
+      "coverage": 0.1295151812696927,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed After-Tax Margin Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), sale), 1), RATIO(MUL(prcc_f, csho), sale)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms outperform when after-tax operating margins improve strongly relative to price-to-sales and cash accumulates relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-backed asset-productivity recovery produced strong evidence on both Fama-MacBeth and FF5-alpha metrics; this tests the complementary margin channel of operating improvement. Cash accumulation confirms that the valuation-scaled margin recovery is strengthening the creditor cushion rather than remaining an accounting-only gain.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.5801477663020874,
+      "ls_alpha": 0.029826752979035757,
+      "ls_talpha": 3.5886388873420643,
+      "ls_sharpe": 0.0883188678945588,
+      "coverage": 0.12588279153428147,
+      "error": null
+    },
+    {
+      "name": "Deteriorating Payout Capacity Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(SUB(dvc, MAX(SUB(ebitda, MAX(txt, SUB(at, at))), SUB(at, at))), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), at), 1)), 1)))",
+      "hypothesis": "Firms underperform when dividends exceed positive after-tax operating capacity while that operating capacity is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "The payout shortfall leg is zero for nonpayers with operating losses and becomes large only when actual distributions exceed positive operating support, avoiding an opposing standalone dividend-yield exposure. Requiring deterioration in after-tax operating return targets unsustainable payouts whose support is worsening rather than merely low.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.236652000067757,
+      "ls_alpha": 0.0037575625693105404,
+      "ls_talpha": 0.3905199274436769,
+      "ls_sharpe": -0.3046531174012328,
+      "coverage": 0.12911322762329056,
+      "error": null
+    },
+    {
+      "name": "Funding-Gap Productivity Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)), IND_ZSCORE(WINSOR(RATIO(MAX(SUB(lct, act), SUB(at, at)), MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "Firms underperform when valuation-scaled asset productivity deteriorates while current liabilities exceed current assets by a large amount relative to equity value.",
+      "expected_sign": "negative",
+      "reasoning": "Creditor-funded productivity erosion had a correctly signed cross-sectional slope but positive alpha, suggesting that liability growth alone may be compensated financing rather than acute distress. Requiring an actual uncovered current-claim gap instead isolates productivity deterioration occurring alongside a present liquidity shortfall.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.0109328676086966,
+      "ls_alpha": 0.01646294859872199,
+      "ls_talpha": 1.478200107332773,
+      "ls_sharpe": -0.061299197007173054,
+      "coverage": 0.09963415046882726,
+      "error": null
+    },
+    {
+      "name": "Current-Claim Revenue Squeeze",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(sale, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lct, 1), at), 1)))",
+      "hypothesis": "Firms underperform when sales contract sharply relative to equity value while current liabilities simultaneously increase.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage post-payout recombination with a broadly observable operating squeeze. Rising current claims can be benign during expansion, but their conjunction with shrinking sales indicates increasing near-term obligations despite a contracting revenue base.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.3711309694786644,
+      "ls_alpha": 0.02282997027346609,
+      "ls_talpha": 2.268955358988252,
+      "ls_sharpe": -0.09207861275680781,
+      "coverage": 0.11204879658452387,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Floor Productivity Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at)), 1)), IND_ZSCORE(TS_MIN(RATIO(wcap, at), 5)))",
+      "hypothesis": "Firms outperform when valuation-scaled asset productivity improves and even their weakest recent working-capital position remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the failed depletion-and-deficit construction rather than substituting one liquid asset for another. The productivity channel captures operating recovery, while the historical working-capital floor requires durable liquidity resilience instead of a potentially noisy distance from a recent balance-sheet peak.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.9019773946395448,
+      "ls_alpha": 0.0326106743162805,
+      "ls_talpha": 3.169292910578396,
+      "ls_sharpe": 0.13416265476288203,
+      "coverage": 0.11191470885162705,
+      "error": null
+    },
+    {
+      "name": "Dual-DuPont Valuation Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), sale), 1), RATIO(MUL(prcc_f, csho), sale))), 1)), IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)))",
+      "hypothesis": "Firms underperform when both after-tax operating margin and asset turnover deteriorate substantially relative to their valuation.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the familiar liability-reduction and external-financing channels with simultaneous erosion in the two operating components of return on assets. The standardized minimum is high only when both pricing power or cost efficiency and asset productivity weaken, identifying a broad-based operating value trap rather than a single-anomaly exposure.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.5236309718432755,
+      "ls_alpha": -0.0068546409676326055,
+      "ls_talpha": -0.6721516990577655,
+      "ls_sharpe": -0.20114769107582675,
+      "coverage": 0.1270816359549523,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Liquid Sales Bargain",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), at)))",
+      "hypothesis": "High sales-to-price firms outperform when their apparent cheapness is supported by a strong net working-capital position.",
+      "expected_sign": "positive",
+      "reasoning": "Sales yield captures inexpensive operating scale but does not reveal whether near-term obligations can be funded. Interacting it with asset-scaled net working capital favors liquid value firms and downweights sales-rich businesses facing acute payment pressure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Near-Term Refinancing Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(SUB(dlc, che), at)))",
+      "hypothesis": "Cheap firms with high short-term debt net of cash subsequently underperform because refinancing pressure makes the valuation discount less likely to mean-revert.",
+      "expected_sign": "negative",
+      "reasoning": "Short-term debt in excess of cash measures immediate funding pressure rather than leverage in general. Its interaction with book cheapness isolates firms where low market value may reflect dilution, forced asset sales, or default risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Flow Floor Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(TS_MIN(RATIO(oancf, at), 3)))",
+      "hypothesis": "Book-cheap firms outperform when even their weakest recent operating-cash-flow outcome remains comparatively strong.",
+      "expected_sign": "positive",
+      "reasoning": "The trailing cash-flow floor captures downside operating resilience rather than static leverage, separating temporarily discounted firms from businesses repeatedly approaching cash distress. Requiring both cheapness and a strong worst-case outcome makes the signal distinct from the near-term refinancing mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Continuously Health-Weighted Cash Yield",
+      "expression": "MUL(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1), RANK(RATIO(re, at)))",
+      "hypothesis": "Operating-cash-flow yield predicts higher returns more strongly as accumulated financial health improves.",
+      "expected_sign": "positive",
+      "reasoning": "The continuous retained-earnings weight preserves cash-yield variation across deficit firms instead of assigning them a common zero. Because retained earnings only scale the signed cash yield, firms with neutral cash yield receive no standalone retained-earnings score, reducing contamination from an isolated retained-earnings effect.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deleveraging Operating Bargain",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(NEG(RATIO(DELTA(ADD(dltt, dlc), 1), at))))",
+      "hypothesis": "High EBITDA-yield firms outperform when they are actively reducing debt rather than using additional borrowing to sustain operations.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike EBITDA-to-enterprise-value, this construction does not mechanically fold the debt stock into a standard valuation multiple. It interacts equity cheapness with a dynamic distress-resolution channel, favoring operating bargains whose creditor burden is actually declining.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deteriorating Value Trap",
+      "expression": "MUL(WINSOR(NEG(TREND(RATIO(ib, at), 5)), 1), RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "Cheap firms with worsening profitability trends underperform cheap firms whose profitability is recovering.",
+      "expected_sign": "negative",
+      "reasoning": "The signed deterioration term is positive for declining profitability and negative for improving profitability, while book cheapness only scales that contrast rather than adding an independently positive ranked leg. Thus, high scores identify deteriorating cheap firms and low scores emphasize recovering cheap firms, giving the long-short spread a clean negative prediction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability-Financed Cash Adjustment",
+      "expression": "WINSOR(RATIO(SUB(oancf, MAX(DELTA(lt, 1), SUB(at, at))), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Operating-cash-flow yield predicts higher returns when the reported cash generation is not accompanied by an expansion of total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Rising liabilities can support cash flow through supplier credit, deferred obligations, or new borrowing, making an apparently high cash yield less reassuring. Deducting only positive liability accumulation directly addresses the prior cash-yield signal\u2019s weak portfolio evidence without imposing a retained-earnings main effect.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Burning Sales Trap",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(NEG(RATIO(oancf, lct)), 1))",
+      "hypothesis": "High sales-to-price firms underperform when operations consume cash relative to current obligations.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier sales-value interaction had strong cross-sectional evidence but negative FF5 alpha, suggesting that some sales-cheap firms may carry an uncompensated distress exposure. This signal isolates that adverse branch by contrasting cash-burning sales bargains with cheap firms generating cash sufficient to support current claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Pretax Deterioration Asset Trap",
+      "expression": "MUL(RANK(RATIO(at, MUL(prcc_f, csho))), WINSOR(NEG(TREND(RATIO(pi, at), 5)), 1))",
+      "hypothesis": "Firms that look cheap relative to their asset base underperform when pretax operating profitability is trending downward.",
+      "expected_sign": "negative",
+      "reasoning": "Asset cheapness scales a signed deterioration measure rather than being combined with a positively ranked distress leg, resolving the earlier trap signal\u2019s sign ambiguity. High scores represent large apparent asset discounts accompanied by worsening pretax economics, while improving cheap firms receive negative scores.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Accumulated-Deficit Adjusted Book Value",
+      "expression": "WINSOR(RATIO(ceq, ADD(MUL(prcc_f, csho), MAX(NEG(re), SUB(at, at)))), 1)",
+      "hypothesis": "Book-equity cheapness predicts higher returns after imposing a continuous valuation penalty for accumulated deficits.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the profitability-like change in retained earnings with the stock of cumulative accounting losses, which measures unresolved historical distress rather than current ROA. The adjustment is active for the economically meaningful set of negative-retained-earnings firms and becomes larger with deficit severity, preventing their small market capitalizations from mechanically generating extreme value scores.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Tax-Corroborated Operating Bargain",
+      "expression": "MIN(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(RATIO(txt, ABS(pi))))",
+      "hypothesis": "High EBITDA-yield firms outperform when positive tax expense relative to pretax income corroborates the operating earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel now measures earnings corroboration rather than placing tax expense directly over market capitalization, avoiding a repackaged taxable-income yield. The minimum operator creates a bottleneck score that can be high only when both operating cheapness and tax confirmation are strong, so the distress modifier is not confined to a tiny insolvent subset.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deleveraging-Backed Dividend Yield",
+      "expression": "MUL(WINSOR(RATIO(dvc, MUL(prcc_f, csho)), 1), WINSOR(NEG(RATIO(DELTA(lt, 1), at)), 1))",
+      "hypothesis": "High-dividend-yield firms that reduce their liability burden outperform high-yield firms whose payouts coincide with liability expansion.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing working-capital contraction removes the accrual-direction conflict identified by the critic. Dividend yield scales a signed solvency change, producing high scores for distributions accompanied by deleveraging and low scores for high payouts associated with growing obligations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Maturity-Extension Operating Value",
+      "expression": "MUL(IND_RANK(RATIO(ebitda, MUL(prcc_f, csho))), WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1))",
+      "hypothesis": "Industry-relative operating bargains outperform when the proportion of liabilities due in the short term is declining.",
+      "expected_sign": "positive",
+      "reasoning": "A falling short-term-debt share captures maturity extension or repayment rather than generic deleveraging. The signed maturity change distinguishes cheap firms actively reducing refinancing exposure from firms whose high EBITDA yield accompanies an increasingly fragile liability structure.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Downside Cash-Coverage Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(TS_MIN(RATIO(oancf, lct), 3), 1))",
+      "hypothesis": "Book-cheap firms outperform when their weakest recent operating-cash-flow coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the incremental net-debt-issuance refinement with a downside-resilience mechanism based on the firm\u2019s cash-coverage floor. Signed coverage preserves the distinction between cash-generating and cash-burning bargains, while the short window limits the coverage loss and instability of a long historical requirement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Deleveraging Sales Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(NEG(RATIO(lt, TS_MAX(lt, 5)))))",
+      "hypothesis": "Sales-cheap firms outperform when total liabilities have retreated materially from their recent firm-specific peak.",
+      "expected_sign": "positive",
+      "reasoning": "The distress channel is now distance from a historical liability maximum rather than another working-capital level or industry transformation of the archived signal. This identifies discounted firms that have completed meaningful balance-sheet repair, while industry-relative sales yield reduces structural turnover differences across sectors.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Noncash Asset Build Value Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(RATIO(DELTA(SUB(act, che), 1), at), 1))",
+      "hypothesis": "Book-cheap firms with rapid noncash current-asset accumulation subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Removing cash from current assets isolates accrual-like balance-sheet expansion rather than interpreting a rising current ratio as unambiguously healthy. The negative expected sign now aligns with the documented lower returns following working-capital accrual growth, with book cheapness concentrating the test among apparent value opportunities.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Corroborated Pretax Value",
+      "expression": "WINSOR(RATIO(MIN(oancf, pi), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms priced cheaply relative to the weaker of operating cash flow and pretax income subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "The minimum operator requires both cash generation and pretax profitability to support the valuation, sharply penalizing firms for which either measure is negative or weak. This removes the problematic effective-tax-rate construction and avoids rediscovering tax-expense surprise while retaining broad current-period coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding-Gap Residual Operating Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ebitda, MAX(SUB(lct, act), SUB(at, at))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high operating earnings relative to market value outperform after charging EBITDA for any current-liability funding gap.",
+      "expected_sign": "positive",
+      "reasoning": "The distress component is an operating-liquidity shortfall that directly reduces the earnings available to equity rather than a standalone leverage ratio. Because current liabilities exceed current assets for a substantial set of firms, the adjustment is economically active; industry ranking also limits distortions from sectors where negative working capital is a normal business model.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Accelerating-Leverage Sales Trap",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(ACCEL(RATIO(lt, at)), 1))",
+      "hypothesis": "Sales-cheap firms underperform when their liability-to-asset ratio is accelerating.",
+      "expected_sign": "negative",
+      "reasoning": "Liability acceleration identifies an adverse solvency inflection rather than a high but stable leverage level or a standard one-period debt-issuance effect. Because the distress term is signed, sales cheapness amplifies worsening or improving leverage dynamics instead of contributing an unconditional positive value score.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings-Instability Value Trap",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(VOL(RATIO(pi, at), 3)))",
+      "hypothesis": "Book-cheap firms with unusually volatile pretax profitability relative to industry peers subsequently underperform stable cheap firms.",
+      "expected_sign": "negative",
+      "reasoning": "Profitability volatility captures uncertainty about whether book value can generate sustainable earnings, a distress mechanism distinct from loss levels, trends, leverage, and liquidity. Industry-standardizing volatility makes the distress term signed around zero, so book cheapness only emphasizes unusually unstable versus unusually stable firms rather than adding an independent value score.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Pretax-Conversion Sales Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(pi, ABS(ebitda))))",
+      "hypothesis": "Sales-cheap firms outperform when an unusually large share of EBITDA survives depreciation, financing costs, and other pre-tax claims.",
+      "expected_sign": "positive",
+      "reasoning": "Pretax income relative to EBITDA measures the claim burden between operating earnings and shareholder-relevant profitability, replacing the archived working-capital accrual component. Industry standardization makes this condition signed around zero, so sales yield emphasizes above- versus below-industry pretax conversion rather than contributing an unconditional value tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncovered Maturity Residual Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ebitda, MUL(MAX(SUB(dlc, che), SUB(at, at)), RATIO(dlc, lct))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high operating earnings relative to market value outperform after charging earnings for uncovered short-term debt concentrated within current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior denominator tweak with a nonlinear refinancing charge: only short-term debt exceeding cash is penalized, and the penalty increases with debt\u2019s share of current liabilities. The resulting residual yield jointly measures operating cheapness and capacity to absorb a maturity wall rather than merely tracking a change in debt composition.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Runway Trend Value",
+      "expression": "MUL(IND_RANK(RATIO(sale, MUL(prcc_f, csho))), WINSOR(TREND(RATIO(che, lct), 3), 1))",
+      "hypothesis": "Sales-cheap firms with improving cash coverage of current liabilities outperform cheap firms with deteriorating cash runways.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-coverage condition is now a signed trend, placing deteriorating cheap firms in the low-score portfolio instead of assigning every firm a nonnegative liquidity weight. Sales yield contributes no standalone score when the cash-runway trend is flat, directly addressing the unconditional-value dominance of the earlier construction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Tax-Cash Funding Gap",
+      "expression": "WINSOR(RATIO(SUB(txt, oancf), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms whose reported tax burden exceeds operating cash generation by a large amount relative to equity value subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A high score identifies low-valued firms where tax expense is not supported by internally generated cash, consistent with accrual-backed earnings or emerging funding pressure. Unlike the dividend-deficit interaction, this mechanism applies broadly to payers and nonpayers and does not rely on a thin intersection of dividend distributions and accumulated deficits.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim Concentration Trap",
+      "expression": "MUL(TS_RANK(RATIO(ebitda, MUL(prcc_f, csho)), 5), IND_ZSCORE(RATIO(lct, lt)))",
+      "hypothesis": "Firms that appear operationally cheap relative to their own history underperform when an unusually large share of liabilities consists of current claims.",
+      "expected_sign": "negative",
+      "reasoning": "Current-liability concentration captures a near-term maturity wall without relying on noisy changes in short-term debt or another net-leverage ratio. The industry-centered condition is signed, so historical cheapness amplifies unusually fragile versus unusually patient liability structures rather than producing a standalone value score.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncompensated Deficit Burden",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(NEG(re), at), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when their accumulated deficit is large relative to the sales-based valuation discount offered to investors.",
+      "expected_sign": "negative",
+      "reasoning": "Cheapness now acts as compensation in the denominator rather than as a strictly positive multiplier of an independent distress score. A firm receives a high trap score only when cumulative losses are severe relative to its sales yield, making this economically distinct from the failed post-deleveraging normalization variants.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability-Funded Earnings Spiral",
+      "expression": "MUL(TS_RANK(RATIO(sale, MUL(prcc_f, csho)), 5), WINSOR(MIN(NEG(RATIO(DELTA(pi, 1), at)), RATIO(DELTA(lt, 1), at)), 1))",
+      "hypothesis": "Historically sales-cheap firms underperform when pretax earnings are falling while liabilities are simultaneously increasing.",
+      "expected_sign": "negative",
+      "reasoning": "The minimum operator creates a conjunctive distress state that is strongly positive only when both earnings deterioration and liability expansion occur. This replaces the working-capital accrual channel with a financing spiral in which weakening operations are accompanied by growing creditor claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncompensated Earnings Instability",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(VOL(RATIO(pi, at), 5), RATIO(at, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms with pretax-earnings instability that is large relative to their asset-based valuation discount subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the archived multiplicative instability signal, asset cheapness now lowers the score by compensating investors for a given amount of fundamental uncertainty. This directly targets the prior alpha disagreement: only instability not offset by a sufficiently large valuation discount receives a high trap score, while the longer window reduces volatility-estimation noise.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual-Cushion Recovery Value",
+      "expression": "MUL(TS_RANK(RATIO(ebitda, MUL(prcc_f, csho)), 5), WINSOR(MIN(RATIO(DELTA(che, 1), at), RATIO(DELTA(re, 1), at)), 1))",
+      "hypothesis": "Firms that are operationally cheap relative to their own history outperform when both cash reserves and retained earnings are rebuilding.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces another current-liability coverage trend with simultaneous repair of two distinct internal cushions: immediate liquidity and cumulative earned capital. The weakest-link minimum prevents profitability alone from driving the signal because a firm cannot score highly unless cash accumulation corroborates retained-earnings improvement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Refinancing Burden",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(TS_SUM(RATIO(SUB(dlc, che), lct), 5), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when persistent short-term debt net of cash is large relative to both current claims and the sales-based valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "This measures the cumulative persistence of uncovered refinancing pressure rather than wrapping the prior one-period residual-yield formula in another normalization. Dividing by sales yield treats valuation cheapness as required compensation, while industry standardization limits structural differences in current-liability financing.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Market-Scaled Dual-Cushion Repair",
+      "expression": "WINSOR(RATIO(MIN(DELTA(che, 1), DELTA(re, 1)), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms with simultaneous cash and retained-earnings growth that is large relative to market value subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier dual-cushion signal produced the strongest jointly aligned positive evidence, including significant FF5 alpha, but only a moderate Fama-MacBeth slope. Scaling the weaker dollar improvement directly by market value integrates valuation into the repair yield and prevents either profitability or cash accumulation from generating a high score alone.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Loss-Confirmed Persistent Refinancing Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(TS_SUM(RATIO(SUB(dlc, che), lct), 5), RATIO(sale, MUL(prcc_f, csho))), 1)), IND_ZSCORE(NEG(RATIO(pi, at))))",
+      "hypothesis": "Firms with persistently uncovered short-term debt underperform when the refinancing burden is accompanied by unusually weak pretax profitability.",
+      "expected_sign": "negative",
+      "reasoning": "Persistent refinancing burden produced strongly negative FF5 alpha but a positive average Fama-MacBeth slope, suggesting that profitable borrowers may earn compensation while the loss-making tail is a trap. The signed minimum continuously requires both above-industry refinancing pressure and below-industry profitability, avoiding a sparse hard gate while targeting the economically adverse subgroup.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Claim-Light Sales Recovery",
+      "expression": "WINSOR(RATIO(MIN(DELTA(sale, 1), NEG(DELTA(lct, 1))), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Firms with simultaneous sales growth and current-liability reduction that is large relative to market value subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This identifies operating expansion accompanied by near-term claim relief, rather than another static sales-yield and liquidity-level composite. The weakest-link construction excludes firms that increase sales by leaning more heavily on current creditors and directly values the joint turnaround relative to equity capitalization.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Reserve Depletion Trap",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(RATIO(SUB(TS_MAX(che, 5), che), lct), RATIO(sale, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when cash reserves have fallen far below their recent peak relative to current claims and the sales-based valuation discount is insufficient compensation.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces earnings momentum and debt issuance with depletion of a pre-existing liquidity reserve, a distinct path into distress. Cash depletion is scaled by current obligations, while sales cheapness enters as compensation in the denominator, so a larger valuation discount reduces rather than mechanically amplifies the trap score.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Standardized Cash-Funded Maturity Repair",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1)))",
+      "hypothesis": "Firms outperform when both market-scaled cash accumulation and declining short-term debt concentration are unusually strong relative to industry peers.",
+      "expected_sign": "positive",
+      "reasoning": "Standardizing each leg before applying the minimum makes the cash-accumulation and maturity-repair channels commensurate. A high score now genuinely requires both improvements to be above their industry norms rather than being mechanically determined by the lower-dispersion cash term.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Compensated Pretax Loss Floor",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(MAX(NEG(TS_MIN(RATIO(pi, at), 5)), SUB(RATIO(at, at), RATIO(at, at))), RATIO(at, MUL(prcc_f, csho))), 1))",
+      "hypothesis": "Firms underperform when the magnitude of their worst recent pretax loss is not compensated by a sufficiently large asset-based valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "The positive-part operator assigns zero downside burden to firms whose profitability floor remains positive, eliminating the prior sign reversal for healthy firms. Asset cheapness reduces the score only when an actual loss occurred, preserving the interpretation of valuation as compensation for downside distress.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Residual-Cash Dividend Value",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(dvc, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dvc), lct), 1)))",
+      "hypothesis": "High-dividend-yield firms outperform when operating cash flow remaining after dividends provides unusually strong coverage of current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield alone cannot distinguish durable value from a payout that worsens distress. The soft conjunction requires both an attractive payout valuation and positive residual-cash coverage, retaining continuous variation without a hard dividend-coverage gate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deficit-Confirmed Cash Collapse",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), at)), 1)), IND_ZSCORE(WINSOR(RATIO(NEG(re), MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "Firms with deteriorating operating cash flow underperform when the decline is accompanied by a large accumulated deficit relative to equity value.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow deterioration can be transitory, while an accumulated deficit alone can already be reflected in price. Requiring both conditions isolates firms where current cash deterioration confirms that the historically impaired earnings base remains economically relevant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Revenue Value with Liquidity Floor",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(revt, MUL(prcc_f, csho)), 1)), IND_ZSCORE(TS_MIN(RATIO(wcap, at), 5)))",
+      "hypothesis": "Revenue-cheap firms outperform when their worst recent working-capital position remains strong relative to industry peers.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces retained-earnings change and current profitability with a downside liquidity-resilience mechanism. The standardized minimum requires both attractive revenue valuation and a strong multi-period working-capital floor, rather than re-aggregating the archived dual-cushion components.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim After-Tax Operating Yield",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), ADD(MUL(prcc_f, csho), lct)), 1))",
+      "hypothesis": "Firms with high operating earnings after positive tax expense relative to equity value and current claims subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the cash-accumulation and debt-maturity-change components of the archived repair signal. Positive tax expense is treated as a deduction from operating capacity, current liabilities are an always-active claim in the valuation base, and tax benefits cannot mechanically increase the score.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Realized Sales Growth",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(sale, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(oancf, 1), lct), 1)))",
+      "hypothesis": "Firms outperform when market-scaled sales growth is accompanied by improving operating cash flow relative to current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This removes current-liability reduction, so the signal no longer relies on a balance-sheet change that mechanically raises working-capital accruals. The two commensurately standardized channels test whether growth priced cheaply by the market is being realized in cash rather than merely recorded as revenue.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual-Extreme Funding Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(TS_RANK(RATIO(lct, at), 5), RATIO(sale, MUL(prcc_f, csho))), 1)), IND_ZSCORE(NEG(TS_RANK(RATIO(oancf, at), 5))))",
+      "hypothesis": "Firms underperform when current-claim intensity is near its historical high while operating cash generation is near its historical low, after accounting for the sales valuation discount.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sign-flipped cash-change and debt-maturity components with a joint distance-to-extremes state. A high score requires both unusually elevated current claims relative to the valuation cushion and unusually weak firm-specific cash generation, identifying a sustained funding squeeze rather than the mirror image of a repair signal.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Cash-Funded Maturity Repair",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(dlc, lt), 1)), 1)))",
+      "hypothesis": "Firms outperform when improving operating cash generation accompanies a reduction in short-term debt concentration.",
+      "expected_sign": "positive",
+      "reasoning": "The archived maturity-repair winner used cash-stock accumulation, which can reflect asset sales or external financing. Requiring improvement in operating cash flow instead tests whether maturity extension is supported by the underlying business, while standardized legs preserve a valid soft conjunction.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Payout Liquidity Residual",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(SUB(oancf, dvc), MAX(SUB(lct, act), SUB(at, at))), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Firms with high post-dividend operating cash flow relative to market value outperform after charging for any current-liability funding gap.",
+      "expected_sign": "positive",
+      "reasoning": "The residual-cash dividend signal had useful cross-sectional evidence but risked sorting primarily on dividend-payer status. This integrated residual applies to payers and nonpayers, deducting both distributions and uncovered current claims before measuring the cash surplus available to equity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Realized After-Tax Operating Value",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "Firms outperform when high after-tax operating yield is corroborated by strong operating-cash-flow coverage of current claims.",
+      "expected_sign": "positive",
+      "reasoning": "The parent signal\u2019s strong cross-sectional slope but modest alpha suggests that accounting operating yield may not consistently translate into cash available to service near-term obligations. This construction replaces cosmetic smoothing with a commensurately standardized cash-realization condition, requiring both valuation and claim coverage to be strong.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent-Deficit Cash Collapse",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(TS_SUM(INDICATOR(NEG(re), 0), 5)))",
+      "hypothesis": "Firms with sharply deteriorating operating cash flow underperform when they have remained in an accumulated-deficit state for much of their recent history.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the magnitude of RE-to-market or RE-to-assets with the persistence of the deficit state, reducing direct exposure to the familiar retained-earnings value-quality ratio. A high score requires both a market-scaled cash-flow collapse and repeated historical evidence of impaired earned capital.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Supported Sales Expansion",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(sale, 1), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, MAX(act, lct)), 1)))",
+      "hypothesis": "Firms outperform when market-scaled sales growth is supported by strong operating cash generation relative to their current balance-sheet footprint.",
+      "expected_sign": "positive",
+      "reasoning": "Operating cash flow is used without subtracting current-liability changes because it already incorporates working-capital effects. Scaling cash flow by the larger of current assets and current liabilities provides a conservative support test, while the standardized minimum requires both inexpensive growth and cash backing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Raising Asset Rationalization",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(at, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms with market-significant asset contraction outperform when the contraction is accompanied by cash accumulation relative to creditor claims.",
+      "expected_sign": "positive",
+      "reasoning": "The expected sign now aligns with evidence that asset contraction can predict higher returns, while cash accumulation distinguishes orderly asset monetization from destructive liquidation. A high score requires both a large asset-release yield and an improvement in liquidity relative to liabilities.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deficit-Weighted Cash Deterioration",
+      "expression": "MUL(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(oancf, 1), MUL(prcc_f, csho))), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Market-scaled operating-cash-flow deterioration predicts underperformance primarily among firms with weak accumulated earned capital.",
+      "expected_sign": "negative",
+      "reasoning": "The cash-collapse interaction generated the strongest negative FF5 alpha, but a direct RE-to-market leg risked carrying a standalone value-quality effect. Here retained earnings only weight the signed cash-flow-deterioration slope; when cash flow is unchanged, retained earnings contribute no signal by themselves.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed Asset Productivity Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms outperform when asset-turnover improvement is large relative to asset valuation and is accompanied by cash accumulation relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes productive rationalization from the standalone asset-contraction anomaly by requiring improved sales generated per asset rather than shrinkage itself. Cash accumulation relative to creditor claims confirms that the efficiency gain is strengthening the distress cushion.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncovered-Claim After-Tax Yield",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), ADD(MUL(prcc_f, csho), MAX(SUB(lct, act), SUB(at, at)))), 1))",
+      "hypothesis": "Firms with high after-tax operating earnings relative to equity value and uncovered current claims subsequently outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Penalizing all current liabilities can misclassify firms whose operating current claims are fully backed by current assets, potentially weakening the parent signal\u2019s alpha. This integrated valuation base charges only the positive current funding gap, creating a substantively different distinction between normal operating float and genuine liquidity distress.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deficit-Weighted Working-Capital Depletion",
+      "expression": "MUL(IND_ZSCORE(WINSOR(RATIO(SUB(TS_MAX(wcap, 5), wcap), MUL(prcc_f, csho)), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Firms underperform when their working-capital buffer has fallen substantially from its recent peak and accumulated earned capital is weak.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage post-payout cash-flow construction with a balance-sheet liquidity-depletion mechanism using broadly reported fields. Retained earnings only weight the signed depletion signal, so they contribute no standalone score when working capital remains near its normal level.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim Payout Capacity Gap",
+      "expression": "IND_ZSCORE(WINSOR(MUL(RATIO(SUB(dvc, SUB(ebitda, MAX(txt, SUB(at, at)))), MUL(prcc_f, csho)), RANK(RATIO(lct, at))), 1))",
+      "hypothesis": "Firms underperform when distributions are large relative to after-tax operating capacity and the current-claim burden is high.",
+      "expected_sign": "negative",
+      "reasoning": "The signed numerator measures payout minus after-tax operating capacity, eliminating the opposing positive dividend-yield leg and the exact negation of residual cash coverage. Current liabilities only amplify that capacity gap, while EBITDA and tax expense provide substantially broader coverage than operating cash flow.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Creditor-Funded Productivity Erosion",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lt, 1), at), 1)))",
+      "hypothesis": "Firms underperform when asset productivity deteriorates relative to valuation while creditor claims simultaneously expand.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the previously weak cash-collapse and current-claim-concentration components. A high score instead requires both declining sales generated per asset and liability growth, identifying creditor-funded operating erosion without relying on the disputed return sign of asset contraction itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed After-Tax Margin Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), sale), 1), RATIO(MUL(prcc_f, csho), sale)), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lt), 1)))",
+      "hypothesis": "Firms outperform when after-tax operating margins improve strongly relative to price-to-sales and cash accumulates relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-backed asset-productivity recovery produced strong evidence on both Fama-MacBeth and FF5-alpha metrics; this tests the complementary margin channel of operating improvement. Cash accumulation confirms that the valuation-scaled margin recovery is strengthening the creditor cushion rather than remaining an accounting-only gain.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Deteriorating Payout Capacity Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(SUB(dvc, MAX(SUB(ebitda, MAX(txt, SUB(at, at))), SUB(at, at))), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), at), 1)), 1)))",
+      "hypothesis": "Firms underperform when dividends exceed positive after-tax operating capacity while that operating capacity is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "The payout shortfall leg is zero for nonpayers with operating losses and becomes large only when actual distributions exceed positive operating support, avoiding an opposing standalone dividend-yield exposure. Requiring deterioration in after-tax operating return targets unsustainable payouts whose support is worsening rather than merely low.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding-Gap Productivity Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)), IND_ZSCORE(WINSOR(RATIO(MAX(SUB(lct, act), SUB(at, at)), MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "Firms underperform when valuation-scaled asset productivity deteriorates while current liabilities exceed current assets by a large amount relative to equity value.",
+      "expected_sign": "negative",
+      "reasoning": "Creditor-funded productivity erosion had a correctly signed cross-sectional slope but positive alpha, suggesting that liability growth alone may be compensated financing rather than acute distress. Requiring an actual uncovered current-claim gap instead isolates productivity deterioration occurring alongside a present liquidity shortfall.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim Revenue Squeeze",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(sale, 1), MUL(prcc_f, csho))), 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lct, 1), at), 1)))",
+      "hypothesis": "Firms underperform when sales contract sharply relative to equity value while current liabilities simultaneously increase.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage post-payout recombination with a broadly observable operating squeeze. Rising current claims can be benign during expansion, but their conjunction with shrinking sales indicates increasing near-term obligations despite a contracting revenue base.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Floor Productivity Recovery",
+      "expression": "MIN(IND_ZSCORE(WINSOR(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at)), 1)), IND_ZSCORE(TS_MIN(RATIO(wcap, at), 5)))",
+      "hypothesis": "Firms outperform when valuation-scaled asset productivity improves and even their weakest recent working-capital position remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the failed depletion-and-deficit construction rather than substituting one liquid asset for another. The productivity channel captures operating recovery, while the historical working-capital floor requires durable liquidity resilience instead of a potentially noisy distance from a recent balance-sheet peak.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual-DuPont Valuation Trap",
+      "expression": "MIN(IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(SUB(ebitda, MAX(txt, SUB(at, at))), sale), 1), RATIO(MUL(prcc_f, csho), sale))), 1)), IND_ZSCORE(WINSOR(NEG(RATIO(DELTA(RATIO(sale, at), 1), RATIO(MUL(prcc_f, csho), at))), 1)))",
+      "hypothesis": "Firms underperform when both after-tax operating margin and asset turnover deteriorate substantially relative to their valuation.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the familiar liability-reduction and external-financing channels with simultaneous erosion in the two operating components of return on assets. The standardized minimum is high only when both pricing power or cost efficiency and asset productivity weaken, identifying a broad-based operating value trap rather than a single-anomaly exposure.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Solvency-Weighted Book Cheapness",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a coarse restatement of the well-documented value-plus-low-leverage screen (Penman-Richardson-Tuna's negative net-debt-to-price component, Piotroski's leverage criterion), and it is largely redundant with the sharper \"Near-Term Refinancing Trap\" proposal in the same batch."
+    },
+    {
+      "generation": 0,
+      "target_name": "Accumulated-Profit Cash Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The hard indicator gate assigns an identical score of exactly zero to every negative-retained-earnings firm, so the short leg becomes a lump of deficit firms rather than low-cash-flow-yield firms \u2014 the resulting spread will largely reproduce the known retained-earnings/RE-to-assets effect rather than test the stated conditional cash-yield hypothesis."
+    },
+    {
+      "generation": 0,
+      "target_name": "Debt-Claim Operating Yield",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "This is verbatim EBITDA/enterprise value, the published enterprise-multiple anomaly (Loughran and Wellman 2011), with no cross-theme interaction at all."
+    },
+    {
+      "generation": 0,
+      "target_name": "Liquid Sales Bargain",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sales-to-price and net-working-capital-to-assets are each individually familiar, but their interaction as a liquidity-conditioned value screen is a defensible and internally consistent test, though the author should verify RANK's output range since a product of two centered ranks would score expensive/illiquid firms as highly as cheap/liquid ones."
+    },
+    {
+      "generation": 0,
+      "target_name": "Persistent-Loss Value Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the classic Piotroski/profitability-screened-value result in reverse, and the expected negative sign is not cleanly implied by the expression because the book-cheapness leg pushes returns positive while the loss leg pushes them negative, leaving the composite slope's sign economically ambiguous rather than predicted."
+    },
+    {
+      "generation": 0,
+      "target_name": "Near-Term Refinancing Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning value on short-term debt net of cash \u2014 a genuine near-term refinancing measure rather than generic leverage \u2014 is a reasonable and sign-coherent refinement, but it overlaps heavily with the batch's Solvency-Weighted proposal and with known net-debt-to-price evidence, so only one of the two should be carried forward."
+    },
+    {
+      "generation": 1,
+      "target_name": "Cumulative-Earnings Repair Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Since RANK(B/M) is a bounded [0,1] positive multiplier, the signal's variation is dominated by \u0394RE/at, which is essentially net income minus dividends scaled by assets \u2014 a direct rediscovery of the profitability/ROA anomaly dressed as a value interaction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Liability-Financed Cash Adjustment",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The construction is internally coherent and dimensionally consistent (dollar cash flow net of positive liability growth, scaled by market cap), and though it fuses two known effects (cash-flow yield and debt issuance), the asymmetric max(\u0394lt,0) deduction is a genuinely new functional form rather than a cosmetic variant of the archived cash-yield signal."
+    },
+    {
+      "generation": 1,
+      "target_name": "Solvency-Adjusted Tax Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Smoothed tax expense over market cap is a well-known earnings-yield proxy (taxable-income anomaly), and the max(lt\u2212at,0) denominator adjustment is non-zero for only a tiny sliver of firms, so the signal is effectively a rediscovery of E/P with a near-inert modifier."
+    },
+    {
+      "generation": 1,
+      "target_name": "Liquidity-Funded Dividend Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The dominant signed component is \u2212\u0394wcap/at, a standard working-capital accrual proxy whose documented direction implies *higher* future returns for contracting working capital, so the stated negative expected sign contradicts the expression's natural direction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Cash-Burning Sales Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent (high score = sales-cheap plus negative cash-flow coverage, expected to underperform) and motivated by a real diagnosis of the archived signal's FMB/alpha disagreement, though it remains a same-family reweighting of the sales-to-price leg and risks simply reproducing a cash-flow-to-current-liabilities distress screen."
+    },
+    {
+      "generation": 1,
+      "target_name": "Pretax Deterioration Asset Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The sign logic is coherent (assets-to-price rank scales a signed ROA trend, so improving cheap firms score negative), and the profitability-trend leg is distinct from the static distress legs already tested, but the 5-year TREND requirement will materially cut coverage and the assets-to-market leg conflates value with leverage."
+    },
+    {
+      "generation": 2,
+      "target_name": "Net-Liability Cash Surplus",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Swapping DELTA(lt) for DELTA(lt\u2212che) in the already-archived \"Liability-Financed Cash Adjustment\" is a cosmetic one-term substitution rather than a new mechanism, and the resulting construct (cash flow minus net-debt issuance, scaled by market cap) is close to standard net-payout/net-debt-issuance value measures."
+    },
+    {
+      "generation": 2,
+      "target_name": "Industry-Bottleneck Sales Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Liquid Sales Bargain\" with industry demeaning and MIN in place of MUL \u2014 a mechanically minor variant of a known sales-to-price \u00d7 working-capital screen \u2014 and the stated justification about \"centered ranks\" is inconsistent with the [0,1] rank convention used elsewhere in the archive."
+    },
+    {
+      "generation": 2,
+      "target_name": "Maturity-Extension Operating Value",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Conditioning an industry-relative EBITDA yield on the signed change in short-term-debt share is an economically distinct refinancing-fragility mechanism (not the archived liability-growth level), and the unsigned-rank \u00d7 signed-change construction correctly puts cheap-and-fragile firms in the short leg, though \u0394(dlc/lt) will be noisy for low-lt firms."
+    },
+    {
+      "generation": 2,
+      "target_name": "Liquidity-Turnaround Book Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The construction is coherent, but \u0394(act/lct) is essentially a scaled working-capital accrual, whose published sign is negative (Sloan), so the positive expected sign conflicts with a well-documented anomaly and the proposal does not address that tension."
+    },
+    {
+      "generation": 2,
+      "target_name": "Tax-Normalizing Operating Bargain",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The ABS(pi) denominator breaks the stated interpretation \u2014 a loss-making firm with positive tax expense scores high rather than low \u2014 and the change in effective tax rate is itself a published anomaly (tax expense surprise, Thomas\u2013Zhang), so the signal is both internally inconsistent and partly a rediscovery."
+    },
+    {
+      "generation": 2,
+      "target_name": "Near-Term Claim Pressure",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a single-theme leverage ratio, not a cross-theme interaction, and decomposes into well-known net-debt-to-market and cash-to-price effects, making it too close to published leverage/cash-holdings anomalies to be worth a test slot."
+    },
+    {
+      "generation": 3,
+      "target_name": "Industry Operating-Accrual Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical recombination of two archive components \u2014 the identical WINSOR(DELTA(act-che)/at) accrual term from \"Noncash Asset Build Value Trap\" (which was already weak at fmb -1.76, t-alpha -1.09) bolted onto the identical IND_RANK EBITDA-yield leg from \"Maturity-Extension Operating Value\" \u2014 so it is a cosmetic value-proxy swap rather than a new mechanism, and the accrual leg itself is close to the published working-capital accrual anomaly."
+    },
+    {
+      "generation": 3,
+      "target_name": "Current-Claim Maturity Repair",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Changing the scaler of short-term debt from total liabilities to current liabilities is a pure denominator tweak on \"Maturity-Extension Operating Value,\" whose evidence was insignificant on both metrics (fmb 1.13, t-alpha 1.24), so this is a cosmetic variant unlikely to change the diagnosis rather than a substantively different test."
+    },
+    {
+      "generation": 3,
+      "target_name": "Historical Cash-Coverage Sales Recovery",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The stated diagnosis is that all-positive value\u00d7liquidity composites deliver strong FMB slopes purely from an unconditional value tilt with negative FF5 alpha, yet the proposal reproduces exactly that structure (IND_RANK \u2265 0 multiplied by TS_RANK \u2265 0, as in \"Liquid Sales Bargain\"), so the conditioning term cannot change sign and the signal will again be dominated by the sales-yield leg."
+    },
+    {
+      "generation": 3,
+      "target_name": "Accelerating-Leverage Sales Trap",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The second-difference leverage term is economically distinct from the one-period DELTA(lt) and peak-distance leverage variants already in the archive, and the signed distress leg correctly makes the composite a two-sided conditional consistent with the negative expected sign, though ACCEL on annual data will be noisy."
+    },
+    {
+      "generation": 3,
+      "target_name": "Accumulated-Deficit Dividend Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is close to the archive's \"Continuously Health-Weighted Cash Yield\" (which failed) with the yield numerator swapped from oancf to dvc and the re/at term flipped, and conditioning on dividend payers with accumulated deficits selects a thin, unstable subgroup that will drive the long leg with poor coverage."
+    },
+    {
+      "generation": 3,
+      "target_name": "Earnings-Instability Value Trap",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Fundamental-earnings volatility is a genuinely different distress channel from the levels, trends, leverage and liquidity terms already tested, and the industry z-scored, sign-centered construction properly makes book cheapness an amplifier rather than a standalone value tilt; the main weakness is that a 3-period VOL estimate is a very noisy volatility proxy and earnings volatility on its own is a documented anomaly."
+    },
+    {
+      "generation": 4,
+      "target_name": "Self-History Deleveraging Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is the archived \"Post-Deleveraging Sales Value\" mechanism with only normalization swaps (IND_RANK\u2192TS_RANK, RANK\u2192IND_ZSCORE), so it is a largely cosmetic rescaling of a construct that already failed on alpha, and because TS_RANK is strictly positive the signal's sign is driven almost entirely by the deleveraging z-score leg rather than by any genuine interaction."
+    },
+    {
+      "generation": 4,
+      "target_name": "Current-Claim Concentration Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The lct/lt maturity-concentration level is a genuinely new conditioning variable in this archive (prior attempts used changes in dlc/lt or netted short-term debt), the expected negative sign is consistent with the expression, though the value leg again only scales magnitude so the test is close to a standalone debt-maturity-structure signal."
+    },
+    {
+      "generation": 4,
+      "target_name": "Supplier-Unfunded Asset Build Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The conditioning term \u0394(act\u2212che) minus the increase in current liabilities, scaled by assets, is essentially the classic working-capital accrual measure, so despite the one-sided MAX twist this is close to a rediscovery of the Sloan accrual anomaly interacted with book-to-market."
+    },
+    {
+      "generation": 4,
+      "target_name": "Persistent Earnings-Instability Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This differs from the archived \"Earnings-Instability Value Trap\" only by lengthening the volatility window from 3 to 5 and switching the value leg's normalization, which is a parameter tweak rather than a substantively different mechanism addressing why the alpha was wrongly signed."
+    },
+    {
+      "generation": 4,
+      "target_name": "Operating Claim-Coverage Turnaround",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "A trend in a coverage-of-current-liabilities ratio interacted with cheapness has already been tested twice in this archive (Cash-Runway Trend Value, Downside Cash-Coverage Value) with weak results, and substituting EBITDA for cash in the numerator is a cosmetic variant of the same failed family."
+    },
+    {
+      "generation": 4,
+      "target_name": "Relative-History Maturity Residual",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This wraps the archived \"Uncovered Maturity Residual Yield\" expression verbatim in a TS_RANK, which is a pure renormalization rather than a new mechanism, and the claim that it isolates \"distress resolution\" mispricing is not supported by anything the expression actually computes."
+    },
+    {
+      "generation": 5,
+      "target_name": "Market-Scaled Dual-Cushion Repair",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and a genuine re-scaling (assets \u2192 market value) that drops the value multiplier rather than a pure cosmetic tweak, but DELTA(re)/mktcap is close to a retained-earnings/E-P yield, so any strong result risks being a rediscovery of the earnings-yield anomaly rather than the conjunctive \"repair\" mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Market-Scaled Earnings-Liability Spiral",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Sign logic is coherent, but the construction is the same denominator swap applied to a second archived signal whose evidence was insignificant on both metrics, and its two legs (price-scaled pretax earnings decline and liability growth) are close proxies for the well-documented earnings-change/earnings-momentum and net-debt-issuance anomalies."
+    },
+    {
+      "generation": 5,
+      "target_name": "Cash-Funded Maturity Repair",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The MIN is taken over two incommensurate quantities \u2014 a cash change scaled by market cap (typically a few percent) versus a change in the dlc/lt fraction (dispersion an order of magnitude larger) \u2014 so the \"weakest-link\" gate will be mechanically dominated by the smaller-scale cash term rather than genuinely requiring both improvements; normalize (rank or z-score) both legs before combining."
+    },
+    {
+      "generation": 5,
+      "target_name": "Loss-Confirmed Persistent Refinancing Trap",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is a well-motivated diagnosis of the archived signal's fmb/alpha disagreement, combines two commensurate industry z-scores so the signed minimum is a legitimate soft conjunction, and the expected negative sign matches the expression's direction; the main risk is that the profitability leg alone carries the result."
+    },
+    {
+      "generation": 5,
+      "target_name": "Uncompensated Pretax Downside",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Replacing symmetric volatility with the profitability floor is a substantive, well-argued refinement, but unlike the archived version the numerator now changes sign across firms, so dividing by the always-positive asset-to-market term shrinks the signal toward zero for profitable cheap firms \u2014 implying cheapness is a negative for healthy firms and breaking the stated \"valuation as compensation\" interpretation over half the cross-section."
+    },
+    {
+      "generation": 5,
+      "target_name": "Claim-Light Sales Recovery",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Units are consistent and the conjunctive turnaround story is distinct from the archived static sales-yield composites, but the current-liability-reduction leg mechanically raises working-capital accruals, so the positive expected sign runs against the accrual anomaly and the mechanism deserves an explicit accrual control."
+    },
+    {
+      "generation": 6,
+      "target_name": "Operating-Value Dual-Cushion Confirmation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is largely a re-aggregation of the archive's \"Dual-Cushion Recovery Value\" (same three ingredients, MIN instead of multiplication plus industry z-scoring), and since \u0394RE/AT is essentially net income minus dividends over assets, the retained-earnings leg reintroduces plain profitability rather than the claimed independent \"repair\" channel."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Accumulating Short-Debt Retirement",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The reclassification-vs-repayment critique is legitimate and the construction is internally consistent, but one leg is literally identical to the archive's \"Standardized Cash-Funded Maturity Repair\" and the other is a near-mechanical respecification of its partner, so the result will be highly collinear with an already-tested signal."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Backed Claim-Light Expansion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The stated diagnosis (that falling current liabilities mechanically inflate working-capital accruals, i.e., the accrual anomaly) is not addressed by adding cash accumulation, since \u0394cash sits outside operating accruals, and the triple nested MIN will collapse to whichever standardized leg is weakest, leaving an unstable, thinly-populated long tail on top of an already-tested claim-light sales signal."
+    },
+    {
+      "generation": 6,
+      "target_name": "Residual-Cash Dividend Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Economically coherent and internally consistent (both legs high implies genuinely funded payout value), and distinct from the archive's deleveraging-based dividend conditioner, though much of the long-short spread may come from a de facto dividend-payer dummy in the low tail, so a payer-only sample check is warranted."
+    },
+    {
+      "generation": 6,
+      "target_name": "Deficit-Confirmed Cash Collapse",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conjunction is sign-consistent and economically interpretable, but the second leg is effectively the negative of the well-known RE/ME value-quality proxy, so the incremental content rests entirely on the \u0394oancf interaction and the test should control for RE/ME standalone."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Draining Rollover Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the mirror image of the archive's \"Standardized Cash-Funded Maturity Repair\" built from the negated versions of the same two components, so it is close to a sign-flipped rediscovery whose only genuine novelty is MIN-over-negatives selecting the max rather than the min of the original pair."
+    },
+    {
+      "generation": 7,
+      "target_name": "Persistent After-Tax Claim Yield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is a single-operator tightening (TS_MIN over 3 years) of the archived Current-Claim After-Tax Operating Yield, with no mechanism addressing why that parent's alpha was economically small and imprecise (ls_talpha 1.19), so it reads as a cosmetic persistence variant rather than a substantive improvement."
+    },
+    {
+      "generation": 7,
+      "target_name": "Operating-Cash-Funded Maturity Repair",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It is only a one-leg substitution on the archived Standardized Cash-Funded Maturity Repair, but the swap from cash-stock accumulation to operating-cash-flow improvement is an economically meaningful quality-of-cash distinction (cash balances can rise from issuance or asset sales) and the expression, sign, and standardized soft-AND construction are internally consistent."
+    },
+    {
+      "generation": 7,
+      "target_name": "Asset-Scaled Deficit Cash Collapse",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This merely re-scales the two legs of the archived Deficit-Confirmed Cash Collapse (deficit moved from market to assets, cash-flow change moved from assets to market), and the name is internally misleading since the cash-flow leg is market-scaled, making it a denominator permutation rather than a new mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Supplier-Adjusted Cash Sales Recovery",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The stated adjustment is inconsistent with the accounting: oancf already nets working-capital changes, so subtracting DELTA(lct) double-penalizes payables growth while also deducting short-term debt changes (dlc) that are financing rather than operating, so the expression does not cleanly compute the hypothesized \"cash flow not attributable to current-liability financing.\""
+    },
+    {
+      "generation": 7,
+      "target_name": "Post-Payout Liquidity Residual",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The integrated residual (operating cash flow less dividends less any uncovered current-claim gap, market-scaled) is a coherent and non-trivial combination that plausibly fixes the dividend-payer selection problem in the archived residual-cash signal, though it inherits the dimensional awkwardness of subtracting a balance-sheet gap level from annual flows."
+    },
+    {
+      "generation": 7,
+      "target_name": "Creditor-Encroachment Liquidation Trap",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The two legs are close repackagings of the well-documented asset-growth and debt-issuance anomalies, and the first leg's expected sign runs directly against that literature (shrinking assets historically predict higher, not lower, returns), so the negative sign rests entirely on an unargued interaction effect."
+    },
+    {
+      "generation": 8,
+      "target_name": "Liquid-Reserve After-Tax Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally consistent and coverage-motivated, but it is a one-variable swap (che/lct for oancf/lct) inside the already-tested MIN(after-tax operating yield, liquidity leg) template from generation 7, i.e. a cosmetic variant rather than a new mechanism, and substituting a static cash stock for the cash-realization channel removes precisely the corroboration that drove the earlier alpha."
+    },
+    {
+      "generation": 8,
+      "target_name": "Deficit-Weighted Cash Deterioration",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The multiplicative weighting is a genuinely different functional form from the archive's MIN-based deficit/cash-collapse conjunction, the non-negative RANK weight preserves the signed direction so the expression matches the stated hypothesis and negative sign, and coverage should improve; the main caveat is that IND_ZSCORE recenters at the industry mean, so the claimed \"no signal when cash flow is unchanged\" neutral point is only approximate."
+    },
+    {
+      "generation": 8,
+      "target_name": "Post-Payout Cash-and-Liquidity Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The dimensional-coherence critique of the earlier funding-gap subtraction is legitimate and the expression matches the hypothesis, but the construction simply re-pairs two already-tested archive legs (post-dividend cash-flow yield and the net-working-capital ratio from the generation-0 signal) inside the same MIN template while inheriting the dvc/oancf coverage constraint of ~0.08."
+    },
+    {
+      "generation": 8,
+      "target_name": "Cash-Backed Asset Productivity Recovery",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is the most substantive departure in the batch \u2014 replacing raw asset contraction with valuation-scaled asset-turnover improvement is an economically distinct channel and the cash-cushion leg is well motivated \u2014 though the reviewer should note that change in asset turnover is itself a published DuPont-decomposition anomaly (Soliman), so the novelty rests entirely on the valuation scaling and the cash conjunction."
+    },
+    {
+      "generation": 8,
+      "target_name": "Unfunded Dividend Yield Trap",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The expression does encode the stated trap, but it loads positively on dividend yield \u2014 a leg the archive shows carries a weakly positive return slope \u2014 while expecting a negative overall sign, so the two components pull against each other, and the second leg is the exact negation of the generation-6 residual-cash dividend signal, making net direction and incremental content ambiguous."
+    },
+    {
+      "generation": 8,
+      "target_name": "Claim-Concentrated Cash Collapse",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Both legs have already been tested in the archive and both failed in this direction \u2014 lct/lt produced a wrong-signed positive alpha in the generation-4 concentration trap and the market-scaled cash-flow decline was insignificant in generation 7 \u2014 so mechanically MIN-ing two known-weak components inside the same template offers little reason to expect improvement, and oancf still caps coverage near 0.08."
+    },
+    {
+      "generation": 9,
+      "target_name": "Uncovered-Claim Post-Payout Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical recombination of two archived signals \u2014 the numerator of \"Post-Payout Liquidity Residual\" (oancf\u2212dvc) with the denominator of \"Uncovered-Claim After-Tax Yield\" (mktcap + current-liability gap) \u2014 and moving the gap from numerator to denominator is a cosmetic reformulation of essentially the same economic content, at the lower ~0.08 oancf coverage."
+    },
+    {
+      "generation": 9,
+      "target_name": "Cash-Backed After-Tax Margin Recovery",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Substituting the margin leg of the DuPont decomposition for the turnover leg of the archived \"Cash-Backed Asset Productivity Recovery\" is a defensible substantive channel change rather than a pure clone, though the scaling term collapses to \u0394margin \u00d7 (sale/mktcap), so part of the leg is a repackaged sales-to-price value exposure that must be controlled for in interpretation."
+    },
+    {
+      "generation": 9,
+      "target_name": "Deteriorating Payout Capacity Trap",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The construction is internally consistent (both AND-ed legs are high-is-bad, matching the negative expected sign), the flooring at zero correctly avoids picking up an inverted dividend-yield exposure, and replacing the archived signal's static current-claim weight with a deterioration condition is a genuine diagnosis-driven change rather than a cosmetic tweak."
+    },
+    {
+      "generation": 9,
+      "target_name": "Deficit-Weighted Cash-Reserve Drawdown",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Deficit-Weighted Working-Capital Depletion\" with che substituted for wcap in an otherwise identical expression \u2014 a one-variable cosmetic swap whose parent already produced a wrong-signed Fama-MacBeth slope (+2.795 against a negative expectation), and it overlaps further with the archived \"Liquidity-Reserve Depletion Trap.\""
+    },
+    {
+      "generation": 9,
+      "target_name": "Funding-Gap Productivity Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing liability growth with an actual uncovered current-claim level is a coherent response to the parent signal's slope/alpha disagreement, but the MAX(lct\u2212act,0) leg is zero for the majority of firms, so its industry z-score is near-constant for most of the cross-section and the MIN will produce heavy ties that may blunt the portfolio sort."
+    },
+    {
+      "generation": 9,
+      "target_name": "Market-Scaled Creditor Repair",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived MIN(...)/mktcap \"repair\" template with legs already tested separately in \"Market-Scaled Dual-Cushion Repair\" (\u0394che) and \"Claim-Light Sales Recovery\" (\u2212\u0394lct), and the \u2212\u0394lt component is close to the well-documented net debt issuance / net external financing anomaly."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid Sales Bargain",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sale,mul(prcc_f,csho))),rank(ratio(sub(act,lct),at)))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Near-Term Refinancing Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),rank(ratio(sub(dlc,che),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Flow Floor Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),rank(ts_min(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Continuously Health-Weighted Cash Yield",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(oancf,mul(prcc_f,csho)),1),rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Deleveraging Operating Bargain",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,mul(prcc_f,csho))),rank(neg(ratio(delta(add(dltt,dlc),1),at))))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Deteriorating Value Trap",
+      "metadata": {
+        "normalized_expression": "mul(winsor(neg(trend(ratio(ib,at),5)),1),rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability-Financed Cash Adjustment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(oancf,max(delta(lt,1),sub(at,at))),mul(prcc_f,csho)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Burning Sales Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sale,mul(prcc_f,csho))),winsor(neg(ratio(oancf,lct)),1))",
+        "variables": [
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pretax Deterioration Asset Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(at,mul(prcc_f,csho))),winsor(neg(trend(ratio(pi,at),5)),1))",
+        "variables": [
+          "at",
+          "csho",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accumulated-Deficit Adjusted Book Value",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ceq,add(mul(prcc_f,csho),max(neg(re),sub(at,at)))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Tax-Corroborated Operating Bargain",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ebitda,mul(prcc_f,csho))),rank(ratio(txt,abs(pi))))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "pi",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deleveraging-Backed Dividend Yield",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(dvc,mul(prcc_f,csho)),1),winsor(neg(ratio(delta(lt,1),at)),1))",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maturity-Extension Operating Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ebitda,mul(prcc_f,csho))),winsor(neg(delta(ratio(dlc,lt),1)),1))",
+        "variables": [
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Downside Cash-Coverage Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),winsor(ts_min(ratio(oancf,lct),3),1))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Deleveraging Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sale,mul(prcc_f,csho))),rank(neg(ratio(lt,ts_max(lt,5)))))",
+        "variables": [
+          "csho",
+          "lt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Noncash Asset Build Value Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),winsor(ratio(delta(sub(act,che),1),at),1))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Corroborated Pretax Value",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(min(oancf,pi),mul(prcc_f,csho)),1)",
+        "variables": [
+          "csho",
+          "oancf",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding-Gap Residual Operating Yield",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(ebitda,max(sub(lct,act),sub(at,at))),mul(prcc_f,csho)),1))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accelerating-Leverage Sales Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sale,mul(prcc_f,csho))),winsor(accel(ratio(lt,at)),1))",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings-Instability Value Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(vol(ratio(pi,at),3)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pretax-Conversion Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sale,mul(prcc_f,csho))),ind_zscore(ratio(pi,abs(ebitda))))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "pi",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncovered Maturity Residual Yield",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(ebitda,mul(max(sub(dlc,che),sub(at,at)),ratio(dlc,lct))),mul(prcc_f,csho)),1))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Runway Trend Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sale,mul(prcc_f,csho))),winsor(trend(ratio(che,lct),3),1))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Tax-Cash Funding Gap",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(txt,oancf),mul(prcc_f,csho)),1)",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim Concentration Trap",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(ebitda,mul(prcc_f,csho)),5),ind_zscore(ratio(lct,lt)))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncompensated Deficit Burden",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ratio(neg(re),at),ratio(sale,mul(prcc_f,csho))),1))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "re",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability-Funded Earnings Spiral",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(sale,mul(prcc_f,csho)),5),winsor(min(neg(ratio(delta(pi,1),at)),ratio(delta(lt,1),at)),1))",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "pi",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncompensated Earnings Instability",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(vol(ratio(pi,at),5),ratio(at,mul(prcc_f,csho))),1))",
+        "variables": [
+          "at",
+          "csho",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual-Cushion Recovery Value",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(ebitda,mul(prcc_f,csho)),5),winsor(min(ratio(delta(che,1),at),ratio(delta(re,1),at)),1))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Refinancing Burden",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ts_sum(ratio(sub(dlc,che),lct),5),ratio(sale,mul(prcc_f,csho))),1))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Market-Scaled Dual-Cushion Repair",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(min(delta(che,1),delta(re,1)),mul(prcc_f,csho)),1)",
+        "variables": [
+          "che",
+          "csho",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Loss-Confirmed Persistent Refinancing Trap",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(ts_sum(ratio(sub(dlc,che),lct),5),ratio(sale,mul(prcc_f,csho))),1)),ind_zscore(neg(ratio(pi,at))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "lct",
+          "pi",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Claim-Light Sales Recovery",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(min(delta(sale,1),neg(delta(lct,1))),mul(prcc_f,csho)),1)",
+        "variables": [
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Reserve Depletion Trap",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ratio(sub(ts_max(che,5),che),lct),ratio(sale,mul(prcc_f,csho))),1))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Standardized Cash-Funded Maturity Repair",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(che,1),mul(prcc_f,csho)),1)),ind_zscore(winsor(neg(delta(ratio(dlc,lt),1)),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Compensated Pretax Loss Floor",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(max(neg(ts_min(ratio(pi,at),5)),sub(ratio(at,at),ratio(at,at))),ratio(at,mul(prcc_f,csho))),1))",
+        "variables": [
+          "at",
+          "csho",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Residual-Cash Dividend Value",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(dvc,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(sub(oancf,dvc),lct),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deficit-Confirmed Cash Collapse",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(oancf,1),at)),1)),ind_zscore(winsor(ratio(neg(re),mul(prcc_f,csho)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Revenue Value with Liquidity Floor",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(revt,mul(prcc_f,csho)),1)),ind_zscore(ts_min(ratio(wcap,at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "revt",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim After-Tax Operating Yield",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(sub(ebitda,max(txt,sub(at,at))),add(mul(prcc_f,csho),lct)),1))",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Realized Sales Growth",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(sale,1),mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(delta(oancf,1),lct),1)))",
+        "variables": [
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual-Extreme Funding Trap",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(ts_rank(ratio(lct,at),5),ratio(sale,mul(prcc_f,csho))),1)),ind_zscore(neg(ts_rank(ratio(oancf,at),5))))",
+        "variables": [
+          "at",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Cash-Funded Maturity Repair",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(oancf,1),mul(prcc_f,csho)),1)),ind_zscore(winsor(neg(delta(ratio(dlc,lt),1)),1)))",
+        "variables": [
+          "csho",
+          "dlc",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Payout Liquidity Residual",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(sub(sub(oancf,dvc),max(sub(lct,act),sub(at,at))),mul(prcc_f,csho)),1))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "dvc",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Realized After-Tax Operating Value",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(sub(ebitda,max(txt,sub(at,at))),mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(oancf,lct),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent-Deficit Cash Collapse",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(oancf,1),mul(prcc_f,csho))),1)),ind_zscore(ts_sum(indicator(neg(re),0),5)))",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Supported Sales Expansion",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(sale,1),mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(oancf,max(act,lct)),1)))",
+        "variables": [
+          "act",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Raising Asset Rationalization",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(at,1),mul(prcc_f,csho))),1)),ind_zscore(winsor(ratio(delta(che,1),lt),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deficit-Weighted Cash Deterioration",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(winsor(neg(ratio(delta(oancf,1),mul(prcc_f,csho))),1)),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed Asset Productivity Recovery",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(ratio(sale,at),1),ratio(mul(prcc_f,csho),at)),1)),ind_zscore(winsor(ratio(delta(che,1),lt),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "lt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncovered-Claim After-Tax Yield",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(sub(ebitda,max(txt,sub(at,at))),add(mul(prcc_f,csho),max(sub(lct,act),sub(at,at)))),1))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deficit-Weighted Working-Capital Depletion",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(winsor(ratio(sub(ts_max(wcap,5),wcap),mul(prcc_f,csho)),1)),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "re",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim Payout Capacity Gap",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(mul(ratio(sub(dvc,sub(ebitda,max(txt,sub(at,at)))),mul(prcc_f,csho)),rank(ratio(lct,at))),1))",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Creditor-Funded Productivity Erosion",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(ratio(sale,at),1),ratio(mul(prcc_f,csho),at))),1)),ind_zscore(winsor(ratio(delta(lt,1),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed After-Tax Margin Recovery",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(ratio(sub(ebitda,max(txt,sub(at,at))),sale),1),ratio(mul(prcc_f,csho),sale)),1)),ind_zscore(winsor(ratio(delta(che,1),lt),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ebitda",
+          "lt",
+          "prcc_f",
+          "sale",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deteriorating Payout Capacity Trap",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(sub(dvc,max(sub(ebitda,max(txt,sub(at,at))),sub(at,at))),mul(prcc_f,csho)),1)),ind_zscore(winsor(neg(delta(ratio(sub(ebitda,max(txt,sub(at,at))),at),1)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "ebitda",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding-Gap Productivity Trap",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(ratio(sale,at),1),ratio(mul(prcc_f,csho),at))),1)),ind_zscore(winsor(ratio(max(sub(lct,act),sub(at,at)),mul(prcc_f,csho)),1)))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim Revenue Squeeze",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(sale,1),mul(prcc_f,csho))),1)),ind_zscore(winsor(ratio(delta(lct,1),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Floor Productivity Recovery",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(ratio(delta(ratio(sale,at),1),ratio(mul(prcc_f,csho),at)),1)),ind_zscore(ts_min(ratio(wcap,at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual-DuPont Valuation Trap",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(winsor(neg(ratio(delta(ratio(sub(ebitda,max(txt,sub(at,at))),sale),1),ratio(mul(prcc_f,csho),sale))),1)),ind_zscore(winsor(neg(ratio(delta(ratio(sale,at),1),ratio(mul(prcc_f,csho),at))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "sale",
+          "txt"
+        ]
+      }
+    }
+  ]
+}

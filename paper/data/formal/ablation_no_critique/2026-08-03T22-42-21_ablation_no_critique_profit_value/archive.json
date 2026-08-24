@@ -1,0 +1,3058 @@
+{
+  "pair": "profit_value",
+  "evaluated": [
+    {
+      "name": "Industry Profitable Value Product",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "Cheapness is only informative about mispricing when the underlying business actually earns high returns on assets; the product of within-industry gross profitability and within-industry book-to-market isolates firms that are simultaneously fundamentally strong and priced pessimistically, and should earn higher subsequent returns than either leg alone.",
+      "expected_sign": "positive",
+      "reasoning": "A multiplicative rank interaction is near zero unless both cheapness and profitability are high, so it cannot be reproduced by a linear combination of the two single-theme signals. Industry ranking removes sector-level differences in both margins and book-to-market so the interaction reflects firm-level quality-at-a-discount rather than a sector tilt. Gross profit is the least manipulated profitability numerator, which keeps the profitability leg economically clean.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 5.751683482684968,
+      "ls_alpha": -0.0004961225769072181,
+      "ls_talpha": -0.04387350836789173,
+      "ls_sharpe": 0.1496363446848643,
+      "coverage": 0.14130628589258784,
+      "error": null
+    },
+    {
+      "name": "Value Conditional On Above Peer Operating Profit",
+      "expression": "MUL(INDICATOR(IND_ZSCORE(RATIO(oiadp, at)), 0), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The value premium is concentrated in firms whose operating profitability exceeds their industry mean; among below-average profitability firms, low price multiples reflect genuine distress rather than mispriced pessimism, so the value signal should be switched off there.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator turns the valuation signal on only for firms with positive industry-demeaned operating profitability, testing the conditional (regime) form of the interaction rather than a smooth product. This directly separates \"cheap and good\" from the value trap segment that typically drags on unconditional book-to-market portfolios. If the conditional version delivers a larger FF5 alpha than plain book-to-market, the profitability screen is adding information, not relabeling value.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.291502213623579,
+      "ls_alpha": -0.00902856591592514,
+      "ls_talpha": -0.5845966087561371,
+      "ls_sharpe": 0.0037456609667509562,
+      "coverage": 0.1411932993073458,
+      "error": null
+    },
+    {
+      "name": "Gross Profit To Enterprise Value",
+      "expression": "RATIO(SUB(revt, cogs), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))",
+      "hypothesis": "Scaling operating-level profit by total enterprise value (equity plus net debt) measures the profit stream an investor buys per dollar of capital claim; high values identify genuinely cheap profitable firms while neutralizing the leverage distortion that contaminates equity-only earnings yields.",
+      "expected_sign": "positive",
+      "reasoning": "This is an intrinsic ratio interaction: the numerator is pure profitability and the denominator is pure valuation, so variation comes from the joint mapping of fundamentals into price rather than from either theme separately. Using enterprise value rather than market cap prevents highly levered, cheap-looking but unprofitable firms from ranking high, which should sharpen both the Fama-MacBeth slope and the long-short alpha. Net cash netting also rewards profitable firms whose price is largely backed by liquid assets.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.471279423424791,
+      "ls_alpha": 0.005911519452176255,
+      "ls_talpha": 0.5992160331649297,
+      "ls_sharpe": 0.48098650343201604,
+      "coverage": 0.14064136757724569,
+      "error": null
+    },
+    {
+      "name": "Cheap With Improving Profitability Trend",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_RANK(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "Low market expectations combined with a multi-year improving return-on-assets trajectory indicates fundamentals are strengthening before the price has re-rated; profitability momentum should therefore amplify the value premium, whereas cheap firms with deteriorating profitability are correctly priced.",
+      "expected_sign": "positive",
+      "reasoning": "Here profitability enters as a five-year trend (a state of fundamental improvement) rather than a level, so the signal is economically distinct from static profitable-value composites and cannot be a level relabeling. The interaction captures expectation errors: valuation embeds the market's stale view while the trend reveals the direction of the fundamentals. The temporal operator is justified because the mechanism is about unrecognized improvement, not about the current profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.9997315874865937,
+      "ls_alpha": -0.0040313637658352455,
+      "ls_talpha": -0.40877078223798213,
+      "ls_sharpe": 0.157112617134746,
+      "coverage": 0.11889846643668996,
+      "error": null
+    },
+    {
+      "name": "Stable Earnings Yield Interaction",
+      "expression": "MUL(RANK(MA(RATIO(ib, MUL(prcc_f, csho)), 3)), RANK(NEG(VOL(RATIO(oiadp, at), 5))))",
+      "hypothesis": "A high earnings yield is credible only if the earnings stream is stable; cheap firms with volatile profitability offer a yield that is a risk premium, while cheap firms with smooth profitability offer a mispricing premium that should be corrected.",
+      "expected_sign": "positive",
+      "reasoning": "Profitability enters through its second moment (five-year volatility of return on assets), interacting with a three-year smoothed earnings yield, so the signal exploits the quality-of-earnings dimension rather than the level of profits. This targets the reason value strategies sometimes fail FF5 tests: the spread is loaded on distress-like earnings instability. Averaging the yield and ranking the inverse volatility keeps both legs comparable and reduces one-off accounting noise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.6915481882503278,
+      "ls_alpha": -0.01328280442106134,
+      "ls_talpha": -0.9871607050787495,
+      "ls_sharpe": 0.0709916394964613,
+      "coverage": 0.1309638343870493,
+      "error": null
+    },
+    {
+      "name": "Fundamental Price Divergence Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(oancf, at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Returns should be highest where a firm's fundamental standing among peers (cash-flow generation and gross margin) is far above its valuation standing; this rank gap measures how much profitability the market is failing to pay for, and the gap should close through positive abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than multiplying the two themes, this signal measures their misalignment, so it is positive only when the profitability percentile exceeds the price-to-book percentile within the industry. It differs from a product because a firm that is both mid-quality and mid-priced scores neutral while an elite-fundamentals firm at an average multiple scores high. Using operating cash flow and gross margin jointly ensures the fundamental leg reflects realized cash profitability, not accrual-inflated earnings.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.6292049497370784,
+      "ls_alpha": 0.026269514875126375,
+      "ls_talpha": 2.31711599712735,
+      "ls_sharpe": 0.2030441714200557,
+      "coverage": 0.08534743529738069,
+      "error": null
+    },
+    {
+      "name": "Pure Centered Profitability Value Interaction",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(revt, cogs), at)), IND_ZSCORE(LOG(RATIO(ceq, MUL(prcc_f, csho)))))",
+      "hypothesis": "The incremental payoff to buying cheap stocks rises with profitability and the incremental payoff to profitability rises with cheapness; the genuine interaction is the product of the two industry-demeaned exposures, which is high for cheap-profitable firms and also high for expensive-unprofitable firms, and low for value traps and expensive quality.",
+      "expected_sign": "positive",
+      "reasoning": "Centering each leg within industry before multiplying removes the linear value and profitability main effects that HML and RMW absorb, so any surviving spread is a true second-order effect rather than a factor relabeling. This is the direct repair of the gen-0 rank-product failure (fmb t=5.75 but alpha=0.00) and isolates a single design choice: centered versus uncentered multiplication with identical ingredients. Coverage should match the gen-0 products (~0.14) since it uses the same inputs.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -5.08279061522304,
+      "ls_alpha": -0.021604098272496163,
+      "ls_talpha": -2.178678600044889,
+      "ls_sharpe": -0.22169985979123702,
+      "coverage": 0.13703498023405455,
+      "error": null
+    },
+    {
+      "name": "Quality Price Rank Gap Wide Coverage",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Abnormal returns accrue where a firm's fundamental percentile among peers (asset-level gross profitability plus gross margin) far exceeds the percentile the market assigns it via price-to-book; the misalignment, not the level of either theme, is what mean-reverts.",
+      "expected_sign": "positive",
+      "reasoning": "This retains the only gen-0 structure that produced reliable alpha (rank divergence, alpha 2.6%, t=2.3) but replaces the cash-flow leg, whose availability cut coverage to 0.085, with income-statement profitability available for nearly all firms. If alpha holds or improves with coverage back near 0.14, the divergence mechanism is robust rather than a small-sample artifact of cash-flow reporters.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 6.681137116490473,
+      "ls_alpha": 0.025817347601073008,
+      "ls_talpha": 2.9786098282981244,
+      "ls_sharpe": 0.22975623418431224,
+      "coverage": 0.1350168024982108,
+      "error": null
+    },
+    {
+      "name": "Through Cycle Earnings Power Yield",
+      "expression": "RATIO(MUL(MA(RATIO(oiadp, at), 5), at), MUL(prcc_f, csho))",
+      "hypothesis": "Applying a firm's five-year average return on assets to its current asset base gives normalized earnings power; dividing by market capitalization yields the price of a dollar of sustainable, cycle-adjusted profit, and firms cheap on this basis are mispriced rather than merely temporarily depressed.",
+      "expected_sign": "positive",
+      "reasoning": "This is a non-collapsing ratio interaction: the numerator's profitability rate comes from history while the scale and the denominator come from today, so it cannot be rewritten as either a pure earnings yield or a pure profitability ratio. It repairs the weakness of one-year earnings yields, whose numerators are contaminated by transitory losses that make genuinely profitable firms look expensive. The five-year average also lowers turnover, which should help the long-short Sharpe and alpha precision.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.7899495101644414,
+      "ls_alpha": -0.01981800276962395,
+      "ls_talpha": -1.8106649169822693,
+      "ls_sharpe": 0.22282624692341158,
+      "coverage": 0.14260681823997648,
+      "error": null
+    },
+    {
+      "name": "Margin Justified Sales Multiple",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(revt, cogs), sale)), IND_ZSCORE(LOG(RATIO(sale, MUL(prcc_f, csho)))))",
+      "hypothesis": "A price-to-sales multiple is only interpretable jointly with margin, because a dollar of revenue is worth more at a high-margin firm; firms with high gross margins trading at high sales yields are therefore the most clearly underpriced, while low-margin firms deserve their low multiples.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the valuation anchor from book equity to revenue, which sidesteps the book-equity distortions (intangibles, buybacks) that make HML noisy, and the margin leg is exactly the missing conditioning variable in a sales multiple. Both legs are industry-demeaned so the product is a pure interaction, not a repackaged value or profitability tilt. It teaches a different lesson from Signal 1: whether the interaction survives when cheapness is measured off the top line rather than the balance sheet.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.5732583321758696,
+      "ls_alpha": -0.009623081670742094,
+      "ls_talpha": -0.9763184775750677,
+      "ls_sharpe": 0.021755587946438042,
+      "coverage": 0.1400346450921104,
+      "error": null
+    },
+    {
+      "name": "Fundamentals Outrunning Market Value",
+      "expression": "SUB(IND_ZSCORE(GROWTH(RATIO(oiadp, at), 1)), IND_ZSCORE(GROWTH(RATIO(MUL(prcc_f, csho), at), 1)))",
+      "hypothesis": "When operating profitability per unit of assets improves but the market value of that same asset base does not keep pace, the market is under-reacting to fundamental improvement, and prices should catch up; the reverse configuration marks firms whose valuation has run ahead of earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "This is a dynamic version of the profitability-valuation gap: both legs are scaled by the identical asset base, so the difference measures whether fundamentals or price moved more, which no static value or profitability factor captures. It is deliberately distinct from the level-based archive so we learn whether the payoff comes from stale price levels or from unrecognized fundamental change. Growth rates are industry-demeaned to avoid loading on sector-wide profit cycles.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3670156866007066,
+      "ls_alpha": -0.0011086901562613726,
+      "ls_talpha": -0.0815943222637911,
+      "ls_sharpe": -0.03567424124781661,
+      "coverage": 0.12896913103307092,
+      "error": null
+    },
+    {
+      "name": "Profitable Firms Cheap Versus Own History",
+      "expression": "MUL(IND_ZSCORE(RATIO(oibdp, at)), ZSCORE(NEG(TS_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq)), 5))))",
+      "hypothesis": "Cheapness relative to a firm's own five-year multiple history identifies de-rating that is informative only when the business remains highly profitable; a persistently profitable firm trading at the bottom of its own valuation range is mispriced, whereas a de-rated unprofitable firm is repriced for deteriorating fundamentals.",
+      "expected_sign": "positive",
+      "reasoning": "Using a time-series valuation position rather than a cross-sectional one avoids the permanent industry and style tilts that make cross-sectional book-to-market collinear with HML, which is the likely reason gen-0 cheap-plus-profitable products showed no FF5 alpha. Both legs are centered so the product is an interaction rather than a stacked pair of main effects. The mechanism \u2014 de-rating without fundamental deterioration \u2014 is genuinely new to the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.7750823255765447,
+      "ls_alpha": -0.0035369932847754814,
+      "ls_talpha": -0.29797242391596296,
+      "ls_sharpe": -0.08037473855122358,
+      "coverage": 0.12373578845444257,
+      "error": null
+    },
+    {
+      "name": "Two Anchor Quality Cheapness Composite",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(oiadp, at))), IND_RANK(SUMRANK(RATIO(MUL(prcc_f, csho), ceq), RATIO(MUL(prcc_f, csho), sale))))",
+      "hypothesis": "Firms whose peer-relative profitability standing (gross and operating return on assets) far exceeds the peer-relative richness the market assigns them on both a book and a sales multiple are systematically underpriced; using two valuation anchors reduces the measurement error in book equity that mislabels intangible-heavy and buyback-heavy firms as expensive.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the only structure with reliable FF5 alpha while attacking its main measurement weakness: single-anchor price-to-book. Averaging two profitability channels and two valuation channels before differencing should raise the signal-to-noise of the divergence without changing the economic mechanism, so it is a direct test of whether the gap payoff is about mispriced fundamentals rather than about book equity specifically.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.581812407963638,
+      "ls_alpha": 0.007152274052693468,
+      "ls_talpha": 0.8200037496138131,
+      "ls_sharpe": 0.31556686270583517,
+      "coverage": 0.13901585691915402,
+      "error": null
+    },
+    {
+      "name": "Bounded Rank Product Interaction",
+      "expression": "MUL(ZSCORE(IND_RANK(RATIO(SUB(revt, cogs), at))), ZSCORE(IND_RANK(RATIO(ceq, MUL(prcc_f, csho)))))",
+      "hypothesis": "If profitability truly strengthens value, the centered product of the two exposures should predict returns positively; the previously observed negative product is hypothesized to be an artifact of unbounded z-scores, where tiny-book-equity distress firms dominate both tails.",
+      "expected_sign": "positive",
+      "reasoning": "Ranking first bounds each leg, then centering makes the product a genuine second-order term with the main effects removed, so this isolates one design choice \u2014 outlier robustness \u2014 relative to the gen-1 pure interaction that failed with the same economic content. The result is diagnostic either way: a positive alpha vindicates complementarity, while a repeat negative confirms that the two themes are substitutes at the extremes and directs all later generations to additive and gated forms.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": NaN,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.0,
+      "error": "Insufficient coverage: 0.0%"
+    },
+    {
+      "name": "Conjunctive Cheap And Profitable Gate",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The economically stated mechanism is a conjunction \u2014 a firm must be both highly profitable and cheap \u2014 so the binding constraint is the weaker of the two ranks; taking the minimum builds portfolios that exclude both value traps and expensive quality without the tail sensitivity of a product.",
+      "expected_sign": "positive",
+      "reasoning": "MIN is the natural robust form of complementarity: it is monotone, bounded, and unlike the additive composite it refuses to let an extreme score on one theme compensate for a weak score on the other. Evaluated alongside Signals 1 and 2 on identical inputs, it completes an additive-versus-multiplicative-versus-conjunctive comparison that will settle the functional-form question for the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.052178925441769,
+      "ls_alpha": -0.008247890839369177,
+      "ls_talpha": -0.7635736328042548,
+      "ls_sharpe": 0.10406828645289205,
+      "coverage": 0.14130628589258784,
+      "error": null
+    },
+    {
+      "name": "Expensive And Deteriorating Profitability",
+      "expression": "SUMRANK(RATIO(MUL(prcc_f, csho), ceq), NEG(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "The most overpriced stocks are those with rich multiples whose profitability is on a multi-year downtrend, because the price still embeds an earnings path that the fundamentals are already abandoning; these firms should earn low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The archive has tested only long-side constructions; if the value-quality spread is driven mainly by the short leg, a signal explicitly built to rank the expensive-and-deteriorating corner will show a stronger and more reliable negative slope than the mirror image of a long-side signal. The five-year trend is justified because the mechanism is fundamental deterioration relative to embedded expectations, not the current profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.931068771788544,
+      "ls_alpha": 0.008227076605521248,
+      "ls_talpha": 0.7446119754343167,
+      "ls_sharpe": -0.15002648778099062,
+      "coverage": 0.1189062052438983,
+      "error": null
+    },
+    {
+      "name": "Operating Profitability Cheapness Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Operating profitability net of selling and administrative costs is a better measure of the profit a shareholder actually owns than gross profit; pairing it with peer-relative price-to-book should widen the divergence between fundamentally strong firms and the pessimistic prices attached to them.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the winning divergence structure fixed and changes only the profitability definition, so it cleanly tests whether SG&A-adjusted profit adds information beyond gross profit inside the value interaction. Because SG&A partly reflects intangible investment, the more conservative profit measure should better separate genuinely profitable cheap firms from ones whose gross margin never reaches the bottom line.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.252816744812069,
+      "ls_alpha": 0.022478598296164644,
+      "ls_talpha": 2.5187424119446584,
+      "ls_sharpe": 0.2549942806756353,
+      "coverage": 0.11487129434955635,
+      "error": null
+    },
+    {
+      "name": "Profit Versus Price Of Assets Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), at))))",
+      "hypothesis": "The relevant comparison is the profit an asset base produces against the total price investors pay for that asset base including debt claims; firms earning high gross profit per asset while their assets are capitalized cheaply on an enterprise basis are the purest form of profitable value.",
+      "expected_sign": "positive",
+      "reasoning": "Numerator and denominator legs are now scaled by the same asset base, making the divergence a direct statement about profit per asset versus price per asset, and removing the leverage distortion that makes indebted firms look cheap on price-to-book. This is the rank-based repair of the gross-profit-to-enterprise-value ratio, which had the archive's best Sharpe (0.48) but no alpha because its level scaling loaded on HML and RMW.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 7.20340634436462,
+      "ls_alpha": 0.025049777537666795,
+      "ls_talpha": 3.005036956456604,
+      "ls_sharpe": 0.32608924283232,
+      "coverage": 0.13539719066852562,
+      "error": null
+    },
+    {
+      "name": "Cardinal Winsorized Quality Value Gap",
+      "expression": "SUB(IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), at), 1)), IND_ZSCORE(WINSOR(LOG(RATIO(MUL(prcc_f, csho), ceq)), 1)))",
+      "hypothesis": "Ranks discard magnitude information, so a firm with extraordinary profitability at a modest multiple is treated the same as a marginal case; winsorized industry z-scores preserve the size of the fundamental-price divergence and should produce a larger economic alpha if the effect is genuinely about the magnitude of mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice \u2014 cardinal versus ordinal measurement \u2014 within the structure that has already generated reliable alpha, with winsorization at the 1 percent tails to neutralize the small-book-equity outliers that destroyed the earlier uncentered z-score product. If the alpha rises, later generations should build magnitude-weighted versions of the winner; if it falls, the payoff is ordinal and rank-based construction is the right frame.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 6.368261064909303,
+      "ls_alpha": 0.012394879083145686,
+      "ls_talpha": 1.4247453774407204,
+      "ls_sharpe": 0.29273936849647697,
+      "coverage": 0.1370337420249012,
+      "error": null
+    },
+    {
+      "name": "Intangible Adjusted Profitable Value",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Reported book equity omits internally generated intangible capital, so research-intensive but highly profitable firms are misclassified as expensive; capitalizing five years of R&D into the book anchor should reclassify them as cheap and strengthen the profitability-value interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This changes only the valuation anchor's measurement, testing whether the mismeasurement of book equity is what caps the alpha of the winning gap structure. Treating unreported R&D as zero is the economically correct convention rather than a coverage patch, since firms that report no R&D genuinely have no capitalizable research spend.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 7.451887414823425,
+      "ls_alpha": 0.0379617718850741,
+      "ls_talpha": 4.114686621256151,
+      "ls_sharpe": 0.2917372017568501,
+      "coverage": 0.13622225070103275,
+      "error": null
+    },
+    {
+      "name": "Safe Profitable Value Triple",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Cheap and profitable firms still fail when their balance sheets are fragile, because leverage transfers the upside of a re-rating to creditors; requiring low net debt alongside high operating profitability and a high book-to-market isolates the mispriced segment from the distressed segment.",
+      "expected_sign": "positive",
+      "reasoning": "This adds a third, economically distinct dimension \u2014 solvency \u2014 rather than another valuation anchor, which is what diluted the gen-2 composite. Since RMW and HML contain no explicit leverage leg, the safety tilt is a plausible source of FF5 alpha and directly addresses the value-trap problem that gates and indicators failed to solve.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.7721187149430757,
+      "ls_alpha": 0.05788381869215596,
+      "ls_talpha": 3.785167313328674,
+      "ls_sharpe": 0.4238340547568562,
+      "coverage": 0.11999944074219908,
+      "error": null
+    },
+    {
+      "name": "Earnings Yield With Profit Track Record",
+      "expression": "SUMRANK(RATIO(pi, MUL(prcc_f, csho)), TS_SUM(INDICATOR(RATIO(oiadp, at), 0), 5))",
+      "hypothesis": "A high earnings yield is credible when the firm has been consistently profitable over the past five years; the count of profitable years validates the yield in a way that the current profit level cannot, so the combination should identify pessimistically priced firms with durable earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier attempt to condition a yield on profitability stability used a multiplicative form with return-on-asset volatility and failed, but the diagnostic problem was the operator, not the idea; a discrete track-record count combined additively fits the structure that works and is robust to scale. Pretax income avoids tax-driven noise in the yield, and the five-year window is justified because persistence, not the current level, is the economic content.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.5567142716907676,
+      "ls_alpha": -0.01226968629422328,
+      "ls_talpha": -1.1090871712756245,
+      "ls_sharpe": 0.20109572922199384,
+      "coverage": 0.14250188001423114,
+      "error": null
+    },
+    {
+      "name": "Safe Intangible Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "The profitable-value interaction is strongest when cheapness is measured against intangible-inclusive book capital and when the firm's balance sheet is unlevered enough that a re-rating accrues to equity holders rather than creditors; the three conditions together should identify mispriced quality rather than distress.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the archive's two independent gen-3 discoveries \u2014 the intangible-adjusted book anchor (alpha 3.8%, t=4.1) and the net-debt safety channel (alpha 5.8%, t=3.8) \u2014 inside the additive rank structure that is the only form producing reliable FF5 alpha. Because the two improvements act on different legs (valuation measurement and solvency), their information should be close to additive rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.344635530136915,
+      "ls_alpha": 0.06311399112263749,
+      "ls_talpha": 4.216886580222962,
+      "ls_sharpe": 0.46540207931238925,
+      "coverage": 0.11999944074219908,
+      "error": null
+    },
+    {
+      "name": "Industry Gap Intangible Operating Profit",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Within-industry divergence between a firm's operating profitability standing and its intangible-adjusted richness identifies mispricing more sharply than either correction alone, because SG&A-adjusted profit and capitalized R&D fix opposite ends of the same accounting distortion.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 3 improved the profitability leg (SG&A adjustment, alpha 2.2%) and the valuation leg (intangible book, alpha 3.8%) separately within the same industry-rank gap; this tests whether the two corrections compound or overlap. Keeping the industry-neutral gap form also preserves the strongest Fama-MacBeth evidence in the archive, which the unranked safety triple sacrificed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.974857091666369,
+      "ls_alpha": 0.034314815675836996,
+      "ls_talpha": 3.63087544115851,
+      "ls_sharpe": 0.36545431644900117,
+      "coverage": 0.11578787867531432,
+      "error": null
+    },
+    {
+      "name": "Intangible Book To Enterprise Value With Profitability",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))",
+      "hypothesis": "Leverage should enter through the price of the whole firm rather than as a separate preference for low debt; capitalized intangible book relative to enterprise value, combined with operating profitability, should capture the same safety information more efficiently than a standalone net-debt rank.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a specific design choice raised by the safety triple: whether the leverage payoff is a distinct low-debt tilt or simply the correct denominator for cheapness. If alpha matches the triple with better coverage and Sharpe, the mechanism is valuation-based and later generations should use enterprise-value anchors; if it falls short, low leverage is an independent quality dimension worth ranking separately.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.056700648884477,
+      "ls_alpha": 0.03641748128090009,
+      "ls_talpha": 2.4145385877007786,
+      "ls_sharpe": 0.44902944374733966,
+      "coverage": 0.12000217512074603,
+      "error": null
+    },
+    {
+      "name": "Consistent Intangible Profit And Price",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at)), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "If R&D is capital expenditure rather than expense, then it must be added back to profit as well as to book equity; treating intangibles consistently on both legs should identify research-intensive firms that are genuinely profitable and genuinely cheap, a group that standard value and profitability factors both misclassify.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 winner corrected only the denominator of the valuation leg, leaving R&D-heavy firms penalized in the profitability leg, which understates their economic profit. Consistent capitalization is the internally coherent version of that fix, so a further alpha gain would confirm that intangible mismeasurement \u2014 not a generic quality tilt \u2014 is the source of the effect.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 6.310890428116365,
+      "ls_alpha": 0.03816599251160738,
+      "ls_talpha": 3.7653563908225736,
+      "ls_sharpe": 0.41561422305816553,
+      "coverage": 0.11785826756379048,
+      "error": null
+    },
+    {
+      "name": "Payout Validated Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(COALESCE(dvc, 0), MUL(prcc_f, csho))))",
+      "hypothesis": "Cash actually distributed to shareholders verifies that reported profitability is real and that management is not reinvesting into value-destroying growth; profitable cheap firms that also pay out should outperform equally cheap and profitable firms that retain everything.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend channel is unexplored in the archive and offers a hard-cash validation of the profitability leg that accrual and even cash-flow measures cannot provide, so it tests a distinct economic mechanism rather than another accounting adjustment. Treating non-payers as zero yield is the economically correct convention, and using the additive rank form keeps the construction inside the family that produces alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.4216299391157348,
+      "ls_alpha": -0.025962603515590217,
+      "ls_talpha": -2.4308241344116532,
+      "ls_sharpe": 0.1410423399991515,
+      "coverage": 0.1204201738940935,
+      "error": null
+    },
+    {
+      "name": "Improving Profit Meets Intangible Cheapness",
+      "expression": "SUMRANK(TREND(RATIO(oiadp, at), 5), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), RATIO(SUB(SUB(revt, cogs), xsga), at)))",
+      "hypothesis": "Among cheap and profitable firms, those whose return on assets has been trending upward are the ones whose low multiple is most clearly stale, so a fundamental-improvement channel should add to the level-based interaction just as balance-sheet safety does.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier trend interactions failed only in multiplicative form (gen-0 alpha \u22120.4%), so this retests the improvement mechanism in the additive rank structure now known to work, and it directly competes with the safety channel for the third slot. Comparing this against Signal 1 tells us whether the extra alpha in three-channel composites comes from risk reduction or from unrecognized fundamental momentum.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.065011261908726,
+      "ls_alpha": 0.012001598719185567,
+      "ls_talpha": 1.1507015961485472,
+      "ls_sharpe": 0.29296114560626885,
+      "coverage": 0.10111860846753457,
+      "error": null
+    },
+    {
+      "name": "Consistent Intangible Safe Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "If R&D is investment rather than expense, it must be added back to profit and to book capital simultaneously; combining that internally consistent measurement with low net debt should give the cleanest identification of profitable, cheap, financeable firms.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the archive's best portfolio signal (safe intangible triple, alpha 6.3%) with the adjustment that most improved cross-sectional evidence (consistent intangible profit, fmb 6.31), so it targets both metrics rather than trading one for the other. Since R&D-intensive firms are currently penalized in the profitability leg while being credited in the valuation leg, the correction should reduce internal contradiction rather than add a new tilt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.0835260437772,
+      "ls_alpha": 0.07188518912814461,
+      "ls_talpha": 4.7825913865218235,
+      "ls_sharpe": 0.42736516836794813,
+      "coverage": 0.11999944074219908,
+      "error": null
+    },
+    {
+      "name": "Industry Neutral Safe Intangible Value",
+      "expression": "SUMRANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), at)), SUMRANK(IND_ADJ(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho))), IND_ADJ(NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))))",
+      "hypothesis": "Profitability levels, book-to-market and leverage norms all differ structurally across industries, so the raw composite is partly a static sector bet; demeaning each channel within industry should isolate firm-level profitable value and sharpen the cross-sectional slope without sacrificing abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The best-alpha composite has a notably weaker fmb (4.35) than the industry-ranked gap signals (6.7\u20137.5), which points to sector composition rather than firm-level mispricing carrying part of its spread. This isolates one design choice \u2014 industry neutralization of each channel \u2014 and will tell us whether the two evidence types can be maximized together or genuinely trade off.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.3990689234809555,
+      "ls_alpha": 0.04525097144417235,
+      "ls_talpha": 4.101451249950579,
+      "ls_sharpe": 0.2485001093284133,
+      "coverage": 0.11999593248293129,
+      "error": null
+    },
+    {
+      "name": "Debt Capacity Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Creditors and equity markets assess solvency against cash earnings, not book assets, so net debt to EBITDA is the economically relevant safety measure; cheap profitable firms with low earnings-based leverage face no refinancing constraint on the re-rating.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the measurement of the safety channel that generated most of the recent alpha gain: asset-scaled versus earnings-scaled leverage. Earnings-based leverage is also an implicit second interaction with profitability, since the same profit stream that makes the firm attractive also determines its debt capacity, so it should dominate if the mechanism is genuinely about financial flexibility rather than a mechanical low-debt tilt.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.3049040711429765,
+      "ls_alpha": 0.0689822351667968,
+      "ls_talpha": 4.570800379212358,
+      "ls_sharpe": 0.4902203721807317,
+      "coverage": 0.11981737240461043,
+      "error": null
+    },
+    {
+      "name": "Cash Operating Yield On Enterprise Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(ADD(oiadp, dp), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))",
+      "hypothesis": "A flow-based cheapness anchor \u2014 cash operating earnings before depreciation relative to the total price of the firm's capital claims \u2014 measures low expectations for firms whose book equity is uninformative, and combined with high operating profitability identifies underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal so far anchors cheapness on book equity, so the archive cannot distinguish an intangible-correction effect from a broader mismeasured-denominator effect; a depreciation-adjusted earnings yield on enterprise value replaces the book anchor entirely while remaining leverage-neutral. If it matches the intangible composite, cheapness measurement is fungible and future work should focus on the safety channel instead.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8220296396758737,
+      "ls_alpha": 0.0004941855568877419,
+      "ls_talpha": 0.04773382119304097,
+      "ls_sharpe": 0.2947386016985094,
+      "coverage": 0.11769121251218605,
+      "error": null
+    },
+    {
+      "name": "Margin Augmented Safe Intangible Value",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), sale), SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))))",
+      "hypothesis": "Gross margin measures pricing power while return on assets measures capital efficiency; a cheap, unlevered firm with both is competitively protected, so adding the margin channel should strengthen the profitability side of the interaction rather than duplicate it.",
+      "expected_sign": "positive",
+      "reasoning": "The gross margin channel was present in both early alpha-positive gap signals but is absent from the current best composite, so its marginal contribution is untested inside the winning structure. It is the one profitability dimension orthogonal to asset scaling, which is why it may add information where a third valuation anchor previously diluted the signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.3412040237441922,
+      "ls_alpha": 0.05445125857446398,
+      "ls_talpha": 3.9419598857856926,
+      "ls_sharpe": 0.20327384001553106,
+      "coverage": 0.1179081054822123,
+      "error": null
+    },
+    {
+      "name": "Share Retirement Validated Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(GROWTH(csho, 1))))",
+      "hypothesis": "Managers of genuinely undervalued profitable firms retire shares, while managers of overvalued firms issue them; a shrinking share count therefore validates the market's mispricing of a cheap profitable firm in a way that dividend payments do not.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend-validation channel failed badly (alpha \u22122.6%), but dividends signal maturity and capital-return constraints, whereas net issuance is a direct managerial statement about the price itself, so the repair changes the economic content rather than the formula. Issuance is also largely orthogonal to the FF5 legs, giving the composite a plausible new source of abnormal return without touching the profitability or intangible-value channels.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.7382307860581587,
+      "ls_alpha": 0.01280153211252754,
+      "ls_talpha": 1.2381910312314555,
+      "ls_sharpe": 0.35992714621465777,
+      "coverage": 0.11032118526332994,
+      "error": null
+    },
+    {
+      "name": "Intangible Profit Value With Debt Capacity",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheap, genuinely profitable firms realize their re-rating only when their debt is small relative to the cash earnings that service it; measuring profit and book capital with R&D capitalized and solvency against EBITDA should combine the two strongest corrections found so far.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the archive's best alpha construction with the best-Sharpe safety measurement, two changes that acted on different legs and are therefore likely additive rather than redundant. Earnings-based leverage is also itself a profitability-valuation interaction, since the same profit stream that makes the firm attractive determines its capacity to survive to the re-rating.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.2290208246480985,
+      "ls_alpha": 0.07590714086368844,
+      "ls_talpha": 5.124051055688893,
+      "ls_sharpe": 0.5258385178164834,
+      "coverage": 0.11981737240461043,
+      "error": null
+    },
+    {
+      "name": "Fully Consistent Intangible Capital Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "If R&D creates an asset, it belongs in the denominator of profitability as well as in book equity; scaling intangible-inclusive profit by intangible-inclusive capital gives the true economic return on invested capital and should rank research-intensive firms correctly against asset-heavy ones.",
+      "expected_sign": "positive",
+      "reasoning": "The current leader capitalizes R&D in the profit numerator and in book equity but still divides profit by unadjusted assets, which mechanically overstates the return of research-heavy firms and creates an internal inconsistency. Fixing it isolates a single design choice \u2014 the profitability denominator \u2014 and should sharpen the cross-sectional slope if the intangible story is the true mechanism rather than a proxy for an R&D-intensity tilt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.913941094959011,
+      "ls_alpha": 0.07259407446938287,
+      "ls_talpha": 4.91764019767945,
+      "ls_sharpe": 0.48782295195977465,
+      "coverage": 0.11999944074219908,
+      "error": null
+    },
+    {
+      "name": "Stable Profit Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(VOL(RATIO(oiadp, at), 5))))",
+      "hypothesis": "The third channel may be about the reliability of the profit stream rather than about debt: cheap firms whose return on assets is stable have predictable earnings power, so their low multiple is more likely mispricing than a rational discount for cash-flow risk.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes operating-profit volatility for financial leverage while holding the profitability and valuation legs fixed, providing a controlled test of what the safety channel actually contributes. An earlier stability attempt failed only in multiplicative form with a raw earnings yield, so the mechanism itself has never been tested inside the additive structure that works.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.534492996613423,
+      "ls_alpha": 0.04127245913810744,
+      "ls_talpha": 2.99734889699932,
+      "ls_sharpe": 0.44436478734648815,
+      "coverage": 0.11029600834387875,
+      "error": null
+    },
+    {
+      "name": "Accrual Quality Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ib, oancf), at))))",
+      "hypothesis": "Cheap profitable firms whose earnings are cash-backed rather than accrual-driven have credible fundamentals, so low accruals should validate the profitability leg in the same way low leverage validates the balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This is the third arm of the competition for the third channel, testing earnings credibility instead of financial or operating risk, and it revives an idea that was never evaluated because two earlier accrual proposals were rejected on theme-exclusivity grounds. Comparing Signals 1, 3 and 4 with identical first two legs will identify which economic dimension complements profitable value, rather than stacking channels blindly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.526733207888378,
+      "ls_alpha": 0.06472409744964626,
+      "ls_talpha": 3.640923420287854,
+      "ls_sharpe": 0.6662428934050509,
+      "coverage": 0.0763835233158911,
+      "error": null
+    },
+    {
+      "name": "Solvent Cash Backed Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Financial solvency and earnings credibility are distinct failure modes of cheap profitable firms \u2014 one is about surviving to the re-rating, the other about whether the profits are real \u2014 so screening on both should produce a higher and more reliable alpha than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "A four-channel version is warranted only if the added dimension is economically orthogonal, which is the case here, unlike the gross-margin channel that duplicated existing profitability information and cut the Sharpe ratio. If this beats Signals 1 and 4 individually, the final generations should consolidate on the four-channel form; if it dilutes, three channels is the capacity limit of this additive design.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.076711450972926,
+      "ls_alpha": 0.07916897843524753,
+      "ls_talpha": 4.625888028851459,
+      "ls_sharpe": 0.7153159589005633,
+      "coverage": 0.07599307469620538,
+      "error": null
+    },
+    {
+      "name": "Smoothed Price Anchor Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Using a three-year average market capitalization as the price anchor measures cheapness relative to a normal valuation rather than to a possibly crash-driven current price, which avoids buying profitable firms whose price collapse reflects genuine news not yet in the accounting data.",
+      "expected_sign": "positive",
+      "reasoning": "All current constructions use the latest price, so the value leg is mechanically contaminated by recent momentum, and the spread's Sharpe may suffer from buying firms in active decline. Smoothing the denominator isolates one timing choice, and if alpha and Sharpe both improve it implies the interaction is about persistent low expectations rather than fresh price drops.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.872936800884773,
+      "ls_alpha": 0.07017930303600933,
+      "ls_talpha": 5.145428952999609,
+      "ls_sharpe": 0.44000792211309975,
+      "coverage": 0.12019430390770554,
+      "error": null
+    },
+    {
+      "name": "Coverage Repaired Solvent Cash Backed Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cheap, intangible-adjusted profitable firms with low earnings-based leverage and cash-backed earnings are the cleanest expression of profitable value; the accrual screen should retain its power once measured on the whole panel rather than only on firms with reported cash-flow statements.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the coverage failure of the best-alpha signal by approximating operating cash flow with income plus depreciation where the statement is missing, which is the standard reconstruction and preserves the economic content of the accrual channel. If alpha and t-stat both hold with coverage restored to about 0.12, the four-channel design is validated rather than being an artifact of the cash-flow-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.3995064385632965,
+      "ls_alpha": 0.07346715990978515,
+      "ls_talpha": 5.961333360091063,
+      "ls_sharpe": 0.5733643132682744,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Debt Capacity With Smoothed Price Anchor",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheapness relative to a three-year average market value identifies persistently low expectations rather than a fresh price collapse, and pairing that with earnings-based debt capacity should compound two independent improvements to the same composite.",
+      "expected_sign": "positive",
+      "reasoning": "The smoothed anchor and the EBITDA leverage measure each independently raised the alpha t-stat above 5 while acting on different legs, so their information is unlikely to be redundant. It also directly addresses the residual concern that the current value leg is contaminated by recent momentum, which is the most plausible remaining source of unrewarded risk in the spread.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.963274511346265,
+      "ls_alpha": 0.07586417356887573,
+      "ls_talpha": 5.532696946495181,
+      "ls_sharpe": 0.4956025385629406,
+      "coverage": 0.12001037825638688,
+      "error": null
+    },
+    {
+      "name": "Full Profitable Value Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "The four economically distinct requirements for a mispriced profitable value stock \u2014 intangible-adjusted profitability, persistent cheapness, financeable leverage, and cash-backed earnings \u2014 should jointly produce the highest reliable abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This combines every surviving improvement, including the coverage-repaired accrual channel and the smoothed price anchor, and thus tests the capacity limit of the additive design directly against Signals 1 and 2. Because the margin channel previously diluted a similar composite, this will show whether dilution comes from channel count itself or only from redundant channels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.290642559123824,
+      "ls_alpha": 0.07091186279243725,
+      "ls_talpha": 5.98803902239824,
+      "ls_sharpe": 0.539369488444092,
+      "coverage": 0.11766159867660206,
+      "error": null
+    },
+    {
+      "name": "Peer Relative Profit With Absolute Cheapness",
+      "expression": "SUMRANK(IND_ADJ(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Profitability norms are technology-driven and differ structurally across industries, so profitability should be judged against peers, whereas cheapness and leverage carry information across industries and should be judged in absolute terms.",
+      "expected_sign": "positive",
+      "reasoning": "Blanket industry neutralization cut alpha from 7.2% to 4.5%, but that test demeaned all three channels at once and so could not identify which leg was harmed. Demeaning only the profitability leg is the economically motivated middle case and should raise the Fama-MacBeth slope \u2014 currently the weaker form of evidence for the composites \u2014 without discarding the cross-industry valuation signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.339062563304452,
+      "ls_alpha": 0.0624793891391063,
+      "ls_talpha": 4.465920089314239,
+      "ls_sharpe": 0.42532171470302943,
+      "coverage": 0.11981386414534265,
+      "error": null
+    },
+    {
+      "name": "Cash Profitability Meets Intangible Cheapness",
+      "expression": "SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cash-based operating profitability is the profit measure least distorted by accounting choices, so substituting it for accrual operating profitability should give a stronger profitability leg for the interaction with cheapness and debt capacity.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has only ever tested income-statement profitability at full coverage, since the one cash-profitability construction was rejected on theme grounds and the accrual version halved coverage; the depreciation-based fallback lets this be evaluated on the full panel. Comparing it with Signal 1 separates two distinct claims: whether cash profitability is a better *level* measure, or whether the accrual gap works only as a separate quality screen.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.074863190214088,
+      "ls_alpha": 0.06996715177121898,
+      "ls_talpha": 4.798266749388897,
+      "ls_sharpe": 0.5727128259062485,
+      "coverage": 0.13647520651264997,
+      "error": null
+    },
+    {
+      "name": "Enterprise Cheapness Plus Debt Capacity",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheapness measured against the price of all capital claims and solvency measured against cash earnings capture different aspects of leverage \u2014 how much of the firm equity holders are buying, and whether the debt is serviceable \u2014 so using both should improve on either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value anchor was previously tested only without an explicit leverage channel, where it underperformed the equity anchor (3.6% versus 6.3%), leaving open whether it complements a solvency screen or double counts it. This is the decisive test of whether leverage should enter the valuation denominator, the safety channel, or both, which matters for how the final signal is specified.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.5223156517849326,
+      "ls_alpha": 0.07264530212786001,
+      "ls_talpha": 5.117202822811075,
+      "ls_sharpe": 0.517631555523226,
+      "coverage": 0.11981948767858072,
+      "error": null
+    },
+    {
+      "name": "Smoothed Profit Full Discipline Model",
+      "expression": "SUMRANK(MA(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), 3), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Persistent profitability, not a single year's figure, is what the market underprices in cheap firms; averaging intangible-adjusted operating profitability over three years should isolate durable earnings power and reduce turnover-driven noise in the spread.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the price anchor raised the alpha t-stat to above 5, so the same noise-reduction logic applied to the profitability leg is the natural next refinement, and it also matches the horizon over which value re-rating occurs. This holds all four economic channels of the current best model fixed and changes only the measurement window of one leg, making the test interpretable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.281292382215449,
+      "ls_alpha": 0.06476535188139798,
+      "ls_talpha": 5.533191393183215,
+      "ls_sharpe": 0.49263448591051295,
+      "coverage": 0.1190096988922981,
+      "error": null
+    },
+    {
+      "name": "Cash And Accrual Profitability Value Model",
+      "expression": "SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), at), SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cash profitability and intangible-adjusted operating profitability capture different things \u2014 how much cash the assets throw off versus how much economic profit they generate \u2014 and a cheap firm strong on both has fundamentals that neither accounting convention can flatter.",
+      "expected_sign": "positive",
+      "reasoning": "Cash profitability delivered the highest coverage of any leading construction (0.136) with Sharpe 0.573, so using it as a second profitability channel rather than as a substitute tests whether the two profit measures are complements. This is the cleanest alternative to the accrual-gap screen, which encodes the same information as a difference rather than as two levels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.083857367069001,
+      "ls_alpha": 0.05999758912759623,
+      "ls_talpha": 4.7857124471108925,
+      "ls_sharpe": 0.5113927961908364,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Interest Burden Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(COALESCE(xint, 0), oibdp))))",
+      "hypothesis": "What threatens a cheap profitable firm is not the stock of debt but the cost of servicing it; interest expense relative to EBITDA measures the actual claim creditors have on operating cash flow and should identify financeable value more precisely than balance-sheet net debt.",
+      "expected_sign": "positive",
+      "reasoning": "Interest expense is the one economically relevant variable in the menu never used, and it distinguishes cheaply financed leverage from expensive distressed leverage, a distinction that net debt to EBITDA cannot make. Treating unreported interest expense as zero is correct for debt-free firms, so this is an economic substitution of the safety channel rather than a coverage patch.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.804809670464531,
+      "ls_alpha": 0.06435194629713124,
+      "ls_talpha": 4.082483456211676,
+      "ls_sharpe": 0.424335628593815,
+      "coverage": 0.12023748645192818,
+      "error": null
+    },
+    {
+      "name": "Short Window Intangible Capital Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Research capital depreciates quickly, so a three-year accumulation may value the intangible stock more accurately than five years while requiring less firm history, widening the usable sample without weakening the valuation anchor.",
+      "expected_sign": "positive",
+      "reasoning": "The five-year R&D window is the main reason the leading signals lose about two percentage points of coverage relative to simple constructions, and it is an arbitrary choice never tested. If alpha and t-stat hold with higher coverage, the shorter window is the better specification on robustness grounds; if they fall, the long-lived intangible interpretation is confirmed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.345107886147842,
+      "ls_alpha": 0.0737508952675365,
+      "ls_talpha": 5.94668346329163,
+      "ls_sharpe": 0.5706856082639498,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Smoothed Solvency Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(MA(RATIO(SUB(ADD(dltt, dlc), che), oibdp), 3)))))",
+      "hypothesis": "EBITDA is cyclical, so a single year's net-debt-to-EBITDA ratio misclassifies firms in a temporary earnings trough as unfinanceable; averaging the leverage ratio over three years measures structural rather than transitory debt capacity.",
+      "expected_sign": "positive",
+      "reasoning": "The safety channel is the noisiest leg because its denominator is a flow that can nearly vanish, which likely costs the current model both alpha precision and portfolio stability. Smoothing it isolates that measurement issue while keeping the smoothed price anchor and the repaired accrual screen from the best model intact.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.146353657198002,
+      "ls_alpha": 0.06908255343776716,
+      "ls_talpha": 5.659747076374592,
+      "ls_sharpe": 0.5075604429081775,
+      "coverage": 0.117899489610187,
+      "error": null
+    },
+    {
+      "name": "Dual Solvency Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(COALESCE(xint, 0), oibdp)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Debt quantity and debt cost are distinct constraints \u2014 a firm can have modest net debt at punitive rates or heavy debt cheaply financed \u2014 so screening cheap profitable firms on both should isolate those genuinely able to survive to a re-rating.",
+      "expected_sign": "positive",
+      "reasoning": "The safety dimension has produced the largest incremental alpha of any channel added so far, so testing whether it has two separable components is the highest-value structural question left. Comparing this against Signal 3 and the current best model separates a genuine complementarity from mere duplication of the same leverage information.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.6649021672927256,
+      "ls_alpha": 0.06437139986042786,
+      "ls_talpha": 4.842202067225437,
+      "ls_sharpe": 0.3688322137256721,
+      "coverage": 0.12001037825638688,
+      "error": null
+    },
+    {
+      "name": "Balanced Weight Profitable Value Model",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at))), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "The interaction is strongest when fundamentals and price receive equal weight; pairing the two fundamental-quality channels against the two price-and-solvency channels gives each side half the signal instead of leaving cheapness with an eighth.",
+      "expected_sign": "positive",
+      "reasoning": "Nested SUMRANK calls impose geometric weights, so the leading model is effectively a profitability signal with a small value tilt, which is likely why its cross-sectional slope lags the earlier value-heavy gap constructions. Restructuring the nesting is a substantive change to the economic content of the signal, not a cosmetic one, and it should raise fmb if the cheapness leg is currently under-weighted.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.558192961048881,
+      "ls_alpha": 0.08396130465585794,
+      "ls_talpha": 5.710944199348253,
+      "ls_sharpe": 0.5220402933500706,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Value Led Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cheapness is the source of expected return and profitability, earnings quality and solvency are the screens that decide which cheap stocks deliver it, so the valuation leg should carry the dominant weight with the fundamentals acting as progressively finer filters.",
+      "expected_sign": "positive",
+      "reasoning": "This is the mirror image of Signal 1 and of the current leader, placing intangible-adjusted book-to-price at half the weight, and together the three specifications trace the full weighting curve. Because the economic story is that profitability *strengthens* value rather than replacing it, a value-led ordering is the specification most faithful to the stated mechanism and should show the strongest Fama-MacBeth evidence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.491935106618274,
+      "ls_alpha": 0.05826320463696358,
+      "ls_talpha": 4.0918700845077245,
+      "ls_sharpe": 0.5669716372951623,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Short Window Smoothed Price Discipline",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "A three-year R&D stock and a three-year average price are both statements that the relevant horizon for intangible capital and for market expectations is a few years, so combining them should give the most internally consistent measure of persistent cheapness relative to economic capital.",
+      "expected_sign": "positive",
+      "reasoning": "The shorter R&D window and the smoothed price anchor each improved the model separately but have never been combined, and both act on the same valuation leg, so the test is whether they are complementary horizon corrections or duplicate smoothing. Keeping the profitability and solvency legs at current-year measurement respects the gen-8 finding that smoothing those legs destroys information.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.2211351538930515,
+      "ls_alpha": 0.07241895418292991,
+      "ls_talpha": 6.128011080329498,
+      "ls_sharpe": 0.5539253180144774,
+      "coverage": 0.11766159867660206,
+      "error": null
+    },
+    {
+      "name": "Cash Conversion Quality Value Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), oibdp), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Earnings quality is better expressed as the fraction of operating profit that converts into cash than as accruals scaled by assets, because conversion is scale-free and directly answers whether the profitability that makes a cheap firm attractive is actually collectible.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel is the archive's most valuable non-valuation screen, but its asset scaling mixes capital intensity into an earnings-credibility measure, penalizing asset-light firms mechanically. Replacing it with a cash conversion ratio isolates the measurement choice while leaving the three other channels untouched.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.559541788020149,
+      "ls_alpha": 0.07090844134060384,
+      "ls_talpha": 5.323888676046382,
+      "ls_sharpe": 0.5313051266676967,
+      "coverage": 0.11746983103397894,
+      "error": null
+    },
+    {
+      "name": "Broad Universe Profitable Value Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(revt, ADD(cogs, COALESCE(xsga, 0))), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(COALESCE(RATIO(SUB(ADD(dltt, dlc), che), oibdp), RATIO(SUB(ADD(dltt, dlc), che), at))))))",
+      "hypothesis": "The frontier signal's edge should survive on the widest defensible universe: firms that fold selling costs into cost of goods sold have no separate SG&A to subtract, and firms without a meaningful EBITDA can still be assessed on asset-based leverage.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage of the leading models is stuck near 0.117 versus 0.141 for simple constructions, and both shortfalls come from data conventions rather than economics, so the fallbacks are justified reconstructions rather than blanket patches. If alpha and t-stat hold at materially higher coverage this becomes the most robust final specification, and if they fall the frontier result is partly a selected-sample effect worth knowing about.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.878002105566023,
+      "ls_alpha": 0.0583718470075702,
+      "ls_talpha": 4.558120444876796,
+      "ls_sharpe": 0.50553697539092,
+      "coverage": 0.13703255540779594,
+      "error": null
+    },
+    {
+      "name": "Net Of Debt Intangible Book To Price",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), RATIO(SUB(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), SUB(ADD(dltt, dlc), che)), MUL(prcc_f, csho))))",
+      "hypothesis": "What an equity holder actually buys is intangible-inclusive capital net of the creditors' claim, so subtracting net debt from the book anchor merges cheapness and solvency into a single economically correct measure rather than ranking them as separate channels.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior integration of leverage into valuation used net debt in the denominator, which double counts the market's pricing; putting it in the numerator instead states the residual claim directly and frees a channel slot for earnings quality. This is the one remaining structurally different way to express the safety-value interaction, and it also raises the weight on the profitability and quality legs relative to a four-channel nesting.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.048636538472712,
+      "ls_alpha": 0.06838845200833871,
+      "ls_talpha": 5.817993834749425,
+      "ls_sharpe": 0.5187410085373073,
+      "coverage": 0.11760226782133798,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Industry Profitable Value Product",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "Cheapness is only informative about mispricing when the underlying business actually earns high returns on assets; the product of within-industry gross profitability and within-industry book-to-market isolates firms that are simultaneously fundamentally strong and priced pessimistically, and should earn higher subsequent returns than either leg alone.",
+      "expected_sign": "positive",
+      "reasoning": "A multiplicative rank interaction is near zero unless both cheapness and profitability are high, so it cannot be reproduced by a linear combination of the two single-theme signals. Industry ranking removes sector-level differences in both margins and book-to-market so the interaction reflects firm-level quality-at-a-discount rather than a sector tilt. Gross profit is the least manipulated profitability numerator, which keeps the profitability leg economically clean.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Value Conditional On Above Peer Operating Profit",
+      "expression": "MUL(INDICATOR(IND_ZSCORE(RATIO(oiadp, at)), 0), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The value premium is concentrated in firms whose operating profitability exceeds their industry mean; among below-average profitability firms, low price multiples reflect genuine distress rather than mispriced pessimism, so the value signal should be switched off there.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator turns the valuation signal on only for firms with positive industry-demeaned operating profitability, testing the conditional (regime) form of the interaction rather than a smooth product. This directly separates \"cheap and good\" from the value trap segment that typically drags on unconditional book-to-market portfolios. If the conditional version delivers a larger FF5 alpha than plain book-to-market, the profitability screen is adding information, not relabeling value.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Profit To Enterprise Value",
+      "expression": "RATIO(SUB(revt, cogs), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))",
+      "hypothesis": "Scaling operating-level profit by total enterprise value (equity plus net debt) measures the profit stream an investor buys per dollar of capital claim; high values identify genuinely cheap profitable firms while neutralizing the leverage distortion that contaminates equity-only earnings yields.",
+      "expected_sign": "positive",
+      "reasoning": "This is an intrinsic ratio interaction: the numerator is pure profitability and the denominator is pure valuation, so variation comes from the joint mapping of fundamentals into price rather than from either theme separately. Using enterprise value rather than market cap prevents highly levered, cheap-looking but unprofitable firms from ranking high, which should sharpen both the Fama-MacBeth slope and the long-short alpha. Net cash netting also rewards profitable firms whose price is largely backed by liquid assets.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap With Improving Profitability Trend",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_RANK(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "Low market expectations combined with a multi-year improving return-on-assets trajectory indicates fundamentals are strengthening before the price has re-rated; profitability momentum should therefore amplify the value premium, whereas cheap firms with deteriorating profitability are correctly priced.",
+      "expected_sign": "positive",
+      "reasoning": "Here profitability enters as a five-year trend (a state of fundamental improvement) rather than a level, so the signal is economically distinct from static profitable-value composites and cannot be a level relabeling. The interaction captures expectation errors: valuation embeds the market's stale view while the trend reveals the direction of the fundamentals. The temporal operator is justified because the mechanism is about unrecognized improvement, not about the current profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Earnings Yield Interaction",
+      "expression": "MUL(RANK(MA(RATIO(ib, MUL(prcc_f, csho)), 3)), RANK(NEG(VOL(RATIO(oiadp, at), 5))))",
+      "hypothesis": "A high earnings yield is credible only if the earnings stream is stable; cheap firms with volatile profitability offer a yield that is a risk premium, while cheap firms with smooth profitability offer a mispricing premium that should be corrected.",
+      "expected_sign": "positive",
+      "reasoning": "Profitability enters through its second moment (five-year volatility of return on assets), interacting with a three-year smoothed earnings yield, so the signal exploits the quality-of-earnings dimension rather than the level of profits. This targets the reason value strategies sometimes fail FF5 tests: the spread is loaded on distress-like earnings instability. Averaging the yield and ranking the inverse volatility keeps both legs comparable and reduces one-off accounting noise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Fundamental Price Divergence Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(oancf, at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Returns should be highest where a firm's fundamental standing among peers (cash-flow generation and gross margin) is far above its valuation standing; this rank gap measures how much profitability the market is failing to pay for, and the gap should close through positive abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than multiplying the two themes, this signal measures their misalignment, so it is positive only when the profitability percentile exceeds the price-to-book percentile within the industry. It differs from a product because a firm that is both mid-quality and mid-priced scores neutral while an elite-fundamentals firm at an average multiple scores high. Using operating cash flow and gross margin jointly ensures the fundamental leg reflects realized cash profitability, not accrual-inflated earnings.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Pure Centered Profitability Value Interaction",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(revt, cogs), at)), IND_ZSCORE(LOG(RATIO(ceq, MUL(prcc_f, csho)))))",
+      "hypothesis": "The incremental payoff to buying cheap stocks rises with profitability and the incremental payoff to profitability rises with cheapness; the genuine interaction is the product of the two industry-demeaned exposures, which is high for cheap-profitable firms and also high for expensive-unprofitable firms, and low for value traps and expensive quality.",
+      "expected_sign": "positive",
+      "reasoning": "Centering each leg within industry before multiplying removes the linear value and profitability main effects that HML and RMW absorb, so any surviving spread is a true second-order effect rather than a factor relabeling. This is the direct repair of the gen-0 rank-product failure (fmb t=5.75 but alpha=0.00) and isolates a single design choice: centered versus uncentered multiplication with identical ingredients. Coverage should match the gen-0 products (~0.14) since it uses the same inputs.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Quality Price Rank Gap Wide Coverage",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Abnormal returns accrue where a firm's fundamental percentile among peers (asset-level gross profitability plus gross margin) far exceeds the percentile the market assigns it via price-to-book; the misalignment, not the level of either theme, is what mean-reverts.",
+      "expected_sign": "positive",
+      "reasoning": "This retains the only gen-0 structure that produced reliable alpha (rank divergence, alpha 2.6%, t=2.3) but replaces the cash-flow leg, whose availability cut coverage to 0.085, with income-statement profitability available for nearly all firms. If alpha holds or improves with coverage back near 0.14, the divergence mechanism is robust rather than a small-sample artifact of cash-flow reporters.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Through Cycle Earnings Power Yield",
+      "expression": "RATIO(MUL(MA(RATIO(oiadp, at), 5), at), MUL(prcc_f, csho))",
+      "hypothesis": "Applying a firm's five-year average return on assets to its current asset base gives normalized earnings power; dividing by market capitalization yields the price of a dollar of sustainable, cycle-adjusted profit, and firms cheap on this basis are mispriced rather than merely temporarily depressed.",
+      "expected_sign": "positive",
+      "reasoning": "This is a non-collapsing ratio interaction: the numerator's profitability rate comes from history while the scale and the denominator come from today, so it cannot be rewritten as either a pure earnings yield or a pure profitability ratio. It repairs the weakness of one-year earnings yields, whose numerators are contaminated by transitory losses that make genuinely profitable firms look expensive. The five-year average also lowers turnover, which should help the long-short Sharpe and alpha precision.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Justified Sales Multiple",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(revt, cogs), sale)), IND_ZSCORE(LOG(RATIO(sale, MUL(prcc_f, csho)))))",
+      "hypothesis": "A price-to-sales multiple is only interpretable jointly with margin, because a dollar of revenue is worth more at a high-margin firm; firms with high gross margins trading at high sales yields are therefore the most clearly underpriced, while low-margin firms deserve their low multiples.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the valuation anchor from book equity to revenue, which sidesteps the book-equity distortions (intangibles, buybacks) that make HML noisy, and the margin leg is exactly the missing conditioning variable in a sales multiple. Both legs are industry-demeaned so the product is a pure interaction, not a repackaged value or profitability tilt. It teaches a different lesson from Signal 1: whether the interaction survives when cheapness is measured off the top line rather than the balance sheet.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Fundamentals Outrunning Market Value",
+      "expression": "SUB(IND_ZSCORE(GROWTH(RATIO(oiadp, at), 1)), IND_ZSCORE(GROWTH(RATIO(MUL(prcc_f, csho), at), 1)))",
+      "hypothesis": "When operating profitability per unit of assets improves but the market value of that same asset base does not keep pace, the market is under-reacting to fundamental improvement, and prices should catch up; the reverse configuration marks firms whose valuation has run ahead of earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "This is a dynamic version of the profitability-valuation gap: both legs are scaled by the identical asset base, so the difference measures whether fundamentals or price moved more, which no static value or profitability factor captures. It is deliberately distinct from the level-based archive so we learn whether the payoff comes from stale price levels or from unrecognized fundamental change. Growth rates are industry-demeaned to avoid loading on sector-wide profit cycles.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Firms Cheap Versus Own History",
+      "expression": "MUL(IND_ZSCORE(RATIO(oibdp, at)), ZSCORE(NEG(TS_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq)), 5))))",
+      "hypothesis": "Cheapness relative to a firm's own five-year multiple history identifies de-rating that is informative only when the business remains highly profitable; a persistently profitable firm trading at the bottom of its own valuation range is mispriced, whereas a de-rated unprofitable firm is repriced for deteriorating fundamentals.",
+      "expected_sign": "positive",
+      "reasoning": "Using a time-series valuation position rather than a cross-sectional one avoids the permanent industry and style tilts that make cross-sectional book-to-market collinear with HML, which is the likely reason gen-0 cheap-plus-profitable products showed no FF5 alpha. Both legs are centered so the product is an interaction rather than a stacked pair of main effects. The mechanism \u2014 de-rating without fundamental deterioration \u2014 is genuinely new to the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Two Anchor Quality Cheapness Composite",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(oiadp, at))), IND_RANK(SUMRANK(RATIO(MUL(prcc_f, csho), ceq), RATIO(MUL(prcc_f, csho), sale))))",
+      "hypothesis": "Firms whose peer-relative profitability standing (gross and operating return on assets) far exceeds the peer-relative richness the market assigns them on both a book and a sales multiple are systematically underpriced; using two valuation anchors reduces the measurement error in book equity that mislabels intangible-heavy and buyback-heavy firms as expensive.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the only structure with reliable FF5 alpha while attacking its main measurement weakness: single-anchor price-to-book. Averaging two profitability channels and two valuation channels before differencing should raise the signal-to-noise of the divergence without changing the economic mechanism, so it is a direct test of whether the gap payoff is about mispriced fundamentals rather than about book equity specifically.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Bounded Rank Product Interaction",
+      "expression": "MUL(ZSCORE(IND_RANK(RATIO(SUB(revt, cogs), at))), ZSCORE(IND_RANK(RATIO(ceq, MUL(prcc_f, csho)))))",
+      "hypothesis": "If profitability truly strengthens value, the centered product of the two exposures should predict returns positively; the previously observed negative product is hypothesized to be an artifact of unbounded z-scores, where tiny-book-equity distress firms dominate both tails.",
+      "expected_sign": "positive",
+      "reasoning": "Ranking first bounds each leg, then centering makes the product a genuine second-order term with the main effects removed, so this isolates one design choice \u2014 outlier robustness \u2014 relative to the gen-1 pure interaction that failed with the same economic content. The result is diagnostic either way: a positive alpha vindicates complementarity, while a repeat negative confirms that the two themes are substitutes at the extremes and directs all later generations to additive and gated forms.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive Cheap And Profitable Gate",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The economically stated mechanism is a conjunction \u2014 a firm must be both highly profitable and cheap \u2014 so the binding constraint is the weaker of the two ranks; taking the minimum builds portfolios that exclude both value traps and expensive quality without the tail sensitivity of a product.",
+      "expected_sign": "positive",
+      "reasoning": "MIN is the natural robust form of complementarity: it is monotone, bounded, and unlike the additive composite it refuses to let an extreme score on one theme compensate for a weak score on the other. Evaluated alongside Signals 1 and 2 on identical inputs, it completes an additive-versus-multiplicative-versus-conjunctive comparison that will settle the functional-form question for the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Return Versus Enterprise Multiple Gap",
+      "expression": "SUB(IND_RANK(RATIO(oancf, at)), IND_RANK(RATIO(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), ebitda)))",
+      "hypothesis": "Whole-firm cheapness measured by enterprise value to EBITDA, paired with high cash return on assets, identifies firms whose operating cash generation is not reflected in the total price of their capital claims; leverage-neutral valuation prevents indebted, unprofitable firms from appearing cheap.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-profit-to-enterprise-value earned the archive's best Sharpe (0.48) but no FF5 alpha, consistent with a level-scaled yield loading straight onto HML and RMW; recasting the same economic idea as an industry-rank divergence between cash profitability and the enterprise multiple should preserve the leverage-neutral insight while removing the factor-spanned level component. It also swaps accrual profitability for operating cash flow, which is the harder-to-manipulate profit measure.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensive And Deteriorating Profitability",
+      "expression": "SUMRANK(RATIO(MUL(prcc_f, csho), ceq), NEG(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "The most overpriced stocks are those with rich multiples whose profitability is on a multi-year downtrend, because the price still embeds an earnings path that the fundamentals are already abandoning; these firms should earn low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The archive has tested only long-side constructions; if the value-quality spread is driven mainly by the short leg, a signal explicitly built to rank the expensive-and-deteriorating corner will show a stronger and more reliable negative slope than the mirror image of a long-side signal. The five-year trend is justified because the mechanism is fundamental deterioration relative to embedded expectations, not the current profit level.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Backed Cheapness Versus Accruals",
+      "expression": "SUB(IND_RANK(RATIO(oancf, MUL(prcc_f, csho))), IND_RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "A high cash-flow yield is only trustworthy when reported earnings are cash-backed; cheap stocks whose profits arrive as cash rather than accruals are genuinely underpriced, while cheap stocks with large accruals are cheap because their earnings will not persist.",
+      "expected_sign": "positive",
+      "reasoning": "This conditions valuation on earnings quality rather than on the profitability level, a channel absent from the archive, and it uses the divergence structure that has produced the only reliable alphas so far. Because accruals and cash-flow yield are only weakly correlated with RMW and HML respectively, the resulting spread has a good chance of surviving the FF5 adjustment while retaining a clear economic story.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Profitability Cheapness Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ceq))))",
+      "hypothesis": "Operating profitability net of selling and administrative costs is a better measure of the profit a shareholder actually owns than gross profit; pairing it with peer-relative price-to-book should widen the divergence between fundamentally strong firms and the pessimistic prices attached to them.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the winning divergence structure fixed and changes only the profitability definition, so it cleanly tests whether SG&A-adjusted profit adds information beyond gross profit inside the value interaction. Because SG&A partly reflects intangible investment, the more conservative profit measure should better separate genuinely profitable cheap firms from ones whose gross margin never reaches the bottom line.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit Versus Price Of Assets Gap",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), at))))",
+      "hypothesis": "The relevant comparison is the profit an asset base produces against the total price investors pay for that asset base including debt claims; firms earning high gross profit per asset while their assets are capitalized cheaply on an enterprise basis are the purest form of profitable value.",
+      "expected_sign": "positive",
+      "reasoning": "Numerator and denominator legs are now scaled by the same asset base, making the divergence a direct statement about profit per asset versus price per asset, and removing the leverage distortion that makes indebted firms look cheap on price-to-book. This is the rank-based repair of the gross-profit-to-enterprise-value ratio, which had the archive's best Sharpe (0.48) but no alpha because its level scaling loaded on HML and RMW.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cardinal Winsorized Quality Value Gap",
+      "expression": "SUB(IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), at), 1)), IND_ZSCORE(WINSOR(LOG(RATIO(MUL(prcc_f, csho), ceq)), 1)))",
+      "hypothesis": "Ranks discard magnitude information, so a firm with extraordinary profitability at a modest multiple is treated the same as a marginal case; winsorized industry z-scores preserve the size of the fundamental-price divergence and should produce a larger economic alpha if the effect is genuinely about the magnitude of mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice \u2014 cardinal versus ordinal measurement \u2014 within the structure that has already generated reliable alpha, with winsorization at the 1 percent tails to neutralize the small-book-equity outliers that destroyed the earlier uncentered z-score product. If the alpha rises, later generations should build magnitude-weighted versions of the winner; if it falls, the payoff is ordinal and rank-based construction is the right frame.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Adjusted Profitable Value",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(revt, cogs), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Reported book equity omits internally generated intangible capital, so research-intensive but highly profitable firms are misclassified as expensive; capitalizing five years of R&D into the book anchor should reclassify them as cheap and strengthen the profitability-value interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This changes only the valuation anchor's measurement, testing whether the mismeasurement of book equity is what caps the alpha of the winning gap structure. Treating unreported R&D as zero is the economically correct convention rather than a coverage patch, since firms that report no R&D genuinely have no capitalizable research spend.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Safe Profitable Value Triple",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Cheap and profitable firms still fail when their balance sheets are fragile, because leverage transfers the upside of a re-rating to creditors; requiring low net debt alongside high operating profitability and a high book-to-market isolates the mispriced segment from the distressed segment.",
+      "expected_sign": "positive",
+      "reasoning": "This adds a third, economically distinct dimension \u2014 solvency \u2014 rather than another valuation anchor, which is what diluted the gen-2 composite. Since RMW and HML contain no explicit leverage leg, the safety tilt is a plausible source of FF5 alpha and directly addresses the value-trap problem that gates and indicators failed to solve.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings Yield With Profit Track Record",
+      "expression": "SUMRANK(RATIO(pi, MUL(prcc_f, csho)), TS_SUM(INDICATOR(RATIO(oiadp, at), 0), 5))",
+      "hypothesis": "A high earnings yield is credible when the firm has been consistently profitable over the past five years; the count of profitable years validates the yield in a way that the current profit level cannot, so the combination should identify pessimistically priced firms with durable earnings power.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier attempt to condition a yield on profitability stability used a multiplicative form with return-on-asset volatility and failed, but the diagnostic problem was the operator, not the idea; a discrete track-record count combined additively fits the structure that works and is robust to scale. Pretax income avoids tax-driven noise in the yield, and the five-year window is justified because persistence, not the current level, is the economic content.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Safe Intangible Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "The profitable-value interaction is strongest when cheapness is measured against intangible-inclusive book capital and when the firm's balance sheet is unlevered enough that a re-rating accrues to equity holders rather than creditors; the three conditions together should identify mispriced quality rather than distress.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the archive's two independent gen-3 discoveries \u2014 the intangible-adjusted book anchor (alpha 3.8%, t=4.1) and the net-debt safety channel (alpha 5.8%, t=3.8) \u2014 inside the additive rank structure that is the only form producing reliable FF5 alpha. Because the two improvements act on different legs (valuation measurement and solvency), their information should be close to additive rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Gap Intangible Operating Profit",
+      "expression": "SUB(IND_RANK(SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(SUB(revt, cogs), sale))), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Within-industry divergence between a firm's operating profitability standing and its intangible-adjusted richness identifies mispricing more sharply than either correction alone, because SG&A-adjusted profit and capitalized R&D fix opposite ends of the same accounting distortion.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 3 improved the profitability leg (SG&A adjustment, alpha 2.2%) and the valuation leg (intangible book, alpha 3.8%) separately within the same industry-rank gap; this tests whether the two corrections compound or overlap. Keeping the industry-neutral gap form also preserves the strongest Fama-MacBeth evidence in the archive, which the unranked safety triple sacrificed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Book To Enterprise Value With Profitability",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))",
+      "hypothesis": "Leverage should enter through the price of the whole firm rather than as a separate preference for low debt; capitalized intangible book relative to enterprise value, combined with operating profitability, should capture the same safety information more efficiently than a standalone net-debt rank.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a specific design choice raised by the safety triple: whether the leverage payoff is a distinct low-debt tilt or simply the correct denominator for cheapness. If alpha matches the triple with better coverage and Sharpe, the mechanism is valuation-based and later generations should use enterprise-value anchors; if it falls short, low leverage is an independent quality dimension worth ranking separately.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Consistent Intangible Profit And Price",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at)), IND_RANK(LOG(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "If R&D is capital expenditure rather than expense, then it must be added back to profit as well as to book equity; treating intangibles consistently on both legs should identify research-intensive firms that are genuinely profitable and genuinely cheap, a group that standard value and profitability factors both misclassify.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 winner corrected only the denominator of the valuation leg, leaving R&D-heavy firms penalized in the profitability leg, which understates their economic profit. Consistent capitalization is the internally coherent version of that fix, so a further alpha gain would confirm that intangible mismeasurement \u2014 not a generic quality tilt \u2014 is the source of the effect.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout Validated Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(COALESCE(dvc, 0), MUL(prcc_f, csho))))",
+      "hypothesis": "Cash actually distributed to shareholders verifies that reported profitability is real and that management is not reinvesting into value-destroying growth; profitable cheap firms that also pay out should outperform equally cheap and profitable firms that retain everything.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend channel is unexplored in the archive and offers a hard-cash validation of the profitability leg that accrual and even cash-flow measures cannot provide, so it tests a distinct economic mechanism rather than another accounting adjustment. Treating non-payers as zero yield is the economically correct convention, and using the additive rank form keeps the construction inside the family that produces alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Improving Profit Meets Intangible Cheapness",
+      "expression": "SUMRANK(TREND(RATIO(oiadp, at), 5), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), RATIO(SUB(SUB(revt, cogs), xsga), at)))",
+      "hypothesis": "Among cheap and profitable firms, those whose return on assets has been trending upward are the ones whose low multiple is most clearly stale, so a fundamental-improvement channel should add to the level-based interaction just as balance-sheet safety does.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier trend interactions failed only in multiplicative form (gen-0 alpha \u22120.4%), so this retests the improvement mechanism in the additive rank structure now known to work, and it directly competes with the safety channel for the third slot. Comparing this against Signal 1 tells us whether the extra alpha in three-channel composites comes from risk reduction or from unrecognized fundamental momentum.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Consistent Intangible Safe Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "If R&D is investment rather than expense, it must be added back to profit and to book capital simultaneously; combining that internally consistent measurement with low net debt should give the cleanest identification of profitable, cheap, financeable firms.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the archive's best portfolio signal (safe intangible triple, alpha 6.3%) with the adjustment that most improved cross-sectional evidence (consistent intangible profit, fmb 6.31), so it targets both metrics rather than trading one for the other. Since R&D-intensive firms are currently penalized in the profitability leg while being credited in the valuation leg, the correction should reduce internal contradiction rather than add a new tilt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Neutral Safe Intangible Value",
+      "expression": "SUMRANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), at)), SUMRANK(IND_ADJ(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho))), IND_ADJ(NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))))",
+      "hypothesis": "Profitability levels, book-to-market and leverage norms all differ structurally across industries, so the raw composite is partly a static sector bet; demeaning each channel within industry should isolate firm-level profitable value and sharpen the cross-sectional slope without sacrificing abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The best-alpha composite has a notably weaker fmb (4.35) than the industry-ranked gap signals (6.7\u20137.5), which points to sector composition rather than firm-level mispricing carrying part of its spread. This isolates one design choice \u2014 industry neutralization of each channel \u2014 and will tell us whether the two evidence types can be maximized together or genuinely trade off.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt Capacity Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Creditors and equity markets assess solvency against cash earnings, not book assets, so net debt to EBITDA is the economically relevant safety measure; cheap profitable firms with low earnings-based leverage face no refinancing constraint on the re-rating.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the measurement of the safety channel that generated most of the recent alpha gain: asset-scaled versus earnings-scaled leverage. Earnings-based leverage is also an implicit second interaction with profitability, since the same profit stream that makes the firm attractive also determines its debt capacity, so it should dominate if the mechanism is genuinely about financial flexibility rather than a mechanical low-debt tilt.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Operating Yield On Enterprise Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), RATIO(ADD(oiadp, dp), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))",
+      "hypothesis": "A flow-based cheapness anchor \u2014 cash operating earnings before depreciation relative to the total price of the firm's capital claims \u2014 measures low expectations for firms whose book equity is uninformative, and combined with high operating profitability identifies underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal so far anchors cheapness on book equity, so the archive cannot distinguish an intangible-correction effect from a broader mismeasured-denominator effect; a depreciation-adjusted earnings yield on enterprise value replaces the book anchor entirely while remaining leverage-neutral. If it matches the intangible composite, cheapness measurement is fungible and future work should focus on the safety channel instead.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Augmented Safe Intangible Value",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), sale), SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))))",
+      "hypothesis": "Gross margin measures pricing power while return on assets measures capital efficiency; a cheap, unlevered firm with both is competitively protected, so adding the margin channel should strengthen the profitability side of the interaction rather than duplicate it.",
+      "expected_sign": "positive",
+      "reasoning": "The gross margin channel was present in both early alpha-positive gap signals but is absent from the current best composite, so its marginal contribution is untested inside the winning structure. It is the one profitability dimension orthogonal to asset scaling, which is why it may add information where a third valuation anchor previously diluted the signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Share Retirement Validated Profitable Value",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(GROWTH(csho, 1))))",
+      "hypothesis": "Managers of genuinely undervalued profitable firms retire shares, while managers of overvalued firms issue them; a shrinking share count therefore validates the market's mispricing of a cheap profitable firm in a way that dividend payments do not.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend-validation channel failed badly (alpha \u22122.6%), but dividends signal maturity and capital-return constraints, whereas net issuance is a direct managerial statement about the price itself, so the repair changes the economic content rather than the formula. Issuance is also largely orthogonal to the FF5 legs, giving the composite a plausible new source of abnormal return without touching the profitability or intangible-value channels.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Profit Value With Debt Capacity",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheap, genuinely profitable firms realize their re-rating only when their debt is small relative to the cash earnings that service it; measuring profit and book capital with R&D capitalized and solvency against EBITDA should combine the two strongest corrections found so far.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the archive's best alpha construction with the best-Sharpe safety measurement, two changes that acted on different legs and are therefore likely additive rather than redundant. Earnings-based leverage is also itself a profitability-valuation interaction, since the same profit stream that makes the firm attractive determines its capacity to survive to the re-rating.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Fully Consistent Intangible Capital Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "If R&D creates an asset, it belongs in the denominator of profitability as well as in book equity; scaling intangible-inclusive profit by intangible-inclusive capital gives the true economic return on invested capital and should rank research-intensive firms correctly against asset-heavy ones.",
+      "expected_sign": "positive",
+      "reasoning": "The current leader capitalizes R&D in the profit numerator and in book equity but still divides profit by unadjusted assets, which mechanically overstates the return of research-heavy firms and creates an internal inconsistency. Fixing it isolates a single design choice \u2014 the profitability denominator \u2014 and should sharpen the cross-sectional slope if the intangible story is the true mechanism rather than a proxy for an R&D-intensity tilt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Profit Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(VOL(RATIO(oiadp, at), 5))))",
+      "hypothesis": "The third channel may be about the reliability of the profit stream rather than about debt: cheap firms whose return on assets is stable have predictable earnings power, so their low multiple is more likely mispricing than a rational discount for cash-flow risk.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes operating-profit volatility for financial leverage while holding the profitability and valuation legs fixed, providing a controlled test of what the safety channel actually contributes. An earlier stability attempt failed only in multiplicative form with a raw earnings yield, so the mechanism itself has never been tested inside the additive structure that works.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual Quality Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ib, oancf), at))))",
+      "hypothesis": "Cheap profitable firms whose earnings are cash-backed rather than accrual-driven have credible fundamentals, so low accruals should validate the profitability leg in the same way low leverage validates the balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This is the third arm of the competition for the third channel, testing earnings credibility instead of financial or operating risk, and it revives an idea that was never evaluated because two earlier accrual proposals were rejected on theme-exclusivity grounds. Comparing Signals 1, 3 and 4 with identical first two legs will identify which economic dimension complements profitable value, rather than stacking channels blindly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Solvent Cash Backed Intangible Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Financial solvency and earnings credibility are distinct failure modes of cheap profitable firms \u2014 one is about surviving to the re-rating, the other about whether the profits are real \u2014 so screening on both should produce a higher and more reliable alpha than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "A four-channel version is warranted only if the added dimension is economically orthogonal, which is the case here, unlike the gross-margin channel that duplicated existing profitability information and cut the Sharpe ratio. If this beats Signals 1 and 4 individually, the final generations should consolidate on the four-channel form; if it dilutes, three channels is the capacity limit of this additive design.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Price Anchor Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Using a three-year average market capitalization as the price anchor measures cheapness relative to a normal valuation rather than to a possibly crash-driven current price, which avoids buying profitable firms whose price collapse reflects genuine news not yet in the accounting data.",
+      "expected_sign": "positive",
+      "reasoning": "All current constructions use the latest price, so the value leg is mechanically contaminated by recent momentum, and the spread's Sharpe may suffer from buying firms in active decline. Smoothing the denominator isolates one timing choice, and if alpha and Sharpe both improve it implies the interaction is about persistent low expectations rather than fresh price drops.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage Repaired Solvent Cash Backed Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cheap, intangible-adjusted profitable firms with low earnings-based leverage and cash-backed earnings are the cleanest expression of profitable value; the accrual screen should retain its power once measured on the whole panel rather than only on firms with reported cash-flow statements.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the coverage failure of the best-alpha signal by approximating operating cash flow with income plus depreciation where the statement is missing, which is the standard reconstruction and preserves the economic content of the accrual channel. If alpha and t-stat both hold with coverage restored to about 0.12, the four-channel design is validated rather than being an artifact of the cash-flow-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt Capacity With Smoothed Price Anchor",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheapness relative to a three-year average market value identifies persistently low expectations rather than a fresh price collapse, and pairing that with earnings-based debt capacity should compound two independent improvements to the same composite.",
+      "expected_sign": "positive",
+      "reasoning": "The smoothed anchor and the EBITDA leverage measure each independently raised the alpha t-stat above 5 while acting on different legs, so their information is unlikely to be redundant. It also directly addresses the residual concern that the current value leg is contaminated by recent momentum, which is the most plausible remaining source of unrewarded risk in the spread.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Full Profitable Value Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "The four economically distinct requirements for a mispriced profitable value stock \u2014 intangible-adjusted profitability, persistent cheapness, financeable leverage, and cash-backed earnings \u2014 should jointly produce the highest reliable abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This combines every surviving improvement, including the coverage-repaired accrual channel and the smoothed price anchor, and thus tests the capacity limit of the additive design directly against Signals 1 and 2. Because the margin channel previously diluted a similar composite, this will show whether dilution comes from channel count itself or only from redundant channels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer Relative Profit With Absolute Cheapness",
+      "expression": "SUMRANK(IND_ADJ(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Profitability norms are technology-driven and differ structurally across industries, so profitability should be judged against peers, whereas cheapness and leverage carry information across industries and should be judged in absolute terms.",
+      "expected_sign": "positive",
+      "reasoning": "Blanket industry neutralization cut alpha from 7.2% to 4.5%, but that test demeaned all three channels at once and so could not identify which leg was harmed. Demeaning only the profitability leg is the economically motivated middle case and should raise the Fama-MacBeth slope \u2014 currently the weaker form of evidence for the composites \u2014 without discarding the cross-industry valuation signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Profitability Meets Intangible Cheapness",
+      "expression": "SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cash-based operating profitability is the profit measure least distorted by accounting choices, so substituting it for accrual operating profitability should give a stronger profitability leg for the interaction with cheapness and debt capacity.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has only ever tested income-statement profitability at full coverage, since the one cash-profitability construction was rejected on theme grounds and the accrual version halved coverage; the depreciation-based fallback lets this be evaluated on the full panel. Comparing it with Signal 1 separates two distinct claims: whether cash profitability is a better *level* measure, or whether the accrual gap works only as a separate quality screen.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Enterprise Cheapness Plus Debt Capacity",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "Cheapness measured against the price of all capital claims and solvency measured against cash earnings capture different aspects of leverage \u2014 how much of the firm equity holders are buying, and whether the debt is serviceable \u2014 so using both should improve on either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value anchor was previously tested only without an explicit leverage channel, where it underperformed the equity anchor (3.6% versus 6.3%), leaving open whether it complements a solvency screen or double counts it. This is the decisive test of whether leverage should enter the valuation denominator, the safety channel, or both, which matters for how the final signal is specified.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Profit Full Discipline Model",
+      "expression": "SUMRANK(MA(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), 3), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Persistent profitability, not a single year's figure, is what the market underprices in cheap firms; averaging intangible-adjusted operating profitability over three years should isolate durable earnings power and reduce turnover-driven noise in the spread.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the price anchor raised the alpha t-stat to above 5, so the same noise-reduction logic applied to the profitability leg is the natural next refinement, and it also matches the horizon over which value re-rating occurs. This holds all four economic channels of the current best model fixed and changes only the measurement window of one leg, making the test interpretable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash And Accrual Profitability Value Model",
+      "expression": "SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), at), SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cash profitability and intangible-adjusted operating profitability capture different things \u2014 how much cash the assets throw off versus how much economic profit they generate \u2014 and a cheap firm strong on both has fundamentals that neither accounting convention can flatter.",
+      "expected_sign": "positive",
+      "reasoning": "Cash profitability delivered the highest coverage of any leading construction (0.136) with Sharpe 0.573, so using it as a second profitability channel rather than as a substitute tests whether the two profit measures are complements. This is the cleanest alternative to the accrual-gap screen, which encodes the same information as a difference rather than as two levels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Interest Burden Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), NEG(RATIO(COALESCE(xint, 0), oibdp))))",
+      "hypothesis": "What threatens a cheap profitable firm is not the stock of debt but the cost of servicing it; interest expense relative to EBITDA measures the actual claim creditors have on operating cash flow and should identify financeable value more precisely than balance-sheet net debt.",
+      "expected_sign": "positive",
+      "reasoning": "Interest expense is the one economically relevant variable in the menu never used, and it distinguishes cheaply financed leverage from expensive distressed leverage, a distinction that net debt to EBITDA cannot make. Treating unreported interest expense as zero is correct for debt-free firms, so this is an economic substitution of the safety channel rather than a coverage patch.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Short Window Intangible Capital Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Research capital depreciates quickly, so a three-year accumulation may value the intangible stock more accurately than five years while requiring less firm history, widening the usable sample without weakening the valuation anchor.",
+      "expected_sign": "positive",
+      "reasoning": "The five-year R&D window is the main reason the leading signals lose about two percentage points of coverage relative to simple constructions, and it is an arbitrary choice never tested. If alpha and t-stat hold with higher coverage, the shorter window is the better specification on robustness grounds; if they fall, the long-lived intangible interpretation is confirmed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Solvency Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(MA(RATIO(SUB(ADD(dltt, dlc), che), oibdp), 3)))))",
+      "hypothesis": "EBITDA is cyclical, so a single year's net-debt-to-EBITDA ratio misclassifies firms in a temporary earnings trough as unfinanceable; averaging the leverage ratio over three years measures structural rather than transitory debt capacity.",
+      "expected_sign": "positive",
+      "reasoning": "The safety channel is the noisiest leg because its denominator is a flow that can nearly vanish, which likely costs the current model both alpha precision and portfolio stability. Smoothing it isolates that measurement issue while keeping the smoothed price anchor and the repaired accrual screen from the best model intact.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Solvency Profitable Value",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(COALESCE(xint, 0), oibdp)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Debt quantity and debt cost are distinct constraints \u2014 a firm can have modest net debt at punitive rates or heavy debt cheaply financed \u2014 so screening cheap profitable firms on both should isolate those genuinely able to survive to a re-rating.",
+      "expected_sign": "positive",
+      "reasoning": "The safety dimension has produced the largest incremental alpha of any channel added so far, so testing whether it has two separable components is the highest-value structural question left. Comparing this against Signal 3 and the current best model separates a genuine complementarity from mere duplication of the same leverage information.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Balanced Weight Profitable Value Model",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at))), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp))))",
+      "hypothesis": "The interaction is strongest when fundamentals and price receive equal weight; pairing the two fundamental-quality channels against the two price-and-solvency channels gives each side half the signal instead of leaving cheapness with an eighth.",
+      "expected_sign": "positive",
+      "reasoning": "Nested SUMRANK calls impose geometric weights, so the leading model is effectively a profitability signal with a small value tilt, which is likely why its cross-sectional slope lags the earlier value-heavy gap constructions. Restructuring the nesting is a substantive change to the economic content of the signal, not a cosmetic one, and it should raise fmb if the cheapness leg is currently under-weighted.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Value Led Discipline Model",
+      "expression": "SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Cheapness is the source of expected return and profitability, earnings quality and solvency are the screens that decide which cheap stocks deliver it, so the valuation leg should carry the dominant weight with the fundamentals acting as progressively finer filters.",
+      "expected_sign": "positive",
+      "reasoning": "This is the mirror image of Signal 1 and of the current leader, placing intangible-adjusted book-to-price at half the weight, and together the three specifications trace the full weighting curve. Because the economic story is that profitability *strengthens* value rather than replacing it, a value-led ordering is the specification most faithful to the stated mechanism and should show the strongest Fama-MacBeth evidence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Short Window Smoothed Price Discipline",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MA(MUL(prcc_f, csho), 3)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "A three-year R&D stock and a three-year average price are both statements that the relevant horizon for intangible capital and for market expectations is a few years, so combining them should give the most internally consistent measure of persistent cheapness relative to economic capital.",
+      "expected_sign": "positive",
+      "reasoning": "The shorter R&D window and the smoothed price anchor each improved the model separately but have never been combined, and both act on the same valuation leg, so the test is whether they are complementary horizon corrections or duplicate smoothing. Keeping the profitability and solvency legs at current-year measurement respects the gen-8 finding that smoothing those legs destroys information.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Conversion Quality Value Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(RATIO(COALESCE(oancf, ADD(ib, dp)), oibdp), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(RATIO(SUB(ADD(dltt, dlc), che), oibdp)))))",
+      "hypothesis": "Earnings quality is better expressed as the fraction of operating profit that converts into cash than as accruals scaled by assets, because conversion is scale-free and directly answers whether the profitability that makes a cheap firm attractive is actually collectible.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel is the archive's most valuable non-valuation screen, but its asset scaling mixes capital intensity into an earnings-credibility measure, penalizing asset-light firms mechanically. Replacing it with a cash conversion ratio isolates the measurement choice while leaving the three other channels untouched.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Broad Universe Profitable Value Model",
+      "expression": "SUMRANK(RATIO(ADD(SUB(revt, ADD(cogs, COALESCE(xsga, 0))), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), SUMRANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), MUL(prcc_f, csho)), NEG(COALESCE(RATIO(SUB(ADD(dltt, dlc), che), oibdp), RATIO(SUB(ADD(dltt, dlc), che), at))))))",
+      "hypothesis": "The frontier signal's edge should survive on the widest defensible universe: firms that fold selling costs into cost of goods sold have no separate SG&A to subtract, and firms without a meaningful EBITDA can still be assessed on asset-based leverage.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage of the leading models is stuck near 0.117 versus 0.141 for simple constructions, and both shortfalls come from data conventions rather than economics, so the fallbacks are justified reconstructions rather than blanket patches. If alpha and t-stat hold at materially higher coverage this becomes the most robust final specification, and if they fall the frontier result is partly a selected-sample effect worth knowing about.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Net Of Debt Intangible Book To Price",
+      "expression": "SUMRANK(RATIO(ADD(SUB(SUB(revt, cogs), xsga), COALESCE(xrd, 0)), at), SUMRANK(NEG(RATIO(SUB(ib, COALESCE(oancf, ADD(ib, dp))), at)), RATIO(SUB(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 3)), SUB(ADD(dltt, dlc), che)), MUL(prcc_f, csho))))",
+      "hypothesis": "What an equity holder actually buys is intangible-inclusive capital net of the creditors' claim, so subtracting net debt from the book anchor merges cheapness and solvency into a single economically correct measure rather than ranking them as separate channels.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior integration of leverage into valuation used net debt in the denominator, which double counts the market's pricing; putting it in the numerator instead states the residual claim directly and frees a channel slot for earnings quality. This is the one remaining structurally different way to express the safety-value interaction, and it also raises the weight on the profitability and quality legs relative to a four-channel nesting.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Profitable Value Product",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(revt,cogs),at)),ind_rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value Conditional On Above Peer Operating Profit",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_zscore(ratio(oiadp,at)),0),ind_rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Profit To Enterprise Value",
+      "metadata": {
+        "normalized_expression": "ratio(sub(revt,cogs),add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap With Improving Profitability Trend",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ceq,mul(prcc_f,csho))),ind_rank(trend(ratio(oiadp,at),5)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Earnings Yield Interaction",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(ib,mul(prcc_f,csho)),3)),rank(neg(vol(ratio(oiadp,at),5))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fundamental Price Divergence Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(oancf,at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(mul(prcc_f,csho),ceq))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pure Centered Profitability Value Interaction",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(revt,cogs),at)),ind_zscore(log(ratio(ceq,mul(prcc_f,csho)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Quality Price Rank Gap Wide Coverage",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(revt,cogs),at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(mul(prcc_f,csho),ceq))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Through Cycle Earnings Power Yield",
+      "metadata": {
+        "normalized_expression": "ratio(mul(ma(ratio(oiadp,at),5),at),mul(prcc_f,csho))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Justified Sales Multiple",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(revt,cogs),sale)),ind_zscore(log(ratio(sale,mul(prcc_f,csho)))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fundamentals Outrunning Market Value",
+      "metadata": {
+        "normalized_expression": "sub(ind_zscore(growth(ratio(oiadp,at),1)),ind_zscore(growth(ratio(mul(prcc_f,csho),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Firms Cheap Versus Own History",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oibdp,at)),zscore(neg(ts_rank(log(ratio(mul(prcc_f,csho),ceq)),5))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Two Anchor Quality Cheapness Composite",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(revt,cogs),at),ratio(oiadp,at))),ind_rank(sumrank(ratio(mul(prcc_f,csho),ceq),ratio(mul(prcc_f,csho),sale))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Bounded Rank Product Interaction",
+      "metadata": {
+        "normalized_expression": "mul(zscore(ind_rank(ratio(sub(revt,cogs),at))),zscore(ind_rank(ratio(ceq,mul(prcc_f,csho)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive Cheap And Profitable Gate",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),at)),ind_rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash Return Versus Enterprise Multiple Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(oancf,at)),ind_rank(ratio(add(mul(prcc_f,csho),sub(add(dltt,dlc),che)),ebitda)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensive And Deteriorating Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(mul(prcc_f,csho),ceq),neg(trend(ratio(oiadp,at),5)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash Backed Cheapness Versus Accruals",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(oancf,mul(prcc_f,csho))),ind_rank(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Profitability Cheapness Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(sub(revt,cogs),xsga),at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(mul(prcc_f,csho),ceq))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit Versus Price Of Assets Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(revt,cogs),at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(add(mul(prcc_f,csho),sub(add(dltt,dlc),che)),at))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cardinal Winsorized Quality Value Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_zscore(winsor(ratio(sub(revt,cogs),at),1)),ind_zscore(winsor(log(ratio(mul(prcc_f,csho),ceq)),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Adjusted Profitable Value",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(revt,cogs),at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(mul(prcc_f,csho),add(ceq,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Safe Profitable Value Triple",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings Yield With Profit Track Record",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(pi,mul(prcc_f,csho)),ts_sum(indicator(ratio(oiadp,at),0),5))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Safe Intangible Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Gap Intangible Operating Profit",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(sumrank(ratio(sub(sub(revt,cogs),xsga),at),ratio(sub(revt,cogs),sale))),ind_rank(log(ratio(mul(prcc_f,csho),add(ceq,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Book To Enterprise Value With Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Consistent Intangible Profit And Price",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at)),ind_rank(log(ratio(mul(prcc_f,csho),add(ceq,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout Validated Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(coalesce(dvc,0),mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "dvc",
+          "prcc_f",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Improving Profit Meets Intangible Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(trend(ratio(oiadp,at),5),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),ratio(sub(sub(revt,cogs),xsga),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Consistent Intangible Safe Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Neutral Safe Intangible Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_adj(ratio(sub(sub(revt,cogs),xsga),at)),sumrank(ind_adj(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho))),ind_adj(neg(ratio(sub(add(dltt,dlc),che),at)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt Capacity Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Operating Yield On Enterprise Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),ratio(add(oiadp,dp),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Augmented Safe Intangible Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),sale),sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),at)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Share Retirement Validated Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(growth(csho,1))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Profit Value With Debt Capacity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fully Consistent Intangible Capital Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Profit Intangible Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(vol(ratio(oiadp,at),5))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual Quality Intangible Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(ib,oancf),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Solvent Cash Backed Intangible Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,oancf),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Price Anchor Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage Repaired Solvent Cash Backed Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt Capacity With Smoothed Price Anchor",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Full Profitable Value Discipline Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer Relative Profit With Absolute Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_adj(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Profitability Meets Intangible Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(coalesce(oancf,add(ib,dp)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Enterprise Cheapness Plus Debt Capacity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Profit Full Discipline Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),3),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash And Accrual Profitability Value Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(coalesce(oancf,add(ib,dp)),at),sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Interest Burden Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),neg(ratio(coalesce(xint,0),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "csho",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short Window Intangible Capital Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Solvency Discipline Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ma(ratio(sub(add(dltt,dlc),che),oibdp),3)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Solvency Profitable Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(coalesce(xint,0),oibdp)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Balanced Weight Profitable Value Model",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at))),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value Led Discipline Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),mul(prcc_f,csho)),sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short Window Smoothed Price Discipline",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),ma(mul(prcc_f,csho),3)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Conversion Quality Value Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(ratio(coalesce(oancf,add(ib,dp)),oibdp),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),mul(prcc_f,csho)),neg(ratio(sub(add(dltt,dlc),che),oibdp)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Broad Universe Profitable Value Model",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(revt,add(cogs,coalesce(xsga,0))),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),sumrank(ratio(add(ceq,ts_sum(coalesce(xrd,0),3)),mul(prcc_f,csho)),neg(coalesce(ratio(sub(add(dltt,dlc),che),oibdp),ratio(sub(add(dltt,dlc),che),at))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net Of Debt Intangible Book To Price",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(sub(sub(revt,cogs),xsga),coalesce(xrd,0)),at),sumrank(neg(ratio(sub(ib,coalesce(oancf,add(ib,dp))),at)),ratio(sub(add(ceq,ts_sum(coalesce(xrd,0),3)),sub(add(dltt,dlc),che)),mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

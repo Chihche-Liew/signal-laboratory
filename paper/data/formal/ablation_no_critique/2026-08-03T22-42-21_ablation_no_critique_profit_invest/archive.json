@@ -1,0 +1,2794 @@
+{
+  "pair": "profit_invest",
+  "evaluated": [
+    {
+      "name": "CashPerCapexDollar",
+      "expression": "WINSOR(RATIO(MA(oancf, 3), MA(capx, 3)), 1)",
+      "hypothesis": "The ratio of operating cash generated to capital spent measures how many dollars of internal cash each dollar of investment supports; high values identify self-funding, capital-light profit machines that are systematically undervalued relative to capital-hungry firms.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profitability by investment outlay rather than by assets makes the signal a direct measure of investment discipline conditional on profitability, which no single-theme ratio captures. Three-year averaging removes lumpy capex cycles and one-off cash-flow spikes, and winsorization controls the exploding-denominator tail typical of ratio constructions.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.3625065713298494,
+      "ls_alpha": 0.03510599920229199,
+      "ls_talpha": 2.214829606083882,
+      "ls_sharpe": 0.41769629395169,
+      "coverage": 0.08917344998914503,
+      "error": null
+    },
+    {
+      "name": "ProfitableShrinkerConditional",
+      "expression": "MUL(INDICATOR(RATIO(ib, at), 0.05), NEG(GROWTH(ppegt, 1)))",
+      "hypothesis": "Among firms that clear a real profitability hurdle, shrinking or flat gross physical capacity signals management returning capital instead of chasing growth, and such firms are mispriced upward-drifting value plays; unprofitable firms' capacity cuts carry no such information.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the investment-discipline signal on only for genuinely profitable firms, making the effect explicitly conditional rather than additive. Using gross PP&E growth rather than total asset growth focuses on deliberate capacity decisions rather than cash or working-capital noise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.17067074244656968,
+      "ls_alpha": -0.021440273652317883,
+      "ls_talpha": -2.188803682728736,
+      "ls_sharpe": -0.1098706368078168,
+      "coverage": 0.11902708541249286,
+      "error": null
+    },
+    {
+      "name": "MarginTrendVsCapexTrend",
+      "expression": "SUB(RANK(TREND(RATIO(oiadp, at), 5)), RANK(TREND(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose operating profitability is trending up while their reinvestment rate is trending down are quietly improving efficiency; the market underreacts because there is no visible expansion story, whereas rising capex intensity with flattening margins signals value-destroying growth.",
+      "expected_sign": "positive",
+      "reasoning": "This contrasts the direction of two multi-year states rather than their levels, capturing a divergence concept that neither theme expresses alone. Ranking both trends before differencing makes the scales comparable and keeps the spread robust to industry-level differences in capital intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.8143734295921705,
+      "ls_alpha": 0.03589060379977074,
+      "ls_talpha": 3.708861685346543,
+      "ls_sharpe": 0.4019116951521669,
+      "coverage": 0.11160861323051245,
+      "error": null
+    },
+    {
+      "name": "DoubleCreditedGrowth",
+      "expression": "MUL(RANK(RATIO(oibdp, at)), RANK(GROWTH(ppegt, 1)))",
+      "hypothesis": "Investors credit a firm twice when it is both highly profitable and rapidly expanding capacity, pushing prices above fundamentals; these doubly celebrated firms subsequently underperform as returns on new capacity mean-revert.",
+      "expected_sign": "negative",
+      "reasoning": "The multiplicative form peaks only in the joint high-profitability, high-investment corner, which is precisely the overpricing quadrant of the economic story and cannot be produced by either theme in isolation. It provides the mirror-image test of the cash-cow hypothesis, so a reliably negative slope corroborates the mechanism from the short side.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.19744304634624982,
+      "ls_alpha": 0.03436839142307293,
+      "ls_talpha": 2.6970478247759275,
+      "ls_sharpe": 0.039968571821073995,
+      "coverage": 0.11865846022913473,
+      "error": null
+    },
+    {
+      "name": "SelfFundedVsExternallyFundedGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(oancf, capx), at)), RANK(RATIO(ADD(sstk, DELTA(dltt, 1)), at)))",
+      "hypothesis": "Firms whose profits comfortably cover their investment and that raise no outside capital are disciplined compounders, while firms funding expansion with new equity and debt are exploiting favorable sentiment about their profitability; the former outperform the latter.",
+      "expected_sign": "positive",
+      "reasoning": "Free cash flow after capex embeds profitability and investment jointly in the numerator, and subtracting the external-financing rank identifies who is paying for the investment, a discipline dimension absent from asset-growth measures. The construction separates internally financed restraint from externally financed empire building even when both groups show similar reported profitability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.6961244985994943,
+      "ls_alpha": 0.014846157714849088,
+      "ls_talpha": 1.2679843002626088,
+      "ls_sharpe": 0.3181229650484368,
+      "coverage": 0.08148700870956319,
+      "error": null
+    },
+    {
+      "name": "InternalCashPerCapexBroad",
+      "expression": "WINSOR(RATIO(MA(ADD(ib, dp), 3), MA(capx, 3)), 1)",
+      "hypothesis": "Firms generating many dollars of internal cash earnings per dollar of capital expenditure are self-funding, capital-light profit machines whose returns are underpriced relative to capital-hungry peers with the same reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the coverage failure of the winning CashPerCapexDollar signal by replacing the narrowly reported `oancf` with the much more widely available earnings-plus-depreciation cash proxy, keeping the same economic ratio of profit generation to investment outlay. Three-year averaging still smooths lumpy capex, and winsorization controls the small-denominator tail, so if the mechanism is real the FMB slope and alpha should survive at roughly triple the coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.203940671333793,
+      "ls_alpha": 0.002486288003444661,
+      "ls_talpha": 0.21993495786751724,
+      "ls_sharpe": 0.21108761011784866,
+      "coverage": 0.13347502573411357,
+      "error": null
+    },
+    {
+      "name": "HarvestModeProfitability",
+      "expression": "SUMRANK(MA(RATIO(oiadp, at), 3), NEG(TREND(RATIO(capx, at), 5)))",
+      "hypothesis": "Firms with persistently high operating profitability that are steadily *decelerating* their reinvestment rate have entered a harvest phase; because there is no growth narrative, the market underprices the cash they are about to return.",
+      "expected_sign": "positive",
+      "reasoning": "MarginTrendVsCapexTrend delivered the strongest alpha in the archive, but it is unclear whether the profitability trend or the capex downtrend drove it; pairing a stable profitability *level* with the capex-intensity downtrend isolates that design choice while remaining economically coherent. It also avoids the noisy 5-year margin trend, which should improve both coverage and portfolio stability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.744845720836482,
+      "ls_alpha": 0.01278720889180935,
+      "ls_talpha": 1.2081313688041044,
+      "ls_sharpe": 0.1357843006059405,
+      "coverage": 0.11299716161188417,
+      "error": null
+    },
+    {
+      "name": "MarginVsInventoryBuild",
+      "expression": "SUB(RANK(RATIO(oibdp, sale)), RANK(GROWTH(invt, 1)))",
+      "hypothesis": "High-margin firms that are not building inventory are converting profitability into cash, whereas high-margin firms whose inventories swell are booking sales that have not yet been validated by demand and are therefore overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This moves the investment leg from long-lived capital to working capital, an economically distinct discipline channel that also carries an information quality interpretation about the durability of reported margins. Rank differencing keeps the two legs on comparable scales and avoids the distress-contamination that ruined the PP&E-shrinkage construction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.2842722053635556,
+      "ls_alpha": 0.0075613129246978085,
+      "ls_talpha": 0.7301276299880123,
+      "ls_sharpe": 0.02590235464305118,
+      "coverage": 0.10528879371187863,
+      "error": null
+    },
+    {
+      "name": "OrganicProfitVsInorganicExpansion",
+      "expression": "SUB(RANK(MA(RATIO(oiadp, at), 3)), RANK(GROWTH(ADD(ppent, intan), 1)))",
+      "hypothesis": "Profitable firms that expand their combined tangible and intangible capital base rapidly, largely through acquisition and capitalized intangibles, are being credited twice for profitability and growth; profitable firms expanding that base slowly are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "DoubleCreditedGrowth failed because multiplication let profitability dominate; subtracting the investment rank instead makes the aggressive-expansion firms genuinely land in the short leg. Adding intangibles to net PP&E captures acquisition- and goodwill-driven empire building, which is where overpayment for growth is most likely, without relying on the sparsely reported `aqc` series.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.271227711955766,
+      "ls_alpha": -0.019526511536906946,
+      "ls_talpha": -1.9892452862331753,
+      "ls_sharpe": 0.06749279017183085,
+      "coverage": 0.11572798030752163,
+      "error": null
+    },
+    {
+      "name": "ProfitTimesLowReinvestment",
+      "expression": "MUL(RANK(RATIO(oibdp, at)), RANK(NEG(RATIO(capx, ppent))))",
+      "hypothesis": "The mispricing is concentrated in the joint corner of high operating profitability and a low reinvestment rate relative to installed capacity: these are cash cows the market treats as ex-growth stories.",
+      "expected_sign": "positive",
+      "reasoning": "This is the correctly signed mirror of DoubleCreditedGrowth and tests whether a multiplicative interaction adds anything beyond an additive rank composite, since the product peaks only when both conditions hold simultaneously. Using capx scaled by net PP&E measures reinvestment intensity continuously rather than through capacity contraction, avoiding the distressed asset-sale firms that reversed the earlier conditional signal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.899557025976111,
+      "ls_alpha": -0.038464188527695425,
+      "ls_talpha": -3.1142800136439344,
+      "ls_sharpe": -0.015248421792729559,
+      "coverage": 0.1333604397953818,
+      "error": null
+    },
+    {
+      "name": "ProfitPerHeadVsHiringGrowth",
+      "expression": "SUMRANK(RATIO(oiadp, emp), NEG(GROWTH(emp, 1)))",
+      "hypothesis": "Firms earning high operating profit per employee while holding headcount flat are running lean, efficient operations whose cash generation is underappreciated; profitable firms hiring aggressively are investing in growth the market has already paid for.",
+      "expected_sign": "positive",
+      "reasoning": "Labor is an investment margin that management adjusts faster than physical capital, so it provides an independent read on investment discipline uncorrelated with capex-based measures. Scaling profit by employees rather than assets also sidesteps the shared `at` denominator, giving a genuinely real-side interaction between profitability intensity and expansion restraint.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.223191349967841,
+      "ls_alpha": -0.009153159205898855,
+      "ls_talpha": -0.904726597418949,
+      "ls_sharpe": -0.010129480708108738,
+      "coverage": 0.1250836823019464,
+      "error": null
+    },
+    {
+      "name": "CashFlowPerCapexUnsmoothed",
+      "expression": "WINSOR(RATIO(oancf, capx), 1)",
+      "hypothesis": "Operating cash flow per dollar of current capital expenditure identifies self-funding cash generators whose valuation does not reflect how little reinvestment their profits require.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best ratio signal used three-year averages on both legs and paid for it with 0.089 coverage; this strips the windows to isolate whether the alpha comes from the cash-flow-to-capex economics or from the smoothing, while roughly doubling usable observations. Because the profitability leg is cash-based rather than earnings-plus-depreciation, it should retain the FF5-orthogonal quality information that InternalCashPerCapexBroad lost.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.516778368883803,
+      "ls_alpha": 0.030036453409888395,
+      "ls_talpha": 1.9344316025076382,
+      "ls_sharpe": 0.4354932794572777,
+      "coverage": 0.08818133490503348,
+      "error": null
+    },
+    {
+      "name": "InvestmentProductivityTrend",
+      "expression": "TREND(WINSOR(RATIO(oiadp, capx), 1), 5)",
+      "hypothesis": "Firms whose operating profit per dollar of capital spending is rising over several years are becoming structurally more capital-efficient; the market extrapolates the level of profitability but not the improving productivity of investment.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately fuses the two structures that produced real FF5 alpha \u2014 a profit-per-investment ratio and a multi-year trend \u2014 into one variable, so it tests whether their success shares a single mechanism rather than being two accidents. Being a slope of a ratio, it is doubly removed from the linear profitability/investment directions spanned by RMW and CMA, which is where the earlier composites lost their alpha.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.7824840153196961,
+      "ls_alpha": 0.021808660738737357,
+      "ls_talpha": 2.414409230147815,
+      "ls_sharpe": 0.19607465511220387,
+      "coverage": 0.11097609472134928,
+      "error": null
+    },
+    {
+      "name": "MarginalReturnOnNewInvestment",
+      "expression": "WINSOR(RATIO(DELTA(oiadp, 1), LAG(capx, 1)), 1)",
+      "hypothesis": "The incremental operating profit earned per dollar of the prior year's capital expenditure measures whether investment is actually creating value; firms with high marginal returns on new capital are underpriced, while firms whose profits stagnate after heavy spending are the overpriced growth-credited names.",
+      "expected_sign": "positive",
+      "reasoning": "All archive signals used average profitability against average investment; this is the first to test the *marginal* product of investment, a distinct economic mechanism that speaks directly to whether the market can distinguish productive from empire-building capex. The lagged denominator imposes a sensible investment-to-payoff timing structure and cannot be replicated by a static RMW/CMA blend.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.7592472753988606,
+      "ls_alpha": 0.03293423198443013,
+      "ls_talpha": 3.3042946200229735,
+      "ls_sharpe": 0.23342372353326823,
+      "coverage": 0.1208411650062282,
+      "error": null
+    },
+    {
+      "name": "OwnHistoryCapexRestraintVsProfit",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Cash-profitable firms whose current reinvestment rate sits at the bottom of their *own* five-year history have chosen to harvest; because the restraint is relative to the firm's own norm rather than to the cross-section, it is not captured by the standard investment factor.",
+      "expected_sign": "positive",
+      "reasoning": "Cross-sectionally low investment is exactly what CMA prices, which is why earlier low-capex composites had their alpha absorbed; a within-firm position-in-history measure identifies a regime change in policy instead of a permanently capital-light business model. Pairing it with cash-based profitability keeps the interaction focused on firms that actually have profits to harvest.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.9191274532859772,
+      "ls_alpha": 0.04203096698602645,
+      "ls_talpha": 2.666325741890509,
+      "ls_sharpe": 0.5418785339048902,
+      "coverage": 0.08176421278376658,
+      "error": null
+    },
+    {
+      "name": "ProfitStabilityVsCapexVolatility",
+      "expression": "SUB(RANK(MA(RATIO(oibdp, at), 3)), RANK(VOL(GROWTH(ppegt, 1), 5)))",
+      "hypothesis": "Steady profitability combined with a smooth capital expansion path signals disciplined, well-governed capital allocation, whereas profitable firms with erratic lumpy expansion are chasing opportunities and destroying value; the market prices the profitability but not the allocation discipline.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment investment channel, which is orthogonal to the level-based CMA exposure that flattened the earlier low-investment composites. It tests whether \"investment discipline\" is better measured by the stability of capital deployment than by its magnitude.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.555753656063663,
+      "ls_alpha": 0.002527156476019289,
+      "ls_talpha": 0.29383335421804513,
+      "ls_sharpe": 0.00977205552567817,
+      "coverage": 0.10948585841325974,
+      "error": null
+    },
+    {
+      "name": "IndustryRelativeCapitalProductivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(MA(oiadp, 3), ppegt), 1))",
+      "hypothesis": "Within an industry, firms that extract more operating profit from each dollar of installed gross capital are efficient asset-light operators whose future cash generation is underestimated relative to capital-heavy rivals with similar accounting profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profit by installed physical capital rather than by total assets makes the measure a true capital-productivity statistic, and industry z-scoring removes the mechanical capital-intensity differences that otherwise dominate this ratio. It tests the productivity-of-stock channel as a complement to the productivity-of-flow channel in Signals 1 and 3, which is a distinguishable economic hypothesis about efficiency rather than restraint.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.4265352995573415,
+      "ls_alpha": 0.015166484788854894,
+      "ls_talpha": 1.6347462724010922,
+      "ls_sharpe": 0.10470600491081405,
+      "coverage": 0.13050807023452507,
+      "error": null
+    },
+    {
+      "name": "OwnHistoryRestraintBroadProfit",
+      "expression": "SUB(RANK(MA(RATIO(oibdp, at), 3)), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms with persistently high operating profitability whose current reinvestment rate sits low within their own five-year history are shifting from building to harvesting, and the market is slow to reprice this policy change.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice in the archive's best signal: whether the 4.2% alpha requires cash-flow-based profitability or merely persistent operating profitability, while lifting coverage from 0.082 toward 0.11 by dropping `oancf`. If the alpha survives, the mechanism is the own-history investment leg rather than the cash-flow leg, which tells us where to concentrate the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.2113913448411116,
+      "ls_alpha": 0.028922643358071758,
+      "ls_talpha": 2.792155238647904,
+      "ls_sharpe": 0.3996423264399996,
+      "coverage": 0.12157769308427169,
+      "error": null
+    },
+    {
+      "name": "CashCowCapexOffPeak",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(WINSOR(RATIO(capx, TS_MAX(capx, 5)), 1)))",
+      "hypothesis": "Cash-profitable firms whose capital spending has fallen far below its own five-year peak have completed an investment cycle and are about to convert capacity into free cash flow, a transition the market underprices.",
+      "expected_sign": "positive",
+      "reasoning": "Distance-from-own-peak is a sharper statement of the harvesting transition than a time-series percentile rank, because it measures how far spending has been cut in dollars rather than just its ordinal position. It keeps the within-firm conditioning that escaped CMA absorption while testing a different functional form of \"investment discipline as a regime change.\"",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.0442348172041105,
+      "ls_alpha": 0.031504354495832464,
+      "ls_talpha": 2.083148194017072,
+      "ls_sharpe": 0.5579616432451358,
+      "coverage": 0.0889427819422879,
+      "error": null
+    },
+    {
+      "name": "CumulativeReturnOnInvestmentCycle",
+      "expression": "WINSOR(RATIO(DELTA(oiadp, 3), TS_SUM(capx, 3)), 1)",
+      "hypothesis": "Three-year growth in operating profit per dollar of capital cumulatively invested over the same three years measures whether a full investment cycle actually paid off; firms with high realized payoffs are underpriced, and heavy spenders with no profit gain are the overpriced growth-credited names.",
+      "expected_sign": "positive",
+      "reasoning": "The one-year version of this idea produced a strong FF5 alpha but essentially no Fama-MacBeth slope, which points to timing mismatch and single-year noise rather than a false mechanism. Matching the profit change to the cumulative investment that produced it should convert tail-driven portfolio evidence into a coherent cross-sectional slope while retaining the payoff-realization economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.242020589225079,
+      "ls_alpha": 0.027811705018684046,
+      "ls_talpha": 2.9708357945395605,
+      "ls_sharpe": 0.12379425936883301,
+      "coverage": 0.10369124594383318,
+      "error": null
+    },
+    {
+      "name": "ProfitPerTotalInvestmentIncludingRD",
+      "expression": "WINSOR(RATIO(MA(oiadp, 3), ADD(capx, COALESCE(xrd, 0))), 1)",
+      "hypothesis": "Total investment includes intangible capital, so profit per dollar of combined physical and research investment better identifies genuinely capital-efficient cash generators than capex alone, which mislabels R&D-intensive firms as capital-light.",
+      "expected_sign": "positive",
+      "reasoning": "The profit-per-investment ratio family is the archive's most reliable, and its main measurement error is treating R&D-heavy firms as if they do not invest; treating unreported R&D as zero is the economically correct convention here rather than a coverage patch. This tests whether widening the investment base strengthens both the FMB slope and the alpha relative to the capex-only version.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.5210721250719128,
+      "ls_alpha": -0.0388411887949766,
+      "ls_talpha": -3.238196033935758,
+      "ls_sharpe": 0.04936368166457686,
+      "coverage": 0.13337039706065656,
+      "error": null
+    },
+    {
+      "name": "ProfitGrowthOutpacingCapacityGrowth",
+      "expression": "SUB(RANK(GROWTH(oiadp, 1)), RANK(GROWTH(ppegt, 1)))",
+      "hypothesis": "Firms whose operating profit is growing faster than their productive capacity are generating growth without capital, and this \"growth for free\" is underpriced relative to firms whose profit growth merely tracks the capacity they bought.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike the failed level composites, both legs here are flows, so the signal is not a linear blend of the RMW profitability level and the CMA asset-growth level; it identifies the source of growth rather than its amount. It is also a much higher-coverage, shorter-horizon complement to the five-year trend divergence signal, which lets us see whether the divergence effect is slow-moving or immediate.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.5969123684316355,
+      "ls_alpha": -0.017308147902742738,
+      "ls_talpha": -1.3928263609731153,
+      "ls_sharpe": 0.0860812200712884,
+      "coverage": 0.11886818190448124,
+      "error": null
+    },
+    {
+      "name": "DemeanedProfitInvestmentInteraction",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(oibdp, at), 1)), NEG(ZSCORE(WINSOR(GROWTH(ppegt, 1), 1))))",
+      "hypothesis": "The mispricing is a genuine interaction: capacity expansion is most damaging for firms the market already celebrates for profitability, and profitability is most rewarding when unaccompanied by expansion; the cross-product of demeaned profitability and demeaned expansion isolates that quadrant structure.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier rank products failed because ranks are non-negative and monotone, so their product remained a near-linear blend of the two factor directions; a product of z-scores is mean-zero in each leg and is therefore mechanically orthogonal to the linear RMW and CMA exposures that absorbed those signals. This is the cleanest available test of whether the interaction itself, rather than the two main effects, carries the abnormal return.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.8593380308309293,
+      "ls_alpha": -0.030271793553310864,
+      "ls_talpha": -2.849504197749531,
+      "ls_sharpe": -0.07664805977213952,
+      "coverage": 0.11865846022913473,
+      "error": null
+    },
+    {
+      "name": "HarvestTransitionComposite",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), RATIO(capx, TS_MAX(capx, 5)))))",
+      "hypothesis": "Cash-profitable firms that are simultaneously spending at the low end of their own five-year reinvestment history and far below their own capex peak have unambiguously entered a harvesting phase, and this policy transition is repriced only slowly.",
+      "expected_sign": "positive",
+      "reasoning": "The two best archive signals used two different but individually noisy measures of own-history restraint (time-series percentile and distance from peak); combining them inside a single ranked restraint leg should cancel measurement noise and raise both ls_talpha and Sharpe rather than merely reshuffling the same firms. It keeps the cash-flow profitability leg that delivered the highest alpha and Sharpe in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.1334790170545905,
+      "ls_alpha": 0.034572731057338824,
+      "ls_talpha": 2.3931602620826995,
+      "ls_sharpe": 0.544961660536221,
+      "coverage": 0.08137144252191837,
+      "error": null
+    },
+    {
+      "name": "HierarchicalProfitRestraint",
+      "expression": "SUB(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "The harvesting mechanism is the same whether profitability is measured in cash or in operating income; using cash flow when reported and operating profitability when not should preserve the cash-flow alpha while extending the signal to the pre-cash-flow-statement era and to non-reporters.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a clean trade-off \u2014 oancf gives alpha 4.2% at coverage 0.082, oibdp gives 2.9% at 0.122 \u2014 and COALESCE is the economically correct way to prioritize the better measure without discarding firms. This directly tests whether the leading signal's alpha is coverage-limited or sample-specific, which matters for the remaining consolidation rounds.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.5973831560209937,
+      "ls_alpha": 0.03846618990811799,
+      "ls_talpha": 3.670385655420331,
+      "ls_sharpe": 0.46420367582724137,
+      "coverage": 0.12176868684617398,
+      "error": null
+    },
+    {
+      "name": "FreeCashFlowOnInstalledCapital",
+      "expression": "WINSOR(RATIO(SUB(oancf, capx), ppent), 1)",
+      "hypothesis": "Free cash flow per dollar of installed productive capital measures how much surplus cash a firm's existing asset base throws off after funding its own investment needs; high values identify underpriced cash generators, low or negative values identify firms consuming cash to grow.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the profit-per-investment ratio structure that reliably produced alpha but changes the economics from \"how cheaply do they grow\" to \"how much surplus does the installed base yield,\" netting investment out of the numerator rather than dividing by it. Scaling by net PP&E rather than the lumpy capex flow should also stabilize portfolio composition, addressing the modest ls_talpha of the unsmoothed oancf/capx version.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.7480064064879075,
+      "ls_alpha": 0.030096079543427884,
+      "ls_talpha": 1.8600412865804552,
+      "ls_sharpe": 0.42619288660494126,
+      "coverage": 0.08888608228147465,
+      "error": null
+    },
+    {
+      "name": "ProfitAccelVsCapexDecel",
+      "expression": "SUB(RANK(ACCEL(RATIO(oiadp, at))), RANK(ACCEL(RATIO(capx, ppent))))",
+      "hypothesis": "The turning point matters more than the trend: firms whose profitability is accelerating just as their reinvestment rate decelerates are at the inflection from investment phase to cash harvest, and the market anchors on the prior phase.",
+      "expected_sign": "positive",
+      "reasoning": "Trend divergence over five years produced the archive's most precise alpha (t 3.71), so the natural next question is whether the information is in the level of the slopes or in their change, a distinguishable timing hypothesis rather than a cosmetic variant. Second differences are also mechanically orthogonal to the level-based RMW and CMA exposures that flattened the static composites.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.4170621017749436,
+      "ls_alpha": 0.01720462708646813,
+      "ls_talpha": 1.9196552193062681,
+      "ls_sharpe": 0.3014708245682405,
+      "coverage": 0.10968871834621484,
+      "error": null
+    },
+    {
+      "name": "MaintenanceCapexCashCow",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(WINSOR(MA(RATIO(capx, dp), 3), 1)))",
+      "hypothesis": "Capital expenditure relative to depreciation measures investment against the firm's own replacement requirement; cash-profitable firms spending near or below maintenance levels are deliberately liquidating capacity into cash and are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Normalizing capex by depreciation is a firm-specific benchmark like the own-history measures that escaped CMA absorption, rather than a cross-sectional capital-intensity ranking, and it has a sharp economic threshold at one. Earlier evidence that (ib+dp)/capx lost its alpha suggests the depreciation channel needs to sit in the *investment* leg with genuine cash profitability on the other side, which is exactly the structure tested here.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.656869911141128,
+      "ls_alpha": 0.013890961621845294,
+      "ls_talpha": 0.937864563155704,
+      "ls_sharpe": 0.26174217215658707,
+      "coverage": 0.08926038259011893,
+      "error": null
+    },
+    {
+      "name": "ProfitableIntangibleTilt",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), 1))",
+      "hypothesis": "Among profitable firms, investment tilted toward research rather than physical capacity is systematically underpriced because intangible investment is expensed rather than capitalized, so reported profitability understates the true earning power of these firms.",
+      "expected_sign": "positive",
+      "reasoning": "The sign reversal of ProfitPerTotalInvestmentIncludingRD (\u22123.9%, t \u22123.24) revealed that R&D-heavy profitable firms sit in the outperforming leg, so investment *composition* is a distinct and oppositely signed channel from investment *restraint*. Treating unreported R&D as zero is the standard convention, and this proposal turns an accidental reversal into an explicit, testable mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.18419022642827,
+      "ls_alpha": 0.03644771030118417,
+      "ls_talpha": 3.2260808621261794,
+      "ls_sharpe": 0.2933193961981451,
+      "coverage": 0.13312383866299826,
+      "error": null
+    },
+    {
+      "name": "HarvestAndIntangibleTilt",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Underpriced cash generators are profitable firms that both hold physical reinvestment below their own historical norm and direct the spending they do undertake toward research rather than capacity; the two forms of investment discipline are complementary and should compound.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's two strongest signals isolate different investment legs \u2014 own-history restraint (Sharpe 0.46\u20130.56) and research tilt (fmb 4.18) \u2014 while sharing the same profitability channel, so merging them tests additivity rather than restating either. The COALESCE profitability hierarchy is retained because it demonstrably raised alpha, t-stat, and coverage simultaneously in generation 4.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.373690261465478,
+      "ls_alpha": 0.052925757034375666,
+      "ls_talpha": 4.979549679812844,
+      "ls_sharpe": 0.4614125670725775,
+      "coverage": 0.12089678123403226,
+      "error": null
+    },
+    {
+      "name": "ResearchStockVsPhysicalStock",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ppegt), 1))",
+      "hypothesis": "What matters for mismeasured earning power is the accumulated stock of research capital relative to installed physical capital, not the single-year spending mix; profitable firms whose economic capital is mostly unbooked research are the most underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "ProfitableIntangibleTilt used a one-year flow share and delivered a strong FMB slope but a modest Sharpe, consistent with a noisy annual mix measure; cumulating five years of R&D into a stock and benchmarking it against gross PP&E should stabilize portfolio composition. This isolates the flow-versus-stock design choice inside the composition channel rather than duplicating it.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.098699845163797,
+      "ls_alpha": 0.037381671389260705,
+      "ls_talpha": 3.36068443240352,
+      "ls_sharpe": 0.33311159877585994,
+      "coverage": 0.13038657096135384,
+      "error": null
+    },
+    {
+      "name": "CashProfitTrendVsCapexTrend",
+      "expression": "SUB(RANK(TREND(COALESCE(RATIO(oancf, at), RATIO(oibdp, at)), 5)), RANK(TREND(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose cash profitability is trending up while their reinvestment rate trends down are transitioning to harvest, and cash-based profitability tracks that transition more faithfully than accrual operating income.",
+      "expected_sign": "positive",
+      "reasoning": "MarginTrendVsCapexTrend still holds the archive's most precise alpha (3.6%, t 3.71) using accrual operating profitability, while the cash-flow hierarchy lifted every statistic in the restraint family; this applies that one proven substitution to the trend family. It is a deliberate single-design-choice test whose outcome tells us whether the cash-flow advantage is general or specific to level-based restraint measures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.914553455662486,
+      "ls_alpha": 0.04954783838558982,
+      "ls_talpha": 4.55141311375417,
+      "ls_sharpe": 0.4468256683857704,
+      "coverage": 0.11155934282461923,
+      "error": null
+    },
+    {
+      "name": "IndustryRelativeRestraintCashCow",
+      "expression": "SUB(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(IND_ZSCORE(RATIO(capx, ppent))))",
+      "hypothesis": "Investment norms are set by technology within an industry, so a profitable firm spending well below its industry's reinvestment norm is exercising genuine discipline, whereas a low absolute capex rate may merely reflect an asset-light industry.",
+      "expected_sign": "positive",
+      "reasoning": "Own-history conditioning succeeded because it escaped the cross-sectional low-investment direction that CMA already prices; industry-relative conditioning is the other natural way to strip out permanent capital-intensity differences, and it applies to firms without long histories. Comparing it head-to-head with the TS_RANK version identifies which benchmark carries the harvesting information.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.6964364621707877,
+      "ls_alpha": 0.0034410734600902777,
+      "ls_talpha": 0.4141316888869551,
+      "ls_sharpe": 0.21781578789990597,
+      "coverage": 0.13359714411186147,
+      "error": null
+    },
+    {
+      "name": "EarningsQualityAndCapexRestraint",
+      "expression": "SUB(RANK(NEG(RATIO(SUB(ib, oancf), at))), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose earnings are fully backed by cash and that are simultaneously restraining reinvestment relative to their own history are true cash generators; firms with accrual-inflated earnings that keep spending are the ones the market credits for both quality and growth it will not receive.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the profitability *level* leg with an earnings *quality* leg, a distinct economic dimension that explains why cash-flow profitability outperformed accrual profitability throughout the archive rather than just exploiting it. Because the accrual gap is nearly orthogonal to the RMW profitability level, the interaction should not be absorbed by FF5 in the way the earlier level composites were.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.702668380673042,
+      "ls_alpha": 0.048752409186257804,
+      "ls_talpha": 3.1075987949642356,
+      "ls_sharpe": 0.4488388641859021,
+      "coverage": 0.08176421278376658,
+      "error": null
+    },
+    {
+      "name": "RealizedPayoffPlusProfitability",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(DELTA(oiadp, 3), TS_SUM(capx, 3)), 1))",
+      "hypothesis": "Firms that are both persistently profitable and can show that their last three years of capital spending actually produced incremental operating profit have demonstrated value-creating investment, whereas persistent profitability with no payoff on cumulative spending signals capital destruction.",
+      "expected_sign": "positive",
+      "reasoning": "The cumulative-payoff ratio produced a reliable FF5 alpha (2.8%, t 2.97) but almost no Fama-MacBeth slope (1.24), the signature of a tail-driven measure; anchoring it with a smooth profitability level should supply the missing cross-sectional monotonicity while preserving the payoff-realization economics. This repairs the specific failure mode of that channel instead of discarding it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.878470144354473,
+      "ls_alpha": 0.013789540619639287,
+      "ls_talpha": 1.4569225809963455,
+      "ls_sharpe": 0.05443878856245728,
+      "coverage": 0.10349514456917339,
+      "error": null
+    },
+    {
+      "name": "FourChannelHarvestScore",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(TS_RANK(RATIO(capx, ppent), 5))), SUMRANK(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), NEG(TREND(RATIO(capx, ppent), 5))))",
+      "hypothesis": "Harvesting is a multi-dimensional state: high cash profitability, reinvestment low relative to the firm's own history, a research-tilted spending mix, and a multi-year downward path in reinvestment intensity each carry independent information about underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel version delivered the archive's best alpha (5.3%, t 4.98) and the capex-trend leg independently powered a 5.0% alpha in the trend family, so adding it as a fourth equally weighted channel is the direct test of whether additivity continues or saturates. Because the level and slope of reinvestment are distinct states, this is not a restatement of the restraint leg already present.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.554638240504701,
+      "ls_alpha": 0.04653947094233872,
+      "ls_talpha": 4.341200859282254,
+      "ls_sharpe": 0.3649520372020093,
+      "coverage": 0.11008148860806305,
+      "error": null
+    },
+    {
+      "name": "QualityAugmentedHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(ib, oancf), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Cash-backed earnings are the credible form of profitability, so adding an accrual-gap quality screen to the harvest score should concentrate the long leg in firms whose reported profits are real and whose investment discipline is deliberate rather than a symptom of hidden weakness.",
+      "expected_sign": "positive",
+      "reasoning": "EarningsQualityAndCapexRestraint produced a 4.9% alpha with only two channels and coverage 0.082, showing the accrual gap carries information beyond the profitability level itself. This asks whether the quality dimension adds to the flagship or merely re-expresses the cash-flow hierarchy already embedded in it, which is the key remaining ambiguity in the winning family.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.229698595855231,
+      "ls_alpha": 0.06936469977611068,
+      "ls_talpha": 4.147678939128936,
+      "ls_sharpe": 0.6479863710322846,
+      "coverage": 0.08110703327563279,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralIntangibleHarvest",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), IND_ZSCORE(WINSOR(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "If the research-tilt channel reflects genuine mismeasurement of firm-level intangible capital rather than a static bet on pharmaceutical and software sectors, then measuring the tilt relative to industry peers should preserve or improve the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D mix is mechanically industry-determined, so the flagship's long leg may be a sector portfolio whose alpha would not survive industry neutralization; this is the robustness test that matters most before further refinement. I winsorize the mix before industry z-scoring because unwinsorized industry z-scores are exactly what killed IndustryRelativeRestraintCashCow.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.356989228488363,
+      "ls_alpha": 0.040444416019037074,
+      "ls_talpha": 4.205585356489666,
+      "ls_sharpe": 0.29605867384177004,
+      "coverage": 0.11176896131586964,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkHarvest",
+      "expression": "MIN(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(NEG(TS_RANK(RATIO(capx, ppent), 5))))",
+      "hypothesis": "The mispricing requires *both* conditions simultaneously \u2014 profits to harvest and restraint in reinvesting them \u2014 so a conjunctive score that takes the weaker of the two ranks should identify the true cash cows more cleanly than an average that lets one strong leg compensate for a weak one.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal so far has used additive or subtractive rank combinations, which admit firms that are merely extremely profitable or merely extremely restrained; MIN enforces the conjunction that the economic story actually specifies. Comparing its alpha and Sharpe to HierarchicalProfitRestraint isolates the aggregation-structure choice while holding the two economic legs fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.134691821258219,
+      "ls_alpha": 0.0014493878382674102,
+      "ls_talpha": 0.06780601768591482,
+      "ls_sharpe": 0.08594166570377894,
+      "coverage": 0.12176868684617398,
+      "error": null
+    },
+    {
+      "name": "TotalRealInputRestraint",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(TS_RANK(GROWTH(emp, 1), 5))))",
+      "hypothesis": "Genuine harvesting shows up in labor as well as capital: profitable firms holding both capital spending and headcount growth below their own historical norms have committed to running the existing business for cash rather than expanding it.",
+      "expected_sign": "positive",
+      "reasoning": "Headcount growth failed as a stand-alone cross-sectional composite (\u22120.9%), but the archive's lesson is that expansion restraint must be measured against the firm's own history to escape factor absorption, which the earlier employment signal never did. If the labor channel adds alpha here, \"investment discipline\" is a general managerial stance rather than a capex-specific phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.5619896204171653,
+      "ls_alpha": 0.039048805488510537,
+      "ls_talpha": 3.8761120431749494,
+      "ls_sharpe": 0.4419020772996114,
+      "coverage": 0.10713011390698737,
+      "error": null
+    },
+    {
+      "name": "NoExternalGrowthCashCow",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(RATIO(ADD(sstk, aqc), at))))",
+      "hypothesis": "Profitable firms that neither reinvest above their own norm nor raise equity or buy other companies are pure internal cash generators, whereas profitable firms funding acquisitions with new shares are precisely the doubly credited names the market overprices.",
+      "expected_sign": "positive",
+      "reasoning": "The financing channel showed a real cross-sectional slope (fmb 2.70) but negligible alpha when used alone against a free-cash-flow leg, plausibly because issuance scaled by assets is dominated by small speculative issuers; embedding it as one ranked channel inside a profitability-anchored harvest score caps its influence while retaining its information. Combining equity issuance with acquisition spending captures external expansion in both cash and paper form, a dimension the flagship currently ignores.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.187468903271488,
+      "ls_alpha": 0.02131566013947759,
+      "ls_talpha": 2.07939762620843,
+      "ls_sharpe": 0.3812394144397501,
+      "coverage": 0.1076364898586543,
+      "error": null
+    },
+    {
+      "name": "BroadQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Earnings quality can be measured either as the earnings-minus-cash-flow gap or, when cash flow statements are unavailable, as inventory build net of depreciation; either way, cash-backed profits combined with own-history investment restraint and a research-tilted spending mix identify underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "The quality channel produced the archive's largest alpha and Sharpe but only over the cash-flow-reporting sample, so the fallback balance-sheet accrual proxy is an economically motivated substitute rather than a coverage patch. If the alpha survives at coverage near 0.12, the quality dimension is general; if it fades, the gain was sample-specific and the flagship should stay at three channels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.3796116655273885,
+      "ls_alpha": 0.0623109988726441,
+      "ls_talpha": 5.584777958178916,
+      "ls_sharpe": 0.484584652708277,
+      "coverage": 0.1205865582490732,
+      "error": null
+    },
+    {
+      "name": "CashSampleHarvestControl",
+      "expression": "SUMRANK(MA(RATIO(oancf, at), 3), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Cash profitability, own-history reinvestment restraint, and research tilt are jointly sufficient; the apparent gain from adding an accrual-gap channel may simply reflect the cash-flow-reporting subsample in which that channel is computable.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact matched control for QualityAugmentedHarvest \u2014 same three-channel architecture, same restricted sample, no quality leg \u2014 and it is the only way to attribute the 6.9% alpha to a mechanism rather than a sample. The comparison directly determines what the final two generations should refine.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.451622803669221,
+      "ls_alpha": 0.06251022329911032,
+      "ls_talpha": 4.047881908183625,
+      "ls_sharpe": 0.6596703236524765,
+      "coverage": 0.08110703327563279,
+      "error": null
+    },
+    {
+      "name": "QualityRestraintTiltNoLevel",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Once earnings are known to be cash-backed, the level of profitability adds little: the mispricing is about credibility of profits plus discipline in deploying them, not about the size of the margin.",
+      "expected_sign": "positive",
+      "reasoning": "In the four-channel quality score the profitability level and the accrual gap both load on cash flow, so they may be partly redundant; dropping the level tests parsimony and tells us whether the profitability *level* or the profitability *quality* is the active ingredient. A strong result here would also mean the signal is nearly orthogonal to RMW, which is the cleanest explanation of the large FF5 alphas in this family.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.9057730247247529,
+      "ls_alpha": 0.07131874284066744,
+      "ls_talpha": 4.345673611434213,
+      "ls_sharpe": 0.5094757196764073,
+      "coverage": 0.08110703327563279,
+      "error": null
+    },
+    {
+      "name": "OrganizationCapitalTilt",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Intangible investment is broader than R&D: selling, general and administrative spending builds brand, distribution and organizational capital that is expensed rather than capitalized, so profitable firms whose investment is tilted toward intangibles of either kind are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The research-tilt channel was the single most valuable addition in the archive (fmb 4.18 alone, and the driver of the 5.3% three-channel alpha), and organization capital is the natural extension of the same mismeasurement mechanism to non-R&D industries. Because SG&A is reported almost universally, this also widens the intangible channel beyond the technology and pharmaceutical firms that dominate R&D reporting.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.061452547191062,
+      "ls_alpha": 0.05322987492287688,
+      "ls_talpha": 4.067565613999896,
+      "ls_sharpe": 0.4163817952361064,
+      "coverage": 0.10485913513567058,
+      "error": null
+    },
+    {
+      "name": "PeerRelativeProfitHarvest",
+      "expression": "SUMRANK(IND_ZSCORE(WINSOR(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), 1)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "A firm is a cash cow relative to its industry's economics, so profitability measured against industry peers should identify harvesting candidates more accurately than raw profitability, which mostly ranks industries.",
+      "expected_sign": "positive",
+      "reasoning": "Industry neutralization of the intangible leg preserved the alpha (4.0%, t 4.21), suggesting industry adjustment is safe when applied to a winsorized, bounded quantity; applying it to the profitability leg tests whether within-industry competitive position is the relevant profitability concept. This is the complementary experiment to generation 6's industry test, and unlike the failed IND_ZSCORE investment leg it does not disturb the firm-specific restraint measure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.74858510160216,
+      "ls_alpha": 0.04727919711246356,
+      "ls_talpha": 4.417991840252404,
+      "ls_sharpe": 0.3073487489930036,
+      "coverage": 0.12080283211452279,
+      "error": null
+    },
+    {
+      "name": "BreadthOfExpansionRestraint",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), SUMRANK(GROWTH(invt, 1), GROWTH(emp, 1)))), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Discipline is credible when it is broad: profitable firms restraining fixed capital, inventory and headcount simultaneously are genuinely harvesting, whereas restraint in one input alone can be a temporary cash-timing artifact.",
+      "expected_sign": "positive",
+      "reasoning": "The employment-restraint version of this idea worked once measured against the firm's own history (3.9%, t 3.88, Sharpe 0.44), and building a single composite expansion index keeps the added inputs from crowding out the profitability and intangible channels that carry the most alpha. This tests whether breadth of restraint is a better investment leg than capex restraint alone, without disturbing the rest of the winning architecture.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.026323558728959,
+      "ls_alpha": 0.03954750197533485,
+      "ls_talpha": 3.9600094145624523,
+      "ls_sharpe": 0.36403815593404226,
+      "coverage": 0.09529144141578486,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalRestraintHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(DELTA(invt, 1), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "The fourth channel in the leading signal works because inventory build is *working-capital investment*, not because it proxies earnings quality: disciplined firms restrain both fixed and working capital, and profitable firms quietly accumulating inventory are expanding in a form the market does not see.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the hybrid accrual channel with pure inventory investment scaled by assets, holding the other three channels fixed, so its outcome cleanly attributes the generation-7 gain to investment discipline versus accounting quality. It also removes the internal inconsistency of a COALESCE channel whose two branches have different scales, which can pollute cross-sectional ranks.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.208229657418416,
+      "ls_alpha": 0.059846792045080144,
+      "ls_talpha": 5.503301579280864,
+      "ls_sharpe": 0.48369877908626047,
+      "coverage": 0.11921895623921211,
+      "error": null
+    },
+    {
+      "name": "UniformAccrualQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "A single, uniformly defined balance-sheet accrual measure \u2014 inventory build net of depreciation \u2014 captures the credibility of profits for every firm, and a homogeneous definition should rank the cross-section more coherently than a two-branch hybrid.",
+      "expected_sign": "positive",
+      "reasoning": "BroadQualityHarvest mixes the cash-flow accrual gap for reporters with the balance-sheet proxy for everyone else, so part of its rank dispersion is definitional rather than economic. Comparing this uniform version against both BroadQualityHarvest and Signal 1 pins down whether the depreciation term (maintenance investment) matters or only the inventory term does.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.617445080836975,
+      "ls_alpha": 0.05759881779263851,
+      "ls_talpha": 5.466209115111019,
+      "ls_sharpe": 0.48660875154771527,
+      "coverage": 0.11872439486654994,
+      "error": null
+    },
+    {
+      "name": "PersistentRestraintHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(MA(TS_RANK(RATIO(capx, ppent), 5), 3)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Sustained restraint is more informative than a single year of low spending: firms whose reinvestment has sat below their own historical norm for several consecutive years have made a durable harvesting commitment, whereas one-year dips are cash-timing noise.",
+      "expected_sign": "positive",
+      "reasoning": "The leading signal's Sharpe (0.485) is below the cash-sample variants (0.66), which suggests portfolio turnover and one-year measurement noise in the restraint leg; smoothing the own-history percentile over three years should stabilize portfolio composition and raise both ls_talpha and Sharpe without changing the economics. This is a persistence hypothesis, the one temporal concept in the restraint channel not yet tested.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.72556347933565,
+      "ls_alpha": 0.05419682129269272,
+      "ls_talpha": 4.58510038940172,
+      "ls_sharpe": 0.369699569536071,
+      "coverage": 0.12070444607888052,
+      "error": null
+    },
+    {
+      "name": "PeakProfitHarvestState",
+      "expression": "SUMRANK(SUMRANK(TS_RANK(COALESCE(RATIO(oancf, at), RATIO(oibdp, at)), 5), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Harvesting is a firm-specific state: the strongest candidates are firms whose profitability sits near the top of its own five-year range while reinvestment sits near the bottom of its own range, regardless of where they rank against other firms.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's biggest single insight was that own-history conditioning of the investment leg escapes the factor-spanned cross-sectional direction; this asks whether the same is true of the profitability leg, which is currently the channel most exposed to RMW. If it holds, the signal becomes almost entirely a within-firm state variable, which would be a substantively different and more clearly mispricing-based construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.118022811999513,
+      "ls_alpha": 0.0603555087582088,
+      "ls_talpha": 5.073189425225821,
+      "ls_sharpe": 0.40742956922796675,
+      "coverage": 0.12057918058620123,
+      "error": null
+    },
+    {
+      "name": "InternalVsAcquiredIntangibles",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(GROWTH(ADD(intan, gdwl), 1))))",
+      "hypothesis": "Intangible investment is only underpriced when internally generated: research spending builds unbooked capital the market ignores, whereas rapidly growing acquired intangibles and goodwill represent overpayment for other firms' growth stories and predict underperformance.",
+      "expected_sign": "positive",
+      "reasoning": "The archive treats the intangible channel as uniformly good, but the earlier organic-versus-inorganic result (negative alpha when acquired intangibles sat in the long-leg construction) suggests the two forms have opposite signs; separating them turns a confound into an additional channel. This is the sharpest remaining economic distinction inside the winning family and directly addresses the \"overpriced growth-credited firm\" half of the mandate.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.195142821113433,
+      "ls_alpha": 0.05122510339980685,
+      "ls_talpha": 4.308900250258734,
+      "ls_sharpe": 0.5790117060352782,
+      "coverage": 0.045311077349274864,
+      "error": null
+    },
+    {
+      "name": "BroadIntangibleQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Defining the intangible tilt over research plus selling and administrative spending extends the mismeasured-capital mechanism to brand- and distribution-intensive firms outside technology and pharmaceuticals, and should therefore work in a broader cross-section.",
+      "expected_sign": "positive",
+      "reasoning": "Organization capital matched the flagship alpha (5.3%) when tested against the three-channel base, so the fair test is whether it also improves the current best four-channel configuration where the quality leg is present. Because SG&A is reported nearly universally, a positive result would make the signal less dependent on R&D disclosure without sacrificing the intangible mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.9029383982976205,
+      "ls_alpha": 0.07528563146027487,
+      "ls_talpha": 6.6456434915662435,
+      "ls_sharpe": 0.6033495814773484,
+      "coverage": 0.10465385037645686,
+      "error": null
+    },
+    {
+      "name": "UniformQualityBroadIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Underpriced cash generators are profitable firms with cash-backed earnings and restrained working capital, physical reinvestment below their own historical norm, and investment tilted toward intangible capital that accounting expenses rather than capitalizes.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two best-performing design choices found \u2014 the uniform balance-sheet accrual channel that maximized the Fama-MacBeth slope (6.62) and the broadened intangible tilt that maximized alpha and its precision (7.5%, t 6.65) \u2014 with all other channels held at their proven settings. Because the improvements came from different legs of the same architecture, combining them should strengthen both forms of evidence rather than trade one for the other.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.016314632119506,
+      "ls_alpha": 0.06573392966197988,
+      "ls_talpha": 5.723768656618091,
+      "ls_sharpe": 0.5766719944248405,
+      "coverage": 0.10335321484497209,
+      "error": null
+    },
+    {
+      "name": "FullCoverageIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xsga, 0)), ADD(capx, ADD(COALESCE(xrd, 0), COALESCE(xsga, 0)))), 1)))",
+      "hypothesis": "A firm that does not separately report selling and administrative expense is one whose costs are bundled into cost of goods sold, i.e. it has no separately identifiable intangible outlay, so treating unreported SG&A as zero is the economically correct convention and should extend the signal without weakening it.",
+      "expected_sign": "positive",
+      "reasoning": "The intangible broadening cost coverage (0.119 \u2192 0.105) purely through SG&A reporting, and zero-filling is the same convention already validated for R&D, where it strengthened rather than diluted the channel. If alpha and ls_talpha hold at the higher coverage, this is the preferred deployable version of the flagship.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.677076494000242,
+      "ls_alpha": 0.04954263141502489,
+      "ls_talpha": 4.7573505888651715,
+      "ls_sharpe": 0.5669415699300364,
+      "coverage": 0.11911633965562927,
+      "error": null
+    },
+    {
+      "name": "IntangibleFlowPerPhysicalCapital",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ppent), 1)))",
+      "hypothesis": "What identifies an underpriced intangible-intensive cash generator is the size of annual intangible investment relative to the physical capital already on the books, not merely its share of the current-year investment budget.",
+      "expected_sign": "positive",
+      "reasoning": "The share formulation is bounded but mechanically anti-correlated with the capex restraint channel already present, so part of the intangible tilt's contribution may be redundant restraint information; scaling by installed physical capital separates the intangible-intensity concept from the capex level. Comparing it with Signal 1 isolates whether the intangible channel adds capital-composition information or simply re-expresses low capex.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.339598983382539,
+      "ls_alpha": 0.07158916511214473,
+      "ls_talpha": 6.034775621417899,
+      "ls_sharpe": 0.5584737894882741,
+      "coverage": 0.10335383394954875,
+      "error": null
+    },
+    {
+      "name": "AcquiredIntangiblePenaltyHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(RATIO(DELTA(COALESCE(ADD(intan, gdwl), 0), 1), at)))))",
+      "hypothesis": "Internally generated intangibles are underpriced while purchased intangibles and goodwill represent overpayment for other firms' growth stories, so penalizing balance-sheet intangible accumulation should sharpen the short leg of the harvest score.",
+      "expected_sign": "positive",
+      "reasoning": "The acquired-intangible penalty showed a strong slope and the archive's second-best Sharpe (fmb 6.20, 0.579) but was unusable at coverage 0.045 because GROWTH of `intan` and `gdwl` requires both reported and non-zero bases; measuring it as a change scaled by assets with unreported intangibles set to zero fixes exactly that leak, since a firm with no acquisitions genuinely has zero acquired intangibles. This is the last untested economic distinction inside the winning family and it addresses the overpriced-growth half of the mandate directly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.1782588942960714,
+      "ls_alpha": 0.060216464755225865,
+      "ls_talpha": 5.820342966074415,
+      "ls_sharpe": 0.6324548567075681,
+      "coverage": 0.10335321484497209,
+      "error": null
+    },
+    {
+      "name": "SectorNeutralIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), IND_ZSCORE(WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1))))",
+      "hypothesis": "If the intangible tilt reflects firm-level mismeasurement of capital rather than a persistent long-service/short-manufacturing sector position, then measuring the tilt relative to industry peers should preserve most of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D-only tilt survived industry neutralization with alpha 4.0% and t 4.21, but the SG&A-inclusive version is far more sector-determined and therefore more at risk of being an implicit industry bet; this is the essential robustness check on the archive's largest alpha before recommending it. Winsorizing before industry z-scoring avoids the outlier problem that destroyed the earlier industry-scaled investment leg.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.248354072560103,
+      "ls_alpha": 0.054997702780393044,
+      "ls_talpha": 5.226895380933444,
+      "ls_sharpe": 0.48186172481725537,
+      "coverage": 0.1032343467662517,
+      "error": null
+    },
+    {
+      "name": "DualRestraintIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), RATIO(capx, TS_MAX(capx, 5)))), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Combining two independent measures of own-history restraint \u2014 position in the five-year reinvestment distribution and distance below the five-year capex peak \u2014 measures the harvesting transition with less noise, which should raise the risk-adjusted reliability of the spread.",
+      "expected_sign": "positive",
+      "reasoning": "The off-peak restraint metric delivered the archive's highest Sharpe ratios in simpler configurations (0.545\u20130.558), and the flagship's main remaining weakness is a Sharpe of 0.60 against alphas that are already large, indicating residual noise in the restraint leg. Unlike the failed moving-average smoothing, averaging two distinct restraint statistics reduces measurement error without delaying the signal's response to a genuine policy change.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.076088123678178,
+      "ls_alpha": 0.0568033599266399,
+      "ls_talpha": 5.316418101607136,
+      "ls_sharpe": 0.5850176192779616,
+      "coverage": 0.10319395019262408,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "CashCowDiscipline",
+      "expression": "SUMRANK(RATIO(MA(oancf, 3), at), NEG(GROWTH(at, 1)))",
+      "hypothesis": "Firms that generate persistent operating cash flow per dollar of assets while keeping the asset base flat are underpriced cash generators; the market extrapolates growth, not harvesting, so disciplined cash cows earn positive abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "The smoothed cash-based profitability channel isolates genuine cash generation rather than accrual-inflated earnings, while NEG(GROWTH(at,1)) rewards balance-sheet restraint. The composite only scores high when both conditions hold, so it is an interaction rather than either theme alone, and it directly targets the harvest-versus-empire-building distinction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CashPerCapexDollar",
+      "expression": "WINSOR(RATIO(MA(oancf, 3), MA(capx, 3)), 1)",
+      "hypothesis": "The ratio of operating cash generated to capital spent measures how many dollars of internal cash each dollar of investment supports; high values identify self-funding, capital-light profit machines that are systematically undervalued relative to capital-hungry firms.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profitability by investment outlay rather than by assets makes the signal a direct measure of investment discipline conditional on profitability, which no single-theme ratio captures. Three-year averaging removes lumpy capex cycles and one-off cash-flow spikes, and winsorization controls the exploding-denominator tail typical of ratio constructions.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitableShrinkerConditional",
+      "expression": "MUL(INDICATOR(RATIO(ib, at), 0.05), NEG(GROWTH(ppegt, 1)))",
+      "hypothesis": "Among firms that clear a real profitability hurdle, shrinking or flat gross physical capacity signals management returning capital instead of chasing growth, and such firms are mispriced upward-drifting value plays; unprofitable firms' capacity cuts carry no such information.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the investment-discipline signal on only for genuinely profitable firms, making the effect explicitly conditional rather than additive. Using gross PP&E growth rather than total asset growth focuses on deliberate capacity decisions rather than cash or working-capital noise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginTrendVsCapexTrend",
+      "expression": "SUB(RANK(TREND(RATIO(oiadp, at), 5)), RANK(TREND(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose operating profitability is trending up while their reinvestment rate is trending down are quietly improving efficiency; the market underreacts because there is no visible expansion story, whereas rising capex intensity with flattening margins signals value-destroying growth.",
+      "expected_sign": "positive",
+      "reasoning": "This contrasts the direction of two multi-year states rather than their levels, capturing a divergence concept that neither theme expresses alone. Ranking both trends before differencing makes the scales comparable and keeps the spread robust to industry-level differences in capital intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "DoubleCreditedGrowth",
+      "expression": "MUL(RANK(RATIO(oibdp, at)), RANK(GROWTH(ppegt, 1)))",
+      "hypothesis": "Investors credit a firm twice when it is both highly profitable and rapidly expanding capacity, pushing prices above fundamentals; these doubly celebrated firms subsequently underperform as returns on new capacity mean-revert.",
+      "expected_sign": "negative",
+      "reasoning": "The multiplicative form peaks only in the joint high-profitability, high-investment corner, which is precisely the overpricing quadrant of the economic story and cannot be produced by either theme in isolation. It provides the mirror-image test of the cash-cow hypothesis, so a reliably negative slope corroborates the mechanism from the short side.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "SelfFundedVsExternallyFundedGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(oancf, capx), at)), RANK(RATIO(ADD(sstk, DELTA(dltt, 1)), at)))",
+      "hypothesis": "Firms whose profits comfortably cover their investment and that raise no outside capital are disciplined compounders, while firms funding expansion with new equity and debt are exploiting favorable sentiment about their profitability; the former outperform the latter.",
+      "expected_sign": "positive",
+      "reasoning": "Free cash flow after capex embeds profitability and investment jointly in the numerator, and subtracting the external-financing rank identifies who is paying for the investment, a discipline dimension absent from asset-growth measures. The construction separates internally financed restraint from externally financed empire building even when both groups show similar reported profitability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "InternalCashPerCapexBroad",
+      "expression": "WINSOR(RATIO(MA(ADD(ib, dp), 3), MA(capx, 3)), 1)",
+      "hypothesis": "Firms generating many dollars of internal cash earnings per dollar of capital expenditure are self-funding, capital-light profit machines whose returns are underpriced relative to capital-hungry peers with the same reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the coverage failure of the winning CashPerCapexDollar signal by replacing the narrowly reported `oancf` with the much more widely available earnings-plus-depreciation cash proxy, keeping the same economic ratio of profit generation to investment outlay. Three-year averaging still smooths lumpy capex, and winsorization controls the small-denominator tail, so if the mechanism is real the FMB slope and alpha should survive at roughly triple the coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "HarvestModeProfitability",
+      "expression": "SUMRANK(MA(RATIO(oiadp, at), 3), NEG(TREND(RATIO(capx, at), 5)))",
+      "hypothesis": "Firms with persistently high operating profitability that are steadily *decelerating* their reinvestment rate have entered a harvest phase; because there is no growth narrative, the market underprices the cash they are about to return.",
+      "expected_sign": "positive",
+      "reasoning": "MarginTrendVsCapexTrend delivered the strongest alpha in the archive, but it is unclear whether the profitability trend or the capex downtrend drove it; pairing a stable profitability *level* with the capex-intensity downtrend isolates that design choice while remaining economically coherent. It also avoids the noisy 5-year margin trend, which should improve both coverage and portfolio stability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginVsInventoryBuild",
+      "expression": "SUB(RANK(RATIO(oibdp, sale)), RANK(GROWTH(invt, 1)))",
+      "hypothesis": "High-margin firms that are not building inventory are converting profitability into cash, whereas high-margin firms whose inventories swell are booking sales that have not yet been validated by demand and are therefore overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This moves the investment leg from long-lived capital to working capital, an economically distinct discipline channel that also carries an information quality interpretation about the durability of reported margins. Rank differencing keeps the two legs on comparable scales and avoids the distress-contamination that ruined the PP&E-shrinkage construction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "OrganicProfitVsInorganicExpansion",
+      "expression": "SUB(RANK(MA(RATIO(oiadp, at), 3)), RANK(GROWTH(ADD(ppent, intan), 1)))",
+      "hypothesis": "Profitable firms that expand their combined tangible and intangible capital base rapidly, largely through acquisition and capitalized intangibles, are being credited twice for profitability and growth; profitable firms expanding that base slowly are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "DoubleCreditedGrowth failed because multiplication let profitability dominate; subtracting the investment rank instead makes the aggressive-expansion firms genuinely land in the short leg. Adding intangibles to net PP&E captures acquisition- and goodwill-driven empire building, which is where overpayment for growth is most likely, without relying on the sparsely reported `aqc` series.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitTimesLowReinvestment",
+      "expression": "MUL(RANK(RATIO(oibdp, at)), RANK(NEG(RATIO(capx, ppent))))",
+      "hypothesis": "The mispricing is concentrated in the joint corner of high operating profitability and a low reinvestment rate relative to installed capacity: these are cash cows the market treats as ex-growth stories.",
+      "expected_sign": "positive",
+      "reasoning": "This is the correctly signed mirror of DoubleCreditedGrowth and tests whether a multiplicative interaction adds anything beyond an additive rank composite, since the product peaks only when both conditions hold simultaneously. Using capx scaled by net PP&E measures reinvestment intensity continuously rather than through capacity contraction, avoiding the distressed asset-sale firms that reversed the earlier conditional signal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitPerHeadVsHiringGrowth",
+      "expression": "SUMRANK(RATIO(oiadp, emp), NEG(GROWTH(emp, 1)))",
+      "hypothesis": "Firms earning high operating profit per employee while holding headcount flat are running lean, efficient operations whose cash generation is underappreciated; profitable firms hiring aggressively are investing in growth the market has already paid for.",
+      "expected_sign": "positive",
+      "reasoning": "Labor is an investment margin that management adjusts faster than physical capital, so it provides an independent read on investment discipline uncorrelated with capex-based measures. Scaling profit by employees rather than assets also sidesteps the shared `at` denominator, giving a genuinely real-side interaction between profitability intensity and expansion restraint.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlowPerCapexUnsmoothed",
+      "expression": "WINSOR(RATIO(oancf, capx), 1)",
+      "hypothesis": "Operating cash flow per dollar of current capital expenditure identifies self-funding cash generators whose valuation does not reflect how little reinvestment their profits require.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best ratio signal used three-year averages on both legs and paid for it with 0.089 coverage; this strips the windows to isolate whether the alpha comes from the cash-flow-to-capex economics or from the smoothing, while roughly doubling usable observations. Because the profitability leg is cash-based rather than earnings-plus-depreciation, it should retain the FF5-orthogonal quality information that InternalCashPerCapexBroad lost.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "InvestmentProductivityTrend",
+      "expression": "TREND(WINSOR(RATIO(oiadp, capx), 1), 5)",
+      "hypothesis": "Firms whose operating profit per dollar of capital spending is rising over several years are becoming structurally more capital-efficient; the market extrapolates the level of profitability but not the improving productivity of investment.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately fuses the two structures that produced real FF5 alpha \u2014 a profit-per-investment ratio and a multi-year trend \u2014 into one variable, so it tests whether their success shares a single mechanism rather than being two accidents. Being a slope of a ratio, it is doubly removed from the linear profitability/investment directions spanned by RMW and CMA, which is where the earlier composites lost their alpha.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginalReturnOnNewInvestment",
+      "expression": "WINSOR(RATIO(DELTA(oiadp, 1), LAG(capx, 1)), 1)",
+      "hypothesis": "The incremental operating profit earned per dollar of the prior year's capital expenditure measures whether investment is actually creating value; firms with high marginal returns on new capital are underpriced, while firms whose profits stagnate after heavy spending are the overpriced growth-credited names.",
+      "expected_sign": "positive",
+      "reasoning": "All archive signals used average profitability against average investment; this is the first to test the *marginal* product of investment, a distinct economic mechanism that speaks directly to whether the market can distinguish productive from empire-building capex. The lagged denominator imposes a sensible investment-to-payoff timing structure and cannot be replicated by a static RMW/CMA blend.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "OwnHistoryCapexRestraintVsProfit",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Cash-profitable firms whose current reinvestment rate sits at the bottom of their *own* five-year history have chosen to harvest; because the restraint is relative to the firm's own norm rather than to the cross-section, it is not captured by the standard investment factor.",
+      "expected_sign": "positive",
+      "reasoning": "Cross-sectionally low investment is exactly what CMA prices, which is why earlier low-capex composites had their alpha absorbed; a within-firm position-in-history measure identifies a regime change in policy instead of a permanently capital-light business model. Pairing it with cash-based profitability keeps the interaction focused on firms that actually have profits to harvest.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitStabilityVsCapexVolatility",
+      "expression": "SUB(RANK(MA(RATIO(oibdp, at), 3)), RANK(VOL(GROWTH(ppegt, 1), 5)))",
+      "hypothesis": "Steady profitability combined with a smooth capital expansion path signals disciplined, well-governed capital allocation, whereas profitable firms with erratic lumpy expansion are chasing opportunities and destroying value; the market prices the profitability but not the allocation discipline.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment investment channel, which is orthogonal to the level-based CMA exposure that flattened the earlier low-investment composites. It tests whether \"investment discipline\" is better measured by the stability of capital deployment than by its magnitude.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryRelativeCapitalProductivity",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(MA(oiadp, 3), ppegt), 1))",
+      "hypothesis": "Within an industry, firms that extract more operating profit from each dollar of installed gross capital are efficient asset-light operators whose future cash generation is underestimated relative to capital-heavy rivals with similar accounting profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profit by installed physical capital rather than by total assets makes the measure a true capital-productivity statistic, and industry z-scoring removes the mechanical capital-intensity differences that otherwise dominate this ratio. It tests the productivity-of-stock channel as a complement to the productivity-of-flow channel in Signals 1 and 3, which is a distinguishable economic hypothesis about efficiency rather than restraint.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "OwnHistoryRestraintBroadProfit",
+      "expression": "SUB(RANK(MA(RATIO(oibdp, at), 3)), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms with persistently high operating profitability whose current reinvestment rate sits low within their own five-year history are shifting from building to harvesting, and the market is slow to reprice this policy change.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice in the archive's best signal: whether the 4.2% alpha requires cash-flow-based profitability or merely persistent operating profitability, while lifting coverage from 0.082 toward 0.11 by dropping `oancf`. If the alpha survives, the mechanism is the own-history investment leg rather than the cash-flow leg, which tells us where to concentrate the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CashCowCapexOffPeak",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(WINSOR(RATIO(capx, TS_MAX(capx, 5)), 1)))",
+      "hypothesis": "Cash-profitable firms whose capital spending has fallen far below its own five-year peak have completed an investment cycle and are about to convert capacity into free cash flow, a transition the market underprices.",
+      "expected_sign": "positive",
+      "reasoning": "Distance-from-own-peak is a sharper statement of the harvesting transition than a time-series percentile rank, because it measures how far spending has been cut in dollars rather than just its ordinal position. It keeps the within-firm conditioning that escaped CMA absorption while testing a different functional form of \"investment discipline as a regime change.\"",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CumulativeReturnOnInvestmentCycle",
+      "expression": "WINSOR(RATIO(DELTA(oiadp, 3), TS_SUM(capx, 3)), 1)",
+      "hypothesis": "Three-year growth in operating profit per dollar of capital cumulatively invested over the same three years measures whether a full investment cycle actually paid off; firms with high realized payoffs are underpriced, and heavy spenders with no profit gain are the overpriced growth-credited names.",
+      "expected_sign": "positive",
+      "reasoning": "The one-year version of this idea produced a strong FF5 alpha but essentially no Fama-MacBeth slope, which points to timing mismatch and single-year noise rather than a false mechanism. Matching the profit change to the cumulative investment that produced it should convert tail-driven portfolio evidence into a coherent cross-sectional slope while retaining the payoff-realization economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitPerTotalInvestmentIncludingRD",
+      "expression": "WINSOR(RATIO(MA(oiadp, 3), ADD(capx, COALESCE(xrd, 0))), 1)",
+      "hypothesis": "Total investment includes intangible capital, so profit per dollar of combined physical and research investment better identifies genuinely capital-efficient cash generators than capex alone, which mislabels R&D-intensive firms as capital-light.",
+      "expected_sign": "positive",
+      "reasoning": "The profit-per-investment ratio family is the archive's most reliable, and its main measurement error is treating R&D-heavy firms as if they do not invest; treating unreported R&D as zero is the economically correct convention here rather than a coverage patch. This tests whether widening the investment base strengthens both the FMB slope and the alpha relative to the capex-only version.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitGrowthOutpacingCapacityGrowth",
+      "expression": "SUB(RANK(GROWTH(oiadp, 1)), RANK(GROWTH(ppegt, 1)))",
+      "hypothesis": "Firms whose operating profit is growing faster than their productive capacity are generating growth without capital, and this \"growth for free\" is underpriced relative to firms whose profit growth merely tracks the capacity they bought.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike the failed level composites, both legs here are flows, so the signal is not a linear blend of the RMW profitability level and the CMA asset-growth level; it identifies the source of growth rather than its amount. It is also a much higher-coverage, shorter-horizon complement to the five-year trend divergence signal, which lets us see whether the divergence effect is slow-moving or immediate.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "DemeanedProfitInvestmentInteraction",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(oibdp, at), 1)), NEG(ZSCORE(WINSOR(GROWTH(ppegt, 1), 1))))",
+      "hypothesis": "The mispricing is a genuine interaction: capacity expansion is most damaging for firms the market already celebrates for profitability, and profitability is most rewarding when unaccompanied by expansion; the cross-product of demeaned profitability and demeaned expansion isolates that quadrant structure.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier rank products failed because ranks are non-negative and monotone, so their product remained a near-linear blend of the two factor directions; a product of z-scores is mean-zero in each leg and is therefore mechanically orthogonal to the linear RMW and CMA exposures that absorbed those signals. This is the cleanest available test of whether the interaction itself, rather than the two main effects, carries the abnormal return.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "HarvestTransitionComposite",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), RATIO(capx, TS_MAX(capx, 5)))))",
+      "hypothesis": "Cash-profitable firms that are simultaneously spending at the low end of their own five-year reinvestment history and far below their own capex peak have unambiguously entered a harvesting phase, and this policy transition is repriced only slowly.",
+      "expected_sign": "positive",
+      "reasoning": "The two best archive signals used two different but individually noisy measures of own-history restraint (time-series percentile and distance from peak); combining them inside a single ranked restraint leg should cancel measurement noise and raise both ls_talpha and Sharpe rather than merely reshuffling the same firms. It keeps the cash-flow profitability leg that delivered the highest alpha and Sharpe in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "HierarchicalProfitRestraint",
+      "expression": "SUB(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "The harvesting mechanism is the same whether profitability is measured in cash or in operating income; using cash flow when reported and operating profitability when not should preserve the cash-flow alpha while extending the signal to the pre-cash-flow-statement era and to non-reporters.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a clean trade-off \u2014 oancf gives alpha 4.2% at coverage 0.082, oibdp gives 2.9% at 0.122 \u2014 and COALESCE is the economically correct way to prioritize the better measure without discarding firms. This directly tests whether the leading signal's alpha is coverage-limited or sample-specific, which matters for the remaining consolidation rounds.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "FreeCashFlowOnInstalledCapital",
+      "expression": "WINSOR(RATIO(SUB(oancf, capx), ppent), 1)",
+      "hypothesis": "Free cash flow per dollar of installed productive capital measures how much surplus cash a firm's existing asset base throws off after funding its own investment needs; high values identify underpriced cash generators, low or negative values identify firms consuming cash to grow.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the profit-per-investment ratio structure that reliably produced alpha but changes the economics from \"how cheaply do they grow\" to \"how much surplus does the installed base yield,\" netting investment out of the numerator rather than dividing by it. Scaling by net PP&E rather than the lumpy capex flow should also stabilize portfolio composition, addressing the modest ls_talpha of the unsmoothed oancf/capx version.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitAccelVsCapexDecel",
+      "expression": "SUB(RANK(ACCEL(RATIO(oiadp, at))), RANK(ACCEL(RATIO(capx, ppent))))",
+      "hypothesis": "The turning point matters more than the trend: firms whose profitability is accelerating just as their reinvestment rate decelerates are at the inflection from investment phase to cash harvest, and the market anchors on the prior phase.",
+      "expected_sign": "positive",
+      "reasoning": "Trend divergence over five years produced the archive's most precise alpha (t 3.71), so the natural next question is whether the information is in the level of the slopes or in their change, a distinguishable timing hypothesis rather than a cosmetic variant. Second differences are also mechanically orthogonal to the level-based RMW and CMA exposures that flattened the static composites.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "MaintenanceCapexCashCow",
+      "expression": "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(WINSOR(MA(RATIO(capx, dp), 3), 1)))",
+      "hypothesis": "Capital expenditure relative to depreciation measures investment against the firm's own replacement requirement; cash-profitable firms spending near or below maintenance levels are deliberately liquidating capacity into cash and are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Normalizing capex by depreciation is a firm-specific benchmark like the own-history measures that escaped CMA absorption, rather than a cross-sectional capital-intensity ranking, and it has a sharp economic threshold at one. Earlier evidence that (ib+dp)/capx lost its alpha suggests the depreciation channel needs to sit in the *investment* leg with genuine cash profitability on the other side, which is exactly the structure tested here.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitableIntangibleTilt",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), 1))",
+      "hypothesis": "Among profitable firms, investment tilted toward research rather than physical capacity is systematically underpriced because intangible investment is expensed rather than capitalized, so reported profitability understates the true earning power of these firms.",
+      "expected_sign": "positive",
+      "reasoning": "The sign reversal of ProfitPerTotalInvestmentIncludingRD (\u22123.9%, t \u22123.24) revealed that R&D-heavy profitable firms sit in the outperforming leg, so investment *composition* is a distinct and oppositely signed channel from investment *restraint*. Treating unreported R&D as zero is the standard convention, and this proposal turns an accidental reversal into an explicit, testable mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "HarvestAndIntangibleTilt",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Underpriced cash generators are profitable firms that both hold physical reinvestment below their own historical norm and direct the spending they do undertake toward research rather than capacity; the two forms of investment discipline are complementary and should compound.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's two strongest signals isolate different investment legs \u2014 own-history restraint (Sharpe 0.46\u20130.56) and research tilt (fmb 4.18) \u2014 while sharing the same profitability channel, so merging them tests additivity rather than restating either. The COALESCE profitability hierarchy is retained because it demonstrably raised alpha, t-stat, and coverage simultaneously in generation 4.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "ResearchStockVsPhysicalStock",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ppegt), 1))",
+      "hypothesis": "What matters for mismeasured earning power is the accumulated stock of research capital relative to installed physical capital, not the single-year spending mix; profitable firms whose economic capital is mostly unbooked research are the most underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "ProfitableIntangibleTilt used a one-year flow share and delivered a strong FMB slope but a modest Sharpe, consistent with a noisy annual mix measure; cumulating five years of R&D into a stock and benchmarking it against gross PP&E should stabilize portfolio composition. This isolates the flow-versus-stock design choice inside the composition channel rather than duplicating it.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProfitTrendVsCapexTrend",
+      "expression": "SUB(RANK(TREND(COALESCE(RATIO(oancf, at), RATIO(oibdp, at)), 5)), RANK(TREND(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose cash profitability is trending up while their reinvestment rate trends down are transitioning to harvest, and cash-based profitability tracks that transition more faithfully than accrual operating income.",
+      "expected_sign": "positive",
+      "reasoning": "MarginTrendVsCapexTrend still holds the archive's most precise alpha (3.6%, t 3.71) using accrual operating profitability, while the cash-flow hierarchy lifted every statistic in the restraint family; this applies that one proven substitution to the trend family. It is a deliberate single-design-choice test whose outcome tells us whether the cash-flow advantage is general or specific to level-based restraint measures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryRelativeRestraintCashCow",
+      "expression": "SUB(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(IND_ZSCORE(RATIO(capx, ppent))))",
+      "hypothesis": "Investment norms are set by technology within an industry, so a profitable firm spending well below its industry's reinvestment norm is exercising genuine discipline, whereas a low absolute capex rate may merely reflect an asset-light industry.",
+      "expected_sign": "positive",
+      "reasoning": "Own-history conditioning succeeded because it escaped the cross-sectional low-investment direction that CMA already prices; industry-relative conditioning is the other natural way to strip out permanent capital-intensity differences, and it applies to firms without long histories. Comparing it head-to-head with the TS_RANK version identifies which benchmark carries the harvesting information.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsQualityAndCapexRestraint",
+      "expression": "SUB(RANK(NEG(RATIO(SUB(ib, oancf), at))), RANK(TS_RANK(RATIO(capx, ppent), 5)))",
+      "hypothesis": "Firms whose earnings are fully backed by cash and that are simultaneously restraining reinvestment relative to their own history are true cash generators; firms with accrual-inflated earnings that keep spending are the ones the market credits for both quality and growth it will not receive.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the profitability *level* leg with an earnings *quality* leg, a distinct economic dimension that explains why cash-flow profitability outperformed accrual profitability throughout the archive rather than just exploiting it. Because the accrual gap is nearly orthogonal to the RMW profitability level, the interaction should not be absorbed by FF5 in the way the earlier level composites were.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "RealizedPayoffPlusProfitability",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), WINSOR(RATIO(DELTA(oiadp, 3), TS_SUM(capx, 3)), 1))",
+      "hypothesis": "Firms that are both persistently profitable and can show that their last three years of capital spending actually produced incremental operating profit have demonstrated value-creating investment, whereas persistent profitability with no payoff on cumulative spending signals capital destruction.",
+      "expected_sign": "positive",
+      "reasoning": "The cumulative-payoff ratio produced a reliable FF5 alpha (2.8%, t 2.97) but almost no Fama-MacBeth slope (1.24), the signature of a tail-driven measure; anchoring it with a smooth profitability level should supply the missing cross-sectional monotonicity while preserving the payoff-realization economics. This repairs the specific failure mode of that channel instead of discarding it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "FourChannelHarvestScore",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(TS_RANK(RATIO(capx, ppent), 5))), SUMRANK(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), NEG(TREND(RATIO(capx, ppent), 5))))",
+      "hypothesis": "Harvesting is a multi-dimensional state: high cash profitability, reinvestment low relative to the firm's own history, a research-tilted spending mix, and a multi-year downward path in reinvestment intensity each carry independent information about underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel version delivered the archive's best alpha (5.3%, t 4.98) and the capex-trend leg independently powered a 5.0% alpha in the trend family, so adding it as a fourth equally weighted channel is the direct test of whether additivity continues or saturates. Because the level and slope of reinvestment are distinct states, this is not a restatement of the restraint leg already present.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "QualityAugmentedHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(ib, oancf), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Cash-backed earnings are the credible form of profitability, so adding an accrual-gap quality screen to the harvest score should concentrate the long leg in firms whose reported profits are real and whose investment discipline is deliberate rather than a symptom of hidden weakness.",
+      "expected_sign": "positive",
+      "reasoning": "EarningsQualityAndCapexRestraint produced a 4.9% alpha with only two channels and coverage 0.082, showing the accrual gap carries information beyond the profitability level itself. This asks whether the quality dimension adds to the flagship or merely re-expresses the cash-flow hierarchy already embedded in it, which is the key remaining ambiguity in the winning family.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralIntangibleHarvest",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), IND_ZSCORE(WINSOR(RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "If the research-tilt channel reflects genuine mismeasurement of firm-level intangible capital rather than a static bet on pharmaceutical and software sectors, then measuring the tilt relative to industry peers should preserve or improve the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D mix is mechanically industry-determined, so the flagship's long leg may be a sector portfolio whose alpha would not survive industry neutralization; this is the robustness test that matters most before further refinement. I winsorize the mix before industry z-scoring because unwinsorized industry z-scores are exactly what killed IndustryRelativeRestraintCashCow.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkHarvest",
+      "expression": "MIN(RANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3))), RANK(NEG(TS_RANK(RATIO(capx, ppent), 5))))",
+      "hypothesis": "The mispricing requires *both* conditions simultaneously \u2014 profits to harvest and restraint in reinvesting them \u2014 so a conjunctive score that takes the weaker of the two ranks should identify the true cash cows more cleanly than an average that lets one strong leg compensate for a weak one.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal so far has used additive or subtractive rank combinations, which admit firms that are merely extremely profitable or merely extremely restrained; MIN enforces the conjunction that the economic story actually specifies. Comparing its alpha and Sharpe to HierarchicalProfitRestraint isolates the aggregation-structure choice while holding the two economic legs fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "TotalRealInputRestraint",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(TS_RANK(GROWTH(emp, 1), 5))))",
+      "hypothesis": "Genuine harvesting shows up in labor as well as capital: profitable firms holding both capital spending and headcount growth below their own historical norms have committed to running the existing business for cash rather than expanding it.",
+      "expected_sign": "positive",
+      "reasoning": "Headcount growth failed as a stand-alone cross-sectional composite (\u22120.9%), but the archive's lesson is that expansion restraint must be measured against the firm's own history to escape factor absorption, which the earlier employment signal never did. If the labor channel adds alpha here, \"investment discipline\" is a general managerial stance rather than a capex-specific phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "NoExternalGrowthCashCow",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(RATIO(ADD(sstk, aqc), at))))",
+      "hypothesis": "Profitable firms that neither reinvest above their own norm nor raise equity or buy other companies are pure internal cash generators, whereas profitable firms funding acquisitions with new shares are precisely the doubly credited names the market overprices.",
+      "expected_sign": "positive",
+      "reasoning": "The financing channel showed a real cross-sectional slope (fmb 2.70) but negligible alpha when used alone against a free-cash-flow leg, plausibly because issuance scaled by assets is dominated by small speculative issuers; embedding it as one ranked channel inside a profitability-anchored harvest score caps its influence while retaining its information. Combining equity issuance with acquisition spending captures external expansion in both cash and paper form, a dimension the flagship currently ignores.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "BroadQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Earnings quality can be measured either as the earnings-minus-cash-flow gap or, when cash flow statements are unavailable, as inventory build net of depreciation; either way, cash-backed profits combined with own-history investment restraint and a research-tilted spending mix identify underpriced cash generators.",
+      "expected_sign": "positive",
+      "reasoning": "The quality channel produced the archive's largest alpha and Sharpe but only over the cash-flow-reporting sample, so the fallback balance-sheet accrual proxy is an economically motivated substitute rather than a coverage patch. If the alpha survives at coverage near 0.12, the quality dimension is general; if it fades, the gain was sample-specific and the flagship should stay at three channels.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "CashSampleHarvestControl",
+      "expression": "SUMRANK(MA(RATIO(oancf, at), 3), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Cash profitability, own-history reinvestment restraint, and research tilt are jointly sufficient; the apparent gain from adding an accrual-gap channel may simply reflect the cash-flow-reporting subsample in which that channel is computable.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact matched control for QualityAugmentedHarvest \u2014 same three-channel architecture, same restricted sample, no quality leg \u2014 and it is the only way to attribute the 6.9% alpha to a mechanism rather than a sample. The comparison directly determines what the final two generations should refine.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "QualityRestraintTiltNoLevel",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Once earnings are known to be cash-backed, the level of profitability adds little: the mispricing is about credibility of profits plus discipline in deploying them, not about the size of the margin.",
+      "expected_sign": "positive",
+      "reasoning": "In the four-channel quality score the profitability level and the accrual gap both load on cash flow, so they may be partly redundant; dropping the level tests parsimony and tells us whether the profitability *level* or the profitability *quality* is the active ingredient. A strong result here would also mean the signal is nearly orthogonal to RMW, which is the cleanest explanation of the large FF5 alphas in this family.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "OrganizationCapitalTilt",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Intangible investment is broader than R&D: selling, general and administrative spending builds brand, distribution and organizational capital that is expensed rather than capitalized, so profitable firms whose investment is tilted toward intangibles of either kind are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The research-tilt channel was the single most valuable addition in the archive (fmb 4.18 alone, and the driver of the 5.3% three-channel alpha), and organization capital is the natural extension of the same mismeasurement mechanism to non-R&D industries. Because SG&A is reported almost universally, this also widens the intangible channel beyond the technology and pharmaceutical firms that dominate R&D reporting.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "PeerRelativeProfitHarvest",
+      "expression": "SUMRANK(IND_ZSCORE(WINSOR(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), 1)), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "A firm is a cash cow relative to its industry's economics, so profitability measured against industry peers should identify harvesting candidates more accurately than raw profitability, which mostly ranks industries.",
+      "expected_sign": "positive",
+      "reasoning": "Industry neutralization of the intangible leg preserved the alpha (4.0%, t 4.21), suggesting industry adjustment is safe when applied to a winsorized, bounded quantity; applying it to the profitability leg tests whether within-industry competitive position is the relevant profitability concept. This is the complementary experiment to generation 6's industry test, and unlike the failed IND_ZSCORE investment leg it does not disturb the firm-specific restraint measure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "BreadthOfExpansionRestraint",
+      "expression": "SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), SUMRANK(NEG(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), SUMRANK(GROWTH(invt, 1), GROWTH(emp, 1)))), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Discipline is credible when it is broad: profitable firms restraining fixed capital, inventory and headcount simultaneously are genuinely harvesting, whereas restraint in one input alone can be a temporary cash-timing artifact.",
+      "expected_sign": "positive",
+      "reasoning": "The employment-restraint version of this idea worked once measured against the firm's own history (3.9%, t 3.88, Sharpe 0.44), and building a single composite expansion index keeps the added inputs from crowding out the profitability and intangible channels that carry the most alpha. This tests whether breadth of restraint is a better investment leg than capex restraint alone, without disturbing the rest of the winning architecture.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalRestraintHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(DELTA(invt, 1), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "The fourth channel in the leading signal works because inventory build is *working-capital investment*, not because it proxies earnings quality: disciplined firms restrain both fixed and working capital, and profitable firms quietly accumulating inventory are expanding in a form the market does not see.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the hybrid accrual channel with pure inventory investment scaled by assets, holding the other three channels fixed, so its outcome cleanly attributes the generation-7 gain to investment discipline versus accounting quality. It also removes the internal inconsistency of a COALESCE channel whose two branches have different scales, which can pollute cross-sectional ranks.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "UniformAccrualQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "A single, uniformly defined balance-sheet accrual measure \u2014 inventory build net of depreciation \u2014 captures the credibility of profits for every firm, and a homogeneous definition should rank the cross-section more coherently than a two-branch hybrid.",
+      "expected_sign": "positive",
+      "reasoning": "BroadQualityHarvest mixes the cash-flow accrual gap for reporters with the balance-sheet proxy for everyone else, so part of its rank dispersion is definitional rather than economic. Comparing this uniform version against both BroadQualityHarvest and Signal 1 pins down whether the depreciation term (maintenance investment) matters or only the inventory term does.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentRestraintHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(MA(TS_RANK(RATIO(capx, ppent), 5), 3)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Sustained restraint is more informative than a single year of low spending: firms whose reinvestment has sat below their own historical norm for several consecutive years have made a durable harvesting commitment, whereas one-year dips are cash-timing noise.",
+      "expected_sign": "positive",
+      "reasoning": "The leading signal's Sharpe (0.485) is below the cash-sample variants (0.66), which suggests portfolio turnover and one-year measurement noise in the restraint leg; smoothing the own-history percentile over three years should stabilize portfolio composition and raise both ls_talpha and Sharpe without changing the economics. This is a persistence hypothesis, the one temporal concept in the restraint channel not yet tested.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "PeakProfitHarvestState",
+      "expression": "SUMRANK(SUMRANK(TS_RANK(COALESCE(RATIO(oancf, at), RATIO(oibdp, at)), 5), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))))",
+      "hypothesis": "Harvesting is a firm-specific state: the strongest candidates are firms whose profitability sits near the top of its own five-year range while reinvestment sits near the bottom of its own range, regardless of where they rank against other firms.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's biggest single insight was that own-history conditioning of the investment leg escapes the factor-spanned cross-sectional direction; this asks whether the same is true of the profitability leg, which is currently the channel most exposed to RMW. If it holds, the signal becomes almost entirely a within-firm state variable, which would be a substantively different and more clearly mispricing-based construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "InternalVsAcquiredIntangibles",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), RATIO(COALESCE(xrd, 0), ADD(capx, COALESCE(xrd, 0)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(GROWTH(ADD(intan, gdwl), 1))))",
+      "hypothesis": "Intangible investment is only underpriced when internally generated: research spending builds unbooked capital the market ignores, whereas rapidly growing acquired intangibles and goodwill represent overpayment for other firms' growth stories and predict underperformance.",
+      "expected_sign": "positive",
+      "reasoning": "The archive treats the intangible channel as uniformly good, but the earlier organic-versus-inorganic result (negative alpha when acquired intangibles sat in the long-leg construction) suggests the two forms have opposite signs; separating them turns a confound into an additional channel. This is the sharpest remaining economic distinction inside the winning family and directly addresses the \"overpriced growth-credited firm\" half of the mandate.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "BroadIntangibleQualityHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), COALESCE(NEG(RATIO(SUB(ib, oancf), at)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at)))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Defining the intangible tilt over research plus selling and administrative spending extends the mismeasured-capital mechanism to brand- and distribution-intensive firms outside technology and pharmaceuticals, and should therefore work in a broader cross-section.",
+      "expected_sign": "positive",
+      "reasoning": "Organization capital matched the flagship alpha (5.3%) when tested against the three-channel base, so the fair test is whether it also improves the current best four-channel configuration where the quality leg is present. Because SG&A is reported nearly universally, a positive result would make the signal less dependent on R&D disclosure without sacrificing the intangible mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "UniformQualityBroadIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Underpriced cash generators are profitable firms with cash-backed earnings and restrained working capital, physical reinvestment below their own historical norm, and investment tilted toward intangible capital that accounting expenses rather than capitalizes.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two best-performing design choices found \u2014 the uniform balance-sheet accrual channel that maximized the Fama-MacBeth slope (6.62) and the broadened intangible tilt that maximized alpha and its precision (7.5%, t 6.65) \u2014 with all other channels held at their proven settings. Because the improvements came from different legs of the same architecture, combining them should strengthen both forms of evidence rather than trade one for the other.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "FullCoverageIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xsga, 0)), ADD(capx, ADD(COALESCE(xrd, 0), COALESCE(xsga, 0)))), 1)))",
+      "hypothesis": "A firm that does not separately report selling and administrative expense is one whose costs are bundled into cost of goods sold, i.e. it has no separately identifiable intangible outlay, so treating unreported SG&A as zero is the economically correct convention and should extend the signal without weakening it.",
+      "expected_sign": "positive",
+      "reasoning": "The intangible broadening cost coverage (0.119 \u2192 0.105) purely through SG&A reporting, and zero-filling is the same convention already validated for R&D, where it strengthened rather than diluted the channel. If alpha and ls_talpha hold at the higher coverage, this is the preferred deployable version of the flagship.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleFlowPerPhysicalCapital",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ppent), 1)))",
+      "hypothesis": "What identifies an underpriced intangible-intensive cash generator is the size of annual intangible investment relative to the physical capital already on the books, not merely its share of the current-year investment budget.",
+      "expected_sign": "positive",
+      "reasoning": "The share formulation is bounded but mechanically anti-correlated with the capex restraint channel already present, so part of the intangible tilt's contribution may be redundant restraint information; scaling by installed physical capital separates the intangible-intensity concept from the capex level. Comparing it with Signal 1 isolates whether the intangible channel adds capital-composition information or simply re-expresses low capex.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquiredIntangiblePenaltyHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), NEG(RATIO(DELTA(COALESCE(ADD(intan, gdwl), 0), 1), at)))))",
+      "hypothesis": "Internally generated intangibles are underpriced while purchased intangibles and goodwill represent overpayment for other firms' growth stories, so penalizing balance-sheet intangible accumulation should sharpen the short leg of the harvest score.",
+      "expected_sign": "positive",
+      "reasoning": "The acquired-intangible penalty showed a strong slope and the archive's second-best Sharpe (fmb 6.20, 0.579) but was unusable at coverage 0.045 because GROWTH of `intan` and `gdwl` requires both reported and non-zero bases; measuring it as a change scaled by assets with unreported intangibles set to zero fixes exactly that leak, since a firm with no acquisitions genuinely has zero acquired intangibles. This is the last untested economic distinction inside the winning family and it addresses the overpriced-growth half of the mandate directly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "SectorNeutralIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(TS_RANK(RATIO(capx, ppent), 5)), IND_ZSCORE(WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1))))",
+      "hypothesis": "If the intangible tilt reflects firm-level mismeasurement of capital rather than a persistent long-service/short-manufacturing sector position, then measuring the tilt relative to industry peers should preserve most of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D-only tilt survived industry neutralization with alpha 4.0% and t 4.21, but the SG&A-inclusive version is far more sector-determined and therefore more at risk of being an implicit industry bet; this is the essential robustness check on the archive's largest alpha before recommending it. Winsorizing before industry z-scoring avoids the outlier problem that destroyed the earlier industry-scaled investment leg.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "DualRestraintIntangibleHarvest",
+      "expression": "SUMRANK(SUMRANK(COALESCE(MA(RATIO(oancf, at), 3), MA(RATIO(oibdp, at), 3)), NEG(RATIO(SUB(DELTA(invt, 1), dp), at))), SUMRANK(NEG(SUMRANK(TS_RANK(RATIO(capx, ppent), 5), RATIO(capx, TS_MAX(capx, 5)))), WINSOR(RATIO(ADD(COALESCE(xrd, 0), xsga), ADD(capx, ADD(COALESCE(xrd, 0), xsga))), 1)))",
+      "hypothesis": "Combining two independent measures of own-history restraint \u2014 position in the five-year reinvestment distribution and distance below the five-year capex peak \u2014 measures the harvesting transition with less noise, which should raise the risk-adjusted reliability of the spread.",
+      "expected_sign": "positive",
+      "reasoning": "The off-peak restraint metric delivered the archive's highest Sharpe ratios in simpler configurations (0.545\u20130.558), and the flagship's main remaining weakness is a Sharpe of 0.60 against alphas that are already large, indicating residual noise in the restraint leg. Unlike the failed moving-average smoothing, averaging two distinct restraint statistics reduces measurement error without delaying the signal's response to a genuine policy change.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "investment",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_invest"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashCowDiscipline",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(oancf,3),at),neg(growth(at,1)))",
+        "variables": [
+          "at",
+          "oancf"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashPerCapexDollar",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(oancf,3),ma(capx,3)),1)",
+        "variables": [
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitableShrinkerConditional",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ratio(ib,at),0.05),neg(growth(ppegt,1)))",
+        "variables": [
+          "at",
+          "ib",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginTrendVsCapexTrend",
+      "metadata": {
+        "normalized_expression": "sub(rank(trend(ratio(oiadp,at),5)),rank(trend(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oiadp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DoubleCreditedGrowth",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(oibdp,at)),rank(growth(ppegt,1)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SelfFundedVsExternallyFundedGrowth",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(sub(oancf,capx),at)),rank(ratio(add(sstk,delta(dltt,1)),at)))",
+        "variables": [
+          "at",
+          "capx",
+          "dltt",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InternalCashPerCapexBroad",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(add(ib,dp),3),ma(capx,3)),1)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HarvestModeProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oiadp,at),3),neg(trend(ratio(capx,at),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginVsInventoryBuild",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(oibdp,sale)),rank(growth(invt,1)))",
+        "variables": [
+          "invt",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OrganicProfitVsInorganicExpansion",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oiadp,at),3)),rank(growth(add(ppent,intan),1)))",
+        "variables": [
+          "at",
+          "intan",
+          "oiadp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitTimesLowReinvestment",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(oibdp,at)),rank(neg(ratio(capx,ppent))))",
+        "variables": [
+          "at",
+          "capx",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitPerHeadVsHiringGrowth",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oiadp,emp),neg(growth(emp,1)))",
+        "variables": [
+          "emp",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlowPerCapexUnsmoothed",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(oancf,capx),1)",
+        "variables": [
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InvestmentProductivityTrend",
+      "metadata": {
+        "normalized_expression": "trend(winsor(ratio(oiadp,capx),1),5)",
+        "variables": [
+          "capx",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginalReturnOnNewInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(delta(oiadp,1),lag(capx,1)),1)",
+        "variables": [
+          "capx",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OwnHistoryCapexRestraintVsProfit",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oancf,at),3)),rank(ts_rank(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitStabilityVsCapexVolatility",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oibdp,at),3)),rank(vol(growth(ppegt,1),5)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryRelativeCapitalProductivity",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(ma(oiadp,3),ppegt),1))",
+        "variables": [
+          "oiadp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OwnHistoryRestraintBroadProfit",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oibdp,at),3)),rank(ts_rank(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashCowCapexOffPeak",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oancf,at),3)),rank(winsor(ratio(capx,ts_max(capx,5)),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CumulativeReturnOnInvestmentCycle",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(delta(oiadp,3),ts_sum(capx,3)),1)",
+        "variables": [
+          "capx",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitPerTotalInvestmentIncludingRD",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(oiadp,3),add(capx,coalesce(xrd,0))),1)",
+        "variables": [
+          "capx",
+          "oiadp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitGrowthOutpacingCapacityGrowth",
+      "metadata": {
+        "normalized_expression": "sub(rank(growth(oiadp,1)),rank(growth(ppegt,1)))",
+        "variables": [
+          "oiadp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DemeanedProfitInvestmentInteraction",
+      "metadata": {
+        "normalized_expression": "mul(zscore(winsor(ratio(oibdp,at),1)),neg(zscore(winsor(growth(ppegt,1),1))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HarvestTransitionComposite",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oancf,at),3)),rank(sumrank(ts_rank(ratio(capx,ppent),5),ratio(capx,ts_max(capx,5)))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HierarchicalProfitRestraint",
+      "metadata": {
+        "normalized_expression": "sub(rank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3))),rank(ts_rank(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FreeCashFlowOnInstalledCapital",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(oancf,capx),ppent),1)",
+        "variables": [
+          "capx",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitAccelVsCapexDecel",
+      "metadata": {
+        "normalized_expression": "sub(rank(accel(ratio(oiadp,at))),rank(accel(ratio(capx,ppent))))",
+        "variables": [
+          "at",
+          "capx",
+          "oiadp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MaintenanceCapexCashCow",
+      "metadata": {
+        "normalized_expression": "sub(rank(ma(ratio(oancf,at),3)),rank(winsor(ma(ratio(capx,dp),3),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitableIntangibleTilt",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),winsor(ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0))),1))",
+        "variables": [
+          "at",
+          "capx",
+          "oibdp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HarvestAndIntangibleTilt",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ResearchStockVsPhysicalStock",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),winsor(ratio(ts_sum(coalesce(xrd,0),5),ppegt),1))",
+        "variables": [
+          "at",
+          "oibdp",
+          "ppegt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProfitTrendVsCapexTrend",
+      "metadata": {
+        "normalized_expression": "sub(rank(trend(coalesce(ratio(oancf,at),ratio(oibdp,at)),5)),rank(trend(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryRelativeRestraintCashCow",
+      "metadata": {
+        "normalized_expression": "sub(rank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3))),rank(ind_zscore(ratio(capx,ppent))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsQualityAndCapexRestraint",
+      "metadata": {
+        "normalized_expression": "sub(rank(neg(ratio(sub(ib,oancf),at))),rank(ts_rank(ratio(capx,ppent),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RealizedPayoffPlusProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),winsor(ratio(delta(oiadp,3),ts_sum(capx,3)),1))",
+        "variables": [
+          "at",
+          "capx",
+          "oiadp",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FourChannelHarvestScore",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ts_rank(ratio(capx,ppent),5))),sumrank(ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0))),neg(trend(ratio(capx,ppent),5))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "QualityAugmentedHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(ib,oancf),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralIntangibleHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ind_zscore(winsor(ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0))),1))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkHarvest",
+      "metadata": {
+        "normalized_expression": "min(rank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3))),rank(neg(ts_rank(ratio(capx,ppent),5))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TotalRealInputRestraint",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),neg(ts_rank(growth(emp,1),5))))",
+        "variables": [
+          "at",
+          "capx",
+          "emp",
+          "oancf",
+          "oibdp",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NoExternalGrowthCashCow",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),neg(ratio(add(sstk,aqc),at))))",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BroadQualityHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),coalesce(neg(ratio(sub(ib,oancf),at)),neg(ratio(sub(delta(invt,1),dp),at)))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashSampleHarvestControl",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oancf,at),3),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "QualityRestraintTiltNoLevel",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(ib,oancf),at)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OrganizationCapitalTilt",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeerRelativeProfitHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(winsor(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),1)),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BreadthOfExpansionRestraint",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),sumrank(neg(sumrank(ts_rank(ratio(capx,ppent),5),sumrank(growth(invt,1),growth(emp,1)))),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "emp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalRestraintHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(delta(invt,1),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "UniformAccrualQualityHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentRestraintHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),coalesce(neg(ratio(sub(ib,oancf),at)),neg(ratio(sub(delta(invt,1),dp),at)))),sumrank(neg(ma(ts_rank(ratio(capx,ppent),5),3)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeakProfitHarvestState",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ts_rank(coalesce(ratio(oancf,at),ratio(oibdp,at)),5),coalesce(neg(ratio(sub(ib,oancf),at)),neg(ratio(sub(delta(invt,1),dp),at)))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InternalVsAcquiredIntangibles",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),ratio(coalesce(xrd,0),add(capx,coalesce(xrd,0)))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),neg(growth(add(intan,gdwl),1))))",
+        "variables": [
+          "at",
+          "capx",
+          "gdwl",
+          "intan",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BroadIntangibleQualityHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),coalesce(neg(ratio(sub(ib,oancf),at)),neg(ratio(sub(delta(invt,1),dp),at)))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "UniformQualityBroadIntangibleHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullCoverageIntangibleHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),winsor(ratio(add(coalesce(xrd,0),coalesce(xsga,0)),add(capx,add(coalesce(xrd,0),coalesce(xsga,0)))),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleFlowPerPhysicalCapital",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),winsor(ratio(add(coalesce(xrd,0),xsga),ppent),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquiredIntangiblePenaltyHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1),sumrank(neg(ts_rank(ratio(capx,ppent),5)),neg(ratio(delta(coalesce(add(intan,gdwl),0),1),at)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "gdwl",
+          "intan",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SectorNeutralIntangibleHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(ts_rank(ratio(capx,ppent),5)),ind_zscore(winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualRestraintIntangibleHarvest",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(coalesce(ma(ratio(oancf,at),3),ma(ratio(oibdp,at),3)),neg(ratio(sub(delta(invt,1),dp),at))),sumrank(neg(sumrank(ts_rank(ratio(capx,ppent),5),ratio(capx,ts_max(capx,5)))),winsor(ratio(add(coalesce(xrd,0),xsga),add(capx,add(coalesce(xrd,0),xsga))),1)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "invt",
+          "oancf",
+          "oibdp",
+          "ppent",
+          "xrd",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2880 @@
+{
+  "pair": "value_accrual",
+  "evaluated": [
+    {
+      "name": "EVYieldCleanWorkingCapital",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), at)))",
+      "hypothesis": "Enterprise-level cheapness (EBITDA/EV) is trustworthy only when operating profitability is not being manufactured by working-capital build-ups in receivables and inventory.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV neutralizes leverage and cash holdings so cheapness is measured on operating assets, while the change in non-cash working capital captures the specific accrual channel (receivables/inventory inflation) that contaminates EBITDA. Combining them should separate genuinely cheap operating businesses from those whose EBITDA is a working-capital illusion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.5883056450981154,
+      "ls_alpha": 0.0026755360799732737,
+      "ls_talpha": 0.24207066049769382,
+      "ls_sharpe": 0.2900779606400789,
+      "coverage": 0.10969836605920126,
+      "error": null
+    },
+    {
+      "name": "ValueCleanSloanAccruals",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "Book-to-market earns a premium only when reported profits are not produced by working-capital build-up net of depreciation; accrual-heavy cheap firms are value traps.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual leg is the balance-sheet Sloan measure (change in working capital minus depreciation) scaled by assets, built from theme-exclusive items `wcap` and `dp` that are reported far more broadly than cash-flow-statement components, which should lift coverage well above the 0.11 of the accepted gen-0 signal. Ranking both legs makes the long book cheap-and-clean and the short book expensive-and-accrual-laden, the exact intersection the economic story requires.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.872399681918965,
+      "ls_alpha": -0.019540450844016784,
+      "ls_talpha": -2.27990047246782,
+      "ls_sharpe": 0.09955246446525998,
+      "coverage": 0.11023760614547967,
+      "error": null
+    },
+    {
+      "name": "SloanCashEarningsYield",
+      "expression": "RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))",
+      "hypothesis": "The correct value multiple is price relative to accrual-purged cash earnings; firms cheap on cash earnings outperform, and firms that look cheap only on GAAP income do not.",
+      "expected_sign": "positive",
+      "reasoning": "Instead of blending two ranks, this embeds the accrual correction inside the valuation ratio itself, so accruals change the measured cheapness rather than acting as a separate filter \u2014 a distinguishable structural test against Signal 1. Using `dp` and `DELTA(wcap,1)` keeps coverage high while making the numerator an approximation of cash flow available to equity.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.2554340992060573,
+      "ls_alpha": -0.023719803028268083,
+      "ls_talpha": -2.457148920860074,
+      "ls_sharpe": 0.09886984232949807,
+      "coverage": 0.11125866436855048,
+      "error": null
+    },
+    {
+      "name": "AccrualLoadPerMarketValue",
+      "expression": "RATIO(SUB(DELTA(wcap, 1), dp), MUL(prcc_f, csho))",
+      "hypothesis": "Scaling accruals by market equity rather than assets measures how large the non-cash component of earnings is relative to what investors paid; this is the defining quantitative feature of a value trap.",
+      "expected_sign": "negative",
+      "reasoning": "The price deflator makes the variable jointly large for cheap firms and for accrual-inflated firms, so the short leg concentrates precisely on low-priced companies whose earnings are least cash-backed and most likely to reverse. It also serves as a clean diagnostic of whether the interaction's return predictability lives in the trap (short) side rather than the quality-value (long) side.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.925346471208114,
+      "ls_alpha": 0.013865210644030134,
+      "ls_talpha": 1.4441642371484913,
+      "ls_sharpe": -0.08064239108828339,
+      "coverage": 0.11125866436855048,
+      "error": null
+    },
+    {
+      "name": "CheapAndCleanConjunction",
+      "expression": "MIN(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Value and accounting quality are complements, not substitutes: a firm must be both cheap and cash-backed to earn the premium, so the weaker of the two ranks should govern expected returns.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets an extreme value rank compensate for terrible accruals (and vice versa), whereas MIN enforces the conjunction and should sharpen the long leg toward genuine quality-value names. Comparing this against Signal 1 isolates the aggregation choice while holding the underlying economic channels fixed, telling us whether the FF5 alpha comes from the intersection or from linear averaging.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.7738651475617733,
+      "ls_alpha": -0.02183954662878632,
+      "ls_talpha": -2.379158228398045,
+      "ls_sharpe": 0.09549904611206603,
+      "coverage": 0.11023760614547967,
+      "error": null
+    },
+    {
+      "name": "CumulativeBloatValue",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(TS_SUM(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)))",
+      "hypothesis": "What contaminates cheapness is not a single year's accrual but a multi-year accumulation of unconfirmed accruals (balance-sheet bloat), which must eventually be reversed or written off.",
+      "expected_sign": "positive",
+      "reasoning": "A five-year cumulative accrual sum captures the stock of soft assets embedded in book equity, which is exactly why a high book-to-market can be illusory \u2014 the book value itself is inflated. This changes the economic channel from annual earnings quality to the reliability of the denominator-free book anchor, a mechanism a one-year accrual cannot express.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.4355236123889004,
+      "ls_alpha": -0.029540407913854184,
+      "ls_talpha": -3.090689062920564,
+      "ls_sharpe": 0.06267396967823921,
+      "coverage": 0.11126820889744078,
+      "error": null
+    },
+    {
+      "name": "SalesYieldRevenueQuality",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))",
+      "hypothesis": "Sales-to-price cheapness is trustworthy only if revenue is converting to cash; rising non-cash current assets per dollar of sales signals channel-stuffing or inventory accumulation that will reverse.",
+      "expected_sign": "positive",
+      "reasoning": "This swaps the valuation anchor to a revenue multiple (immune to earnings management in the numerator) and pairs it with an operating-quality ratio measuring how many non-cash current assets are needed to generate a dollar of sales, a distinct accrual channel from net income minus cash flow. If sales-based value works better than book- or earnings-based value once revenue quality is imposed, the interaction is about revenue recognition rather than earnings smoothing.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.271884411026615,
+      "ls_alpha": -0.013705627024017246,
+      "ls_talpha": -1.442109207550863,
+      "ls_sharpe": 0.33212861373674585,
+      "coverage": 0.10837214087188085,
+      "error": null
+    },
+    {
+      "name": "CashVsAccrualYieldWedge",
+      "expression": "SUB(RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))), RANK(RATIO(ib, MUL(prcc_f, csho))))",
+      "hypothesis": "Investors anchor on the earnings multiple; firms that are cheap on accrual-purged cash earnings but not cheap on reported earnings are systematically underpriced, and the reverse for accrual-inflated earnings multiples.",
+      "expected_sign": "positive",
+      "reasoning": "Both legs are price-deflated yield ranks, so their difference is nearly HML-neutral by construction and isolates the wedge created purely by accruals \u2014 precisely the orthogonality the archive's negative FF5 alphas say we need. If this delivers positive alpha where the SUMRANK composites failed, the mispricing lives in the accrual wedge and not in cheapness itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.6792324023571961,
+      "ls_alpha": -0.02868438598475659,
+      "ls_talpha": -2.961899873776685,
+      "ls_sharpe": -0.252415500894152,
+      "coverage": 0.11125866436855048,
+      "error": null
+    },
+    {
+      "name": "ValueScaledAccrualLoad",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), ZSCORE(WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), at), 1)))",
+      "hypothesis": "The accrual anomaly is concentrated in cheap, neglected firms where information quality is low and arbitrage costly; expensive growth firms' accruals are already scrutinized.",
+      "expected_sign": "negative",
+      "reasoning": "Here accruals set the sign and cheapness only scales the magnitude, so the long-short book is clean-cheap versus dirty-cheap \u2014 both legs are value names, cancelling much of the HML/CMA loading that destroyed the earlier composites. Winsorizing before z-scoring prevents microcap accrual outliers from driving portfolio composition, a likely contributor to the unstable spreads seen so far.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.5896483716929137,
+      "ls_alpha": -0.0050822769777855645,
+      "ls_talpha": -0.5664318809595162,
+      "ls_sharpe": -0.13921475520080714,
+      "coverage": 0.11023760614547967,
+      "error": null
+    },
+    {
+      "name": "IndNeutralCleanValue",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cross-industry differences in normal book-to-market and normal accrual intensity (capital-intensive versus working-capital-intensive sectors) contaminate the raw composite; within-industry cheapness backed by within-industry clean accounting is the real mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the economic channels of ValueCleanSloanAccruals fixed and changes only the neutralization, so it cleanly diagnoses whether the negative FF5 alpha came from industry-level value/investment tilts absorbed by HML and CMA. If alpha turns positive, industry neutralization is the design lever worth consolidating in later generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.369644323010971,
+      "ls_alpha": -0.018392924071889208,
+      "ls_talpha": -1.6455655297945506,
+      "ls_sharpe": -0.037908254135075696,
+      "coverage": 0.1101039311489673,
+      "error": null
+    },
+    {
+      "name": "ConservativeDepreciationValue",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at))",
+      "hypothesis": "Cheapness is more credible when accounting is conservative: firms charging heavy depreciation understate current earnings and book value, so their low price reflects accounting conservatism rather than genuine economic decline.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the working-capital accrual channel with the long-lived-asset accrual channel \u2014 depreciation adequacy \u2014 which is a distinct source of earnings quality and is not what the Sloan measure captures. It also uses only current-year levels, so it should show whether the archive's stuck 0.11 coverage is driven by the two-year requirement of DELTA(wcap, 1).",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.9773624464440633,
+      "ls_alpha": -0.013618581243657515,
+      "ls_talpha": -1.2705059133811212,
+      "ls_sharpe": 0.15313291536336643,
+      "coverage": 0.13715302284000605,
+      "error": null
+    },
+    {
+      "name": "HardBookToMarket",
+      "expression": "RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))",
+      "hypothesis": "A high book-to-market is only informative if book equity is composed of hard assets (cash and fixed capital) rather than soft accrual assets; stripping non-cash working capital out of book equity should isolate defensible value.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than filtering value with a separate quality score, this repairs the value measure's numerator, so the resulting spread is a *different* value factor rather than HML plus a quality tilt \u2014 a structurally distinct route to non-spanned alpha. Soft-asset-heavy book equity is exactly what gets written down in value traps, so removing it should shift the long leg away from the traps.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.4011919840896625,
+      "ls_alpha": -0.018467415011897973,
+      "ls_talpha": -1.9430566373539588,
+      "ls_sharpe": 0.06680854315891276,
+      "coverage": 0.12015122454757901,
+      "error": null
+    },
+    {
+      "name": "RevenueCashQualityValue",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), RATIO(ADD(recch, invch), at))",
+      "hypothesis": "Sales-based cheapness is trustworthy only when revenue is collected in cash; direct cash-flow-statement changes in receivables and inventory measure collection quality far more precisely than balance-sheet differences.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow-statement items recch and invch are signed as cash inflows, so higher values mean receivables and inventory are shrinking, i.e. revenue converting to cash, giving a cleaner quality channel than the noisy balance-sheet delta used earlier. Pairing it with a revenue multiple keeps the valuation anchor immune to earnings management, and comparing its coverage and alpha against Signal 1 tells us whether measurement precision or factor-neutrality is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.3376036494141057,
+      "ls_alpha": -0.021899539110997478,
+      "ls_talpha": -1.487158810153727,
+      "ls_sharpe": 0.10479076817071885,
+      "coverage": 0.07700541386315478,
+      "error": null
+    },
+    {
+      "name": "CheapFirmPercentAccruals",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), ABS(ib)), 1))",
+      "hypothesis": "Among cheap firms, the fraction of reported profit that is accrual rather than cash determines whether cheapness is opportunity or trap; percent accruals (accruals per dollar of earnings) measures that reliance directly, unlike asset-scaled accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator restricts the signal to above-average book-to-market firms and sets everything else to zero, so the sorted long-short book is clean-cheap versus dirty-cheap \u2014 a value-neutral accrual spread whose HML and CMA loadings largely cancel, addressing the mechanical source of the archive's negative alphas. Percent accruals is also a stronger measure of earnings reliance than accruals/assets because it scales by the earnings actually being questioned.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.0072335689431795,
+      "ls_alpha": 0.007314187358840484,
+      "ls_talpha": 0.8095127958180942,
+      "ls_sharpe": -0.08015576012112478,
+      "coverage": 0.11023141509971299,
+      "error": null
+    },
+    {
+      "name": "CheapFirmCashStatementAccruals",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), NEG(RATIO(ADD(recch, ADD(invch, apalch)), at)))",
+      "hypothesis": "Within the cheap universe, the specific accruals that reverse are receivable, inventory and payable movements; measuring them from the cash-flow statement rather than balance-sheet differences removes acquisition and restatement noise.",
+      "expected_sign": "negative",
+      "reasoning": "This holds the value-neutral gating structure of Signal 1 fixed and changes only the accrual measurement, so together the pair isolates whether the weak within-value accrual spread reflects a genuine absence of mispricing or noisy balance-sheet accrual proxies. Coverage will be lower (cash-flow items start later), which is exactly the precision-versus-breadth trade we need quantified.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.335292391357189,
+      "ls_alpha": -0.0011176776845750677,
+      "ls_talpha": -0.0633917654820324,
+      "ls_sharpe": -0.07967555381734287,
+      "coverage": 0.057473902678411494,
+      "error": null
+    },
+    {
+      "name": "ValueAccrualImprovement",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), NEG(DELTA(RATIO(SUB(DELTA(wcap, 1), dp), at), 1)))",
+      "hypothesis": "A cheap firm becomes investable when its earnings stop being accrual-driven; the transition from accrual-inflated to cash-backed earnings is the moment the value trap resolves, and investors underreact to it.",
+      "expected_sign": "positive",
+      "reasoning": "The level of accruals may already be reflected in price after years of persistence, whereas the first difference is news about accounting quality and is a change variable with little factor loading. Gating on cheapness keeps the spread value-neutral, so any alpha here is genuinely non-spanned by FF5 rather than a repackaged HML tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.0364195002562973,
+      "ls_alpha": -0.019689215629991236,
+      "ls_talpha": -1.595928935687172,
+      "ls_sharpe": -0.3125726211357655,
+      "coverage": 0.10075751572319257,
+      "error": null
+    },
+    {
+      "name": "EVYieldLowWorkingCapitalStock",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(wcap, at)))",
+      "hypothesis": "Enterprise-value cheapness backed by a lean working-capital balance sheet identifies firms whose operating profits are cash-converting; a large stock of working capital is accumulated soft assets awaiting reversal.",
+      "expected_sign": "positive",
+      "reasoning": "The EV-anchored gen-0 signal was the only construction with non-negative alpha and a decent Sharpe, suggesting enterprise-level cheapness is less collinear with HML than book-to-market, but its one-year working-capital delta was noisy and cost coverage. Replacing the delta with the working-capital *stock* keeps the same economic channel (balance-sheet bloat), drops the two-year data requirement, and should raise coverage toward the 0.137 seen for level-based measures.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.8448698751884682,
+      "ls_alpha": -0.03429698361212339,
+      "ls_talpha": -2.7799038365888156,
+      "ls_sharpe": 0.03808521168131589,
+      "coverage": 0.12015973723550821,
+      "error": null
+    },
+    {
+      "name": "PayoutNotCoveredByCashEarnings",
+      "expression": "RATIO(SUB(dvc, SUB(ADD(ib, dp), DELTA(wcap, 1))), MUL(prcc_f, csho))",
+      "hypothesis": "The classic value trap is a high-yield, cheap firm distributing cash it is not generating; a dividend exceeding accrual-purged cash earnings is an unsustainable payout that precedes cuts and price declines.",
+      "expected_sign": "negative",
+      "reasoning": "This is a distinct mechanism \u2014 payout sustainability rather than earnings quality per se \u2014 and it is high precisely for the optically attractive names (high dividend yield, low price) that pure value screens buy, so its short leg should sit inside the value universe rather than in glamour stocks. Because both the trap and non-trap firms are cheap dividend payers, the spread should be far less HML-loaded than the earlier composites.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.4440655360536967,
+      "ls_alpha": 0.016883493259703362,
+      "ls_talpha": 1.6547048174994972,
+      "ls_sharpe": -0.14335522353708446,
+      "coverage": 0.11118112152032272,
+      "error": null
+    },
+    {
+      "name": "NetCashValueCleanAccruals",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The most defensible form of cheapness is net cash relative to market value, and it is only credible when earnings are not accrual-inflated; cash on the balance sheet cannot be manufactured by accounting choices.",
+      "expected_sign": "positive",
+      "reasoning": "Net-cash-to-price is a valuation anchor that HML (a book-based factor) spans poorly, so a spread built on it can retain raw return without inheriting the large value-factor loading that produced the archive's negative alphas. Requiring clean accruals alongside net cash separates genuinely cash-rich cheap firms from those whose apparent balance-sheet strength is receivables and inventory.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.6055896324456678,
+      "ls_alpha": 0.0222767130468281,
+      "ls_talpha": 1.8877552403427535,
+      "ls_sharpe": 0.1426013209034742,
+      "coverage": 0.1098565472785401,
+      "error": null
+    },
+    {
+      "name": "EVYieldSloanAccruals",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "Enterprise-value cheapness is credible only when operating profit is not generated by working-capital accruals net of depreciation; EV anchoring removes the leverage tilt that makes book-based value spreads collinear with HML.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's EV/EBITDA composite remains the best joint result in the archive (FMB 3.59, alpha \u2248 0, Sharpe 0.29) but used a fragile multi-item working-capital delta, while gen-3 showed the working-capital stock is the wrong quality variable. This version keeps the EV anchor and the accrual *change* but measures it with the compact wcap\u2212dp Sloan definition, isolating whether measurement noise in the accrual leg was suppressing the EV composite's alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.051175585828035,
+      "ls_alpha": -0.020686439754993794,
+      "ls_talpha": -2.206909473323452,
+      "ls_sharpe": 0.11966072709409724,
+      "coverage": 0.10985618613420371,
+      "error": null
+    },
+    {
+      "name": "NetCashCleanValueTriple",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cheapness is trustworthy when it is simultaneously visible in book value, backed by net cash on the balance sheet, and not manufactured by accruals; the cash channel screens out the levered value traps that dominate book-only value screens.",
+      "expected_sign": "positive",
+      "reasoning": "The net-cash anchor was the only channel producing positive FF5 alpha, and the book-value-plus-clean-accruals composite was among the strongest FMB slopes, so combining all three ranks tests directly whether the two forms of evidence can be obtained together rather than traded off. Ranking each channel also removes the skewness that made the raw net-cash ratio cross-sectionally weak.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.38801748243192,
+      "ls_alpha": 0.028924793723711123,
+      "ls_talpha": 2.2295235938710305,
+      "ls_sharpe": 0.24557439554659455,
+      "coverage": 0.10927850997212378,
+      "error": null
+    },
+    {
+      "name": "NetCashAccrualStability",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), NEG(VOL(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)))",
+      "hypothesis": "What makes cheap balance-sheet-strong firms safe is not the level of accruals but the predictability of their accrual process; erratic accruals signal earnings management and estimation error that will eventually reverse into write-downs.",
+      "expected_sign": "positive",
+      "reasoning": "Accrual volatility is an untested quality dimension in this archive and is close to orthogonal to the accrual level, so it can add information rather than restate the Sloan measure. Pairing it with the net-cash anchor keeps the spread out of deep-value territory, where every prior long leg was penalized by its HML and CMA loadings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.7378508409716458,
+      "ls_alpha": 0.0032834795385506786,
+      "ls_talpha": 0.3828612697049302,
+      "ls_sharpe": 0.010595297867725709,
+      "coverage": 0.10145467906856954,
+      "error": null
+    },
+    {
+      "name": "SalesToEVRevenueQuality",
+      "expression": "SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))",
+      "hypothesis": "Revenue-based cheapness measured against total enterprise value, combined with improving cash conversion of revenue, identifies firms whose sales are real and whose capital structure does not disguise expensiveness.",
+      "expected_sign": "positive",
+      "reasoning": "The sales-yield plus revenue-quality channel produced the archive's best Sharpe (0.332) but a negative alpha because price-only deflation loads the long leg with highly levered value names; deflating by EV penalizes debt and tilts the long leg toward the net-cash firms that generated positive alpha. This isolates the deflator choice while holding the revenue-quality mechanism fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.8069762059044123,
+      "ls_alpha": -0.010089144792771928,
+      "ls_talpha": -0.9914901699688653,
+      "ls_sharpe": 0.35591334977387684,
+      "coverage": 0.1076481496615149,
+      "error": null
+    },
+    {
+      "name": "PayoutCoverageRankGap",
+      "expression": "SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))))",
+      "hypothesis": "A firm whose dividend yield rank far exceeds its accrual-purged cash-earnings yield rank is distributing cash it does not generate, and that unsustainable payout precedes dividend cuts and negative returns.",
+      "expected_sign": "negative",
+      "reasoning": "The level version of this payout-coverage idea had the strongest correctly-signed FMB slope in the archive (\u22122.44) but a wrong-signed decile alpha, which is what happens when a price-deflated level's extreme tail is populated by distressed rebound names rather than by the economically intended cases. Differencing two rank-transformed yields bounds the signal, makes the sorted deciles reflect the same monotone relation the FMB slope detects, and keeps the construction nearly value-factor neutral since both legs are price-deflated yields.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.135578579908958,
+      "ls_alpha": -0.011010425514975296,
+      "ls_talpha": -0.9199084448137935,
+      "ls_sharpe": -0.15916849576844516,
+      "coverage": 0.11118112152032272,
+      "error": null
+    },
+    {
+      "name": "DebtFinancedAccrualTrap",
+      "expression": "SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), RATIO(SUB(DELTA(wcap, 1), dp), at))",
+      "hypothesis": "The prototypical value trap is cheap because of leverage, not because of mispricing, and its reported profits are accrual-driven; net debt per dollar of market value combined with high accruals identifies firms whose equity is an option on deteriorating accounting.",
+      "expected_sign": "negative",
+      "reasoning": "This makes the financing channel the explicit driver rather than a by-product, and it is the economic mirror of the net-cash signal that produced the archive's only positive alpha, so it should inherit a correctly signed (negative) alpha while sharpening the short side. Because both legs are elevated for levered accrual-heavy firms, the sort concentrates on a specific, identifiable trap population instead of the broad value universe.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.600076468109102,
+      "ls_alpha": -0.02475961420704612,
+      "ls_talpha": -2.1036771599974236,
+      "ls_sharpe": -0.16868225044367752,
+      "coverage": 0.1098565472785401,
+      "error": null
+    },
+    {
+      "name": "NetCashValueConservativeDep",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at)))",
+      "hypothesis": "Cheapness supported by net cash and by conservative depreciation policy identifies firms whose low price reflects understated accounting earnings rather than deteriorating economics.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the winning net-cash-plus-book-value frame but swaps the working-capital accrual screen for the long-lived-asset accrual channel, which had the archive's strongest FMB slope (3.98) and the highest coverage (0.137) because it needs no lagged data. If alpha stays near +0.03 while FMB rises above 3, the depreciation channel dominates the Sloan channel and should anchor the final refinement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.483756529073177,
+      "ls_alpha": 0.021932582686796223,
+      "ls_talpha": 1.5133799695694197,
+      "ls_sharpe": 0.14656424735301998,
+      "coverage": 0.13597089424290526,
+      "error": null
+    },
+    {
+      "name": "GrossCashValueCleanAccruals",
+      "expression": "SUMRANK(RATIO(che, MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "The FF5-orthogonal component of the winning signal comes from holding hard, unmanipulable cash relative to price, not from low leverage per se.",
+      "expected_sign": "positive",
+      "reasoning": "Net cash mixes a cash-asset effect with a negative-leverage effect, and FF5 partially prices leverage through HML and CMA, so replacing net cash with gross cash-to-price cleanly attributes the +0.029 alpha to one of the two. This is a deliberate single-design-choice isolation whose outcome determines whether later generations should push the cash-asset story or the low-leverage story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.8849289440405337,
+      "ls_alpha": 0.014133135072859512,
+      "ls_talpha": 1.4873043050506234,
+      "ls_sharpe": 0.32486015827080145,
+      "coverage": 0.10956711588894749,
+      "error": null
+    },
+    {
+      "name": "NetCashSalesEVRevenueQuality",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Combining the balance-sheet cash channel with revenue-based enterprise cheapness and clean accruals should retain the strongest cross-sectional signal in the archive while inheriting the alpha-generating cash dimension.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-to-EV plus revenue quality produced the best FMB t-stat (3.81) and Sharpe (0.36) but a mildly negative alpha, whereas net cash produced reliable positive alpha with weak cross-sectional power; the two channels have complementary failure modes. If both statistics strengthen relative to NetCashCleanValueTriple, the revenue multiple is a better cheapness anchor than book equity within the cash-backed frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.2718049950208337,
+      "ls_alpha": 0.01687515628245758,
+      "ls_talpha": 1.4044104616176734,
+      "ls_sharpe": 0.38082754645634964,
+      "coverage": 0.1098565472785401,
+      "error": null
+    },
+    {
+      "name": "NetCashValuePercentAccruals",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), ABS(ib)), 1))))",
+      "hypothesis": "The economically relevant question is what share of *earnings* is accrual-based, not what share of assets; deflating accruals by the magnitude of income sharpens the value-trap screen.",
+      "expected_sign": "positive",
+      "reasoning": "Percent accruals were only ever tested inside the failed indicator-gating structure, where degenerate portfolios masked their information content, so this re-tests the measure inside the frame that demonstrably works. Winsorizing controls the small-earnings denominators that make percent accruals explosive, addressing the tail problem that flipped earlier level-based signals' decile spreads.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.05352232037529,
+      "ls_alpha": 0.02173871788204759,
+      "ls_talpha": 1.8933978782781524,
+      "ls_sharpe": 0.22706583152128945,
+      "coverage": 0.1092723189263571,
+      "error": null
+    },
+    {
+      "name": "OwnHistoryCheapCleanAccruals",
+      "expression": "SUMRANK(TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "A firm that is cheap relative to its own five-year valuation history, while its earnings remain cash-backed, has been de-rated without accounting deterioration \u2014 a mispricing rather than a fundamental repricing.",
+      "expected_sign": "positive",
+      "reasoning": "Time-series cheapness is measured within firm, so it carries little cross-sectional book-to-market tilt and should not be absorbed by HML the way every level-based value composite in the archive was. Pairing it with the accrual screen keeps the economic interaction intact: a de-rating is an opportunity only if the accounting behind current earnings has not degraded.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.1232332897088286,
+      "ls_alpha": -0.014512630565228071,
+      "ls_talpha": -1.218494498846754,
+      "ls_sharpe": -0.061241026650590676,
+      "coverage": 0.10921247215061246,
+      "error": null
+    },
+    {
+      "name": "LeveredPayoutAccrualTrap",
+      "expression": "SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))))",
+      "hypothesis": "The deepest value traps are cheap firms with contractual cash outflows \u2014 debt service plus a dividend \u2014 that exceed the cash earnings left after stripping accruals; such firms must cut, refinance or write down.",
+      "expected_sign": "negative",
+      "reasoning": "Its two components each produced correctly signed evidence but only one at a time (net debt gave alpha \u22120.025 with t = \u22122.10 and weak FMB; the payout-coverage rank gap gave FMB \u22122.14 with weak alpha), and they identify the same population through different statements, so the union should deliver both. Combining a stock measure of obligations with a flow measure of coverage also makes the short leg a coherent economic type rather than a statistical tail.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.5384447211507474,
+      "ls_alpha": -0.05109221969549573,
+      "ls_talpha": -3.790233764566492,
+      "ls_sharpe": -0.09891813102719012,
+      "coverage": 0.10978333816234903,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitCleanValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cheapness is reliable when it is simultaneously backed by cash assets, unencumbered by debt claims, and not manufactured by working-capital accruals; the cash and debt dimensions carry distinct information and should be scored separately.",
+      "expected_sign": "positive",
+      "reasoning": "Gross cash to price delivered the strongest cross-sectional slope (3.89) while net cash delivered the strongest positive alpha (t = 2.23), which means the netted ratio conflates a cross-sectionally monotone cash effect with a skewed leverage effect. Ranking cash-to-price and debt-to-price as separate equally weighted channels should retain both sources of evidence at once instead of trading one against the other.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.9748171305336677,
+      "ls_alpha": 0.046538538511591586,
+      "ls_talpha": 3.606150895485716,
+      "ls_sharpe": 0.37917215852562813,
+      "coverage": 0.10927850997212378,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitConservativeDep",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at)))",
+      "hypothesis": "Conservative depreciation understates the earnings and book value of cash-rich, low-debt cheap firms, making their apparent cheapness a measurement artifact that reverses as cash flows are recognized.",
+      "expected_sign": "positive",
+      "reasoning": "The depreciation quality leg requires no lagged data, so it raises coverage from 0.110 to about 0.136 while previously producing FMB 3.48 and alpha +0.022 in the net-cash frame. Pairing it with the split cash/debt channels tests whether the breadth gain comes for free or whether the working-capital accrual screen is doing something the depreciation channel cannot.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.024029791274885,
+      "ls_alpha": 0.041084561212294805,
+      "ls_talpha": 2.8661587207925803,
+      "ls_sharpe": 0.24198567217505196,
+      "coverage": 0.13597089424290526,
+      "error": null
+    },
+    {
+      "name": "PayoutWeightedLeveredTrap",
+      "expression": "SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The value trap is a cheap firm distributing dividends it does not earn in cash while carrying net debt and accrual-inflated profits; payout coverage is the monotone core of the mechanism and leverage and accruals intensify it.",
+      "expected_sign": "negative",
+      "reasoning": "The equal-weighted version delivered the largest reliable alpha in the archive (\u22120.051, t = \u22123.79) but diluted the payout-coverage channel, which alone had FMB \u22122.14, down to a 50% share of a tail-driven net-debt ratio. Re-nesting so payout coverage carries half the weight and leverage and accruals a quarter each should convert the tail-concentrated portfolio result into a cross-sectionally monotone slope without giving up the short-leg alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.886138265679868,
+      "ls_alpha": -0.0376663154858309,
+      "ls_talpha": -2.72880175264969,
+      "ls_sharpe": -0.15353438598379715,
+      "coverage": 0.10977900443031235,
+      "error": null
+    },
+    {
+      "name": "CheapWithCashCoverage",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), lct))",
+      "hypothesis": "Cheapness is defensible when accrual-purged cash earnings can service near-term obligations; a cheap firm whose current liabilities dwarf its cash earnings faces forced asset sales and equity dilution regardless of book value.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new economic channel \u2014 near-term solvency coverage rather than balance-sheet composition \u2014 and it interacts the two themes multiplicatively in the denominator by measuring cash earnings against the current liabilities that generated much of the accrual. Current liabilities are almost never zero, so the ratio is far better behaved than the debt-to-price measures whose skewness has been suppressing FMB slopes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.251530820212298,
+      "ls_alpha": -0.022930178448144028,
+      "ls_talpha": -2.496321993530785,
+      "ls_sharpe": -0.017204379214783953,
+      "coverage": 0.11023482017488466,
+      "error": null
+    },
+    {
+      "name": "TaxConfirmedCashBackedValue",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(txp, at)))",
+      "hypothesis": "Earnings that generate a tax liability have been validated by an outside authority, so cheap, cash-rich firms carrying taxes payable are reporting real income, whereas accrual-inflated earnings typically create book-tax differences and no tax accrual.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel is the one accrual dimension in the resource menu never yet tested, and it is economically distinct from working-capital accruals because it reflects external verification rather than management estimates. Slotting it into the net-cash frame that already produces positive alpha isolates whether tax confirmation adds quality information beyond the Sloan measure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.5162957525546084,
+      "ls_alpha": 0.03472430913240232,
+      "ls_talpha": 2.4926996060577276,
+      "ls_sharpe": 0.26423846480439767,
+      "coverage": 0.12329911335969894,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitRevenueQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(GROWTH(RATIO(SUB(act, che), sale), 1))))",
+      "hypothesis": "Enterprise-level revenue cheapness with improving cash conversion of sales, held by a cash-rich and lowly levered firm, is the highest-quality form of value.",
+      "expected_sign": "positive",
+      "reasoning": "The sales-to-EV plus revenue-quality pair has produced the archive's best Sharpe ratios (0.356, 0.381) and FMB slopes above 3.2 but has never reached alpha t above 1.4, and the missing ingredient in every high-alpha signal has been an explicit low-debt channel. Adding the split cash/debt ranks tests whether the revenue-quality channel's raw return can be made FF5-orthogonal rather than absorbed by HML and CMA.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.854724586908014,
+      "ls_alpha": 0.040472894264013834,
+      "ls_talpha": 3.1848150666451756,
+      "ls_sharpe": 0.40291783693501615,
+      "coverage": 0.10764789170127462,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitDualQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(RATIO(dp, at), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Working-capital accruals and depreciation policy measure two independent dimensions of accounting quality \u2014 short-term estimate manipulation and long-term conservatism \u2014 and cheap, cash-backed firms clean on both are the most reliable value candidates.",
+      "expected_sign": "positive",
+      "reasoning": "Each quality leg separately produced strong results in the split frame (Sloan: alpha 0.047, t = 3.61; depreciation: FMB 4.02, alpha 0.041), and because one is a flow of estimates and the other a policy choice their errors should be largely uncorrelated, so combining them ought to raise the signal-to-noise of the quality dimension. This tests whether quality is one factor or two within the established frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.208349792729462,
+      "ls_alpha": 0.04306912698093915,
+      "ls_talpha": 3.02238616771445,
+      "ls_sharpe": 0.3172223703144158,
+      "coverage": 0.10927850997212378,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitTaxQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(txp, at)))",
+      "hypothesis": "Earnings that generate a tax liability are externally verified, so tax-confirmed profits are the cheapest available proof that a low-priced firm's income is real rather than accrued.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel produced alpha 0.035 (t = 2.49) and FMB 3.52 inside the weaker netted-cash frame, so moving it into the split frame that has consistently added roughly one point of alpha t is the natural consolidation test. It also raises coverage to about 0.123 relative to 0.109 because it needs no lagged balance sheet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.118848753881083,
+      "ls_alpha": 0.04034801754414896,
+      "ls_talpha": 2.9716699881454356,
+      "ls_sharpe": 0.27541901489938103,
+      "coverage": 0.12329911335969894,
+      "error": null
+    },
+    {
+      "name": "CashDebtSplitValueQualityBreadth",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))))",
+      "hypothesis": "Cheapness confirmed by two independent multiples (book and enterprise-level revenue) and quality confirmed by two independent accrual measures (earnings accruals and revenue collection) is the most robust expression of the cash-backed value idea.",
+      "expected_sign": "positive",
+      "reasoning": "The two highest-Sharpe signals in the archive both use the sales-to-EV plus revenue-quality pair, while the two highest-alpha-t signals use book value plus Sloan accruals, and these two pairs disagree on which statistic they maximize. Balancing all four channels against the split cash/debt block tests whether the disagreement reflects noise (in which case both statistics improve) or a genuine trade-off between the two value anchors.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.7495642883083664,
+      "ls_alpha": 0.04205429993588616,
+      "ls_talpha": 3.080356766529689,
+      "ls_sharpe": 0.4924435714801962,
+      "coverage": 0.1069008904374758,
+      "error": null
+    },
+    {
+      "name": "AccrualWeightedCashDebtValue",
+      "expression": "SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "If accounting quality is the binding constraint on whether cheapness pays, it deserves more than an equal share of the composite; doubling its weight should sharpen the separation between genuine value and value traps.",
+      "expected_sign": "positive",
+      "reasoning": "In the gen-6 winner the accrual screen carried only a quarter of the weight, so we do not yet know whether it is essential or incidental to the +0.047 alpha; this construction gives accruals half the weight and splits the remainder across cash, debt and book value. Comparing the two directly identifies the marginal contribution of the accrual theme, which matters for the economic interpretation of the interaction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.515984215679559,
+      "ls_alpha": 0.024027946381992897,
+      "ls_talpha": 2.082736983427224,
+      "ls_sharpe": 0.3170118490952987,
+      "coverage": 0.10927850997212378,
+      "error": null
+    },
+    {
+      "name": "CashBackedCleanValueConjunction",
+      "expression": "MIN(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Balance-sheet strength and cheap-clean accounting are complements: a firm must clear both hurdles, so the weaker of the two composite ranks should determine expected returns rather than their average.",
+      "expected_sign": "positive",
+      "reasoning": "Averaging lets an extreme cash position offset accrual-inflated earnings, which is precisely the substitution the value-trap story says should not be allowed, and the MIN operator enforces the conjunction while leaving both economic channels unchanged. An earlier MIN test was run only inside the HML-loaded book-value family where nothing worked, so this is the first informative test of the aggregation choice within the frame that does work.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.083255007807037,
+      "ls_alpha": 0.0052319301308648425,
+      "ls_talpha": 0.4554280988185356,
+      "ls_sharpe": 0.2768565066975639,
+      "coverage": 0.10927850997212378,
+      "error": null
+    },
+    {
+      "name": "CashPoorLeveredPayoutTrap",
+      "expression": "SUMRANK(SUMRANK(NEG(RATIO(che, MUL(prcc_f, csho))), RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))), SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The complete value trap is cash-poor and levered, distributing dividends that exceed accrual-purged cash earnings, with profits sustained by working-capital accruals; such firms should earn reliably negative abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "The trap side has produced large alphas (\u22120.051 and \u22120.038) but weak cross-sectional slopes because the skewed net-debt ratio dominated the composite; splitting cash and debt into separate ranks is exactly the fix that repaired the long side, and it is applied here for the first time to the short side. If both FMB and alpha strengthen, the mechanism is symmetric, which materially raises confidence that the long-side result is economic rather than a factor-loading artifact.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.771875162147001,
+      "ls_alpha": -0.06691198985755298,
+      "ls_talpha": -4.412465570099874,
+      "ls_sharpe": -0.29620915034921014,
+      "coverage": 0.10977900443031235,
+      "error": null
+    },
+    {
+      "name": "SplitValueBreadthTaxQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), RATIO(txp, at))))",
+      "hypothesis": "Cheapness confirmed by both a book and a revenue multiple, and quality confirmed both internally (low accruals) and externally (a tax liability on reported profits), is the most robust form of cash-backed value.",
+      "expected_sign": "positive",
+      "reasoning": "The breadth composite delivered the best Sharpe (0.492) using revenue quality, while the tax leg delivered the best FMB (4.12) with higher coverage and no lag requirement, and the two quality proxies are economically independent \u2014 management estimates versus external verification. This tests whether the two best-performing channel sets are complements rather than substitutes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.007787939299163,
+      "ls_alpha": 0.02550426798223436,
+      "ls_talpha": 1.6415669738156915,
+      "ls_sharpe": 0.33230957611933837,
+      "coverage": 0.10562151082978999,
+      "error": null
+    },
+    {
+      "name": "SplitEbitdaEVCleanValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Operating-profit cheapness at the enterprise level, screened for working-capital accruals, is a better cheapness anchor than book equity because EBITDA is harder to inflate through balance-sheet estimates than book value is.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV is the one value anchor with a strong standalone FMB (3.59) that has never been tested inside the cash/debt split frame, and this holds every other channel fixed so the anchor choice is cleanly identified. If it beats the book-value version's alpha of 0.047, the final generation should anchor on operating profitability rather than book equity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.965334929068976,
+      "ls_alpha": 0.045176262557432185,
+      "ls_talpha": 3.3971213507163602,
+      "ls_sharpe": 0.5192928133296599,
+      "coverage": 0.10985592817396343,
+      "error": null
+    },
+    {
+      "name": "SplitCashFlowStatementAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), RATIO(dp, at))))",
+      "hypothesis": "The gap between net income and operating cash flow is the most complete measure of accrual reliance because it captures non-current as well as working-capital accruals, so it should screen value traps better than the balance-sheet Sloan proxy.",
+      "expected_sign": "positive",
+      "reasoning": "This canonical accrual definition was blocked in generation 0 for lacking a theme-exclusive accruals variable and has never been tested since; pairing it with depreciation intensity satisfies that constraint while adding the long-lived-asset dimension. The trade-off is coverage, since oancf begins later, so the comparison against the wcap-based version quantifies whether measurement completeness is worth the sample loss.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.008394854508658,
+      "ls_alpha": 0.060482603662314297,
+      "ls_talpha": 3.589744406884297,
+      "ls_sharpe": 0.3206960976140251,
+      "coverage": 0.08943042998051058,
+      "error": null
+    },
+    {
+      "name": "TaxUnconfirmedLeveredTrap",
+      "expression": "SUMRANK(SUMRANK(NEG(RATIO(che, MUL(prcc_f, csho))), RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))), SUMRANK(SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), NEG(RATIO(txp, at))), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "A cash-poor, levered firm paying dividends it does not earn, whose accrual-driven profits generate no tax liability, is reporting income that exists only on paper and should underperform reliably.",
+      "expected_sign": "negative",
+      "reasoning": "The trap composite already produces the archive's largest abnormal return (alpha \u22120.067, t = \u22124.41) but its FMB stalls near \u22121.8 because the effect concentrates in the extreme tail; the absence of a tax liability is a broadly distributed, monotone indicator of unverified earnings that should extend the signal into the middle of the cross-section. Adding it tests whether the short-side mechanism can be made cross-sectionally monotone without sacrificing portfolio alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.1163197901950483,
+      "ls_alpha": -0.05075847262530814,
+      "ls_talpha": -3.6877273711286267,
+      "ls_sharpe": -0.24741860390713308,
+      "coverage": 0.1055666168906587,
+      "error": null
+    },
+    {
+      "name": "IndNeutralSplitCleanValue",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(che, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))))), SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "The cash-backed clean-value effect is a firm-level accounting-quality phenomenon, not a sector bet on cash-rich technology firms versus levered utilities and financials.",
+      "expected_sign": "positive",
+      "reasoning": "Every channel in the winning composite has a strong industry component \u2014 cash holdings, leverage capacity, working-capital intensity and depreciation all vary systematically by sector \u2014 so the +0.047 alpha could partly be a static industry tilt that FF5 does not span. Industry z-scoring each channel is the decisive robustness test: if alpha and FMB survive, the final generation can commit to the frame with confidence.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.8348337101633168,
+      "ls_alpha": 0.005019569271142465,
+      "ls_talpha": 0.5777872842599028,
+      "ls_sharpe": 0.15402895644294964,
+      "coverage": 0.10914081079586306,
+      "error": null
+    },
+    {
+      "name": "SplitHardBookValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho)))",
+      "hypothesis": "Rather than screening cheapness with a separate accrual score, the accrual correction belongs inside the value measure itself: book equity stripped of non-cash working capital is the portion of book value that cannot be written down.",
+      "expected_sign": "positive",
+      "reasoning": "This embeds the quality adjustment in the numerator of the value ratio, giving the corrected value channel half the total weight instead of splitting weight between value and quality, which is a structurally different way to express the same interaction. Because gen-7 showed that adding weight to a standalone accrual channel hurt alpha, the alternative of building quality into the value measure is the natural remaining design question.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.5142292011077,
+      "ls_alpha": 0.05535992754413903,
+      "ls_talpha": 4.43360095524687,
+      "ls_sharpe": 0.32800638426815015,
+      "coverage": 0.1198387315125055,
+      "error": null
+    },
+    {
+      "name": "SplitEbitdaEVHardBook",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))))",
+      "hypothesis": "Cheapness is trustworthy when it appears both in operating profit per dollar of enterprise value and in book equity stripped of soft non-cash working capital, held by a cash-rich, low-debt firm.",
+      "expected_sign": "positive",
+      "reasoning": "These are the archive's two best-performing value channels \u2014 EBITDA/EV owns the strongest cross-sectional slope and Sharpe, hard book-to-market the strongest alpha t-statistic \u2014 and they contaminate differently, since one bypasses the balance sheet entirely while the other cleans it. Combining exactly four equally weighted channels respects the finding that quarter-weights maximize alpha and that further breadth dilutes it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.025802668540082,
+      "ls_alpha": 0.04718120125507062,
+      "ls_talpha": 3.2660771347591377,
+      "ls_sharpe": 0.4604039690143333,
+      "coverage": 0.11952138882491475,
+      "error": null
+    },
+    {
+      "name": "SplitEbitdaEVCashFlowAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(SUB(ib, oancf), dpc), at))))",
+      "hypothesis": "The sharpest measure of accrual reliance is net income minus operating cash flow with depreciation added back, since it captures every non-depreciation accrual directly from the cash-flow statement without balance-sheet differencing error.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow-statement accrual definition delivered the archive's largest alpha (0.060) but was bundled with book value and depreciation, leaving its slope weak (2.01); pairing it instead with the highest-slope value anchor should supply the cross-sectional monotonicity it lacked. Adding depreciation back isolates exactly the discretionary accruals the value-trap story concerns, rather than mixing them with capital-intensity effects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.4404004189553175,
+      "ls_alpha": 0.0751194834022444,
+      "ls_talpha": 4.8545101833456545,
+      "ls_sharpe": 0.5162928501556021,
+      "coverage": 0.08895439015310043,
+      "error": null
+    },
+    {
+      "name": "SplitHardBookCashFlowAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho)), NEG(RATIO(ADD(SUB(ib, oancf), dpc), at))))",
+      "hypothesis": "Cheap firms whose book value consists of hard assets and whose earnings are confirmed by operating cash flow are the purest expression of quality-supported value; the balance sheet and the cash-flow statement must agree.",
+      "expected_sign": "positive",
+      "reasoning": "This pairs the two ingredients with the highest alpha t-statistics in the archive (4.43 and 3.59) and they are conceptually complementary: one removes soft assets from the stock measure of value, the other removes soft earnings from the flow measure of profit. If alpha exceeds 0.055 with t above 4, the interaction is confirmed on both financial statements simultaneously rather than through a single accrual proxy.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.8272933357299485,
+      "ls_alpha": 0.07979833846774383,
+      "ls_talpha": 5.0065044461342,
+      "ls_sharpe": 0.46106833417205484,
+      "coverage": 0.07792782809034304,
+      "error": null
+    },
+    {
+      "name": "SplitEbitdaEVHardBookSloan",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "An explicit flow-based accrual screen still adds information beyond an accrual-corrected book value, because stripping soft assets from the balance sheet says nothing about how fast those assets are currently being built.",
+      "expected_sign": "positive",
+      "reasoning": "Signal 1 embeds quality in the value measure only as a stock correction, so this variant asks whether the change in working capital \u2014 the flow that predicts reversal \u2014 remains incrementally informative once the stock correction is applied. The comparison of the two is the last open question about how the accruals theme should enter the composite.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.7826730527286143,
+      "ls_alpha": 0.04601375562354823,
+      "ls_talpha": 3.488249072017114,
+      "ls_sharpe": 0.42661954485188197,
+      "coverage": 0.10927789086754712,
+      "error": null
+    },
+    {
+      "name": "SplitAccrualPurgedCashEarningsYield",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))",
+      "hypothesis": "Value and quality can be fused into a single channel \u2014 the price paid per dollar of accrual-purged cash earnings \u2014 and given half the total weight alongside the cash and debt channels, without needing separate value and quality ranks.",
+      "expected_sign": "positive",
+      "reasoning": "This yield failed badly on its own (alpha \u22120.024, t = \u22122.46) because a price-deflated cash-earnings measure is heavily HML-loaded, so testing it inside the split frame identifies whether the cash and debt channels are sufficient to neutralize that loading. It is the most parsimonious version of the whole research idea, and if it matches the four-channel composites, the mechanism reduces to cash-backed cash earnings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.837269005823919,
+      "ls_alpha": 0.05925119374502685,
+      "ls_talpha": 4.1413054919769685,
+      "ls_sharpe": 0.4135238620960571,
+      "coverage": 0.10986088101057678,
+      "error": null
+    },
+    {
+      "name": "SplitNoLagBroadCoverage",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))), SUMRANK(RATIO(dp, at), RATIO(txp, at))))",
+      "hypothesis": "The cash-backed clean-value effect can be measured entirely from current-year statements \u2014 conservative depreciation and a tax liability substitute for lagged accrual changes \u2014 extending the signal to firms with only one year of data.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal in the archive is capped near 0.110 coverage by the two-year requirement of DELTA(wcap, 1), whereas depreciation intensity and taxes payable are contemporaneous quality proxies that previously reached 0.136 and 0.123 coverage with FMB above 4. This tests whether roughly a quarter more firm-months can be signalled without losing the abnormal return, which matters for whether the result is an implementable strategy or a narrow-sample artifact.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.912869909906571,
+      "ls_alpha": 0.03928562108062598,
+      "ls_talpha": 2.7620855994785947,
+      "ls_sharpe": 0.36936999931329995,
+      "coverage": 0.11556319530603165,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "CashBackedBookToMarket",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Book-to-market predicts returns only when reported earnings are backed by operating cash flow; cheap firms whose income is accrual-driven are value traps whose book value will be written down.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel ranks cheapness, the second ranks accounting quality as the negative of total accruals (ib - oancf) scaled by assets, so the composite is high only for firms that are simultaneously cheap and cash-generating. This isolates \"high-quality value\" from mechanically cheap distressed accrual firms, which should raise both the cross-sectional slope and the FF5 spread alpha versus plain B/M.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueGatedByCashSurplus",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), INDICATOR(NEG(RATIO(SUB(ib, oancf), at)), 0))",
+      "hypothesis": "Value exposure should be taken only in the state where accruals are negative (cash flow exceeds reported income); in the positive-accrual state cheapness carries no reliable premium.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator turns the valuation rank on only when total accruals are negative, so the signal is a state-dependent value bet rather than a linear blend of two themes. If the value premium is concentrated in cash-surplus firms, the conditional version should show a stronger long-short FF5 alpha per unit of turnover than unconditional B/M.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualYieldOnPrice",
+      "expression": "RATIO(SUB(ib, oancf), MUL(prcc_f, csho))",
+      "hypothesis": "Deflating accruals by market value rather than assets measures how much of the price-implied earnings claim is non-cash; a large accrual claim per dollar of market equity is the defining feature of a value trap.",
+      "expected_sign": "negative",
+      "reasoning": "Because the deflator is price, this variable is jointly high for cheap firms and for accrual-heavy firms, so it mechanically pinpoints the intersection the economic story targets instead of either theme alone. Firms with high accrual-to-price should underperform as accruals reverse and the apparent cheapness disappears.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EVYieldCleanWorkingCapital",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), at)))",
+      "hypothesis": "Enterprise-level cheapness (EBITDA/EV) is trustworthy only when operating profitability is not being manufactured by working-capital build-ups in receivables and inventory.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV neutralizes leverage and cash holdings so cheapness is measured on operating assets, while the change in non-cash working capital captures the specific accrual channel (receivables/inventory inflation) that contaminates EBITDA. Combining them should separate genuinely cheap operating businesses from those whose EBITDA is a working-capital illusion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashMinusEarningsYieldGap",
+      "expression": "SUB(RANK(RATIO(oancf, MUL(prcc_f, csho))), RANK(RATIO(ib, MUL(prcc_f, csho))))",
+      "hypothesis": "The market prices visible earnings yield but underweights cash-flow yield; firms that look expensive on earnings but cheap on cash flow are mispriced upward-revision candidates, and the reverse for accrual-inflated earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The signal is the valuation wedge created purely by accruals, since the two ratios share the same price deflator and differ only by (ib - oancf). It directly tests whether investors anchor on accrual-laden earnings multiples and therefore misprice cash-based cheapness, which is the accrual-anomaly mechanism expressed in valuation space.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsYieldAccrualStability",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), NEG(VOL(RATIO(SUB(ib, oancf), at), 5)))",
+      "hypothesis": "A high earnings yield is a reliable value signal only if the firm's accrual behavior is stable; volatile accruals indicate low-quality, easily reversed earnings and hence an unreliable multiple.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than penalizing the level of accruals, this uses five-year accrual volatility as a measure of accounting reliability, a distinct quality dimension that captures earnings-management intensity and estimation error. Cheap firms with quiet, predictable accruals should deliver the value premium, while cheap firms with erratic accruals should not, sharpening both the Fama-MacBeth slope and the FF5 alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueCleanSloanAccruals",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "Book-to-market earns a premium only when reported profits are not produced by working-capital build-up net of depreciation; accrual-heavy cheap firms are value traps.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual leg is the balance-sheet Sloan measure (change in working capital minus depreciation) scaled by assets, built from theme-exclusive items `wcap` and `dp` that are reported far more broadly than cash-flow-statement components, which should lift coverage well above the 0.11 of the accepted gen-0 signal. Ranking both legs makes the long book cheap-and-clean and the short book expensive-and-accrual-laden, the exact intersection the economic story requires.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SloanCashEarningsYield",
+      "expression": "RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))",
+      "hypothesis": "The correct value multiple is price relative to accrual-purged cash earnings; firms cheap on cash earnings outperform, and firms that look cheap only on GAAP income do not.",
+      "expected_sign": "positive",
+      "reasoning": "Instead of blending two ranks, this embeds the accrual correction inside the valuation ratio itself, so accruals change the measured cheapness rather than acting as a separate filter \u2014 a distinguishable structural test against Signal 1. Using `dp` and `DELTA(wcap,1)` keeps coverage high while making the numerator an approximation of cash flow available to equity.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualLoadPerMarketValue",
+      "expression": "RATIO(SUB(DELTA(wcap, 1), dp), MUL(prcc_f, csho))",
+      "hypothesis": "Scaling accruals by market equity rather than assets measures how large the non-cash component of earnings is relative to what investors paid; this is the defining quantitative feature of a value trap.",
+      "expected_sign": "negative",
+      "reasoning": "The price deflator makes the variable jointly large for cheap firms and for accrual-inflated firms, so the short leg concentrates precisely on low-priced companies whose earnings are least cash-backed and most likely to reverse. It also serves as a clean diagnostic of whether the interaction's return predictability lives in the trap (short) side rather than the quality-value (long) side.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapAndCleanConjunction",
+      "expression": "MIN(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Value and accounting quality are complements, not substitutes: a firm must be both cheap and cash-backed to earn the premium, so the weaker of the two ranks should govern expected returns.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets an extreme value rank compensate for terrible accruals (and vice versa), whereas MIN enforces the conjunction and should sharpen the long leg toward genuine quality-value names. Comparing this against Signal 1 isolates the aggregation choice while holding the underlying economic channels fixed, telling us whether the FF5 alpha comes from the intersection or from linear averaging.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CumulativeBloatValue",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(TS_SUM(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)))",
+      "hypothesis": "What contaminates cheapness is not a single year's accrual but a multi-year accumulation of unconfirmed accruals (balance-sheet bloat), which must eventually be reversed or written off.",
+      "expected_sign": "positive",
+      "reasoning": "A five-year cumulative accrual sum captures the stock of soft assets embedded in book equity, which is exactly why a high book-to-market can be illusory \u2014 the book value itself is inflated. This changes the economic channel from annual earnings quality to the reliability of the denominator-free book anchor, a mechanism a one-year accrual cannot express.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesYieldRevenueQuality",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))",
+      "hypothesis": "Sales-to-price cheapness is trustworthy only if revenue is converting to cash; rising non-cash current assets per dollar of sales signals channel-stuffing or inventory accumulation that will reverse.",
+      "expected_sign": "positive",
+      "reasoning": "This swaps the valuation anchor to a revenue multiple (immune to earnings management in the numerator) and pairs it with an operating-quality ratio measuring how many non-cash current assets are needed to generate a dollar of sales, a distinct accrual channel from net income minus cash flow. If sales-based value works better than book- or earnings-based value once revenue quality is imposed, the interaction is about revenue recognition rather than earnings smoothing.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashVsAccrualYieldWedge",
+      "expression": "SUB(RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))), RANK(RATIO(ib, MUL(prcc_f, csho))))",
+      "hypothesis": "Investors anchor on the earnings multiple; firms that are cheap on accrual-purged cash earnings but not cheap on reported earnings are systematically underpriced, and the reverse for accrual-inflated earnings multiples.",
+      "expected_sign": "positive",
+      "reasoning": "Both legs are price-deflated yield ranks, so their difference is nearly HML-neutral by construction and isolates the wedge created purely by accruals \u2014 precisely the orthogonality the archive's negative FF5 alphas say we need. If this delivers positive alpha where the SUMRANK composites failed, the mispricing lives in the accrual wedge and not in cheapness itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueScaledAccrualLoad",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), ZSCORE(WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), at), 1)))",
+      "hypothesis": "The accrual anomaly is concentrated in cheap, neglected firms where information quality is low and arbitrage costly; expensive growth firms' accruals are already scrutinized.",
+      "expected_sign": "negative",
+      "reasoning": "Here accruals set the sign and cheapness only scales the magnitude, so the long-short book is clean-cheap versus dirty-cheap \u2014 both legs are value names, cancelling much of the HML/CMA loading that destroyed the earlier composites. Winsorizing before z-scoring prevents microcap accrual outliers from driving portfolio composition, a likely contributor to the unstable spreads seen so far.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutralCleanValue",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cross-industry differences in normal book-to-market and normal accrual intensity (capital-intensive versus working-capital-intensive sectors) contaminate the raw composite; within-industry cheapness backed by within-industry clean accounting is the real mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the economic channels of ValueCleanSloanAccruals fixed and changes only the neutralization, so it cleanly diagnoses whether the negative FF5 alpha came from industry-level value/investment tilts absorbed by HML and CMA. If alpha turns positive, industry neutralization is the design lever worth consolidating in later generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ConservativeDepreciationValue",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at))",
+      "hypothesis": "Cheapness is more credible when accounting is conservative: firms charging heavy depreciation understate current earnings and book value, so their low price reflects accounting conservatism rather than genuine economic decline.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the working-capital accrual channel with the long-lived-asset accrual channel \u2014 depreciation adequacy \u2014 which is a distinct source of earnings quality and is not what the Sloan measure captures. It also uses only current-year levels, so it should show whether the archive's stuck 0.11 coverage is driven by the two-year requirement of DELTA(wcap, 1).",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "HardBookToMarket",
+      "expression": "RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))",
+      "hypothesis": "A high book-to-market is only informative if book equity is composed of hard assets (cash and fixed capital) rather than soft accrual assets; stripping non-cash working capital out of book equity should isolate defensible value.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than filtering value with a separate quality score, this repairs the value measure's numerator, so the resulting spread is a *different* value factor rather than HML plus a quality tilt \u2014 a structurally distinct route to non-spanned alpha. Soft-asset-heavy book equity is exactly what gets written down in value traps, so removing it should shift the long leg away from the traps.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "RevenueCashQualityValue",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), RATIO(ADD(recch, invch), at))",
+      "hypothesis": "Sales-based cheapness is trustworthy only when revenue is collected in cash; direct cash-flow-statement changes in receivables and inventory measure collection quality far more precisely than balance-sheet differences.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow-statement items recch and invch are signed as cash inflows, so higher values mean receivables and inventory are shrinking, i.e. revenue converting to cash, giving a cleaner quality channel than the noisy balance-sheet delta used earlier. Pairing it with a revenue multiple keeps the valuation anchor immune to earnings management, and comparing its coverage and alpha against Signal 1 tells us whether measurement precision or factor-neutrality is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapFirmPercentAccruals",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), ABS(ib)), 1))",
+      "hypothesis": "Among cheap firms, the fraction of reported profit that is accrual rather than cash determines whether cheapness is opportunity or trap; percent accruals (accruals per dollar of earnings) measures that reliance directly, unlike asset-scaled accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator restricts the signal to above-average book-to-market firms and sets everything else to zero, so the sorted long-short book is clean-cheap versus dirty-cheap \u2014 a value-neutral accrual spread whose HML and CMA loadings largely cancel, addressing the mechanical source of the archive's negative alphas. Percent accruals is also a stronger measure of earnings reliance than accruals/assets because it scales by the earnings actually being questioned.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapFirmCashStatementAccruals",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), NEG(RATIO(ADD(recch, ADD(invch, apalch)), at)))",
+      "hypothesis": "Within the cheap universe, the specific accruals that reverse are receivable, inventory and payable movements; measuring them from the cash-flow statement rather than balance-sheet differences removes acquisition and restatement noise.",
+      "expected_sign": "negative",
+      "reasoning": "This holds the value-neutral gating structure of Signal 1 fixed and changes only the accrual measurement, so together the pair isolates whether the weak within-value accrual spread reflects a genuine absence of mispricing or noisy balance-sheet accrual proxies. Coverage will be lower (cash-flow items start later), which is exactly the precision-versus-breadth trade we need quantified.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueAccrualImprovement",
+      "expression": "MUL(INDICATOR(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), 0), NEG(DELTA(RATIO(SUB(DELTA(wcap, 1), dp), at), 1)))",
+      "hypothesis": "A cheap firm becomes investable when its earnings stop being accrual-driven; the transition from accrual-inflated to cash-backed earnings is the moment the value trap resolves, and investors underreact to it.",
+      "expected_sign": "positive",
+      "reasoning": "The level of accruals may already be reflected in price after years of persistence, whereas the first difference is news about accounting quality and is a change variable with little factor loading. Gating on cheapness keeps the spread value-neutral, so any alpha here is genuinely non-spanned by FF5 rather than a repackaged HML tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EVYieldLowWorkingCapitalStock",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(wcap, at)))",
+      "hypothesis": "Enterprise-value cheapness backed by a lean working-capital balance sheet identifies firms whose operating profits are cash-converting; a large stock of working capital is accumulated soft assets awaiting reversal.",
+      "expected_sign": "positive",
+      "reasoning": "The EV-anchored gen-0 signal was the only construction with non-negative alpha and a decent Sharpe, suggesting enterprise-level cheapness is less collinear with HML than book-to-market, but its one-year working-capital delta was noisy and cost coverage. Replacing the delta with the working-capital *stock* keeps the same economic channel (balance-sheet bloat), drops the two-year data requirement, and should raise coverage toward the 0.137 seen for level-based measures.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutNotCoveredByCashEarnings",
+      "expression": "RATIO(SUB(dvc, SUB(ADD(ib, dp), DELTA(wcap, 1))), MUL(prcc_f, csho))",
+      "hypothesis": "The classic value trap is a high-yield, cheap firm distributing cash it is not generating; a dividend exceeding accrual-purged cash earnings is an unsustainable payout that precedes cuts and price declines.",
+      "expected_sign": "negative",
+      "reasoning": "This is a distinct mechanism \u2014 payout sustainability rather than earnings quality per se \u2014 and it is high precisely for the optically attractive names (high dividend yield, low price) that pure value screens buy, so its short leg should sit inside the value universe rather than in glamour stocks. Because both the trap and non-trap firms are cheap dividend payers, the spread should be far less HML-loaded than the earlier composites.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashValueCleanAccruals",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The most defensible form of cheapness is net cash relative to market value, and it is only credible when earnings are not accrual-inflated; cash on the balance sheet cannot be manufactured by accounting choices.",
+      "expected_sign": "positive",
+      "reasoning": "Net-cash-to-price is a valuation anchor that HML (a book-based factor) spans poorly, so a spread built on it can retain raw return without inheriting the large value-factor loading that produced the archive's negative alphas. Requiring clean accruals alongside net cash separates genuinely cash-rich cheap firms from those whose apparent balance-sheet strength is receivables and inventory.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EVYieldSloanAccruals",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "Enterprise-value cheapness is credible only when operating profit is not generated by working-capital accruals net of depreciation; EV anchoring removes the leverage tilt that makes book-based value spreads collinear with HML.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's EV/EBITDA composite remains the best joint result in the archive (FMB 3.59, alpha \u2248 0, Sharpe 0.29) but used a fragile multi-item working-capital delta, while gen-3 showed the working-capital stock is the wrong quality variable. This version keeps the EV anchor and the accrual *change* but measures it with the compact wcap\u2212dp Sloan definition, isolating whether measurement noise in the accrual leg was suppressing the EV composite's alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashCleanValueTriple",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cheapness is trustworthy when it is simultaneously visible in book value, backed by net cash on the balance sheet, and not manufactured by accruals; the cash channel screens out the levered value traps that dominate book-only value screens.",
+      "expected_sign": "positive",
+      "reasoning": "The net-cash anchor was the only channel producing positive FF5 alpha, and the book-value-plus-clean-accruals composite was among the strongest FMB slopes, so combining all three ranks tests directly whether the two forms of evidence can be obtained together rather than traded off. Ranking each channel also removes the skewness that made the raw net-cash ratio cross-sectionally weak.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashAccrualStability",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), NEG(VOL(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)))",
+      "hypothesis": "What makes cheap balance-sheet-strong firms safe is not the level of accruals but the predictability of their accrual process; erratic accruals signal earnings management and estimation error that will eventually reverse into write-downs.",
+      "expected_sign": "positive",
+      "reasoning": "Accrual volatility is an untested quality dimension in this archive and is close to orthogonal to the accrual level, so it can add information rather than restate the Sloan measure. Pairing it with the net-cash anchor keeps the spread out of deep-value territory, where every prior long leg was penalized by its HML and CMA loadings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesToEVRevenueQuality",
+      "expression": "SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))",
+      "hypothesis": "Revenue-based cheapness measured against total enterprise value, combined with improving cash conversion of revenue, identifies firms whose sales are real and whose capital structure does not disguise expensiveness.",
+      "expected_sign": "positive",
+      "reasoning": "The sales-yield plus revenue-quality channel produced the archive's best Sharpe (0.332) but a negative alpha because price-only deflation loads the long leg with highly levered value names; deflating by EV penalizes debt and tilts the long leg toward the net-cash firms that generated positive alpha. This isolates the deflator choice while holding the revenue-quality mechanism fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutCoverageRankGap",
+      "expression": "SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho))))",
+      "hypothesis": "A firm whose dividend yield rank far exceeds its accrual-purged cash-earnings yield rank is distributing cash it does not generate, and that unsustainable payout precedes dividend cuts and negative returns.",
+      "expected_sign": "negative",
+      "reasoning": "The level version of this payout-coverage idea had the strongest correctly-signed FMB slope in the archive (\u22122.44) but a wrong-signed decile alpha, which is what happens when a price-deflated level's extreme tail is populated by distressed rebound names rather than by the economically intended cases. Differencing two rank-transformed yields bounds the signal, makes the sorted deciles reflect the same monotone relation the FMB slope detects, and keeps the construction nearly value-factor neutral since both legs are price-deflated yields.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtFinancedAccrualTrap",
+      "expression": "SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), RATIO(SUB(DELTA(wcap, 1), dp), at))",
+      "hypothesis": "The prototypical value trap is cheap because of leverage, not because of mispricing, and its reported profits are accrual-driven; net debt per dollar of market value combined with high accruals identifies firms whose equity is an option on deteriorating accounting.",
+      "expected_sign": "negative",
+      "reasoning": "This makes the financing channel the explicit driver rather than a by-product, and it is the economic mirror of the net-cash signal that produced the archive's only positive alpha, so it should inherit a correctly signed (negative) alpha while sharpening the short side. Because both legs are elevated for levered accrual-heavy firms, the sort concentrates on a specific, identifiable trap population instead of the broad value universe.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashValueConservativeDep",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at)))",
+      "hypothesis": "Cheapness supported by net cash and by conservative depreciation policy identifies firms whose low price reflects understated accounting earnings rather than deteriorating economics.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the winning net-cash-plus-book-value frame but swaps the working-capital accrual screen for the long-lived-asset accrual channel, which had the archive's strongest FMB slope (3.98) and the highest coverage (0.137) because it needs no lagged data. If alpha stays near +0.03 while FMB rises above 3, the depreciation channel dominates the Sloan channel and should anchor the final refinement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossCashValueCleanAccruals",
+      "expression": "SUMRANK(RATIO(che, MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "The FF5-orthogonal component of the winning signal comes from holding hard, unmanipulable cash relative to price, not from low leverage per se.",
+      "expected_sign": "positive",
+      "reasoning": "Net cash mixes a cash-asset effect with a negative-leverage effect, and FF5 partially prices leverage through HML and CMA, so replacing net cash with gross cash-to-price cleanly attributes the +0.029 alpha to one of the two. This is a deliberate single-design-choice isolation whose outcome determines whether later generations should push the cash-asset story or the low-leverage story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashSalesEVRevenueQuality",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Combining the balance-sheet cash channel with revenue-based enterprise cheapness and clean accruals should retain the strongest cross-sectional signal in the archive while inheriting the alpha-generating cash dimension.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-to-EV plus revenue quality produced the best FMB t-stat (3.81) and Sharpe (0.36) but a mildly negative alpha, whereas net cash produced reliable positive alpha with weak cross-sectional power; the two channels have complementary failure modes. If both statistics strengthen relative to NetCashCleanValueTriple, the revenue multiple is a better cheapness anchor than book equity within the cash-backed frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashValuePercentAccruals",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(WINSOR(RATIO(SUB(DELTA(wcap, 1), dp), ABS(ib)), 1))))",
+      "hypothesis": "The economically relevant question is what share of *earnings* is accrual-based, not what share of assets; deflating accruals by the magnitude of income sharpens the value-trap screen.",
+      "expected_sign": "positive",
+      "reasoning": "Percent accruals were only ever tested inside the failed indicator-gating structure, where degenerate portfolios masked their information content, so this re-tests the measure inside the frame that demonstrably works. Winsorizing controls the small-earnings denominators that make percent accruals explosive, addressing the tail problem that flipped earlier level-based signals' decile spreads.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "OwnHistoryCheapCleanAccruals",
+      "expression": "SUMRANK(TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "A firm that is cheap relative to its own five-year valuation history, while its earnings remain cash-backed, has been de-rated without accounting deterioration \u2014 a mispricing rather than a fundamental repricing.",
+      "expected_sign": "positive",
+      "reasoning": "Time-series cheapness is measured within firm, so it carries little cross-sectional book-to-market tilt and should not be absorbed by HML the way every level-based value composite in the archive was. Pairing it with the accrual screen keeps the economic interaction intact: a de-rating is an opportunity only if the accounting behind current earnings has not degraded.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "LeveredPayoutAccrualTrap",
+      "expression": "SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))))",
+      "hypothesis": "The deepest value traps are cheap firms with contractual cash outflows \u2014 debt service plus a dividend \u2014 that exceed the cash earnings left after stripping accruals; such firms must cut, refinance or write down.",
+      "expected_sign": "negative",
+      "reasoning": "Its two components each produced correctly signed evidence but only one at a time (net debt gave alpha \u22120.025 with t = \u22122.10 and weak FMB; the payout-coverage rank gap gave FMB \u22122.14 with weak alpha), and they identify the same population through different statements, so the union should deliver both. Combining a stock measure of obligations with a flow measure of coverage also makes the short leg a coherent economic type rather than a statistical tail.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitCleanValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Cheapness is reliable when it is simultaneously backed by cash assets, unencumbered by debt claims, and not manufactured by working-capital accruals; the cash and debt dimensions carry distinct information and should be scored separately.",
+      "expected_sign": "positive",
+      "reasoning": "Gross cash to price delivered the strongest cross-sectional slope (3.89) while net cash delivered the strongest positive alpha (t = 2.23), which means the netted ratio conflates a cross-sectionally monotone cash effect with a skewed leverage effect. Ranking cash-to-price and debt-to-price as separate equally weighted channels should retain both sources of evidence at once instead of trading one against the other.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitConservativeDep",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(dp, at)))",
+      "hypothesis": "Conservative depreciation understates the earnings and book value of cash-rich, low-debt cheap firms, making their apparent cheapness a measurement artifact that reverses as cash flows are recognized.",
+      "expected_sign": "positive",
+      "reasoning": "The depreciation quality leg requires no lagged data, so it raises coverage from 0.110 to about 0.136 while previously producing FMB 3.48 and alpha +0.022 in the net-cash frame. Pairing it with the split cash/debt channels tests whether the breadth gain comes for free or whether the working-capital accrual screen is doing something the depreciation channel cannot.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutWeightedLeveredTrap",
+      "expression": "SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), SUMRANK(RATIO(SUB(ADD(dltt, dlc), che), MUL(prcc_f, csho)), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The value trap is a cheap firm distributing dividends it does not earn in cash while carrying net debt and accrual-inflated profits; payout coverage is the monotone core of the mechanism and leverage and accruals intensify it.",
+      "expected_sign": "negative",
+      "reasoning": "The equal-weighted version delivered the largest reliable alpha in the archive (\u22120.051, t = \u22123.79) but diluted the payout-coverage channel, which alone had FMB \u22122.14, down to a 50% share of a tail-driven net-debt ratio. Re-nesting so payout coverage carries half the weight and leverage and accruals a quarter each should convert the tail-concentrated portfolio result into a cross-sectionally monotone slope without giving up the short-leg alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapWithCashCoverage",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), lct))",
+      "hypothesis": "Cheapness is defensible when accrual-purged cash earnings can service near-term obligations; a cheap firm whose current liabilities dwarf its cash earnings faces forced asset sales and equity dilution regardless of book value.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new economic channel \u2014 near-term solvency coverage rather than balance-sheet composition \u2014 and it interacts the two themes multiplicatively in the denominator by measuring cash earnings against the current liabilities that generated much of the accrual. Current liabilities are almost never zero, so the ratio is far better behaved than the debt-to-price measures whose skewness has been suppressing FMB slopes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxConfirmedCashBackedValue",
+      "expression": "SUMRANK(RATIO(SUB(che, ADD(dltt, dlc)), MUL(prcc_f, csho)), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(txp, at)))",
+      "hypothesis": "Earnings that generate a tax liability have been validated by an outside authority, so cheap, cash-rich firms carrying taxes payable are reporting real income, whereas accrual-inflated earnings typically create book-tax differences and no tax accrual.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel is the one accrual dimension in the resource menu never yet tested, and it is economically distinct from working-capital accruals because it reflects external verification rather than management estimates. Slotting it into the net-cash frame that already produces positive alpha isolates whether tax confirmation adds quality information beyond the Sloan measure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitRevenueQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(GROWTH(RATIO(SUB(act, che), sale), 1))))",
+      "hypothesis": "Enterprise-level revenue cheapness with improving cash conversion of sales, held by a cash-rich and lowly levered firm, is the highest-quality form of value.",
+      "expected_sign": "positive",
+      "reasoning": "The sales-to-EV plus revenue-quality pair has produced the archive's best Sharpe ratios (0.356, 0.381) and FMB slopes above 3.2 but has never reached alpha t above 1.4, and the missing ingredient in every high-alpha signal has been an explicit low-debt channel. Adding the split cash/debt ranks tests whether the revenue-quality channel's raw return can be made FF5-orthogonal rather than absorbed by HML and CMA.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitDualQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(RATIO(dp, at), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Working-capital accruals and depreciation policy measure two independent dimensions of accounting quality \u2014 short-term estimate manipulation and long-term conservatism \u2014 and cheap, cash-backed firms clean on both are the most reliable value candidates.",
+      "expected_sign": "positive",
+      "reasoning": "Each quality leg separately produced strong results in the split frame (Sloan: alpha 0.047, t = 3.61; depreciation: FMB 4.02, alpha 0.041), and because one is a flow of estimates and the other a policy choice their errors should be largely uncorrelated, so combining them ought to raise the signal-to-noise of the quality dimension. This tests whether quality is one factor or two within the established frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitTaxQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(txp, at)))",
+      "hypothesis": "Earnings that generate a tax liability are externally verified, so tax-confirmed profits are the cheapest available proof that a low-priced firm's income is real rather than accrued.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel produced alpha 0.035 (t = 2.49) and FMB 3.52 inside the weaker netted-cash frame, so moving it into the split frame that has consistently added roughly one point of alpha t is the natural consolidation test. It also raises coverage to about 0.123 relative to 0.109 because it needs no lagged balance sheet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtSplitValueQualityBreadth",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), NEG(GROWTH(RATIO(SUB(act, che), sale), 1)))))",
+      "hypothesis": "Cheapness confirmed by two independent multiples (book and enterprise-level revenue) and quality confirmed by two independent accrual measures (earnings accruals and revenue collection) is the most robust expression of the cash-backed value idea.",
+      "expected_sign": "positive",
+      "reasoning": "The two highest-Sharpe signals in the archive both use the sales-to-EV plus revenue-quality pair, while the two highest-alpha-t signals use book value plus Sloan accruals, and these two pairs disagree on which statistic they maximize. Balancing all four channels against the split cash/debt block tests whether the disagreement reflects noise (in which case both statistics improve) or a genuine trade-off between the two value anchors.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualWeightedCashDebtValue",
+      "expression": "SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "If accounting quality is the binding constraint on whether cheapness pays, it deserves more than an equal share of the composite; doubling its weight should sharpen the separation between genuine value and value traps.",
+      "expected_sign": "positive",
+      "reasoning": "In the gen-6 winner the accrual screen carried only a quarter of the weight, so we do not yet know whether it is essential or incidental to the +0.047 alpha; this construction gives accruals half the weight and splits the remainder across cash, debt and book value. Comparing the two directly identifies the marginal contribution of the accrual theme, which matters for the economic interpretation of the interaction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedCleanValueConjunction",
+      "expression": "MIN(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Balance-sheet strength and cheap-clean accounting are complements: a firm must clear both hurdles, so the weaker of the two composite ranks should determine expected returns rather than their average.",
+      "expected_sign": "positive",
+      "reasoning": "Averaging lets an extreme cash position offset accrual-inflated earnings, which is precisely the substitution the value-trap story says should not be allowed, and the MIN operator enforces the conjunction while leaving both economic channels unchanged. An earlier MIN test was run only inside the HML-loaded book-value family where nothing worked, so this is the first informative test of the aggregation choice within the frame that does work.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashPoorLeveredPayoutTrap",
+      "expression": "SUMRANK(SUMRANK(NEG(RATIO(che, MUL(prcc_f, csho))), RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))), SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "The complete value trap is cash-poor and levered, distributing dividends that exceed accrual-purged cash earnings, with profits sustained by working-capital accruals; such firms should earn reliably negative abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "The trap side has produced large alphas (\u22120.051 and \u22120.038) but weak cross-sectional slopes because the skewed net-debt ratio dominated the composite; splitting cash and debt into separate ranks is exactly the fix that repaired the long side, and it is applied here for the first time to the short side. If both FMB and alpha strengthen, the mechanism is symmetric, which materially raises confidence that the long-side result is economic rather than a factor-loading artifact.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitValueBreadthTaxQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(sale, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), SUMRANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)), RATIO(txp, at))))",
+      "hypothesis": "Cheapness confirmed by both a book and a revenue multiple, and quality confirmed both internally (low accruals) and externally (a tax liability on reported profits), is the most robust form of cash-backed value.",
+      "expected_sign": "positive",
+      "reasoning": "The breadth composite delivered the best Sharpe (0.492) using revenue quality, while the tax leg delivered the best FMB (4.12) with higher coverage and no lag requirement, and the two quality proxies are economically independent \u2014 management estimates versus external verification. This tests whether the two best-performing channel sets are complements rather than substitutes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitEbitdaEVCleanValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "Operating-profit cheapness at the enterprise level, screened for working-capital accruals, is a better cheapness anchor than book equity because EBITDA is harder to inflate through balance-sheet estimates than book value is.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV is the one value anchor with a strong standalone FMB (3.59) that has never been tested inside the cash/debt split frame, and this holds every other channel fixed so the anchor choice is cleanly identified. If it beats the book-value version's alpha of 0.047, the final generation should anchor on operating profitability rather than book equity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitCashFlowStatementAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), RATIO(dp, at))))",
+      "hypothesis": "The gap between net income and operating cash flow is the most complete measure of accrual reliance because it captures non-current as well as working-capital accruals, so it should screen value traps better than the balance-sheet Sloan proxy.",
+      "expected_sign": "positive",
+      "reasoning": "This canonical accrual definition was blocked in generation 0 for lacking a theme-exclusive accruals variable and has never been tested since; pairing it with depreciation intensity satisfies that constraint while adding the long-lived-asset dimension. The trade-off is coverage, since oancf begins later, so the comparison against the wcap-based version quantifies whether measurement completeness is worth the sample loss.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxUnconfirmedLeveredTrap",
+      "expression": "SUMRANK(SUMRANK(NEG(RATIO(che, MUL(prcc_f, csho))), RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))), SUMRANK(SUMRANK(SUB(RANK(RATIO(dvc, MUL(prcc_f, csho))), RANK(RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))), NEG(RATIO(txp, at))), RATIO(SUB(DELTA(wcap, 1), dp), at)))",
+      "hypothesis": "A cash-poor, levered firm paying dividends it does not earn, whose accrual-driven profits generate no tax liability, is reporting income that exists only on paper and should underperform reliably.",
+      "expected_sign": "negative",
+      "reasoning": "The trap composite already produces the archive's largest abnormal return (alpha \u22120.067, t = \u22124.41) but its FMB stalls near \u22121.8 because the effect concentrates in the extreme tail; the absence of a tax liability is a broadly distributed, monotone indicator of unverified earnings that should extend the signal into the middle of the cross-section. Adding it tests whether the short-side mechanism can be made cross-sectionally monotone without sacrificing portfolio alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutralSplitCleanValue",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(che, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho))))), SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "The cash-backed clean-value effect is a firm-level accounting-quality phenomenon, not a sector bet on cash-rich technology firms versus levered utilities and financials.",
+      "expected_sign": "positive",
+      "reasoning": "Every channel in the winning composite has a strong industry component \u2014 cash holdings, leverage capacity, working-capital intensity and depreciation all vary systematically by sector \u2014 so the +0.047 alpha could partly be a static industry tilt that FF5 does not span. Industry z-scoring each channel is the decisive robustness test: if alpha and FMB survive, the final generation can commit to the frame with confidence.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitHardBookValue",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho)))",
+      "hypothesis": "Rather than screening cheapness with a separate accrual score, the accrual correction belongs inside the value measure itself: book equity stripped of non-cash working capital is the portion of book value that cannot be written down.",
+      "expected_sign": "positive",
+      "reasoning": "This embeds the quality adjustment in the numerator of the value ratio, giving the corrected value channel half the total weight instead of splitting weight between value and quality, which is a structurally different way to express the same interaction. Because gen-7 showed that adding weight to a standalone accrual channel hurt alpha, the alternative of building quality into the value measure is the natural remaining design question.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitEbitdaEVHardBook",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))))",
+      "hypothesis": "Cheapness is trustworthy when it appears both in operating profit per dollar of enterprise value and in book equity stripped of soft non-cash working capital, held by a cash-rich, low-debt firm.",
+      "expected_sign": "positive",
+      "reasoning": "These are the archive's two best-performing value channels \u2014 EBITDA/EV owns the strongest cross-sectional slope and Sharpe, hard book-to-market the strongest alpha t-statistic \u2014 and they contaminate differently, since one bypasses the balance sheet entirely while the other cleans it. Combining exactly four equally weighted channels respects the finding that quarter-weights maximize alpha and that further breadth dilutes it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitEbitdaEVCashFlowAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(SUB(ib, oancf), dpc), at))))",
+      "hypothesis": "The sharpest measure of accrual reliance is net income minus operating cash flow with depreciation added back, since it captures every non-depreciation accrual directly from the cash-flow statement without balance-sheet differencing error.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow-statement accrual definition delivered the archive's largest alpha (0.060) but was bundled with book value and depreciation, leaving its slope weak (2.01); pairing it instead with the highest-slope value anchor should supply the cross-sectional monotonicity it lacked. Adding depreciation back isolates exactly the discretionary accruals the value-trap story concerns, rather than mixing them with capital-intensity effects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitHardBookCashFlowAccruals",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho)), NEG(RATIO(ADD(SUB(ib, oancf), dpc), at))))",
+      "hypothesis": "Cheap firms whose book value consists of hard assets and whose earnings are confirmed by operating cash flow are the purest expression of quality-supported value; the balance sheet and the cash-flow statement must agree.",
+      "expected_sign": "positive",
+      "reasoning": "This pairs the two ingredients with the highest alpha t-statistics in the archive (4.43 and 3.59) and they are conceptually complementary: one removes soft assets from the stock measure of value, the other removes soft earnings from the flow measure of profit. If alpha exceeds 0.055 with t above 4, the interaction is confirmed on both financial statements simultaneously rather than through a single accrual proxy.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitEbitdaEVHardBookSloan",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))), NEG(RATIO(SUB(DELTA(wcap, 1), dp), at))))",
+      "hypothesis": "An explicit flow-based accrual screen still adds information beyond an accrual-corrected book value, because stripping soft assets from the balance sheet says nothing about how fast those assets are currently being built.",
+      "expected_sign": "positive",
+      "reasoning": "Signal 1 embeds quality in the value measure only as a stock correction, so this variant asks whether the change in working capital \u2014 the flow that predicts reversal \u2014 remains incrementally informative once the stock correction is applied. The comparison of the two is the last open question about how the accruals theme should enter the composite.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitAccrualPurgedCashEarningsYield",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), RATIO(SUB(ADD(ib, dp), DELTA(wcap, 1)), MUL(prcc_f, csho)))",
+      "hypothesis": "Value and quality can be fused into a single channel \u2014 the price paid per dollar of accrual-purged cash earnings \u2014 and given half the total weight alongside the cash and debt channels, without needing separate value and quality ranks.",
+      "expected_sign": "positive",
+      "reasoning": "This yield failed badly on its own (alpha \u22120.024, t = \u22122.46) because a price-deflated cash-earnings measure is heavily HML-loaded, so testing it inside the split frame identifies whether the cash and debt channels are sufficient to neutralize that loading. It is the most parsimonious version of the whole research idea, and if it matches the four-channel composites, the mechanism reduces to cash-backed cash earnings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SplitNoLagBroadCoverage",
+      "expression": "SUMRANK(SUMRANK(RATIO(che, MUL(prcc_f, csho)), NEG(RATIO(ADD(dltt, dlc), MUL(prcc_f, csho)))), SUMRANK(SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(SUB(ceq, SUB(SUB(act, che), lct)), MUL(prcc_f, csho))), SUMRANK(RATIO(dp, at), RATIO(txp, at))))",
+      "hypothesis": "The cash-backed clean-value effect can be measured entirely from current-year statements \u2014 conservative depreciation and a tax liability substitute for lagged accrual changes \u2014 extending the signal to firms with only one year of data.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal in the archive is capped near 0.110 coverage by the two-year requirement of DELTA(wcap, 1), whereas depreciation intensity and taxes payable are contemporaneous quality proxies that previously reached 0.136 and 0.123 coverage with FMB above 4. This tests whether roughly a quarter more firm-months can be signalled without losing the abnormal return, which matters for whether the result is an implementable strategy or a narrow-sample artifact.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "accruals",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_accrual"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashBackedBookToMarket",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "ValueGatedByCashSurplus",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),indicator(neg(ratio(sub(ib,oancf),at)),0))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualYieldOnPrice",
+      "metadata": {
+        "normalized_expression": "ratio(sub(ib,oancf),mul(prcc_f,csho))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EVYieldCleanWorkingCapital",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(delta(sub(sub(act,che),sub(lct,dlc)),1),at)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashMinusEarningsYieldGap",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(oancf,mul(prcc_f,csho))),rank(ratio(ib,mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "EarningsYieldAccrualStability",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),neg(vol(ratio(sub(ib,oancf),at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ValueCleanSloanAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SloanCashEarningsYield",
+      "metadata": {
+        "normalized_expression": "ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualLoadPerMarketValue",
+      "metadata": {
+        "normalized_expression": "ratio(sub(delta(wcap,1),dp),mul(prcc_f,csho))",
+        "variables": [
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapAndCleanConjunction",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ceq,mul(prcc_f,csho))),rank(neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CumulativeBloatValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ts_sum(ratio(sub(delta(wcap,1),dp),at),5)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SalesYieldRevenueQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sale,mul(prcc_f,csho)),neg(growth(ratio(sub(act,che),sale),1)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashVsAccrualYieldWedge",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho))),rank(ratio(ib,mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ValueScaledAccrualLoad",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),zscore(winsor(ratio(sub(delta(wcap,1),dp),at),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutralCleanValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ceq,mul(prcc_f,csho))),neg(ind_zscore(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConservativeDepreciationValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(dp,at))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HardBookToMarket",
+      "metadata": {
+        "normalized_expression": "ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho))",
+        "variables": [
+          "act",
+          "ceq",
+          "che",
+          "csho",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RevenueCashQualityValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(revt,mul(prcc_f,csho)),ratio(add(recch,invch),at))",
+        "variables": [
+          "at",
+          "csho",
+          "invch",
+          "prcc_f",
+          "recch",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapFirmPercentAccruals",
+      "metadata": {
+        "normalized_expression": "mul(indicator(zscore(ratio(ceq,mul(prcc_f,csho))),0),winsor(ratio(sub(delta(wcap,1),dp),abs(ib)),1))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dp",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapFirmCashStatementAccruals",
+      "metadata": {
+        "normalized_expression": "mul(indicator(zscore(ratio(ceq,mul(prcc_f,csho))),0),neg(ratio(add(recch,add(invch,apalch)),at)))",
+        "variables": [
+          "apalch",
+          "at",
+          "ceq",
+          "csho",
+          "invch",
+          "prcc_f",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ValueAccrualImprovement",
+      "metadata": {
+        "normalized_expression": "mul(indicator(zscore(ratio(ceq,mul(prcc_f,csho))),0),neg(delta(ratio(sub(delta(wcap,1),dp),at),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EVYieldLowWorkingCapitalStock",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(wcap,at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutNotCoveredByCashEarnings",
+      "metadata": {
+        "normalized_expression": "ratio(sub(dvc,sub(add(ib,dp),delta(wcap,1))),mul(prcc_f,csho))",
+        "variables": [
+          "csho",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashValueCleanAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EVYieldSloanAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashCleanValueTriple",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashAccrualStability",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),neg(vol(ratio(sub(delta(wcap,1),dp),at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SalesToEVRevenueQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(growth(ratio(sub(act,che),sale),1)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutCoverageRankGap",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(dvc,mul(prcc_f,csho))),rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtFinancedAccrualTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(add(dltt,dlc),che),mul(prcc_f,csho)),ratio(sub(delta(wcap,1),dp),at))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashValueConservativeDep",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(dp,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossCashValueCleanAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(che,mul(prcc_f,csho)),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashSalesEVRevenueQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),sumrank(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashValuePercentAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(winsor(ratio(sub(delta(wcap,1),dp),abs(ib)),1))))",
+        "variables": [
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OwnHistoryCheapCleanAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ts_rank(ratio(ceq,mul(prcc_f,csho)),5),neg(ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LeveredPayoutAccrualTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(add(dltt,dlc),che),mul(prcc_f,csho)),sub(rank(ratio(dvc,mul(prcc_f,csho))),rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho)))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitCleanValue",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitConservativeDep",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(dp,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutWeightedLeveredTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(sub(rank(ratio(dvc,mul(prcc_f,csho))),rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho)))),sumrank(ratio(sub(add(dltt,dlc),che),mul(prcc_f,csho)),ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapWithCashCoverage",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(sub(add(ib,dp),delta(wcap,1)),lct))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxConfirmedCashBackedValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(txp,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitRevenueQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(growth(ratio(sub(act,che),sale),1))))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitDualQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),sumrank(ratio(dp,at),neg(ratio(sub(delta(wcap,1),dp),at)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitTaxQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(txp,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtSplitValueQualityBreadth",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),sumrank(neg(ratio(sub(delta(wcap,1),dp),at)),neg(growth(ratio(sub(act,che),sale),1)))))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "sale",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualWeightedCashDebtValue",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(delta(wcap,1),dp),at)),sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedCleanValueConjunction",
+      "metadata": {
+        "normalized_expression": "min(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashPoorLeveredPayoutTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(neg(ratio(che,mul(prcc_f,csho))),ratio(add(dltt,dlc),mul(prcc_f,csho))),sumrank(sub(rank(ratio(dvc,mul(prcc_f,csho))),rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho)))),ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitValueBreadthTaxQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),sumrank(neg(ratio(sub(delta(wcap,1),dp),at)),ratio(txp,at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "sale",
+          "txp",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitEbitdaEVCleanValue",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitCashFlowStatementAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ceq,mul(prcc_f,csho)),sumrank(neg(ratio(sub(ib,oancf),at)),ratio(dp,at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxUnconfirmedLeveredTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(neg(ratio(che,mul(prcc_f,csho))),ratio(add(dltt,dlc),mul(prcc_f,csho))),sumrank(sumrank(sub(rank(ratio(dvc,mul(prcc_f,csho))),rank(ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho)))),neg(ratio(txp,at))),ratio(sub(delta(wcap,1),dp),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "txp",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutralSplitCleanValue",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(che,mul(prcc_f,csho))),neg(ind_zscore(ratio(add(dltt,dlc),mul(prcc_f,csho))))),sumrank(ind_zscore(ratio(ceq,mul(prcc_f,csho))),neg(ind_zscore(ratio(sub(delta(wcap,1),dp),at)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitHardBookValue",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho)))",
+        "variables": [
+          "act",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitEbitdaEVHardBook",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho))))",
+        "variables": [
+          "act",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitEbitdaEVCashFlowAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(add(sub(ib,oancf),dpc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dpc",
+          "ebitda",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitHardBookCashFlowAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho)),neg(ratio(add(sub(ib,oancf),dpc),at))))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dpc",
+          "ib",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitEbitdaEVHardBookSloan",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho))),neg(ratio(sub(delta(wcap,1),dp),at))))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitAccrualPurgedCashEarningsYield",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),ratio(sub(add(ib,dp),delta(wcap,1)),mul(prcc_f,csho)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SplitNoLagBroadCoverage",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(che,mul(prcc_f,csho)),neg(ratio(add(dltt,dlc),mul(prcc_f,csho)))),sumrank(sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),ratio(sub(ceq,sub(sub(act,che),lct)),mul(prcc_f,csho))),sumrank(ratio(dp,at),ratio(txp,at))))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "txp"
+        ]
+      }
+    }
+  ]
+}

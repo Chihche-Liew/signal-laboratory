@@ -1,0 +1,3304 @@
+{
+  "pair": "accrual_intangible",
+  "evaluated": [
+    {
+      "name": "Goodwill Accrual Collision",
+      "expression": "MUL(RANK(WINSOR(RATIO(DELTA(gdwl, 1), LAG(at, 1)), 1)), RANK(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms combining large goodwill additions with high earnings accruals subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill additions identify acquisition-driven intangible growth, where purchase accounting creates substantial estimation discretion. When that growth coincides with earnings materially exceeding operating cash flow, reported performance is more likely to reflect acquisition accounting than productive intangible capital.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -1.4748784244464,
+      "ls_alpha": 0.0011988508081801253,
+      "ls_talpha": 0.10059884070196279,
+      "ls_sharpe": 0.056860829082711395,
+      "coverage": 0.07078011097655905,
+      "error": null
+    },
+    {
+      "name": "Persistent Innovation Low-Noise",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), RANK(NEG(VOL(RATIO(SUB(ib, oancf), at), 5))))",
+      "hypothesis": "Firms combining sustained R&D investment with a stable earnings-to-cash reconciliation subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Cumulative R&D intensity identifies a persistent investment program rather than a one-period spending spike. Low volatility in accrual intensity indicates that the program is accompanied by less accounting noise, helping separate repeatable innovation investment from unstable accrual-driven earnings.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.6575738679118515,
+      "ls_alpha": 0.039879423308022924,
+      "ls_talpha": 2.9323658999140476,
+      "ls_sharpe": 0.29582435537024593,
+      "coverage": 0.08051537566852976,
+      "error": null
+    },
+    {
+      "name": "R&D Dominance over Accounting Wedge",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), at), 3)), RATIO(MA(RATIO(COALESCE(xrd, 0), at), 3), ADD(MA(RATIO(COALESCE(xrd, 0), at), 3), ABS(MA(RATIO(SUB(ib, oancf), at), 3)))))",
+      "hypothesis": "Firms whose sustained R&D investment is large relative to the magnitude of their accounting accrual wedge subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The ratio treats R&D and the absolute earnings-to-cash gap as competing explanations for accounting opacity, rather than combining two independent anomaly scores. The outer R&D rank prevents a trivially small denominator from identifying firms with negligible intangible investment as high-quality innovators.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.8979683332063398,
+      "ls_alpha": -0.01731028176529692,
+      "ls_talpha": -0.6722604204539238,
+      "ls_sharpe": -2.658796459564562,
+      "coverage": 0.09121143907144219,
+      "error": null
+    },
+    {
+      "name": "Intangible-Scaled Working-Capital Mismatch",
+      "expression": "MUL(SUMRANK(MA(RATIO(COALESCE(xrd, 0), sale), 3), RATIO(intan, at)), ZSCORE(WINSOR(RATIO(DELTA(wcap, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "Positive working-capital accruals predict especially low returns as a firm's expensed and booked intangible footprint increases.",
+      "expected_sign": "negative",
+      "reasoning": "Intangible-based business models should generally require less incremental working capital, so a large buildup is more anomalous when the intangible footprint is high. The continuous intangible weight preserves cross-sectional variation and makes the long and short tails reflect opposing working-capital outcomes among intangible firms without hard-zeroing most observations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.1076426511622723,
+      "ls_alpha": 0.014476909764445068,
+      "ls_talpha": 1.5038860801448524,
+      "ls_sharpe": 0.028514598141445743,
+      "coverage": 0.10220683953717392,
+      "error": null
+    },
+    {
+      "name": "Intangible Sales Realization",
+      "expression": "MUL(RANK(RATIO(intan, at)), RANK(WINSOR(ADD(GROWTH(sale, 1), RATIO(recch, LAG(sale, 1))), 1)))",
+      "hypothesis": "Intangible-intensive firms with sales growth supported by receivables collection rather than receivables accumulation subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Because recch is negative when receivables increase, adding it to sales growth correctly penalizes revenue accompanied by a receivables buildup and rewards improved collection. The interaction concentrates this cash-realization test on firms whose intangible assets should generate scalable customer demand.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.3352393667646364,
+      "ls_alpha": -0.006666203485460081,
+      "ls_talpha": -0.4986596772599049,
+      "ls_sharpe": -0.022973888502433627,
+      "coverage": 0.0685948265970628,
+      "error": null
+    },
+    {
+      "name": "Booked-Intangible Cash-Earnings Validation",
+      "expression": "MUL(RANK(RATIO(intan, at)), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Cash flow exceeding reported earnings predicts higher returns particularly among firms with substantial booked intangible assets.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing operating cash profitability with the cash-minus-earnings wedge removes the generic profitability level that FF5's RMW factor is likely to absorb. The continuously weighted interaction instead tests whether intangible-heavy firms are rewarded when cash generation validates conservatively reported earnings and penalized when earnings rely on accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.575958378660791,
+      "ls_alpha": 0.04234626727160536,
+      "ls_talpha": 2.8613013504958342,
+      "ls_sharpe": 0.2579965906868749,
+      "coverage": 0.08339828772183548,
+      "error": null
+    },
+    {
+      "name": "Industry-Relative Intangible Cash Validation",
+      "expression": "MUL(IND_RANK(RATIO(intan, at)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Within industries, cash flow exceeding reported earnings is especially favorable for firms with unusually high booked-intangible intensity.",
+      "expected_sign": "positive",
+      "reasoning": "The prior cash-earnings validation signal generated strong FF5 alpha but weaker cross-sectional evidence, potentially because intangible intensity differs structurally across industries. Industry-relative scaling focuses the interaction on conservative cash realization among comparable business models rather than on sector allocation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.6020817924293569,
+      "ls_alpha": 0.012160925030634068,
+      "ls_talpha": 1.00780116748091,
+      "ls_sharpe": 0.20453395071064012,
+      "coverage": 0.08334597338510699,
+      "error": null
+    },
+    {
+      "name": "Lagged Intangible Cash Payoff",
+      "expression": "MUL(RANK(WINSOR(LAG(RATIO(DELTA(intan, 1), LAG(at, 1)), 1), 1)), RANK(WINSOR(DELTA(RATIO(oancf, at), 1), 1)))",
+      "hypothesis": "Prior increases in booked intangible capital followed by improving operating cash flow subsequently predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The lag structure tests realized payoff from intangible investment rather than rewarding intangible accumulation or cash profitability independently. Requiring cash-flow improvement after the balance-sheet investment helps distinguish productive intangible deployment from capitalization, acquisition accounting, or unsupported asset growth.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.686190055280582,
+      "ls_alpha": 0.024852479412149988,
+      "ls_talpha": 2.25728554747817,
+      "ls_sharpe": 0.3396437556182383,
+      "coverage": 0.06726112056277432,
+      "error": null
+    },
+    {
+      "name": "Innovation Accrual-Dependence Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), RANK(TS_MIN(WINSOR(RATIO(SUB(oancf, ib), at), 1), 5)))",
+      "hypothesis": "Firms sustaining high R&D intensity without any severe earnings-over-cash episode subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The historical minimum of cash minus earnings measures the innovation program's worst accrual-dependence episode, rather than merely shortening the prior volatility window. This distinguishes consistently cash-supported innovation from a low-volatility but persistently accrual-supported reporting process.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.8785958912151444,
+      "ls_alpha": 0.035504870315659215,
+      "ls_talpha": 2.6208497561580666,
+      "ls_sharpe": 0.17459513324760548,
+      "coverage": 0.08964974777679546,
+      "error": null
+    },
+    {
+      "name": "Intangible Signed Non-Amortization Accrual",
+      "expression": "MUL(IND_RANK(RATIO(intan, at)), IND_ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Positive non-amortization accruals predict lower returns especially among firms with high intangible intensity relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Adding depreciation and amortization to earnings minus cash flow isolates the signed residual accrual rather than discarding its direction with an absolute value. Industry-relative scaling retains the strong negative working-capital mechanism while reducing sector-driven portfolio extremes that may have caused the prior Fama-MacBeth and long-short evidence to disagree.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.5267456482409759,
+      "ls_alpha": -0.012118343323765275,
+      "ls_talpha": -1.0880312985847804,
+      "ls_sharpe": -0.1982030554671579,
+      "coverage": 0.08261553316873406,
+      "error": null
+    },
+    {
+      "name": "Organic-over-Acquired Cash Validation",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), gdwl))), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Firms oriented toward organic R&D rather than acquired goodwill earn higher returns when operating cash flow validates conservatively reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The organic-investment share replaces goodwill quantity, which largely proxies for acquisition intensity and asset growth, with the composition of intangible formation. Cash-minus-earnings then tests whether that organic orientation is supported by realized cash rather than accrual-driven income.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.8644156140216837,
+      "ls_alpha": 0.025342525814985223,
+      "ls_talpha": 1.881474914781441,
+      "ls_sharpe": 0.19878231424465043,
+      "coverage": 0.0627429469542944,
+      "error": null
+    },
+    {
+      "name": "Industry-Relative Pre-R&D Cash Surplus",
+      "expression": "IND_ZSCORE(WINSOR(MA(RATIO(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), at), 3), 1))",
+      "hypothesis": "Firms with persistently high pre-R&D operating cash generation relative to reported earnings subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The expression directly reconstructs pre-R&D cash surplus as operating cash flow plus R&D less accounting income, with every component scaled by assets inside one channel. Removing the separate R&D-intensity multiplier eliminates the squared-R&D loading and mismatched scalers, while industry standardization limits domination by structurally R&D-heavy sectors.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2922448268176443,
+      "ls_alpha": 0.03499010003383016,
+      "ls_talpha": 2.718746488264933,
+      "ls_sharpe": 0.2645024771425905,
+      "coverage": 0.09115912473471369,
+      "error": null
+    },
+    {
+      "name": "Innovation Accrual Creep",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), ZSCORE(WINSOR(TREND(RATIO(SUB(ib, oancf), at), 5), 1)))",
+      "hypothesis": "A sustained increase in accrual dependence predicts lower returns particularly among firms maintaining large long-horizon R&D programs.",
+      "expected_sign": "negative",
+      "reasoning": "Prior results favor persistent innovation when the earnings-to-cash relation is stable or conservatively bounded. This signal instead tests a directional failure mode: reported earnings gradually becoming more dependent on accruals while the firm continues to incur intangible-investment expenses.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.0529162948230089,
+      "ls_alpha": -0.03603858990461761,
+      "ls_talpha": -2.7031541185726993,
+      "ls_sharpe": -0.35150749962122196,
+      "coverage": 0.07215101487749571,
+      "error": null
+    },
+    {
+      "name": "Intangible Revenue Accrual Burden",
+      "expression": "MUL(RANK(RATIO(intan, at)), ZSCORE(RATIO(NEG(recch), ADD(ABS(recch), ABS(DELTA(sale, 1))))))",
+      "hypothesis": "Receivables accumulation that absorbs a large share of contemporaneous sales changes predicts lower returns among intangible-intensive firms.",
+      "expected_sign": "negative",
+      "reasoning": "Because recch is negative when receivables increase, its negation correctly treats customer-credit expansion as a positive accrual burden. Scaling that burden by the combined magnitude of receivables and sales changes distinguishes cash-poor revenue recognition from productive demand growth without repeating the failed sales-growth composite.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.8866302793892991,
+      "ls_alpha": -0.011286894677643211,
+      "ls_talpha": -1.0559966800338902,
+      "ls_sharpe": -0.27368171625099125,
+      "coverage": 0.0692998835257923,
+      "error": null
+    },
+    {
+      "name": "Organic Innovation Working-Capital Pressure",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), IND_ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Positive non-amortization accruals predict lower returns particularly for firms with persistent organic R&D intensity.",
+      "expected_sign": "negative",
+      "reasoning": "The prior signed residual signal was directionally consistent but weak when conditioned on booked intangibles, which mix acquired assets with amortization effects. Conditioning instead on persistent R&D focuses on businesses whose intangible production should require relatively little working-capital support, while industry-standardizing the signed residual limits sector-driven portfolio extremes.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.2695658361335118,
+      "ls_alpha": -0.018637297401222115,
+      "ls_talpha": -1.4180791531721708,
+      "ls_sharpe": -0.28741166957749786,
+      "coverage": 0.08822709705165892,
+      "error": null
+    },
+    {
+      "name": "Nonoverlapping R&D Cash Realization",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(WINSOR(TREND(RATIO(SUB(oancf, ib), at), 3), 1)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by a subsequent improvement in cash flow relative to accounting earnings predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Lagging the three-period R&D window by three periods makes it nonoverlapping with the current three-period cash-reconciliation trend, implementing a genuine investment-then-realization sequence. Using a subsequent trend rather than a one-period change should also reduce noisy portfolio turnover and strengthen alignment between the cross-sectional slope and long-short evidence.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.2245031713249834,
+      "ls_alpha": 0.05316156717524576,
+      "ls_talpha": 3.5423043122391213,
+      "ls_sharpe": 0.4996406784148955,
+      "coverage": 0.06626013164639719,
+      "error": null
+    },
+    {
+      "name": "Identifiable-Capitalization Working-Capital Support",
+      "expression": "MUL(RANK(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1)), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Firms increasing identifiable booked intangibles relative to expensed R&D underperform when their earnings are also supported by positive non-amortization accruals.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting goodwill from total intangibles removes the component most directly tied to acquisition intensity and the failed goodwill-growth channel. Removing depreciation from the earnings-to-cash reconciliation further focuses the second leg on signed working-capital support, so the interaction tests simultaneous capitalization and operating-accrual aggressiveness.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.9349179990170224,
+      "ls_alpha": -0.05696180605184058,
+      "ls_talpha": -4.068999531125738,
+      "ls_sharpe": -0.3957867688487832,
+      "coverage": 0.06590254716132297,
+      "error": null
+    },
+    {
+      "name": "Cash-Validated Expense Mix",
+      "expression": "MUL(RANK(RATIO(TS_SUM(xrd, 3), ADD(TS_SUM(xrd, 3), TS_SUM(dp, 3)))), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "A high share of immediately expensed R&D predicts higher returns when operating cash flow also exceeds reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-minus-earnings validation converts the expense-mix ratio from an isolated R&D-intensity rescaling into a joint test of conservative accounting and realized cash support. Omitting zero imputation for R&D avoids creating a large artificial point mass of nonreporters, while the common three-period aggregation makes the expense components comparable.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.528317301979818,
+      "ls_alpha": 0.026423952274247795,
+      "ls_talpha": 2.4647786651875188,
+      "ls_sharpe": 0.21112856899872787,
+      "coverage": 0.049458046171993855,
+      "error": null
+    },
+    {
+      "name": "Nonoverlapping R&D Operating-Cash Payoff",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(WINSOR(TREND(RATIO(oancf, at), 3), 1)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by a nonoverlapping improvement in operating cash profitability predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior nonoverlapping cash-reconciliation signal produced strong evidence in both Fama-MacBeth and portfolio tests. Replacing cash-minus-earnings with an operating-cash trend isolates whether the payoff reflects actual cash realization rather than changes in book earnings or depreciation accruals.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.9496790703602722,
+      "ls_alpha": 0.0490933146743648,
+      "ls_talpha": 4.158858082172008,
+      "ls_sharpe": 0.4074779100725724,
+      "coverage": 0.06626260806470385,
+      "error": null
+    },
+    {
+      "name": "R&D-Accrual Offset Smoothing",
+      "expression": "WINSOR(MUL(ZSCORE(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1)), ZSCORE(WINSOR(DELTA(RATIO(SUB(ib, oancf), at), 1), 1))), 1)",
+      "hypothesis": "Firms whose accrual changes systematically offset the earnings effects of changes in R&D expense subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D increase depresses current earnings, while a simultaneous positive accrual change offsets that effect; an R&D cut paired with an accrual decrease produces the analogous offset in reverse. The product is therefore high for both forms of expense-accrual smoothing and is not merely an additive combination of R&D and accrual levels.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.01871515305180282,
+      "ls_alpha": -0.03936294354386224,
+      "ls_talpha": -2.546965346287863,
+      "ls_sharpe": -0.13942254784124095,
+      "coverage": 0.0811476878095007,
+      "error": null
+    },
+    {
+      "name": "Innovation Operating-Accrual Funding Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(RATIO(NEG(ADD(ADD(recch, invch), apalch)), ADD(ABS(recch), ADD(ABS(invch), ABS(apalch))))))",
+      "hypothesis": "Persistent R&D firms underperform when receivables and inventory accumulation absorb cash beyond the financing supplied by accounts payable.",
+      "expected_sign": "negative",
+      "reasoning": "The signed numerator measures net operating cash absorption from receivables, inventory, and supplier financing, while the absolute-flow denominator limits scale effects. This decomposition may improve on the broad working-capital interaction by separating commercially meaningful operating components from other current-account changes.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.029495317074645148,
+      "ls_alpha": -0.002106421305932988,
+      "ls_talpha": -0.176241096615786,
+      "ls_sharpe": -0.029148579725663572,
+      "coverage": 0.05658208253572027,
+      "error": null
+    },
+    {
+      "name": "Capitalization Regime Break",
+      "expression": "MUL(TS_RANK(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "An unusually large within-firm shift toward identifiable intangible capitalization predicts lower returns when accompanied by positive working-capital accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The prior capitalization-support signal generated very strong negative portfolio alpha but a weaker linear cross-sectional slope, suggesting an episodic regime-shift effect. Ranking the capitalization-minus-expensing measure within the firm's own history targets unusual accounting transitions rather than persistent acquisition-oriented business models.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.1129895360097628,
+      "ls_alpha": -0.031441957369203695,
+      "ls_talpha": -2.4856046099764173,
+      "ls_sharpe": -0.3078710932279703,
+      "coverage": 0.05751290626674162,
+      "error": null
+    },
+    {
+      "name": "Identifiable-Intangible Amortization Shortfall",
+      "expression": "MUL(RANK(WINSOR(LAG(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), 1), 1)), ZSCORE(WINSOR(NEG(DELTA(RATIO(dp, at), 1)), 1)))",
+      "hypothesis": "Prior additions to identifiable intangible assets predict lower returns when they are followed by declining depreciation and amortization recognition.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the previously repeated cash-validation leg with a lead-lag test of whether capitalized identifiable intangibles generate the expected subsequent noncash expense. A high score identifies firms adding non-goodwill intangible assets while reducing depreciation and amortization, consistent with delayed expense recognition rather than conservative accounting.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.9930809642585918,
+      "ls_alpha": -0.02046611902450505,
+      "ls_talpha": -1.3929524501053614,
+      "ls_sharpe": -0.25191678354921127,
+      "coverage": 0.06074272325117403,
+      "error": null
+    },
+    {
+      "name": "Expensing-Regime Cash Funding Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(TS_MIN(WINSOR(RATIO(oancf, at), 1), 3)))",
+      "hypothesis": "Firms using an R&D-heavy expensing regime and maintaining a strong operating-cash floor subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal selects one coherent accounting regime\u2014immediate R&D expensing\u2014rather than averaging it with the conceptually opposed booked-intangible regime. Conditioning that expense mix on the worst recent operating-cash outcome distinguishes sustainably funded innovation from firms whose high R&D share simply reflects weak depreciable capital or reporter status.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.5434429299636045,
+      "ls_alpha": 0.05166984100384053,
+      "ls_talpha": 3.8524356641235933,
+      "ls_sharpe": 0.4997150116002207,
+      "coverage": 0.08982418049127186,
+      "error": null
+    },
+    {
+      "name": "Liability-Adjusted Expensing Cash Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(TS_MIN(WINSOR(RATIO(SUB(SUB(oancf, apalch), txach), at), 1), 3)))",
+      "hypothesis": "Firms using an R&D-heavy expensing regime and maintaining strong operating cash flow after removing payable and tax-accrual financing subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The strong expensing-regime cash-floor result may partly reflect operating cash temporarily boosted by unpaid suppliers or accrued taxes. Removing those liability changes tests whether the innovation program is supported by internally realized cash rather than by working-capital financing.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.500244139091887,
+      "ls_alpha": 0.022823444508579885,
+      "ls_talpha": 1.5685586714279844,
+      "ls_sharpe": 0.33898500717590724,
+      "coverage": 0.05418707648087751,
+      "error": null
+    },
+    {
+      "name": "Post-Innovation Cash-Reconciliation Floor",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(TS_MIN(WINSOR(RATIO(SUB(oancf, ib), at), 1), 3)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by consistently cash-supported earnings predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Prior nonoverlapping signals show that cash improvement after R&D has strong cross-sectional and portfolio evidence. Using the subsequent period's minimum cash-minus-earnings outcome tests whether that realization is durable rather than driven by a single favorable endpoint or trend estimate.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.1687268315011514,
+      "ls_alpha": 0.04375708219587996,
+      "ls_talpha": 3.2127424450222097,
+      "ls_sharpe": 0.2806698499918306,
+      "coverage": 0.07136944694149958,
+      "error": null
+    },
+    {
+      "name": "Dual Earnings Support",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(DELTA(RATIO(SUB(ib, oancf), at), 1), 1)))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and increasing accrual support for earnings subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both an R&D cut and an accrual increase mechanically raise current accounting earnings, making their conjunction a focused earnings-management mechanism. Isolating this quadrant avoids the symmetric smoothing construction that generated strong portfolio alpha but an approximately zero Fama-MacBeth slope.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.4333185764273755,
+      "ls_alpha": -0.017462381816180473,
+      "ls_talpha": -1.6948388451893879,
+      "ls_sharpe": -0.3036271593075912,
+      "coverage": 0.0811476878095007,
+      "error": null
+    },
+    {
+      "name": "Innovation Gross-Profit Cash Conversion",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(WINSOR(RATIO(TS_SUM(oancf, 3), TS_SUM(SUB(sale, cogs), 3)), 1)))",
+      "hypothesis": "Firms with an R&D-heavy expense regime and high conversion of gross profit into operating cash flow subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling operating cash by gross profit asks whether the economic margin associated with innovation is actually realized in cash, rather than rewarding cash profitability relative to assets. Three-period aggregation reduces sensitivity to annual working-capital timing and aligns the cash horizon with the expense-mix measure.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.8505861381295343,
+      "ls_alpha": 0.03898734313707007,
+      "ls_talpha": 3.0788000419745396,
+      "ls_sharpe": 0.3181881400531083,
+      "coverage": 0.08845833261104466,
+      "error": null
+    },
+    {
+      "name": "Organic Investment Net Accounting Support",
+      "expression": "ZSCORE(WINSOR(MA(RATIO(SUB(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), DELTA(SUB(intan, gdwl), 1)), at), 3), 1))",
+      "hypothesis": "Firms whose expensed organic investment and operating cash surplus exceed identifiable-intangible capitalization subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The expression nets the earnings-to-cash wedge and growth in non-goodwill booked intangibles from R&D-adjusted operating cash, placing expensing, capitalization, and accrual support on one asset-scaled basis. A high value identifies firms relying more on observable organic spending and cash generation than on balance-sheet intangible growth or accrual-backed earnings.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.9937848696220954,
+      "ls_alpha": 0.06204465941704067,
+      "ls_talpha": 4.1597166035582305,
+      "ls_sharpe": 0.4034801362786053,
+      "coverage": 0.06914412713271208,
+      "error": null
+    },
+    {
+      "name": "Nonoverlapping Capitalization Cash Failure",
+      "expression": "MUL(RANK(LAG(MA(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), 3)), RANK(NEG(WINSOR(TREND(RATIO(oancf, at), 3), 1))))",
+      "hypothesis": "A sustained shift from expensed R&D toward identifiable-intangible capitalization predicts lower returns when it is followed by a nonoverlapping deterioration in operating cash profitability.",
+      "expected_sign": "negative",
+      "reasoning": "Capitalization is economically justified only if the deferred investment subsequently produces cash, so a later cash decline directly identifies failed realization rather than stacking multiple accounting-quality proxies. The nonoverlapping windows establish the accounting choice before the cash outcome, and the construction eliminates depreciation from both legs to avoid double-counting.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.8714893403260425,
+      "ls_alpha": -0.06628567799365981,
+      "ls_talpha": -4.711188688950658,
+      "ls_sharpe": -0.4465439472304959,
+      "coverage": 0.04901290998136908,
+      "error": null
+    },
+    {
+      "name": "Centered Capitalization Cash Failure",
+      "expression": "MUL(RANK(LAG(MA(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), 3)), ZSCORE(NEG(WINSOR(TREND(RATIO(oancf, at), 3), 1))))",
+      "hypothesis": "A completed shift toward identifiable-intangible capitalization predicts lower returns when followed by deteriorating operating cash profitability.",
+      "expected_sign": "negative",
+      "reasoning": "The prior nonoverlapping capitalization-failure signal produced very strong portfolio alpha but a weak linear slope, while its rank-by-rank construction left the low end economically ambiguous. Centering the signed cash-deterioration leg makes improving post-capitalization cash flow a meaningful negative signal value and downweights capitalization-neutral firms toward zero.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.2630039865694897,
+      "ls_alpha": 0.011077262631625614,
+      "ls_talpha": 0.7720741886707575,
+      "ls_sharpe": 0.04587496131907163,
+      "coverage": 0.04901290998136908,
+      "error": null
+    },
+    {
+      "name": "R&D-Cut Inventory Capitalization",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), RANK(NEG(WINSOR(RATIO(invch, at), 1))))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and accumulating inventory subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Cutting R&D immediately reduces reported expenses, while inventory accumulation capitalizes production costs that otherwise could flow through cost of goods sold. The conjunction identifies a specific two-channel expense-deferral strategy rather than applying a broad working-capital accrual penalty to all intangible firms.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.15499065889854996,
+      "ls_alpha": -0.007529058471686517,
+      "ls_talpha": -0.6262941685426887,
+      "ls_sharpe": -0.02204830988778586,
+      "coverage": 0.07514345684882374,
+      "error": null
+    },
+    {
+      "name": "R&D Cash-Absorption Capacity",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(sale, 3))), RANK(RATIO(TS_SUM(oancf, 3), ADD(ABS(TS_SUM(oancf, 3)), TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "R&D-intensive firms that retain substantial operating cash flow after absorbing their innovation spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The first leg requires economically meaningful intangible investment, while the second measures whether operating cash remains large relative to that R&D burden. Because greater R&D mechanically makes the cash-coverage ratio harder to satisfy, the interaction separates sustainably funded innovation from a simple R&D-intensity or cash-profitability effect.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.26423758855884,
+      "ls_alpha": 0.023354992131561163,
+      "ls_talpha": 1.4527628572328695,
+      "ls_sharpe": 0.22594256505707644,
+      "coverage": 0.08949419775190746,
+      "error": null
+    },
+    {
+      "name": "Dual Expense Compression",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, at), 1), 1))))",
+      "hypothesis": "Firms simultaneously reducing R&D expense intensity and depreciation and amortization expense subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both changes mechanically increase current accounting earnings without requiring improved operating cash generation. The interaction therefore targets coordinated compression of immediately expensed and noncash long-lived investment costs rather than recombining an R&D accounting-regime score with another archived cash-floor measure.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.000306967599959,
+      "ls_alpha": -0.022759287285590332,
+      "ls_talpha": -2.672598829581808,
+      "ls_sharpe": -0.3425431864147685,
+      "coverage": 0.12840228920108268,
+      "error": null
+    },
+    {
+      "name": "Accrual-Adjusted Innovation Margin",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(ADD(SUB(sale, cogs), ADD(recch, invch)), sale), 1), 3)))",
+      "hypothesis": "R&D-intensive firms whose gross margins remain strong after receivables and inventory cash absorption subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding recch and invch to gross profit correctly reduces the margin when receivables or inventory build and increases it when those operating assets release cash. This replaces the unstable cash-to-gross-profit ratio with a sales-scaled realization margin, avoiding sign-flipped scores for negative-gross-profit firms.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.3190844368369663,
+      "ls_alpha": 0.04065821371346264,
+      "ls_talpha": 3.183556811314506,
+      "ls_sharpe": 0.33049122304230677,
+      "coverage": 0.07791157659520549,
+      "error": null
+    },
+    {
+      "name": "Nonoverlapping Organic-Formation Cash Payoff",
+      "expression": "MUL(RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), MAX(DELTA(SUB(intan, gdwl), 3), 0))), 3)), RANK(WINSOR(TREND(RATIO(oancf, at), 3), 1)))",
+      "hypothesis": "A prior period dominated by organic R&D rather than positive identifiable-intangible capitalization predicts higher returns when followed by improving operating cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Restricting the capitalization term to positive changes ensures that amortization-driven declines in booked intangibles are not incorrectly treated as new capitalization. The nonoverlapping operating-cash trend replaces the repeated cash-minus-earnings leg and tests whether the chosen intangible-formation regime produces subsequent economic realization.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.45488107368338304,
+      "ls_alpha": 0.02262391266736455,
+      "ls_talpha": 1.9420741955651404,
+      "ls_sharpe": 0.3000695774302606,
+      "coverage": 0.022993595569522556,
+      "error": null
+    },
+    {
+      "name": "Organic Cash Surplus with Low Capitalization",
+      "expression": "MUL(RANK(MA(WINSOR(RATIO(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), at), 1), 3)), RANK(NEG(MA(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1), 3))))",
+      "hypothesis": "Firms with persistent pre-R&D cash surplus and little positive identifiable-intangible capitalization subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior net-support composite delivered strong portfolio alpha but imposed an arbitrary one-for-one dollar weight on the cash wedge and capitalization. Ranking the channels separately requires both strong R&D-adjusted cash support and low positive capitalization, while correctly treating amortization-driven intangible declines as zero new capitalization rather than as a penalty.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.9860529458569722,
+      "ls_alpha": 0.03551279947411669,
+      "ls_talpha": 2.716565782654749,
+      "ls_sharpe": 0.3414737653476889,
+      "coverage": 0.06917384415239218,
+      "error": null
+    },
+    {
+      "name": "Expense-Compression Cash Disconnect",
+      "expression": "ZSCORE(WINSOR(SUB(NEG(DELTA(RATIO(ADD(COALESCE(xrd, 0), dp), at), 1)), DELTA(RATIO(oancf, at), 1)), 1))",
+      "hypothesis": "Firms whose recognized R&D and depreciation expenses decline without a commensurate improvement in operating cash flow subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A reduction in total recognized investment-related expense can raise earnings mechanically, but it is economically credible only when cash performance improves alongside it. Netting the operating-cash change from the expense reduction creates a direct earnings-versus-cash disconnect rather than combining two independent decline anomalies.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.5424896548964604,
+      "ls_alpha": -0.012655576583556455,
+      "ls_talpha": -0.899127822803888,
+      "ls_sharpe": -0.2886296358299278,
+      "coverage": 0.08004888037000991,
+      "error": null
+    },
+    {
+      "name": "R&D Pre-Working-Capital Cash Generation",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(SUB(SUB(oancf, recch), invch), at), 1), 3)))",
+      "hypothesis": "R&D-intensive firms with strong operating cash generation before receivables and inventory timing effects subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Removing recch and invch from operating cash reverses both temporary cash boosts from asset liquidation and temporary cash drains from commercialization-related asset investment. The signal therefore tests whether innovation is supported by underlying operating cash generation rather than applying another downside operator to an archived bounded-coverage measure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.8722651274704765,
+      "ls_alpha": 0.03813529189485702,
+      "ls_talpha": 2.9633558369413944,
+      "ls_sharpe": 0.4909857898162327,
+      "coverage": 0.07799169904583603,
+      "error": null
+    },
+    {
+      "name": "Incremental R&D Commercialization Payback",
+      "expression": "ZSCORE(WINSOR(RATIO(ADD(DELTA(SUB(sale, cogs), 1), ADD(recch, invch)), ADD(ABS(ADD(DELTA(SUB(sale, cogs), 1), ADD(recch, invch))), LAG(xrd, 1))), 1))",
+      "hypothesis": "Firms generating large receivables- and inventory-adjusted gross-profit improvements relative to prior R&D spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator measures incremental gross profit after penalizing receivables and inventory accumulation, while prior R&D supplies the economically relevant investment base. This is an incremental payback ratio rather than a window or output-leg substitution on the archived R&D-intensity interactions.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.1020393718129324,
+      "ls_alpha": 0.021074607318460024,
+      "ls_talpha": 1.9987527811285546,
+      "ls_sharpe": 0.22737492853902969,
+      "coverage": 0.04044615358581243,
+      "error": null
+    },
+    {
+      "name": "R&D-to-Capitalized Migration Support",
+      "expression": "MUL(MIN(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1))), ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms simultaneously reducing expensed R&D, increasing identifiable capitalized intangibles, and reporting earnings above cash flow subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The minimum operator requires both sides of an expense-to-capitalization migration rather than treating either R&D cuts or intangible growth alone as sufficient. Signed accrual support then distinguishes a potentially aggressive reclassification episode from a capitalization shift accompanied by conservative cash-supported earnings.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.3961486420064053,
+      "ls_alpha": -0.034126396971762535,
+      "ls_talpha": -2.1624205616527883,
+      "ls_sharpe": -0.24284122208588654,
+      "coverage": 0.0665406892037242,
+      "error": null
+    },
+    {
+      "name": "R&D Cut with Slower Intangible Amortization",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms cutting R&D while reducing depreciation and amortization recognition relative to their identifiable intangible base subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling depreciation and amortization by the combined expense and non-goodwill intangible base focuses on recognition intensity rather than the mechanical asset-mix behavior of dp divided by total assets. The interaction identifies simultaneous reductions in immediate R&D expense and subsequent amortization burden, a sharper dual expense-deferral mechanism than a simple trend substitution.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.8000469545783893,
+      "ls_alpha": -0.027295992023149637,
+      "ls_talpha": -2.1051060223554883,
+      "ls_sharpe": -0.3792143883653904,
+      "coverage": 0.0677910740804027,
+      "error": null
+    },
+    {
+      "name": "Capitalization Migration without Amortization",
+      "expression": "MUL(MIN(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms shifting from expensed R&D toward identifiable-intangible capitalization while also reducing amortization recognition subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The migration gate requires both an R&D cut and positive non-goodwill intangible growth, while the final leg tests whether the newly capitalized base receives a correspondingly lower expense-recognition rate. This isolates delayed recognition within a changing accounting regime without relying on a generic total-accrual anomaly.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.0086531972882793,
+      "ls_alpha": -0.03553992980818847,
+      "ls_talpha": -2.6139361253914397,
+      "ls_sharpe": -0.46320919691441576,
+      "coverage": 0.0677910740804027,
+      "error": null
+    },
+    {
+      "name": "R&D-Cut Margin-Cash Divergence",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), ZSCORE(WINSOR(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(oancf, sale), 1)), 1)))",
+      "hypothesis": "Firms cutting R&D while reported gross margins improve more than operating cash margins subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D cut mechanically supports accounting margins, but a productive efficiency gain should also appear in cash generation. The signed margin-minus-cash divergence focuses the signal on expense cuts associated with accounting improvement that lacks operating-cash confirmation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.4865557428471585,
+      "ls_alpha": -0.00958662554136153,
+      "ls_talpha": -0.7675842009162761,
+      "ls_sharpe": -0.1420246502349874,
+      "coverage": 0.07914870231553367,
+      "error": null
+    },
+    {
+      "name": "Innovation Tax-Payable Financing",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(WINSOR(RATIO(DELTA(txp, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "R&D-intensive firms whose operating liquidity increasingly depends on accrued but unpaid taxes subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Growth in taxes payable represents a financing source created by the difference between recognized tax expense and cash tax payment. Conditioning this accrual on persistent R&D distinguishes innovation supported by realized operations from innovation partly financed through a temporary tax-accounting liability.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.862535670332078,
+      "ls_alpha": 0.00453869338000302,
+      "ls_talpha": 0.5323786622420776,
+      "ls_sharpe": -0.047886575715853016,
+      "coverage": 0.11227858756656406,
+      "error": null
+    },
+    {
+      "name": "Innovation Historical Accrual Extremity",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), TS_RANK(WINSOR(RATIO(SUB(ib, oancf), at), 1), 5))",
+      "hypothesis": "R&D-intensive firms whose current earnings accrual reaches an unusually high position relative to their own history subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The within-firm historical position tests an episodic accounting-support event rather than another cross-sectional accrual level, trend, or volatility score. A high value identifies persistent innovators whose current earnings are unusually dependent on accruals compared with their own reporting norm.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.8835590891254234,
+      "ls_alpha": 0.03196132533578232,
+      "ls_talpha": 2.778240857349143,
+      "ls_sharpe": 0.14992135505613752,
+      "coverage": 0.08041007629844803,
+      "error": null
+    },
+    {
+      "name": "Innovation Amortization-Policy Instability",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(VOL(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 3)))",
+      "hypothesis": "R&D-intensive firms with unstable depreciation and amortization recognition relative to their identifiable intangible base subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Volatility in the bounded expense-recognition rate captures changing useful-life, classification, or amortization treatment rather than the mechanical decline of dp relative to total assets. The interaction tests whether accounting-policy instability is especially informative when current earnings already reflect substantial expensed innovation.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.281742319100773,
+      "ls_alpha": 0.0336059965780591,
+      "ls_talpha": 1.8971908994268567,
+      "ls_sharpe": 0.3236025655379539,
+      "coverage": 0.06892517048076359,
+      "error": null
+    },
+    {
+      "name": "Intangible Depreciation Reconciliation Gap",
+      "expression": "MUL(RANK(RATIO(intan, at)), RANK(WINSOR(ABS(RATIO(SUB(dpc, dp), at)), 1)))",
+      "hypothesis": "Intangible-intensive firms with large discrepancies between cash-flow-statement and income-statement depreciation measures subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A large dpc-minus-dp gap indicates that noncash expense recognition does not reconcile cleanly across financial statements, potentially reflecting reclassification, acquisition accounting, or other adjustments. Scaling this discrepancy by intangible intensity targets firms where depreciation and amortization measurement is most economically consequential.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.6068063220034008,
+      "ls_alpha": -0.02830515035395958,
+      "ls_talpha": -1.939839505696288,
+      "ls_sharpe": -0.08053142105698224,
+      "coverage": 0.11587579152520128,
+      "error": null
+    },
+    {
+      "name": "Working-Capital-Invariant Innovation Realization",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), MIN(RANK(MA(WINSOR(RATIO(SUB(SUB(oancf, recch), invch), at), 1), 3)), RANK(MA(WINSOR(RATIO(ADD(SUB(sale, cogs), ADD(recch, invch)), sale), 1), 3))))",
+      "hypothesis": "R&D-intensive firms that exhibit both strong pre-working-capital cash generation and strong accrual-adjusted gross margins subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Receivables and inventory enter the two realization measures with opposite adjustments, so requiring both to be strong prevents a working-capital movement from mechanically creating a favorable score. The minimum operator implements a weakest-link test of whether innovation produces both economic margin and underlying cash.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.739250561318048,
+      "ls_alpha": 0.04282164405886943,
+      "ls_talpha": 3.2222723125093595,
+      "ls_sharpe": 0.3891773540239364,
+      "coverage": 0.07790842948027409,
+      "error": null
+    },
+    {
+      "name": "Intangible Excess Depreciation Addback",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), at)), ZSCORE(WINSOR(RATIO(SUB(dpc, dp), at), 1)))",
+      "hypothesis": "Firms with substantial identifiable intangibles underperform when the depreciation addback reported in cash flow exceeds depreciation and amortization recognized in income.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier absolute reconciliation-gap signal mixed economically different positive and negative discrepancies and produced conflicting cross-sectional and portfolio evidence. Retaining the sign specifically isolates excess cash-flow addbacks, which can make operating cash appear stronger than the corresponding income-statement expense recognition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.2281810101944368,
+      "ls_alpha": 0.02936099151332134,
+      "ls_talpha": 2.6471475892676466,
+      "ls_sharpe": 0.2758589411627129,
+      "coverage": 0.07487430113411704,
+      "error": null
+    },
+    {
+      "name": "Innovation Dual Operating-Asset Buildup",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), MIN(RANK(MA(NEG(WINSOR(RATIO(recch, at), 1)), 3)), RANK(MA(NEG(WINSOR(RATIO(invch, at), 1)), 3))))",
+      "hypothesis": "R&D-intensive firms simultaneously accumulating receivables and inventory subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Receivables growth can indicate aggressive credit-sales recognition, while inventory growth can defer costs and indicate weak sell-through. Requiring both operating assets to build distinguishes a joint commercialization failure from volatility in a previously tested adjusted-margin measure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.8490022930710636,
+      "ls_alpha": 0.0492728434064693,
+      "ls_talpha": 3.157717838422426,
+      "ls_sharpe": 0.2625908900560887,
+      "coverage": 0.07803947328233563,
+      "error": null
+    },
+    {
+      "name": "Intangible Equity Fragility with Accrual Support",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), ADD(MAX(SUB(intan, gdwl), 0), MAX(ceq, 0)))), ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms whose identifiable intangibles consume a large share of positive book equity underperform when earnings also rely on positive accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The bounded first leg measures balance-sheet fragility from identifiable intangible claims rather than contrasting capitalization with pre-R&D cash surplus. Positive accrual support is more concerning when little equity remains outside the intangible base, because write-downs or failed commercialization can materially impair book capital.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.4720658175604948,
+      "ls_alpha": -0.04354717834557652,
+      "ls_talpha": -2.549534521605887,
+      "ls_sharpe": -0.3047938472763166,
+      "coverage": 0.07491516203617717,
+      "error": null
+    },
+    {
+      "name": "R&D-Cut Receivable Expansion",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), RANK(NEG(WINSOR(RATIO(recch, LAG(sale, 1)), 1))))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and expanding receivables relative to sales subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D cut immediately reduces reported expenses, while a receivables buildup can support earnings through credit sales not yet realized in cash. Their conjunction targets two distinct current-earnings support channels and abandons the already-saturated capitalization-and-amortization specification family.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.831796568053725,
+      "ls_alpha": -0.005737049934137789,
+      "ls_talpha": -0.49826090828697195,
+      "ls_sharpe": -0.10482635970769123,
+      "coverage": 0.0748139900299399,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Addback-Free Innovation Cash",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(SUB(oancf, dpc), at), 1), 3)))",
+      "hypothesis": "R&D-intensive firms with strong operating cash after removing the cash-flow-statement depreciation addback subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting dpc isolates cash support that does not depend on adding back a noncash depreciation and amortization charge. This tests whether innovation is supported by underlying cash earnings rather than applying another working-capital adjustment or downside operator to the archived cash-floor signal.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.140656047964941,
+      "ls_alpha": 0.04971804568542279,
+      "ls_talpha": 3.5646192004858466,
+      "ls_sharpe": 0.5062434535740645,
+      "coverage": 0.08864679836259222,
+      "error": null
+    },
+    {
+      "name": "Equity-Constrained Amortization Deferral",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), ADD(MAX(SUB(intan, gdwl), 0), MAX(ceq, 0)))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms whose identifiable intangibles consume a large share of equity underperform when their depreciation and amortization recognition rate declines.",
+      "expected_sign": "negative",
+      "reasoning": "A falling expense-recognition rate is most consequential when the identifiable intangible base already represents a large claim on book equity. The interaction targets delayed recognition under limited balance-sheet loss capacity rather than treating amortization changes or intangible intensity as isolated effects.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.6402304995073157,
+      "ls_alpha": -0.006161812919813865,
+      "ls_talpha": -0.4186468057598701,
+      "ls_sharpe": -0.2864792101591249,
+      "coverage": 0.06664655608633455,
+      "error": null
+    },
+    {
+      "name": "Innovation Accrual-Reconciliation Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(WINSOR(ABS(SUB(RATIO(SUB(ib, oancf), LAG(at, 1)), RATIO(SUB(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(SUB(DELTA(lct, 1), DELTA(dlc, 1)), DELTA(txp, 1))), dp), LAG(at, 1)))), 1)))",
+      "hypothesis": "R&D-intensive firms with large discrepancies between cash-flow-based and balance-sheet-based accrual estimates subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The two accrual constructions should broadly reconcile but can diverge because of acquisitions, classifications, and accounting adjustments. A large gap is especially informative for R&D-intensive firms, where expense treatment already makes reported earnings difficult to interpret.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.14990118313081519,
+      "ls_alpha": 0.05225182513169753,
+      "ls_talpha": 4.616617097679556,
+      "ls_sharpe": 0.2649945659112208,
+      "coverage": 0.06989370799891367,
+      "error": null
+    },
+    {
+      "name": "Innovation Working-Capital Sales Mismatch",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(WINSOR(SUB(RATIO(DELTA(wcap, 1), LAG(sale, 1)), GROWTH(sale, 1)), 1)))",
+      "hypothesis": "R&D-intensive firms whose working-capital investment grows faster than sales subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Working-capital growth can be productive when justified by contemporaneous revenue expansion, so the signal measures the excess buildup rather than applying a generic accrual penalty. Positive mismatches identify innovation programs accompanied by operating-asset absorption without corresponding commercial growth.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.897243518664659,
+      "ls_alpha": -8.518805544621266e-05,
+      "ls_talpha": -0.008326734945266366,
+      "ls_sharpe": 0.013143758071209532,
+      "coverage": 0.11169234712450689,
+      "error": null
+    },
+    {
+      "name": "R&D Cash-Sales Payback",
+      "expression": "ZSCORE(WINSOR(RATIO(ADD(DELTA(sale, 1), recch), ADD(ABS(ADD(DELTA(sale, 1), recch)), LAG(xrd, 1))), 1))",
+      "hypothesis": "Firms generating large cash-realized sales improvements relative to prior R&D spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding recch to the sales change penalizes growth funded by receivables accumulation and rewards collections, producing an incremental cash-sales outcome. Scaling that outcome by prior reported R&D creates a direct commercialization-payback measure rather than another R&D-intensity-conditioned profitability signal.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.5413804412670554,
+      "ls_alpha": -0.011251270044211033,
+      "ls_talpha": -0.8741887096319221,
+      "ls_sharpe": -0.06888128504353995,
+      "coverage": 0.042097563452028065,
+      "error": null
+    },
+    {
+      "name": "Innovation Tax Reconciliation Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(WINSOR(ABS(RATIO(SUB(DELTA(txp, 1), txach), LAG(at, 1))), 1)))",
+      "hypothesis": "R&D-intensive firms with large discrepancies between balance-sheet tax-payable changes and cash-flow tax accrual adjustments subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "R&D credits and tax timing can create legitimate complexity, but large unreconciled differences across statements indicate greater tax-accounting noise. Using the absolute reconciliation gap avoids imposing the unsupported directional assumption that caused the prior tax-payable-financing signal to fail.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.9949632839093839,
+      "ls_alpha": 0.029854054415716515,
+      "ls_talpha": 2.476775057335683,
+      "ls_sharpe": 0.1317292912114776,
+      "coverage": 0.05376345417429197,
+      "error": null
+    },
+    {
+      "name": "Shadow-Intangible Equity Accrual Strain",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), MAX(ceq, 0)))), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Firms with cumulative expensed R&D large relative to positive equity underperform when earnings are also supported by positive non-amortization accruals.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulative R&D proxies for unbooked intangible capital, so a high ratio identifies firms with substantial shadow-intangible claims relative to balance-sheet loss capacity. Positive accruals after adding back depreciation indicate that current earnings support comes from working-capital and other non-amortization components rather than from that investment producing cash.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.6539707598835772,
+      "ls_alpha": -0.03818947468542022,
+      "ls_talpha": -3.2048882465508512,
+      "ls_sharpe": -0.3320203072590706,
+      "coverage": 0.0882224537673339,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Goodwill Accrual Collision",
+      "expression": "MUL(RANK(WINSOR(RATIO(DELTA(gdwl, 1), LAG(at, 1)), 1)), RANK(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms combining large goodwill additions with high earnings accruals subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill additions identify acquisition-driven intangible growth, where purchase accounting creates substantial estimation discretion. When that growth coincides with earnings materially exceeding operating cash flow, reported performance is more likely to reflect acquisition accounting than productive intangible capital.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Innovation Low-Noise",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), RANK(NEG(VOL(RATIO(SUB(ib, oancf), at), 5))))",
+      "hypothesis": "Firms combining sustained R&D investment with a stable earnings-to-cash reconciliation subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Cumulative R&D intensity identifies a persistent investment program rather than a one-period spending spike. Low volatility in accrual intensity indicates that the program is accompanied by less accounting noise, helping separate repeatable innovation investment from unstable accrual-driven earnings.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Dominance over Accounting Wedge",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), at), 3)), RATIO(MA(RATIO(COALESCE(xrd, 0), at), 3), ADD(MA(RATIO(COALESCE(xrd, 0), at), 3), ABS(MA(RATIO(SUB(ib, oancf), at), 3)))))",
+      "hypothesis": "Firms whose sustained R&D investment is large relative to the magnitude of their accounting accrual wedge subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The ratio treats R&D and the absolute earnings-to-cash gap as competing explanations for accounting opacity, rather than combining two independent anomaly scores. The outer R&D rank prevents a trivially small denominator from identifying firms with negligible intangible investment as high-quality innovators.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible-Scaled Working-Capital Mismatch",
+      "expression": "MUL(SUMRANK(MA(RATIO(COALESCE(xrd, 0), sale), 3), RATIO(intan, at)), ZSCORE(WINSOR(RATIO(DELTA(wcap, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "Positive working-capital accruals predict especially low returns as a firm's expensed and booked intangible footprint increases.",
+      "expected_sign": "negative",
+      "reasoning": "Intangible-based business models should generally require less incremental working capital, so a large buildup is more anomalous when the intangible footprint is high. The continuous intangible weight preserves cross-sectional variation and makes the long and short tails reflect opposing working-capital outcomes among intangible firms without hard-zeroing most observations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Sales Realization",
+      "expression": "MUL(RANK(RATIO(intan, at)), RANK(WINSOR(ADD(GROWTH(sale, 1), RATIO(recch, LAG(sale, 1))), 1)))",
+      "hypothesis": "Intangible-intensive firms with sales growth supported by receivables collection rather than receivables accumulation subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Because recch is negative when receivables increase, adding it to sales growth correctly penalizes revenue accompanied by a receivables buildup and rewards improved collection. The interaction concentrates this cash-realization test on firms whose intangible assets should generate scalable customer demand.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Booked-Intangible Cash-Earnings Validation",
+      "expression": "MUL(RANK(RATIO(intan, at)), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Cash flow exceeding reported earnings predicts higher returns particularly among firms with substantial booked intangible assets.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing operating cash profitability with the cash-minus-earnings wedge removes the generic profitability level that FF5's RMW factor is likely to absorb. The continuously weighted interaction instead tests whether intangible-heavy firms are rewarded when cash generation validates conservatively reported earnings and penalized when earnings rely on accruals.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Relative Intangible Cash Validation",
+      "expression": "MUL(IND_RANK(RATIO(intan, at)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Within industries, cash flow exceeding reported earnings is especially favorable for firms with unusually high booked-intangible intensity.",
+      "expected_sign": "positive",
+      "reasoning": "The prior cash-earnings validation signal generated strong FF5 alpha but weaker cross-sectional evidence, potentially because intangible intensity differs structurally across industries. Industry-relative scaling focuses the interaction on conservative cash realization among comparable business models rather than on sector allocation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Intangible Cash Payoff",
+      "expression": "MUL(RANK(WINSOR(LAG(RATIO(DELTA(intan, 1), LAG(at, 1)), 1), 1)), RANK(WINSOR(DELTA(RATIO(oancf, at), 1), 1)))",
+      "hypothesis": "Prior increases in booked intangible capital followed by improving operating cash flow subsequently predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The lag structure tests realized payoff from intangible investment rather than rewarding intangible accumulation or cash profitability independently. Requiring cash-flow improvement after the balance-sheet investment helps distinguish productive intangible deployment from capitalization, acquisition accounting, or unsupported asset growth.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Accrual-Dependence Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), RANK(TS_MIN(WINSOR(RATIO(SUB(oancf, ib), at), 1), 5)))",
+      "hypothesis": "Firms sustaining high R&D intensity without any severe earnings-over-cash episode subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The historical minimum of cash minus earnings measures the innovation program's worst accrual-dependence episode, rather than merely shortening the prior volatility window. This distinguishes consistently cash-supported innovation from a low-volatility but persistently accrual-supported reporting process.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Signed Non-Amortization Accrual",
+      "expression": "MUL(IND_RANK(RATIO(intan, at)), IND_ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Positive non-amortization accruals predict lower returns especially among firms with high intangible intensity relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Adding depreciation and amortization to earnings minus cash flow isolates the signed residual accrual rather than discarding its direction with an absolute value. Industry-relative scaling retains the strong negative working-capital mechanism while reducing sector-driven portfolio extremes that may have caused the prior Fama-MacBeth and long-short evidence to disagree.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic-over-Acquired Cash Validation",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), gdwl))), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "Firms oriented toward organic R&D rather than acquired goodwill earn higher returns when operating cash flow validates conservatively reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The organic-investment share replaces goodwill quantity, which largely proxies for acquisition intensity and asset growth, with the composition of intangible formation. Cash-minus-earnings then tests whether that organic orientation is supported by realized cash rather than accrual-driven income.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Relative Pre-R&D Cash Surplus",
+      "expression": "IND_ZSCORE(WINSOR(MA(RATIO(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), at), 3), 1))",
+      "hypothesis": "Firms with persistently high pre-R&D operating cash generation relative to reported earnings subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The expression directly reconstructs pre-R&D cash surplus as operating cash flow plus R&D less accounting income, with every component scaled by assets inside one channel. Removing the separate R&D-intensity multiplier eliminates the squared-R&D loading and mismatched scalers, while industry standardization limits domination by structurally R&D-heavy sectors.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Accrual Creep",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), ZSCORE(WINSOR(TREND(RATIO(SUB(ib, oancf), at), 5), 1)))",
+      "hypothesis": "A sustained increase in accrual dependence predicts lower returns particularly among firms maintaining large long-horizon R&D programs.",
+      "expected_sign": "negative",
+      "reasoning": "Prior results favor persistent innovation when the earnings-to-cash relation is stable or conservatively bounded. This signal instead tests a directional failure mode: reported earnings gradually becoming more dependent on accruals while the firm continues to incur intangible-investment expenses.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Revenue Accrual Burden",
+      "expression": "MUL(RANK(RATIO(intan, at)), ZSCORE(RATIO(NEG(recch), ADD(ABS(recch), ABS(DELTA(sale, 1))))))",
+      "hypothesis": "Receivables accumulation that absorbs a large share of contemporaneous sales changes predicts lower returns among intangible-intensive firms.",
+      "expected_sign": "negative",
+      "reasoning": "Because recch is negative when receivables increase, its negation correctly treats customer-credit expansion as a positive accrual burden. Scaling that burden by the combined magnitude of receivables and sales changes distinguishes cash-poor revenue recognition from productive demand growth without repeating the failed sales-growth composite.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Innovation Working-Capital Pressure",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), IND_ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Positive non-amortization accruals predict lower returns particularly for firms with persistent organic R&D intensity.",
+      "expected_sign": "negative",
+      "reasoning": "The prior signed residual signal was directionally consistent but weak when conditioned on booked intangibles, which mix acquired assets with amortization effects. Conditioning instead on persistent R&D focuses on businesses whose intangible production should require relatively little working-capital support, while industry-standardizing the signed residual limits sector-driven portfolio extremes.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Nonoverlapping R&D Cash Realization",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(WINSOR(TREND(RATIO(SUB(oancf, ib), at), 3), 1)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by a subsequent improvement in cash flow relative to accounting earnings predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Lagging the three-period R&D window by three periods makes it nonoverlapping with the current three-period cash-reconciliation trend, implementing a genuine investment-then-realization sequence. Using a subsequent trend rather than a one-period change should also reduce noisy portfolio turnover and strengthen alignment between the cross-sectional slope and long-short evidence.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Identifiable-Capitalization Working-Capital Support",
+      "expression": "MUL(RANK(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1)), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Firms increasing identifiable booked intangibles relative to expensed R&D underperform when their earnings are also supported by positive non-amortization accruals.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting goodwill from total intangibles removes the component most directly tied to acquisition intensity and the failed goodwill-growth channel. Removing depreciation from the earnings-to-cash reconciliation further focuses the second leg on signed working-capital support, so the interaction tests simultaneous capitalization and operating-accrual aggressiveness.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Validated Expense Mix",
+      "expression": "MUL(RANK(RATIO(TS_SUM(xrd, 3), ADD(TS_SUM(xrd, 3), TS_SUM(dp, 3)))), ZSCORE(WINSOR(RATIO(SUB(oancf, ib), at), 1)))",
+      "hypothesis": "A high share of immediately expensed R&D predicts higher returns when operating cash flow also exceeds reported earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-minus-earnings validation converts the expense-mix ratio from an isolated R&D-intensity rescaling into a joint test of conservative accounting and realized cash support. Omitting zero imputation for R&D avoids creating a large artificial point mass of nonreporters, while the common three-period aggregation makes the expense components comparable.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Nonoverlapping R&D Operating-Cash Payoff",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(WINSOR(TREND(RATIO(oancf, at), 3), 1)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by a nonoverlapping improvement in operating cash profitability predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior nonoverlapping cash-reconciliation signal produced strong evidence in both Fama-MacBeth and portfolio tests. Replacing cash-minus-earnings with an operating-cash trend isolates whether the payoff reflects actual cash realization rather than changes in book earnings or depreciation accruals.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Accrual Offset Smoothing",
+      "expression": "WINSOR(MUL(ZSCORE(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1)), ZSCORE(WINSOR(DELTA(RATIO(SUB(ib, oancf), at), 1), 1))), 1)",
+      "hypothesis": "Firms whose accrual changes systematically offset the earnings effects of changes in R&D expense subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D increase depresses current earnings, while a simultaneous positive accrual change offsets that effect; an R&D cut paired with an accrual decrease produces the analogous offset in reverse. The product is therefore high for both forms of expense-accrual smoothing and is not merely an additive combination of R&D and accrual levels.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Operating-Accrual Funding Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(RATIO(NEG(ADD(ADD(recch, invch), apalch)), ADD(ABS(recch), ADD(ABS(invch), ABS(apalch))))))",
+      "hypothesis": "Persistent R&D firms underperform when receivables and inventory accumulation absorb cash beyond the financing supplied by accounts payable.",
+      "expected_sign": "negative",
+      "reasoning": "The signed numerator measures net operating cash absorption from receivables, inventory, and supplier financing, while the absolute-flow denominator limits scale effects. This decomposition may improve on the broad working-capital interaction by separating commercially meaningful operating components from other current-account changes.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Capitalization Regime Break",
+      "expression": "MUL(TS_RANK(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "An unusually large within-firm shift toward identifiable intangible capitalization predicts lower returns when accompanied by positive working-capital accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The prior capitalization-support signal generated very strong negative portfolio alpha but a weaker linear cross-sectional slope, suggesting an episodic regime-shift effect. Ranking the capitalization-minus-expensing measure within the firm's own history targets unusual accounting transitions rather than persistent acquisition-oriented business models.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Identifiable-Intangible Amortization Shortfall",
+      "expression": "MUL(RANK(WINSOR(LAG(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), 1), 1)), ZSCORE(WINSOR(NEG(DELTA(RATIO(dp, at), 1)), 1)))",
+      "hypothesis": "Prior additions to identifiable intangible assets predict lower returns when they are followed by declining depreciation and amortization recognition.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the previously repeated cash-validation leg with a lead-lag test of whether capitalized identifiable intangibles generate the expected subsequent noncash expense. A high score identifies firms adding non-goodwill intangible assets while reducing depreciation and amortization, consistent with delayed expense recognition rather than conservative accounting.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensing-Regime Cash Funding Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(TS_MIN(WINSOR(RATIO(oancf, at), 1), 3)))",
+      "hypothesis": "Firms using an R&D-heavy expensing regime and maintaining a strong operating-cash floor subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal selects one coherent accounting regime\u2014immediate R&D expensing\u2014rather than averaging it with the conceptually opposed booked-intangible regime. Conditioning that expense mix on the worst recent operating-cash outcome distinguishes sustainably funded innovation from firms whose high R&D share simply reflects weak depreciable capital or reporter status.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability-Adjusted Expensing Cash Floor",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(TS_MIN(WINSOR(RATIO(SUB(SUB(oancf, apalch), txach), at), 1), 3)))",
+      "hypothesis": "Firms using an R&D-heavy expensing regime and maintaining strong operating cash flow after removing payable and tax-accrual financing subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The strong expensing-regime cash-floor result may partly reflect operating cash temporarily boosted by unpaid suppliers or accrued taxes. Removing those liability changes tests whether the innovation program is supported by internally realized cash rather than by working-capital financing.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Innovation Cash-Reconciliation Floor",
+      "expression": "MUL(RANK(LAG(MA(RATIO(COALESCE(xrd, 0), sale), 3), 3)), RANK(TS_MIN(WINSOR(RATIO(SUB(oancf, ib), at), 1), 3)))",
+      "hypothesis": "A completed period of persistent R&D investment followed by consistently cash-supported earnings predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Prior nonoverlapping signals show that cash improvement after R&D has strong cross-sectional and portfolio evidence. Using the subsequent period's minimum cash-minus-earnings outcome tests whether that realization is durable rather than driven by a single favorable endpoint or trend estimate.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Earnings Support",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(DELTA(RATIO(SUB(ib, oancf), at), 1), 1)))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and increasing accrual support for earnings subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both an R&D cut and an accrual increase mechanically raise current accounting earnings, making their conjunction a focused earnings-management mechanism. Isolating this quadrant avoids the symmetric smoothing construction that generated strong portfolio alpha but an approximately zero Fama-MacBeth slope.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Gross-Profit Cash Conversion",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(dp, 3)))), RANK(WINSOR(RATIO(TS_SUM(oancf, 3), TS_SUM(SUB(sale, cogs), 3)), 1)))",
+      "hypothesis": "Firms with an R&D-heavy expense regime and high conversion of gross profit into operating cash flow subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling operating cash by gross profit asks whether the economic margin associated with innovation is actually realized in cash, rather than rewarding cash profitability relative to assets. Three-period aggregation reduces sensitivity to annual working-capital timing and aligns the cash horizon with the expense-mix measure.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Investment Net Accounting Support",
+      "expression": "ZSCORE(WINSOR(MA(RATIO(SUB(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), DELTA(SUB(intan, gdwl), 1)), at), 3), 1))",
+      "hypothesis": "Firms whose expensed organic investment and operating cash surplus exceed identifiable-intangible capitalization subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The expression nets the earnings-to-cash wedge and growth in non-goodwill booked intangibles from R&D-adjusted operating cash, placing expensing, capitalization, and accrual support on one asset-scaled basis. A high value identifies firms relying more on observable organic spending and cash generation than on balance-sheet intangible growth or accrual-backed earnings.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Nonoverlapping Capitalization Cash Failure",
+      "expression": "MUL(RANK(LAG(MA(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), 3)), RANK(NEG(WINSOR(TREND(RATIO(oancf, at), 3), 1))))",
+      "hypothesis": "A sustained shift from expensed R&D toward identifiable-intangible capitalization predicts lower returns when it is followed by a nonoverlapping deterioration in operating cash profitability.",
+      "expected_sign": "negative",
+      "reasoning": "Capitalization is economically justified only if the deferred investment subsequently produces cash, so a later cash decline directly identifies failed realization rather than stacking multiple accounting-quality proxies. The nonoverlapping windows establish the accounting choice before the cash outcome, and the construction eliminates depreciation from both legs to avoid double-counting.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Centered Capitalization Cash Failure",
+      "expression": "MUL(RANK(LAG(MA(WINSOR(SUB(RATIO(DELTA(SUB(intan, gdwl), 1), LAG(at, 1)), RATIO(COALESCE(xrd, 0), LAG(at, 1))), 1), 3), 3)), ZSCORE(NEG(WINSOR(TREND(RATIO(oancf, at), 3), 1))))",
+      "hypothesis": "A completed shift toward identifiable-intangible capitalization predicts lower returns when followed by deteriorating operating cash profitability.",
+      "expected_sign": "negative",
+      "reasoning": "The prior nonoverlapping capitalization-failure signal produced very strong portfolio alpha but a weak linear slope, while its rank-by-rank construction left the low end economically ambiguous. Centering the signed cash-deterioration leg makes improving post-capitalization cash flow a meaningful negative signal value and downweights capitalization-neutral firms toward zero.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Cut Inventory Capitalization",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), RANK(NEG(WINSOR(RATIO(invch, at), 1))))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and accumulating inventory subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Cutting R&D immediately reduces reported expenses, while inventory accumulation capitalizes production costs that otherwise could flow through cost of goods sold. The conjunction identifies a specific two-channel expense-deferral strategy rather than applying a broad working-capital accrual penalty to all intangible firms.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Cash-Absorption Capacity",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), TS_SUM(sale, 3))), RANK(RATIO(TS_SUM(oancf, 3), ADD(ABS(TS_SUM(oancf, 3)), TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "R&D-intensive firms that retain substantial operating cash flow after absorbing their innovation spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The first leg requires economically meaningful intangible investment, while the second measures whether operating cash remains large relative to that R&D burden. Because greater R&D mechanically makes the cash-coverage ratio harder to satisfy, the interaction separates sustainably funded innovation from a simple R&D-intensity or cash-profitability effect.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Expense Compression",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, at), 1), 1))))",
+      "hypothesis": "Firms simultaneously reducing R&D expense intensity and depreciation and amortization expense subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both changes mechanically increase current accounting earnings without requiring improved operating cash generation. The interaction therefore targets coordinated compression of immediately expensed and noncash long-lived investment costs rather than recombining an R&D accounting-regime score with another archived cash-floor measure.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Adjusted Innovation Margin",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(ADD(SUB(sale, cogs), ADD(recch, invch)), sale), 1), 3)))",
+      "hypothesis": "R&D-intensive firms whose gross margins remain strong after receivables and inventory cash absorption subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding recch and invch to gross profit correctly reduces the margin when receivables or inventory build and increases it when those operating assets release cash. This replaces the unstable cash-to-gross-profit ratio with a sales-scaled realization margin, avoiding sign-flipped scores for negative-gross-profit firms.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Nonoverlapping Organic-Formation Cash Payoff",
+      "expression": "MUL(RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), MAX(DELTA(SUB(intan, gdwl), 3), 0))), 3)), RANK(WINSOR(TREND(RATIO(oancf, at), 3), 1)))",
+      "hypothesis": "A prior period dominated by organic R&D rather than positive identifiable-intangible capitalization predicts higher returns when followed by improving operating cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Restricting the capitalization term to positive changes ensures that amortization-driven declines in booked intangibles are not incorrectly treated as new capitalization. The nonoverlapping operating-cash trend replaces the repeated cash-minus-earnings leg and tests whether the chosen intangible-formation regime produces subsequent economic realization.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Cash Surplus with Low Capitalization",
+      "expression": "MUL(RANK(MA(WINSOR(RATIO(SUB(ADD(oancf, COALESCE(xrd, 0)), ib), at), 1), 3)), RANK(NEG(MA(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1), 3))))",
+      "hypothesis": "Firms with persistent pre-R&D cash surplus and little positive identifiable-intangible capitalization subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The prior net-support composite delivered strong portfolio alpha but imposed an arbitrary one-for-one dollar weight on the cash wedge and capitalization. Ranking the channels separately requires both strong R&D-adjusted cash support and low positive capitalization, while correctly treating amortization-driven intangible declines as zero new capitalization rather than as a penalty.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Expense-Compression Cash Disconnect",
+      "expression": "ZSCORE(WINSOR(SUB(NEG(DELTA(RATIO(ADD(COALESCE(xrd, 0), dp), at), 1)), DELTA(RATIO(oancf, at), 1)), 1))",
+      "hypothesis": "Firms whose recognized R&D and depreciation expenses decline without a commensurate improvement in operating cash flow subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A reduction in total recognized investment-related expense can raise earnings mechanically, but it is economically credible only when cash performance improves alongside it. Netting the operating-cash change from the expense reduction creates a direct earnings-versus-cash disconnect rather than combining two independent decline anomalies.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Pre-Working-Capital Cash Generation",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(SUB(SUB(oancf, recch), invch), at), 1), 3)))",
+      "hypothesis": "R&D-intensive firms with strong operating cash generation before receivables and inventory timing effects subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Removing recch and invch from operating cash reverses both temporary cash boosts from asset liquidation and temporary cash drains from commercialization-related asset investment. The signal therefore tests whether innovation is supported by underlying operating cash generation rather than applying another downside operator to an archived bounded-coverage measure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Incremental R&D Commercialization Payback",
+      "expression": "ZSCORE(WINSOR(RATIO(ADD(DELTA(SUB(sale, cogs), 1), ADD(recch, invch)), ADD(ABS(ADD(DELTA(SUB(sale, cogs), 1), ADD(recch, invch))), LAG(xrd, 1))), 1))",
+      "hypothesis": "Firms generating large receivables- and inventory-adjusted gross-profit improvements relative to prior R&D spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator measures incremental gross profit after penalizing receivables and inventory accumulation, while prior R&D supplies the economically relevant investment base. This is an incremental payback ratio rather than a window or output-leg substitution on the archived R&D-intensity interactions.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-to-Capitalized Migration Support",
+      "expression": "MUL(MIN(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1))), ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms simultaneously reducing expensed R&D, increasing identifiable capitalized intangibles, and reporting earnings above cash flow subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The minimum operator requires both sides of an expense-to-capitalization migration rather than treating either R&D cuts or intangible growth alone as sufficient. Signed accrual support then distinguishes a potentially aggressive reclassification episode from a capitalization shift accompanied by conservative cash-supported earnings.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Cut with Slower Intangible Amortization",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms cutting R&D while reducing depreciation and amortization recognition relative to their identifiable intangible base subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling depreciation and amortization by the combined expense and non-goodwill intangible base focuses on recognition intensity rather than the mechanical asset-mix behavior of dp divided by total assets. The interaction identifies simultaneous reductions in immediate R&D expense and subsequent amortization burden, a sharper dual expense-deferral mechanism than a simple trend substitution.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Capitalization Migration without Amortization",
+      "expression": "MUL(MIN(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), at), 1), 1))), RANK(WINSOR(RATIO(MAX(DELTA(SUB(intan, gdwl), 1), 0), at), 1))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms shifting from expensed R&D toward identifiable-intangible capitalization while also reducing amortization recognition subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The migration gate requires both an R&D cut and positive non-goodwill intangible growth, while the final leg tests whether the newly capitalized base receives a correspondingly lower expense-recognition rate. This isolates delayed recognition within a changing accounting regime without relying on a generic total-accrual anomaly.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Cut Margin-Cash Divergence",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), ZSCORE(WINSOR(SUB(DELTA(RATIO(SUB(sale, cogs), sale), 1), DELTA(RATIO(oancf, sale), 1)), 1)))",
+      "hypothesis": "Firms cutting R&D while reported gross margins improve more than operating cash margins subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D cut mechanically supports accounting margins, but a productive efficiency gain should also appear in cash generation. The signed margin-minus-cash divergence focuses the signal on expense cuts associated with accounting improvement that lacks operating-cash confirmation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Tax-Payable Financing",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(WINSOR(RATIO(DELTA(txp, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "R&D-intensive firms whose operating liquidity increasingly depends on accrued but unpaid taxes subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Growth in taxes payable represents a financing source created by the difference between recognized tax expense and cash tax payment. Conditioning this accrual on persistent R&D distinguishes innovation supported by realized operations from innovation partly financed through a temporary tax-accounting liability.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Historical Accrual Extremity",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(sale, 5))), TS_RANK(WINSOR(RATIO(SUB(ib, oancf), at), 1), 5))",
+      "hypothesis": "R&D-intensive firms whose current earnings accrual reaches an unusually high position relative to their own history subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The within-firm historical position tests an episodic accounting-support event rather than another cross-sectional accrual level, trend, or volatility score. A high value identifies persistent innovators whose current earnings are unusually dependent on accruals compared with their own reporting norm.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Amortization-Policy Instability",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(VOL(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 3)))",
+      "hypothesis": "R&D-intensive firms with unstable depreciation and amortization recognition relative to their identifiable intangible base subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Volatility in the bounded expense-recognition rate captures changing useful-life, classification, or amortization treatment rather than the mechanical decline of dp relative to total assets. The interaction tests whether accounting-policy instability is especially informative when current earnings already reflect substantial expensed innovation.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Depreciation Reconciliation Gap",
+      "expression": "MUL(RANK(RATIO(intan, at)), RANK(WINSOR(ABS(RATIO(SUB(dpc, dp), at)), 1)))",
+      "hypothesis": "Intangible-intensive firms with large discrepancies between cash-flow-statement and income-statement depreciation measures subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "A large dpc-minus-dp gap indicates that noncash expense recognition does not reconcile cleanly across financial statements, potentially reflecting reclassification, acquisition accounting, or other adjustments. Scaling this discrepancy by intangible intensity targets firms where depreciation and amortization measurement is most economically consequential.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital-Invariant Innovation Realization",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), MIN(RANK(MA(WINSOR(RATIO(SUB(SUB(oancf, recch), invch), at), 1), 3)), RANK(MA(WINSOR(RATIO(ADD(SUB(sale, cogs), ADD(recch, invch)), sale), 1), 3))))",
+      "hypothesis": "R&D-intensive firms that exhibit both strong pre-working-capital cash generation and strong accrual-adjusted gross margins subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Receivables and inventory enter the two realization measures with opposite adjustments, so requiring both to be strong prevents a working-capital movement from mechanically creating a favorable score. The minimum operator implements a weakest-link test of whether innovation produces both economic margin and underlying cash.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Excess Depreciation Addback",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), at)), ZSCORE(WINSOR(RATIO(SUB(dpc, dp), at), 1)))",
+      "hypothesis": "Firms with substantial identifiable intangibles underperform when the depreciation addback reported in cash flow exceeds depreciation and amortization recognized in income.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier absolute reconciliation-gap signal mixed economically different positive and negative discrepancies and produced conflicting cross-sectional and portfolio evidence. Retaining the sign specifically isolates excess cash-flow addbacks, which can make operating cash appear stronger than the corresponding income-statement expense recognition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Dual Operating-Asset Buildup",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), MIN(RANK(MA(NEG(WINSOR(RATIO(recch, at), 1)), 3)), RANK(MA(NEG(WINSOR(RATIO(invch, at), 1)), 3))))",
+      "hypothesis": "R&D-intensive firms simultaneously accumulating receivables and inventory subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Receivables growth can indicate aggressive credit-sales recognition, while inventory growth can defer costs and indicate weak sell-through. Requiring both operating assets to build distinguishes a joint commercialization failure from volatility in a previously tested adjusted-margin measure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Equity Fragility with Accrual Support",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), ADD(MAX(SUB(intan, gdwl), 0), MAX(ceq, 0)))), ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1)))",
+      "hypothesis": "Firms whose identifiable intangibles consume a large share of positive book equity underperform when earnings also rely on positive accruals.",
+      "expected_sign": "negative",
+      "reasoning": "The bounded first leg measures balance-sheet fragility from identifiable intangible claims rather than contrasting capitalization with pre-R&D cash surplus. Positive accrual support is more concerning when little equity remains outside the intangible base, because write-downs or failed commercialization can materially impair book capital.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Cut Receivable Expansion",
+      "expression": "MUL(RANK(NEG(WINSOR(DELTA(RATIO(COALESCE(xrd, 0), sale), 1), 1))), RANK(NEG(WINSOR(RATIO(recch, LAG(sale, 1)), 1))))",
+      "hypothesis": "Firms simultaneously cutting R&D intensity and expanding receivables relative to sales subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "An R&D cut immediately reduces reported expenses, while a receivables buildup can support earnings through credit sales not yet realized in cash. Their conjunction targets two distinct current-earnings support channels and abandons the already-saturated capitalization-and-amortization specification family.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Addback-Free Innovation Cash",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(MA(WINSOR(RATIO(SUB(oancf, dpc), at), 1), 3)))",
+      "hypothesis": "R&D-intensive firms with strong operating cash after removing the cash-flow-statement depreciation addback subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting dpc isolates cash support that does not depend on adding back a noncash depreciation and amortization charge. This tests whether innovation is supported by underlying cash earnings rather than applying another working-capital adjustment or downside operator to the archived cash-floor signal.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Equity-Constrained Amortization Deferral",
+      "expression": "MUL(RANK(RATIO(MAX(SUB(intan, gdwl), 0), ADD(MAX(SUB(intan, gdwl), 0), MAX(ceq, 0)))), RANK(NEG(WINSOR(DELTA(RATIO(dp, ADD(dp, MAX(SUB(intan, gdwl), 0))), 1), 1))))",
+      "hypothesis": "Firms whose identifiable intangibles consume a large share of equity underperform when their depreciation and amortization recognition rate declines.",
+      "expected_sign": "negative",
+      "reasoning": "A falling expense-recognition rate is most consequential when the identifiable intangible base already represents a large claim on book equity. The interaction targets delayed recognition under limited balance-sheet loss capacity rather than treating amortization changes or intangible intensity as isolated effects.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Accrual-Reconciliation Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(WINSOR(ABS(SUB(RATIO(SUB(ib, oancf), LAG(at, 1)), RATIO(SUB(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(SUB(DELTA(lct, 1), DELTA(dlc, 1)), DELTA(txp, 1))), dp), LAG(at, 1)))), 1)))",
+      "hypothesis": "R&D-intensive firms with large discrepancies between cash-flow-based and balance-sheet-based accrual estimates subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The two accrual constructions should broadly reconcile but can diverge because of acquisitions, classifications, and accounting adjustments. A large gap is especially informative for R&D-intensive firms, where expense treatment already makes reported earnings difficult to interpret.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Working-Capital Sales Mismatch",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), ZSCORE(WINSOR(SUB(RATIO(DELTA(wcap, 1), LAG(sale, 1)), GROWTH(sale, 1)), 1)))",
+      "hypothesis": "R&D-intensive firms whose working-capital investment grows faster than sales subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Working-capital growth can be productive when justified by contemporaneous revenue expansion, so the signal measures the excess buildup rather than applying a generic accrual penalty. Positive mismatches identify innovation programs accompanied by operating-asset absorption without corresponding commercial growth.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Cash-Sales Payback",
+      "expression": "ZSCORE(WINSOR(RATIO(ADD(DELTA(sale, 1), recch), ADD(ABS(ADD(DELTA(sale, 1), recch)), LAG(xrd, 1))), 1))",
+      "hypothesis": "Firms generating large cash-realized sales improvements relative to prior R&D spending subsequently earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Adding recch to the sales change penalizes growth funded by receivables accumulation and rewards collections, producing an incremental cash-sales outcome. Scaling that outcome by prior reported R&D creates a direct commercialization-payback measure rather than another R&D-intensity-conditioned profitability signal.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Tax Reconciliation Gap",
+      "expression": "MUL(RANK(MA(RATIO(COALESCE(xrd, 0), sale), 3)), RANK(WINSOR(ABS(RATIO(SUB(DELTA(txp, 1), txach), LAG(at, 1))), 1)))",
+      "hypothesis": "R&D-intensive firms with large discrepancies between balance-sheet tax-payable changes and cash-flow tax accrual adjustments subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "R&D credits and tax timing can create legitimate complexity, but large unreconciled differences across statements indicate greater tax-accounting noise. Using the absolute reconciliation gap avoids imposing the unsupported directional assumption that caused the prior tax-payable-financing signal to fail.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Shadow-Intangible Equity Accrual Strain",
+      "expression": "MUL(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 3), ADD(TS_SUM(COALESCE(xrd, 0), 3), MAX(ceq, 0)))), ZSCORE(WINSOR(RATIO(ADD(SUB(ib, oancf), dp), at), 1)))",
+      "hypothesis": "Firms with cumulative expensed R&D large relative to positive equity underperform when earnings are also supported by positive non-amortization accruals.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulative R&D proxies for unbooked intangible capital, so a high ratio identifies firms with substantial shadow-intangible claims relative to balance-sheet loss capacity. Positive accruals after adding back depreciation indicate that current earnings support comes from working-capital and other non-amortization components rather than from that investment producing cash.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Innovation Cash-Conversion Inflection",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially a rank-product double-sort of two well-documented anomalies \u2014 R&D-increase abnormal returns (Eberhart-Maxwell-Siddique) and the accrual/change-in-accruals anomaly \u2014 with no mechanism that isn't delivered by the two legs separately, so it is more a rediscovery-combination than a new cross-theme insight."
+    },
+    {
+      "generation": 0,
+      "target_name": "R&D-Gated Working-Capital Distortion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It is Sloan's working-capital accrual anomaly with a coarse high-R&D gate, and the INDICATOR construction hard-zeros ~70% of the cross-section, so quantile portfolios and the FM slope will be dominated by a mass of exact ties rather than by the claimed conditional effect."
+    },
+    {
+      "generation": 0,
+      "target_name": "Goodwill Accrual Collision",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The goodwill-addition \u00d7 accrual interaction is a coherent and reasonably distinct earnings-quality mechanism with sign-consistent construction, though it inherits overlap with the acquisition/asset-growth anomaly and will suffer thin, lumpy coverage because DELTA(gdwl) is zero or missing for most firm-years."
+    },
+    {
+      "generation": 0,
+      "target_name": "Intangible Sales Realization",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Internally inconsistent sign convention \u2014 Compustat recch is the cash-flow item that is negative when receivables build, so SUB(GROWTH(sale), recch/lag(sale)) rewards rather than penalizes receivables accumulation, inverting the stated \"receivables-adjusted\" hypothesis."
+    },
+    {
+      "generation": 0,
+      "target_name": "Booked-Intangible Cash Validation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Multiplying raw levels makes the signal essentially cash-flow-to-assets (a known cash-based profitability anomaly largely spanned by FF5's RMW) shrunk by a bounded intangible-share multiplier, so it is both a near-rediscovery and poorly scaled relative to a rank-interaction version."
+    },
+    {
+      "generation": 0,
+      "target_name": "Persistent Innovation Low-Noise",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning long-horizon R&D intensity on the stability of the earnings-to-cash reconciliation is an economically sensible and reasonably novel \"quality of the innovation program\" interaction, though both legs echo known R&D-intensity and earnings-volatility effects and the 5-year VOL window will materially reduce coverage."
+    },
+    {
+      "generation": 1,
+      "target_name": "Medium-Horizon Innovation Reliability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a pure window tweak (5\u21923 periods) on the archive's \"Persistent Innovation Low-Noise\" signal with an identical mechanism and no new economic content, and the stated motivation (coverage) is dubious since the archived version already had comparable coverage at 0.081."
+    },
+    {
+      "generation": 1,
+      "target_name": "Industry-Relative Intangible Cash Validation",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Industry-neutralizing both legs is a defensible, diagnosis-driven change to the archived cash-earnings validation signal because it converts a partly sectoral intangible-intensity tilt into a within-peer comparison, though it remains a close derivative whose incremental information is likely modest."
+    },
+    {
+      "generation": 1,
+      "target_name": "Amortization-Explained Intangible Earnings",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Adding back dp mechanically reduces ib\u2212oancf to roughly working-capital accruals, so the absolute-value transform discards precisely the accrual sign that produced the archive's strongest cross-sectional evidence (fmb \u22123.11 on the signed intangible\u00d7working-capital interaction) and collapses the signal into a generic Dechow\u2013Dichev-style accrual-magnitude/earnings-quality proxy."
+    },
+    {
+      "generation": 1,
+      "target_name": "Lagged Intangible Cash Payoff",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The lead-lag construction (prior intangible investment, subsequent cash-flow improvement) is a genuinely different test from the archive's contemporaneous intangible-level interactions, though multiplying two ascending ranks loads the long leg with high asset-growth firms whose known negative asset-growth effect works against the expected positive sign."
+    },
+    {
+      "generation": 1,
+      "target_name": "Goodwill Overhang Accrual Deterioration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a recombination of the already-rejected \"Goodwill Accrual Collision\" (fmb \u22121.48, alpha \u2248 0) that swaps levels for changes on each leg without diagnosing why the original failed, and the goodwill/at leg is largely a known acquisition-intensity/asset-growth proxy."
+    },
+    {
+      "generation": 1,
+      "target_name": "R&D-Adjusted Cash Surplus",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because xrd appears in both legs, the product is dominated by squared R&D intensity plus depreciation scaling (ib\u2212oancf \u2248 \u0394WC \u2212 dp), so the signal does not cleanly test the stated \"cash before R&D versus earnings\" mechanism and largely rediscovers the known R&D-intensity effect; the mismatched scalers (xrd/sale vs xrd/at) compound this."
+    },
+    {
+      "generation": 2,
+      "target_name": "Innovation Accrual Creep",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression matches the hypothesis (a non-negative R&D rank scaling a signed 5-year accrual trend, so a rising accrual-dependence trend maps to the predicted negative direction) and the trend framing is a genuine directional variation on the archive's level/volatility/minimum treatments of the same R&D\u00d7accrual pair, though it remains a close member of that family and the second leg is close to the known change-in-accruals effect."
+    },
+    {
+      "generation": 2,
+      "target_name": "Lagged R&D Cash-Reconciliation Payoff",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The claimed investment-to-realization timing test is not actually implemented, since LAG of a 3-year moving average of R&D/sales overlaps two-thirds with the contemporaneous window and is nearly indistinguishable from plain R&D intensity, leaving the signal an incremental rewrite of the archive's lagged-intangible and cash-validation composites."
+    },
+    {
+      "generation": 2,
+      "target_name": "Intangible Revenue Accrual Burden",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The recch sign convention is handled correctly and the bounded scaling by |recch|+|\u0394sale| is a substantively different construction from the failed sales-growth composite, though the underlying receivables-accrual effect is well documented and the ratio can be noisy when both sales and receivables changes are near zero."
+    },
+    {
+      "generation": 2,
+      "target_name": "Capitalization-Shift Accrual Support",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Since Compustat intan includes goodwill, \u0394intan\u2212xrd interacted with signed accruals is largely a re-parameterization of the archive's already-tested and failed Goodwill Accrual Collision, with the added R&D subtraction unlikely to change the acquisition/asset-growth channel that drives it."
+    },
+    {
+      "generation": 2,
+      "target_name": "Organic Innovation Working-Capital Pressure",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Swapping the conditioning variable from booked intangibles (which conflate acquisitions and amortization) to persistent R&D intensity is a defensible diagnosis-driven change rather than a cosmetic tweak, and the depreciation add-back correctly isolates working-capital accruals in line with the stated hypothesis, though it is still a modest edit of an already weak archive signal."
+    },
+    {
+      "generation": 2,
+      "target_name": "Expensed-to-Amortized Investment Share",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a single-theme rescaling of the long-known R&D-intensity anomaly rather than a cross-theme interaction, and COALESCE(xrd,0) creates a large point mass at exactly zero so the industry rank mostly just separates R&D reporters from non-reporters."
+    },
+    {
+      "generation": 3,
+      "target_name": "Nonoverlapping R&D Operating-Cash Payoff",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A defensible diagnostic edit on the archive's strongest signal \u2014 swapping the cash-minus-earnings trend for a pure operating-cash-profitability trend genuinely tests whether the payoff comes from cash realization rather than accrual reversal \u2014 but it sits close to the known R&D-intensity \u00d7 profitability-improvement combination and risks being an incremental variant rather than a new mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "R&D-Accrual Offset Smoothing",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The sign logic is internally consistent (both offsetting quadrants yield a positive product, predicting low returns), and it is not a level-based rediscovery, but it is a noisy double-difference that lumps \"R&D up + accruals up\" (which may simply be growth-driven) with \"R&D cut + accruals down,\" so the economic interpretation of the long-short spread will be hard to attribute."
+    },
+    {
+      "generation": 3,
+      "target_name": "Innovation Operating-Accrual Funding Gap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sign conventions on the cash-flow-statement items are handled correctly (recch/invch negative on asset build-ups, apalch positive on payable increases) and the absolute-flow denominator is a sensible scale control, but this is the third attempt in the archive at R&D/intangible-intensity \u00d7 working-capital accruals, the prior two of which failed on either slope or alpha, so the decomposition needs to carry a lot of weight to be more than a re-slicing of the accruals anomaly."
+    },
+    {
+      "generation": 3,
+      "target_name": "Capitalization Regime Break",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Reframing the strongest archived negative signal as an episodic within-firm accounting transition is a genuine and well-motivated diagnosis of its weak linear slope versus strong alpha, but TS_RANK over a 3-observation window is extremely coarse (effectively three levels) and discards cross-sectional information, so the refinement may amount mostly to re-scaling one leg."
+    },
+    {
+      "generation": 3,
+      "target_name": "Identifiable-Intangible Cash Validation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the minimal edit to the archived \"Booked-Intangible Cash-Earnings Validation\" (intan/at \u2192 (intan-gdwl)/at) with an identical second leg, and the goodwill-versus-organic distinction has already been probed by the archived \"Organic-over-Acquired Cash Validation,\" so it is a cosmetic variant rather than a substantively different mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "Broad Expense-Mix Cash Validation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The signal is a SUMRANK blend of the left legs of two already-evaluated signals multiplied by their shared cash-minus-earnings leg, so its performance is mechanically bounded between the two archived results; worse, it averages a high-expensing indicator with a high-capitalized-intangible indicator, which are conceptually opposed accounting regimes, muddying rather than sharpening the mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "Liability-Adjusted Expensing Cash Floor",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Economically motivated purification of the archive's strongest signal (subtracting payable and tax-accrual financing from operating cash is directionally consistent with the hypothesis), but it is an incremental variant whose main risk is a sharp coverage drop from apalch/txach availability (prior apalch-based signals ran ~0.057 versus 0.090 here), so the true test is whether the slope survives on the narrower sample."
+    },
+    {
+      "generation": 4,
+      "target_name": "Post-Innovation Cash-Reconciliation Floor",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "This is close to a mechanical recombination of two archive signals (lagged R&D leg from \"Nonoverlapping R&D Cash Realization\" plus the TS_MIN cash-reconciliation leg from \"Innovation Accrual-Dependence Floor\"), but substituting a durability floor for a trend is a genuinely different economic claim (persistent level versus improvement) and the construction is internally consistent with the positive expected sign."
+    },
+    {
+      "generation": 4,
+      "target_name": "Dual Earnings Support",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The quadrant restriction is a coherent and internally consistent earnings-management mechanism (both RANK legs increase with R&D cuts and rising accruals, so high values map to the predicted underperformance), though it inherits substantial overlap with the accrual anomaly and with the earlier offset-smoothing signal, and the RANK\u00d7RANK product leaves the low end economically ambiguous."
+    },
+    {
+      "generation": 4,
+      "target_name": "Capitalization Expense-Deferral Stack",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This stacks the legs of two already-tested archive signals whose Fama-MacBeth slopes were both insignificant, double-counts dp (once inside the non-amortization accrual and again in the DELTA(dp/at) term), and is explicitly motivated by hoping the union will \"align\" prior mismatched evidence \u2014 i.e., specification search rather than a new mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "Innovation Gross-Profit Cash Conversion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Rescaling cash to gross profit is a legitimately different economic question from the asset-scaled cash floor and the 3-year aggregation is sensible, but the denominator (sale\u2212cogs) can be small or negative, so low/negative-gross-profit firms will produce sign-flipped extreme ratios that winsorization only partly tames and that muddy the ranking's interpretation."
+    },
+    {
+      "generation": 4,
+      "target_name": "Organic Investment Net Accounting Support",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A coherent single-scale composite that extends the archive's pre-R&D cash surplus by netting identifiable-intangible capitalization, and the sign logic is consistent, but the equal, unmotivated weighting of the capitalization term against the cash-earnings wedge and the unexplained drop from IND_ZSCORE to plain ZSCORE make it hard to attribute any result to the new ingredient."
+    },
+    {
+      "generation": 5,
+      "target_name": "Expensing-Regime Conservative-Earnings Floor",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is a mechanical recombination of two archived signals \u2014 the identical R&D/(R&D+DP) expensing leg from \"Cash-Validated Expense Mix\" paired with the TS_MIN floor construction from \"Expensing-Regime Cash Funding Floor\" \u2014 so its likely outcome (a modest ~2\u20133 t-stat alpha) is largely already known and it adds little beyond a diagnostic swap of level profitability for the accrual wedge."
+    },
+    {
+      "generation": 5,
+      "target_name": "Bounded Innovation Gross-Profit Conversion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-normalization of the already-tested \"Innovation Gross-Profit Cash Conversion\" (which already delivered ls_talpha 3.08), and the |gross profit| in the denominator actually distorts the economics by assigning high conversion scores to negative-gross-profit firms with positive cash flow."
+    },
+    {
+      "generation": 5,
+      "target_name": "Organic-Formation Cash Validation",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The ABS on the three-year change in non-goodwill intangibles contradicts the stated hypothesis, since large amortization-driven *declines* in booked intangibles are penalized identically to capitalization, and the signal otherwise closely overlaps the archived \"Organic-over-Acquired Cash Validation\" with the same cash-validation leg."
+    },
+    {
+      "generation": 5,
+      "target_name": "Centered Capitalization Cash Failure",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Swapping RANK for ZSCORE on the cash-deterioration leg is a thin change, but it is a legitimately motivated response to the archived signal's strong-alpha/weak-slope divergence, since it makes the interaction signed rather than uniformly positive and shrinks capitalization-neutral firms toward zero."
+    },
+    {
+      "generation": 5,
+      "target_name": "R&D-Cut Inventory Capitalization",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The sign convention on invch is handled correctly and the conjunction is internally consistent and distinct from the archive, though both legs are individually known anomalies (R&D declines, inventory growth) so the composite risks simply loading on inventory growth rather than the claimed dual expense-deferral channel."
+    },
+    {
+      "generation": 5,
+      "target_name": "R&D Cash-Absorption Capacity",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The bounded cash-coverage leg is well-constructed and the deliberate mechanical tension between the two legs is a sensible way to isolate sustainably funded innovation, but the R&D-intensity \u00d7 cash-strength family has already been mined heavily in this archive so incremental information is likely limited."
+    },
+    {
+      "generation": 6,
+      "target_name": "Innovation Internal-Funding Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical recombination of two already-tested archive signals (\"R&D Cash-Absorption Capacity\" for the bounded cash/R&D coverage leg and \"Expensing-Regime Cash Funding Floor\" for the TS_MIN floor operator), so it adds a cosmetic operator swap rather than a new mechanism, and the TS_MIN of a bounded ratio will be dominated by a single loss-year outlier."
+    },
+    {
+      "generation": 6,
+      "target_name": "Innovation Realized-Margin Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Identical to the archived \"Accrual-Adjusted Innovation Margin\" with MA(...,3) replaced by TS_MIN(...,3) \u2014 a one-operator variant of a signal that already worked, offering little incremental economic information and likely high correlation with the original."
+    },
+    {
+      "generation": 6,
+      "target_name": "Organic Cash Surplus with Low Capitalization",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Decomposing the archived net-support composite into separately ranked legs with a MAX(\u00b7,0) capitalization floor is a defensible, economically motivated re-specification rather than a cosmetic tweak, though the zero-capitalization mass will produce heavy rank ties in the second leg and the surviving predictive content may still come almost entirely from the already-tested pre-R&D cash surplus."
+    },
+    {
+      "generation": 6,
+      "target_name": "Expense-Compression Cash Disconnect",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression's direction is internally consistent with the stated hypothesis and the netted earnings-versus-cash disconnect is a genuinely single-construct signal, but it imposes an arbitrary one-for-one weight and is at risk of being largely a repackaging of the well-known change-in-cash-flow/profitability and investment-decline effects."
+    },
+    {
+      "generation": 6,
+      "target_name": "Nonoverlapping R&D Realized-Margin Payoff",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The nonoverlapping lagged-R&D template has already been tested three times in the archive (cash-reconciliation trend, operating-cash trend, organic-formation), and swapping in the accrual-adjusted margin trend \u2014 itself already used in another archive signal \u2014 is a leg substitution within a saturated family rather than a substantively new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Sustained Dual Expense Compression",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Pure DELTA\u2192TREND operator swap on the archived \"Dual Expense Compression\" with an already-weak economic story, since declining dp/at is largely mechanical asset-mix and the R&D leg is close to the known investment/R&D-decline anomaly."
+    },
+    {
+      "generation": 7,
+      "target_name": "Working-Capital-Neutral Innovation Conservatism",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the archived \"R&D Pre-Working-Capital Cash Generation\" leg with `ib` subtracted and RANK swapped for ZSCORE, which merely re-splices it onto the already-archived (oancf \u2212 ib) accrual leg rather than testing a genuinely new mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Innovation Incremental Sell-Through",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally consistent (recch/invch signs correctly penalize working-capital absorption), but it overlaps two archived signals \u2014 \"Accrual-Adjusted Innovation Margin\" and \"Incremental R&D Commercialization Payback\" \u2014 with the only real change being the scaling denominator, so it reads as a cosmetic rescaling rather than a new economic idea."
+    },
+    {
+      "generation": 7,
+      "target_name": "Expense-Compression Earnings Lift",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The two legs are near-mechanically linked (xrd and dp are deductions in ib, so falling expense intensity arithmetically lifts ROA), and the negative expected sign fights the well-documented positive predictive direction of \u0394 profitability, making the construct partly tautological and directionally ambiguous."
+    },
+    {
+      "generation": 7,
+      "target_name": "Capitalization Migration without Amortization",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A coherent recombination that gates the archived \"R&D Cut with Slower Intangible Amortization\" leg on actual identifiable-intangible growth \u2014 a defensible sharpening of the delayed-recognition mechanism \u2014 though it is incremental and the triple-rank product plus MIN gate risks correlated, thinner-coverage results very close to the two archived parents."
+    },
+    {
+      "generation": 7,
+      "target_name": "R&D-Cut Margin-Cash Divergence",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The signed gross-margin-minus-cash-margin divergence is a substantively different second leg from the archived expense-versus-cash disconnect and the sign logic matches the hypothesis, though the underlying accounting-versus-cash wedge is close to the classic Sloan channel and only the R&D-cut conditioning supplies the novelty."
+    },
+    {
+      "generation": 7,
+      "target_name": "Material-Expensing Cash Floor",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The materiality concern about low-depreciation firms is legitimate, but adding a MIN gate to the archived \"Expensing-Regime Cash Funding Floor\" (already fmb 4.54, alpha 5.2%, talpha 3.85) is a gating tweak whose output will be highly correlated with the parent, so it is more a robustness check than a new signal."
+    },
+    {
+      "generation": 8,
+      "target_name": "Working-Capital-Invariant Innovation Realization",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The weakest-link MIN is internally coherent and the invariance argument is correct (a receivables build raises the pre-working-capital cash term while lowering the adjusted-margin term, so the composite cannot be gamed by one working-capital swing), but it is still largely a blend of two already-strong archived signals and should be judged on whether it beats both, not merely on being positive."
+    },
+    {
+      "generation": 8,
+      "target_name": "Innovation Realized-Margin Stability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is structurally the archived \"Persistent Innovation Low-Noise\" signal (R&D intensity \u00d7 NEG volatility of a fundamental ratio) with the volatility target swapped, and it also overlaps the well-documented earnings/fundamental-volatility anomaly, while a three-observation VOL is too short to measure stability reliably."
+    },
+    {
+      "generation": 8,
+      "target_name": "Capitalization Dependence Ratio",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Beyond being the bounded-ratio restatement of the archived \"Organic Investment Net Accounting Support\" contrast, the construction is degenerate \u2014 whenever the pre-R&D cash surplus is negative the numerator equals the denominator, pinning a large mass of firms at exactly 1 and destroying cross-sectional discrimination in precisely the distressed region the hypothesis cares about."
+    },
+    {
+      "generation": 8,
+      "target_name": "R&D-Cut Capitalization-Amortization Gap",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally consistent and correctly signed, but it recombines the same three archived ingredients (R&D cut, positive identifiable-intangible additions, weak amortization recognition) already tested twice with similar results, making it a cosmetic reparameterization rather than a new mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Expensing-Regime Core-Cash Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived best signal (\"Expensing-Regime Cash Funding Floor\") with the cash measure adjusted again, and the directly analogous prior attempt (\"Liability-Adjusted Expensing Cash Floor\") already showed this class of adjustment degrades the alpha and coverage without a diagnosed economic reason for a different outcome here."
+    },
+    {
+      "generation": 8,
+      "target_name": "Intangible Excess Depreciation Addback",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Signing the previously absolute-valued reconciliation gap is a legitimate, diagnosis-motivated refinement with a coherent quality-of-cash-flow story and a consistent expected sign, though dpc\u2212dp differences are substantially definitional/data artifacts, so the economic interpretation is weak and the result should be scrutinized for mechanical drivers."
+    },
+    {
+      "generation": 9,
+      "target_name": "Expensing-Regime Addback-Free Cash",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical splice of two already-archived legs \u2014 the expense-mix ratio from \"Expensing-Regime Cash Funding Floor\" and the (oancf\u2212dpc)/at leg from \"Depreciation-Addback-Free Innovation Cash\" \u2014 and since both conditioning legs proxy the same R&D-heaviness construct, it is a cosmetic variant rather than a new mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Fully Reconciled Innovation Realization",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Identical in structure to the archived \"Working-Capital-Invariant Innovation Realization\" with only \"\u2212dpc\" appended to the cash leg, which is a one-term tweak of an existing strong signal rather than a substantively different hypothesis, and stacking dpc, recch and invch subtractions on top of a margin leg that already re-adds recch/invch double-counts the same adjustments."
+    },
+    {
+      "generation": 9,
+      "target_name": "Innovation Net Realization Margin",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is the archived \"Accrual-Adjusted Innovation Margin\" with xrd/sale subtracted from the second leg, and because that subtraction is mechanically the negative of the first leg the product partly cancels itself, making the economic interpretation (R&D productivity vs. R&D intensity) ambiguous rather than sharper."
+    },
+    {
+      "generation": 9,
+      "target_name": "Equity-Constrained Amortization Deferral",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The pairing of intangible-to-equity fragility with a declining amortization-recognition rate is an untested combination whose sign and expression are internally consistent, though both legs are recycled from archived signals and share intan\u2212gdwl in numerator and denominator, so the mechanical overlap should be diagnosed if results look strong."
+    },
+    {
+      "generation": 9,
+      "target_name": "Intangible Equity Core-Cash Shortfall",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Intangible Equity Fragility with Accrual Support\" with the accrual leg swapped for a negated cash-profitability leg, and since oancf\u2212dpc scaled by assets is essentially a cash-profitability sort, the signal risks rediscovering the well-known profitability/distress effect conditioned on intangible intensity."
+    },
+    {
+      "generation": 9,
+      "target_name": "Capitalization Migration Core-Cash Failure",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The archive already contains two versions of \"capitalization migration plus weak cash\" (\"Nonoverlapping Capitalization Cash Failure\", \"R&D-to-Capitalized Migration Support\"), and replacing the cash-trend leg with an addback-free cash level is an incremental leg swap rather than a diagnosis-driven redirection."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 1 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Accrual Collision",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(delta(gdwl,1),lag(at,1)),1)),rank(winsor(ratio(sub(ib,oancf),at),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Innovation Low-Noise",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),ts_sum(sale,5))),rank(neg(vol(ratio(sub(ib,oancf),at),5))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D Dominance over Accounting Wedge",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),at),3)),ratio(ma(ratio(coalesce(xrd,0),at),3),add(ma(ratio(coalesce(xrd,0),at),3),abs(ma(ratio(sub(ib,oancf),at),3)))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible-Scaled Working-Capital Mismatch",
+      "metadata": {
+        "normalized_expression": "mul(sumrank(ma(ratio(coalesce(xrd,0),sale),3),ratio(intan,at)),zscore(winsor(ratio(delta(wcap,1),lag(at,1)),1)))",
+        "variables": [
+          "at",
+          "intan",
+          "sale",
+          "wcap",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Sales Realization",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(intan,at)),rank(winsor(add(growth(sale,1),ratio(recch,lag(sale,1))),1)))",
+        "variables": [
+          "at",
+          "intan",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Booked-Intangible Cash-Earnings Validation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(intan,at)),zscore(winsor(ratio(sub(oancf,ib),at),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Relative Intangible Cash Validation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(intan,at)),ind_zscore(winsor(ratio(sub(oancf,ib),at),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Intangible Cash Payoff",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(lag(ratio(delta(intan,1),lag(at,1)),1),1)),rank(winsor(delta(ratio(oancf,at),1),1)))",
+        "variables": [
+          "at",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Accrual-Dependence Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),ts_sum(sale,5))),rank(ts_min(winsor(ratio(sub(oancf,ib),at),1),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Signed Non-Amortization Accrual",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(intan,at)),ind_zscore(winsor(ratio(add(sub(ib,oancf),dp),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic-over-Acquired Cash Validation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),gdwl))),zscore(winsor(ratio(sub(oancf,ib),at),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Relative Pre-R&D Cash Surplus",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ma(ratio(sub(add(oancf,coalesce(xrd,0)),ib),at),3),1))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Accrual Creep",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),ts_sum(sale,5))),zscore(winsor(trend(ratio(sub(ib,oancf),at),5),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Revenue Accrual Burden",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(intan,at)),zscore(ratio(neg(recch),add(abs(recch),abs(delta(sale,1))))))",
+        "variables": [
+          "at",
+          "intan",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Innovation Working-Capital Pressure",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),ind_zscore(winsor(ratio(add(sub(ib,oancf),dp),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Nonoverlapping R&D Cash Realization",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ma(ratio(coalesce(xrd,0),sale),3),3)),rank(winsor(trend(ratio(sub(oancf,ib),at),3),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Identifiable-Capitalization Working-Capital Support",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(sub(ratio(delta(sub(intan,gdwl),1),lag(at,1)),ratio(coalesce(xrd,0),lag(at,1))),1)),zscore(winsor(ratio(add(sub(ib,oancf),dp),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Validated Expense Mix",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(xrd,3),add(ts_sum(xrd,3),ts_sum(dp,3)))),zscore(winsor(ratio(sub(oancf,ib),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Nonoverlapping R&D Operating-Cash Payoff",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ma(ratio(coalesce(xrd,0),sale),3),3)),rank(winsor(trend(ratio(oancf,at),3),1)))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Accrual Offset Smoothing",
+      "metadata": {
+        "normalized_expression": "winsor(mul(zscore(winsor(delta(ratio(coalesce(xrd,0),at),1),1)),zscore(winsor(delta(ratio(sub(ib,oancf),at),1),1))),1)",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Operating-Accrual Funding Gap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),zscore(ratio(neg(add(add(recch,invch),apalch)),add(abs(recch),add(abs(invch),abs(apalch))))))",
+        "variables": [
+          "apalch",
+          "invch",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capitalization Regime Break",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(winsor(sub(ratio(delta(sub(intan,gdwl),1),lag(at,1)),ratio(coalesce(xrd,0),lag(at,1))),1),3),zscore(winsor(ratio(add(sub(ib,oancf),dp),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Identifiable-Intangible Amortization Shortfall",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(lag(ratio(delta(sub(intan,gdwl),1),lag(at,1)),1),1)),zscore(winsor(neg(delta(ratio(dp,at),1)),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "intan"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensing-Regime Cash Funding Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),ts_sum(dp,3)))),rank(ts_min(winsor(ratio(oancf,at),1),3)))",
+        "variables": [
+          "at",
+          "dp",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability-Adjusted Expensing Cash Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),ts_sum(dp,3)))),rank(ts_min(winsor(ratio(sub(sub(oancf,apalch),txach),at),1),3)))",
+        "variables": [
+          "apalch",
+          "at",
+          "dp",
+          "oancf",
+          "txach",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Innovation Cash-Reconciliation Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ma(ratio(coalesce(xrd,0),sale),3),3)),rank(ts_min(winsor(ratio(sub(oancf,ib),at),1),3)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Earnings Support",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),at),1),1))),rank(winsor(delta(ratio(sub(ib,oancf),at),1),1)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Gross-Profit Cash Conversion",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),ts_sum(dp,3)))),rank(winsor(ratio(ts_sum(oancf,3),ts_sum(sub(sale,cogs),3)),1)))",
+        "variables": [
+          "cogs",
+          "dp",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Investment Net Accounting Support",
+      "metadata": {
+        "normalized_expression": "zscore(winsor(ma(ratio(sub(sub(add(oancf,coalesce(xrd,0)),ib),delta(sub(intan,gdwl),1)),at),3),1))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Nonoverlapping Capitalization Cash Failure",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ma(winsor(sub(ratio(delta(sub(intan,gdwl),1),lag(at,1)),ratio(coalesce(xrd,0),lag(at,1))),1),3),3)),rank(neg(winsor(trend(ratio(oancf,at),3),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Centered Capitalization Cash Failure",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ma(winsor(sub(ratio(delta(sub(intan,gdwl),1),lag(at,1)),ratio(coalesce(xrd,0),lag(at,1))),1),3),3)),zscore(neg(winsor(trend(ratio(oancf,at),3),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Cut Inventory Capitalization",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),sale),1),1))),rank(neg(winsor(ratio(invch,at),1))))",
+        "variables": [
+          "at",
+          "invch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D Cash-Absorption Capacity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),ts_sum(sale,3))),rank(ratio(ts_sum(oancf,3),add(abs(ts_sum(oancf,3)),ts_sum(coalesce(xrd,0),3)))))",
+        "variables": [
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Expense Compression",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),at),1),1))),rank(neg(winsor(delta(ratio(dp,at),1),1))))",
+        "variables": [
+          "at",
+          "dp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual-Adjusted Innovation Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(ma(winsor(ratio(add(sub(sale,cogs),add(recch,invch)),sale),1),3)))",
+        "variables": [
+          "cogs",
+          "invch",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Nonoverlapping Organic-Formation Cash Payoff",
+      "metadata": {
+        "normalized_expression": "mul(rank(lag(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),max(delta(sub(intan,gdwl),3),0))),3)),rank(winsor(trend(ratio(oancf,at),3),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Cash Surplus with Low Capitalization",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(winsor(ratio(sub(add(oancf,coalesce(xrd,0)),ib),at),1),3)),rank(neg(ma(winsor(ratio(max(delta(sub(intan,gdwl),1),0),at),1),3))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expense-Compression Cash Disconnect",
+      "metadata": {
+        "normalized_expression": "zscore(winsor(sub(neg(delta(ratio(add(coalesce(xrd,0),dp),at),1)),delta(ratio(oancf,at),1)),1))",
+        "variables": [
+          "at",
+          "dp",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D Pre-Working-Capital Cash Generation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(ma(winsor(ratio(sub(sub(oancf,recch),invch),at),1),3)))",
+        "variables": [
+          "at",
+          "invch",
+          "oancf",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Incremental R&D Commercialization Payback",
+      "metadata": {
+        "normalized_expression": "zscore(winsor(ratio(add(delta(sub(sale,cogs),1),add(recch,invch)),add(abs(add(delta(sub(sale,cogs),1),add(recch,invch))),lag(xrd,1))),1))",
+        "variables": [
+          "cogs",
+          "invch",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-to-Capitalized Migration Support",
+      "metadata": {
+        "normalized_expression": "mul(min(rank(neg(winsor(delta(ratio(coalesce(xrd,0),at),1),1))),rank(winsor(ratio(max(delta(sub(intan,gdwl),1),0),at),1))),zscore(winsor(ratio(sub(ib,oancf),at),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D Cut with Slower Intangible Amortization",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),at),1),1))),rank(neg(winsor(delta(ratio(dp,add(dp,max(sub(intan,gdwl),0))),1),1))))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "intan",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capitalization Migration without Amortization",
+      "metadata": {
+        "normalized_expression": "mul(min(rank(neg(winsor(delta(ratio(coalesce(xrd,0),at),1),1))),rank(winsor(ratio(max(delta(sub(intan,gdwl),1),0),at),1))),rank(neg(winsor(delta(ratio(dp,add(dp,max(sub(intan,gdwl),0))),1),1))))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "intan",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Cut Margin-Cash Divergence",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),sale),1),1))),zscore(winsor(sub(delta(ratio(sub(sale,cogs),sale),1),delta(ratio(oancf,sale),1)),1)))",
+        "variables": [
+          "cogs",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Tax-Payable Financing",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),zscore(winsor(ratio(delta(txp,1),lag(at,1)),1)))",
+        "variables": [
+          "at",
+          "sale",
+          "txp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Historical Accrual Extremity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),5),ts_sum(sale,5))),ts_rank(winsor(ratio(sub(ib,oancf),at),1),5))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Amortization-Policy Instability",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(vol(ratio(dp,add(dp,max(sub(intan,gdwl),0))),3)))",
+        "variables": [
+          "dp",
+          "gdwl",
+          "intan",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Depreciation Reconciliation Gap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(intan,at)),rank(winsor(abs(ratio(sub(dpc,dp),at)),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "dpc",
+          "intan"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital-Invariant Innovation Realization",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),min(rank(ma(winsor(ratio(sub(sub(oancf,recch),invch),at),1),3)),rank(ma(winsor(ratio(add(sub(sale,cogs),add(recch,invch)),sale),1),3))))",
+        "variables": [
+          "at",
+          "cogs",
+          "invch",
+          "oancf",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Excess Depreciation Addback",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(max(sub(intan,gdwl),0),at)),zscore(winsor(ratio(sub(dpc,dp),at),1)))",
+        "variables": [
+          "at",
+          "dp",
+          "dpc",
+          "gdwl",
+          "intan"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Dual Operating-Asset Buildup",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),min(rank(ma(neg(winsor(ratio(recch,at),1)),3)),rank(ma(neg(winsor(ratio(invch,at),1)),3))))",
+        "variables": [
+          "at",
+          "invch",
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Equity Fragility with Accrual Support",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(max(sub(intan,gdwl),0),add(max(sub(intan,gdwl),0),max(ceq,0)))),zscore(winsor(ratio(sub(ib,oancf),at),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Cut Receivable Expansion",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(winsor(delta(ratio(coalesce(xrd,0),sale),1),1))),rank(neg(winsor(ratio(recch,lag(sale,1)),1))))",
+        "variables": [
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Addback-Free Innovation Cash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(ma(winsor(ratio(sub(oancf,dpc),at),1),3)))",
+        "variables": [
+          "at",
+          "dpc",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Equity-Constrained Amortization Deferral",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(max(sub(intan,gdwl),0),add(max(sub(intan,gdwl),0),max(ceq,0)))),rank(neg(winsor(delta(ratio(dp,add(dp,max(sub(intan,gdwl),0))),1),1))))",
+        "variables": [
+          "ceq",
+          "dp",
+          "gdwl",
+          "intan"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Accrual-Reconciliation Gap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(winsor(abs(sub(ratio(sub(ib,oancf),lag(at,1)),ratio(sub(sub(sub(delta(act,1),delta(che,1)),sub(sub(delta(lct,1),delta(dlc,1)),delta(txp,1))),dp),lag(at,1)))),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "sale",
+          "txp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Working-Capital Sales Mismatch",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),zscore(winsor(sub(ratio(delta(wcap,1),lag(sale,1)),growth(sale,1)),1)))",
+        "variables": [
+          "sale",
+          "wcap",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D Cash-Sales Payback",
+      "metadata": {
+        "normalized_expression": "zscore(winsor(ratio(add(delta(sale,1),recch),add(abs(add(delta(sale,1),recch)),lag(xrd,1))),1))",
+        "variables": [
+          "recch",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Tax Reconciliation Gap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(coalesce(xrd,0),sale),3)),rank(winsor(abs(ratio(sub(delta(txp,1),txach),lag(at,1))),1)))",
+        "variables": [
+          "at",
+          "sale",
+          "txach",
+          "txp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Shadow-Intangible Equity Accrual Strain",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ts_sum(coalesce(xrd,0),3),add(ts_sum(coalesce(xrd,0),3),max(ceq,0)))),zscore(winsor(ratio(add(sub(ib,oancf),dp),at),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "dp",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    }
+  ]
+}

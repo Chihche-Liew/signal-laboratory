@@ -1,0 +1,70 @@
+run:
+  name: ablation_no_critique
+  output_root: data/experiments
+
+mode:
+  type: default
+
+task:
+  type: cross_theme
+  pairs:
+    - profit_value
+    - profit_invest
+    - profit_accrual
+    - profit_quality
+    - profit_finance
+    - profit_intangible
+    - profit_distress
+    - value_invest
+    - value_accrual
+    - value_quality
+    - value_finance
+    - value_intangible
+    - value_distress
+    - invest_accrual
+    - invest_quality
+    - invest_finance
+    - invest_intangible
+    - invest_distress
+    - accrual_quality
+    - accrual_finance
+    - accrual_intangible
+    - accrual_distress
+    - quality_finance
+    - quality_intangible
+    - quality_distress
+    - finance_intangible
+    - finance_distress
+    - intangible_distress
+
+llm:
+  provider: anthropic
+  model: claude-opus-5
+  reasoning_effort: high
+  max_tokens:
+
+proposer:
+  type: single_agent
+  n_proposals: 6
+
+loop:
+  n_generations: 10
+  validation:
+    reject_duplicates: true
+    reject_invalid_expression: true
+    reject_single_theme: true
+
+evaluator:
+  sample_filters:
+    - exclude_financials
+    - exclude_microcap
+  success_threshold: 1.96
+  alpha_factor_model: 5
+
+budget:
+  max_tokens_in:
+  max_tokens_out:
+
+posthoc:
+  enabled: false
+  suites: []

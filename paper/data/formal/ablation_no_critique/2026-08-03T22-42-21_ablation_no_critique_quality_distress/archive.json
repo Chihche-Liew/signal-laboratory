@@ -1,0 +1,2723 @@
+{
+  "pair": "quality_distress",
+  "evaluated": [
+    {
+      "name": "LossGatedGrossProfitCoverage",
+      "expression": "MUL(INDICATOR(NEG(pi), 0), IND_ZSCORE(RATIO(SUB(revt, cogs), lt)))",
+      "hypothesis": "Among firms currently reporting a pretax loss (the distress state), the ones whose gross profit still covers a large fraction of total liabilities have a viable operating core and recover, while loss-makers whose gross profit is small relative to obligations face restructuring; for profitable firms this coverage difference carries little default information.",
+      "expected_sign": "positive",
+      "reasoning": "The pretax-loss indicator switches the signal on only in the distressed state and leaves healthy firms at the neutral value zero, so the predictive content is genuinely state-dependent rather than an unconditional gross-profitability effect. Gross profit (revt minus cogs) is the most persistent quality flow available and is unpolluted by the write-offs and one-off charges that drive reported losses.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.5578058036172294,
+      "ls_alpha": -0.024422867036779396,
+      "ls_talpha": -2.2375547856783444,
+      "ls_sharpe": -0.08296910498102088,
+      "coverage": 0.1448151126729056,
+      "error": null
+    },
+    {
+      "name": "MarginDecayXCashDrain",
+      "expression": "MUL(IND_RANK(TREND(RATIO(cogs, revt), 5)), IND_RANK(NEG(DELTA(RATIO(che, at), 1))))",
+      "hypothesis": "Distress is a process, not a level: firms whose cost-of-sales ratio has been trending up for years (eroding gross margin quality) and which are simultaneously drawing down their cash buffer are on a depletion path that the market prices with a lag, producing low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Neither a slow margin slide nor a single year of cash decline is alarming alone; jointly they indicate that internal funds are shrinking exactly as unit economics deteriorate. Using a 5-year trend for the quality channel and a one-year change for the liquidity channel matches the different speeds at which operating deterioration and financing stress manifest.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.12892851692048385,
+      "ls_alpha": -0.008663624440601907,
+      "ls_talpha": -1.068618262550176,
+      "ls_sharpe": -0.020784821479929487,
+      "coverage": 0.11902073959058201,
+      "error": null
+    },
+    {
+      "name": "MarginStabilityXPretaxDebtCoverage",
+      "expression": "MUL(IND_RANK(RATIO(pi, lt)), IND_RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Pretax earnings coverage of total liabilities is a much more reliable solvency measure when the underlying gross margin is stable; firms with strong coverage and stable margins are safe and richly rewarded, while weak coverage combined with volatile margins marks unpriced default risk.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-margin volatility is the quality dimension that determines how much information a single year's coverage ratio contains, so multiplying the two ranks sharpens the distress ordering instead of restating it. Pretax income (pi) is used rather than net income to avoid tax and special-item noise in the coverage channel.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.140777468534056,
+      "ls_alpha": 0.0002830425998404367,
+      "ls_talpha": 0.034971289395574486,
+      "ls_sharpe": -0.020488475532379882,
+      "coverage": 0.13085151849843202,
+      "error": null
+    },
+    {
+      "name": "NegativeWorkingCapitalProfitSort",
+      "expression": "MUL(INDICATOR(NEG(wcap), 0), IND_ZSCORE(RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Negative working capital is ambiguous: for profitable firms it reflects efficient supplier financing and fast inventory turns, but for weakly profitable firms it is a liquidity shortfall. Sorting the negative-working-capital subsample on gross profitability should therefore generate a large spread, with efficient operators outperforming genuinely illiquid firms.",
+      "expected_sign": "positive",
+      "reasoning": "This tests a sign-interpretation flip rather than a monotone composite: the same balance-sheet configuration means opposite things depending on operating quality, which no single-theme signal can express. Firms with positive working capital are held at neutral zero so the spread is driven entirely by the conditioned subsample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.1234613809223544,
+      "ls_alpha": 0.028263487947314904,
+      "ls_talpha": 3.0930599000326273,
+      "ls_sharpe": 0.24320347139899975,
+      "coverage": 0.12463250984169909,
+      "error": null
+    },
+    {
+      "name": "CapitalConsumptionAdjustedLiquidity",
+      "expression": "MUL(IND_RANK(RATIO(SUB(oancf, dp), at)), IND_RANK(RATIO(che, lt)))",
+      "hypothesis": "Operating cash flow flatters firms whose cash flow is mostly the depreciation add-back; subtracting dp isolates cash earnings net of capital consumption, and this true cash-generating capacity is what makes a given cash-to-liabilities buffer sustainable rather than a one-time stock.",
+      "expected_sign": "positive",
+      "reasoning": "The interaction separates firms whose liquidity is replenished by real economic earnings from those holding a static cash stock while consuming their asset base, a distinction invisible to either cash-flow or liquidity signals alone. Depreciation intensity also proxies for the reinvestment obligation that competes with debt service.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.2734166863782024,
+      "ls_alpha": 0.0439303704795562,
+      "ls_talpha": 3.257339815512733,
+      "ls_sharpe": 0.30565602291012484,
+      "coverage": 0.08980442073686652,
+      "error": null
+    },
+    {
+      "name": "ChronicLossShortRunway",
+      "expression": "MUL(TS_SUM(INDICATOR(NEG(pi), 0), 5), IND_ZSCORE(NEG(RATIO(che, cogs))))",
+      "hypothesis": "Repeated pretax losses only become terminal when the cash balance is small relative to the firm's operating cost base; the number of loss years over five years times the shortness of the cash runway (che scaled by cogs) identifies firms most likely to dilute or default, which underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Cash divided by cost of goods sold is an explicit runway concept that fuses the liquidity stock with the operating burn rate, and multiplying it by loss persistence rather than a single-year loss flag removes transitory-loss firms from the short leg. Firms with no loss years receive zero and stay neutral, so the spread comes from the chronically unprofitable tail.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.8648564691804232,
+      "ls_alpha": -0.04368740240004572,
+      "ls_talpha": -2.266740686562551,
+      "ls_sharpe": -0.1289382595619378,
+      "coverage": 0.14242557537515674,
+      "error": null
+    },
+    {
+      "name": "LiquidCoverageOfCurrentObligations",
+      "expression": "RATIO(ADD(che, SUB(oancf, dp)), lct)",
+      "hypothesis": "Near-term default risk is governed by the sum of the liquid stock (cash) and the sustainable cash flow net of capital consumption, measured against the obligations actually coming due (current liabilities); firms with high combined coverage earn higher returns than firms whose current liabilities exceed both their cash and their true cash earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the quality flow (oancf net of the dp add-back) and the distress stock into a single economically interpretable coverage ratio rather than a product of ranks, which should raise coverage and stability relative to the gen-1 winner while preserving the mechanism. Current liabilities are strictly positive, so the ratio is well behaved and does not need the two-way ranking machinery.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.19172513658903148,
+      "ls_alpha": 0.05140356794159247,
+      "ls_talpha": 2.975602128427561,
+      "ls_sharpe": 0.3089234409728896,
+      "coverage": 0.07939273270283723,
+      "error": null
+    },
+    {
+      "name": "NetLiquidPositionXCashEarnings",
+      "expression": "MUL(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Refinancing risk, not total leverage, is the binding distress channel: firms whose cash exceeds short-term debt are immune to rollover shocks, and this immunity is most valuable when accompanied by cash earnings that actually service total liabilities. The joint group earns higher returns; net-short-cash firms with weak cash earnings underperform.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing the cash-to-total-liabilities stock with the *net* liquid position (che minus dlc) changes the economic content from a liquidity buffer to rollover capacity, a distinct distress mechanism from the gen-1 winner. Scaling cash earnings by total liabilities rather than assets keeps both legs on a solvency footing.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.8732025578305667,
+      "ls_alpha": 0.05422553669703925,
+      "ls_talpha": 3.6133775877367267,
+      "ls_sharpe": 0.3771142200322475,
+      "coverage": 0.08970159778509147,
+      "error": null
+    },
+    {
+      "name": "LossGatedCashRunway",
+      "expression": "MUL(INDICATOR(NEG(pi), 0), IND_ZSCORE(RATIO(che, cogs)))",
+      "hypothesis": "Among firms reporting a pretax loss, survival and returns are determined by how many periods of operating costs the cash balance can fund, not by the level of gross profitability; loss-makers with long runways are mispriced as if they were doomed and subsequently outperform loss-makers facing imminent financing needs.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the gen-1 loss-gate failure by keeping the state gate that isolated the distressed subsample but replacing the sorting variable with the liquidity-versus-burn concept that ChronicLossShortRunway's negative alpha already supported. Cash scaled by cost of goods sold is a runway measure that combines the distress stock with the operating cost base.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.19127831693337075,
+      "ls_alpha": -0.0074600534560174715,
+      "ls_talpha": -0.5962915937078747,
+      "ls_sharpe": -0.06098748073624814,
+      "coverage": 0.14242495627058008,
+      "error": null
+    },
+    {
+      "name": "ThinMarginCushionNoCash",
+      "expression": "MUL(IND_RANK(RATIO(cogs, revt)), IND_RANK(NEG(RATIO(che, lt))))",
+      "hypothesis": "A high cost-of-sales ratio means there is little gross-margin cushion to absorb a demand or input-price shock; when such a firm also holds almost no cash against its liabilities it has neither an operating nor a financial buffer, and its equity earns low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the failed dynamic margin-decay design with the static level of the margin cushion, on the diagnosis that five-year trends and one-year cash changes were too noisy to identify the fragile group. The interaction is genuine: thin margins are tolerable with a cash buffer, and low cash is tolerable with fat margins, so only the joint state should predict underperformance.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.034846094682050376,
+      "ls_alpha": -0.04036673177656879,
+      "ls_talpha": -3.7121556418284203,
+      "ls_sharpe": -0.03471169625170555,
+      "coverage": 0.14188189837274554,
+      "error": null
+    },
+    {
+      "name": "SmoothedCashEarningsXLiquidity",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oancf, dp), at), 3)), IND_RANK(RATIO(che, lt)))",
+      "hypothesis": "The quality leg of the cash-earnings/liquidity interaction should reflect durable earning power rather than a single year's cash flow; three-year averaged cash earnings net of capital consumption, combined with the cash buffer against liabilities, should sharpen the distress ordering and improve the spread's reliability.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice relative to the gen-1 winner - smoothing the quality channel - so the evaluation tells us whether its alpha came from persistent earning power or from transitory cash flow. Averaging also stabilises portfolio composition, which should raise ls_talpha and Sharpe even if the point alpha is similar.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.947196767778685,
+      "ls_alpha": 0.04369835052980927,
+      "ls_talpha": 3.10036178595782,
+      "ls_sharpe": 0.28624969992661126,
+      "coverage": 0.0900394741078084,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkSolvency",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Solvency is a weakest-link property: a firm is safe only if both its cash-earnings coverage of total liabilities and its cash coverage of near-term obligations are adequate, and strength in one dimension does not substitute for weakness in the other. The minimum of the two ranks should therefore predict returns better than their product.",
+      "expected_sign": "positive",
+      "reasoning": "The product form rewards firms that are extreme on one leg, whereas default is triggered by the binding constraint, so the MIN operator matches the economics of financial distress more literally. Testing it against the multiplicative winner isolates the functional form while holding the two economic channels fixed.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.814921478405375,
+      "ls_alpha": 0.05513090407101394,
+      "ls_talpha": 3.604919733564544,
+      "ls_sharpe": 0.397242021920199,
+      "coverage": 0.07922170506353252,
+      "error": null
+    },
+    {
+      "name": "GrossProfitRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "The weakest-link solvency mechanism should not depend on the cash-flow statement: gross profit relative to total liabilities measures the same durable capacity to service obligations, and a firm is safe only if that capacity and its net liquid position (cash minus short-term debt) are both adequate.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the archive's best mechanism is about economic solvency or about the specific oancf-minus-dp construction, while nearly doubling coverage because gross profit is available for firms and periods where cash-flow items are missing. If the alpha survives at higher coverage, the mechanism is robust rather than a sample artefact.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.138728889650211,
+      "ls_alpha": 0.05323335326942796,
+      "ls_talpha": 4.289519273969402,
+      "ls_sharpe": 0.18522693057559675,
+      "coverage": 0.14353826107557452,
+      "error": null
+    },
+    {
+      "name": "CashEarningsRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Combining the two strongest legs found so far - cash earnings net of capital consumption against total liabilities, and the net liquid position against assets - under a binding-constraint aggregation should deliver the sharpest distress ordering, because default requires only one of solvency or liquidity to fail.",
+      "expected_sign": "positive",
+      "reasoning": "WeakestLinkSolvency and NetLiquidPositionXCashEarnings each produced ~5.5% alpha with t above 3.6 but used different liquidity legs (che/lct versus che-minus-dlc) and different aggregations; this consolidates the better leg with the better aggregation. It is a deliberate one-step consolidation rather than a new channel, and its incremental value over both parents is directly measurable.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.15082236005104,
+      "ls_alpha": 0.05638070175845104,
+      "ls_talpha": 3.8266665857777995,
+      "ls_sharpe": 0.41136645113923187,
+      "coverage": 0.08970159778509147,
+      "error": null
+    },
+    {
+      "name": "TripleConstraintSolvency",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), MIN(IND_RANK(RATIO(che, lct)), IND_RANK(RATIO(re, at))))",
+      "hypothesis": "Financial distress has three distinct binding constraints: insufficient cash earnings to service liabilities, insufficient cash for near-term obligations, and an absence of accumulated retained earnings (no equity cushion built from past profitability). A firm must clear all three to be genuinely safe, and the minimum across them should predict returns more sharply than any pair.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings scaled by assets adds a stock-of-past-quality channel that neither the cash-flow nor the liquidity leg captures, and it is the classic Altman/Ohlson survival variable. Nesting MIN keeps the weakest-link economics that outperformed the multiplicative form.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.289503271706372,
+      "ls_alpha": 0.04744665964104637,
+      "ls_talpha": 3.635753521906313,
+      "ls_sharpe": 0.37516760979542046,
+      "coverage": 0.07907766006536093,
+      "error": null
+    },
+    {
+      "name": "LiquidityDeteriorationUnderWeakCoverage",
+      "expression": "MUL(IND_RANK(NEG(DELTA(RATIO(SUB(che, dlc), at), 1))), IND_RANK(NEG(RATIO(SUB(oancf, dp), lct))))",
+      "hypothesis": "Firms whose net liquid position deteriorated over the past year are only endangered if their cash earnings cannot cover near-term obligations; the joint state - shrinking liquidity plus inadequate coverage - identifies firms about to draw on external financing at bad terms and predicts low returns.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier dynamic designs failed when both legs were changes (MarginDecayXCashDrain); here the change is paired with a *level* of coverage weakness, so the direction of travel is interpreted conditional on how much slack exists. This tests whether flow deterioration adds anything beyond static solvency levels.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.526371660665095,
+      "ls_alpha": -0.026415578014431437,
+      "ls_talpha": -2.1537672434928603,
+      "ls_sharpe": -0.23417344188019706,
+      "coverage": 0.07310417796532519,
+      "error": null
+    },
+    {
+      "name": "LiquidityDeficitGatedCoverage",
+      "expression": "MUL(INDICATOR(NEG(SUB(che, dlc)), 0), IND_ZSCORE(RATIO(SUB(oancf, dp), lct)))",
+      "hypothesis": "Among firms whose cash does not cover their short-term debt - a genuine rollover-exposed subsample - differences in cash-earnings coverage of current liabilities determine who refinances cheaply and who dilutes; for cash-rich firms this coverage difference is not priced.",
+      "expected_sign": "positive",
+      "reasoning": "The successful gen-1 gate (negative working capital) showed that gating on a balance-sheet configuration works while the pretax-loss gate did not; a net-liquidity deficit is a sharper and more theory-based version of that configuration. Safe firms are held at neutral zero so the spread is generated entirely inside the exposed subsample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.3219973926107729,
+      "ls_alpha": 0.018883155939806873,
+      "ls_talpha": 1.3225080628727566,
+      "ls_sharpe": 0.17861905673284514,
+      "coverage": 0.07933577508178372,
+      "error": null
+    },
+    {
+      "name": "BurnAdjustedTotalRunway",
+      "expression": "IND_RANK(RATIO(ADD(che, SUB(oancf, dp)), cogs))",
+      "hypothesis": "The economically correct distress metric is time, not a ratio to obligations: cash on hand plus this year's cash earnings net of capital consumption, expressed in units of the annual operating cost base, measures how long the firm can operate without external funding. Longer total runway predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The unranked coverage ratio produced 5.1% alpha but a flat Fama-MacBeth slope, diagnosing skewness rather than absence of signal, so ranking within industry should recover the cross-sectional evidence. Scaling by cogs rather than by liabilities changes the economic content from a solvency ratio to a survival horizon, which is the distinct design choice being tested.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.8016751382683935,
+      "ls_alpha": 0.04169523076474134,
+      "ls_talpha": 2.6360590809950817,
+      "ls_sharpe": 0.2568903161009443,
+      "coverage": 0.08798120935062534,
+      "error": null
+    },
+    {
+      "name": "TripleMinAccrualCashRollover",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "A firm is genuinely safe only if its accrual operating margin, its cash earnings net of capital consumption, and its net liquid position are all adequate relative to obligations; requiring all three constraints to clear should isolate a cleaner safe/fragile ordering than any two of them.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit and cash-earnings legs produced almost identical alphas but very different Sharpe ratios, implying they capture partly distinct information (product-market profitability versus cash conversion), so requiring both should reduce false positives in the long leg. The MIN aggregation preserves the binding-constraint economics that has beaten multiplicative forms throughout the archive.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.046981851837848,
+      "ls_alpha": 0.04630775224966401,
+      "ls_talpha": 2.9343504476040354,
+      "ls_sharpe": 0.3023881817758234,
+      "coverage": 0.08970159778509147,
+      "error": null
+    },
+    {
+      "name": "EbitdaCoverageRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(ADD(pi, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Pretax income plus depreciation is the classic pre-financing cash earnings measure used in credit analysis, and its coverage of total liabilities MIN'd with the net liquid position should reproduce the winning mechanism on a much broader sample because it does not require the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes an income-statement reconstruction of cash earnings for the oancf-minus-dp construction, testing whether the mechanism is about credit-style coverage rather than about cash-flow-statement data specifically, and it should lift coverage from 0.090 toward 0.14. If both alpha and Sharpe hold at higher coverage it becomes the preferred consolidation target.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.6328534205562977,
+      "ls_alpha": 0.04964463422215283,
+      "ls_talpha": 4.48051680211403,
+      "ls_sharpe": 0.2243377082047748,
+      "coverage": 0.13947017649433271,
+      "error": null
+    },
+    {
+      "name": "RolloverLegScaledByObligations",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "The net liquid position is economically meaningful relative to the obligations it must eventually meet rather than relative to the asset base; scaling both legs by total liabilities puts the solvency flow and the liquidity stock on a common denominator and should sharpen the ordering.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice - the denominator of the liquidity leg - holding the quality leg and the MIN aggregation fixed, so the result cleanly attributes performance to scaling rather than to economic content. Asset scaling mixes in capital intensity, which is a size/industry effect rather than a distress effect.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.7078893182160546,
+      "ls_alpha": 0.051885176492981036,
+      "ls_talpha": 3.631084958826714,
+      "ls_sharpe": 0.34815277357899266,
+      "coverage": 0.08970593151712815,
+      "error": null
+    },
+    {
+      "name": "AccrualGapUnderRolloverStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(pi, oancf), revt)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Reported pretax income that is not backed by operating cash flow is an earnings-quality red flag, and it is dangerous precisely when the firm has no net liquid buffer to absorb the eventual reversal; firms combining a large accrual gap with a net-debt position should earn low returns.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual channel is untested in this archive and is economically distinct from the level-of-coverage channel: it measures the credibility of earnings rather than their size, and its relevance is conditional on financing slack. Scaling the gap by revenue keeps it comparable across capital structures while the second leg supplies the distress conditioning.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.19527502442583072,
+      "ls_alpha": -0.06984005518171527,
+      "ls_talpha": -4.627071101232317,
+      "ls_sharpe": -0.33009111369250094,
+      "coverage": 0.08880570187060384,
+      "error": null
+    },
+    {
+      "name": "TroughCashEarningsRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "What protects a levered firm is not this year's cash earnings but the worst coverage it produced over a full cycle; using the five-year trough of cash-earnings coverage as the quality leg should improve the reliability of the spread, since firms that never breached coverage are truly investment grade.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing with a three-year mean did not improve the multiplicative form, but a trough is a downside-risk concept rather than a noise-reduction device and speaks directly to default probability. If the Sharpe ratio rises while alpha holds, persistence of coverage - not its current level - is the priced characteristic.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.911294240440596,
+      "ls_alpha": 0.05548892033079045,
+      "ls_talpha": 3.822979811561187,
+      "ls_sharpe": 0.4358930882406982,
+      "coverage": 0.09013332004322175,
+      "error": null
+    },
+    {
+      "name": "HighMarginLeverageRiskPremium",
+      "expression": "MUL(INDICATOR(RATIO(SUB(revt, cogs), revt), 0.3), IND_ZSCORE(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "For firms with fat gross margins, carrying net debt is a compensated risk and a discipline device rather than a default threat, so within this high-quality group the most net-indebted firms should earn higher returns - the opposite of the unconditional distress effect.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal so far says net liquidity is good on average; this tests whether that relation flips inside the high-margin subsample, which is the strongest possible evidence that the two themes interact rather than simply add. Low-margin firms are held at neutral zero so the spread comes entirely from the conditioned high-quality group.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.5866479170185854,
+      "ls_alpha": -0.06157551783629976,
+      "ls_talpha": -4.53650124261968,
+      "ls_sharpe": -0.19201701421450793,
+      "coverage": 0.1413333717178171,
+      "error": null
+    },
+    {
+      "name": "TroughEbitdaRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "The worst pre-financing cash earnings coverage of liabilities over the past five years, combined with the current net liquid position, identifies firms that never came close to a covenant or default boundary; these firms earn higher returns than firms whose coverage collapsed at some point in the cycle.",
+      "expected_sign": "positive",
+      "reasoning": "This joins the two best-performing design choices of gen 4 - the trough operator, which gave the strongest Fama-MacBeth slope, and the pi-plus-dp coverage leg, which gave the strongest alpha t-stat at nearly 0.14 coverage. If both properties survive together it is the natural consolidation candidate for the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.10959471148516,
+      "ls_alpha": 0.054117316714431034,
+      "ls_talpha": 4.799675524953341,
+      "ls_sharpe": 0.2783721467330496,
+      "coverage": 0.1401710544671697,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageCleanAccrualRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(pi, oancf), revt)))))",
+      "hypothesis": "A safe firm must clear three separate constraints: its worst-case cash earnings covered its liabilities, it holds cash in excess of short-term debt, and its reported income is backed by cash rather than accruals. Requiring all three should produce the cleanest safe-versus-fragile ordering.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual gap generated the largest absolute alpha in the archive but only at the extremes, so embedding it as a binding constraint alongside the trough and rollover legs uses it where it is informative rather than as a standalone continuous sort. This directly tests whether earnings credibility adds incremental information to coverage and liquidity.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.512926810925643,
+      "ls_alpha": 0.04302672274434724,
+      "ls_talpha": 3.1586915193402194,
+      "ls_sharpe": 0.32129887340065144,
+      "coverage": 0.08791806068380513,
+      "error": null
+    },
+    {
+      "name": "AccrualCredibilityRolloverAdditive",
+      "expression": "SUMRANK(NEG(RATIO(SUB(pi, oancf), revt)), RATIO(SUB(che, dlc), at))",
+      "hypothesis": "Cash-backed earnings and a positive net liquid position are substitutable sources of financial resilience, so an additive rank combination should order the entire cross-section monotonically rather than only its tails, converting the accrual channel's large tail alpha into a genuine cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative version of this pair delivered a 7% alpha with no Fama-MacBeth slope, which points to construction rather than economics as the problem; SUMRANK removes the interaction-induced non-monotonicity in the middle of the distribution. Comparing it with the MUL parent isolates aggregation from economic content.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.23315336615576565,
+      "ls_alpha": 0.06327473881031964,
+      "ls_talpha": 3.7064380219755915,
+      "ls_sharpe": 0.1984938743488006,
+      "coverage": 0.0888066821195169,
+      "error": null
+    },
+    {
+      "name": "ChronicAccrualInflationNetDebt",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(pi, oancf), revt), 3)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "A single year's accrual gap can reflect ordinary working-capital timing, but a firm that has reported income exceeding cash flow for three consecutive years while carrying net debt is systematically overstating its debt-service capacity, and its equity should underperform sharply.",
+      "expected_sign": "negative",
+      "reasoning": "Smoothing the accrual gap over three years should raise the persistence of the short-leg membership and therefore the reliability of the negative alpha, while also testing whether the gen-4 result was driven by transitory one-year timing effects. This is the persistence analogue of the archive's largest-magnitude alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.29234955829163534,
+      "ls_alpha": -0.07124343478855406,
+      "ls_talpha": -4.98446756399744,
+      "ls_sharpe": -0.3519072346078864,
+      "coverage": 0.0892894289131743,
+      "error": null
+    },
+    {
+      "name": "MaturityStructureXCoverage",
+      "expression": "MIN(IND_RANK(RATIO(ADD(pi, dp), lt)), IND_RANK(NEG(RATIO(dlc, ADD(dlc, dltt)))))",
+      "hypothesis": "Rollover risk depends on when debt comes due, not only on how much cash is on hand: firms funding themselves with a high share of short-maturity debt must refinance frequently, and that fragility is dangerous only when pre-financing cash earnings do not comfortably cover total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Every distress leg tested so far has been a liquidity stock; debt maturity composition is an economically distinct source of refinancing risk that the cash-based legs cannot capture. Pairing it with the broad-coverage earnings leg under the weakest-link aggregation keeps the structure that has worked while changing the distress channel.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.3317782431825305,
+      "ls_alpha": 0.01180645289496063,
+      "ls_talpha": 1.4172146860238026,
+      "ls_sharpe": 0.07396783164634702,
+      "coverage": 0.1243792960698416,
+      "error": null
+    },
+    {
+      "name": "MarginAmplifiedNetLiquidity",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), revt), RATIO(SUB(che, dlc), at))",
+      "hypothesis": "Gross margin and net liquidity reinforce each other: a wide margin means operating shocks are absorbed before they reach the balance sheet, and a positive net liquid position means shocks that do reach it can be funded internally, so the jointly strong group earns high returns and the jointly weak group underperforms.",
+      "expected_sign": "positive",
+      "reasoning": "The failed sign-flip test showed that high margins amplify rather than reverse the reward to net liquidity, and this is the parsimonious, high-coverage (no cash-flow-statement requirement) way to exploit that amplification. Additive ranking keeps the sort monotone across the full cross-section, which the gate-based version could not do because half the sample was pinned at zero.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.4886845419434906,
+      "ls_alpha": 0.06130706820494468,
+      "ls_talpha": 5.419945392427852,
+      "ls_sharpe": 0.1354884933717734,
+      "coverage": 0.14147844855694977,
+      "error": null
+    },
+    {
+      "name": "IndustryAdditiveAccrualRollover",
+      "expression": "ADD(IND_RANK(NEG(RATIO(SUB(pi, oancf), revt))), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Cash-backed earnings and a positive net liquid position are substitutable forms of resilience, and combining them additively after industry neutralisation should produce both a monotone cross-sectional slope and the large abnormal return the global-rank version achieved.",
+      "expected_sign": "positive",
+      "reasoning": "The SUMRANK parent produced a 6.3% alpha with a flat Fama-MacBeth slope, which the archive pattern attributes to global ranking letting industry composition drive the sort; ADD of IND_RANK legs holds the economics fixed and removes that contamination. This is the cleanest test of the diagnosis that aggregation scope, not economic content, caused the metric disagreement.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.16018563162536983,
+      "ls_alpha": 0.054768399170464895,
+      "ls_talpha": 3.7001118126211803,
+      "ls_sharpe": 0.25709811241055053,
+      "coverage": 0.08880570187060384,
+      "error": null
+    },
+    {
+      "name": "IndustryAdditiveMarginRollover",
+      "expression": "ADD(IND_RANK(RATIO(SUB(revt, cogs), revt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Wide gross margins absorb operating shocks before they reach the balance sheet, and net cash absorbs those that do; the additive combination of the two, measured relative to industry peers, should predict returns strongly because margin levels are only comparable within an industry.",
+      "expected_sign": "positive",
+      "reasoning": "The global-rank version delivered the archive's highest alpha t-stat (5.42) but a Sharpe of only 0.135 and no cross-sectional slope, which is the signature of an unhedged industry bet on high-margin sectors. Industry-ranking both legs should convert that alpha into a tradable, cross-sectionally coherent signal at high coverage.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.455573077879149,
+      "ls_alpha": 0.05353198465757976,
+      "ls_talpha": 4.5282098152862655,
+      "ls_sharpe": 0.14977073812132224,
+      "coverage": 0.14146431233578252,
+      "error": null
+    },
+    {
+      "name": "TripleAdditiveSolvencyCredibility",
+      "expression": "ADD(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), ADD(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(pi, oancf), revt)))))",
+      "hypothesis": "Trough coverage of liabilities, current net liquidity, and earnings credibility are three partially independent dimensions of financial strength; averaging them within industry should give a higher-signal-to-noise composite than requiring all three to bind simultaneously.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN-based triple constraint gave the archive's best Fama-MacBeth slope (5.51) but a diluted alpha (4.3%) because the minimum discards information from the two non-binding legs. Additive aggregation of the same three industry-ranked channels tests whether information pooling beats the binding-constraint logic once all three channels are individually validated.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.0946120068659537,
+      "ls_alpha": 0.06340140476376464,
+      "ls_talpha": 3.6595423917966183,
+      "ls_sharpe": 0.39117508140618773,
+      "coverage": 0.08795897317791332,
+      "error": null
+    },
+    {
+      "name": "BalanceSheetAccrualsUnderNetDebt",
+      "expression": "MUL(IND_RANK(RATIO(SUB(DELTA(wcap, 1), dp), at)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Accruals computed from the balance sheet - the change in working capital less depreciation - measure the same earnings-credibility gap as income minus operating cash flow, and their interaction with a net-debt position should identify firms whose reported debt-service capacity is illusory, predicting low returns on a much broader sample.",
+      "expected_sign": "negative",
+      "reasoning": "The oancf-based accrual interaction produced the largest magnitude alphas in the archive (-7.0% and -7.1%) but only at 0.089 coverage; the Sloan-style balance-sheet construction uses wcap and dp, which are available for roughly 50% more firm-months. If the alpha survives, the earnings-credibility channel becomes usable on the full sample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.745361853585017,
+      "ls_alpha": -0.05154448460460049,
+      "ls_talpha": -3.9251511394148366,
+      "ls_sharpe": -0.3268699241698831,
+      "coverage": 0.11222663437417195,
+      "error": null
+    },
+    {
+      "name": "TroughEbitdaRolloverProduct",
+      "expression": "MUL(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "If trough coverage and net liquidity amplify each other rather than acting as substitutable binding constraints, the product of their industry ranks should dominate the minimum, because firms strong on both dimensions are disproportionately safe and firms weak on both are disproportionately fragile.",
+      "expected_sign": "positive",
+      "reasoning": "MIN narrowly beat MUL at the level configuration, but that comparison was never repeated with the trough leg and the broad-coverage pi-plus-dp numerator that now define the best signal. This isolates the aggregation choice at the current frontier, which matters for how the final consolidated signal should be built.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.9656879520270105,
+      "ls_alpha": 0.05294775218120766,
+      "ls_talpha": 4.698446365622266,
+      "ls_sharpe": 0.2545225137844787,
+      "coverage": 0.1401710544671697,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalSlackTroughCoverage",
+      "expression": "ADD(IND_RANK(RATIO(wcap, at)), IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)))",
+      "hypothesis": "The relevant liquidity buffer may be total working capital - receivables and inventory that can be liquidated or financed - rather than cash net of short-term debt alone; combined with trough earnings coverage it should identify firms with both an operating cushion and proven debt-service capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Working capital slack was the conditioning variable in the first successful gate of the archive but has never been used as a continuous leg against the coverage channel, so this tests whether the liquidity leg should be narrow (cash minus short-term debt) or broad (working capital). Both legs avoid the cash-flow statement, keeping coverage near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.078892227015735,
+      "ls_alpha": 0.043994983232414575,
+      "ls_talpha": 4.0913432100958405,
+      "ls_sharpe": 0.23180081675840292,
+      "coverage": 0.12441174746806866,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageRolloverMarginTriple",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(RATIO(SUB(revt, cogs), revt))))",
+      "hypothesis": "Genuine financial safety requires proven debt-service capacity through the cycle, cash in excess of short-term debt, and a gross margin wide enough to absorb the next operating shock; requiring all three to clear should produce the archive's cleanest safe-versus-fragile ordering without sacrificing coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The margin channel supplied large tail alphas (t up to 5.42) but no cross-sectional slope on its own, so it belongs as a binding constraint inside the monotone trough-coverage/rollover core rather than as a continuous sort. All three legs avoid the cash-flow statement, so coverage should remain near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.7097399728172795,
+      "ls_alpha": 0.04515790181758843,
+      "ls_talpha": 4.073658277600071,
+      "ls_sharpe": 0.15404233921252025,
+      "coverage": 0.13775051034853936,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageNearTermRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), lct)))",
+      "hypothesis": "The net liquid position matters relative to the obligations coming due within the year, not relative to the asset base; scaling cash minus short-term debt by current liabilities makes the liquidity leg a genuine near-term solvency measure and should sharpen both the slope and the spread.",
+      "expected_sign": "positive",
+      "reasoning": "Asset scaling embeds capital intensity, an industry and size characteristic, whereas current-liability scaling isolates the refinancing constraint; the analogous re-scaling test at the oancf configuration (RolloverLegScaledByObligations) held up, but was never run with the broad-coverage trough leg. This isolates the denominator choice at the current frontier.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.9024984377378296,
+      "ls_alpha": 0.047143564616490094,
+      "ls_talpha": 4.34973307037519,
+      "ls_sharpe": 0.23568393898748324,
+      "coverage": 0.12432239004083613,
+      "error": null
+    },
+    {
+      "name": "PersistentCoverageAndLiquidity",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(TS_MIN(RATIO(SUB(che, dlc), at), 5)))",
+      "hypothesis": "Firms that have never run a liquidity deficit in five years are structurally conservative, while firms whose current cash surplus is new are merely lucky; requiring both the worst coverage and the worst net liquid position over the cycle to be high should identify persistent, priced financial strength.",
+      "expected_sign": "positive",
+      "reasoning": "Applying the trough operator to the quality leg produced the largest gains in the archive (fmb 4.9, Sharpe 0.44), so the natural question is whether persistence matters symmetrically on the distress leg. If it does, financial-policy conservatism rather than the current balance-sheet snapshot is the priced characteristic.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.7584468777795412,
+      "ls_alpha": 0.05670671219570514,
+      "ls_talpha": 4.679391987081065,
+      "ls_sharpe": 0.2528861965130247,
+      "coverage": 0.14036070683582255,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageRolloverCleanAccruals",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Firms that pass the trough-coverage and rollover tests but are simultaneously accumulating working-capital accruals are reporting resilience they have not earned; excluding them from the long leg should raise the spread relative to the two-leg signal.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual-credibility channel produced the archive's largest magnitude alphas but no monotone slope, which is exactly the profile of a constraint rather than a sort; using the balance-sheet accrual (change in working capital less depreciation) keeps coverage at roughly 0.11 instead of 0.088. This tests whether earnings credibility adds incrementally to proven coverage and liquidity.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.256416762394158,
+      "ls_alpha": 0.01683580866777752,
+      "ls_talpha": 1.6213717418409954,
+      "ls_sharpe": 0.12335487651342585,
+      "coverage": 0.11216162839362173,
+      "error": null
+    },
+    {
+      "name": "CashQualityOfCurrentAssets",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Not all current assets are liquid: a firm whose current assets are mostly inventory and receivables cannot meet obligations in a stress episode, whereas a high cash share of current assets is immediately available. Cash intensity of current assets, paired with proven coverage, should predict returns.",
+      "expected_sign": "positive",
+      "reasoning": "Every distress leg tested so far measures the *size* of the buffer; this measures its *composition*, an economically distinct source of liquidity risk that is orthogonal to leverage and to the cash-to-liabilities level. It is also unaffected by capital structure, so it should behave differently from the net-liquid-position legs.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.0199297332732575,
+      "ls_alpha": 0.051952503549592265,
+      "ls_talpha": 4.439907894021644,
+      "ls_sharpe": 0.30478491632194304,
+      "coverage": 0.12370395616079219,
+      "error": null
+    },
+    {
+      "name": "BroadAdditiveSolvencyCredibility",
+      "expression": "ADD(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), ADD(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Pooling proven coverage, net liquidity and accrual credibility additively should deliver the largest abnormal return of the family, because each channel contributes independent information about financial strength and none should veto the others.",
+      "expected_sign": "positive",
+      "reasoning": "The additive triple built on cash-flow-statement accruals produced the archive's best combination of alpha (6.3%) and Sharpe (0.391) at only 0.088 coverage; substituting the balance-sheet accrual raises coverage to about 0.11 while preserving the pooling logic. Running it against the MIN version in signal 4 cleanly separates information pooling from binding-constraint aggregation at identical data requirements.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.372963021920997,
+      "ls_alpha": 0.03984235835041586,
+      "ls_talpha": 3.4048941048117918,
+      "ls_sharpe": 0.3191086511736356,
+      "coverage": 0.11216162839362173,
+      "error": null
+    },
+    {
+      "name": "PersistentLiquidityCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(TS_MIN(RATIO(SUB(che, dlc), at), 5)), IND_RANK(RATIO(che, act))))",
+      "hypothesis": "A firm is financially safe when its worst-cycle earnings coverage was adequate, it has never run a net liquidity deficit, and the liquid assets it holds are actually cash rather than inventory and receivables; these three conditions are the complete characterisation of the resilient group.",
+      "expected_sign": "positive",
+      "reasoning": "This joins the only two refinements that improved the frontier in gen 7 - the trough operator on the liquidity leg (best alpha) and the cash-composition leg (best Sharpe) - inside the binding-constraint structure that has dominated throughout. Unlike the accrual and margin legs, both added channels are liquidity-economic and monotone, so dilution risk is lower.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.500698624444757,
+      "ls_alpha": 0.0556212010175889,
+      "ls_talpha": 4.158218603673269,
+      "ls_sharpe": 0.25333388575229976,
+      "coverage": 0.12328131410311971,
+      "error": null
+    },
+    {
+      "name": "ShortWindowTroughCoverageRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 3)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Recent trough coverage is more informative than the five-year trough because a coverage breach four years ago may reflect a resolved shock rather than current fragility; a three-year trough should keep the downside concept while reducing staleness and requiring less history.",
+      "expected_sign": "positive",
+      "reasoning": "The trough window length has never been varied, yet it determines both how much history is imposed on coverage and how many firms qualify; shortening it should raise coverage above 0.14 and sharpen the timing of the distress information. Comparing against the five-year parent isolates the window choice cleanly.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.023991093019737,
+      "ls_alpha": 0.05268995882612719,
+      "ls_talpha": 4.8027630261096315,
+      "ls_sharpe": 0.25416581266705723,
+      "coverage": 0.1399887281693408,
+      "error": null
+    },
+    {
+      "name": "CashEarningsTroughCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Pairing the highest-Sharpe quality leg in the archive - the five-year trough of cash earnings net of capital consumption - with the liquidity-composition leg should produce the most efficient spread, because both legs are about the durability of resources rather than their momentary size.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow-based trough leg produced Sharpe 0.436 and the cash-composition leg produced Sharpe 0.305, and neither has been combined; these two channels are close to orthogonal (one flow-based, one asset-mix based). The coverage cost (about 0.088) is acceptable if the risk-adjusted spread improves materially.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.994596735228748,
+      "ls_alpha": 0.06802847942698667,
+      "ls_talpha": 4.292814157817276,
+      "ls_sharpe": 0.5296964437891429,
+      "coverage": 0.07910433315420574,
+      "error": null
+    },
+    {
+      "name": "BurnScaledTroughCoverageRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), cogs), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Pre-financing cash earnings are best judged against the operating cost base they must sustain rather than against the stock of liabilities, because the cost base determines how quickly a shortfall consumes resources; a trough of earnings-to-cost combined with net liquidity should identify durable operating economics.",
+      "expected_sign": "positive",
+      "reasoning": "Every quality leg tested has been scaled by liabilities or assets, so the burn-rate denominator is the one untested scaling with clear economic content, and the standalone runway signal did produce 4.2% alpha. Because cogs is strictly positive and industry-ranked, this also avoids the leverage contamination inherent in liability scaling.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.496351244861434,
+      "ls_alpha": 0.04625550874648583,
+      "ls_talpha": 4.139281757280578,
+      "ls_sharpe": 0.24690030010858613,
+      "coverage": 0.13862411849826692,
+      "error": null
+    },
+    {
+      "name": "GrossProfitCoverageCashComposition",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Gross profit coverage of liabilities and the cash share of current assets are both computable without the cash-flow statement or a five-year history, so their weakest-link combination should deliver the mechanism at maximum coverage: profitable product markets plus genuinely liquid assets.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit coverage leg scored fmb 4.14 with 5.3% alpha at the archive's highest coverage (0.144) but had a weak Sharpe of 0.185, and the cash-composition leg is precisely the kind of liquidity-quality channel that should fix an unhedged spread. This tests whether the full mechanism can be delivered on the broadest possible sample.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.324265652220037,
+      "ls_alpha": 0.05302798202977229,
+      "ls_talpha": 4.25540259646149,
+      "ls_sharpe": 0.25949183199577436,
+      "coverage": 0.12348737274305427,
+      "error": null
+    },
+    {
+      "name": "SubstitutableResilienceMax",
+      "expression": "MAX(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "If financial resilience is substitutable - strong proven coverage compensates for thin liquidity and vice versa - then the maximum of the two industry ranks should predict returns as well as the minimum; if default is driven by the binding constraint, MAX should perform markedly worse.",
+      "expected_sign": "positive",
+      "reasoning": "MIN and MUL have performed nearly identically at the frontier, which leaves open whether the aggregation reflects genuine weakest-link economics or merely a monotone composite; MAX is the discriminating test because it inverts which leg determines the score. The answer directly determines how the final-generation signal should aggregate its legs.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.239593766873476,
+      "ls_alpha": 0.034369535059482745,
+      "ls_talpha": 3.008526848469658,
+      "ls_sharpe": 0.13128943079355507,
+      "coverage": 0.1401710544671697,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageCashCompositionRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), MIN(IND_RANK(RATIO(che, act)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Proven through-cycle cash-earnings coverage, a cash-dominated current asset mix, and cash in excess of short-term debt are three non-redundant safety conditions - capacity, asset liquidity, and rollover immunity - and requiring all three should improve on the two-leg winner.",
+      "expected_sign": "positive",
+      "reasoning": "The composition leg (che/act) and the rollover leg (che minus dlc over assets) measure different things: one the liquidity of assets held, the other the adequacy of that liquidity against near-term debt, and each individually improved a trough-coverage signal. Because both are liquidity-economic and monotone, dilution risk is far lower than for the margin and accrual legs that failed as third constraints.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.890212018908657,
+      "ls_alpha": 0.05697575205374192,
+      "ls_talpha": 3.635408458252543,
+      "ls_sharpe": 0.3678185910574238,
+      "coverage": 0.07910309494505241,
+      "error": null
+    },
+    {
+      "name": "PersistentCashCompositionCoverage",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(TS_MIN(RATIO(che, act), 5)))",
+      "hypothesis": "A cash-heavy current asset mix is informative only if it reflects deliberate financial policy rather than a temporary receivables collection; the five-year trough of the cash share of current assets identifies firms that have consistently held genuinely liquid assets, which should be the priced characteristic.",
+      "expected_sign": "positive",
+      "reasoning": "Applying the trough operator to the liquidity leg raised alpha when the leg was the net liquid position (5.7% versus 5.4%), and the composition leg is a slower-moving policy variable for which persistence should matter even more. This isolates persistence on the leg that drove the winner's Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.014073771875619,
+      "ls_alpha": 0.0548269389730278,
+      "ls_talpha": 3.5475910316280785,
+      "ls_sharpe": 0.385076118735795,
+      "coverage": 0.07957015775610086,
+      "error": null
+    },
+    {
+      "name": "TroughCoverageCashToCurrentDebt",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "The cash buffer may be better judged against the obligations it must cover within the year than against the composition of current assets; cash over current liabilities combines the stock and the claim in one leg and should compete directly with the cash-share formulation.",
+      "expected_sign": "positive",
+      "reasoning": "Cash over current liabilities was the liquidity leg of the original weakest-link signal (Sharpe 0.397) but has never been paired with the trough quality leg that defines the frontier, so this is the missing cell in the design grid. Comparing it against the winner attributes performance to asset-mix quality versus obligation coverage.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.75625258325731,
+      "ls_alpha": 0.056368318721096114,
+      "ls_talpha": 3.8101298365151894,
+      "ls_sharpe": 0.4548672708052147,
+      "coverage": 0.07947202968069887,
+      "error": null
+    },
+    {
+      "name": "TroughProfitabilityCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), at), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "If the winner's power comes from proven earning power rather than from leverage-adjusted solvency, scaling trough cash earnings by assets instead of liabilities should perform equally well; if solvency is the mechanism, the liability denominator is essential.",
+      "expected_sign": "positive",
+      "reasoning": "Every frontier signal scales the quality leg by total liabilities, which mixes profitability with leverage, so this decomposition test is economically informative about whether the interaction is quality-times-distress or simply persistent profitability plus liquidity. It holds the composition leg, the trough operator and the aggregation fixed.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.7849827661713005,
+      "ls_alpha": 0.06488980984601907,
+      "ls_talpha": 3.9580211227444835,
+      "ls_sharpe": 0.48131360234127957,
+      "coverage": 0.07914839276324533,
+      "error": null
+    },
+    {
+      "name": "BroadTroughCoverageDualLiquidity",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(che, act)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "The same three-condition safety characterisation should hold on the broad sample when trough coverage is reconstructed from pretax income plus depreciation, delivering most of the winner's spread at roughly 50% higher coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The pi-plus-dp coverage leg has consistently produced the highest alpha t-statistics (up to 4.80) at 0.124-0.140 coverage but weaker Sharpe ratios, and the missing ingredient in those tests was combining both liquidity legs at once. This is the deployable, wide-sample counterpart to signal 1 and tells us the cost of the cash-flow-statement requirement.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.365717118377347,
+      "ls_alpha": 0.053644338493837686,
+      "ls_talpha": 4.302785637890295,
+      "ls_sharpe": 0.23431054692485107,
+      "coverage": 0.12326810653881744,
+      "error": null
+    },
+    {
+      "name": "CoverageStabilityCashComposition",
+      "expression": "MIN(IND_RANK(NEG(VOL(RATIO(SUB(oancf, dp), lt), 5))), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "What protects a levered firm may be the low variability of its coverage rather than the level of its worst outcome: firms whose cash-earnings coverage barely moves have predictable debt service, and paired with liquid assets they should be the safest group.",
+      "expected_sign": "positive",
+      "reasoning": "Trough and volatility are different downside concepts - one is a worst realisation, the other a dispersion - and only the trough has been tested on the coverage series, while an early volatility test used gross margins rather than coverage. This distinguishes whether the market prices the depth of the worst outcome or the predictability of the series.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.955128912732229,
+      "ls_alpha": 0.04156362858826364,
+      "ls_talpha": 3.1382701317425123,
+      "ls_sharpe": 0.37905145299797366,
+      "coverage": 0.0705872083088787,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "LeverageXEarningsInstability",
+      "expression": "MUL(IND_RANK(RATIO(lt, at)), IND_RANK(VOL(RATIO(ib, at), 5)))",
+      "hypothesis": "Balance-sheet leverage is only genuinely distressing when the earnings stream servicing it is unstable; firms that are simultaneously highly levered and have volatile ROA are the true financially fragile group whose equity earns low subsequent returns (the distress anomaly), whereas levered firms with stable earnings are merely leveraged, not distressed.",
+      "expected_sign": "negative",
+      "reasoning": "Leverage alone is a weak return predictor because stable cash generators can safely carry debt, so the distress effect must be sharpened by earnings-stability quality. Multiplying within-industry ranks of liabilities/assets and 5-year ROA volatility isolates the joint tail, where mispricing and slow diffusion of default-risk news is strongest. Industry ranking removes mechanical capital-structure differences across sectors.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DownsideCashDebtCoverage",
+      "expression": "RATIO(TS_MIN(oancf, 5), lt)",
+      "hypothesis": "What matters for distress is not average cash generation but the worst cash flow a firm produced over a full cycle relative to its total obligations; high worst-case coverage marks quality-backed solvency and predicts higher returns, while firms whose trough operating cash flow cannot service liabilities underperform.",
+      "expected_sign": "positive",
+      "reasoning": "This builds the quality dimension (persistence of cash generation, measured as the 5-year minimum) directly into the distress denominator (total liabilities), so the signal is not decomposable into a cash-flow-margin effect or a leverage effect alone. Trough-based coverage is a forward-looking default proxy that accounting levels and averages miss, and investors appear to underweight downside cash-flow states.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualQualityXDebtBurden",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(dltt, dlc), at)))",
+      "hypothesis": "Earnings that are not backed by cash (high accruals) are especially informative about future trouble when the firm carries a heavy debt load, because accrual-inflated profits temporarily mask an inability to service obligations; the joint group of high-accrual, high-debt firms delivers low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Accrual quality and debt burden are individually modest predictors, but their product identifies firms whose reported solvency is accounting-driven rather than cash-driven, which is where covenant violations and equity dilution cluster. Industry ranks control for sector-level working-capital and financing norms.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DistressGatedCashSolvency",
+      "expression": "MUL(INDICATOR(NEG(re), 0), IND_ZSCORE(RATIO(MA(oancf, 3), lt)))",
+      "hypothesis": "Among firms with accumulated deficits (negative retained earnings, a classic distress marker), cross-sectional differences in smoothed operating cash flow relative to liabilities separate survivors from likely restructurers; the surviving cash generators earn a large positive spread over cash-poor distressed peers, while the same coverage differences matter little for firms with healthy retained earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator gate makes the signal an explicitly state-dependent interaction: non-distressed firms take the neutral value zero and only the distressed subsample is spread by cash-flow quality. Three-year averaging of oancf suppresses transitory cash swings so the ranking reflects durable solvency rather than one-off receipts.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "QualityLeverageAlignment",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_ZSCORE(RATIO(ADD(dltt, dlc), at)))",
+      "hypothesis": "The sign of the leverage-return relation flips with quality: for strong cash generators, debt is a compensated risk-and-discipline channel that predicts higher returns, whereas for weak cash generators the same debt is unpriced default risk that predicts lower returns. Aligned pairs (high cash flow with high debt, low cash flow with low debt) outperform misaligned pairs (low cash flow with high debt).",
+      "expected_sign": "positive",
+      "reasoning": "The product of two signed within-industry z-scores is positive exactly when capital structure is matched to cash-generating capacity, producing a pure interaction with (approximately) zero loading on either theme in isolation. This directly tests the sign-flip mechanism that a linear combination of quality and distress cannot express.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "NetDebtXCashMarginDecay",
+      "expression": "MUL(IND_RANK(RATIO(SUB(lt, che), at)), IND_RANK(NEG(TREND(RATIO(oancf, sale), 5))))",
+      "hypothesis": "Distress risk becomes acute when high net indebtedness is combined with a multi-year deterioration in cash conversion; the deteriorating trend signals that internal funds will not grow into the obligations, and such firms subsequently underperform, while high net debt paired with an improving cash margin is benign.",
+      "expected_sign": "negative",
+      "reasoning": "Cash net of the liquidity buffer (lt minus che) is the economically relevant distress stock, and the 5-year trend in operating cash flow to sales is the quality flow that determines whether that stock is sustainable. The interaction targets dynamic deterioration rather than a static level, a state that markets price with a lag.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LossGatedGrossProfitCoverage",
+      "expression": "MUL(INDICATOR(NEG(pi), 0), IND_ZSCORE(RATIO(SUB(revt, cogs), lt)))",
+      "hypothesis": "Among firms currently reporting a pretax loss (the distress state), the ones whose gross profit still covers a large fraction of total liabilities have a viable operating core and recover, while loss-makers whose gross profit is small relative to obligations face restructuring; for profitable firms this coverage difference carries little default information.",
+      "expected_sign": "positive",
+      "reasoning": "The pretax-loss indicator switches the signal on only in the distressed state and leaves healthy firms at the neutral value zero, so the predictive content is genuinely state-dependent rather than an unconditional gross-profitability effect. Gross profit (revt minus cogs) is the most persistent quality flow available and is unpolluted by the write-offs and one-off charges that drive reported losses.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginDecayXCashDrain",
+      "expression": "MUL(IND_RANK(TREND(RATIO(cogs, revt), 5)), IND_RANK(NEG(DELTA(RATIO(che, at), 1))))",
+      "hypothesis": "Distress is a process, not a level: firms whose cost-of-sales ratio has been trending up for years (eroding gross margin quality) and which are simultaneously drawing down their cash buffer are on a depletion path that the market prices with a lag, producing low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Neither a slow margin slide nor a single year of cash decline is alarming alone; jointly they indicate that internal funds are shrinking exactly as unit economics deteriorate. Using a 5-year trend for the quality channel and a one-year change for the liquidity channel matches the different speeds at which operating deterioration and financing stress manifest.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginStabilityXPretaxDebtCoverage",
+      "expression": "MUL(IND_RANK(RATIO(pi, lt)), IND_RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Pretax earnings coverage of total liabilities is a much more reliable solvency measure when the underlying gross margin is stable; firms with strong coverage and stable margins are safe and richly rewarded, while weak coverage combined with volatile margins marks unpriced default risk.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-margin volatility is the quality dimension that determines how much information a single year's coverage ratio contains, so multiplying the two ranks sharpens the distress ordering instead of restating it. Pretax income (pi) is used rather than net income to avoid tax and special-item noise in the coverage channel.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "NegativeWorkingCapitalProfitSort",
+      "expression": "MUL(INDICATOR(NEG(wcap), 0), IND_ZSCORE(RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Negative working capital is ambiguous: for profitable firms it reflects efficient supplier financing and fast inventory turns, but for weakly profitable firms it is a liquidity shortfall. Sorting the negative-working-capital subsample on gross profitability should therefore generate a large spread, with efficient operators outperforming genuinely illiquid firms.",
+      "expected_sign": "positive",
+      "reasoning": "This tests a sign-interpretation flip rather than a monotone composite: the same balance-sheet configuration means opposite things depending on operating quality, which no single-theme signal can express. Firms with positive working capital are held at neutral zero so the spread is driven entirely by the conditioned subsample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CapitalConsumptionAdjustedLiquidity",
+      "expression": "MUL(IND_RANK(RATIO(SUB(oancf, dp), at)), IND_RANK(RATIO(che, lt)))",
+      "hypothesis": "Operating cash flow flatters firms whose cash flow is mostly the depreciation add-back; subtracting dp isolates cash earnings net of capital consumption, and this true cash-generating capacity is what makes a given cash-to-liabilities buffer sustainable rather than a one-time stock.",
+      "expected_sign": "positive",
+      "reasoning": "The interaction separates firms whose liquidity is replenished by real economic earnings from those holding a static cash stock while consuming their asset base, a distinction invisible to either cash-flow or liquidity signals alone. Depreciation intensity also proxies for the reinvestment obligation that competes with debt service.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicLossShortRunway",
+      "expression": "MUL(TS_SUM(INDICATOR(NEG(pi), 0), 5), IND_ZSCORE(NEG(RATIO(che, cogs))))",
+      "hypothesis": "Repeated pretax losses only become terminal when the cash balance is small relative to the firm's operating cost base; the number of loss years over five years times the shortness of the cash runway (che scaled by cogs) identifies firms most likely to dilute or default, which underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Cash divided by cost of goods sold is an explicit runway concept that fuses the liquidity stock with the operating burn rate, and multiplying it by loss persistence rather than a single-year loss flag removes transitory-loss firms from the short leg. Firms with no loss years receive zero and stay neutral, so the spread comes from the chronically unprofitable tail.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidCoverageOfCurrentObligations",
+      "expression": "RATIO(ADD(che, SUB(oancf, dp)), lct)",
+      "hypothesis": "Near-term default risk is governed by the sum of the liquid stock (cash) and the sustainable cash flow net of capital consumption, measured against the obligations actually coming due (current liabilities); firms with high combined coverage earn higher returns than firms whose current liabilities exceed both their cash and their true cash earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the quality flow (oancf net of the dp add-back) and the distress stock into a single economically interpretable coverage ratio rather than a product of ranks, which should raise coverage and stability relative to the gen-1 winner while preserving the mechanism. Current liabilities are strictly positive, so the ratio is well behaved and does not need the two-way ranking machinery.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "NetLiquidPositionXCashEarnings",
+      "expression": "MUL(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Refinancing risk, not total leverage, is the binding distress channel: firms whose cash exceeds short-term debt are immune to rollover shocks, and this immunity is most valuable when accompanied by cash earnings that actually service total liabilities. The joint group earns higher returns; net-short-cash firms with weak cash earnings underperform.",
+      "expected_sign": "positive",
+      "reasoning": "Replacing the cash-to-total-liabilities stock with the *net* liquid position (che minus dlc) changes the economic content from a liquidity buffer to rollover capacity, a distinct distress mechanism from the gen-1 winner. Scaling cash earnings by total liabilities rather than assets keeps both legs on a solvency footing.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LossGatedCashRunway",
+      "expression": "MUL(INDICATOR(NEG(pi), 0), IND_ZSCORE(RATIO(che, cogs)))",
+      "hypothesis": "Among firms reporting a pretax loss, survival and returns are determined by how many periods of operating costs the cash balance can fund, not by the level of gross profitability; loss-makers with long runways are mispriced as if they were doomed and subsequently outperform loss-makers facing imminent financing needs.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the gen-1 loss-gate failure by keeping the state gate that isolated the distressed subsample but replacing the sorting variable with the liquidity-versus-burn concept that ChronicLossShortRunway's negative alpha already supported. Cash scaled by cost of goods sold is a runway measure that combines the distress stock with the operating cost base.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ThinMarginCushionNoCash",
+      "expression": "MUL(IND_RANK(RATIO(cogs, revt)), IND_RANK(NEG(RATIO(che, lt))))",
+      "hypothesis": "A high cost-of-sales ratio means there is little gross-margin cushion to absorb a demand or input-price shock; when such a firm also holds almost no cash against its liabilities it has neither an operating nor a financial buffer, and its equity earns low subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the failed dynamic margin-decay design with the static level of the margin cushion, on the diagnosis that five-year trends and one-year cash changes were too noisy to identify the fragile group. The interaction is genuine: thin margins are tolerable with a cash buffer, and low cash is tolerable with fat margins, so only the joint state should predict underperformance.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedCashEarningsXLiquidity",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oancf, dp), at), 3)), IND_RANK(RATIO(che, lt)))",
+      "hypothesis": "The quality leg of the cash-earnings/liquidity interaction should reflect durable earning power rather than a single year's cash flow; three-year averaged cash earnings net of capital consumption, combined with the cash buffer against liabilities, should sharpen the distress ordering and improve the spread's reliability.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice relative to the gen-1 winner - smoothing the quality channel - so the evaluation tells us whether its alpha came from persistent earning power or from transitory cash flow. Averaging also stabilises portfolio composition, which should raise ls_talpha and Sharpe even if the point alpha is similar.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkSolvency",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Solvency is a weakest-link property: a firm is safe only if both its cash-earnings coverage of total liabilities and its cash coverage of near-term obligations are adequate, and strength in one dimension does not substitute for weakness in the other. The minimum of the two ranks should therefore predict returns better than their product.",
+      "expected_sign": "positive",
+      "reasoning": "The product form rewards firms that are extreme on one leg, whereas default is triggered by the binding constraint, so the MIN operator matches the economics of financial distress more literally. Testing it against the multiplicative winner isolates the functional form while holding the two economic channels fixed.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "The weakest-link solvency mechanism should not depend on the cash-flow statement: gross profit relative to total liabilities measures the same durable capacity to service obligations, and a firm is safe only if that capacity and its net liquid position (cash minus short-term debt) are both adequate.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the archive's best mechanism is about economic solvency or about the specific oancf-minus-dp construction, while nearly doubling coverage because gross profit is available for firms and periods where cash-flow items are missing. If the alpha survives at higher coverage, the mechanism is robust rather than a sample artefact.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashEarningsRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Combining the two strongest legs found so far - cash earnings net of capital consumption against total liabilities, and the net liquid position against assets - under a binding-constraint aggregation should deliver the sharpest distress ordering, because default requires only one of solvency or liquidity to fail.",
+      "expected_sign": "positive",
+      "reasoning": "WeakestLinkSolvency and NetLiquidPositionXCashEarnings each produced ~5.5% alpha with t above 3.6 but used different liquidity legs (che/lct versus che-minus-dlc) and different aggregations; this consolidates the better leg with the better aggregation. It is a deliberate one-step consolidation rather than a new channel, and its incremental value over both parents is directly measurable.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleConstraintSolvency",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), MIN(IND_RANK(RATIO(che, lct)), IND_RANK(RATIO(re, at))))",
+      "hypothesis": "Financial distress has three distinct binding constraints: insufficient cash earnings to service liabilities, insufficient cash for near-term obligations, and an absence of accumulated retained earnings (no equity cushion built from past profitability). A firm must clear all three to be genuinely safe, and the minimum across them should predict returns more sharply than any pair.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings scaled by assets adds a stock-of-past-quality channel that neither the cash-flow nor the liquidity leg captures, and it is the classic Altman/Ohlson survival variable. Nesting MIN keeps the weakest-link economics that outperformed the multiplicative form.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidityDeteriorationUnderWeakCoverage",
+      "expression": "MUL(IND_RANK(NEG(DELTA(RATIO(SUB(che, dlc), at), 1))), IND_RANK(NEG(RATIO(SUB(oancf, dp), lct))))",
+      "hypothesis": "Firms whose net liquid position deteriorated over the past year are only endangered if their cash earnings cannot cover near-term obligations; the joint state - shrinking liquidity plus inadequate coverage - identifies firms about to draw on external financing at bad terms and predicts low returns.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier dynamic designs failed when both legs were changes (MarginDecayXCashDrain); here the change is paired with a *level* of coverage weakness, so the direction of travel is interpreted conditional on how much slack exists. This tests whether flow deterioration adds anything beyond static solvency levels.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidityDeficitGatedCoverage",
+      "expression": "MUL(INDICATOR(NEG(SUB(che, dlc)), 0), IND_ZSCORE(RATIO(SUB(oancf, dp), lct)))",
+      "hypothesis": "Among firms whose cash does not cover their short-term debt - a genuine rollover-exposed subsample - differences in cash-earnings coverage of current liabilities determine who refinances cheaply and who dilutes; for cash-rich firms this coverage difference is not priced.",
+      "expected_sign": "positive",
+      "reasoning": "The successful gen-1 gate (negative working capital) showed that gating on a balance-sheet configuration works while the pretax-loss gate did not; a net-liquidity deficit is a sharper and more theory-based version of that configuration. Safe firms are held at neutral zero so the spread is generated entirely inside the exposed subsample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "BurnAdjustedTotalRunway",
+      "expression": "IND_RANK(RATIO(ADD(che, SUB(oancf, dp)), cogs))",
+      "hypothesis": "The economically correct distress metric is time, not a ratio to obligations: cash on hand plus this year's cash earnings net of capital consumption, expressed in units of the annual operating cost base, measures how long the firm can operate without external funding. Longer total runway predicts higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The unranked coverage ratio produced 5.1% alpha but a flat Fama-MacBeth slope, diagnosing skewness rather than absence of signal, so ranking within industry should recover the cross-sectional evidence. Scaling by cogs rather than by liabilities changes the economic content from a solvency ratio to a survival horizon, which is the distinct design choice being tested.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleMinAccrualCashRollover",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "A firm is genuinely safe only if its accrual operating margin, its cash earnings net of capital consumption, and its net liquid position are all adequate relative to obligations; requiring all three constraints to clear should isolate a cleaner safe/fragile ordering than any two of them.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit and cash-earnings legs produced almost identical alphas but very different Sharpe ratios, implying they capture partly distinct information (product-market profitability versus cash conversion), so requiring both should reduce false positives in the long leg. The MIN aggregation preserves the binding-constraint economics that has beaten multiplicative forms throughout the archive.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "EbitdaCoverageRolloverWeakestLink",
+      "expression": "MIN(IND_RANK(RATIO(ADD(pi, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Pretax income plus depreciation is the classic pre-financing cash earnings measure used in credit analysis, and its coverage of total liabilities MIN'd with the net liquid position should reproduce the winning mechanism on a much broader sample because it does not require the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes an income-statement reconstruction of cash earnings for the oancf-minus-dp construction, testing whether the mechanism is about credit-style coverage rather than about cash-flow-statement data specifically, and it should lift coverage from 0.090 toward 0.14. If both alpha and Sharpe hold at higher coverage it becomes the preferred consolidation target.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "RolloverLegScaledByObligations",
+      "expression": "MIN(IND_RANK(RATIO(SUB(oancf, dp), lt)), IND_RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "The net liquid position is economically meaningful relative to the obligations it must eventually meet rather than relative to the asset base; scaling both legs by total liabilities puts the solvency flow and the liquidity stock on a common denominator and should sharpen the ordering.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice - the denominator of the liquidity leg - holding the quality leg and the MIN aggregation fixed, so the result cleanly attributes performance to scaling rather than to economic content. Asset scaling mixes in capital intensity, which is a size/industry effect rather than a distress effect.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualGapUnderRolloverStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(pi, oancf), revt)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Reported pretax income that is not backed by operating cash flow is an earnings-quality red flag, and it is dangerous precisely when the firm has no net liquid buffer to absorb the eventual reversal; firms combining a large accrual gap with a net-debt position should earn low returns.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual channel is untested in this archive and is economically distinct from the level-of-coverage channel: it measures the credibility of earnings rather than their size, and its relevance is conditional on financing slack. Scaling the gap by revenue keeps it comparable across capital structures while the second leg supplies the distress conditioning.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCashEarningsRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "What protects a levered firm is not this year's cash earnings but the worst coverage it produced over a full cycle; using the five-year trough of cash-earnings coverage as the quality leg should improve the reliability of the spread, since firms that never breached coverage are truly investment grade.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing with a three-year mean did not improve the multiplicative form, but a trough is a downside-risk concept rather than a noise-reduction device and speaks directly to default probability. If the Sharpe ratio rises while alpha holds, persistence of coverage - not its current level - is the priced characteristic.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "HighMarginLeverageRiskPremium",
+      "expression": "MUL(INDICATOR(RATIO(SUB(revt, cogs), revt), 0.3), IND_ZSCORE(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "For firms with fat gross margins, carrying net debt is a compensated risk and a discipline device rather than a default threat, so within this high-quality group the most net-indebted firms should earn higher returns - the opposite of the unconditional distress effect.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal so far says net liquidity is good on average; this tests whether that relation flips inside the high-margin subsample, which is the strongest possible evidence that the two themes interact rather than simply add. Low-margin firms are held at neutral zero so the spread comes entirely from the conditioned high-quality group.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughEbitdaRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "The worst pre-financing cash earnings coverage of liabilities over the past five years, combined with the current net liquid position, identifies firms that never came close to a covenant or default boundary; these firms earn higher returns than firms whose coverage collapsed at some point in the cycle.",
+      "expected_sign": "positive",
+      "reasoning": "This joins the two best-performing design choices of gen 4 - the trough operator, which gave the strongest Fama-MacBeth slope, and the pi-plus-dp coverage leg, which gave the strongest alpha t-stat at nearly 0.14 coverage. If both properties survive together it is the natural consolidation candidate for the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageCleanAccrualRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(pi, oancf), revt)))))",
+      "hypothesis": "A safe firm must clear three separate constraints: its worst-case cash earnings covered its liabilities, it holds cash in excess of short-term debt, and its reported income is backed by cash rather than accruals. Requiring all three should produce the cleanest safe-versus-fragile ordering.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual gap generated the largest absolute alpha in the archive but only at the extremes, so embedding it as a binding constraint alongside the trough and rollover legs uses it where it is informative rather than as a standalone continuous sort. This directly tests whether earnings credibility adds incremental information to coverage and liquidity.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualCredibilityRolloverAdditive",
+      "expression": "SUMRANK(NEG(RATIO(SUB(pi, oancf), revt)), RATIO(SUB(che, dlc), at))",
+      "hypothesis": "Cash-backed earnings and a positive net liquid position are substitutable sources of financial resilience, so an additive rank combination should order the entire cross-section monotonically rather than only its tails, converting the accrual channel's large tail alpha into a genuine cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative version of this pair delivered a 7% alpha with no Fama-MacBeth slope, which points to construction rather than economics as the problem; SUMRANK removes the interaction-induced non-monotonicity in the middle of the distribution. Comparing it with the MUL parent isolates aggregation from economic content.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicAccrualInflationNetDebt",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(pi, oancf), revt), 3)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "A single year's accrual gap can reflect ordinary working-capital timing, but a firm that has reported income exceeding cash flow for three consecutive years while carrying net debt is systematically overstating its debt-service capacity, and its equity should underperform sharply.",
+      "expected_sign": "negative",
+      "reasoning": "Smoothing the accrual gap over three years should raise the persistence of the short-leg membership and therefore the reliability of the negative alpha, while also testing whether the gen-4 result was driven by transitory one-year timing effects. This is the persistence analogue of the archive's largest-magnitude alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "MaturityStructureXCoverage",
+      "expression": "MIN(IND_RANK(RATIO(ADD(pi, dp), lt)), IND_RANK(NEG(RATIO(dlc, ADD(dlc, dltt)))))",
+      "hypothesis": "Rollover risk depends on when debt comes due, not only on how much cash is on hand: firms funding themselves with a high share of short-maturity debt must refinance frequently, and that fragility is dangerous only when pre-financing cash earnings do not comfortably cover total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Every distress leg tested so far has been a liquidity stock; debt maturity composition is an economically distinct source of refinancing risk that the cash-based legs cannot capture. Pairing it with the broad-coverage earnings leg under the weakest-link aggregation keeps the structure that has worked while changing the distress channel.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginAmplifiedNetLiquidity",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), revt), RATIO(SUB(che, dlc), at))",
+      "hypothesis": "Gross margin and net liquidity reinforce each other: a wide margin means operating shocks are absorbed before they reach the balance sheet, and a positive net liquid position means shocks that do reach it can be funded internally, so the jointly strong group earns high returns and the jointly weak group underperforms.",
+      "expected_sign": "positive",
+      "reasoning": "The failed sign-flip test showed that high margins amplify rather than reverse the reward to net liquidity, and this is the parsimonious, high-coverage (no cash-flow-statement requirement) way to exploit that amplification. Additive ranking keeps the sort monotone across the full cross-section, which the gate-based version could not do because half the sample was pinned at zero.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAdditiveAccrualRollover",
+      "expression": "ADD(IND_RANK(NEG(RATIO(SUB(pi, oancf), revt))), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Cash-backed earnings and a positive net liquid position are substitutable forms of resilience, and combining them additively after industry neutralisation should produce both a monotone cross-sectional slope and the large abnormal return the global-rank version achieved.",
+      "expected_sign": "positive",
+      "reasoning": "The SUMRANK parent produced a 6.3% alpha with a flat Fama-MacBeth slope, which the archive pattern attributes to global ranking letting industry composition drive the sort; ADD of IND_RANK legs holds the economics fixed and removes that contamination. This is the cleanest test of the diagnosis that aggregation scope, not economic content, caused the metric disagreement.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAdditiveMarginRollover",
+      "expression": "ADD(IND_RANK(RATIO(SUB(revt, cogs), revt)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Wide gross margins absorb operating shocks before they reach the balance sheet, and net cash absorbs those that do; the additive combination of the two, measured relative to industry peers, should predict returns strongly because margin levels are only comparable within an industry.",
+      "expected_sign": "positive",
+      "reasoning": "The global-rank version delivered the archive's highest alpha t-stat (5.42) but a Sharpe of only 0.135 and no cross-sectional slope, which is the signature of an unhedged industry bet on high-margin sectors. Industry-ranking both legs should convert that alpha into a tradable, cross-sectionally coherent signal at high coverage.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleAdditiveSolvencyCredibility",
+      "expression": "ADD(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), ADD(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(pi, oancf), revt)))))",
+      "hypothesis": "Trough coverage of liabilities, current net liquidity, and earnings credibility are three partially independent dimensions of financial strength; averaging them within industry should give a higher-signal-to-noise composite than requiring all three to bind simultaneously.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN-based triple constraint gave the archive's best Fama-MacBeth slope (5.51) but a diluted alpha (4.3%) because the minimum discards information from the two non-binding legs. Additive aggregation of the same three industry-ranked channels tests whether information pooling beats the binding-constraint logic once all three channels are individually validated.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "BalanceSheetAccrualsUnderNetDebt",
+      "expression": "MUL(IND_RANK(RATIO(SUB(DELTA(wcap, 1), dp), at)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Accruals computed from the balance sheet - the change in working capital less depreciation - measure the same earnings-credibility gap as income minus operating cash flow, and their interaction with a net-debt position should identify firms whose reported debt-service capacity is illusory, predicting low returns on a much broader sample.",
+      "expected_sign": "negative",
+      "reasoning": "The oancf-based accrual interaction produced the largest magnitude alphas in the archive (-7.0% and -7.1%) but only at 0.089 coverage; the Sloan-style balance-sheet construction uses wcap and dp, which are available for roughly 50% more firm-months. If the alpha survives, the earnings-credibility channel becomes usable on the full sample.",
+      "interaction_type": "conditional",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughEbitdaRolloverProduct",
+      "expression": "MUL(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "If trough coverage and net liquidity amplify each other rather than acting as substitutable binding constraints, the product of their industry ranks should dominate the minimum, because firms strong on both dimensions are disproportionately safe and firms weak on both are disproportionately fragile.",
+      "expected_sign": "positive",
+      "reasoning": "MIN narrowly beat MUL at the level configuration, but that comparison was never repeated with the trough leg and the broad-coverage pi-plus-dp numerator that now define the best signal. This isolates the aggregation choice at the current frontier, which matters for how the final consolidated signal should be built.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalSlackTroughCoverage",
+      "expression": "ADD(IND_RANK(RATIO(wcap, at)), IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)))",
+      "hypothesis": "The relevant liquidity buffer may be total working capital - receivables and inventory that can be liquidated or financed - rather than cash net of short-term debt alone; combined with trough earnings coverage it should identify firms with both an operating cushion and proven debt-service capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Working capital slack was the conditioning variable in the first successful gate of the archive but has never been used as a continuous leg against the coverage channel, so this tests whether the liquidity leg should be narrow (cash minus short-term debt) or broad (working capital). Both legs avoid the cash-flow statement, keeping coverage near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageRolloverMarginTriple",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(RATIO(SUB(revt, cogs), revt))))",
+      "hypothesis": "Genuine financial safety requires proven debt-service capacity through the cycle, cash in excess of short-term debt, and a gross margin wide enough to absorb the next operating shock; requiring all three to clear should produce the archive's cleanest safe-versus-fragile ordering without sacrificing coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The margin channel supplied large tail alphas (t up to 5.42) but no cross-sectional slope on its own, so it belongs as a binding constraint inside the monotone trough-coverage/rollover core rather than as a continuous sort. All three legs avoid the cash-flow statement, so coverage should remain near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageNearTermRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), lct)))",
+      "hypothesis": "The net liquid position matters relative to the obligations coming due within the year, not relative to the asset base; scaling cash minus short-term debt by current liabilities makes the liquidity leg a genuine near-term solvency measure and should sharpen both the slope and the spread.",
+      "expected_sign": "positive",
+      "reasoning": "Asset scaling embeds capital intensity, an industry and size characteristic, whereas current-liability scaling isolates the refinancing constraint; the analogous re-scaling test at the oancf configuration (RolloverLegScaledByObligations) held up, but was never run with the broad-coverage trough leg. This isolates the denominator choice at the current frontier.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentCoverageAndLiquidity",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(TS_MIN(RATIO(SUB(che, dlc), at), 5)))",
+      "hypothesis": "Firms that have never run a liquidity deficit in five years are structurally conservative, while firms whose current cash surplus is new are merely lucky; requiring both the worst coverage and the worst net liquid position over the cycle to be high should identify persistent, priced financial strength.",
+      "expected_sign": "positive",
+      "reasoning": "Applying the trough operator to the quality leg produced the largest gains in the archive (fmb 4.9, Sharpe 0.44), so the natural question is whether persistence matters symmetrically on the distress leg. If it does, financial-policy conservatism rather than the current balance-sheet snapshot is the priced characteristic.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageRolloverCleanAccruals",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Firms that pass the trough-coverage and rollover tests but are simultaneously accumulating working-capital accruals are reporting resilience they have not earned; excluding them from the long leg should raise the spread relative to the two-leg signal.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual-credibility channel produced the archive's largest magnitude alphas but no monotone slope, which is exactly the profile of a constraint rather than a sort; using the balance-sheet accrual (change in working capital less depreciation) keeps coverage at roughly 0.11 instead of 0.088. This tests whether earnings credibility adds incrementally to proven coverage and liquidity.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashQualityOfCurrentAssets",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Not all current assets are liquid: a firm whose current assets are mostly inventory and receivables cannot meet obligations in a stress episode, whereas a high cash share of current assets is immediately available. Cash intensity of current assets, paired with proven coverage, should predict returns.",
+      "expected_sign": "positive",
+      "reasoning": "Every distress leg tested so far measures the *size* of the buffer; this measures its *composition*, an economically distinct source of liquidity risk that is orthogonal to leverage and to the cash-to-liabilities level. It is also unaffected by capital structure, so it should behave differently from the net-liquid-position legs.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "BroadAdditiveSolvencyCredibility",
+      "expression": "ADD(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), ADD(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(DELTA(wcap, 1), dp), at)))))",
+      "hypothesis": "Pooling proven coverage, net liquidity and accrual credibility additively should deliver the largest abnormal return of the family, because each channel contributes independent information about financial strength and none should veto the others.",
+      "expected_sign": "positive",
+      "reasoning": "The additive triple built on cash-flow-statement accruals produced the archive's best combination of alpha (6.3%) and Sharpe (0.391) at only 0.088 coverage; substituting the balance-sheet accrual raises coverage to about 0.11 while preserving the pooling logic. Running it against the MIN version in signal 4 cleanly separates information pooling from binding-constraint aggregation at identical data requirements.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentLiquidityCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(TS_MIN(RATIO(SUB(che, dlc), at), 5)), IND_RANK(RATIO(che, act))))",
+      "hypothesis": "A firm is financially safe when its worst-cycle earnings coverage was adequate, it has never run a net liquidity deficit, and the liquid assets it holds are actually cash rather than inventory and receivables; these three conditions are the complete characterisation of the resilient group.",
+      "expected_sign": "positive",
+      "reasoning": "This joins the only two refinements that improved the frontier in gen 7 - the trough operator on the liquidity leg (best alpha) and the cash-composition leg (best Sharpe) - inside the binding-constraint structure that has dominated throughout. Unlike the accrual and margin legs, both added channels are liquidity-economic and monotone, so dilution risk is lower.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortWindowTroughCoverageRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 3)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Recent trough coverage is more informative than the five-year trough because a coverage breach four years ago may reflect a resolved shock rather than current fragility; a three-year trough should keep the downside concept while reducing staleness and requiring less history.",
+      "expected_sign": "positive",
+      "reasoning": "The trough window length has never been varied, yet it determines both how much history is imposed on coverage and how many firms qualify; shortening it should raise coverage above 0.14 and sharpen the timing of the distress information. Comparing against the five-year parent isolates the window choice cleanly.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashEarningsTroughCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Pairing the highest-Sharpe quality leg in the archive - the five-year trough of cash earnings net of capital consumption - with the liquidity-composition leg should produce the most efficient spread, because both legs are about the durability of resources rather than their momentary size.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow-based trough leg produced Sharpe 0.436 and the cash-composition leg produced Sharpe 0.305, and neither has been combined; these two channels are close to orthogonal (one flow-based, one asset-mix based). The coverage cost (about 0.088) is acceptable if the risk-adjusted spread improves materially.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "BurnScaledTroughCoverageRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), cogs), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "Pre-financing cash earnings are best judged against the operating cost base they must sustain rather than against the stock of liabilities, because the cost base determines how quickly a shortfall consumes resources; a trough of earnings-to-cost combined with net liquidity should identify durable operating economics.",
+      "expected_sign": "positive",
+      "reasoning": "Every quality leg tested has been scaled by liabilities or assets, so the burn-rate denominator is the one untested scaling with clear economic content, and the standalone runway signal did produce 4.2% alpha. Because cogs is strictly positive and industry-ranked, this also avoids the leverage contamination inherent in liability scaling.",
+      "interaction_type": "ratio",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitCoverageCashComposition",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "Gross profit coverage of liabilities and the cash share of current assets are both computable without the cash-flow statement or a five-year history, so their weakest-link combination should deliver the mechanism at maximum coverage: profitable product markets plus genuinely liquid assets.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit coverage leg scored fmb 4.14 with 5.3% alpha at the archive's highest coverage (0.144) but had a weak Sharpe of 0.185, and the cash-composition leg is precisely the kind of liquidity-quality channel that should fix an unhedged spread. This tests whether the full mechanism can be delivered on the broadest possible sample.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SubstitutableResilienceMax",
+      "expression": "MAX(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), IND_RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "If financial resilience is substitutable - strong proven coverage compensates for thin liquidity and vice versa - then the maximum of the two industry ranks should predict returns as well as the minimum; if default is driven by the binding constraint, MAX should perform markedly worse.",
+      "expected_sign": "positive",
+      "reasoning": "MIN and MUL have performed nearly identically at the frontier, which leaves open whether the aggregation reflects genuine weakest-link economics or merely a monotone composite; MAX is the discriminating test because it inverts which leg determines the score. The answer directly determines how the final-generation signal should aggregate its legs.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageCashCompositionRollover",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), MIN(IND_RANK(RATIO(che, act)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "Proven through-cycle cash-earnings coverage, a cash-dominated current asset mix, and cash in excess of short-term debt are three non-redundant safety conditions - capacity, asset liquidity, and rollover immunity - and requiring all three should improve on the two-leg winner.",
+      "expected_sign": "positive",
+      "reasoning": "The composition leg (che/act) and the rollover leg (che minus dlc over assets) measure different things: one the liquidity of assets held, the other the adequacy of that liquidity against near-term debt, and each individually improved a trough-coverage signal. Because both are liquidity-economic and monotone, dilution risk is far lower than for the margin and accrual legs that failed as third constraints.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentCashCompositionCoverage",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(TS_MIN(RATIO(che, act), 5)))",
+      "hypothesis": "A cash-heavy current asset mix is informative only if it reflects deliberate financial policy rather than a temporary receivables collection; the five-year trough of the cash share of current assets identifies firms that have consistently held genuinely liquid assets, which should be the priced characteristic.",
+      "expected_sign": "positive",
+      "reasoning": "Applying the trough operator to the liquidity leg raised alpha when the leg was the net liquid position (5.7% versus 5.4%), and the composition leg is a slower-moving policy variable for which persistence should matter even more. This isolates persistence on the leg that drove the winner's Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughCoverageCashToCurrentDebt",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "The cash buffer may be better judged against the obligations it must cover within the year than against the composition of current assets; cash over current liabilities combines the stock and the claim in one leg and should compete directly with the cash-share formulation.",
+      "expected_sign": "positive",
+      "reasoning": "Cash over current liabilities was the liquidity leg of the original weakest-link signal (Sharpe 0.397) but has never been paired with the trough quality leg that defines the frontier, so this is the missing cell in the design grid. Comparing it against the winner attributes performance to asset-mix quality versus obligation coverage.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughProfitabilityCashComposition",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), at), 5)), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "If the winner's power comes from proven earning power rather than from leverage-adjusted solvency, scaling trough cash earnings by assets instead of liabilities should perform equally well; if solvency is the mechanism, the liability denominator is essential.",
+      "expected_sign": "positive",
+      "reasoning": "Every frontier signal scales the quality leg by total liabilities, which mixes profitability with leverage, so this decomposition test is economically informative about whether the interaction is quality-times-distress or simply persistent profitability plus liquidity. It holds the composition leg, the trough operator and the aggregation fixed.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "BroadTroughCoverageDualLiquidity",
+      "expression": "MIN(IND_RANK(TS_MIN(RATIO(ADD(pi, dp), lt), 5)), MIN(IND_RANK(RATIO(che, act)), IND_RANK(RATIO(SUB(che, dlc), at))))",
+      "hypothesis": "The same three-condition safety characterisation should hold on the broad sample when trough coverage is reconstructed from pretax income plus depreciation, delivering most of the winner's spread at roughly 50% higher coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The pi-plus-dp coverage leg has consistently produced the highest alpha t-statistics (up to 4.80) at 0.124-0.140 coverage but weaker Sharpe ratios, and the missing ingredient in those tests was combining both liquidity legs at once. This is the deployable, wide-sample counterpart to signal 1 and tells us the cost of the cash-flow-statement requirement.",
+      "interaction_type": "composite",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CoverageStabilityCashComposition",
+      "expression": "MIN(IND_RANK(NEG(VOL(RATIO(SUB(oancf, dp), lt), 5))), IND_RANK(RATIO(che, act)))",
+      "hypothesis": "What protects a levered firm may be the low variability of its coverage rather than the level of its worst outcome: firms whose cash-earnings coverage barely moves have predictable debt service, and paired with liquid assets they should be the safest group.",
+      "expected_sign": "positive",
+      "reasoning": "Trough and volatility are different downside concepts - one is a worst realisation, the other a dispersion - and only the trough has been tested on the coverage series, while an early volatility test used gross margins rather than coverage. This distinguishes whether the market prices the depth of the worst outcome or the predictability of the series.",
+      "interaction_type": "novel",
+      "theme_a": "quality",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:quality_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "LeverageXEarningsInstability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(lt,at)),ind_rank(vol(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "lt"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "DownsideCashDebtCoverage",
+      "metadata": {
+        "normalized_expression": "ratio(ts_min(oancf,5),lt)",
+        "variables": [
+          "lt",
+          "oancf"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualQualityXDebtBurden",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(dltt,dlc),at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "DistressGatedCashSolvency",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(re),0),ind_zscore(ratio(ma(oancf,3),lt)))",
+        "variables": [
+          "lt",
+          "oancf",
+          "re"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "QualityLeverageAlignment",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),ind_zscore(ratio(add(dltt,dlc),at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oancf"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "NetDebtXCashMarginDecay",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(lt,che),at)),ind_rank(neg(trend(ratio(oancf,sale),5))))",
+        "variables": [
+          "at",
+          "che",
+          "lt",
+          "oancf",
+          "sale"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LossGatedGrossProfitCoverage",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(pi),0),ind_zscore(ratio(sub(revt,cogs),lt)))",
+        "variables": [
+          "cogs",
+          "lt",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginDecayXCashDrain",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(trend(ratio(cogs,revt),5)),ind_rank(neg(delta(ratio(che,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginStabilityXPretaxDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(pi,lt)),ind_rank(neg(vol(ratio(sub(revt,cogs),revt),5))))",
+        "variables": [
+          "cogs",
+          "lt",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NegativeWorkingCapitalProfitSort",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(wcap),0),ind_zscore(ratio(sub(revt,cogs),at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "revt",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CapitalConsumptionAdjustedLiquidity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(oancf,dp),at)),ind_rank(ratio(che,lt)))",
+        "variables": [
+          "at",
+          "che",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicLossShortRunway",
+      "metadata": {
+        "normalized_expression": "mul(ts_sum(indicator(neg(pi),0),5),ind_zscore(neg(ratio(che,cogs))))",
+        "variables": [
+          "che",
+          "cogs",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidCoverageOfCurrentObligations",
+      "metadata": {
+        "normalized_expression": "ratio(add(che,sub(oancf,dp)),lct)",
+        "variables": [
+          "che",
+          "dp",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetLiquidPositionXCashEarnings",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(oancf,dp),lt)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LossGatedCashRunway",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(pi),0),ind_zscore(ratio(che,cogs)))",
+        "variables": [
+          "che",
+          "cogs",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThinMarginCushionNoCash",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(cogs,revt)),ind_rank(neg(ratio(che,lt))))",
+        "variables": [
+          "che",
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedCashEarningsXLiquidity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oancf,dp),at),3)),ind_rank(ratio(che,lt)))",
+        "variables": [
+          "at",
+          "che",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkSolvency",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(oancf,dp),lt)),ind_rank(ratio(che,lct)))",
+        "variables": [
+          "che",
+          "dp",
+          "lct",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitRolloverWeakestLink",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),lt)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashEarningsRolloverWeakestLink",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(oancf,dp),lt)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleConstraintSolvency",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(oancf,dp),lt)),min(ind_rank(ratio(che,lct)),ind_rank(ratio(re,at))))",
+        "variables": [
+          "at",
+          "che",
+          "dp",
+          "lct",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidityDeteriorationUnderWeakCoverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(delta(ratio(sub(che,dlc),at),1))),ind_rank(neg(ratio(sub(oancf,dp),lct))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidityDeficitGatedCoverage",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(sub(che,dlc)),0),ind_zscore(ratio(sub(oancf,dp),lct)))",
+        "variables": [
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BurnAdjustedTotalRunway",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(add(che,sub(oancf,dp)),cogs))",
+        "variables": [
+          "che",
+          "cogs",
+          "dp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleMinAccrualCashRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),lt)),min(ind_rank(ratio(sub(oancf,dp),lt)),ind_rank(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EbitdaCoverageRolloverWeakestLink",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(add(pi,dp),lt)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RolloverLegScaledByObligations",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(oancf,dp),lt)),ind_rank(ratio(sub(che,dlc),lt)))",
+        "variables": [
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualGapUnderRolloverStress",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(pi,oancf),revt)),ind_rank(neg(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCashEarningsRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HighMarginLeverageRiskPremium",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ratio(sub(revt,cogs),revt),0.3),ind_zscore(neg(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughEbitdaRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageCleanAccrualRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),min(ind_rank(ratio(sub(che,dlc),at)),ind_rank(neg(ratio(sub(pi,oancf),revt)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualCredibilityRolloverAdditive",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(pi,oancf),revt)),ratio(sub(che,dlc),at))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicAccrualInflationNetDebt",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(pi,oancf),revt),3)),ind_rank(neg(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MaturityStructureXCoverage",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(add(pi,dp),lt)),ind_rank(neg(ratio(dlc,add(dlc,dltt)))))",
+        "variables": [
+          "dlc",
+          "dltt",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginAmplifiedNetLiquidity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),revt),ratio(sub(che,dlc),at))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAdditiveAccrualRollover",
+      "metadata": {
+        "normalized_expression": "add(ind_rank(neg(ratio(sub(pi,oancf),revt))),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAdditiveMarginRollover",
+      "metadata": {
+        "normalized_expression": "add(ind_rank(ratio(sub(revt,cogs),revt)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleAdditiveSolvencyCredibility",
+      "metadata": {
+        "normalized_expression": "add(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),add(ind_rank(ratio(sub(che,dlc),at)),ind_rank(neg(ratio(sub(pi,oancf),revt)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalanceSheetAccrualsUnderNetDebt",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(delta(wcap,1),dp),at)),ind_rank(neg(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughEbitdaRolloverProduct",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalSlackTroughCoverage",
+      "metadata": {
+        "normalized_expression": "add(ind_rank(ratio(wcap,at)),ind_rank(ts_min(ratio(add(pi,dp),lt),5)))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "pi",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageRolloverMarginTriple",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),min(ind_rank(ratio(sub(che,dlc),at)),ind_rank(ratio(sub(revt,cogs),revt))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "lt",
+          "pi",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageNearTermRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ratio(sub(che,dlc),lct)))",
+        "variables": [
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentCoverageAndLiquidity",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ts_min(ratio(sub(che,dlc),at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageRolloverCleanAccruals",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),min(ind_rank(ratio(sub(che,dlc),at)),ind_rank(neg(ratio(sub(delta(wcap,1),dp),at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashQualityOfCurrentAssets",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ratio(che,act)))",
+        "variables": [
+          "act",
+          "che",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BroadAdditiveSolvencyCredibility",
+      "metadata": {
+        "normalized_expression": "add(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),add(ind_rank(ratio(sub(che,dlc),at)),ind_rank(neg(ratio(sub(delta(wcap,1),dp),at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentLiquidityCashComposition",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),min(ind_rank(ts_min(ratio(sub(che,dlc),at),5)),ind_rank(ratio(che,act))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortWindowTroughCoverageRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),3)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashEarningsTroughCashComposition",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),ind_rank(ratio(che,act)))",
+        "variables": [
+          "act",
+          "che",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BurnScaledTroughCoverageRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),cogs),5)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitCoverageCashComposition",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),lt)),ind_rank(ratio(che,act)))",
+        "variables": [
+          "act",
+          "che",
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SubstitutableResilienceMax",
+      "metadata": {
+        "normalized_expression": "max(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),ind_rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageCashCompositionRollover",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),min(ind_rank(ratio(che,act)),ind_rank(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentCashCompositionCoverage",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),ind_rank(ts_min(ratio(che,act),5)))",
+        "variables": [
+          "act",
+          "che",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughCoverageCashToCurrentDebt",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),lt),5)),ind_rank(ratio(che,lct)))",
+        "variables": [
+          "che",
+          "dp",
+          "lct",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughProfitabilityCashComposition",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(sub(oancf,dp),at),5)),ind_rank(ratio(che,act)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BroadTroughCoverageDualLiquidity",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ts_min(ratio(add(pi,dp),lt),5)),min(ind_rank(ratio(che,act)),ind_rank(ratio(sub(che,dlc),at))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lt",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CoverageStabilityCashComposition",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(neg(vol(ratio(sub(oancf,dp),lt),5))),ind_rank(ratio(che,act)))",
+        "variables": [
+          "act",
+          "che",
+          "dp",
+          "lt",
+          "oancf"
+        ]
+      }
+    }
+  ]
+}

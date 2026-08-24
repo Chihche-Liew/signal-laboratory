@@ -1,0 +1,2759 @@
+{
+  "pair": "profit_quality",
+  "evaluated": [
+    {
+      "name": "DebtFinancedProfitPenalty",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(GROWTH(RATIO(ADD(dltt, dlc), at), 1)))",
+      "hypothesis": "Reported profitability that coincides with rapid debt build-up is fragile: the profit level is being sustained by external financing and expanding balance-sheet risk, so such firms underperform despite looking profitable.",
+      "expected_sign": "negative",
+      "reasoning": "Profitability rank (Theme A) is multiplied by the rank of one-year growth in total-debt-to-assets (Theme B financial health deterioration), so the signal is largest for high-profit firms that are simultaneously levering up. It deliberately takes the opposite side of the durability story to test whether the interaction is asymmetric rather than a monotone quality tilt. Neither high profitability nor rising leverage alone identifies this fragile combination.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.286516174215706,
+      "ls_alpha": -0.00719757044559181,
+      "ls_talpha": -0.8724337987668555,
+      "ls_sharpe": 0.01642750833231613,
+      "coverage": 0.11640992399872217,
+      "error": null
+    },
+    {
+      "name": "HealthScoredProfitability",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "High profitability is most valuable when it sits on a foundation of accumulated retained earnings and liquid working-capital solvency, since such firms can self-fund and survive shocks, making current profits persistent.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability rank (Theme A) is scaled by a two-channel balance-sheet health score combining retained-earnings depth and net-working-capital coverage of total liabilities (Theme B), so profits are credited only when the firm is financially sound. Young, deficit-laden or illiquid firms with temporarily high margins get pushed down, isolating durable operating strength. The multiplicative structure makes the quality score a modulator of the profitability payoff rather than an additive competitor.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.352065060180349,
+      "ls_alpha": 0.02667354756953693,
+      "ls_talpha": 2.014923561894031,
+      "ls_sharpe": 0.11617638210004613,
+      "coverage": 0.12234388658994723,
+      "error": null
+    },
+    {
+      "name": "StableROIC",
+      "expression": "WINSOR(RATIO(MA(RATIO(oiadp, ADD(dltt, ceq)), 3), VOL(RATIO(oiadp, ADD(dltt, ceq)), 5)), 1)",
+      "hypothesis": "Return on total invested capital (debt plus equity) is a cleaner measure of operating strength than ROA, and its predictive power for returns is concentrated in firms whose invested-capital return is stable rather than cyclical.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is smoothed operating profit over invested capital (profitability theme, using oiadp and dltt), and the denominator is the five-year volatility of that same return (quality theme, stability of the capital-productivity stream). Two firms with identical ROIC are ranked purely by durability, so the signal is an information-ratio-style interaction rather than a level effect. Scaling by dltt+ceq rather than at also removes the mechanical leverage tilt embedded in equity-based profitability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.0310930962019464,
+      "ls_alpha": 0.0072001953534282966,
+      "ls_talpha": 0.6885458311758897,
+      "ls_sharpe": 0.04050760383618866,
+      "coverage": 0.13094428100083622,
+      "error": null
+    },
+    {
+      "name": "AdditiveHealthProfit",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Profitability and balance-sheet health both carry independent premia, and an additive rank combination should span more of the cross-section (avoiding the rank-product compression that pushes moderate firms to the middle) while retaining the same economic story.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately isolates one design choice relative to the archive winner: the same three channels (smoothed EBITDA/assets, retained-earnings depth, net working capital over total liabilities) combined additively rather than multiplicatively. If the multiplicative form's alpha was limited by extreme-rank concentration and unstable long/short membership, the additive version should raise ls_talpha and Sharpe; if instead the conditioning is essential, the additive version will weaken, which is itself informative.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.810880580123939,
+      "ls_alpha": 0.01128127188662583,
+      "ls_talpha": 1.0495399164328778,
+      "ls_sharpe": 0.2291712176146339,
+      "coverage": 0.12234662096849418,
+      "error": null
+    },
+    {
+      "name": "DebtServicedProfitSpread",
+      "expression": "SUMRANK(RATIO(SUB(oiadp, xint), at), WINSOR(RATIO(oibdp, ADD(dltt, dlc)), 2))",
+      "hypothesis": "Profitability that survives the cost of debt service and that comfortably covers the outstanding debt stock is durable operating strength, whereas equally high pre-interest profitability on a heavily indebted balance sheet is transient and largely a claim of creditors.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is operating profit net of interest expense scaled by assets (profitability theme), the second is EBITDA coverage of total debt (quality theme via dltt and dlc), so leverage enters through earnings capacity rather than as a raw balance-sheet ratio. Firms with negative EBITDA automatically receive a low coverage rank, so the interaction does not invert for distressed names. This tests debt-service capacity as the quality modulator, a channel absent from the archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.0021188568024773,
+      "ls_alpha": 0.019430599113481,
+      "ls_talpha": 1.9030260936999035,
+      "ls_sharpe": 0.1908725288839245,
+      "coverage": 0.11140601125779762,
+      "error": null
+    },
+    {
+      "name": "SelfFundedProfitStreak",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), TS_SUM(INDICATOR(DELTA(re, 1), 0), 5))",
+      "hypothesis": "High profitability is durable when it has been repeatedly retained inside the firm; a multi-year record of rising retained earnings shows profits are real, self-funding, and not paid out or reversed by later write-offs.",
+      "expected_sign": "positive",
+      "reasoning": "The industry rank of smoothed EBITDA/assets (profitability) is multiplied by a count of the last five years in which retained earnings actually increased (quality-exclusive persistence via re), so profitability is credited only when it has accumulated. This is a discrete persistence-of-accretion mechanism, distinct from level-based health scores and from earnings-volatility scaling. Firms with high current margins but an eroding retained-earnings base are pulled toward the middle of the distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.803302867664041,
+      "ls_alpha": 0.0013948861839789134,
+      "ls_talpha": 0.14228290637126043,
+      "ls_sharpe": 0.025634332997478856,
+      "coverage": 0.13037398250162824,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalCleanProfit",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), NEG(DELTA(RATIO(SUB(act, lct), sale), 1)))",
+      "hypothesis": "Operating profitability is higher quality when it is not accompanied by an expanding working-capital footprint; receivable and inventory build-up relative to sales signals earnings that have not yet been realized in cash and tend to reverse.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is a clean operating profitability level built from revt, cogs and xsga (profitability theme), while the second penalizes year-over-year growth in net working capital intensity using act and lct (quality-exclusive). Unlike a total-accruals measure, this isolates the specific balance-sheet account where transient profitability shows up first, giving a different economic channel with broad coverage.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3478095393164367,
+      "ls_alpha": 0.012299555569570629,
+      "ls_talpha": 1.0930025914741532,
+      "ls_sharpe": 0.1371668874101344,
+      "coverage": 0.097567373023715,
+      "error": null
+    },
+    {
+      "name": "QuietBalanceSheetProfit",
+      "expression": "WINSOR(RATIO(MA(RATIO(oiadp, at), 3), VOL(RATIO(lt, at), 5)), 1)",
+      "hypothesis": "Firms that earn high operating returns while holding their capital structure steady are running a genuinely profitable business; firms whose liability base swings year to year are financing, restructuring, or acquiring their way to reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is smoothed operating profitability (profitability theme) and the denominator is the volatility of the total-liabilities-to-assets ratio (quality theme via lt), so the signal rewards profits earned on a stable financing base. This makes capital-structure stability, not earnings smoothness, the durability filter, giving a mechanism that is orthogonal to Signal 1 and to accrual-based quality. Because it needs only lt and oiadp histories, coverage should be materially higher than the multi-variable health scores.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3311052790816913,
+      "ls_alpha": -0.004294553737480337,
+      "ls_talpha": -0.4213446262728275,
+      "ls_sharpe": -0.04975777423588038,
+      "coverage": 0.1328806337484636,
+      "error": null
+    },
+    {
+      "name": "TroughProfitFloor",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), TS_MIN(RATIO(oiadp, ADD(dltt, ceq)), 5))",
+      "hypothesis": "Durability is better measured by how high a firm's profitability floor is than by how smooth its profitability is; a high worst-year return on invested capital proves the business model survives its own cycle.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is the smoothed profitability level (profitability theme) and the second is the minimum five-year return on debt-plus-equity capital (quality theme via dltt), so firms are rewarded only when current strength rests on a high stress-case earnings base. This replaces the failed volatility-denominator idea with a downside-state concept that is robust to scale and does not blow up for small denominators. It also distinguishes levered profitability, since capital in the denominator includes long-term debt.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.8916870725014152,
+      "ls_alpha": -0.0009425901855276836,
+      "ls_talpha": -0.08784613917753245,
+      "ls_sharpe": 0.11251904402644468,
+      "coverage": 0.14418140754663714,
+      "error": null
+    },
+    {
+      "name": "ProfitToLiabilities",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(oiadp, xint), lt), 1))",
+      "hypothesis": "Operating profit after interest measured against the total stock of obligations is the cleanest single statement of the interaction: the same dollar of profit is worth more when fewer creditor claims stand against it.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is a profitability flow net of financing cost (oiadp, xint) and the denominator is total liabilities (lt, quality-exclusive), so leverage and profitability are fused into one economically interpretable coverage ratio rather than two ranked channels. Industry z-scoring removes structural differences in capital intensity and leverage norms, and the parsimony should deliver higher coverage and a more stable long-short membership than the three-channel composites. It is the natural minimal test of whether the archive's composite alphas come from the profitability-per-obligation channel itself.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.2258216744818378,
+      "ls_alpha": 0.015341416935875098,
+      "ls_talpha": 1.6002227470173962,
+      "ls_sharpe": -0.004193958851982976,
+      "coverage": 0.12582268679829656,
+      "error": null
+    },
+    {
+      "name": "ConsolidatedDurableProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(WINSOR(RATIO(oibdp, ADD(dltt, dlc)), 2), RATIO(re, at)))",
+      "hypothesis": "The two channels that independently generated alpha \u2014 debt-service capacity and retained-earnings depth \u2014 should reinforce each other, because a firm that can both cover its debt from current earnings and has historically retained profits has proven durable operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "It keeps the multiplicative conditioning structure that produced the archive's best FF5 alpha but replaces the weak net-working-capital channel with the stronger EBITDA-to-debt coverage channel from DebtServicedProfitSpread. This is a deliberate consolidation test: if alpha and t-alpha both rise relative to HealthScoredProfitability, the quality modulator is solvency rather than liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.306219982734313,
+      "ls_alpha": 0.006678868012168956,
+      "ls_talpha": 0.6286442702852224,
+      "ls_sharpe": 0.186741986370997,
+      "coverage": 0.12628005030431053,
+      "error": null
+    },
+    {
+      "name": "RankedStabilityProfit",
+      "expression": "SUMRANK(MA(RATIO(oiadp, ADD(dltt, ceq)), 3), NEG(VOL(RATIO(oiadp, ADD(dltt, ceq)), 5)))",
+      "hypothesis": "Profitability stability does predict returns, but only when it is combined as an independently ranked characteristic rather than used as a denominator that mechanically amplifies firms with near-zero variance.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against StableROIC: identical economic inputs (level and five-year volatility of return on invested capital) recombined additively through rank space. If the stability channel has real content, this version should show a materially better t-alpha, which would tell us that the gen-1 failure was construction rather than economics.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.1804399062479733,
+      "ls_alpha": -0.0021204230225584757,
+      "ls_talpha": -0.19309572281597034,
+      "ls_sharpe": 0.012918345974279596,
+      "coverage": 0.1309512975193718,
+      "error": null
+    },
+    {
+      "name": "DeleveragingProfitStrength",
+      "expression": "SUMRANK(MA(RATIO(oiadp, at), 3), NEG(TREND(RATIO(lt, at), 5)))",
+      "hypothesis": "Profitable firms that are steadily shrinking their liability base are converting operating strength into balance-sheet quality, while equally profitable firms on a multi-year leveraging path are borrowing their way to reported returns.",
+      "expected_sign": "positive",
+      "reasoning": "The second channel is the negative five-year trend in total-liabilities-to-assets (quality theme, lt), a slow-moving direction-of-travel variable rather than the noisy one-year debt growth that failed in gen 0. Pairing it additively with smoothed operating profitability tests whether capital-structure *improvement*, not its level or its volatility, is the durability marker.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.8912537493322956,
+      "ls_alpha": -0.015528443808901853,
+      "ls_talpha": -1.5398157544871265,
+      "ls_sharpe": -0.15810545918276417,
+      "coverage": 0.12137282106144241,
+      "error": null
+    },
+    {
+      "name": "MaturityBackedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(RATIO(dlc, ADD(dltt, dlc)))))",
+      "hypothesis": "High profitability is more valuable when the debt financing it is long-dated; a heavy share of current debt exposes profitable firms to rollover and refinancing shocks that truncate the value of their earnings stream.",
+      "expected_sign": "positive",
+      "reasoning": "The quality modulator is debt maturity structure \u2014 the share of short-term debt in total debt (dlc, dltt) \u2014 a financial-health dimension untested in the archive and distinct from leverage level, coverage, or retained earnings. Multiplying industry ranks conditions the profitability premium on refinancing safety, so profitable firms funded with commercial paper are pushed toward the middle while equally profitable term-funded firms rise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.6737352962159475,
+      "ls_alpha": 0.006810606953130511,
+      "ls_talpha": 0.7768893024804026,
+      "ls_sharpe": 0.10768793688046657,
+      "coverage": 0.12790865648528554,
+      "error": null
+    },
+    {
+      "name": "SmoothedHealthProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(MA(RATIO(re, at), 3), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "The durable-profitability premium is real but its portfolio implementation is noisy because the health channels are measured from single-year balance sheets; smoothing them should hold the same firms in the extreme buckets longer and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one design choice against the archive's best signal: three-year averaging of the retained-earnings and net-working-capital channels, leaving the economic content and the multiplicative conditioning untouched. If ls_talpha and Sharpe rise while alpha holds near 2-3%, the limiting factor was measurement noise and portfolio turnover rather than the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.218897264628689,
+      "ls_alpha": 0.0246470127619924,
+      "ls_talpha": 1.7798580043044754,
+      "ls_sharpe": 0.11552874971325061,
+      "coverage": 0.12295927653915589,
+      "error": null
+    },
+    {
+      "name": "CashBackedHealthProfit",
+      "expression": "MUL(IND_RANK(SUMRANK(RATIO(oibdp, at), RATIO(oancf, at))), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Profitability that is simultaneously high on an accrual basis and confirmed by operating cash flow is the most durable form of operating strength, and conditioning it on balance-sheet health should compound the effect.",
+      "expected_sign": "positive",
+      "reasoning": "It upgrades the profitability leg of the archive winner from a single accrual measure to a two-channel accrual-plus-cash consensus, while keeping the proven liquidity/retention modulator fixed. This tests whether the earnings-quality dimension enters best through the profitability leg (cash confirmation) rather than through a separate accrual penalty, which was only weakly informative in gen 1.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.0258315539483986,
+      "ls_alpha": 0.02660867221629293,
+      "ls_talpha": 1.5217596355817953,
+      "ls_sharpe": 0.15775274260517558,
+      "coverage": 0.078718476226797,
+      "error": null
+    },
+    {
+      "name": "NearTermCoverageProfit",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(oiadp, lct), 1))",
+      "hypothesis": "Operating profit measured against *current* liabilities captures the economically binding constraint \u2014 whether this year's earnings cover this year's claims \u2014 and should be a sharper, faster-moving interaction than profit over total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the denominator choice against ProfitToLiabilities, which delivered a respectable alpha t-stat but a zero Sharpe because total liabilities move too slowly to differentiate firms in real time. Current liabilities (lct) refresh annually with operating conditions, so the ratio should reprice faster and produce a spread with positive stand-alone Sharpe as well as alpha.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.101258445084195,
+      "ls_alpha": 0.01486044734736242,
+      "ls_talpha": 1.6382878148831068,
+      "ls_sharpe": 0.010015976109616654,
+      "coverage": 0.12576464574423388,
+      "error": null
+    },
+    {
+      "name": "DistressScoredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt)))",
+      "hypothesis": "Profitability is most valuable in firms far from financial distress, where distance is measured Altman-style by working-capital cushion relative to the asset base and accumulated retained earnings relative to creditor claims.",
+      "expected_sign": "positive",
+      "reasoning": "It keeps the successful multiplicative form but re-normalizes both health channels in the distress-score convention (working capital over assets, retained earnings over liabilities) instead of the ad hoc scalings used in gen 0, making the modulator a genuine solvency-distance measure. Because the two channels are scaled by different bases, the composite carries information about both cushion size and creditor coverage rather than double-counting one denominator.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.5508328104762863,
+      "ls_alpha": 0.03663484174800391,
+      "ls_talpha": 2.7948713013423245,
+      "ls_sharpe": 0.19924314574115073,
+      "coverage": 0.12243582361958252,
+      "error": null
+    },
+    {
+      "name": "DeficitProfitTrap",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), INDICATOR(NEG(RATIO(re, at)), 0))",
+      "hypothesis": "Currently profitable firms that still carry an accumulated deficit are showing transient, unproven profitability \u2014 prior losses reveal a business that has not yet demonstrated durability \u2014 and they should underperform equally profitable firms with a retained-earnings history.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches on only for firms with negative retained earnings, so the signal equals the profitability rank exactly within the accumulated-deficit group and zero elsewhere, making it a clean conditional test of whether profitability is *not* rewarded absent a retention record. This is the sign-flipped counterpart of the archive's best mechanism and tests asymmetry directly, unlike the failed debt-growth fragility idea whose quality channel was a noisy one-year flow.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.8377820175385581,
+      "ls_alpha": 0.040940300884595965,
+      "ls_talpha": 1.970421402915622,
+      "ls_sharpe": 1.2045602305174576,
+      "coverage": 0.14293711053162922,
+      "error": null
+    },
+    {
+      "name": "CashDebtServiceProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Operating cash flow relative to total liabilities is the creditor-relevant, cash-based measure of financial health; profitable firms whose cash flow comfortably services their obligations have durable operating strength, while accrual-based coverage ratios can be gamed.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 2 showed accrual-based debt coverage (EBITDA/debt) weakened the multiplicative winner, so this tests whether the cash-based analogue \u2014 smoothed oancf over lt \u2014 is the version that carries information. It separates the \"can the balance sheet be serviced from cash\" channel from the liquidity-cushion and retention channels, so the result tells us which of the three solvency dimensions the alpha actually needs.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.675602470908658,
+      "ls_alpha": 0.019579718725621535,
+      "ls_talpha": 1.5099123314073162,
+      "ls_sharpe": 0.22198999533157127,
+      "coverage": 0.09075665516783099,
+      "error": null
+    },
+    {
+      "name": "DistressScoredProfitPlus",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), SUMRANK(RATIO(SUB(act, lct), at), SUMRANK(RATIO(re, lt), MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Solvency distance is best measured on three complementary axes \u2014 liquid cushion, accumulated retention, and current cash-flow coverage of creditor claims \u2014 so adding smoothed cash-flow coverage to the leading distress score should make the durability filter more complete.",
+      "expected_sign": "positive",
+      "reasoning": "It extends the archive leader with the one health channel that independently showed the best cross-sectional slope and Sharpe (smoothed oancf/lt, fmb 2.68, Sharpe 0.22) while keeping the proven multiplicative conditioning and normalizations. If alpha and t-alpha both rise, the cash-coverage axis carries information orthogonal to the cushion and retention axes; if they fall, the distress score is already saturated and parsimony should be preferred.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.5628201494430702,
+      "ls_alpha": 0.041962118301806565,
+      "ls_talpha": 2.330604737975178,
+      "ls_sharpe": 0.331762870194407,
+      "coverage": 0.07886030276690217,
+      "error": null
+    },
+    {
+      "name": "NetOfInterestDistressProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt)))",
+      "hypothesis": "Charging interest expense against operating profit removes the part of reported profitability that belongs to creditors, so the profitability leg itself should discriminate levered from unlevered operating strength before the solvency modulator is applied.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice in the leader: the profitability numerator becomes profit after financing cost (oiadp \u2212 xint) instead of pre-interest operating profit. Because leverage then enters through both the flow and the balance sheet, the signal should sharpen the distinction between durable operating strength and levered profitability, which is exactly the task's economic story.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.5359179311142652,
+      "ls_alpha": 0.03752000234174907,
+      "ls_talpha": 2.89982973596655,
+      "ls_sharpe": 0.21437068069346304,
+      "coverage": 0.1184702008457794,
+      "error": null
+    },
+    {
+      "name": "RetentionCoveredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(re, lt)))",
+      "hypothesis": "The durable-profitability premium comes primarily from accumulated retained earnings relative to creditor claims \u2014 the cleanest evidence that a firm's past profits were real and were kept inside the business \u2014 rather than from the short-term liquidity cushion.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate channel-attribution test: the leader's two health channels are stripped to retention coverage alone, holding the profitability leg and multiplicative structure fixed. If alpha and t-alpha are close to the leader's, the working-capital term is redundant and the parsimonious signal is preferable for stability; if they drop sharply, the cushion term is doing real work and future refinements should build on liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.488312370091116,
+      "ls_alpha": 0.007087290745214256,
+      "ls_talpha": 0.7775351045149728,
+      "ls_sharpe": 0.05751421204558476,
+      "coverage": 0.14318877654204504,
+      "error": null
+    },
+    {
+      "name": "LeanOperatingProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(SUB(revt, cogs), xsga), at), 3)), IND_RANK(NEG(RATIO(act, sale))))",
+      "hypothesis": "Durable profitability is generated by capital-light operations: firms that produce a dollar of sales with fewer current assets tied up in receivables and inventory convert profits into cash quickly, whereas equally profitable firms with bloated current assets are recognizing revenue before it is collected.",
+      "expected_sign": "positive",
+      "reasoning": "This tests working-capital *efficiency* (act/sale) as the quality modulator, which is economically the opposite of the winner's working-capital *cushion* term, so the result discriminates between the safety interpretation and the operating-quality interpretation of current assets. The profitability leg uses a clean operating margin built from revt, cogs, and xsga, keeping the two channels informationally distinct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.681722699776525,
+      "ls_alpha": -0.023803933525003595,
+      "ls_talpha": -2.7219100880927547,
+      "ls_sharpe": -0.010661136508975232,
+      "coverage": 0.10839138470580563,
+      "error": null
+    },
+    {
+      "name": "RetainedProfitPremium",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), INDICATOR(RATIO(re, at), 0))",
+      "hypothesis": "The profitability premium should be concentrated among firms with a positive retained-earnings history, because for them current profitability is corroborated by a record of cumulative earnings rather than being the first profitable year after sustained losses.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact complement of DeficitProfitTrap, which unexpectedly produced positive alpha, so running the mirror conditional resolves whether the profitability premium lives in the retention group, the deficit group, or is an artifact of one-sided portfolio construction where the zero-valued group forms the short leg. The comparison is diagnostic regardless of outcome and directly informs whether retention should remain in the leading composite.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.956119346457779,
+      "ls_alpha": -0.012235183279585149,
+      "ls_talpha": -1.449056577553155,
+      "ls_sharpe": -0.02586779266607378,
+      "coverage": 0.14293711053162922,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkDurableProfit",
+      "expression": "MIN(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength requires profitability and financial health simultaneously, so a firm should be scored by its weaker attribute; a product form still lets an extreme value on one axis compensate for mediocrity on the other, which blurs the long and short legs.",
+      "expected_sign": "positive",
+      "reasoning": "Using MIN on the two industry-ranked legs enforces strict conjunction: the long portfolio contains only firms that are high on both profitability and solvency distance, and the short portfolio contains any firm that fails on either axis. This is an operator-structure test of the same economics as the archive leader and could raise both t-alpha and Sharpe by producing more homogeneous, more slowly turning extreme buckets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.717814211417265,
+      "ls_alpha": 0.012915128592460362,
+      "ls_talpha": 1.7156339197394272,
+      "ls_sharpe": 0.13226261744684922,
+      "coverage": 0.12243582361958252,
+      "error": null
+    },
+    {
+      "name": "CushionCoveredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(SUB(act, lct), at)))",
+      "hypothesis": "The durable-profitability premium is driven by the liquidity cushion: profitable firms holding large net working capital can fund operations and withstand shocks internally, so their current earnings persist, whereas equally profitable firms with no cushion must refinance to survive.",
+      "expected_sign": "positive",
+      "reasoning": "This is the mirror-image attribution test to RetentionCoveredProfit, which stripped the leader down to retention and failed; here the leader is stripped down to the cushion channel with the profitability leg and multiplicative form held fixed. If alpha stays near the leader's 3.5-4%, the cushion is the sole active modulator and later refinements should build exclusively on liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.7633658207063094,
+      "ls_alpha": 0.031466685662865396,
+      "ls_talpha": 3.332047844425361,
+      "ls_sharpe": 0.1247806417223639,
+      "coverage": 0.12486617022734346,
+      "error": null
+    },
+    {
+      "name": "NetLiquidBalanceProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(SUB(act, lt), at)))",
+      "hypothesis": "The strongest form of financial health is having liquid assets that exceed *all* liabilities, not merely current ones; profitability earned on such a balance sheet is unambiguously the firm's own, not a claim of creditors.",
+      "expected_sign": "positive",
+      "reasoning": "It combines the best-performing profitability leg (operating profit net of interest) with a stricter Graham-style cushion, current assets minus total liabilities scaled by assets, which subsumes leverage level and liquidity in one quality variable. Because both legs now net out creditor claims, the signal should separate durable unlevered operating strength from levered profitability more sharply than the leader.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.704829692909356,
+      "ls_alpha": 0.032240954280510575,
+      "ls_talpha": 3.072063258458288,
+      "ls_sharpe": 0.07239034739314619,
+      "coverage": 0.1202719499400294,
+      "error": null
+    },
+    {
+      "name": "TripleConjunctionProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durability requires profitability, liquidity, and a retention record jointly; a signal that multiplies all three ranks forms a long leg of firms that satisfy every condition, which should be a cleaner portfolio than one where a high sum of two health ranks can offset a weak third.",
+      "expected_sign": "positive",
+      "reasoning": "The leader averages the two health ranks before conditioning, letting retention substitute for liquidity; the triple product enforces conjunction and tests whether the weak stand-alone retention channel nevertheless adds value as a *filter* rather than as an additive score. Comparing it against Signal 1 tells us whether retention has any incremental role once the cushion is present.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8044499371237146,
+      "ls_alpha": 0.03714682071132798,
+      "ls_talpha": 3.678188974600558,
+      "ls_sharpe": 0.24810609869769884,
+      "coverage": 0.1184702008457794,
+      "error": null
+    },
+    {
+      "name": "TurnaroundProfitability",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Among firms with accumulated deficits, current operating profitability is a genuine turnaround signal that the market is slow to price: past losses depressed expectations, so newly demonstrated profitability delivers positive abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "DeficitProfitTrap generated the archive's largest alpha and Sharpe with the sign opposite to my prior, but its construction assigned zero to all non-deficit firms, so the spread may have been an artifact of that zero mass forming the short leg. Replacing the indicator with a continuous rank of *negative* retained earnings tests the same economics with a properly distributed signal, and its result determines whether the retention channel enters the final signal with a positive or negative sign.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.076236848641613,
+      "ls_alpha": -0.002531458586661284,
+      "ls_talpha": -0.29945673139561674,
+      "ls_sharpe": 0.01487223733503707,
+      "coverage": 0.14293711053162922,
+      "error": null
+    },
+    {
+      "name": "EarningsCoverageDistressProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(SUB(act, lct), at), SUMRANK(RATIO(re, lt), RATIO(oibdp, lt))))",
+      "hypothesis": "The gain from adding a third coverage channel to the distress score reflects creditor-claim coverage in general, not cash-flow data specifically, so an earnings-based coverage term should reproduce the improvement without the sample loss from cash-flow reporting.",
+      "expected_sign": "positive",
+      "reasoning": "DistressScoredProfitPlus achieved the highest alpha (4.2%) and Sharpe (0.33) but its oancf channel cut coverage from 0.12 to 0.079, raising the risk that the improvement is a sample-composition artifact. Substituting EBITDA-to-liabilities restores full coverage while keeping the three-axis solvency structure and the net-of-interest profitability leg, giving a direct test of whether the extra alpha is economic or sample-driven.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.6184417346322655,
+      "ls_alpha": 0.03487219862735824,
+      "ls_talpha": 2.7202021480989425,
+      "ls_sharpe": 0.1920432484257223,
+      "coverage": 0.11823107170304112,
+      "error": null
+    },
+    {
+      "name": "SupplierFinancedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(SUB(lt, ADD(dltt, dlc)), lt)))",
+      "hypothesis": "Profitability financed by non-interest-bearing operating liabilities \u2014 payables, accruals, deferred items \u2014 is higher quality than profitability financed by debt, because such funding is interest-free, self-renewing with operations, and evidences bargaining power over suppliers.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces liability *composition* rather than liability level, cushion, or maturity as the quality modulator, an axis untested in the archive and economically distinct from all prior channels. It also gives an alternative reading of why cushion measures work: if operating-liability financing is what matters, this signal should carry comparable alpha with different portfolio composition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.405442445045311,
+      "ls_alpha": 0.0032273988632075794,
+      "ls_talpha": 0.36976598864340243,
+      "ls_sharpe": -0.0010940791876144532,
+      "coverage": 0.14431595960796648,
+      "error": null
+    },
+    {
+      "name": "SmoothedTripleConjunction",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(MA(RATIO(SUB(act, lct), at), 3)), IND_RANK(MA(RATIO(re, lt), 3))))",
+      "hypothesis": "The three-way durability conjunction is economically correct but measured with single-year balance-sheet noise; averaging the liquidity cushion and retention coverage over three years should hold the same firms in the extreme buckets and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the archive leader \u2014 three-year smoothing of both quality legs \u2014 leaving the economics and the conjunctive structure untouched. If t-alpha and Sharpe rise with alpha intact, residual noise in annual balance-sheet items was the binding constraint on portfolio evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.7651754896956686,
+      "ls_alpha": 0.03532776690800668,
+      "ls_talpha": 3.4472610544830196,
+      "ls_sharpe": 0.186402728001895,
+      "coverage": 0.11905422282977018,
+      "error": null
+    },
+    {
+      "name": "CashCoveredQuadConjunction",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(SUB(act, lct), at))), MUL(IND_RANK(RATIO(re, lt)), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Cash-flow coverage of creditor claims is a fourth, non-redundant durability condition: a firm can be profitable, liquid, and historically retentive yet still fail to generate cash against its obligations.",
+      "expected_sign": "positive",
+      "reasoning": "Adding smoothed oancf/lt as a fourth multiplicative filter tests whether the highest-alpha, highest-Sharpe result in the archive (DistressScoredProfitPlus, 4.2%, Sharpe 0.33) came from cash-coverage information or merely from the restricted cash-flow-reporting sample. Because the structure otherwise matches the leader exactly, a rise in alpha at similar t-alpha with coverage near 0.08 would indicate real cash information, while a flat result would confirm the sample-composition explanation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.463142278238514,
+      "ls_alpha": 0.0401986251645683,
+      "ls_talpha": 2.8917254764622298,
+      "ls_sharpe": 0.3720219251659137,
+      "coverage": 0.07551455845048856,
+      "error": null
+    },
+    {
+      "name": "LiquidAssetShareProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(act, at)))",
+      "hypothesis": "What makes profitability durable may be asset-side liquidity \u2014 the share of the asset base held in cash, receivables and inventory that can be redeployed or liquidated \u2014 rather than the netting of current liabilities against it.",
+      "expected_sign": "positive",
+      "reasoning": "CushionCoveredProfit and LeanOperatingProfit jointly imply that current assets enter positively, but both confound asset liquidity with current-liability structure; this strips the modulator to the pure asset-composition ratio act/at. If it matches the cushion version's t-alpha, the mechanism is asset liquidity and future signals should drop the lct term, simplifying the construct and improving coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.982753153555408,
+      "ls_alpha": 0.028704318781296263,
+      "ls_talpha": 3.291343234354208,
+      "ls_sharpe": 0.31718750959932,
+      "coverage": 0.12492183804719557,
+      "error": null
+    },
+    {
+      "name": "ClaimsCoveredTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, lt)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Liquid resources should be measured against *all* creditor claims rather than only current ones, because long-term debt eventually competes for the same liquid assets; profitability plus full-claim liquidity coverage is the sharpest statement of durable, unlevered operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes act/lt for the (act\u2212lct)/at cushion inside the winning triple conjunction, making both quality legs denominated in total liabilities so the score is a coherent coverage-of-claims measure. Gen 5 showed the stricter net-liquid form (act\u2212lt)/at delivered good alpha but a weak FMB slope, suggesting the subtraction, not the concept, hurt the cross-sectional fit; a ratio normalization should retain the alpha while restoring the slope.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.5385716126538305,
+      "ls_alpha": 0.027465101889867997,
+      "ls_talpha": 3.0680776666950393,
+      "ls_sharpe": 0.08889334568525968,
+      "coverage": 0.1185197292119129,
+      "error": null
+    },
+    {
+      "name": "MarginConjunctionProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength may be better identified by pricing power in the income statement \u2014 the operating margin per dollar of sales \u2014 than by return on the asset base, since margin is less mechanically related to the balance-sheet quality legs it is combined with.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal scales profit by assets, which shares its denominator with the cushion channel and can induce mechanical correlation between the legs; replacing it with a sales-based margin makes the profitability and quality legs informationally independent. This isolates the profitability-leg definition while holding the winning conjunction fixed, telling us whether the interaction is margin-driven or asset-turnover-driven.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.826460969680344,
+      "ls_alpha": 0.02766940292316379,
+      "ls_talpha": 2.7498980710986,
+      "ls_sharpe": 0.14879089636644385,
+      "coverage": 0.1205238739106855,
+      "error": null
+    },
+    {
+      "name": "DebtVersusLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(NEG(RATIO(ADD(dltt, dlc), act))))",
+      "hypothesis": "The relevant financial-health condition is how much interest-bearing debt stands against the firm's liquid resources; profitable firms whose debt is small relative to current assets face no refinancing constraint and their earnings stream is durable.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new quality axis \u2014 debt scaled by liquid assets rather than by total assets or netted inside working capital \u2014 which failed as a level (leverage/assets) but should work if the operative mechanism is liquidity-adjusted refinancing risk, exactly what the cushion results hint at. It also uses only debt and current assets, so it is economically distinct from retention coverage and testable at full coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.383161741158734,
+      "ls_alpha": 0.017776536220561003,
+      "ls_talpha": 2.0895924704803908,
+      "ls_sharpe": -0.013478355830029954,
+      "coverage": 0.12393178664500626,
+      "error": null
+    },
+    {
+      "name": "LiquidTripleConjunction",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength is profitability net of financing cost, earned on a liquid asset base, by a firm that has accumulated retained earnings against its creditor claims; asset liquidity is the cleaner measure of financial flexibility than net working capital because it does not net out routine trade financing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cushion leg of the archive leader with the act/at modulator that produced the best FMB slope and Sharpe in gen 6, holding the profitability leg and the retention filter fixed. If it beats TripleConjunctionProfit on t-alpha while keeping Sharpe near 0.3, it becomes the consolidated signal: same alpha magnitude, better cross-sectional slope and better stand-alone risk-adjusted spread.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.124621080727359,
+      "ls_alpha": 0.025404587146216375,
+      "ls_talpha": 3.001956078558413,
+      "ls_sharpe": 0.25054228117354765,
+      "coverage": 0.11851663368902955,
+      "error": null
+    },
+    {
+      "name": "QuadLiquidityRetentionProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Asset liquidity and the net working-capital cushion capture different things \u2014 how liquid the assets are versus how much of that liquidity is unencumbered by near-term claims \u2014 so requiring both alongside profitability and retention should isolate the most unambiguously durable firms.",
+      "expected_sign": "positive",
+      "reasoning": "Both liquidity forms independently generated t-alphas above 3.2 with different Sharpes (0.32 asset-side, 0.13 cushion), which suggests partially orthogonal information rather than duplication. The four-way product is a strict-conjunction test at full coverage; if alpha and t-alpha exceed the triple versions, the two liquidity axes are complementary, and if not, the simpler Signal 1 is the correct final form.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.279457476671229,
+      "ls_alpha": 0.033765130754883334,
+      "ls_talpha": 3.71493054112603,
+      "ls_sharpe": 0.20691607114312927,
+      "coverage": 0.1184702008457794,
+      "error": null
+    },
+    {
+      "name": "DualLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))))",
+      "hypothesis": "If the liquidity mechanism is what drives the interaction, then profitability conditioned on both liquidity measures should capture nearly all of the effect without any retention information at all.",
+      "expected_sign": "positive",
+      "reasoning": "This is the redundancy test that separates the liquidity mechanism from the retention filter: same structure as Signal 2 but with re/lt removed and the plain profitability leg retained. Comparing the three signals identifies exactly which of the three quality conditions is indispensable, which matters for the final generation's choice of a parsimonious, stable construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.273006261772854,
+      "ls_alpha": 0.03542995639751527,
+      "ls_talpha": 3.579356079644519,
+      "ls_sharpe": 0.20235057109026008,
+      "coverage": 0.12486617022734346,
+      "error": null
+    },
+    {
+      "name": "CashCoveredLiquidTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Cash-flow coverage of creditor claims and asset liquidity are the two financial-health conditions with the highest stand-alone Sharpe, so combining them with interest-adjusted profitability should produce the most stable durable-profitability spread.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-coverage filter delivered the archive's highest Sharpe (0.372) and the asset-liquidity modulator the second highest (0.317), and they measure flow-based versus stock-based flexibility, so the pairing is economically non-redundant. The coverage cost (~0.08 from cash-flow reporting) is the explicit tradeoff being priced here: if t-alpha stays above 3 with Sharpe above 0.35, the restricted sample is worth it.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.198060733918539,
+      "ls_alpha": 0.03884801745322502,
+      "ls_talpha": 3.153099183377315,
+      "ls_sharpe": 0.5420780477901952,
+      "coverage": 0.07573836475495428,
+      "error": null
+    },
+    {
+      "name": "EarnedEquityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(re, ceq)))",
+      "hypothesis": "Profitability is more durable when the firm's book equity was earned rather than issued: a high retained-earnings share of equity marks a mature, self-financing business whose current profits reflect an established franchise rather than investor-funded expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new quality axis \u2014 the composition of book equity \u2014 distinct from retention scaled by liabilities (weak alone, t-alpha 0.78) and from all liquidity measures, and it directly encodes the life-cycle interpretation of the economic story. If it produces a strong t-alpha with full coverage, it offers an alternative filter that does not depend on balance-sheet liquidity at all.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.496928209191053,
+      "ls_alpha": 0.0018205550873204891,
+      "ls_talpha": 0.18889194865288197,
+      "ls_sharpe": 0.12777032422568801,
+      "coverage": 0.14341160259759772,
+      "error": null
+    },
+    {
+      "name": "ClaimsProductivityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(sale, lt)))",
+      "hypothesis": "Decomposing profit-per-dollar-of-claims into margin and claims turnover shows that durable strength requires both: a wide operating margin and a large revenue base supporting each dollar of creditor claims, so that obligations are small relative to the business actually being run.",
+      "expected_sign": "positive",
+      "reasoning": "ProfitToLiabilities worked on alpha but had zero Sharpe as a single slow-moving ratio; multiplying the two ranked DuPont components instead of dividing the raw quantities should retain the coverage economics while producing a better-behaved cross-sectional distribution. It is a structurally different way to fuse the themes \u2014 decomposition rather than filtering \u2014 and uses sales productivity of liabilities, an axis untested in the archive.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.9271582106666654,
+      "ls_alpha": 0.013974224592613393,
+      "ls_talpha": 1.6050410078113024,
+      "ls_sharpe": 0.050127789465220736,
+      "coverage": 0.14266465292584696,
+      "error": null
+    },
+    {
+      "name": "FullConjunctionCashProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Durable operating strength satisfies every financial-health condition at once \u2014 interest-adjusted profitability, a liquid asset base, an unencumbered working-capital cushion, accumulated retention, and cash-flow coverage of creditor claims \u2014 and the firms meeting all five should earn the largest and most reliable abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "The two best gen-7 signals each contained a strict subset of these five conditions and each excelled on a different metric (t-alpha for the quad, Sharpe for the cash triple), so the union is the natural maximal test of whether the conditions are jointly non-redundant. Its coverage will be limited to about 0.08 by cash-flow reporting, so it must be judged against Signal 4, the full-coverage analogue, to separate economic content from sample composition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.9246375163313285,
+      "ls_alpha": 0.043118714730485765,
+      "ls_talpha": 3.5020493833232713,
+      "ls_sharpe": 0.43776551736355157,
+      "coverage": 0.07551455845048856,
+      "error": null
+    },
+    {
+      "name": "CashProxyLiquidTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Cash earnings available to creditors can be measured as income plus depreciation relative to total liabilities, which captures the same debt-servicing capacity as operating cash flow but is reportable for the whole sample.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact structural analogue of CashCoveredLiquidTriple (Sharpe 0.542, fmb 3.198) with the oancf channel replaced by the (ib + dp) proxy, so it isolates whether that signal's exceptional Sharpe came from cash-flow information or from the restricted cash-flow-reporting subsample. If it reproduces most of the Sharpe and t-alpha at coverage near 0.12, it becomes the preferred implementation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.8912562708210845,
+      "ls_alpha": 0.02574083883439041,
+      "ls_talpha": 3.0730573662045773,
+      "ls_sharpe": 0.2317057215340915,
+      "coverage": 0.12029511476960643,
+      "error": null
+    },
+    {
+      "name": "CashCoveredDualLiquidity",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Once cash-flow coverage of liabilities is imposed, the retention record becomes redundant \u2014 a firm currently generating cash against its claims has already demonstrated the durability that accumulated retained earnings only proxies for.",
+      "expected_sign": "positive",
+      "reasoning": "It replaces the retention leg of Signal 1 with the second liquidity leg, keeping the number of conditions constant so the comparison identifies which filter carries incremental information within the cash-reporting sample. This directly informs how many legs the final signal should have, which matters because each additional multiplicative filter compresses the informative range of the score.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.1376028737933237,
+      "ls_alpha": 0.04619981596320272,
+      "ls_talpha": 3.352493600264374,
+      "ls_sharpe": 0.42200720236842154,
+      "coverage": 0.07572840748967953,
+      "error": null
+    },
+    {
+      "name": "CashProxyQuadConjunction",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "The strongest full-coverage signal replaces the weak-alone retention filter with cash-earnings coverage of creditor claims, keeping interest-adjusted profitability and both liquidity dimensions.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the (ib + dp)/lt coverage channel for re/lt inside the current full-coverage leader, testing whether an income-statement-based servicing measure dominates a historical-stock measure of retention that showed no stand-alone alpha. It is my primary candidate to beat QuadLiquidityRetentionProfit on t-alpha and Sharpe simultaneously without any coverage sacrifice.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.079287413851461,
+      "ls_alpha": 0.03759956242500026,
+      "ls_talpha": 3.894758531651997,
+      "ls_sharpe": 0.24677586107877572,
+      "coverage": 0.120248423966116,
+      "error": null
+    },
+    {
+      "name": "AssetLightProfitDurability",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(NEG(RATIO(dp, ADD(dltt, ceq)))))",
+      "hypothesis": "Profitability that does not require heavy annual reinvestment to maintain the asset base is more durable: a low depreciation charge per dollar of invested capital means reported profits translate into distributable cash rather than mandatory capital expenditure.",
+      "expected_sign": "positive",
+      "reasoning": "Capital intensity is the one financial-health axis never tested here, and it is economically distinct from liquidity, leverage, coverage, and retention because it concerns the maintenance cost of the earning assets rather than the claims against them. Scaling depreciation by debt plus book equity ties the burden to the capital actually financing those assets, giving a clean interaction with the interest-adjusted profitability leg.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.15483918874181846,
+      "ls_alpha": 0.014850715093516008,
+      "ls_talpha": 1.538269428325737,
+      "ls_sharpe": 0.006466154220026624,
+      "coverage": 0.12593928482690248,
+      "error": null
+    },
+    {
+      "name": "CashProxyCoverageProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "Interest-adjusted profitability conditioned solely on cash-earnings coverage of total liabilities is sufficient to capture the durable-profitability premium, because coverage jointly encodes leverage, profitability persistence, and cash conversion.",
+      "expected_sign": "positive",
+      "reasoning": "This is the two-leg attribution test for the new proxy channel, parallel to how CushionCoveredProfit and RetentionCoveredProfit attributed the earlier composites; it tells us how much of Signals 2 and 4 comes from coverage alone. A parsimonious two-leg signal with full coverage and a t-alpha above 3 would be preferable for stability to a four-way product, so this result determines the final generation's complexity choice.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.158354189142031,
+      "ls_alpha": 0.01648628836147464,
+      "ls_talpha": 1.7464392008645682,
+      "ls_sharpe": 0.06342917586482635,
+      "coverage": 0.12769480744609457,
+      "error": null
+    },
+    {
+      "name": "PentaConjunctionProxyProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), MUL(IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3)), IND_RANK(RATIO(re, lt)))))",
+      "hypothesis": "Durable operating strength requires five simultaneous conditions \u2014 profitability after financing cost, a liquid asset base, an unencumbered working-capital cushion, current cash earnings covering creditor claims, and a history of retained profits \u2014 and all five are jointly informative at full sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "On the restricted cash sample, adding retention to the cash-covered conjunction preserved a high alpha and lifted t-alpha (FullConjunctionCashProfit t 3.50 vs Dual 3.35), so the same addition should be tested where coverage is not compromised. This is the direct full-coverage extension of the archive's best t-alpha signal and the natural candidate for a final consolidated construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.2462942590796082,
+      "ls_alpha": 0.034146127692990275,
+      "ls_talpha": 3.9535206900139728,
+      "ls_sharpe": 0.21944201744114877,
+      "coverage": 0.11837093774532019,
+      "error": null
+    },
+    {
+      "name": "DebtCoverageQuadProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Interest-bearing debt, not total liabilities, is the obligation that can force distress, so cash earnings measured against debt should be the sharper durability filter and should separate levered from unlevered profitability more cleanly.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the denominator of the coverage leg inside the best full-coverage signal, holding the profitability and both liquidity legs fixed; total liabilities mix in trade payables that renew automatically with operations and carry no default trigger. If t-alpha rises above 3.9 with Sharpe intact, the final signal should express coverage against debt rather than all liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.567801314924092,
+      "ls_alpha": 0.030319680225419757,
+      "ls_talpha": 2.831047181302681,
+      "ls_sharpe": 0.1786702043867513,
+      "coverage": 0.11021232604193236,
+      "error": null
+    },
+    {
+      "name": "NearTermCashQuadProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lct), 3))))",
+      "hypothesis": "The binding solvency constraint is near-term: cash earnings relative to liabilities falling due within the year determine whether a profitable firm must raise external funds, and this faster-moving measure should time the spread better than stock measures of total claims.",
+      "expected_sign": "positive",
+      "reasoning": "NearTermCoverageProfit showed current liabilities carry independent information as a denominator, and current liabilities refresh annually with operating conditions, which is the plausible source of the higher Sharpe seen in cash-based legs. Testing it inside the winning quad separates the \"timeliness of the obligation measure\" question from the \"cash versus accrual\" question already answered in gen 8.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.1056556028590125,
+      "ls_alpha": 0.039911779549923095,
+      "ls_talpha": 3.964867065023825,
+      "ls_sharpe": 0.2636462514868763,
+      "coverage": 0.12062329178728888,
+      "error": null
+    },
+    {
+      "name": "AdditiveHealthGatedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(act, at), SUMRANK(RATIO(SUB(act, lct), at), MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Financial health is a single latent factor best measured by averaging its ranked manifestations, with profitability entering multiplicatively; averaging reduces measurement noise in any one balance-sheet item and should stabilize portfolio composition without sacrificing abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Every multiplicative filter added to the conjunction narrows the informative range of the score and concentrates the extreme buckets, which explains why Sharpe has stayed near 0.25 at full coverage while alpha and t-alpha rose; an additive health score with a multiplicative profitability gate keeps the interaction but spreads the cross-section. This is a structural alternative to Signals 1-3 using identical economic content, so it isolates aggregation form as the design choice.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.0296847063020238,
+      "ls_alpha": 0.0491280132687204,
+      "ls_talpha": 3.6618669138829936,
+      "ls_sharpe": 0.24976085955689903,
+      "coverage": 0.120248423966116,
+      "error": null
+    },
+    {
+      "name": "CashToDebtDualLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))), IND_RANK(MA(RATIO(oancf, ADD(dltt, dlc)), 3))))",
+      "hypothesis": "On the sample where cash flow is observed, the most economically meaningful durability condition is operating cash flow covering interest-bearing debt, since that is precisely the ratio creditors and rating agencies use to judge whether operating strength is self-sustaining.",
+      "expected_sign": "positive",
+      "reasoning": "CashCoveredDualLiquidity produced the archive's largest alpha (4.6%) and a 0.42 Sharpe with oancf scaled by total liabilities, so replacing the denominator with interest-bearing debt tests whether the magnitude is driven by true financing risk rather than by all payables. It keeps the coverage limitation explicit and is judged against Signal 2, the full-coverage analogue with the accrual proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.579907434630116,
+      "ls_alpha": 0.03360382951043184,
+      "ls_talpha": 2.422307539252077,
+      "ls_sharpe": 0.3062464577828395,
+      "coverage": 0.0681291051792638,
+      "error": null
+    },
+    {
+      "name": "PretaxQuadConjunctionProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(pi, at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Pretax income is the most complete measure of profit accruing to capital providers after all financing and non-operating costs but before tax distortions, so it should identify durable operating strength at least as well as operating profit net of interest expense.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals use the hand-built oiadp \u2212 xint numerator; pi achieves the same economic netting from the reported income statement and additionally charges non-recurring financing items that transient profitability tends to hide. This is the last untested variation of the profitability leg inside the best full-coverage conjunction, and a win here would simplify the final expression while sharpening the levered-versus-durable distinction.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.94590155919533,
+      "ls_alpha": 0.038848631462344366,
+      "ls_talpha": 3.7862652338242953,
+      "ls_sharpe": 0.25636956486252754,
+      "coverage": 0.12433730014272425,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "VolScaledOperatingProfit",
+      "expression": "WINSOR(RATIO(MA(RATIO(oiadp, at), 3), VOL(RATIO(ib, at), 5)), 1)",
+      "hypothesis": "A given level of operating profitability is worth more when the firm's bottom-line earnings stream is stable; investors underprice smooth, durable operating strength and overpay for equally high but noisy profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is a smoothed profitability level (Theme A) while the denominator is five-year earnings-to-assets volatility (Theme B), so the signal is a profitability-per-unit-of-earnings-instability ratio rather than either theme alone. Two firms with identical ROA are ranked apart purely by earnings quality, isolating the stability interaction. Smoothing over three years removes one-off spikes that would otherwise inflate the numerator.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedProfitability",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), NEG(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "High operating profitability that is matched by operating cash flow reflects real economic earnings, whereas the same accounting profitability funded by accruals reverses and is punished in future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is smoothed EBITDA-to-assets (profitability), the second is the negative of total accruals scaled by assets (quality of earnings recognition), and the composite rewards only the intersection of the two. This separates cash-validated operating strength from paper profits, which is exactly the durability distinction in the economic story. Using EBITDA rather than net income keeps the profitability channel independent of the accrual channel's construction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentProfitStreak",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), TS_SUM(INDICATOR(RATIO(ib, at), 0), 5))",
+      "hypothesis": "Current profitability predicts returns much more strongly for firms with a long unbroken record of positive earnings, because persistence signals a genuine competitive moat rather than a cyclical upswing.",
+      "expected_sign": "positive",
+      "reasoning": "The industry rank of smoothed operating profitability (Theme A) is multiplied by the count of profitable years in the last five (Theme B persistence indicator), so profitability is only credited when it has historically repeated. A currently high-ROA firm with two loss years in five is downweighted toward the middle, which is impossible with either component alone. The multiplicative form encodes conditioning rather than simple averaging.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "UnleveredProfitPurity",
+      "expression": "SUMRANK(MA(RATIO(oiadp, at), 3), SUB(IND_RANK(RATIO(ib, at)), IND_RANK(RATIO(ib, ceq))))",
+      "hypothesis": "Profitability that comes from asset productivity rather than from balance-sheet leverage is more durable; firms whose ROE rank far exceeds their ROA rank are levering up transient returns and should underperform equally profitable unlevered peers.",
+      "expected_sign": "positive",
+      "reasoning": "The second channel is a leverage-purity wedge: high asset-based profitability rank minus high equity-based profitability rank, which is positive precisely for low-leverage firms whose profits are not equity-thin (Theme B capital-structure quality). Combined with the operating profitability level (Theme A), the signal ranks durable operating strength above levered profitability. This is a decomposition-based interaction that neither ROA nor leverage alone captures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtFinancedProfitPenalty",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(GROWTH(RATIO(ADD(dltt, dlc), at), 1)))",
+      "hypothesis": "Reported profitability that coincides with rapid debt build-up is fragile: the profit level is being sustained by external financing and expanding balance-sheet risk, so such firms underperform despite looking profitable.",
+      "expected_sign": "negative",
+      "reasoning": "Profitability rank (Theme A) is multiplied by the rank of one-year growth in total-debt-to-assets (Theme B financial health deterioration), so the signal is largest for high-profit firms that are simultaneously levering up. It deliberately takes the opposite side of the durability story to test whether the interaction is asymmetric rather than a monotone quality tilt. Neither high profitability nor rising leverage alone identifies this fragile combination.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "HealthScoredProfitability",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "High profitability is most valuable when it sits on a foundation of accumulated retained earnings and liquid working-capital solvency, since such firms can self-fund and survive shocks, making current profits persistent.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability rank (Theme A) is scaled by a two-channel balance-sheet health score combining retained-earnings depth and net-working-capital coverage of total liabilities (Theme B), so profits are credited only when the firm is financially sound. Young, deficit-laden or illiquid firms with temporarily high margins get pushed down, isolating durable operating strength. The multiplicative structure makes the quality score a modulator of the profitability payoff rather than an additive competitor.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "StableROIC",
+      "expression": "WINSOR(RATIO(MA(RATIO(oiadp, ADD(dltt, ceq)), 3), VOL(RATIO(oiadp, ADD(dltt, ceq)), 5)), 1)",
+      "hypothesis": "Return on total invested capital (debt plus equity) is a cleaner measure of operating strength than ROA, and its predictive power for returns is concentrated in firms whose invested-capital return is stable rather than cyclical.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is smoothed operating profit over invested capital (profitability theme, using oiadp and dltt), and the denominator is the five-year volatility of that same return (quality theme, stability of the capital-productivity stream). Two firms with identical ROIC are ranked purely by durability, so the signal is an information-ratio-style interaction rather than a level effect. Scaling by dltt+ceq rather than at also removes the mechanical leverage tilt embedded in equity-based profitability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveHealthProfit",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Profitability and balance-sheet health both carry independent premia, and an additive rank combination should span more of the cross-section (avoiding the rank-product compression that pushes moderate firms to the middle) while retaining the same economic story.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately isolates one design choice relative to the archive winner: the same three channels (smoothed EBITDA/assets, retained-earnings depth, net working capital over total liabilities) combined additively rather than multiplicatively. If the multiplicative form's alpha was limited by extreme-rank concentration and unstable long/short membership, the additive version should raise ls_talpha and Sharpe; if instead the conditioning is essential, the additive version will weaken, which is itself informative.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtServicedProfitSpread",
+      "expression": "SUMRANK(RATIO(SUB(oiadp, xint), at), WINSOR(RATIO(oibdp, ADD(dltt, dlc)), 2))",
+      "hypothesis": "Profitability that survives the cost of debt service and that comfortably covers the outstanding debt stock is durable operating strength, whereas equally high pre-interest profitability on a heavily indebted balance sheet is transient and largely a claim of creditors.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is operating profit net of interest expense scaled by assets (profitability theme), the second is EBITDA coverage of total debt (quality theme via dltt and dlc), so leverage enters through earnings capacity rather than as a raw balance-sheet ratio. Firms with negative EBITDA automatically receive a low coverage rank, so the interaction does not invert for distressed names. This tests debt-service capacity as the quality modulator, a channel absent from the archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SelfFundedProfitStreak",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), TS_SUM(INDICATOR(DELTA(re, 1), 0), 5))",
+      "hypothesis": "High profitability is durable when it has been repeatedly retained inside the firm; a multi-year record of rising retained earnings shows profits are real, self-funding, and not paid out or reversed by later write-offs.",
+      "expected_sign": "positive",
+      "reasoning": "The industry rank of smoothed EBITDA/assets (profitability) is multiplied by a count of the last five years in which retained earnings actually increased (quality-exclusive persistence via re), so profitability is credited only when it has accumulated. This is a discrete persistence-of-accretion mechanism, distinct from level-based health scores and from earnings-volatility scaling. Firms with high current margins but an eroding retained-earnings base are pulled toward the middle of the distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalCleanProfit",
+      "expression": "SUMRANK(RATIO(SUB(SUB(revt, cogs), xsga), at), NEG(DELTA(RATIO(SUB(act, lct), sale), 1)))",
+      "hypothesis": "Operating profitability is higher quality when it is not accompanied by an expanding working-capital footprint; receivable and inventory build-up relative to sales signals earnings that have not yet been realized in cash and tend to reverse.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is a clean operating profitability level built from revt, cogs and xsga (profitability theme), while the second penalizes year-over-year growth in net working capital intensity using act and lct (quality-exclusive). Unlike a total-accruals measure, this isolates the specific balance-sheet account where transient profitability shows up first, giving a different economic channel with broad coverage.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "QuietBalanceSheetProfit",
+      "expression": "WINSOR(RATIO(MA(RATIO(oiadp, at), 3), VOL(RATIO(lt, at), 5)), 1)",
+      "hypothesis": "Firms that earn high operating returns while holding their capital structure steady are running a genuinely profitable business; firms whose liability base swings year to year are financing, restructuring, or acquiring their way to reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is smoothed operating profitability (profitability theme) and the denominator is the volatility of the total-liabilities-to-assets ratio (quality theme via lt), so the signal rewards profits earned on a stable financing base. This makes capital-structure stability, not earnings smoothness, the durability filter, giving a mechanism that is orthogonal to Signal 1 and to accrual-based quality. Because it needs only lt and oiadp histories, coverage should be materially higher than the multi-variable health scores.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "TroughProfitFloor",
+      "expression": "SUMRANK(MA(RATIO(oibdp, at), 3), TS_MIN(RATIO(oiadp, ADD(dltt, ceq)), 5))",
+      "hypothesis": "Durability is better measured by how high a firm's profitability floor is than by how smooth its profitability is; a high worst-year return on invested capital proves the business model survives its own cycle.",
+      "expected_sign": "positive",
+      "reasoning": "The first channel is the smoothed profitability level (profitability theme) and the second is the minimum five-year return on debt-plus-equity capital (quality theme via dltt), so firms are rewarded only when current strength rests on a high stress-case earnings base. This replaces the failed volatility-denominator idea with a downside-state concept that is robust to scale and does not blow up for small denominators. It also distinguishes levered profitability, since capital in the denominator includes long-term debt.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitToLiabilities",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(oiadp, xint), lt), 1))",
+      "hypothesis": "Operating profit after interest measured against the total stock of obligations is the cleanest single statement of the interaction: the same dollar of profit is worth more when fewer creditor claims stand against it.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is a profitability flow net of financing cost (oiadp, xint) and the denominator is total liabilities (lt, quality-exclusive), so leverage and profitability are fused into one economically interpretable coverage ratio rather than two ranked channels. Industry z-scoring removes structural differences in capital intensity and leverage norms, and the parsimony should deliver higher coverage and a more stable long-short membership than the three-channel composites. It is the natural minimal test of whether the archive's composite alphas come from the profitability-per-obligation channel itself.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ConsolidatedDurableProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(WINSOR(RATIO(oibdp, ADD(dltt, dlc)), 2), RATIO(re, at)))",
+      "hypothesis": "The two channels that independently generated alpha \u2014 debt-service capacity and retained-earnings depth \u2014 should reinforce each other, because a firm that can both cover its debt from current earnings and has historically retained profits has proven durable operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "It keeps the multiplicative conditioning structure that produced the archive's best FF5 alpha but replaces the weak net-working-capital channel with the stronger EBITDA-to-debt coverage channel from DebtServicedProfitSpread. This is a deliberate consolidation test: if alpha and t-alpha both rise relative to HealthScoredProfitability, the quality modulator is solvency rather than liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedStabilityProfit",
+      "expression": "SUMRANK(MA(RATIO(oiadp, ADD(dltt, ceq)), 3), NEG(VOL(RATIO(oiadp, ADD(dltt, ceq)), 5)))",
+      "hypothesis": "Profitability stability does predict returns, but only when it is combined as an independently ranked characteristic rather than used as a denominator that mechanically amplifies firms with near-zero variance.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against StableROIC: identical economic inputs (level and five-year volatility of return on invested capital) recombined additively through rank space. If the stability channel has real content, this version should show a materially better t-alpha, which would tell us that the gen-1 failure was construction rather than economics.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DeleveragingProfitStrength",
+      "expression": "SUMRANK(MA(RATIO(oiadp, at), 3), NEG(TREND(RATIO(lt, at), 5)))",
+      "hypothesis": "Profitable firms that are steadily shrinking their liability base are converting operating strength into balance-sheet quality, while equally profitable firms on a multi-year leveraging path are borrowing their way to reported returns.",
+      "expected_sign": "positive",
+      "reasoning": "The second channel is the negative five-year trend in total-liabilities-to-assets (quality theme, lt), a slow-moving direction-of-travel variable rather than the noisy one-year debt growth that failed in gen 0. Pairing it additively with smoothed operating profitability tests whether capital-structure *improvement*, not its level or its volatility, is the durability marker.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "MaturityBackedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(RATIO(dlc, ADD(dltt, dlc)))))",
+      "hypothesis": "High profitability is more valuable when the debt financing it is long-dated; a heavy share of current debt exposes profitable firms to rollover and refinancing shocks that truncate the value of their earnings stream.",
+      "expected_sign": "positive",
+      "reasoning": "The quality modulator is debt maturity structure \u2014 the share of short-term debt in total debt (dlc, dltt) \u2014 a financial-health dimension untested in the archive and distinct from leverage level, coverage, or retained earnings. Multiplying industry ranks conditions the profitability premium on refinancing safety, so profitable firms funded with commercial paper are pushed toward the middle while equally profitable term-funded firms rise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedHealthProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), SUMRANK(MA(RATIO(re, at), 3), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "The durable-profitability premium is real but its portfolio implementation is noisy because the health channels are measured from single-year balance sheets; smoothing them should hold the same firms in the extreme buckets longer and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one design choice against the archive's best signal: three-year averaging of the retained-earnings and net-working-capital channels, leaving the economic content and the multiplicative conditioning untouched. If ls_talpha and Sharpe rise while alpha holds near 2-3%, the limiting factor was measurement noise and portfolio turnover rather than the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedHealthProfit",
+      "expression": "MUL(IND_RANK(SUMRANK(RATIO(oibdp, at), RATIO(oancf, at))), SUMRANK(RATIO(re, at), RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Profitability that is simultaneously high on an accrual basis and confirmed by operating cash flow is the most durable form of operating strength, and conditioning it on balance-sheet health should compound the effect.",
+      "expected_sign": "positive",
+      "reasoning": "It upgrades the profitability leg of the archive winner from a single accrual measure to a two-channel accrual-plus-cash consensus, while keeping the proven liquidity/retention modulator fixed. This tests whether the earnings-quality dimension enters best through the profitability leg (cash confirmation) rather than through a separate accrual penalty, which was only weakly informative in gen 1.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NearTermCoverageProfit",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(oiadp, lct), 1))",
+      "hypothesis": "Operating profit measured against *current* liabilities captures the economically binding constraint \u2014 whether this year's earnings cover this year's claims \u2014 and should be a sharper, faster-moving interaction than profit over total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the denominator choice against ProfitToLiabilities, which delivered a respectable alpha t-stat but a zero Sharpe because total liabilities move too slowly to differentiate firms in real time. Current liabilities (lct) refresh annually with operating conditions, so the ratio should reprice faster and produce a spread with positive stand-alone Sharpe as well as alpha.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DistressScoredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt)))",
+      "hypothesis": "Profitability is most valuable in firms far from financial distress, where distance is measured Altman-style by working-capital cushion relative to the asset base and accumulated retained earnings relative to creditor claims.",
+      "expected_sign": "positive",
+      "reasoning": "It keeps the successful multiplicative form but re-normalizes both health channels in the distress-score convention (working capital over assets, retained earnings over liabilities) instead of the ad hoc scalings used in gen 0, making the modulator a genuine solvency-distance measure. Because the two channels are scaled by different bases, the composite carries information about both cushion size and creditor coverage rather than double-counting one denominator.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DeficitProfitTrap",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), INDICATOR(NEG(RATIO(re, at)), 0))",
+      "hypothesis": "Currently profitable firms that still carry an accumulated deficit are showing transient, unproven profitability \u2014 prior losses reveal a business that has not yet demonstrated durability \u2014 and they should underperform equally profitable firms with a retained-earnings history.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches on only for firms with negative retained earnings, so the signal equals the profitability rank exactly within the accumulated-deficit group and zero elsewhere, making it a clean conditional test of whether profitability is *not* rewarded absent a retention record. This is the sign-flipped counterpart of the archive's best mechanism and tests asymmetry directly, unlike the failed debt-growth fragility idea whose quality channel was a noisy one-year flow.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDebtServiceProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(MA(RATIO(oancf, lt), 3)))",
+      "hypothesis": "Operating cash flow relative to total liabilities is the creditor-relevant, cash-based measure of financial health; profitable firms whose cash flow comfortably services their obligations have durable operating strength, while accrual-based coverage ratios can be gamed.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 2 showed accrual-based debt coverage (EBITDA/debt) weakened the multiplicative winner, so this tests whether the cash-based analogue \u2014 smoothed oancf over lt \u2014 is the version that carries information. It separates the \"can the balance sheet be serviced from cash\" channel from the liquidity-cushion and retention channels, so the result tells us which of the three solvency dimensions the alpha actually needs.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DistressScoredProfitPlus",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), SUMRANK(RATIO(SUB(act, lct), at), SUMRANK(RATIO(re, lt), MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Solvency distance is best measured on three complementary axes \u2014 liquid cushion, accumulated retention, and current cash-flow coverage of creditor claims \u2014 so adding smoothed cash-flow coverage to the leading distress score should make the durability filter more complete.",
+      "expected_sign": "positive",
+      "reasoning": "It extends the archive leader with the one health channel that independently showed the best cross-sectional slope and Sharpe (smoothed oancf/lt, fmb 2.68, Sharpe 0.22) while keeping the proven multiplicative conditioning and normalizations. If alpha and t-alpha both rise, the cash-coverage axis carries information orthogonal to the cushion and retention axes; if they fall, the distress score is already saturated and parsimony should be preferred.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NetOfInterestDistressProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt)))",
+      "hypothesis": "Charging interest expense against operating profit removes the part of reported profitability that belongs to creditors, so the profitability leg itself should discriminate levered from unlevered operating strength before the solvency modulator is applied.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice in the leader: the profitability numerator becomes profit after financing cost (oiadp \u2212 xint) instead of pre-interest operating profit. Because leverage then enters through both the flow and the balance sheet, the signal should sharpen the distinction between durable operating strength and levered profitability, which is exactly the task's economic story.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RetentionCoveredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(re, lt)))",
+      "hypothesis": "The durable-profitability premium comes primarily from accumulated retained earnings relative to creditor claims \u2014 the cleanest evidence that a firm's past profits were real and were kept inside the business \u2014 rather than from the short-term liquidity cushion.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate channel-attribution test: the leader's two health channels are stripped to retention coverage alone, holding the profitability leg and multiplicative structure fixed. If alpha and t-alpha are close to the leader's, the working-capital term is redundant and the parsimonious signal is preferable for stability; if they drop sharply, the cushion term is doing real work and future refinements should build on liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LeanOperatingProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(SUB(revt, cogs), xsga), at), 3)), IND_RANK(NEG(RATIO(act, sale))))",
+      "hypothesis": "Durable profitability is generated by capital-light operations: firms that produce a dollar of sales with fewer current assets tied up in receivables and inventory convert profits into cash quickly, whereas equally profitable firms with bloated current assets are recognizing revenue before it is collected.",
+      "expected_sign": "positive",
+      "reasoning": "This tests working-capital *efficiency* (act/sale) as the quality modulator, which is economically the opposite of the winner's working-capital *cushion* term, so the result discriminates between the safety interpretation and the operating-quality interpretation of current assets. The profitability leg uses a clean operating margin built from revt, cogs, and xsga, keeping the two channels informationally distinct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RetainedProfitPremium",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), INDICATOR(RATIO(re, at), 0))",
+      "hypothesis": "The profitability premium should be concentrated among firms with a positive retained-earnings history, because for them current profitability is corroborated by a record of cumulative earnings rather than being the first profitable year after sustained losses.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact complement of DeficitProfitTrap, which unexpectedly produced positive alpha, so running the mirror conditional resolves whether the profitability premium lives in the retention group, the deficit group, or is an artifact of one-sided portfolio construction where the zero-valued group forms the short leg. The comparison is diagnostic regardless of outcome and directly informs whether retention should remain in the leading composite.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkDurableProfit",
+      "expression": "MIN(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(SUMRANK(RATIO(SUB(act, lct), at), RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength requires profitability and financial health simultaneously, so a firm should be scored by its weaker attribute; a product form still lets an extreme value on one axis compensate for mediocrity on the other, which blurs the long and short legs.",
+      "expected_sign": "positive",
+      "reasoning": "Using MIN on the two industry-ranked legs enforces strict conjunction: the long portfolio contains only firms that are high on both profitability and solvency distance, and the short portfolio contains any firm that fails on either axis. This is an operator-structure test of the same economics as the archive leader and could raise both t-alpha and Sharpe by producing more homogeneous, more slowly turning extreme buckets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CushionCoveredProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(SUB(act, lct), at)))",
+      "hypothesis": "The durable-profitability premium is driven by the liquidity cushion: profitable firms holding large net working capital can fund operations and withstand shocks internally, so their current earnings persist, whereas equally profitable firms with no cushion must refinance to survive.",
+      "expected_sign": "positive",
+      "reasoning": "This is the mirror-image attribution test to RetentionCoveredProfit, which stripped the leader down to retention and failed; here the leader is stripped down to the cushion channel with the profitability leg and multiplicative form held fixed. If alpha stays near the leader's 3.5-4%, the cushion is the sole active modulator and later refinements should build exclusively on liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NetLiquidBalanceProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(SUB(act, lt), at)))",
+      "hypothesis": "The strongest form of financial health is having liquid assets that exceed *all* liabilities, not merely current ones; profitability earned on such a balance sheet is unambiguously the firm's own, not a claim of creditors.",
+      "expected_sign": "positive",
+      "reasoning": "It combines the best-performing profitability leg (operating profit net of interest) with a stricter Graham-style cushion, current assets minus total liabilities scaled by assets, which subsumes leverage level and liquidity in one quality variable. Because both legs now net out creditor claims, the signal should separate durable unlevered operating strength from levered profitability more sharply than the leader.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleConjunctionProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durability requires profitability, liquidity, and a retention record jointly; a signal that multiplies all three ranks forms a long leg of firms that satisfy every condition, which should be a cleaner portfolio than one where a high sum of two health ranks can offset a weak third.",
+      "expected_sign": "positive",
+      "reasoning": "The leader averages the two health ranks before conditioning, letting retention substitute for liquidity; the triple product enforces conjunction and tests whether the weak stand-alone retention channel nevertheless adds value as a *filter* rather than as an additive score. Comparing it against Signal 1 tells us whether retention has any incremental role once the cushion is present.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "TurnaroundProfitability",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Among firms with accumulated deficits, current operating profitability is a genuine turnaround signal that the market is slow to price: past losses depressed expectations, so newly demonstrated profitability delivers positive abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "DeficitProfitTrap generated the archive's largest alpha and Sharpe with the sign opposite to my prior, but its construction assigned zero to all non-deficit firms, so the spread may have been an artifact of that zero mass forming the short leg. Replacing the indicator with a continuous rank of *negative* retained earnings tests the same economics with a properly distributed signal, and its result determines whether the retention channel enters the final signal with a positive or negative sign.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsCoverageDistressProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(SUB(act, lct), at), SUMRANK(RATIO(re, lt), RATIO(oibdp, lt))))",
+      "hypothesis": "The gain from adding a third coverage channel to the distress score reflects creditor-claim coverage in general, not cash-flow data specifically, so an earnings-based coverage term should reproduce the improvement without the sample loss from cash-flow reporting.",
+      "expected_sign": "positive",
+      "reasoning": "DistressScoredProfitPlus achieved the highest alpha (4.2%) and Sharpe (0.33) but its oancf channel cut coverage from 0.12 to 0.079, raising the risk that the improvement is a sample-composition artifact. Substituting EBITDA-to-liabilities restores full coverage while keeping the three-axis solvency structure and the net-of-interest profitability leg, giving a direct test of whether the extra alpha is economic or sample-driven.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SupplierFinancedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(SUB(lt, ADD(dltt, dlc)), lt)))",
+      "hypothesis": "Profitability financed by non-interest-bearing operating liabilities \u2014 payables, accruals, deferred items \u2014 is higher quality than profitability financed by debt, because such funding is interest-free, self-renewing with operations, and evidences bargaining power over suppliers.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces liability *composition* rather than liability level, cushion, or maturity as the quality modulator, an axis untested in the archive and economically distinct from all prior channels. It also gives an alternative reading of why cushion measures work: if operating-liability financing is what matters, this signal should carry comparable alpha with different portfolio composition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedTripleConjunction",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(MA(RATIO(SUB(act, lct), at), 3)), IND_RANK(MA(RATIO(re, lt), 3))))",
+      "hypothesis": "The three-way durability conjunction is economically correct but measured with single-year balance-sheet noise; averaging the liquidity cushion and retention coverage over three years should hold the same firms in the extreme buckets and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the archive leader \u2014 three-year smoothing of both quality legs \u2014 leaving the economics and the conjunctive structure untouched. If t-alpha and Sharpe rise with alpha intact, residual noise in annual balance-sheet items was the binding constraint on portfolio evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashCoveredQuadConjunction",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(SUB(act, lct), at))), MUL(IND_RANK(RATIO(re, lt)), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Cash-flow coverage of creditor claims is a fourth, non-redundant durability condition: a firm can be profitable, liquid, and historically retentive yet still fail to generate cash against its obligations.",
+      "expected_sign": "positive",
+      "reasoning": "Adding smoothed oancf/lt as a fourth multiplicative filter tests whether the highest-alpha, highest-Sharpe result in the archive (DistressScoredProfitPlus, 4.2%, Sharpe 0.33) came from cash-coverage information or merely from the restricted cash-flow-reporting sample. Because the structure otherwise matches the leader exactly, a rise in alpha at similar t-alpha with coverage near 0.08 would indicate real cash information, while a flat result would confirm the sample-composition explanation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidAssetShareProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(act, at)))",
+      "hypothesis": "What makes profitability durable may be asset-side liquidity \u2014 the share of the asset base held in cash, receivables and inventory that can be redeployed or liquidated \u2014 rather than the netting of current liabilities against it.",
+      "expected_sign": "positive",
+      "reasoning": "CushionCoveredProfit and LeanOperatingProfit jointly imply that current assets enter positively, but both confound asset liquidity with current-liability structure; this strips the modulator to the pure asset-composition ratio act/at. If it matches the cushion version's t-alpha, the mechanism is asset liquidity and future signals should drop the lct term, simplifying the construct and improving coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ClaimsCoveredTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, lt)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Liquid resources should be measured against *all* creditor claims rather than only current ones, because long-term debt eventually competes for the same liquid assets; profitability plus full-claim liquidity coverage is the sharpest statement of durable, unlevered operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes act/lt for the (act\u2212lct)/at cushion inside the winning triple conjunction, making both quality legs denominated in total liabilities so the score is a coherent coverage-of-claims measure. Gen 5 showed the stricter net-liquid form (act\u2212lt)/at delivered good alpha but a weak FMB slope, suggesting the subtraction, not the concept, hurt the cross-sectional fit; a ratio normalization should retain the alpha while restoring the slope.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "MarginConjunctionProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength may be better identified by pricing power in the income statement \u2014 the operating margin per dollar of sales \u2014 than by return on the asset base, since margin is less mechanically related to the balance-sheet quality legs it is combined with.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal scales profit by assets, which shares its denominator with the cushion channel and can induce mechanical correlation between the legs; replacing it with a sales-based margin makes the profitability and quality legs informationally independent. This isolates the profitability-leg definition while holding the winning conjunction fixed, telling us whether the interaction is margin-driven or asset-turnover-driven.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtVersusLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(NEG(RATIO(ADD(dltt, dlc), act))))",
+      "hypothesis": "The relevant financial-health condition is how much interest-bearing debt stands against the firm's liquid resources; profitable firms whose debt is small relative to current assets face no refinancing constraint and their earnings stream is durable.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new quality axis \u2014 debt scaled by liquid assets rather than by total assets or netted inside working capital \u2014 which failed as a level (leverage/assets) but should work if the operative mechanism is liquidity-adjusted refinancing risk, exactly what the cushion results hint at. It also uses only debt and current assets, so it is economically distinct from retention coverage and testable at full coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidTripleConjunction",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Durable operating strength is profitability net of financing cost, earned on a liquid asset base, by a firm that has accumulated retained earnings against its creditor claims; asset liquidity is the cleaner measure of financial flexibility than net working capital because it does not net out routine trade financing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cushion leg of the archive leader with the act/at modulator that produced the best FMB slope and Sharpe in gen 6, holding the profitability leg and the retention filter fixed. If it beats TripleConjunctionProfit on t-alpha while keeping Sharpe near 0.3, it becomes the consolidated signal: same alpha magnitude, better cross-sectional slope and better stand-alone risk-adjusted spread.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "QuadLiquidityRetentionProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))))",
+      "hypothesis": "Asset liquidity and the net working-capital cushion capture different things \u2014 how liquid the assets are versus how much of that liquidity is unencumbered by near-term claims \u2014 so requiring both alongside profitability and retention should isolate the most unambiguously durable firms.",
+      "expected_sign": "positive",
+      "reasoning": "Both liquidity forms independently generated t-alphas above 3.2 with different Sharpes (0.32 asset-side, 0.13 cushion), which suggests partially orthogonal information rather than duplication. The four-way product is a strict-conjunction test at full coverage; if alpha and t-alpha exceed the triple versions, the two liquidity axes are complementary, and if not, the simpler Signal 1 is the correct final form.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DualLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))))",
+      "hypothesis": "If the liquidity mechanism is what drives the interaction, then profitability conditioned on both liquidity measures should capture nearly all of the effect without any retention information at all.",
+      "expected_sign": "positive",
+      "reasoning": "This is the redundancy test that separates the liquidity mechanism from the retention filter: same structure as Signal 2 but with re/lt removed and the plain profitability leg retained. Comparing the three signals identifies exactly which of the three quality conditions is indispensable, which matters for the final generation's choice of a parsimonious, stable construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashCoveredLiquidTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Cash-flow coverage of creditor claims and asset liquidity are the two financial-health conditions with the highest stand-alone Sharpe, so combining them with interest-adjusted profitability should produce the most stable durable-profitability spread.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-coverage filter delivered the archive's highest Sharpe (0.372) and the asset-liquidity modulator the second highest (0.317), and they measure flow-based versus stock-based flexibility, so the pairing is economically non-redundant. The coverage cost (~0.08 from cash-flow reporting) is the explicit tradeoff being priced here: if t-alpha stays above 3 with Sharpe above 0.35, the restricted sample is worth it.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "EarnedEquityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oiadp, at), 3)), IND_RANK(RATIO(re, ceq)))",
+      "hypothesis": "Profitability is more durable when the firm's book equity was earned rather than issued: a high retained-earnings share of equity marks a mature, self-financing business whose current profits reflect an established franchise rather than investor-funded expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This is a new quality axis \u2014 the composition of book equity \u2014 distinct from retention scaled by liabilities (weak alone, t-alpha 0.78) and from all liquidity measures, and it directly encodes the life-cycle interpretation of the economic story. If it produces a strong t-alpha with full coverage, it offers an alternative filter that does not depend on balance-sheet liquidity at all.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ClaimsProductivityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(sale, lt)))",
+      "hypothesis": "Decomposing profit-per-dollar-of-claims into margin and claims turnover shows that durable strength requires both: a wide operating margin and a large revenue base supporting each dollar of creditor claims, so that obligations are small relative to the business actually being run.",
+      "expected_sign": "positive",
+      "reasoning": "ProfitToLiabilities worked on alpha but had zero Sharpe as a single slow-moving ratio; multiplying the two ranked DuPont components instead of dividing the raw quantities should retain the coverage economics while producing a better-behaved cross-sectional distribution. It is a structurally different way to fuse the themes \u2014 decomposition rather than filtering \u2014 and uses sales productivity of liabilities, an axis untested in the archive.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FullConjunctionCashProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(RATIO(re, lt))), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Durable operating strength satisfies every financial-health condition at once \u2014 interest-adjusted profitability, a liquid asset base, an unencumbered working-capital cushion, accumulated retention, and cash-flow coverage of creditor claims \u2014 and the firms meeting all five should earn the largest and most reliable abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "The two best gen-7 signals each contained a strict subset of these five conditions and each excelled on a different metric (t-alpha for the quad, Sharpe for the cash triple), so the union is the natural maximal test of whether the conditions are jointly non-redundant. Its coverage will be limited to about 0.08 by cash-flow reporting, so it must be judged against Signal 4, the full-coverage analogue, to separate economic content from sample composition.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProxyLiquidTriple",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(IND_RANK(RATIO(act, at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Cash earnings available to creditors can be measured as income plus depreciation relative to total liabilities, which captures the same debt-servicing capacity as operating cash flow but is reportable for the whole sample.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact structural analogue of CashCoveredLiquidTriple (Sharpe 0.542, fmb 3.198) with the oancf channel replaced by the (ib + dp) proxy, so it isolates whether that signal's exceptional Sharpe came from cash-flow information or from the restricted cash-flow-reporting subsample. If it reproduces most of the Sharpe and t-alpha at coverage near 0.12, it becomes the preferred implementation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashCoveredDualLiquidity",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))), IND_RANK(MA(RATIO(oancf, lt), 3))))",
+      "hypothesis": "Once cash-flow coverage of liabilities is imposed, the retention record becomes redundant \u2014 a firm currently generating cash against its claims has already demonstrated the durability that accumulated retained earnings only proxies for.",
+      "expected_sign": "positive",
+      "reasoning": "It replaces the retention leg of Signal 1 with the second liquidity leg, keeping the number of conditions constant so the comparison identifies which filter carries incremental information within the cash-reporting sample. This directly informs how many legs the final signal should have, which matters because each additional multiplicative filter compresses the informative range of the score.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProxyQuadConjunction",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "The strongest full-coverage signal replaces the weak-alone retention filter with cash-earnings coverage of creditor claims, keeping interest-adjusted profitability and both liquidity dimensions.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the (ib + dp)/lt coverage channel for re/lt inside the current full-coverage leader, testing whether an income-statement-based servicing measure dominates a historical-stock measure of retention that showed no stand-alone alpha. It is my primary candidate to beat QuadLiquidityRetentionProfit on t-alpha and Sharpe simultaneously without any coverage sacrifice.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AssetLightProfitDurability",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(NEG(RATIO(dp, ADD(dltt, ceq)))))",
+      "hypothesis": "Profitability that does not require heavy annual reinvestment to maintain the asset base is more durable: a low depreciation charge per dollar of invested capital means reported profits translate into distributable cash rather than mandatory capital expenditure.",
+      "expected_sign": "positive",
+      "reasoning": "Capital intensity is the one financial-health axis never tested here, and it is economically distinct from liquidity, leverage, coverage, and retention because it concerns the maintenance cost of the earning assets rather than the claims against them. Scaling depreciation by debt plus book equity ties the burden to the capital actually financing those assets, giving a clean interaction with the interest-adjusted profitability leg.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProxyCoverageProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "Interest-adjusted profitability conditioned solely on cash-earnings coverage of total liabilities is sufficient to capture the durable-profitability premium, because coverage jointly encodes leverage, profitability persistence, and cash conversion.",
+      "expected_sign": "positive",
+      "reasoning": "This is the two-leg attribution test for the new proxy channel, parallel to how CushionCoveredProfit and RetentionCoveredProfit attributed the earlier composites; it tells us how much of Signals 2 and 4 comes from coverage alone. A parsimonious two-leg signal with full coverage and a t-alpha above 3 would be preferable for stability to a four-way product, so this result determines the final generation's complexity choice.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PentaConjunctionProxyProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), MUL(IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3)), IND_RANK(RATIO(re, lt)))))",
+      "hypothesis": "Durable operating strength requires five simultaneous conditions \u2014 profitability after financing cost, a liquid asset base, an unencumbered working-capital cushion, current cash earnings covering creditor claims, and a history of retained profits \u2014 and all five are jointly informative at full sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "On the restricted cash sample, adding retention to the cash-covered conjunction preserved a high alpha and lifted t-alpha (FullConjunctionCashProfit t 3.50 vs Dual 3.35), so the same addition should be tested where coverage is not compromised. This is the direct full-coverage extension of the archive's best t-alpha signal and the natural candidate for a final consolidated construct.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtCoverageQuadProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Interest-bearing debt, not total liabilities, is the obligation that can force distress, so cash earnings measured against debt should be the sharper durability filter and should separate levered from unlevered profitability more cleanly.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the denominator of the coverage leg inside the best full-coverage signal, holding the profitability and both liquidity legs fixed; total liabilities mix in trade payables that renew automatically with operations and carry no default trigger. If t-alpha rises above 3.9 with Sharpe intact, the final signal should express coverage against debt rather than all liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NearTermCashQuadProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lct), 3))))",
+      "hypothesis": "The binding solvency constraint is near-term: cash earnings relative to liabilities falling due within the year determine whether a profitable firm must raise external funds, and this faster-moving measure should time the spread better than stock measures of total claims.",
+      "expected_sign": "positive",
+      "reasoning": "NearTermCoverageProfit showed current liabilities carry independent information as a denominator, and current liabilities refresh annually with operating conditions, which is the plausible source of the higher Sharpe seen in cash-based legs. Testing it inside the winning quad separates the \"timeliness of the obligation measure\" question from the \"cash versus accrual\" question already answered in gen 8.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveHealthGatedProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), SUMRANK(RATIO(act, at), SUMRANK(RATIO(SUB(act, lct), at), MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Financial health is a single latent factor best measured by averaging its ranked manifestations, with profitability entering multiplicatively; averaging reduces measurement noise in any one balance-sheet item and should stabilize portfolio composition without sacrificing abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Every multiplicative filter added to the conjunction narrows the informative range of the score and concentrates the extreme buckets, which explains why Sharpe has stayed near 0.25 at full coverage while alpha and t-alpha rose; an additive health score with a multiplicative profitability gate keeps the interaction but spreads the cross-section. This is a structural alternative to Signals 1-3 using identical economic content, so it isolates aggregation form as the design choice.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashToDebtDualLiquidityProfit",
+      "expression": "MUL(IND_RANK(MA(RATIO(SUB(oiadp, xint), at), 3)), MUL(MUL(IND_RANK(RATIO(act, at)), IND_RANK(RATIO(SUB(act, lct), at))), IND_RANK(MA(RATIO(oancf, ADD(dltt, dlc)), 3))))",
+      "hypothesis": "On the sample where cash flow is observed, the most economically meaningful durability condition is operating cash flow covering interest-bearing debt, since that is precisely the ratio creditors and rating agencies use to judge whether operating strength is self-sustaining.",
+      "expected_sign": "positive",
+      "reasoning": "CashCoveredDualLiquidity produced the archive's largest alpha (4.6%) and a 0.42 Sharpe with oancf scaled by total liabilities, so replacing the denominator with interest-bearing debt tests whether the magnitude is driven by true financing risk rather than by all payables. It keeps the coverage limitation explicit and is judged against Signal 2, the full-coverage analogue with the accrual proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PretaxQuadConjunctionProfit",
+      "expression": "MUL(MUL(IND_RANK(MA(RATIO(pi, at), 3)), IND_RANK(RATIO(act, at))), MUL(IND_RANK(RATIO(SUB(act, lct), at)), IND_RANK(MA(RATIO(ADD(ib, dp), lt), 3))))",
+      "hypothesis": "Pretax income is the most complete measure of profit accruing to capital providers after all financing and non-operating costs but before tax distortions, so it should identify durable operating strength at least as well as operating profit net of interest expense.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals use the hand-built oiadp \u2212 xint numerator; pi achieves the same economic netting from the reported income statement and additionally charges non-recurring financing items that transient profitability tends to hide. This is the last untested variation of the profitability leg inside the best full-coverage conjunction, and a win here would simplify the final expression while sharpening the levered-versus-durable distinction.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "VolScaledOperatingProfit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(ratio(oiadp,at),3),vol(ratio(ib,at),5)),1)",
+        "variables": [
+          "at",
+          "ib",
+          "oiadp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashBackedProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),neg(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "oibdp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "PersistentProfitStreak",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ts_sum(indicator(ratio(ib,at),0),5))",
+        "variables": [
+          "at",
+          "ib",
+          "oiadp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "UnleveredProfitPurity",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oiadp,at),3),sub(ind_rank(ratio(ib,at)),ind_rank(ratio(ib,ceq))))",
+        "variables": [
+          "at",
+          "ceq",
+          "ib",
+          "oiadp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtFinancedProfitPenalty",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(growth(ratio(add(dltt,dlc),at),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HealthScoredProfitability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),sumrank(ratio(re,at),ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableROIC",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(ratio(oiadp,add(dltt,ceq)),3),vol(ratio(oiadp,add(dltt,ceq)),5)),1)",
+        "variables": [
+          "ceq",
+          "dltt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveHealthProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),sumrank(ratio(re,at),ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtServicedProfitSpread",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(oiadp,xint),at),winsor(ratio(oibdp,add(dltt,dlc)),2))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oiadp",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SelfFundedProfitStreak",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ts_sum(indicator(delta(re,1),0),5))",
+        "variables": [
+          "at",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalCleanProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(revt,cogs),xsga),at),neg(delta(ratio(sub(act,lct),sale),1)))",
+        "variables": [
+          "act",
+          "at",
+          "cogs",
+          "lct",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "QuietBalanceSheetProfit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(ratio(oiadp,at),3),vol(ratio(lt,at),5)),1)",
+        "variables": [
+          "at",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TroughProfitFloor",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oibdp,at),3),ts_min(ratio(oiadp,add(dltt,ceq)),5))",
+        "variables": [
+          "at",
+          "ceq",
+          "dltt",
+          "oiadp",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitToLiabilities",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(sub(oiadp,xint),lt),1))",
+        "variables": [
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConsolidatedDurableProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),sumrank(winsor(ratio(oibdp,add(dltt,dlc)),2),ratio(re,at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedStabilityProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oiadp,add(dltt,ceq)),3),neg(vol(ratio(oiadp,add(dltt,ceq)),5)))",
+        "variables": [
+          "ceq",
+          "dltt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DeleveragingProfitStrength",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(oiadp,at),3),neg(trend(ratio(lt,at),5)))",
+        "variables": [
+          "at",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MaturityBackedProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(neg(ratio(dlc,add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedHealthProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),sumrank(ma(ratio(re,at),3),ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedHealthProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(sumrank(ratio(oibdp,at),ratio(oancf,at))),sumrank(ratio(re,at),ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oancf",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NearTermCoverageProfit",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(oiadp,lct),1))",
+        "variables": [
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DistressScoredProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),sumrank(ratio(sub(act,lct),at),ratio(re,lt)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DeficitProfitTrap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),indicator(neg(ratio(re,at)),0))",
+        "variables": [
+          "at",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDebtServiceProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(ma(ratio(oancf,lt),3)))",
+        "variables": [
+          "at",
+          "lt",
+          "oancf",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DistressScoredProfitPlus",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),sumrank(ratio(sub(act,lct),at),sumrank(ratio(re,lt),ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oancf",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetOfInterestDistressProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),sumrank(ratio(sub(act,lct),at),ratio(re,lt)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RetentionCoveredProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(ratio(re,lt)))",
+        "variables": [
+          "at",
+          "lt",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LeanOperatingProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(sub(revt,cogs),xsga),at),3)),ind_rank(neg(ratio(act,sale))))",
+        "variables": [
+          "act",
+          "at",
+          "cogs",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RetainedProfitPremium",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),indicator(ratio(re,at),0))",
+        "variables": [
+          "at",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkDurableProfit",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(sumrank(ratio(sub(act,lct),at),ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CushionCoveredProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(ratio(sub(act,lct),at)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetLiquidBalanceProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(sub(act,lt),at)))",
+        "variables": [
+          "act",
+          "at",
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleConjunctionProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TurnaroundProfitability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsCoverageDistressProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),sumrank(ratio(sub(act,lct),at),sumrank(ratio(re,lt),ratio(oibdp,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "oibdp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SupplierFinancedProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(ratio(sub(lt,add(dltt,dlc)),lt)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedTripleConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ma(ratio(sub(act,lct),at),3)),ind_rank(ma(ratio(re,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashCoveredQuadConjunction",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(sub(act,lct),at))),mul(ind_rank(ratio(re,lt)),ind_rank(ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oancf",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidAssetShareProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(ratio(act,at)))",
+        "variables": [
+          "act",
+          "at",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ClaimsCoveredTriple",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ratio(act,lt)),ind_rank(ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarginConjunctionProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,sale),3)),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oibdp",
+          "re",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtVersusLiquidityProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(neg(ratio(add(dltt,dlc),act))))",
+        "variables": [
+          "act",
+          "at",
+          "dlc",
+          "dltt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidTripleConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ratio(act,at)),ind_rank(ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "QuadLiquidityRetentionProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualLiquidityProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),mul(ind_rank(ratio(act,at)),ind_rank(ratio(sub(act,lct),at))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashCoveredLiquidTriple",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ratio(act,at)),ind_rank(ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lt",
+          "oancf",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarnedEquityProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oiadp,at),3)),ind_rank(ratio(re,ceq)))",
+        "variables": [
+          "at",
+          "ceq",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ClaimsProductivityProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,sale),3)),ind_rank(ratio(sale,lt)))",
+        "variables": [
+          "lt",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullConjunctionCashProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ratio(re,lt))),ind_rank(ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oancf",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProxyLiquidTriple",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(ind_rank(ratio(act,at)),ind_rank(ma(ratio(add(ib,dp),lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashCoveredDualLiquidity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(mul(ind_rank(ratio(act,at)),ind_rank(ratio(sub(act,lct),at))),ind_rank(ma(ratio(oancf,lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "lt",
+          "oancf",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProxyQuadConjunction",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ma(ratio(add(ib,dp),lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AssetLightProfitDurability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(neg(ratio(dp,add(dltt,ceq)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "dltt",
+          "dp",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProxyCoverageProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ma(ratio(add(ib,dp),lt),3)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PentaConjunctionProxyProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),mul(ind_rank(ma(ratio(add(ib,dp),lt),3)),ind_rank(ratio(re,lt)))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "oiadp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtCoverageQuadProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ma(ratio(add(ib,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "lct",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NearTermCashQuadProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ma(ratio(add(ib,dp),lct),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lct",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveHealthGatedProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),sumrank(ratio(act,at),sumrank(ratio(sub(act,lct),at),ma(ratio(add(ib,dp),lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashToDebtDualLiquidityProfit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(sub(oiadp,xint),at),3)),mul(mul(ind_rank(ratio(act,at)),ind_rank(ratio(sub(act,lct),at))),ind_rank(ma(ratio(oancf,add(dltt,dlc)),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dlc",
+          "dltt",
+          "lct",
+          "oancf",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PretaxQuadConjunctionProfit",
+      "metadata": {
+        "normalized_expression": "mul(mul(ind_rank(ma(ratio(pi,at),3)),ind_rank(ratio(act,at))),mul(ind_rank(ratio(sub(act,lct),at)),ind_rank(ma(ratio(add(ib,dp),lt),3))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "pi"
+        ]
+      }
+    }
+  ]
+}

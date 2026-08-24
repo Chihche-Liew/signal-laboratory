@@ -1,0 +1,3254 @@
+{
+  "pair": "value_quality",
+  "evaluated": [
+    {
+      "name": "Gross-Margin Stability Sales Value",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 3))))",
+      "hypothesis": "High sales yield should predict stronger returns when the firm\u2019s gross margin is stable, indicating durable unit economics rather than distressed low-margin revenue.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the canonical book-to-market plus gross-profits-to-assets construction by using revenue cheapness and the stability of gross margin. Cheap sales are more likely to be mispriced when the firm has demonstrated consistent pricing power or cost control, rather than when revenue is cheap because margins are collapsing.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.7063855677186273,
+      "ls_alpha": -0.020889287432861878,
+      "ls_talpha": -2.0476779008752084,
+      "ls_sharpe": 0.2821472512518898,
+      "coverage": 0.12867650093649885,
+      "error": null
+    },
+    {
+      "name": "Current-Claim Cashflow Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "High book-to-market firms are more likely to be mispriced when operating cash flow comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the prior binary CFO screen by using a continuous cash-flow coverage measure, so cheap firms with weak near-term liquidity are penalized rather than pooled with ordinary growth firms. The interaction targets value stocks whose cash generation can service immediate claims, reducing the chance that cheapness reflects distress.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.762685220842417,
+      "ls_alpha": 0.008830059642285844,
+      "ls_talpha": 0.7656434850329937,
+      "ls_sharpe": 0.2390077850630011,
+      "coverage": 0.07922738018881864,
+      "error": null
+    },
+    {
+      "name": "Deleveraging Revenue Yield",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(TREND(RATIO(lt, at), 3))))",
+      "hypothesis": "High revenue yield is more attractive when the firm is actively reducing its liability burden.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap sales can identify either neglected revenue franchises or firms selling at distressed multiples because obligations are expanding. A falling liabilities-to-assets trend helps distinguish firms where cheap revenue is becoming safer from value traps where creditors are increasingly absorbing enterprise value.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.612045238521526,
+      "ls_alpha": -0.0020567955570595054,
+      "ls_talpha": -0.228697283442532,
+      "ls_sharpe": 0.04660588846008758,
+      "coverage": 0.11861785728731487,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Discipline Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(NEG(ABS(DELTA(RATIO(SUB(act, lct), sale), 1)))))",
+      "hypothesis": "High book-to-market firms are more likely to be true bargains when working-capital intensity is stable.",
+      "expected_sign": "positive",
+      "reasoning": "Abrupt changes in net working capital relative to sales can indicate receivables buildup, inventory pressure, supplier financing stress, or liquidity drawdowns. This interaction favors cheap book equity only when operating balance-sheet quality is disciplined, helping separate durable asset value from deteriorating fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.1329042442830826,
+      "ls_alpha": -0.03224070385551703,
+      "ls_talpha": -3.218398958830112,
+      "ls_sharpe": 0.05656425585112296,
+      "coverage": 0.10796827831970066,
+      "error": null
+    },
+    {
+      "name": "Liability-Maturity Adjusted Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(lct, sale), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when near-term operating claims are modest relative to the firm\u2019s revenue base.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the mechanical current-asset entanglement by avoiding `act` in the quality leg; cash no longer directly improves the liquidity-quality measure by construction. The interaction asks whether the market underprices cash reserves only when short-term liabilities are unlikely to consume them quickly, separating cash-backed value from liquidity-stressed value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 6.302027800749211,
+      "ls_alpha": 0.0132705923583709,
+      "ls_talpha": 1.687665059678794,
+      "ls_sharpe": 0.24548894147825867,
+      "coverage": 0.1198089113087293,
+      "error": null
+    },
+    {
+      "name": "Cash-Covered EBITDA Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when operating cash flow covers current liabilities, indicating that cheap operating earnings are not being overwhelmed by near-term financing pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the depreciation adjustment that mechanically moves EBITDA value toward EBIT value. Instead, it tests whether enterprise-value cheapness is safer when operating cash generation can meet current claims, so the quality leg addresses distress risk rather than redefining the valuation multiple.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.7696065693158456,
+      "ls_alpha": 0.02345663398074142,
+      "ls_talpha": 1.6194860984957284,
+      "ls_sharpe": 0.24025812371556432,
+      "coverage": 0.07891746675614791,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Buildup Penalized Sales Value",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(act, revt), 1), 1))))",
+      "hypothesis": "High sales yield is more likely to be mispriced when revenue is not accompanied by a rising current-asset burden.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from gross-margin variants and targets a different explanation for the prior portfolio disagreement: cheap sales with stable margins may still be low quality if sales require accumulating receivables, inventory, or other current assets. Penalizing increases in current assets per dollar of revenue favors cheap revenue that is converting efficiently rather than being supported by balance-sheet buildup.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.29462771512694463,
+      "ls_alpha": 0.021347713068956796,
+      "ls_talpha": 1.983462395556315,
+      "ls_sharpe": 0.10321004294219083,
+      "coverage": 0.10904278590455718,
+      "error": null
+    },
+    {
+      "name": "After-Payout Liability Cover Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dvc), lct), 1)))",
+      "hypothesis": "High dividend yield should earn stronger returns when dividends are covered after accounting for current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield can signal either shareholder yield or an unsustainable payout before distress. This interaction rewards high payout yield only when operating cash flow remaining after dividends is strong relative to short-term claims, separating durable income value from yield traps.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.6670363751257793,
+      "ls_alpha": 0.023331536082195348,
+      "ls_talpha": 2.0007523516052887,
+      "ls_sharpe": 0.3110912162136765,
+      "coverage": 0.07914942460420644,
+      "error": null
+    },
+    {
+      "name": "Current-Liability Runoff EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(lct, sale), 1), 1))))",
+      "hypothesis": "High EBITDA yield is more likely to be mispriced when the firm is reducing current liabilities relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap operating earnings are less attractive if short-term obligations are building faster than the revenue base. A falling current-liability burden indicates improving operating financing pressure, so the signal distinguishes cheap EBITDA from near-term balance-sheet stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.857855952343036,
+      "ls_alpha": 0.011235940804598606,
+      "ls_talpha": 1.3550001543121486,
+      "ls_sharpe": 0.27308322312943917,
+      "coverage": 0.10977637323586151,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Light Cash Value",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(dp, revt), 1))))",
+      "hypothesis": "Cash-rich value firms should be more attractive when depreciation burden is low relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "Cash on the balance sheet is more likely to represent distributable or protective value when the business does not require heavy asset replacement. This avoids mechanically turning EBITDA into EBIT, instead asking whether cash-to-market cheapness is safer in businesses with lower maintenance-capital pressure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.9425799003824737,
+      "ls_alpha": 0.025918976378053685,
+      "ls_talpha": 2.9246542983599433,
+      "ls_sharpe": 0.3594702589961152,
+      "coverage": 0.13520083133362554,
+      "error": null
+    },
+    {
+      "name": "Gross-Profit Claim Covered Cashflow Yield",
+      "expression": "MUL(RANK(RATIO(oancf, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), lct), 1)))",
+      "hypothesis": "High operating-cash-flow yield should predict stronger returns when gross profit comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier sales-value gross-margin signal had positive Fama-MacBeth evidence but negative FF5 alpha, suggesting cheap sales alone may load into distressed low-quality portfolios. This version requires cash-flow yield as the valuation anchor and uses gross-profit claim coverage to identify firms whose operating economics can support near-term obligations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.4538814567908083,
+      "ls_alpha": 0.0241345394536771,
+      "ls_talpha": 1.8280843778465958,
+      "ls_sharpe": 0.15091607377851934,
+      "coverage": 0.0792310432242306,
+      "error": null
+    },
+    {
+      "name": "Self-Financed Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(DELTA(re, 1), at), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most attractive when the firm is adding to retained earnings rather than consuming accumulated capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the archived liability-coverage overlay with a distinct self-financing mechanism, avoiding a recombination of prior cash-to-price and `oancf/lct` signals. Balance-sheet cash is more likely to be underpriced when retained earnings are growing, because the cash stock is supported by internally generated capital rather than being a temporary residue before losses or claims absorb it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.1272830863460688,
+      "ls_alpha": 0.018428275900971465,
+      "ls_talpha": 1.4425311778742373,
+      "ls_sharpe": -0.014236394298394687,
+      "coverage": 0.12779128457595876,
+      "error": null
+    },
+    {
+      "name": "Short-Claim Rollover Value Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(DELTA(RATIO(lct, lt), 1), 1)))",
+      "hypothesis": "High book-to-market firms should earn weaker future returns when their liability structure is shifting toward short-term claims.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from working-capital buildup variants and explicitly models a value-trap mechanism: creditor maturity pressure. A rising current-liability share of total liabilities makes cheap book equity less reliable because equity holders face refinancing and liquidity risk, so the signal is expected to forecast underperformance rather than quality-value recovery.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.5024287395669154,
+      "ls_alpha": -0.00262448893735627,
+      "ls_talpha": -0.3433082293144199,
+      "ls_sharpe": -0.043524560430133,
+      "coverage": 0.11097341193485039,
+      "error": null
+    },
+    {
+      "name": "Earned-Payout Value",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(re, lt), 1)))",
+      "hypothesis": "High dividend yield should be more predictive when payouts are backed by accumulated internally generated equity relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield can be a yield trap if distributions are debt-funded or unsupported by a durable earnings base. Conditioning payout cheapness on retained earnings relative to total claims seeks firms where distributions represent real shareholder return capacity rather than impending financial strain.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.3831950218819067,
+      "ls_alpha": -0.008084281706555447,
+      "ls_talpha": -0.8627535975330565,
+      "ls_sharpe": 0.022757415101409165,
+      "coverage": 0.14062857274932786,
+      "error": null
+    },
+    {
+      "name": "Stable-Gross-Margin Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(VOL(RATIO(SUB(revt, cogs), revt), 3))))",
+      "hypothesis": "Earnings yield should be more reliable when the firm\u2019s gross margin is stable across recent reporting periods.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier sales-yield margin-stability signal had conflicting cross-sectional and portfolio evidence, suggesting cheap sales may still load on distressed low-profit firms. Using earnings yield as the valuation anchor asks whether margin stability improves the persistence of already profitable cheap firms rather than merely identifying low-priced revenue.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.5627484148302573,
+      "ls_alpha": -0.0337920974129424,
+      "ls_talpha": -3.3300621168400437,
+      "ls_sharpe": 0.045285559085881714,
+      "coverage": 0.12855231887682872,
+      "error": null
+    },
+    {
+      "name": "Net-Current-Asset EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(act, lct), lt), 1)))",
+      "hypothesis": "High EBITDA yield should be more attractive when the firm has a positive current-asset cushion relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap operating earnings may reflect refinancing pressure if near-term obligations dominate liquid operating resources. Conditioning EBITDA yield on net current assets relative to liabilities favors cheap firms with enough balance-sheet flexibility for operating earnings to accrue to equity holders.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.0347437424925205,
+      "ls_alpha": 0.0515206382879926,
+      "ls_talpha": 4.498712616232826,
+      "ls_sharpe": 0.022267781731087826,
+      "coverage": 0.12110330420239931,
+      "error": null
+    },
+    {
+      "name": "Operating-Quality Backed Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(RATIO(oancf, revt), NEG(RATIO(cogs, revt)))))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when the underlying operations convert revenue into cash and maintain a healthy cost structure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids collapsing stocks and flows into a net-cash-style ratio and instead keeps the valuation anchor and quality channel distinct. Balance-sheet cash is more likely to be distributable or underappreciated when operations are cash-generative and not burdened by poor gross economics.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.2412807431567012,
+      "ls_alpha": 0.04265234573653441,
+      "ls_talpha": 3.1880256829755975,
+      "ls_sharpe": 0.32302324706430957,
+      "coverage": 0.08872098772769635,
+      "error": null
+    },
+    {
+      "name": "Current-Asset-Light Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(act, revt), 1))))",
+      "hypothesis": "High earnings yield should be more reliable when earnings are generated without an unusually large current-asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the depreciation overlay with an operating-efficiency quality screen that is not mechanically embedded in operating cash flow. Cheap earnings supported by low current-asset intensity are less likely to reflect receivables buildup, inventory accumulation, or other balance-sheet frictions that can turn apparent value into a trap.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.341666451852137,
+      "ls_alpha": -0.03097629427688183,
+      "ls_talpha": -3.3670241756758283,
+      "ls_sharpe": 0.04041002641911433,
+      "coverage": 0.11951978947142503,
+      "error": null
+    },
+    {
+      "name": "Accelerating-Asset-Wear Book Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(ACCEL(RATIO(dp, revt)), 1)))",
+      "hypothesis": "High book-to-market firms should earn weaker future returns when depreciation burden is accelerating relative to revenue.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids retained earnings entirely and focuses on a different value-trap mechanism: cheap book assets whose maintenance burden is worsening. A high score identifies firms that look cheap on book value but whose asset base may be deteriorating or requiring rising replacement cost, so the expected return relation is negative.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.253904209733961,
+      "ls_alpha": -0.0048381498412282675,
+      "ls_talpha": -0.7054500579281496,
+      "ls_sharpe": -0.13762060316765298,
+      "coverage": 0.11204652653440941,
+      "error": null
+    },
+    {
+      "name": "Rollover-Safe Cashflow Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(lct, lt), 1))))",
+      "hypothesis": "High operating-cash-flow yield is more valuable when liabilities are less concentrated in short-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap cash flow can be illusory when near-term refinancing pressure prevents cash flow from accruing to equity holders. Conditioning cash-flow yield on a lower current-liability share targets firms where operating cash generation is less likely to be captured by urgent creditors.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.7217365001543752,
+      "ls_alpha": -0.019619805924324864,
+      "ls_talpha": -1.5171585283499032,
+      "ls_sharpe": 0.015379333863955267,
+      "coverage": 0.07907028240248896,
+      "error": null
+    },
+    {
+      "name": "Debt-Funded Payout Trap",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(GROWTH(lt, 1), 1)))",
+      "hypothesis": "High dividend yield should predict weaker returns when the firm\u2019s liabilities are growing.",
+      "expected_sign": "negative",
+      "reasoning": "A high payout yield is attractive only if it is sustainable from internal resources. When payouts coincide with rising liabilities, the dividend may be debt-funded or maintained despite deteriorating fundamentals, making the apparent value yield a potential trap.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.8071458614411333,
+      "ls_alpha": 0.03691865074616711,
+      "ls_talpha": 3.1896679830062986,
+      "ls_sharpe": 0.06649059250337286,
+      "coverage": 0.1296661911943518,
+      "error": null
+    },
+    {
+      "name": "Improving-Operations Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(TREND(RATIO(oancf, revt), 3), NEG(TREND(RATIO(cogs, revt), 3)))))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when operating cash conversion is improving and cost intensity is falling.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the archived gross-profit-over-current-liabilities leg and instead tests whether cash-rich value firms are becoming operationally healthier. A cash hoard is more likely to be underpriced when the core business is improving, while cash-rich firms with worsening conversion or cost pressure may be cheap because the cash will be consumed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.7689325133172789,
+      "ls_alpha": 0.015116785285785188,
+      "ls_talpha": 1.4036810112206082,
+      "ls_sharpe": 0.06331746750366928,
+      "coverage": 0.07035205175384072,
+      "error": null
+    },
+    {
+      "name": "Nonexpanding-Claims Cash Value",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(GROWTH(lt, 1), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be strongest when total creditor claims are not expanding.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the archived post-dividend cash-flow coverage recombination with a direct claim-dilution mechanism. High cash balances are more valuable to equity when liabilities are stable or shrinking, whereas cash-rich firms simultaneously growing liabilities may be using cash as a temporary buffer against deteriorating solvency.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.638999717453818,
+      "ls_alpha": -0.006796417825748727,
+      "ls_talpha": -0.7934108901651439,
+      "ls_sharpe": 0.18324945036693266,
+      "coverage": 0.12916858589085434,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Covered Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dp), lt), 1)))",
+      "hypothesis": "High net-income yield should be more reliable when operating cash flow after a depreciation proxy covers total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the net-current-asset cushion that produced contradictory evidence and instead tests whether cheap reported earnings have cash support after maintenance burden. Cheap earnings are more likely to be quality value when cash generation remains meaningful relative to creditor claims, rather than when profits are accounting-heavy or balance-sheet constrained.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.864930525841004,
+      "ls_alpha": 0.03369474679159622,
+      "ls_talpha": 2.555684973950924,
+      "ls_sharpe": 0.30280756719513163,
+      "coverage": 0.08957266925700022,
+      "error": null
+    },
+    {
+      "name": "Asset-Wear-Safe Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(ACCEL(RATIO(dp, revt)), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when depreciation intensity is not accelerating.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids stacking redundant current-liability coverage legs and focuses on a different enterprise-value trap: rising asset-wear pressure. EBITDA cheapness is more credible when depreciation burden is not accelerating relative to revenue, because the operating yield is less likely to be overstated by underrecognized maintenance needs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.994700376918511,
+      "ls_alpha": -0.0002460342019086566,
+      "ls_talpha": -0.031897765446446125,
+      "ls_sharpe": 0.03179180298647158,
+      "coverage": 0.11151672779292521,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Cash-Conversion EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(oancf, ADD(act, lct)), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when EBITDA-like operating cheapness converts into cash relative to the working-capital balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This diagnoses the mixed evidence from liquidity-cushion EBITDA signals by focusing on cash conversion rather than rewarding large current-asset buffers. Cheap EBITDA is more likely to accrue to equity when operations produce cash efficiently against the current assets and current liabilities required to run the business.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.4781349343383567,
+      "ls_alpha": 0.017712496897780473,
+      "ls_talpha": 1.4861346843152727,
+      "ls_sharpe": 0.24443265361311342,
+      "coverage": 0.07879204648732445,
+      "error": null
+    },
+    {
+      "name": "Post-Maintenance Sales Value Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(dp, oancf), lct), 1)))",
+      "hypothesis": "High sales yield should predict weaker returns when the firm is burning cash after maintenance needs relative to current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier cheap-sales signals showed that sales-to-price can identify distressed low-quality firms despite positive cross-sectional value exposure. This signal explicitly tests the trap leg: revenue is cheap for good reason when operating cash flow fails to cover depreciation burden and short-term claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.26274939913196,
+      "ls_alpha": -0.008540813632365401,
+      "ls_talpha": -0.622038667685354,
+      "ls_sharpe": -0.3149029942045617,
+      "coverage": 0.07915659589888618,
+      "error": null
+    },
+    {
+      "name": "Cash-Cushion Profit Persistence",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(MA(RATIO(ni, lct), 3), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when recent profitability has persistently covered current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the canonical accrual-spread leg with a smoothed claim-coverage profitability measure, avoiding a Sloan-style `oancf \u2212 ni` construction. Cash-rich firms are more likely to be mispriced when the operating earnings base has repeatedly supported near-term obligations, rather than when cash is a shrinking buffer against losses.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8081129389197845,
+      "ls_alpha": 0.01870060122983401,
+      "ls_talpha": 1.6921257793103976,
+      "ls_sharpe": 0.010559447609742766,
+      "coverage": 0.12262269001764035,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Rebuilding Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TREND(RATIO(act, lct), 3), 1)))",
+      "hypothesis": "High dividend yield should be more reliable when the firm\u2019s current liquidity position is improving.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the archived post-maintenance cash-flow coverage leg and instead tests whether payout value is supported by a rebuilding short-term liquidity cushion. A high dividend yield is more likely to be sustainable when current assets are improving relative to current liabilities, reducing the likelihood of a yield trap.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.1359058569818166,
+      "ls_alpha": -0.023532591696266827,
+      "ls_talpha": -2.304793097720185,
+      "ls_sharpe": -0.08878073750361457,
+      "coverage": 0.10169153816119338,
+      "error": null
+    },
+    {
+      "name": "Profit-Volatility Book Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(VOL(RATIO(ni, lt), 3), 1)))",
+      "hypothesis": "High book-to-market firms should underperform when liability-adjusted profitability is unstable.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the depreciation-intensity theme and uses earnings instability as the value-trap mechanism. Cheap book equity is less credible when profits relative to creditor claims are volatile, because the low valuation may reflect uncertainty about whether book assets can generate reliable equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.8562950472242594,
+      "ls_alpha": 0.013293537541647972,
+      "ls_talpha": 1.5300160366233835,
+      "ls_sharpe": -0.1980290140353241,
+      "coverage": 0.12942979643016048,
+      "error": null
+    },
+    {
+      "name": "Gross-Recovery Cashflow Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(TREND(RATIO(SUB(revt, cogs), lt), 3), 1)))",
+      "hypothesis": "High operating-cash-flow yield should be most attractive when gross profit is improving relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the static cash-to-market quality-composite structure with a recovery mechanism tied to operating economics versus creditor claims. Cheap cash flow is more likely to be durable when gross profit coverage of total liabilities is strengthening, rather than merely reflecting a temporarily high cash-flow yield.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.008619091912408,
+      "ls_alpha": 0.003029950636991693,
+      "ls_talpha": 0.24437441892172965,
+      "ls_sharpe": 0.13461937481585382,
+      "coverage": 0.07709012800606227,
+      "error": null
+    },
+    {
+      "name": "Post-Maintenance Cashflow Cushion Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(oancf, dp), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(che, lt), 1)))",
+      "hypothesis": "High post-maintenance operating-cash-flow yield should outperform when backed by a cash cushion relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This separates cheap distributable cash generation from firms whose cash flows are already claimed by maintenance needs. The balance-sheet cash-to-liabilities overlay asks whether those cash flows have enough creditor-claim protection to accrue to equity holders.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.0731543168955315,
+      "ls_alpha": 0.05053309852328947,
+      "ls_talpha": 3.7317368685017893,
+      "ls_sharpe": 0.146957086200463,
+      "coverage": 0.08957143104784687,
+      "error": null
+    },
+    {
+      "name": "Short-Debt Safe Enterprise Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, lt), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when interest-bearing short-term debt is a small share of total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Enterprise-value cheapness can reflect refinancing risk rather than mispricing. Conditioning on low short-term debt exposure distinguishes cheap operating yield from firms where near-term financial debt may force distress or dilute equity value.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.5167414203766407,
+      "ls_alpha": -0.00338432305609805,
+      "ls_talpha": -0.36315678866840095,
+      "ls_sharpe": 0.22480095059406338,
+      "coverage": 0.13981759734593996,
+      "error": null
+    },
+    {
+      "name": "Rebuilding-Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lct), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when the cash reserve is being rebuilt rather than drawn down against current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the duplicated maintenance-intensity overlay with a distinct cash-cushion durability mechanism. A high cash balance is more likely to represent underpriced balance-sheet value when cash is increasing relative to near-term liabilities, while shrinking cash reserves may indicate that apparent cash-backed value is being consumed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.32590286541600244,
+      "ls_alpha": 0.03405629317688248,
+      "ls_talpha": 3.778629637680565,
+      "ls_sharpe": 0.18036362107675138,
+      "coverage": 0.11168435035705825,
+      "error": null
+    },
+    {
+      "name": "Cost-Scaled Cash Conversion EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, ADD(ABS(ebitda), cogs)), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when operating cash flow is strong relative to operating-cost scale without relying on a signed EBITDA denominator.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the sign-flip problem in `oancf/ebitda` by scaling cash flow by a positive operating scale rather than by EBITDA itself. It also drops the recycled short-liability-intensity leg, focusing instead on whether cheap EBITDA is actually cash-realizable.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.7669133146838143,
+      "ls_alpha": 0.029507138001888276,
+      "ls_talpha": 2.3591593837665896,
+      "ls_sharpe": 0.2690561424085657,
+      "coverage": 0.09028231787800668,
+      "error": null
+    },
+    {
+      "name": "Gross-Margin High-Water Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(TS_RANK(RATIO(SUB(revt, cogs), revt), 5)))",
+      "hypothesis": "Cash-to-market cheapness should be most valuable when the firm\u2019s gross margin is high relative to its own recent history.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another smoothed `oancf/lct` coverage variant and instead asks whether cash-rich value firms have improving or resilient core unit economics. A cash cushion is less likely to be a melting ice cube when gross margin is near its own historical high, suggesting the operating franchise can preserve the balance-sheet value.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.8436859641985707,
+      "ls_alpha": 0.007951659617800588,
+      "ls_talpha": 1.1814858938054345,
+      "ls_sharpe": -0.01431234455595747,
+      "coverage": 0.1277098207320788,
+      "error": null
+    },
+    {
+      "name": "Persistent Cash-Conversion Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(MA(RATIO(oancf, ADD(act, lct)), 3), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when sales persistently fail to convert into operating cash relative to the working-capital base.",
+      "expected_sign": "negative",
+      "reasoning": "This directly measures cash conversion rather than subtracting cash flow from liabilities, so the quality leg is not mechanically dominated by liability intensity. Cheap revenue is treated as a trap when the operating working-capital structure repeatedly produces weak cash flow, indicating sales are not translating into equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.3705225825337117,
+      "ls_alpha": -0.006672330992183454,
+      "ls_talpha": -0.5330372117214762,
+      "ls_sharpe": -0.24163677765975042,
+      "coverage": 0.07908385111112762,
+      "error": null
+    },
+    {
+      "name": "Cash-Conversion-Floor Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TS_MIN(RATIO(oancf, ADD(act, lct)), 3), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when even the firm\u2019s weakest recent cash conversion remains strong relative to its operating working-capital base.",
+      "expected_sign": "positive",
+      "reasoning": "This refines the cash-backed value theme by focusing on the downside floor of cash conversion rather than a single-period coverage snapshot. Cash-rich firms are less likely to be value traps when operating cash generation has not recently broken down relative to the current assets and liabilities required to run the business.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.614117261411301,
+      "ls_alpha": 0.04888275990581951,
+      "ls_talpha": 3.0922921152018525,
+      "ls_sharpe": 0.3953308553487392,
+      "coverage": 0.07911341335466356,
+      "error": null
+    },
+    {
+      "name": "Two-Sided Sales Deterioration Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(WINSOR(TREND(RATIO(cogs, revt), 3), 1), NEG(WINSOR(TREND(RATIO(oancf, ADD(act, lct)), 3), 1)))))",
+      "hypothesis": "High sales yield should predict weaker returns when cost intensity is rising and cash conversion is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier sales-value signals showed that cheap revenue can load on distressed firms, so this explicitly scores the trap condition rather than treating sales cheapness as attractive. A firm with high revenue-to-price but worsening gross cost structure and declining cash conversion is likely cheap because sales are failing to create equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.47579387639248766,
+      "ls_alpha": -0.008828969845010495,
+      "ls_talpha": -0.806487556135128,
+      "ls_sharpe": -0.13895249875993873,
+      "coverage": 0.060623855172453646,
+      "error": null
+    },
+    {
+      "name": "Cash-Runway EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(che, lct), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when the firm has enough cash to cover near-term operating claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cost-scaled cash-conversion trend with a different mechanism: liquidity runway for cheap operating earnings. EBITDA cheapness is less likely to reflect imminent distress when the balance sheet has cash capacity against current liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.6301522628257927,
+      "ls_alpha": 0.049631812937186916,
+      "ls_talpha": 4.1002365188848415,
+      "ls_sharpe": 0.02574164680742933,
+      "coverage": 0.12188724537260602,
+      "error": null
+    },
+    {
+      "name": "Short-Debt-Light Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, lct), 1))))",
+      "hypothesis": "High dividend yield should outperform when the firm\u2019s current liabilities are not dominated by interest-bearing short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the prior debt-funded-payout trap into a sustainability screen rather than another liability-growth short signal. A high payout yield is more likely to be durable when short-term financial debt is a small share of current obligations, reducing refinancing pressure without betting directly on broad liability growth.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.5302714322487245,
+      "ls_alpha": 0.0004840877834755182,
+      "ls_talpha": 0.055253848947306755,
+      "ls_sharpe": 0.16900079946935131,
+      "coverage": 0.12216398511837692,
+      "error": null
+    },
+    {
+      "name": "Maturity-Stable Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(VOL(RATIO(lct, lt), 3), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm\u2019s liability maturity structure is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the algebraic restatement of operating cash conversion and gross cost intensity. Cash-rich value firms are more credible bargains when current-claim exposure is not fluctuating sharply relative to total liabilities, because the cash reserve is less likely to be consumed by unexpected refinancing stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.103086564491705,
+      "ls_alpha": 0.011606096985015682,
+      "ls_talpha": 1.4030271692308254,
+      "ls_sharpe": 0.21862871040411322,
+      "coverage": 0.11167826249538768,
+      "error": null
+    },
+    {
+      "name": "Rollover-Burden Adjusted Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, ADD(ABS(ni), dp)), 1))))",
+      "hypothesis": "High net-income yield should be more predictive when short-term debt is small relative to cash-earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the residual-cash-after-dividends construction with a refinancing-burden mechanism. Cheap reported earnings are more likely to accrue to equity when near-term financial debt is manageable relative to earnings plus depreciation, rather than being absorbed by rollover risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.442893523858903,
+      "ls_alpha": 0.0035395650132066317,
+      "ls_talpha": 0.45932814550646744,
+      "ls_sharpe": 0.22367515749825875,
+      "coverage": 0.13746329741701316,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Turnover Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(revt, ADD(act, lct)), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm generates substantial revenue from its operating working-capital base.",
+      "expected_sign": "positive",
+      "reasoning": "Prior cash-backed value signals worked best when the quality leg showed that cash was not a melting buffer. This version tests a different channel: operating capital productivity, where cash-rich firms with efficient current-asset and current-liability deployment are less likely to be distressed cash hoards.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.534019146280773,
+      "ls_alpha": -0.03058901975093376,
+      "ls_talpha": -3.3248246845130396,
+      "ls_sharpe": 0.0042882914972962975,
+      "coverage": 0.12101946712430876,
+      "error": null
+    },
+    {
+      "name": "Earnings-Coverage Floor Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TS_MIN(RATIO(ni, lct), 3), 1)))",
+      "hypothesis": "High dividend yield should outperform when the firm\u2019s weakest recent earnings coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the liability-growth payout-trap construction that produced conflicting portfolio evidence and instead asks whether payouts are supported by a durable earnings base. A high dividend yield is less likely to be a yield trap when even the low point of recent profitability covers near-term claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.529770977692264,
+      "ls_alpha": -0.012300600801677808,
+      "ls_talpha": -1.17360036033755,
+      "ls_sharpe": -0.03635886282901499,
+      "coverage": 0.12316378741764877,
+      "error": null
+    },
+    {
+      "name": "Noncash-Current-Asset Drag Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(act, che), revt), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm is not carrying a large noncash current-asset burden relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the duplicated cash-conversion stability ratio with a balance-sheet composition mechanism. By subtracting cash from current assets, the quality leg focuses on receivables, inventories, and other operating current assets that can signal working-capital drag rather than mechanically rewarding the cash balance itself.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.625308829734,
+      "ls_alpha": 0.0405957075932309,
+      "ls_talpha": 3.7044110680136897,
+      "ls_sharpe": 0.34088906321891554,
+      "coverage": 0.11881648667232941,
+      "error": null
+    },
+    {
+      "name": "Gross-Surplus Claim-Covered EBITDA Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(SUB(revt, cogs), dp), lt), 1)))",
+      "hypothesis": "High EBITDA yield should outperform when gross profit after asset-wear charges is strong relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the TS_MIN recombination and does not divide by signed EBITDA, so it sidesteps the conversion-ratio sign-flip problem. The quality leg asks whether the firm\u2019s operating surplus after depreciation can support creditor claims, separating cheap operating yield from EBITDA value traps with weak economic coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.3875443469429752,
+      "ls_alpha": 0.021492084718554256,
+      "ls_talpha": 2.4502144057603163,
+      "ls_sharpe": -0.17557726230160609,
+      "coverage": 0.1376962871060328,
+      "error": null
+    },
+    {
+      "name": "Retained-Profit Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(ni, dvc), lt), 1)))",
+      "hypothesis": "High net-income yield should be more reliable when earnings retained after dividends are strong relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated post-maintenance cash-coverage ratio with an internal-financing mechanism. Cheap earnings are more likely to accrue to equity when profits are not immediately distributed or overwhelmed by liabilities, reducing the risk that the earnings yield is a short-lived value trap.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.200115213555365,
+      "ls_alpha": 0.012265366257690688,
+      "ls_talpha": 1.3727669262515951,
+      "ls_sharpe": 0.0740055457435176,
+      "coverage": 0.14174543740563814,
+      "error": null
+    },
+    {
+      "name": "Retained-Capital Erosion Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(re, 1), lt), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when retained earnings are eroding relative to liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from gross-margin and cash-conversion restatements by testing whether cheap revenue is failing to build cumulative equity capital. A high score identifies firms with high sales-to-price but declining retained capital against creditor claims, suggesting sales volume is not translating into durable shareholder value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.872178979755417,
+      "ls_alpha": 0.011533880140122582,
+      "ls_talpha": 1.096188174217564,
+      "ls_sharpe": -0.021139780843287253,
+      "coverage": 0.12819339299850507,
+      "error": null
+    },
+    {
+      "name": "Clean-Current-Asset Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(act, che), revt), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when operating current assets excluding cash are modest relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "Enterprise-value cheapness can reflect either mispriced operating cash generation or a balance sheet clogged with low-quality operating assets. This interaction favors cheap EBITDA only when the firm does not need excessive noncash current assets to generate revenue, improving separation between quality value and working-capital value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.3047017279742565,
+      "ls_alpha": 0.015146301613827264,
+      "ls_talpha": 1.5041439797215836,
+      "ls_sharpe": 0.3233009192860904,
+      "coverage": 0.11785475930452269,
+      "error": null
+    },
+    {
+      "name": "Internally Rebuilt Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(che, 1), at), 1), NEG(WINSOR(GROWTH(lt, 1), 1)))))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when the cash balance is being rebuilt without simultaneous liability expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another cash-conversion-floor denominator tweak and instead tests whether cheap cash is durable or debt-supported. A high score identifies firms with large discounted cash balances, rising cash reserves, and non-expanding claims, making the cash cushion more likely to accrue to equity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.5902083296457254,
+      "ls_alpha": 0.0006356497989887923,
+      "ls_talpha": 0.068373594478002,
+      "ls_sharpe": 0.07345121187526923,
+      "coverage": 0.12902882303267138,
+      "error": null
+    },
+    {
+      "name": "Gross-Claim Supported Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), lt), 1)))",
+      "hypothesis": "High earnings yield should be more reliable when gross profit is strong relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the failed current-asset-light earnings channel by testing operating surplus against creditor claims rather than penalizing working-capital intensity. Cheap reported earnings are less likely to be value traps when the firm\u2019s gross economics can support the liability structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.693211265319102,
+      "ls_alpha": 0.018103623462234535,
+      "ls_talpha": 2.079844016378661,
+      "ls_sharpe": -0.10199611714741073,
+      "coverage": 0.14185460617932405,
+      "error": null
+    },
+    {
+      "name": "Earnings-Floor Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(TS_MIN(RATIO(ni, lct), 3), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when recent earnings coverage of current liabilities has a poor downside floor.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the noncash-current-asset gate with a direct profitability-distress mechanism. Cheap revenue is treated as a trap when even the best sales volume cannot prevent weak or negative earnings coverage of near-term claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.1314138132086144,
+      "ls_alpha": 0.025154801850000227,
+      "ls_talpha": 2.5717913468469105,
+      "ls_sharpe": -0.04004234038744805,
+      "coverage": 0.12323679016564762,
+      "error": null
+    },
+    {
+      "name": "Bottom-Line Covered EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(ni, lct), 1)))",
+      "hypothesis": "High EBITDA yield should outperform when bottom-line profitability covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another marginal adjustment to the archived cash-conversion gate and tests a distinct concern: EBITDA cheapness may disappear below the operating line. Cheap EBITDA is more credible when net income remains strong relative to near-term claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.6818662706026624,
+      "ls_alpha": -0.0018055543827159562,
+      "ls_talpha": -0.19251874929984475,
+      "ls_sharpe": 0.009869655210214072,
+      "coverage": 0.12258007498594632,
+      "error": null
+    },
+    {
+      "name": "Short-Debt Net-Cash Claim Value",
+      "expression": "WINSOR(RATIO(SUB(che, dlc), ADD(MUL(prcc_f, csho), lct)), 1)",
+      "hypothesis": "Cash-backed value should be strongest when cash remains meaningful after short-term debt and relative to current claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the critique directly by replacing the multiplicative short-debt gate with a net-cash construction. Scaling net cash by market value plus current liabilities penalizes firms whose apparent cash cushion is pre-committed to near-term financial or operating claims.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.197584903835295,
+      "ls_alpha": 0.058639805468673534,
+      "ls_talpha": 5.023663301565966,
+      "ls_sharpe": 0.2258838803124823,
+      "coverage": 0.12181021844485883,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Conservatively Financed EBITDA Value",
+      "expression": "MUL(RANK(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che)))), RANK(NEG(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform most when debt burden is low.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA value can be misleading when cheapness is driven by financial distress or excessive leverage. Combining operating yield with conservative financing targets firms where enterprise value appears low relative to cash earnings without the same balance-sheet fragility.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Improving-Margin Sales Value",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(TREND(RATIO(ib, sale), 5)))",
+      "hypothesis": "Low price-to-sales firms are more likely to rerate when profit margins are improving.",
+      "expected_sign": "positive",
+      "reasoning": "A high sales yield alone can identify low-margin businesses that are cheap for good reason. Requiring a positive margin trend focuses on firms where revenue is inexpensive and earnings quality is improving, suggesting value recovery rather than permanent impairment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Instability Discounted Earnings Value",
+      "expression": "WINSOR(RATIO(RATIO(ib, MUL(prcc_f, csho)), VOL(RATIO(SUB(ib, oancf), at), 3)), 1)",
+      "hypothesis": "Earnings yield is more informative when current earnings are not embedded in an unstable accrual-to-cash-flow process.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the canonical Sloan accrual level with a temporal instability penalty, asking whether cheap earnings are reliable across reporting cycles. A high score identifies firms that are cheap on earnings per dollar of accrual uncertainty, while cheap firms with erratic cash conversion are treated as likely value traps.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Margin Stability Sales Value",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 3))))",
+      "hypothesis": "High sales yield should predict stronger returns when the firm\u2019s gross margin is stable, indicating durable unit economics rather than distressed low-margin revenue.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the canonical book-to-market plus gross-profits-to-assets construction by using revenue cheapness and the stability of gross margin. Cheap sales are more likely to be mispriced when the firm has demonstrated consistent pricing power or cost control, rather than when revenue is cheap because margins are collapsing.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Flow Signed Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(oancf, at)))",
+      "hypothesis": "Book-to-market cheapness should be rewarded only when operating cash generation is strong relative to industry peers, and penalized when cheap firms are cash-flow weak.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike a positive-CFO indicator, this continuous interaction does not collapse negative-CFO firms into the same bucket as ordinary low-B/M growth firms. High-B/M firms with poor industry-adjusted cash flow receive low or negative scores, making the short side more directly represent value traps.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability-Sharpe Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(WINSOR(RATIO(MA(RATIO(ib, at), 3), VOL(RATIO(ib, at), 3)), 1)))",
+      "hypothesis": "High book-to-market firms are more likely to be underpriced when their asset profitability is consistently positive rather than merely supported by accumulated retained earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the retained-earnings decomposition with a forward-looking quality concept: the consistency of recent ROA. Cheap book equity backed by a stable profitability record is less likely to reflect impaired assets or cyclical distress, improving separation between quality value and value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim Cashflow Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "High book-to-market firms are more likely to be mispriced when operating cash flow comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the prior binary CFO screen by using a continuous cash-flow coverage measure, so cheap firms with weak near-term liquidity are penalized rather than pooled with ordinary growth firms. The interaction targets value stocks whose cash generation can service immediate claims, reducing the chance that cheapness reflects distress.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Deleveraging Revenue Yield",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(TREND(RATIO(lt, at), 3))))",
+      "hypothesis": "High revenue yield is more attractive when the firm is actively reducing its liability burden.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap sales can identify either neglected revenue franchises or firms selling at distressed multiples because obligations are expanding. A falling liabilities-to-assets trend helps distinguish firms where cheap revenue is becoming safer from value traps where creditors are increasingly absorbing enterprise value.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Discipline Book Value",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(NEG(ABS(DELTA(RATIO(SUB(act, lct), sale), 1)))))",
+      "hypothesis": "High book-to-market firms are more likely to be true bargains when working-capital intensity is stable.",
+      "expected_sign": "positive",
+      "reasoning": "Abrupt changes in net working capital relative to sales can indicate receivables buildup, inventory pressure, supplier financing stress, or liquidity drawdowns. This interaction favors cheap book equity only when operating balance-sheet quality is disciplined, helping separate durable asset value from deteriorating fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability-Maturity Adjusted Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(lct, sale), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when near-term operating claims are modest relative to the firm\u2019s revenue base.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the mechanical current-asset entanglement by avoiding `act` in the quality leg; cash no longer directly improves the liquidity-quality measure by construction. The interaction asks whether the market underprices cash reserves only when short-term liabilities are unlikely to consume them quickly, separating cash-backed value from liquidity-stressed value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Covered EBITDA Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, lct), 1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when operating cash flow covers current liabilities, indicating that cheap operating earnings are not being overwhelmed by near-term financing pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the depreciation adjustment that mechanically moves EBITDA value toward EBIT value. Instead, it tests whether enterprise-value cheapness is safer when operating cash generation can meet current claims, so the quality leg addresses distress risk rather than redefining the valuation multiple.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Buildup Penalized Sales Value",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(act, revt), 1), 1))))",
+      "hypothesis": "High sales yield is more likely to be mispriced when revenue is not accompanied by a rising current-asset burden.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from gross-margin variants and targets a different explanation for the prior portfolio disagreement: cheap sales with stable margins may still be low quality if sales require accumulating receivables, inventory, or other current assets. Penalizing increases in current assets per dollar of revenue favors cheap revenue that is converting efficiently rather than being supported by balance-sheet buildup.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "After-Payout Liability Cover Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dvc), lct), 1)))",
+      "hypothesis": "High dividend yield should earn stronger returns when dividends are covered after accounting for current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield can signal either shareholder yield or an unsustainable payout before distress. This interaction rewards high payout yield only when operating cash flow remaining after dividends is strong relative to short-term claims, separating durable income value from yield traps.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Liability Runoff EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(DELTA(RATIO(lct, sale), 1), 1))))",
+      "hypothesis": "High EBITDA yield is more likely to be mispriced when the firm is reducing current liabilities relative to sales.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap operating earnings are less attractive if short-term obligations are building faster than the revenue base. A falling current-liability burden indicates improving operating financing pressure, so the signal distinguishes cheap EBITDA from near-term balance-sheet stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Light Cash Value",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(dp, revt), 1))))",
+      "hypothesis": "Cash-rich value firms should be more attractive when depreciation burden is low relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "Cash on the balance sheet is more likely to represent distributable or protective value when the business does not require heavy asset replacement. This avoids mechanically turning EBITDA into EBIT, instead asking whether cash-to-market cheapness is safer in businesses with lower maintenance-capital pressure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Profit Claim Covered Cashflow Yield",
+      "expression": "MUL(RANK(RATIO(oancf, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), lct), 1)))",
+      "hypothesis": "High operating-cash-flow yield should predict stronger returns when gross profit comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier sales-value gross-margin signal had positive Fama-MacBeth evidence but negative FF5 alpha, suggesting cheap sales alone may load into distressed low-quality portfolios. This version requires cash-flow yield as the valuation anchor and uses gross-profit claim coverage to identify firms whose operating economics can support near-term obligations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Financed Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(DELTA(re, 1), at), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most attractive when the firm is adding to retained earnings rather than consuming accumulated capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the archived liability-coverage overlay with a distinct self-financing mechanism, avoiding a recombination of prior cash-to-price and `oancf/lct` signals. Balance-sheet cash is more likely to be underpriced when retained earnings are growing, because the cash stock is supported by internally generated capital rather than being a temporary residue before losses or claims absorb it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Claim Rollover Value Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(DELTA(RATIO(lct, lt), 1), 1)))",
+      "hypothesis": "High book-to-market firms should earn weaker future returns when their liability structure is shifting toward short-term claims.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from working-capital buildup variants and explicitly models a value-trap mechanism: creditor maturity pressure. A rising current-liability share of total liabilities makes cheap book equity less reliable because equity holders face refinancing and liquidity risk, so the signal is expected to forecast underperformance rather than quality-value recovery.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Earned-Payout Value",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(re, lt), 1)))",
+      "hypothesis": "High dividend yield should be more predictive when payouts are backed by accumulated internally generated equity relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield can be a yield trap if distributions are debt-funded or unsupported by a durable earnings base. Conditioning payout cheapness on retained earnings relative to total claims seeks firms where distributions represent real shareholder return capacity rather than impending financial strain.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable-Gross-Margin Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(VOL(RATIO(SUB(revt, cogs), revt), 3))))",
+      "hypothesis": "Earnings yield should be more reliable when the firm\u2019s gross margin is stable across recent reporting periods.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier sales-yield margin-stability signal had conflicting cross-sectional and portfolio evidence, suggesting cheap sales may still load on distressed low-profit firms. Using earnings yield as the valuation anchor asks whether margin stability improves the persistence of already profitable cheap firms rather than merely identifying low-priced revenue.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Net-Current-Asset EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(act, lct), lt), 1)))",
+      "hypothesis": "High EBITDA yield should be more attractive when the firm has a positive current-asset cushion relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap operating earnings may reflect refinancing pressure if near-term obligations dominate liquid operating resources. Conditioning EBITDA yield on net current assets relative to liabilities favors cheap firms with enough balance-sheet flexibility for operating earnings to accrue to equity holders.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Quality Backed Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(RATIO(oancf, revt), NEG(RATIO(cogs, revt)))))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when the underlying operations convert revenue into cash and maintain a healthy cost structure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids collapsing stocks and flows into a net-cash-style ratio and instead keeps the valuation anchor and quality channel distinct. Balance-sheet cash is more likely to be distributable or underappreciated when operations are cash-generative and not burdened by poor gross economics.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Asset-Light Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(act, revt), 1))))",
+      "hypothesis": "High earnings yield should be more reliable when earnings are generated without an unusually large current-asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the depreciation overlay with an operating-efficiency quality screen that is not mechanically embedded in operating cash flow. Cheap earnings supported by low current-asset intensity are less likely to reflect receivables buildup, inventory accumulation, or other balance-sheet frictions that can turn apparent value into a trap.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Accelerating-Asset-Wear Book Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(ACCEL(RATIO(dp, revt)), 1)))",
+      "hypothesis": "High book-to-market firms should earn weaker future returns when depreciation burden is accelerating relative to revenue.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids retained earnings entirely and focuses on a different value-trap mechanism: cheap book assets whose maintenance burden is worsening. A high score identifies firms that look cheap on book value but whose asset base may be deteriorating or requiring rising replacement cost, so the expected return relation is negative.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover-Safe Cashflow Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(lct, lt), 1))))",
+      "hypothesis": "High operating-cash-flow yield is more valuable when liabilities are less concentrated in short-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "Cheap cash flow can be illusory when near-term refinancing pressure prevents cash flow from accruing to equity holders. Conditioning cash-flow yield on a lower current-liability share targets firms where operating cash generation is less likely to be captured by urgent creditors.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Funded Payout Trap",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(GROWTH(lt, 1), 1)))",
+      "hypothesis": "High dividend yield should predict weaker returns when the firm\u2019s liabilities are growing.",
+      "expected_sign": "negative",
+      "reasoning": "A high payout yield is attractive only if it is sustainable from internal resources. When payouts coincide with rising liabilities, the dividend may be debt-funded or maintained despite deteriorating fundamentals, making the apparent value yield a potential trap.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Improving-Operations Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(TREND(RATIO(oancf, revt), 3), NEG(TREND(RATIO(cogs, revt), 3)))))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when operating cash conversion is improving and cost intensity is falling.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the archived gross-profit-over-current-liabilities leg and instead tests whether cash-rich value firms are becoming operationally healthier. A cash hoard is more likely to be underpriced when the core business is improving, while cash-rich firms with worsening conversion or cost pressure may be cheap because the cash will be consumed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Nonexpanding-Claims Cash Value",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(GROWTH(lt, 1), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be strongest when total creditor claims are not expanding.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the archived post-dividend cash-flow coverage recombination with a direct claim-dilution mechanism. High cash balances are more valuable to equity when liabilities are stable or shrinking, whereas cash-rich firms simultaneously growing liabilities may be using cash as a temporary buffer against deteriorating solvency.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Covered Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(oancf, dp), lt), 1)))",
+      "hypothesis": "High net-income yield should be more reliable when operating cash flow after a depreciation proxy covers total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the net-current-asset cushion that produced contradictory evidence and instead tests whether cheap reported earnings have cash support after maintenance burden. Cheap earnings are more likely to be quality value when cash generation remains meaningful relative to creditor claims, rather than when profits are accounting-heavy or balance-sheet constrained.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Asset-Wear-Safe Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(ACCEL(RATIO(dp, revt)), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when depreciation intensity is not accelerating.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids stacking redundant current-liability coverage legs and focuses on a different enterprise-value trap: rising asset-wear pressure. EBITDA cheapness is more credible when depreciation burden is not accelerating relative to revenue, because the operating yield is less likely to be overstated by underrecognized maintenance needs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Cash-Conversion EBITDA Yield",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(oancf, ADD(act, lct)), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when EBITDA-like operating cheapness converts into cash relative to the working-capital balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This diagnoses the mixed evidence from liquidity-cushion EBITDA signals by focusing on cash conversion rather than rewarding large current-asset buffers. Cheap EBITDA is more likely to accrue to equity when operations produce cash efficiently against the current assets and current liabilities required to run the business.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Maintenance Sales Value Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(SUB(dp, oancf), lct), 1)))",
+      "hypothesis": "High sales yield should predict weaker returns when the firm is burning cash after maintenance needs relative to current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier cheap-sales signals showed that sales-to-price can identify distressed low-quality firms despite positive cross-sectional value exposure. This signal explicitly tests the trap leg: revenue is cheap for good reason when operating cash flow fails to cover depreciation burden and short-term claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Cushion Profit Persistence",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(MA(RATIO(ni, lct), 3), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when recent profitability has persistently covered current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the canonical accrual-spread leg with a smoothed claim-coverage profitability measure, avoiding a Sloan-style `oancf \u2212 ni` construction. Cash-rich firms are more likely to be mispriced when the operating earnings base has repeatedly supported near-term obligations, rather than when cash is a shrinking buffer against losses.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Rebuilding Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TREND(RATIO(act, lct), 3), 1)))",
+      "hypothesis": "High dividend yield should be more reliable when the firm\u2019s current liquidity position is improving.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the archived post-maintenance cash-flow coverage leg and instead tests whether payout value is supported by a rebuilding short-term liquidity cushion. A high dividend yield is more likely to be sustainable when current assets are improving relative to current liabilities, reducing the likelihood of a yield trap.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit-Volatility Book Trap",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(VOL(RATIO(ni, lt), 3), 1)))",
+      "hypothesis": "High book-to-market firms should underperform when liability-adjusted profitability is unstable.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the depreciation-intensity theme and uses earnings instability as the value-trap mechanism. Cheap book equity is less credible when profits relative to creditor claims are volatile, because the low valuation may reflect uncertainty about whether book assets can generate reliable equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Recovery Cashflow Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(TREND(RATIO(SUB(revt, cogs), lt), 3), 1)))",
+      "hypothesis": "High operating-cash-flow yield should be most attractive when gross profit is improving relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the static cash-to-market quality-composite structure with a recovery mechanism tied to operating economics versus creditor claims. Cheap cash flow is more likely to be durable when gross profit coverage of total liabilities is strengthening, rather than merely reflecting a temporarily high cash-flow yield.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Maintenance Cashflow Cushion Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(oancf, dp), MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(che, lt), 1)))",
+      "hypothesis": "High post-maintenance operating-cash-flow yield should outperform when backed by a cash cushion relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This separates cheap distributable cash generation from firms whose cash flows are already claimed by maintenance needs. The balance-sheet cash-to-liabilities overlay asks whether those cash flows have enough creditor-claim protection to accrue to equity holders.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Debt Safe Enterprise Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, lt), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when interest-bearing short-term debt is a small share of total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Enterprise-value cheapness can reflect refinancing risk rather than mispricing. Conditioning on low short-term debt exposure distinguishes cheap operating yield from firms where near-term financial debt may force distress or dilute equity value.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rebuilding-Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(DELTA(che, 1), lct), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be more predictive when the cash reserve is being rebuilt rather than drawn down against current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the duplicated maintenance-intensity overlay with a distinct cash-cushion durability mechanism. A high cash balance is more likely to represent underpriced balance-sheet value when cash is increasing relative to near-term liabilities, while shrinking cash reserves may indicate that apparent cash-backed value is being consumed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cost-Scaled Cash Conversion EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, ADD(ABS(ebitda), cogs)), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when operating cash flow is strong relative to operating-cost scale without relying on a signed EBITDA denominator.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the sign-flip problem in `oancf/ebitda` by scaling cash flow by a positive operating scale rather than by EBITDA itself. It also drops the recycled short-liability-intensity leg, focusing instead on whether cheap EBITDA is actually cash-realizable.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Margin High-Water Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(TS_RANK(RATIO(SUB(revt, cogs), revt), 5)))",
+      "hypothesis": "Cash-to-market cheapness should be most valuable when the firm\u2019s gross margin is high relative to its own recent history.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another smoothed `oancf/lct` coverage variant and instead asks whether cash-rich value firms have improving or resilient core unit economics. A cash cushion is less likely to be a melting ice cube when gross margin is near its own historical high, suggesting the operating franchise can preserve the balance-sheet value.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Cash-Conversion Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(MA(RATIO(oancf, ADD(act, lct)), 3), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when sales persistently fail to convert into operating cash relative to the working-capital base.",
+      "expected_sign": "negative",
+      "reasoning": "This directly measures cash conversion rather than subtracting cash flow from liabilities, so the quality leg is not mechanically dominated by liability intensity. Cheap revenue is treated as a trap when the operating working-capital structure repeatedly produces weak cash flow, indicating sales are not translating into equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Conversion-Floor Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TS_MIN(RATIO(oancf, ADD(act, lct)), 3), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when even the firm\u2019s weakest recent cash conversion remains strong relative to its operating working-capital base.",
+      "expected_sign": "positive",
+      "reasoning": "This refines the cash-backed value theme by focusing on the downside floor of cash conversion rather than a single-period coverage snapshot. Cash-rich firms are less likely to be value traps when operating cash generation has not recently broken down relative to the current assets and liabilities required to run the business.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Two-Sided Sales Deterioration Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(WINSOR(TREND(RATIO(cogs, revt), 3), 1), NEG(WINSOR(TREND(RATIO(oancf, ADD(act, lct)), 3), 1)))))",
+      "hypothesis": "High sales yield should predict weaker returns when cost intensity is rising and cash conversion is deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier sales-value signals showed that cheap revenue can load on distressed firms, so this explicitly scores the trap condition rather than treating sales cheapness as attractive. A firm with high revenue-to-price but worsening gross cost structure and declining cash conversion is likely cheap because sales are failing to create equity value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Runway EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(che, lct), 1)))",
+      "hypothesis": "High EBITDA yield should be more reliable when the firm has enough cash to cover near-term operating claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cost-scaled cash-conversion trend with a different mechanism: liquidity runway for cheap operating earnings. EBITDA cheapness is less likely to reflect imminent distress when the balance sheet has cash capacity against current liabilities.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Debt-Light Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, lct), 1))))",
+      "hypothesis": "High dividend yield should outperform when the firm\u2019s current liabilities are not dominated by interest-bearing short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the prior debt-funded-payout trap into a sustainability screen rather than another liability-growth short signal. A high payout yield is more likely to be durable when short-term financial debt is a small share of current obligations, reducing refinancing pressure without betting directly on broad liability growth.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Maturity-Stable Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(VOL(RATIO(lct, lt), 3), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm\u2019s liability maturity structure is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the algebraic restatement of operating cash conversion and gross cost intensity. Cash-rich value firms are more credible bargains when current-claim exposure is not fluctuating sharply relative to total liabilities, because the cash reserve is less likely to be consumed by unexpected refinancing stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover-Burden Adjusted Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(dlc, ADD(ABS(ni), dp)), 1))))",
+      "hypothesis": "High net-income yield should be more predictive when short-term debt is small relative to cash-earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the residual-cash-after-dividends construction with a refinancing-burden mechanism. Cheap reported earnings are more likely to accrue to equity when near-term financial debt is manageable relative to earnings plus depreciation, rather than being absorbed by rollover risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Turnover Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(RATIO(revt, ADD(act, lct)), 1)))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm generates substantial revenue from its operating working-capital base.",
+      "expected_sign": "positive",
+      "reasoning": "Prior cash-backed value signals worked best when the quality leg showed that cash was not a melting buffer. This version tests a different channel: operating capital productivity, where cash-rich firms with efficient current-asset and current-liability deployment are less likely to be distressed cash hoards.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings-Coverage Floor Payout Yield",
+      "expression": "MUL(RANK(RATIO(dvc, MUL(prcc_f, csho))), IND_ZSCORE(WINSOR(TS_MIN(RATIO(ni, lct), 3), 1)))",
+      "hypothesis": "High dividend yield should outperform when the firm\u2019s weakest recent earnings coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the liability-growth payout-trap construction that produced conflicting portfolio evidence and instead asks whether payouts are supported by a durable earnings base. A high dividend yield is less likely to be a yield trap when even the low point of recent profitability covers near-term claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Noncash-Current-Asset Drag Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(act, che), revt), 1))))",
+      "hypothesis": "Cash-to-market cheapness should be more valuable when the firm is not carrying a large noncash current-asset burden relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the duplicated cash-conversion stability ratio with a balance-sheet composition mechanism. By subtracting cash from current assets, the quality leg focuses on receivables, inventories, and other operating current assets that can signal working-capital drag rather than mechanically rewarding the cash balance itself.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Surplus Claim-Covered EBITDA Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(SUB(revt, cogs), dp), lt), 1)))",
+      "hypothesis": "High EBITDA yield should outperform when gross profit after asset-wear charges is strong relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the TS_MIN recombination and does not divide by signed EBITDA, so it sidesteps the conversion-ratio sign-flip problem. The quality leg asks whether the firm\u2019s operating surplus after depreciation can support creditor claims, separating cheap operating yield from EBITDA value traps with weak economic coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained-Profit Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(ni, dvc), lt), 1)))",
+      "hypothesis": "High net-income yield should be more reliable when earnings retained after dividends are strong relative to liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated post-maintenance cash-coverage ratio with an internal-financing mechanism. Cheap earnings are more likely to accrue to equity when profits are not immediately distributed or overwhelmed by liabilities, reducing the risk that the earnings yield is a short-lived value trap.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained-Capital Erosion Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(RATIO(DELTA(re, 1), lt), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when retained earnings are eroding relative to liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from gross-margin and cash-conversion restatements by testing whether cheap revenue is failing to build cumulative equity capital. A high score identifies firms with high sales-to-price but declining retained capital against creditor claims, suggesting sales volume is not translating into durable shareholder value.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Clean-Current-Asset Enterprise Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), dltt), SUB(dlc, che))), 1)), IND_ZSCORE(NEG(WINSOR(RATIO(SUB(act, che), revt), 1))))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms should outperform when operating current assets excluding cash are modest relative to revenue.",
+      "expected_sign": "positive",
+      "reasoning": "Enterprise-value cheapness can reflect either mispriced operating cash generation or a balance sheet clogged with low-quality operating assets. This interaction favors cheap EBITDA only when the firm does not need excessive noncash current assets to generate revenue, improving separation between quality value and working-capital value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Internally Rebuilt Cash Discount",
+      "expression": "MUL(RANK(RATIO(che, MUL(prcc_f, csho))), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(che, 1), at), 1), NEG(WINSOR(GROWTH(lt, 1), 1)))))",
+      "hypothesis": "Cash-to-market cheapness should be most predictive when the cash balance is being rebuilt without simultaneous liability expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another cash-conversion-floor denominator tweak and instead tests whether cheap cash is durable or debt-supported. A high score identifies firms with large discounted cash balances, rising cash reserves, and non-expanding claims, making the cash cushion more likely to accrue to equity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Claim Supported Earnings Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ni, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), lt), 1)))",
+      "hypothesis": "High earnings yield should be more reliable when gross profit is strong relative to total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the failed current-asset-light earnings channel by testing operating surplus against creditor claims rather than penalizing working-capital intensity. Cheap reported earnings are less likely to be value traps when the firm\u2019s gross economics can support the liability structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings-Floor Sales Trap",
+      "expression": "MUL(RANK(RATIO(revt, MUL(prcc_f, csho))), IND_ZSCORE(NEG(WINSOR(TS_MIN(RATIO(ni, lct), 3), 1))))",
+      "hypothesis": "High sales yield should predict weaker returns when recent earnings coverage of current liabilities has a poor downside floor.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the noncash-current-asset gate with a direct profitability-distress mechanism. Cheap revenue is treated as a trap when even the best sales volume cannot prevent weak or negative earnings coverage of near-term claims.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Bottom-Line Covered EBITDA Yield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), IND_ZSCORE(WINSOR(RATIO(ni, lct), 1)))",
+      "hypothesis": "High EBITDA yield should outperform when bottom-line profitability covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another marginal adjustment to the archived cash-conversion gate and tests a distinct concern: EBITDA cheapness may disappear below the operating line. Cheap EBITDA is more credible when net income remains strong relative to near-term claims.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Debt Net-Cash Claim Value",
+      "expression": "WINSOR(RATIO(SUB(che, dlc), ADD(MUL(prcc_f, csho), lct)), 1)",
+      "hypothesis": "Cash-backed value should be strongest when cash remains meaningful after short-term debt and relative to current claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the critique directly by replacing the multiplicative short-debt gate with a net-cash construction. Scaling net cash by market value plus current liabilities penalizes firms whose apparent cash cushion is pre-committed to near-term financial or operating claims.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Accrual-Confirmed Earnings Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical product of two canonical published anomalies (earnings-to-price and the Sloan accrual measure, here in its CFO-minus-earnings form), so it rediscovers \"quality-adjusted value\" rather than testing a new interaction, and the rank-product construction adds no economic content beyond the two known legs."
+    },
+    {
+      "generation": 0,
+      "target_name": "Gross-Profit Book Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Book-to-market interacted with gross profits-to-assets is precisely the combination Novy-Marx (2013) published and marketed as the canonical profitability-plus-value strategy, making this a direct rediscovery."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cash-Flow-Gated Deep Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Beyond being Piotroski's positive-CFO screen applied to B/M, the INDICATOR collapses all negative-CFO firms to exactly zero, so they pool indistinguishably with genuine growth (low B/M) names in the short leg and the resulting spread is not the stated \"value within cash-generating firms\" comparison."
+    },
+    {
+      "generation": 0,
+      "target_name": "Conservatively Financed EBITDA Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The enterprise-value construction is correctly specified and the leverage gate on EBITDA yield is a defensible, less-trodden variant than the standard B/M-times-profitability composites, though it overlaps materially with quality/safety-plus-value (QMJ) and the ratio is non-monotone for firms with negative EV or negative EBITDA, which should be handled before testing."
+    },
+    {
+      "generation": 0,
+      "target_name": "Improving-Margin Sales Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sales-to-price conditioned on a five-year net-margin trend is the most substantive interaction in this batch and the expression matches the hypothesis, but the margin-improvement leg echoes Piotroski's \u0394margin component and the 5-period TREND on annual data will bite into coverage and tilt toward long-lived survivors \u2014 worth checking coverage before crediting any alpha."
+    },
+    {
+      "generation": 0,
+      "target_name": "Retained-Earnings Backed Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Ball, Gerakos, Linnainmaa and Nikolaev already showed that the return predictability in book-to-market comes essentially entirely from its retained-earnings component, so scaling B/M by RE/AT is a rediscovery of a documented decomposition rather than a new cross-theme mechanism."
+    },
+    {
+      "generation": 1,
+      "target_name": "Current-Claim Cashflow Book Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A coherent value \u00d7 short-term cash-coverage conditional that is close to (but not identical with) the well-known Piotroski-style value-plus-financial-soundness combination, and the RANK([0,1]) \u00d7 signed IND_ZSCORE construction means high B/M with negative coverage produces the most negative scores \u2014 an acceptable but worth-checking implementation of the intended conditioning."
+    },
+    {
+      "generation": 1,
+      "target_name": "Unencumbered Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The two legs are mechanically entangled (cash sits in `act`, so high cash mechanically depresses `lct/act`), making this largely a repackaged cash-to-price / current-ratio combination rather than an informative interaction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Deleveraging Revenue Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sales-to-price and leverage-change are each individually well-documented, but conditioning cheap revenue on a three-year deleveraging trend is a defensible value-trap screen with a hypothesis that matches the expression's direction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Depreciation-Light EBITDA Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Penalizing `dp/at` inside an EBITDA/EV signal is close to mechanically converting the ratio back toward the standard EBIT/EV multiple, so the \"interaction\" is largely a trivial redefinition of an already-published enterprise-multiple anomaly."
+    },
+    {
+      "generation": 1,
+      "target_name": "Working-Capital Discipline Book Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Value conditioned on working-capital stability is a reasonable and distinct construct, though the ABS operator discards the signed accrual information that the accrual anomaly says is the economically relevant part, weakening the stated \"deteriorating fundamentals\" rationale."
+    },
+    {
+      "generation": 1,
+      "target_name": "Gross-Cost Improvement Sales Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archived Gross-Margin Stability Sales Value signal \u2014 same value leg and same margin ratio with VOL swapped for TREND \u2014 and it offers no diagnosis of why that signal's FMB slope and FF5 alpha had opposite signs."
+    },
+    {
+      "generation": 2,
+      "target_name": "Cashflow-Covered Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a pure recombination of two archive signals \u2014 the cash-to-market anchor from \"Liability-Maturity Adjusted Cash Discount\" times the exact oancf/lct overlay from \"Current-Claim Cashflow Book Value\" \u2014 with no new variable or mechanism, so it adds essentially no independent information beyond what has already been tested."
+    },
+    {
+      "generation": 2,
+      "target_name": "After-Payout Liability Cover Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Economically coherent yield-trap screen with a genuinely new variable (dvc) and internally consistent signs, though dvc entering both legs makes part of the interaction mechanical and the non-payer mass will compress the first rank into a large tie block that limits effective coverage."
+    },
+    {
+      "generation": 2,
+      "target_name": "Current-Liability Runoff EBITDA Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The EBITDA-to-price anchor is new to this archive and the sign logic is consistent, but the overlay is the third variation on \"penalize rising balance-sheet-to-sales ratios,\" a family that has already produced fmb_tstat of 0.295 and 1.612, so the prior is weak."
+    },
+    {
+      "generation": 2,
+      "target_name": "Signed Working-Capital Book Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a minimal edit of the archived \"Working-Capital Discipline Book Value\" (drop ABS, swap sale for revt) and sits directly between it and \"Working-Capital Buildup Penalized Sales Value,\" so it reads as a cosmetic variant rather than a substantively different response to the earlier wrong-signed alpha."
+    },
+    {
+      "generation": 2,
+      "target_name": "Maintenance-Light Cash Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Depreciation intensity is a genuinely new overlay dimension and the direction is internally consistent, but dp/revt is largely a technology/industry characteristic that IND_ZSCORE will partly neutralize, leaving a thin economic link to whether cash-to-price cheapness is real."
+    },
+    {
+      "generation": 2,
+      "target_name": "Gross-Profit Claim Covered Cashflow Yield",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Well-diagnosed response to the earlier sales-yield failure \u2014 it replaces the distress-prone cheap-sales anchor with cash-flow yield and uses a coverage ratio that is related to but not redundant with the archived oancf/lct overlay \u2014 with hypothesis, expression, and expected sign all aligned."
+    },
+    {
+      "generation": 3,
+      "target_name": "Residual Cash Claims Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This collapses the archive's cash-value interactions into a single dimensionally incoherent ratio (subtracting a flow, depreciation, from stocks of cash and current liabilities) and is otherwise a rediscovery of the well-known net-cash/net-current-asset-to-price value measure with no genuine cross-theme structure."
+    },
+    {
+      "generation": 3,
+      "target_name": "Earned-Payout Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and correctly signed, and the static retained-earnings-to-liabilities overlay is economically distinct from the archive's flow-based dividend coverage signal, though it remains an incremental variation on the same dividend-yield-times-solvency template and is close to the known retained-earnings/distress-conditioned value literature."
+    },
+    {
+      "generation": 3,
+      "target_name": "Stable-Gross-Margin Earnings Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The anchor switch from sales yield to earnings yield is a substantive, well-diagnosed response to the archive's sign conflict (cheap revenue loading on distressed low-margin firms) and the expression matches the hypothesis, though margin-stability-conditioned earnings yield sits near the established quality-value/earnings-stability literature and the 3-period VOL term will further thin already low coverage."
+    },
+    {
+      "generation": 3,
+      "target_name": "Maintenance-Light Cashflow Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archive's best-performing Maintenance-Light Cash Value with only the value anchor swapped and an identical overlay, so it reads as a cosmetic variant rather than a diagnosed improvement, and the overlay is partly mechanical since depreciation is added back inside oancf."
+    },
+    {
+      "generation": 3,
+      "target_name": "Retained-Earnings Recovery Book Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Conditioning high book-to-market on an improving retained-earnings-to-liabilities trend is effectively Piotroski's value-plus-financial-strength strategy (rising profitability plus falling leverage) rediscovered, and retained earnings is itself a component of the ceq numerator, creating mechanical overlap with the value anchor."
+    },
+    {
+      "generation": 3,
+      "target_name": "Net-Current-Asset EBITDA Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Expression, hypothesis, and expected sign are mutually consistent with adequate coverage, and net working capital scaled by total liabilities is a genuinely different liquidity overlay from the archive's cash-flow-coverage and current-liability-change variants, though it is close to the Altman-style distress screen and to the broader distress-conditioned value idea."
+    },
+    {
+      "generation": 4,
+      "target_name": "Gross-Claim Backed Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a straight leg-swap between two archived signals \u2014 the che/market value leg from \"Operating-Quality Backed Cash Discount\"/\"Liability-Maturity Adjusted Cash Discount\" combined with the exact gross-profit-over-lct quality leg from \"Gross-Profit Claim Covered Cashflow Yield\" \u2014 so it is a cosmetic recombination rather than a substantively new mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "After-Distribution Total-Claim Cash Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The economics are coherent (cheap cash is only credible if residual post-dividend cash flow covers creditor claims), but the construction is again a two-way recombination of archived pieces \u2014 the (oancf\u2212dvc)/liabilities leg from \"After-Payout Liability Cover Yield\" with the cash-to-market value leg \u2014 differing only by lct\u2192lt, which is unlikely to generate independent evidence."
+    },
+    {
+      "generation": 4,
+      "target_name": "Rollover-Safe Cashflow Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The level of the short-term liability share as a conditioner on cash-flow yield is distinct from the archived change-in-lct/lt trap signal and the expression matches the stated positive-sign hypothesis, though lct/lt is heavily industry- and business-model-driven and the value leg is a standard cash-flow-to-price anomaly, so the incremental content is modest."
+    },
+    {
+      "generation": 4,
+      "target_name": "Debt-Funded Payout Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent (high payout yield \u00d7 rising liabilities loads high, predicted negative) and not a direct archive rediscovery, but the liability-growth leg is close to the well-documented net debt issuance/asset growth anomaly, and dvc/market has a large mass of tied zeros for non-payers that will blunt the RANK leg."
+    },
+    {
+      "generation": 4,
+      "target_name": "Liquid-Cushion Earnings Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the archived \"Net-Current-Asset EBITDA Yield\" with ni substituted for ebitda \u2014 a numerator swap on an already-tested signal whose FMB slope came out significantly opposite to the expected sign, so it re-tests a known contradiction rather than diagnosing it."
+    },
+    {
+      "generation": 4,
+      "target_name": "Claim-Quality Enterprise Multiple",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It stacks the archived EBITDA/EV multiple with two previously tested quality legs whose components share the same lct scaling, making the SUMRANK largely redundant and the whole construct an incremental variant of \"Cash-Covered EBITDA Enterprise Value\" and \"Liability-Maturity Adjusted Cash Discount\"."
+    },
+    {
+      "generation": 5,
+      "target_name": "Accrual-Reserve Cash Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The quality leg (oancf \u2212 ni) is the canonical Sloan accruals anomaly merely rescaled by total liabilities, and the composite is a near-cosmetic variant of the archive's already-tested cash-to-market \u00d7 operating-cash-quality signals (Operating-Quality Backed Cash Discount, Self-Financed Cash Discount)."
+    },
+    {
+      "generation": 5,
+      "target_name": "Maintenance-Supported Payout Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The quality leg (oancf \u2212 dp)/lt is byte-for-byte the one already tested in \"Maintenance-Covered Earnings Yield,\" so this is a leg-swap recombination of two archived signals (that one and \"After-Payout Liability Cover Yield\") rather than a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Working-Capital Cash-Conversion EBITDA Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It is internally consistent and genuinely motivated by the fmb/alpha sign conflict in the earlier net-current-asset EBITDA signal by replacing a liquidity-buffer reward with a cash-conversion efficiency test, though the act + lct denominator is an ad hoc gross-working-capital scalar whose economic interpretation is weaker than net working capital or sales."
+    },
+    {
+      "generation": 5,
+      "target_name": "Asset-Wear Gross-Profit Book Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This repeats the already-tested \"Accelerating-Asset-Wear Book Trap\" / depreciation-intensity theme with only a level-vs-acceleration and denominator change, and scaling dp by gross profit (which can be near zero or negative) makes the conditioning variable numerically unstable despite winsorization."
+    },
+    {
+      "generation": 5,
+      "target_name": "Profit-Reserve Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It is a component swap inside the archive's best-performing construction (che-to-market \u00d7 SUMRANK quality composite), substituting ni/revt for oancf/revt and re/lt for \u2212cogs/revt, both of which already appear as quality legs elsewhere in the archive, so it tests no new economic channel."
+    },
+    {
+      "generation": 5,
+      "target_name": "Post-Maintenance Sales Value Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression matches the stated negative-sign hypothesis and pairs a sales-yield anchor with a post-maintenance cash-burn leg not previously combined in the archive, but the \"trap\" framing is largely presentational since the leg is just the sign-flipped coverage ratio proposed elsewhere in this same batch, making the two proposals partially redundant."
+    },
+    {
+      "generation": 6,
+      "target_name": "Industry-Maintenance Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the already-tested \"Maintenance-Light Cash Value\" \u2014 the only change is RANK\u2192IND_RANK on the identical base and an identical overlay \u2014 so it cannot deliver a substantively different economic test."
+    },
+    {
+      "generation": 6,
+      "target_name": "Post-Maintenance Cashflow Cushion Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The base is essentially a free-cash-flow-to-price value proxy (close to published FCF/P), but the pairing with a cash-to-total-liabilities creditor-protection overlay is a coherent and not-yet-tested combination whose stated sign matches the expression's direction."
+    },
+    {
+      "generation": 6,
+      "target_name": "EBITDA Cash-Conversion Claim Safety",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The oancf/ebitda conversion ratio flips sign whenever EBITDA is negative (a non-trivial share of firms), so the overlay will systematically mislabel loss-makers as poor converters or vice versa, and the second leg (\u2212lct/revt) simply reuses the already-tested liability-intensity overlay."
+    },
+    {
+      "generation": 6,
+      "target_name": "Short-Debt Safe Enterprise Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Economically sensible refinancing-risk conditioner that is distinct from the prior lct/lt overlays by isolating interest-bearing short-term debt, though dlc already enters the enterprise-value denominator so the two legs partially double-count the same variable."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Profit Persistence Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Direct rediscovery of the archived \"Cash-Cushion Profit Persistence\" with only ni swapped for oancf in the smoothed coverage overlay, and the oancf/lct coverage state was itself already tested in two other archived signals."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Burn Revenue Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because lct typically dwarfs oancf, the overlay (lct\u2212oancf)/revt is dominated by short-term liability intensity rather than \"cash burn,\" making it a sign-flipped recombination of the already-tested lct/sale overlay rather than the new cash-coverage test the hypothesis claims."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash-Conversion-Floor Cash Discount",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Using the worst recent cash-conversion realization rather than a level or mean is a substantively different (downside-floor) conditioner within a heavily mined cash-yield family, and the expression matches the stated hypothesis and sign, though the marginal information over the archived MA/level versions is likely small."
+    },
+    {
+      "generation": 7,
+      "target_name": "Improving Cost-Scaled EBITDA Conversion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic level\u2192TREND swap on the archived \"Cost-Scaled Cash Conversion EBITDA Yield,\" and the archive already demonstrates that this exact transformation destroys performance (Operating-Quality Backed Cash Discount fmb 3.24 vs. Improving-Operations Cash Discount fmb 0.77)."
+    },
+    {
+      "generation": 7,
+      "target_name": "Short-Debt Funded Payout Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Mechanically the same debt-funded-payout mechanism as the archived \"Debt-Funded Payout Trap\" with only the leverage measure narrowed from GROWTH(lt) to GROWTH(dlc/lt), and it fails to address that archived signal's diagnostic problem (correct-signed FMB slope but a large positive, sign-contradicting FF5 alpha), so the same conflict should be expected."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cost-Base Cash Backed Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "oancf/cogs is algebraically just (oancf/revt)\u00f7(cogs/revt), i.e., a simplified restatement of the two components already combined in the archived \"Operating-Quality Backed Cash Discount,\" so it is a near-rediscovery with less information content."
+    },
+    {
+      "generation": 7,
+      "target_name": "Two-Sided Sales Deterioration Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression is internally consistent (rising cost intensity plus falling cash conversion yields a high conditioner, interacted with high sales yield, negative expected sign) and the two-sided deterioration score is a genuine extension of the archived one-sided sales trap, though the reliance on 3-period TRENDs is a known weak transform in this archive."
+    },
+    {
+      "generation": 7,
+      "target_name": "Residual-Cash Earnings Yield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is a permutation of two archived signals \u2014 swapping the dp subtraction in \"Maintenance-Covered Earnings Yield\" for the dvc subtraction of \"After-Payout Liability Cover Yield\" and the denominator from lt to (act+lct) \u2014 so it is an incremental scaling variant rather than a new economic mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Working-Capital Turnover Cash Discount",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The quality leg (revenue per unit of act+lct) is a genuinely different channel \u2014 capital productivity rather than cash coverage or cash conversion \u2014 from the many prior che/market interactions, though it is the Nth instance of the same template and the \"working-capital base\" is really a crude scale proxy (assets *plus* liabilities) rather than net working capital, so the economic interpretation is looser than the hypothesis claims."
+    },
+    {
+      "generation": 8,
+      "target_name": "Stable-Cash-Conversion Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archived \"Cash-Conversion-Floor Cash Discount\" \u2014 identical value leg and identical quality ratio oancf/(act+lct), with TS_MIN swapped for NEG(VOL) \u2014 and since a 3-period minimum already largely encodes downside stability, the two will be highly correlated and this adds little independent information."
+    },
+    {
+      "generation": 8,
+      "target_name": "Conversion-Floor EBITDA Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Internally consistent and well-motivated (the ABS(ebitda)+cogs scaling correctly avoids sign flips), but it is a mechanical recombination of two archived signals \u2014 \"Cost-Scaled Cash Conversion EBITDA Yield\" with the TS_MIN transform borrowed from the cash-discount floor signal \u2014 so the expected marginal evidence over the existing pair is small."
+    },
+    {
+      "generation": 8,
+      "target_name": "Stable Maintenance-Covered Earnings Yield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is the archived \"Maintenance-Covered Earnings Yield\" with a NEG(VOL) term of the *same* ratio appended via SUMRANK; the added stability component is correlated with the level term and will mainly cost coverage (3-year history on (oancf\u2212dp)/lt), making it an incremental tweak rather than a substantively different mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Level Two-Sided Sales Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The sign logic is internally consistent, but the dominant term \u2014 sales yield interacted with (negated) gross margin, signed negative \u2014 reduces to a rediscovery of gross-profit-to-market/gross profitability, and the level-vs-trend change to the archived \"Two-Sided Sales Deterioration Trap\" is a transform swap rather than a new economic channel."
+    },
+    {
+      "generation": 8,
+      "target_name": "Earnings-Coverage Floor Payout Yield",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The cleanest proposal here: expression matches the hypothesis, the sign is unambiguous, and the worst-of-three earnings coverage of current liabilities is a distinct dividend-sustainability conditioner not yet paired with payout yield in the archive (which tested only after-payout cash coverage and liability growth), though it does flirt with well-known payout-safety screens."
+    },
+    {
+      "generation": 9,
+      "target_name": "Operating-Base Conversion Floor Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic denominator tweak (removing `che` from `act+lct`) on the already-tested \"Cash-Conversion-Floor Cash Discount,\" which shares the identical value leg, gate construction, and horizon, so it cannot produce substantively new evidence about the mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Noncash-Asset Clean Earnings Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It differs from the archived \"Current-Asset-Light Earnings Yield\" only by swapping `ib`\u2192`ni` and `act`\u2192`act-che`, both minor perturbations of a specification whose long-short alpha was significantly the wrong sign, and the proposal offers no diagnosis of why that sign flip occurred."
+    },
+    {
+      "generation": 9,
+      "target_name": "Noncash-Working-Capital Sales Trap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The gate is simply the sign-flipped version of the already-tested noncash-current-asset drag term, and because the signed z-score dominates the [0,1] rank the composite mostly re-expresses the well-documented net-operating-asset/working-capital anomaly rather than a genuine value-interaction effect."
+    },
+    {
+      "generation": 9,
+      "target_name": "Maintenance-Adjusted Cost Conversion EBITDA Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Subtracting `dp` from the numerator of the archived \"Cost-Scaled Cash Conversion EBITDA Yield\" gate is a marginal accounting adjustment to an otherwise identical expression, and the archive already contains a separate `oancf - dp` gate, so nothing new is being tested."
+    },
+    {
+      "generation": 9,
+      "target_name": "Short-Debt-Light Cash Discount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical re-pairing of an already-tested `NEG(dlc/lct)` gate with the most heavily reused value leg (`che`/market cap), and the stated economics \u2014 cash pre-committed to debt repayment \u2014 would be captured far more directly by a net-cash construction than by a multiplicative gate."
+    },
+    {
+      "generation": 9,
+      "target_name": "Clean-Current-Asset Enterprise Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The pairing of an EV-based multiple with noncash operating-asset intensity is the least redundant item in this batch and has a coherent asset-light-versus-clogged-balance-sheet rationale, though it reuses a gate already tested elsewhere in the archive and its incremental content over that result is modest."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Conservatively Financed EBITDA Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,add(add(mul(prcc_f,csho),dltt),sub(dlc,che)))),rank(neg(ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Improving-Margin Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sale,mul(prcc_f,csho))),rank(trend(ratio(ib,sale),5)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Accrual-Instability Discounted Earnings Value",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ratio(ib,mul(prcc_f,csho)),vol(ratio(sub(ib,oancf),at),3)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Margin Stability Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),rank(neg(vol(ratio(sub(revt,cogs),revt),3))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Flow Signed Book Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(ratio(oancf,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Profitability-Sharpe Book Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),rank(winsor(ratio(ma(ratio(ib,at),3),vol(ratio(ib,at),3)),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim Cashflow Book Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(winsor(ratio(oancf,lct),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deleveraging Revenue Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(neg(trend(ratio(lt,at),3))))",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Discipline Book Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(neg(abs(delta(ratio(sub(act,lct),sale),1)))))",
+        "variables": [
+          "act",
+          "ceq",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability-Maturity Adjusted Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(neg(winsor(ratio(lct,sale),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Covered EBITDA Enterprise Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,add(add(mul(prcc_f,csho),dltt),sub(dlc,che))),1)),ind_zscore(winsor(ratio(oancf,lct),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Buildup Penalized Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(neg(winsor(delta(ratio(act,revt),1),1))))",
+        "variables": [
+          "act",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "After-Payout Liability Cover Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(winsor(ratio(sub(oancf,dvc),lct),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Liability Runoff EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,mul(prcc_f,csho))),ind_zscore(neg(winsor(delta(ratio(lct,sale),1),1))))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Light Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(neg(winsor(ratio(dp,revt),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Profit Claim Covered Cashflow Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(oancf,mul(prcc_f,csho))),ind_zscore(winsor(ratio(sub(revt,cogs),lct),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Financed Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(winsor(ratio(delta(re,1),at),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Claim Rollover Value Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(winsor(delta(ratio(lct,lt),1),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earned-Payout Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(winsor(ratio(re,lt),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lt",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable-Gross-Margin Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),ind_zscore(neg(vol(ratio(sub(revt,cogs),revt),3))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net-Current-Asset EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,mul(prcc_f,csho))),ind_zscore(winsor(ratio(sub(act,lct),lt),1)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Quality Backed Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(sumrank(ratio(oancf,revt),neg(ratio(cogs,revt)))))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Asset-Light Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),ind_zscore(neg(winsor(ratio(act,revt),1))))",
+        "variables": [
+          "act",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accelerating-Asset-Wear Book Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(winsor(accel(ratio(dp,revt)),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dp",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover-Safe Cashflow Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_zscore(neg(winsor(ratio(lct,lt),1))))",
+        "variables": [
+          "csho",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Funded Payout Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(winsor(growth(lt,1),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Improving-Operations Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(sumrank(trend(ratio(oancf,revt),3),neg(trend(ratio(cogs,revt),3)))))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Nonexpanding-Claims Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(neg(winsor(growth(lt,1),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Covered Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(sub(oancf,dp),lt),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "lt",
+          "ni",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asset-Wear-Safe Enterprise Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,add(add(mul(prcc_f,csho),dltt),sub(dlc,che))),1)),ind_zscore(neg(winsor(accel(ratio(dp,revt)),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Cash-Conversion EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,mul(prcc_f,csho))),ind_zscore(winsor(ratio(oancf,add(act,lct)),1)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Maintenance Sales Value Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(winsor(ratio(sub(dp,oancf),lct),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Cushion Profit Persistence",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(winsor(ma(ratio(ni,lct),3),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Rebuilding Payout Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(winsor(trend(ratio(act,lct),3),1)))",
+        "variables": [
+          "act",
+          "csho",
+          "dvc",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit-Volatility Book Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),ind_zscore(winsor(vol(ratio(ni,lt),3),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lt",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Recovery Cashflow Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_zscore(winsor(trend(ratio(sub(revt,cogs),lt),3),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Maintenance Cashflow Cushion Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(sub(oancf,dp),mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(che,lt),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Debt Safe Enterprise Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,add(add(mul(prcc_f,csho),dltt),sub(dlc,che))),1)),ind_zscore(neg(winsor(ratio(dlc,lt),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rebuilding-Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(winsor(ratio(delta(che,1),lct),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cost-Scaled Cash Conversion EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(oancf,add(abs(ebitda),cogs)),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ebitda",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Margin High-Water Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(ts_rank(ratio(sub(revt,cogs),revt),5)))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Cash-Conversion Sales Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(neg(winsor(ma(ratio(oancf,add(act,lct)),3),1))))",
+        "variables": [
+          "act",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Conversion-Floor Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(winsor(ts_min(ratio(oancf,add(act,lct)),3),1)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Two-Sided Sales Deterioration Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(sumrank(winsor(trend(ratio(cogs,revt),3),1),neg(winsor(trend(ratio(oancf,add(act,lct)),3),1)))))",
+        "variables": [
+          "act",
+          "cogs",
+          "csho",
+          "lct",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Runway EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(che,lct),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Debt-Light Payout Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(neg(winsor(ratio(dlc,lct),1))))",
+        "variables": [
+          "csho",
+          "dlc",
+          "dvc",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maturity-Stable Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(neg(winsor(vol(ratio(lct,lt),3),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover-Burden Adjusted Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_zscore(neg(winsor(ratio(dlc,add(abs(ni),dp)),1))))",
+        "variables": [
+          "csho",
+          "dlc",
+          "dp",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Turnover Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(winsor(ratio(revt,add(act,lct)),1)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "lct",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings-Coverage Floor Payout Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dvc,mul(prcc_f,csho))),ind_zscore(winsor(ts_min(ratio(ni,lct),3),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lct",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Noncash-Current-Asset Drag Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(neg(winsor(ratio(sub(act,che),revt),1))))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Surplus Claim-Covered EBITDA Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(sub(sub(revt,cogs),dp),lt),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "dp",
+          "ebitda",
+          "lt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained-Profit Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(sub(ni,dvc),lt),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lt",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained-Capital Erosion Sales Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(neg(winsor(ratio(delta(re,1),lt),1))))",
+        "variables": [
+          "csho",
+          "lt",
+          "prcc_f",
+          "re",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Clean-Current-Asset Enterprise Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,add(add(mul(prcc_f,csho),dltt),sub(dlc,che))),1)),ind_zscore(neg(winsor(ratio(sub(act,che),revt),1))))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internally Rebuilt Cash Discount",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(che,mul(prcc_f,csho))),ind_zscore(sumrank(winsor(ratio(delta(che,1),at),1),neg(winsor(growth(lt,1),1)))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Claim Supported Earnings Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(sub(revt,cogs),lt),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "lt",
+          "ni",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings-Floor Sales Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(revt,mul(prcc_f,csho))),ind_zscore(neg(winsor(ts_min(ratio(ni,lct),3),1))))",
+        "variables": [
+          "csho",
+          "lct",
+          "ni",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Bottom-Line Covered EBITDA Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ebitda,mul(prcc_f,csho)),1)),ind_zscore(winsor(ratio(ni,lct),1)))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lct",
+          "ni",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Debt Net-Cash Claim Value",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(che,dlc),add(mul(prcc_f,csho),lct)),1)",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    }
+  ]
+}

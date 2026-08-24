@@ -1,0 +1,3227 @@
+{
+  "pair": "profit_quality",
+  "evaluated": [
+    {
+      "name": "Debt-Light EBITDA Strength",
+      "expression": "MUL(RANK(MA(RATIO(ebitda, at), 3)), RANK(NEG(MA(RATIO(ADD(dltt, dlc), at), 3))))",
+      "hypothesis": "EBITDA profitability should command a stronger return premium when it is supported by low financial debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This uses a continuous debt-burden interaction rather than a hard deleveraging gate, avoiding a degenerate zero-valued short leg. The signal favors firms that combine sustained operating profitability with financial health, distinguishing unlevered operating strength from EBITDA generated under heavy debt dependence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.1946004280298608,
+      "ls_alpha": 0.032139518044995735,
+      "ls_talpha": 2.9573568615430537,
+      "ls_sharpe": 0.21805350210788685,
+      "coverage": 0.14422835631036784,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Backed Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(oibdp, at), 3)), RANK(RATIO(act, lct)))",
+      "hypothesis": "Sustained operating profitability is more valuable when near-term liquidity comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "A smoothed oibdp/assets leg favors firms with persistent operating yield rather than a one-period spike. The current-asset-to-current-liability quality leg rewards firms less exposed to refinancing or working-capital stress, making high profitability more likely to persist.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.1699528696383554,
+      "ls_alpha": 0.04463844117754025,
+      "ls_talpha": 3.179215712650991,
+      "ls_sharpe": 0.24431481704630773,
+      "coverage": 0.12478259110949319,
+      "error": null
+    },
+    {
+      "name": "Deficit Profit Rebound Trap",
+      "expression": "MUL(RANK(DELTA(RATIO(oibdp, at), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Profitability rebounds at firms with accumulated retained-earnings deficits are less reliable and should predict weaker future returns.",
+      "expected_sign": "negative",
+      "reasoning": "A sharp improvement in operating profitability can look attractive, but when it occurs at a firm with a weak cumulative earnings history it may represent a transient turnaround rather than durable strength. The signal is high specifically for the combination of improving operating profit and poor retained-earnings quality, so the expected return slope should be negative.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.0202275964853276,
+      "ls_alpha": 0.017954449110490232,
+      "ls_talpha": 1.4677185850964671,
+      "ls_sharpe": 0.05907293652607544,
+      "coverage": 0.12993854561603793,
+      "error": null
+    },
+    {
+      "name": "Operating Profit Reliability Ratio",
+      "expression": "RATIO(MA(RATIO(oiadp, at), 3), ADD(ABS(MA(RATIO(oiadp, at), 3)), ADD(VOL(RATIO(oiadp, at), 5), VOL(RATIO(lct, at), 5))))",
+      "hypothesis": "Average operating profitability should be rewarded most when it is stable and not paired with volatile short-term liability pressure.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator captures smoothed operating profitability, while the denominator discounts firms whose profits or current-liability structure are unstable. This ratio directly measures durable operating strength per unit of operating and short-term financing instability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3811853312892293,
+      "ls_alpha": -0.007597806619526196,
+      "ls_talpha": -0.6921322391786535,
+      "ls_sharpe": -0.0648191457831704,
+      "coverage": 0.11565523551976306,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Stable Operating Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(NEG(VOL(RATIO(SUB(act, lct), sale), 5))))",
+      "hypothesis": "High industry-adjusted operating margin is more durable when it is not accompanied by unstable working-capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the leverage template with a working-capital stability mechanism: strong margins are more credible when receivable, inventory, and payable dynamics are not volatile relative to sales. It avoids dividing a sign-changing profitability measure by liabilities and instead uses a monotone rank interaction between operating surplus and balance-sheet operating quality.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.5014875610186673,
+      "ls_alpha": -0.024578401805633664,
+      "ls_talpha": -2.6039209725429964,
+      "ls_sharpe": -0.07009581858122907,
+      "coverage": 0.09825323771056778,
+      "error": null
+    },
+    {
+      "name": "Fixed-Charge Coverage Profit",
+      "expression": "WINSOR(RATIO(SUB(oiadp, xint), ADD(lct, ABS(xint))), 1)",
+      "hypothesis": "Operating profitability should be rewarded when it remains strong after interest expense and is large relative to short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This reframes the interest-clean idea as coverage of fixed and near-term claims rather than another profitability-times-low-debt composite. The signal is high only when operating income exceeds financing costs by enough to cover current liability pressure, distinguishing financially resilient profitability from profits vulnerable to fixed-charge or maturity stress.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2862977688198105,
+      "ls_alpha": 0.005519977680094278,
+      "ls_talpha": 0.5209925724557636,
+      "ls_sharpe": -0.04348679334773141,
+      "coverage": 0.11934324148297834,
+      "error": null
+    },
+    {
+      "name": "Cutback Liquidity Profit Accel Trap",
+      "expression": "MUL(RANK(ACCEL(RATIO(oiadp, at))), MIN(RANK(NEG(DELTA(RATIO(xsga, sale), 1))), RANK(DELTA(RATIO(lct, act), 1))))",
+      "hypothesis": "Profit acceleration driven by cost cutbacks while liquidity deteriorates is likely transient and should predict weaker future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This removes the debt-issuance channel and focuses on the lower-quality corner where reported operating profit acceleration coincides with falling SG&A intensity and rising current-liability pressure. The MIN structure requires both cutback behavior and liquidity deterioration to be present, making the signal a targeted interaction rather than a broad external-financing proxy.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.040661017135221,
+      "ls_alpha": 0.011204218735490979,
+      "ls_talpha": 1.3022836085193157,
+      "ls_sharpe": 0.16465751793643324,
+      "coverage": 0.08864096846116191,
+      "error": null
+    },
+    {
+      "name": "Maturity-Matched Operating Profit",
+      "expression": "MUL(RANK(MA(RATIO(oiadp, at), 3)), RANK(NEG(RATIO(lct, lt))))",
+      "hypothesis": "Operating profitability is more valuable when the liability structure is not dominated by short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the simple low-leverage template by focusing on liability maturity mix rather than total debt intensity. Profitable firms with a lower current-liability share should have more time to realize operating strength before refinancing or working-capital pressure erodes it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.9709850406606321,
+      "ls_alpha": -0.04912498238297743,
+      "ls_talpha": -3.633491139833015,
+      "ls_sharpe": -0.094279089555298,
+      "coverage": 0.12543399230824473,
+      "error": null
+    },
+    {
+      "name": "Productive Liquidity Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oibdp, at))), RANK(RATIO(sale, act)))",
+      "hypothesis": "Above-industry operating profitability should be rewarded most when current assets are productively supporting sales rather than sitting idle.",
+      "expected_sign": "positive",
+      "reasoning": "Prior evidence favored liquidity-backed profitability, but high current ratios can also reflect bloated current assets. This interaction tests whether profitable firms with efficient current-asset use deliver more durable operating strength than firms whose liquidity cushion reflects sluggish working capital.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.6937952172685315,
+      "ls_alpha": -0.03005780368924916,
+      "ls_talpha": -3.5670031908172266,
+      "ls_sharpe": 0.026567704900577912,
+      "coverage": 0.12466661218546392,
+      "error": null
+    },
+    {
+      "name": "Internally Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(re, ADD(ABS(re), lt))))",
+      "hypothesis": "R&D-adjusted operating profitability is more valuable when it is supported by internally accumulated earnings rather than a weak claims structure.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D treats unreported R&D as zero and recognizes that some durable profitability is masked by expensed intangible investment. The retained-earnings-to-claims leg distinguishes self-financed compounders from firms whose apparent operating strength is less financially seasoned.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.101084584160338,
+      "ls_alpha": 0.01621538876693706,
+      "ls_talpha": 1.6193376533102146,
+      "ls_sharpe": 0.16441152050139285,
+      "coverage": 0.14236459357435488,
+      "error": null
+    },
+    {
+      "name": "Residual Cash Conversion Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(RATIO(SUB(oancf, oibdp), ADD(ABS(oibdp), lct))))",
+      "hypothesis": "High operating margin is more durable when cash generation exceeds what would be mechanically implied by operating EBITDA, after accounting for near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids double-counting oibdp by using residual cash conversion, SUB(oancf, oibdp), rather than raw operating cash flow. The quality leg asks whether cash conversion is strong relative to operating scale and current liabilities, so the interaction targets margin strength that is actually converting into financially usable cash.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.2795471638460776,
+      "ls_alpha": 0.04324280705120072,
+      "ls_talpha": 3.145829995208783,
+      "ls_sharpe": 0.3881164033502328,
+      "coverage": 0.06737292053091107,
+      "error": null
+    },
+    {
+      "name": "Retention-Backed Profit Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, at), 5)), RANK(RATIO(DELTA(re, 1), ADD(ABS(DELTA(re, 1)), lct))))",
+      "hypothesis": "Operating-profit momentum is more persistent when it is accompanied by actual retained-capital accumulation relative to short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-degenerate time-series rank of retained earnings with a flow measure: whether retained earnings are currently being rebuilt or depleted. The profitability leg is operating improvement, while the quality leg checks whether that improvement survives financing, payout, and loss absorption strongly enough to add to internal capital.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.001728705942143,
+      "ls_alpha": -0.002880249408017335,
+      "ls_talpha": -0.2729035062222879,
+      "ls_sharpe": -0.04501474843200394,
+      "coverage": 0.10294976502917634,
+      "error": null
+    },
+    {
+      "name": "Working-Capital Efficient Margin Expansion",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), RANK(NEG(TREND(RATIO(act, sale), 5))))",
+      "hypothesis": "Margin expansion should predict higher returns when it is achieved without rising current-asset intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the accrual-heavy profit-spike template and tests a different mechanism: whether improving margins are supported by efficient working-capital use. If operating margins rise while current assets required per dollar of sales fall, the improvement is more likely to reflect scalable operating strength rather than inventory or receivables buildup.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.4948391406872887,
+      "ls_alpha": 0.009997079476364338,
+      "ls_talpha": 1.0133732482027136,
+      "ls_sharpe": 0.18803966587977275,
+      "coverage": 0.10296900886310112,
+      "error": null
+    },
+    {
+      "name": "Downside Cash Coverage Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, at))), RANK(TS_MIN(RATIO(oancf, lct), 5)))",
+      "hypothesis": "Industry-adjusted operating profitability is more durable when the firm\u2019s recent worst-case cash-flow coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than using current cash flow as a potentially redundant profitability proxy, this tests whether profitable firms have maintained a liquidity-coverage floor through time. High profits paired with poor downside cash coverage may be transient or vulnerable to working-capital stress.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.6815079979682017,
+      "ls_alpha": 0.0027051299501608256,
+      "ls_talpha": 0.23229318153728268,
+      "ls_sharpe": 0.10994709809978466,
+      "coverage": 0.07996034841554629,
+      "error": null
+    },
+    {
+      "name": "Stable Capital Structure Profit",
+      "expression": "MUL(RANK(MA(RATIO(ebitda, at), 3)), RANK(NEG(VOL(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Sustained EBITDA profitability should be more persistent when the firm\u2019s funded-debt intensity is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This differs from low-debt composites by focusing on capital-structure stability rather than debt level. High profitability paired with volatile debt intensity may reflect recapitalizations, financing stress, or episodic balance-sheet support, whereas stable debt intensity makes operating strength easier to underwrite.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.0940049345328275,
+      "ls_alpha": -0.00219529493400244,
+      "ls_talpha": -0.24439614319979375,
+      "ls_sharpe": -0.027001005879705057,
+      "coverage": 0.1318695843827156,
+      "error": null
+    },
+    {
+      "name": "Liquid Profitability Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(oibdp, at), 5)), RANK(RATIO(act, lct)))",
+      "hypothesis": "Firms whose operating profitability has maintained a strong downside floor should earn higher returns when that persistence is paired with adequate short-term liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the residual cash-conversion leg with a direct persistence test: the profitability score is high only when recent worst-case oibdp/assets remains strong. Pairing that downside profit floor with act/lct targets durable operating strength that is less likely to be interrupted by liquidity pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.090468991549121,
+      "ls_alpha": 0.04281539645132564,
+      "ls_talpha": 3.094321595850003,
+      "ls_sharpe": 0.21327801708619662,
+      "coverage": 0.12480771643689632,
+      "error": null
+    },
+    {
+      "name": "Current-Claim Clean Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, sale))), RANK(NEG(RATIO(lct, sale))))",
+      "hypothesis": "High industry-adjusted operating margins are more valuable when they are not dependent on heavy current-liability financing per dollar of sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the mechanical opposition between act/lct and sale/act by using current liabilities relative to sales as the quality conditioner. The signal favors firms that combine strong operating margins with a low near-term claims burden, rather than firms that merely hold large current assets or run high asset turnover.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.8352493441884676,
+      "ls_alpha": 6.553657263590673e-05,
+      "ls_talpha": 0.005859260598146673,
+      "ls_sharpe": 0.1317235545180874,
+      "coverage": 0.12360448669214076,
+      "error": null
+    },
+    {
+      "name": "Cash-Coverage Stable Margin Trend",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), RANK(NEG(VOL(RATIO(oancf, lct), 5))))",
+      "hypothesis": "Operating-margin improvement is more persistent when cash-flow coverage of current liabilities is stable rather than erratic.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the retained-earnings level or drift component and instead validates margin momentum with an independent short-term cash-coverage stability measure. A firm with rising margins but volatile cash coverage may be experiencing timing or working-capital effects, while stable coverage makes the improvement more credible.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.2514660271209892,
+      "ls_alpha": -0.02549137946750613,
+      "ls_talpha": -2.107311867507037,
+      "ls_sharpe": -0.18449133811941415,
+      "coverage": 0.06434699532039487,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Stable EBITDA Quality",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ebitda, at))), RANK(NEG(SUMRANK(VOL(RATIO(dp, sale), 5), VOL(RATIO(lct, sale), 5)))))",
+      "hypothesis": "High EBITDA profitability is more durable when depreciation intensity and current-claim intensity are stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This reframes the maintenance issue as stability rather than penalizing depreciation levels inside a profit-scaled denominator. The quality leg is not mechanically decreasing in profitability; it discounts firms whose EBITDA may be less reliable because asset-consumption charges or short-term obligations are unstable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.2077066120466693,
+      "ls_alpha": 0.0015652928417795083,
+      "ls_talpha": 0.15575970481369908,
+      "ls_sharpe": 0.09716083029533702,
+      "coverage": 0.11364355838197432,
+      "error": null
+    },
+    {
+      "name": "Liquid Sustained RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), MIN(RANK(TREND(RATIO(COALESCE(xrd, 0), sale), 5)), RANK(RATIO(act, lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is most valuable when the firm continues investing in R&D and maintains enough liquidity to support that investment.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D recognizes that expensed intangible investment can depress current operating profit even when it builds durable capability. The conditioning leg requires both sustained R&D commitment and current-liability coverage, separating self-reinforcing intangible profitability from temporary profit boosted by investment cuts or liquidity pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.7259062716078284,
+      "ls_alpha": 0.013407153069033308,
+      "ls_talpha": 1.5049776685314489,
+      "ls_sharpe": 0.1738460670841507,
+      "coverage": 0.10269588056069412,
+      "error": null
+    },
+    {
+      "name": "Liquid Net Operating Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(RATIO(act, lct)))",
+      "hypothesis": "A strong downside floor in operating profitability after interest expense is more valuable when the firm also has solid current-liability coverage.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the weak lct/sale stress leg with a liquidity cushion that has clearer financial-health content. The profitability leg is not the same raw oibdp floor; it tests whether operating profits remain positive after interest claims, then rewards that resilience only when short-term solvency is adequate.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.1368758932891585,
+      "ls_alpha": 0.04292066381936811,
+      "ls_talpha": 3.1090191754172762,
+      "ls_sharpe": 0.21023958111156762,
+      "coverage": 0.1216454850354169,
+      "error": null
+    },
+    {
+      "name": "Trough EBITDA Debt Ceiling",
+      "expression": "MUL(RANK(TS_MIN(RATIO(ebitda, at), 5)), RANK(NEG(TS_MAX(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "A persistent EBITDA profitability floor should predict higher returns when the firm has not recently carried high funded-debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the signed-ratio pathology by using a monotone rank interaction: higher trough EBITDA raises the score, while higher recent peak debt always lowers it. The signal stress-tests both sides, favoring firms whose profitability survives bad periods and whose balance sheet has not depended on large funded-debt exposure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.850266854089488,
+      "ls_alpha": 0.03127323320018526,
+      "ls_talpha": 2.8846986443754647,
+      "ls_sharpe": 0.217077785595026,
+      "coverage": 0.14443900664257936,
+      "error": null
+    },
+    {
+      "name": "Hollow Levered EBITDA Trap",
+      "expression": "MUL(RANK(RATIO(ebitda, at)), MIN(RANK(RATIO(SUB(ebitda, oiadp), at)), RANK(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "High EBITDA profitability should predict weaker returns when it is heavily dependent on depreciation add-backs and paired with high funded debt.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the failed fixed-charge-coverage ratio and instead targets a bad-profitability corner: firms that look profitable on EBITDA but much less so after depreciation, while also carrying substantial debt. The MIN condition makes the short thesis depend on both capital-consumption burden and leverage, not a standalone debt-issuance or low-profitability effect.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.031064536185968,
+      "ls_alpha": -0.025204493900315483,
+      "ls_talpha": -2.252587589084607,
+      "ls_sharpe": 0.12553036944431306,
+      "coverage": 0.14357674874342408,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Backed Smooth Operating Profit",
+      "expression": "MUL(RANK(SUB(MA(RATIO(oiadp, at), 3), VOL(RATIO(oiadp, at), 5))), RANK(RATIO(act, lct)))",
+      "hypothesis": "Operating profitability is more durable when its smoothed level is high relative to its own volatility and the firm maintains adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the nearly saturated positive-profit count with a continuous profitability-minus-instability measure. It also avoids relying on current-liability volatility, which has shown weak portfolio evidence, and instead conditions smooth profitability on a clearer short-term financial-health measure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.9572021965535007,
+      "ls_alpha": 0.042958107470033736,
+      "ls_talpha": 3.32258503197755,
+      "ls_sharpe": 0.22548400025422904,
+      "coverage": 0.11412057845829753,
+      "error": null
+    },
+    {
+      "name": "Cash-Validated Margin Expansion",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), MIN(RANK(TREND(RATIO(oancf, sale), 5)), RANK(RATIO(act, lct))))",
+      "hypothesis": "Operating-margin improvement should predict higher returns when cash-flow margin is also improving and liquidity remains sound.",
+      "expected_sign": "positive",
+      "reasoning": "This revises the margin-trend idea away from falling current liabilities, which can conflict with accrual-quality logic. It requires margin expansion to be validated by operating cash-flow improvement and a current-ratio cushion, making the signal less likely to reward accrual-driven or liquidity-stressed profit growth.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.277402110449281,
+      "ls_alpha": 0.029978131821974098,
+      "ls_talpha": 2.076707961154777,
+      "ls_sharpe": 0.19498058506227703,
+      "coverage": 0.061758983413775656,
+      "error": null
+    },
+    {
+      "name": "Liquid EBITDA Conversion",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ebitda, at))), MIN(RANK(RATIO(oiadp, ADD(ABS(ebitda), dp))), RANK(RATIO(act, lct))))",
+      "hypothesis": "EBITDA profitability is more valuable when it converts into operating income after depreciation and the firm has adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the risk that high EBITDA overstates durable profitability for firms with large depreciation add-backs. The conversion leg rewards EBITDA that survives depreciation charges, while the liquidity leg reduces exposure to firms whose reported operating strength is vulnerable to current-claim pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.5539798568619796,
+      "ls_alpha": 0.03614186310283046,
+      "ls_talpha": 2.938136308088331,
+      "ls_sharpe": 0.26561254974410414,
+      "coverage": 0.12455615361057662,
+      "error": null
+    },
+    {
+      "name": "Debt-Ceiling Net Profit Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(SUB(oibdp, xint), at), 5)), RANK(NEG(TS_MAX(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Improving operating profitability after interest should predict higher returns when the firm has not recently carried high funded-debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Profit improvement is more credible when it remains visible after interest expense rather than being offset by financing costs. Conditioning on the recent maximum debt burden focuses on balance-sheet claim risk without using debt issuance changes, helping separate durable operating momentum from levered profit recoveries.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8926613246190516,
+      "ls_alpha": 0.031934799128921804,
+      "ls_talpha": 3.2890457198808196,
+      "ls_sharpe": 0.19070591916749205,
+      "coverage": 0.1051668301102749,
+      "error": null
+    },
+    {
+      "name": "Gross Surplus Claim Coverage",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(xsga, lct)), 1)",
+      "hypothesis": "Gross profitability is more durable when it comfortably covers both operating overhead and current liability claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic liquidity-profit recombination with a coverage mechanism that is not just profitability multiplied by current ratio. The denominator combines SG&A operating commitments with near-term claims, so the signal rewards firms whose gross surplus has room to absorb both business reinvestment needs and short-term financial pressure.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.8818743279918708,
+      "ls_alpha": 0.012178071224356235,
+      "ls_talpha": 1.1564294994090967,
+      "ls_sharpe": -0.027424647547728106,
+      "coverage": 0.10988234330256796,
+      "error": null
+    },
+    {
+      "name": "Retained Cushion Net Profit Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(SUB(RATIO(re, at), RATIO(lct, at))))",
+      "hypothesis": "A downside floor in operating profitability after interest is more valuable when accumulated retained capital exceeds short-term claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids mechanically welding the current-ratio and debt-ceiling archive signals. The quality leg is a monotone retained-capital cushion: higher retained earnings improve the score and higher current liabilities reduce it, including for deficit firms.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.9571991624454754,
+      "ls_alpha": -0.006067989279881355,
+      "ls_talpha": -0.5401862416266546,
+      "ls_sharpe": -0.014061578806696845,
+      "coverage": 0.12064805597035562,
+      "error": null
+    },
+    {
+      "name": "Stable Overhead Liquid Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), MIN(RANK(NEG(ABS(DELTA(RATIO(xsga, sale), 1)))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High operating margins are more persistent when they are not produced by abrupt SG&A intensity changes and the firm has adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from Sloan accruals and cash-based operating-profitability templates. The signal favors firms with strong industry-adjusted margins only when overhead intensity is stable and current liabilities are covered, reducing exposure to margins inflated by temporary cost cuts or liquidity stress.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.36216818773009,
+      "ls_alpha": 0.015880268787907423,
+      "ls_talpha": 1.3898486503498424,
+      "ls_sharpe": -0.010448658228446052,
+      "coverage": 0.0968808376402375,
+      "error": null
+    },
+    {
+      "name": "Self-Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(oancf, ADD(TS_SUM(COALESCE(xrd, 0), 5), lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when operating cash flow can fund both recent R&D commitments and current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-binary R&D reporting count with a continuous self-funding measure. The quality leg asks whether cash generation is sufficient relative to cumulative intangible investment and short-term claims, rather than simply restricting the signal to R&D reporters.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.093210212542152,
+      "ls_alpha": 0.018531752353987106,
+      "ls_talpha": 1.5912159727190163,
+      "ls_sharpe": 0.1976649899989053,
+      "coverage": 0.0793955702654803,
+      "error": null
+    },
+    {
+      "name": "Liquid Gross Operating Conversion",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High gross profitability is more durable when it converts through overhead into operating income and is backed by adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit can overstate operating strength if SG&A absorbs the surplus or if the firm lacks short-term financial flexibility. This signal rewards firms with strong gross economics only when those economics survive overhead costs and are paired with current-liability coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.495652707016368,
+      "ls_alpha": 0.04409470335946698,
+      "ls_talpha": 3.8274813082870343,
+      "ls_sharpe": 0.2596560424984548,
+      "coverage": 0.10920070916365575,
+      "error": null
+    },
+    {
+      "name": "Core Pretax Claim Coverage",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(pi, at))), RANK(RATIO(oiadp, ADD(ABS(pi), lct))))",
+      "hypothesis": "Pretax profitability should predict higher returns when it is backed by core operating income and not vulnerable to current-claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from EBITDA-conversion and current-ratio recombinations by asking whether pretax profits are genuinely operating in nature. The quality leg is high when operating income is large relative to total pretax-income scale and current liabilities, reducing exposure to firms whose profitability comes from nonoperating gains or fragile short-term financing.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.3887550566635158,
+      "ls_alpha": 0.006533830560778537,
+      "ls_talpha": 0.6611088925047511,
+      "ls_sharpe": -0.01665877561414338,
+      "coverage": 0.12589992009423598,
+      "error": null
+    },
+    {
+      "name": "Interest Burden Stable Profit",
+      "expression": "MUL(RANK(MA(RATIO(oibdp, at), 3)), RANK(NEG(VOL(RATIO(xint, ADD(ABS(oibdp), lct)), 5))))",
+      "hypothesis": "Sustained operating profitability is more durable when the interest burden is stable relative to operating scale and near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the debt-ceiling recombination with a fixed-charge stability mechanism rather than a debt-level signal. High operating profitability should be more valuable when interest expense does not fluctuate sharply relative to the firm\u2019s operating cash-generating base and current-liability pressure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.2002332421171507,
+      "ls_alpha": 0.022155854254109514,
+      "ls_talpha": 2.3249820324020924,
+      "ls_sharpe": 0.13954895021541852,
+      "coverage": 0.11124499247581571,
+      "error": null
+    },
+    {
+      "name": "Cash-Claim Backed Net Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(SUB(oibdp, xint), at), 5)), RANK(TS_MIN(RATIO(oancf, ADD(ADD(dltt, dlc), lct)), 5)))",
+      "hypothesis": "Improving operating profitability after interest expense should predict higher returns when operating cash flow has maintained coverage of total financial and current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another act/lct variant by conditioning profit momentum on a downside cash-coverage floor against both funded debt and current liabilities. The signal favors firms whose after-interest operating improvement is supported by cash capacity to service the full claims structure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.5844345109062,
+      "ls_alpha": -0.017850043859641743,
+      "ls_talpha": -1.4253034581150672,
+      "ls_sharpe": -0.054317815740687135,
+      "coverage": 0.06382447105768652,
+      "error": null
+    },
+    {
+      "name": "Retained Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(SUB(re, TS_SUM(COALESCE(xrd, 0), 5)), ADD(ABS(re), lt))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when accumulated retained earnings are sufficient to support recent R&D commitments relative to total claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-binary R&D reporting count and current-ratio variant with a continuous retained-funding test. The quality leg rewards firms whose accumulated internal capital exceeds multi-period R&D spending, separating self-financed intangible profitability from R&D activity that may strain the balance sheet.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.9572158189330626,
+      "ls_alpha": -0.009069858022421362,
+      "ls_talpha": -1.1040348165854639,
+      "ls_sharpe": 0.08035502058514295,
+      "coverage": 0.14236459357435488,
+      "error": null
+    },
+    {
+      "name": "Net-Claim Stable Profit",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(SUB(TS_MAX(RATIO(SUB(lt, re), at), 5), TS_MIN(RATIO(SUB(lt, re), at), 5)))))",
+      "hypothesis": "After-interest operating profitability is more valuable when the firm\u2019s net claim burden is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the arbitrary mean-minus-volatility construction and does not reuse a simple peak-debt ceiling. The quality leg penalizes a wide recent range in liabilities net of retained earnings, aiming to identify firms whose profitability is not being accompanied by recapitalization, restructuring, or unstable claim dynamics.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.8747596503243702,
+      "ls_alpha": -0.0025119691677105045,
+      "ls_talpha": -0.2778564784685468,
+      "ls_sharpe": -0.008683984634058388,
+      "coverage": 0.12659274970757628,
+      "error": null
+    },
+    {
+      "name": "Interest-Stable Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(VOL(RATIO(xint, ADD(ABS(oibdp), lct)), 5)))))",
+      "hypothesis": "Gross profitability is more durable when it converts through SG&A into operating income and the firm\u2019s interest burden is stable.",
+      "expected_sign": "positive",
+      "reasoning": "The conversion leg tests whether gross economics remain after operating overhead, while the quality leg focuses on fixed-charge stability rather than debt levels or current-ratio liquidity. Stable interest burden should help distinguish repeatable operating profitability from profit streams exposed to refinancing or rate shocks.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.968327277043583,
+      "ls_alpha": 0.028785803298336403,
+      "ls_talpha": 2.888287744190694,
+      "ls_sharpe": 0.1237524183743776,
+      "coverage": 0.09677904652942357,
+      "error": null
+    },
+    {
+      "name": "Demand-Stable Liquid Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, sale))), MIN(RANK(NEG(VOL(RATIO(sale, at), 5))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High operating margins are more valuable when the underlying sales base is stable and short-term liquidity is sound.",
+      "expected_sign": "positive",
+      "reasoning": "High margins can be cyclical or temporarily boosted if revenue is unstable. Conditioning on low sales-intensity volatility and a current-liability cushion targets firms with both durable demand and financial flexibility.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.8481765053408505,
+      "ls_alpha": 0.027984143262592846,
+      "ls_talpha": 2.572732405282997,
+      "ls_sharpe": 0.1947336041263926,
+      "coverage": 0.11238414489688607,
+      "error": null
+    },
+    {
+      "name": "Cash-Covered Overhead Gross Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), RANK(RATIO(oancf, ADD(xsga, lct))))",
+      "hypothesis": "Gross profitability should be rewarded when operating cash flow can fund both overhead commitments and current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit is less valuable if the firm cannot convert operations into cash sufficient to cover SG&A needs and near-term claims. This signal targets firms whose product-level profitability is financially usable, not merely high before overhead and working-capital pressures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.7161789562976457,
+      "ls_alpha": 0.020965015608488916,
+      "ls_talpha": 1.705304118930765,
+      "ls_sharpe": 0.27467738191511626,
+      "coverage": 0.06936788184512975,
+      "error": null
+    },
+    {
+      "name": "Net Overhead Interest Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), RANK(RATIO(SUB(SUB(SUB(revt, cogs), xsga), xint), ADD(ADD(ABS(SUB(revt, cogs)), xsga), lct))))",
+      "hypothesis": "Gross profitability should predict higher returns when the gross surplus survives both overhead and interest costs while remaining large relative to current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This directly fixes the missing-overhead critique by requiring gross profit to convert after SG&A and interest expense, rather than just swapping liquidity denominators. It also avoids reusing the act/lct conditioner, making the quality test about claim-adjusted conversion of gross economics into equity-relevant operating surplus.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.763566151965303,
+      "ls_alpha": 0.016813373502423276,
+      "ls_talpha": 1.6136369719867893,
+      "ls_sharpe": 0.07903452782448152,
+      "coverage": 0.10415387183874884,
+      "error": null
+    },
+    {
+      "name": "Rollover-Mix Stable Net Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(VOL(RATIO(dlc, lct), 5))))",
+      "hypothesis": "Sustained operating profitability after interest expense is more durable when the short-term debt share of current liabilities is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from low-debt intensity and instead tests rollover-composition stability: firms are not rewarded merely for having little debt. High after-interest operating profitability should be more reliable when current obligations are not being repeatedly reshuffled toward or away from short-term interest-bearing debt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.002319797004442,
+      "ls_alpha": 0.018087225224132822,
+      "ls_talpha": 1.8650473163902739,
+      "ls_sharpe": 0.23899007329476277,
+      "coverage": 0.11152591117747912,
+      "error": null
+    },
+    {
+      "name": "Seasoned Gross Operating Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga)))), RANK(RATIO(re, ADD(ABS(re), ABS(ceq)))))",
+      "hypothesis": "Strong gross-to-operating conversion is more valuable when the equity base is seasoned by retained earnings rather than fragile or recently rebuilt capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the inverse-leverage ceq/lt conditioner with a retained-earnings share of equity, so the signal is not just profitability times low leverage. The profitability leg asks whether gross surplus survives overhead into operating income, while the quality leg distinguishes seasoned internally generated capital from firms with weak accumulated profitability histories.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.6689685865634003,
+      "ls_alpha": -0.009884261704971194,
+      "ls_talpha": -1.0908599611437746,
+      "ls_sharpe": -0.02165535092810116,
+      "coverage": 0.12209882436168254,
+      "error": null
+    },
+    {
+      "name": "Operating-Float Funded Profit",
+      "expression": "MUL(RANK(MA(RATIO(oiadp, at), 3)), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(dltt, lt))))",
+      "hypothesis": "Sustained operating profitability is more durable when liabilities are tilted toward non-debt operating float rather than long-term funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "This reinterprets the poor maturity-mix evidence by separating current operating liabilities from interest-bearing debt. Profitable firms with supplier/accrual float and less long-term funded debt may have scalable operating economics, whereas similar profits backed by funded leverage are less equity-resilient.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.058761732748089,
+      "ls_alpha": 0.01699573114799117,
+      "ls_talpha": 1.6662123583190669,
+      "ls_sharpe": 0.24551518362930844,
+      "coverage": 0.12497559696126964,
+      "error": null
+    },
+    {
+      "name": "Stable Operating-Float Converter",
+      "expression": "MUL(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(VOL(RATIO(SUB(lct, dlc), cogs), 5))))",
+      "hypothesis": "Gross-to-operating conversion is more durable when non-debt operating liabilities are stable relative to the cost base.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg measures how much gross surplus remains after SG&A, while the quality leg focuses on the stability of operating float rather than leverage level or current-ratio liquidity. Stable non-debt current liabilities relative to COGS suggest repeatable supplier and accrued-cost financing, not temporary working-capital support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.7220360652708314,
+      "ls_alpha": -0.03940340547752912,
+      "ls_talpha": -3.8580467790499138,
+      "ls_sharpe": -0.1446953072904169,
+      "coverage": 0.09851728581251698,
+      "error": null
+    },
+    {
+      "name": "Operating-Float Supported Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(RATIO(SUB(lct, dlc), ADD(cogs, xsga))))",
+      "hypothesis": "High operating margins are more durable when routine non-debt operating liabilities help fund the cost base rather than short-term debt or a simple liquidity ratio.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the net-working-capital rescaling with an operating-float mechanism based on non-debt current liabilities relative to operating costs. The signal favors firms whose profitability after COGS and SG&A is paired with scalable supplier/accrual financing, not just a higher act/lct-style cushion.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.2224201948401359,
+      "ls_alpha": 0.01177688508139347,
+      "ls_talpha": 1.4028959593864696,
+      "ls_sharpe": -0.06043477930174403,
+      "coverage": 0.10708976892540781,
+      "error": null
+    },
+    {
+      "name": "Demand-Stable Net Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(VOL(RATIO(sale, ADD(at, lct)), 5))))",
+      "hypothesis": "Sustained operating profitability after interest expense is more valuable when sales generation is stable relative to the asset base and current-claim burden.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another gross-conversion-plus-filter permutation and tests demand stability as the independent quality dimension. Stable sales relative to assets and current liabilities should make after-interest operating profits less cyclical and more persistent.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.7046849577829826,
+      "ls_alpha": 0.0168940439627163,
+      "ls_talpha": 1.8149727507902167,
+      "ls_sharpe": 0.0730655435498596,
+      "coverage": 0.11209285619356346,
+      "error": null
+    },
+    {
+      "name": "Current-Debt Overhead Leakage Trap",
+      "expression": "MIN(RANK(RATIO(SUB(SUB(revt, cogs), oiadp), ADD(ABS(SUB(revt, cogs)), xsga))), RANK(RATIO(dlc, lct)))",
+      "hypothesis": "Firms whose gross surplus leaks away before operating income and whose current liabilities are dominated by short-term debt should earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This removes the high-gross-profitability leg that made the prior negative sign fragile. The signal is high only for the bad-quality corner: poor gross-to-operating conversion combined with high current-debt rollover pressure.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.6111082609530205,
+      "ls_alpha": -0.022031769217341398,
+      "ls_talpha": -1.9999673302629337,
+      "ls_sharpe": -0.07923599578659848,
+      "coverage": 0.10918229080249986,
+      "error": null
+    },
+    {
+      "name": "Cash-After-Overhead Surplus",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), at))), RANK(WINSOR(RATIO(SUB(oancf, xsga), lct), 1)))",
+      "hypothesis": "Operating surplus after overhead is more valuable when operating cash flow covers SG&A and leaves capacity for current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the problematic cash-coverage volatility leg with a direct cash-after-overhead coverage measure. It rewards firms whose accounting operating surplus is supported by cash available after sustaining overhead commitments, while winsorization limits small-denominator instability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.124238662197488,
+      "ls_alpha": -0.008638369892602093,
+      "ls_talpha": -0.6686580318264908,
+      "ls_sharpe": 0.04487172408582167,
+      "coverage": 0.0693638576653814,
+      "error": null
+    },
+    {
+      "name": "Operating-Float Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(ADD(dltt, dlc), lt)))))",
+      "hypothesis": "Gross profitability is most valuable when it converts through overhead into operating income and the liability structure reflects operating float rather than funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "The first two components preserve the strong gross-to-operating conversion mechanism, while the quality leg replaces generic liquidity or leverage with a liability-mix decomposition. It favors firms whose profitability is supported by routine operating liabilities and penalizes firms where funded debt dominates the claims structure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.640811188535104,
+      "ls_alpha": 0.023753044903104883,
+      "ls_talpha": 2.530058096130772,
+      "ls_sharpe": 0.21985515388154167,
+      "coverage": 0.10892092548704957,
+      "error": null
+    },
+    {
+      "name": "Rollover-Clean Operating Converter",
+      "expression": "MUL(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(TS_MAX(RATIO(dlc, lct), 5))))",
+      "hypothesis": "Gross-to-operating conversion should predict higher returns when recent current liabilities have not been dominated by short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the fragile negative hollow-profitability setup by focusing on the positive-quality mirror: firms whose gross surplus converts into operating income and whose current claims are not heavily short-term-debt financed. It tests rollover risk as a conditioner of operating conversion, not just low debt intensity.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.8821036273429772,
+      "ls_alpha": 0.03033515104138712,
+      "ls_talpha": 2.342299629736093,
+      "ls_sharpe": 0.08657709986293693,
+      "coverage": 0.10960462330788401,
+      "error": null
+    },
+    {
+      "name": "Depreciation Gap Rollover Trap",
+      "expression": "MUL(RANK(RATIO(SUB(ebitda, oiadp), at)), RANK(TS_MAX(RATIO(dlc, lct), 5)))",
+      "hypothesis": "Firms with a large EBITDA-to-operating-income gap and persistent short-term-debt rollover pressure should earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This no longer treats depreciation as a liquidity claim; instead, the EBITDA-to-operating-income gap is a signal that headline profitability is noncash or capital-consumption-heavy. The quality leg captures actual near-term rollover pressure through the recent peak share of current liabilities represented by debt, isolating a fragile-profitability corner.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.7839417466627954,
+      "ls_alpha": -0.02960120889750566,
+      "ls_talpha": -2.885309158676705,
+      "ls_sharpe": -0.045978778999284944,
+      "coverage": 0.12580220475521844,
+      "error": null
+    },
+    {
+      "name": "Rollover-Stable Net Profit Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(NEG(VOL(SUB(RATIO(dlc, lct), RATIO(dltt, lt)), 5))))",
+      "hypothesis": "A downside floor in operating profitability after interest expense is more valuable when the firm\u2019s debt maturity mix is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing interest-expense volatility as the conditioner and instead tests whether financing structure is being reshuffled between short-term and long-term debt. Stable rollover composition should make an after-interest profit floor more durable and less exposed to refinancing-driven reversals.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.6623381680859453,
+      "ls_alpha": 0.006225882880433357,
+      "ls_talpha": 0.7837833775221368,
+      "ls_sharpe": 0.11262664449649855,
+      "coverage": 0.11241561604620005,
+      "error": null
+    },
+    {
+      "name": "Industry Margin Floor Operating Float",
+      "expression": "MUL(RANK(TS_MIN(IND_ADJ(RATIO(oiadp, sale)), 5)), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(ADD(dltt, dlc), lt))))",
+      "hypothesis": "Persistent industry-adjusted operating margins should predict higher returns when liabilities are tilted toward non-debt operating float rather than funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "This restores industry comparability for the operating-margin floor and replaces the weak demand-volatility recombination with a liability-mix mechanism. The quality leg rewards firms funded more by routine operating liabilities and less by debt claims, helping separate scalable operating profitability from levered profitability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.1075372902678975,
+      "ls_alpha": 0.01759711996528584,
+      "ls_talpha": 1.740537299139809,
+      "ls_sharpe": 0.21686340762365458,
+      "coverage": 0.12329132296044253,
+      "error": null
+    },
+    {
+      "name": "RND Adjusted Overhead Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(ADD(oiadp, COALESCE(xrd, 0)), ADD(ADD(ABS(ADD(oibdp, COALESCE(xrd, 0))), ABS(SUB(xsga, COALESCE(xrd, 0)))), lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when it converts into R&D-adjusted operating income after non-R&D overhead and current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the weak retained-capital-minus-current-claims leg and handles R&D consistently by adding it back to profitability while excluding it from the overhead burden. Treating unreported R&D as zero is economically justified, and the conversion leg tests whether intangible-adjusted profitability survives non-R&D SG&A and near-term liability pressure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.9358245140735226,
+      "ls_alpha": 0.027186562435574463,
+      "ls_talpha": 2.346024636518939,
+      "ls_sharpe": 0.09781625779140432,
+      "coverage": 0.10974552119112418,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Stable Cash Operating Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oibdp, at))), RANK(NEG(VOL(RATIO(oancf, at), 5))))",
+      "hypothesis": "Industry-adjusted operating profitability predicts higher returns most strongly when operating cash-flow generation is stable.",
+      "expected_sign": "positive",
+      "reasoning": "High oibdp/assets can reflect durable operating strength or a temporary margin peak. Multiplying it by low cash-flow volatility favors firms whose profitability is supported by steady cash production rather than noisy or episodic results.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Validated Profit Trend",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, at), 5)), RANK(NEG(RATIO(SUB(ib, oancf), at))))",
+      "hypothesis": "Improving operating profitability is more valuable when the improvement is backed by cash flow rather than accruals.",
+      "expected_sign": "positive",
+      "reasoning": "A positive trend in operating income/assets is a profitability signal, but it is more credible when net income does not exceed operating cash flow. The accrual-quality leg penalizes firms where apparent profit improvement may be accounting-driven or less persistent.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual Financed Profit Spike",
+      "expression": "MUL(RANK(DELTA(RATIO(ib, at), 1)), RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Sharp increases in profitability that are not supported by operating cash flow predict lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "A large increase in income/assets can attract investors, but when it coincides with high accruals it is less likely to persist. This signal is intentionally high for firms with both a profitability spike and weak cash conversion, a classic transient-quality warning.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability-Light Gross Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), RANK(NEG(RATIO(lt, at))))",
+      "hypothesis": "Gross profitability should predict higher returns most strongly when it is achieved without a heavy liability burden.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the unstable ratio with a monotone interaction: higher industry-adjusted gross profitability raises the score, and lower liabilities/assets raises the score. Low liabilities alone are not enough to rank highly unless paired with strong gross profitability, so the signal targets durable operating strength rather than balance-sheet conservatism by itself.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Net Profit Signal To Noise",
+      "expression": "RATIO(MA(RATIO(ni, at), 3), ADD(ABS(MA(RATIO(ni, at), 3)), VOL(RATIO(ni, at), 5)))",
+      "hypothesis": "Average net profitability is more valuable when it is large relative to its own historical instability.",
+      "expected_sign": "positive",
+      "reasoning": "The signal directly measures profitability per unit of earnings noise, rather than stacking profitability, retained earnings, and volatility as separate anomalies. Firms with persistently positive income/assets receive high scores, while firms with volatile or transient profits are discounted even if recent profitability is temporarily high.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Light EBITDA Strength",
+      "expression": "MUL(RANK(MA(RATIO(ebitda, at), 3)), RANK(NEG(MA(RATIO(ADD(dltt, dlc), at), 3))))",
+      "hypothesis": "EBITDA profitability should command a stronger return premium when it is supported by low financial debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This uses a continuous debt-burden interaction rather than a hard deleveraging gate, avoiding a degenerate zero-valued short leg. The signal favors firms that combine sustained operating profitability with financial health, distinguishing unlevered operating strength from EBITDA generated under heavy debt dependence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Backed Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(oibdp, at), 3)), RANK(RATIO(act, lct)))",
+      "hypothesis": "Sustained operating profitability is more valuable when near-term liquidity comfortably covers current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "A smoothed oibdp/assets leg favors firms with persistent operating yield rather than a one-period spike. The current-asset-to-current-liability quality leg rewards firms less exposed to refinancing or working-capital stress, making high profitability more likely to persist.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Deficit Profit Rebound Trap",
+      "expression": "MUL(RANK(DELTA(RATIO(oibdp, at), 1)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Profitability rebounds at firms with accumulated retained-earnings deficits are less reliable and should predict weaker future returns.",
+      "expected_sign": "negative",
+      "reasoning": "A sharp improvement in operating profitability can look attractive, but when it occurs at a firm with a weak cumulative earnings history it may represent a transient turnaround rather than durable strength. The signal is high specifically for the combination of improving operating profit and poor retained-earnings quality, so the expected return slope should be negative.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Profit Reliability Ratio",
+      "expression": "RATIO(MA(RATIO(oiadp, at), 3), ADD(ABS(MA(RATIO(oiadp, at), 3)), ADD(VOL(RATIO(oiadp, at), 5), VOL(RATIO(lct, at), 5))))",
+      "hypothesis": "Average operating profitability should be rewarded most when it is stable and not paired with volatile short-term liability pressure.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator captures smoothed operating profitability, while the denominator discounts firms whose profits or current-liability structure are unstable. This ratio directly measures durable operating strength per unit of operating and short-term financing instability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Stable Operating Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(NEG(VOL(RATIO(SUB(act, lct), sale), 5))))",
+      "hypothesis": "High industry-adjusted operating margin is more durable when it is not accompanied by unstable working-capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the leverage template with a working-capital stability mechanism: strong margins are more credible when receivable, inventory, and payable dynamics are not volatile relative to sales. It avoids dividing a sign-changing profitability measure by liabilities and instead uses a monotone rank interaction between operating surplus and balance-sheet operating quality.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Charge Coverage Profit",
+      "expression": "WINSOR(RATIO(SUB(oiadp, xint), ADD(lct, ABS(xint))), 1)",
+      "hypothesis": "Operating profitability should be rewarded when it remains strong after interest expense and is large relative to short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This reframes the interest-clean idea as coverage of fixed and near-term claims rather than another profitability-times-low-debt composite. The signal is high only when operating income exceeds financing costs by enough to cover current liability pressure, distinguishing financially resilient profitability from profits vulnerable to fixed-charge or maturity stress.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cutback Liquidity Profit Accel Trap",
+      "expression": "MUL(RANK(ACCEL(RATIO(oiadp, at))), MIN(RANK(NEG(DELTA(RATIO(xsga, sale), 1))), RANK(DELTA(RATIO(lct, act), 1))))",
+      "hypothesis": "Profit acceleration driven by cost cutbacks while liquidity deteriorates is likely transient and should predict weaker future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This removes the debt-issuance channel and focuses on the lower-quality corner where reported operating profit acceleration coincides with falling SG&A intensity and rising current-liability pressure. The MIN structure requires both cutback behavior and liquidity deterioration to be present, making the signal a targeted interaction rather than a broad external-financing proxy.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Maturity-Matched Operating Profit",
+      "expression": "MUL(RANK(MA(RATIO(oiadp, at), 3)), RANK(NEG(RATIO(lct, lt))))",
+      "hypothesis": "Operating profitability is more valuable when the liability structure is not dominated by short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the simple low-leverage template by focusing on liability maturity mix rather than total debt intensity. Profitable firms with a lower current-liability share should have more time to realize operating strength before refinancing or working-capital pressure erodes it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Productive Liquidity Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oibdp, at))), RANK(RATIO(sale, act)))",
+      "hypothesis": "Above-industry operating profitability should be rewarded most when current assets are productively supporting sales rather than sitting idle.",
+      "expected_sign": "positive",
+      "reasoning": "Prior evidence favored liquidity-backed profitability, but high current ratios can also reflect bloated current assets. This interaction tests whether profitable firms with efficient current-asset use deliver more durable operating strength than firms whose liquidity cushion reflects sluggish working capital.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Internally Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(re, ADD(ABS(re), lt))))",
+      "hypothesis": "R&D-adjusted operating profitability is more valuable when it is supported by internally accumulated earnings rather than a weak claims structure.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D treats unreported R&D as zero and recognizes that some durable profitability is masked by expensed intangible investment. The retained-earnings-to-claims leg distinguishes self-financed compounders from firms whose apparent operating strength is less financially seasoned.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Residual Cash Conversion Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(RATIO(SUB(oancf, oibdp), ADD(ABS(oibdp), lct))))",
+      "hypothesis": "High operating margin is more durable when cash generation exceeds what would be mechanically implied by operating EBITDA, after accounting for near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids double-counting oibdp by using residual cash conversion, SUB(oancf, oibdp), rather than raw operating cash flow. The quality leg asks whether cash conversion is strong relative to operating scale and current liabilities, so the interaction targets margin strength that is actually converting into financially usable cash.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retention-Backed Profit Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, at), 5)), RANK(RATIO(DELTA(re, 1), ADD(ABS(DELTA(re, 1)), lct))))",
+      "hypothesis": "Operating-profit momentum is more persistent when it is accompanied by actual retained-capital accumulation relative to short-term obligations.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-degenerate time-series rank of retained earnings with a flow measure: whether retained earnings are currently being rebuilt or depleted. The profitability leg is operating improvement, while the quality leg checks whether that improvement survives financing, payout, and loss absorption strongly enough to add to internal capital.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Working-Capital Efficient Margin Expansion",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), RANK(NEG(TREND(RATIO(act, sale), 5))))",
+      "hypothesis": "Margin expansion should predict higher returns when it is achieved without rising current-asset intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the accrual-heavy profit-spike template and tests a different mechanism: whether improving margins are supported by efficient working-capital use. If operating margins rise while current assets required per dollar of sales fall, the improvement is more likely to reflect scalable operating strength rather than inventory or receivables buildup.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Downside Cash Coverage Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, at))), RANK(TS_MIN(RATIO(oancf, lct), 5)))",
+      "hypothesis": "Industry-adjusted operating profitability is more durable when the firm\u2019s recent worst-case cash-flow coverage of current liabilities remains strong.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than using current cash flow as a potentially redundant profitability proxy, this tests whether profitable firms have maintained a liquidity-coverage floor through time. High profits paired with poor downside cash coverage may be transient or vulnerable to working-capital stress.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Capital Structure Profit",
+      "expression": "MUL(RANK(MA(RATIO(ebitda, at), 3)), RANK(NEG(VOL(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Sustained EBITDA profitability should be more persistent when the firm\u2019s funded-debt intensity is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This differs from low-debt composites by focusing on capital-structure stability rather than debt level. High profitability paired with volatile debt intensity may reflect recapitalizations, financing stress, or episodic balance-sheet support, whereas stable debt intensity makes operating strength easier to underwrite.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquid Profitability Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(oibdp, at), 5)), RANK(RATIO(act, lct)))",
+      "hypothesis": "Firms whose operating profitability has maintained a strong downside floor should earn higher returns when that persistence is paired with adequate short-term liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the residual cash-conversion leg with a direct persistence test: the profitability score is high only when recent worst-case oibdp/assets remains strong. Pairing that downside profit floor with act/lct targets durable operating strength that is less likely to be interrupted by liquidity pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Claim Clean Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, sale))), RANK(NEG(RATIO(lct, sale))))",
+      "hypothesis": "High industry-adjusted operating margins are more valuable when they are not dependent on heavy current-liability financing per dollar of sales.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the mechanical opposition between act/lct and sale/act by using current liabilities relative to sales as the quality conditioner. The signal favors firms that combine strong operating margins with a low near-term claims burden, rather than firms that merely hold large current assets or run high asset turnover.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Coverage Stable Margin Trend",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), RANK(NEG(VOL(RATIO(oancf, lct), 5))))",
+      "hypothesis": "Operating-margin improvement is more persistent when cash-flow coverage of current liabilities is stable rather than erratic.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the retained-earnings level or drift component and instead validates margin momentum with an independent short-term cash-coverage stability measure. A firm with rising margins but volatile cash coverage may be experiencing timing or working-capital effects, while stable coverage makes the improvement more credible.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Stable EBITDA Quality",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ebitda, at))), RANK(NEG(SUMRANK(VOL(RATIO(dp, sale), 5), VOL(RATIO(lct, sale), 5)))))",
+      "hypothesis": "High EBITDA profitability is more durable when depreciation intensity and current-claim intensity are stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This reframes the maintenance issue as stability rather than penalizing depreciation levels inside a profit-scaled denominator. The quality leg is not mechanically decreasing in profitability; it discounts firms whose EBITDA may be less reliable because asset-consumption charges or short-term obligations are unstable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquid Sustained RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), MIN(RANK(TREND(RATIO(COALESCE(xrd, 0), sale), 5)), RANK(RATIO(act, lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is most valuable when the firm continues investing in R&D and maintains enough liquidity to support that investment.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D recognizes that expensed intangible investment can depress current operating profit even when it builds durable capability. The conditioning leg requires both sustained R&D commitment and current-liability coverage, separating self-reinforcing intangible profitability from temporary profit boosted by investment cuts or liquidity pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquid Net Operating Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(RATIO(act, lct)))",
+      "hypothesis": "A strong downside floor in operating profitability after interest expense is more valuable when the firm also has solid current-liability coverage.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the weak lct/sale stress leg with a liquidity cushion that has clearer financial-health content. The profitability leg is not the same raw oibdp floor; it tests whether operating profits remain positive after interest claims, then rewards that resilience only when short-term solvency is adequate.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Trough EBITDA Debt Ceiling",
+      "expression": "MUL(RANK(TS_MIN(RATIO(ebitda, at), 5)), RANK(NEG(TS_MAX(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "A persistent EBITDA profitability floor should predict higher returns when the firm has not recently carried high funded-debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the signed-ratio pathology by using a monotone rank interaction: higher trough EBITDA raises the score, while higher recent peak debt always lowers it. The signal stress-tests both sides, favoring firms whose profitability survives bad periods and whose balance sheet has not depended on large funded-debt exposure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Hollow Levered EBITDA Trap",
+      "expression": "MUL(RANK(RATIO(ebitda, at)), MIN(RANK(RATIO(SUB(ebitda, oiadp), at)), RANK(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "High EBITDA profitability should predict weaker returns when it is heavily dependent on depreciation add-backs and paired with high funded debt.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the failed fixed-charge-coverage ratio and instead targets a bad-profitability corner: firms that look profitable on EBITDA but much less so after depreciation, while also carrying substantial debt. The MIN condition makes the short thesis depend on both capital-consumption burden and leverage, not a standalone debt-issuance or low-profitability effect.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Backed Smooth Operating Profit",
+      "expression": "MUL(RANK(SUB(MA(RATIO(oiadp, at), 3), VOL(RATIO(oiadp, at), 5))), RANK(RATIO(act, lct)))",
+      "hypothesis": "Operating profitability is more durable when its smoothed level is high relative to its own volatility and the firm maintains adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the nearly saturated positive-profit count with a continuous profitability-minus-instability measure. It also avoids relying on current-liability volatility, which has shown weak portfolio evidence, and instead conditions smooth profitability on a clearer short-term financial-health measure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Validated Margin Expansion",
+      "expression": "MUL(RANK(TREND(RATIO(oiadp, sale), 5)), MIN(RANK(TREND(RATIO(oancf, sale), 5)), RANK(RATIO(act, lct))))",
+      "hypothesis": "Operating-margin improvement should predict higher returns when cash-flow margin is also improving and liquidity remains sound.",
+      "expected_sign": "positive",
+      "reasoning": "This revises the margin-trend idea away from falling current liabilities, which can conflict with accrual-quality logic. It requires margin expansion to be validated by operating cash-flow improvement and a current-ratio cushion, making the signal less likely to reward accrual-driven or liquidity-stressed profit growth.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquid EBITDA Conversion",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ebitda, at))), MIN(RANK(RATIO(oiadp, ADD(ABS(ebitda), dp))), RANK(RATIO(act, lct))))",
+      "hypothesis": "EBITDA profitability is more valuable when it converts into operating income after depreciation and the firm has adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the risk that high EBITDA overstates durable profitability for firms with large depreciation add-backs. The conversion leg rewards EBITDA that survives depreciation charges, while the liquidity leg reduces exposure to firms whose reported operating strength is vulnerable to current-claim pressure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Ceiling Net Profit Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(SUB(oibdp, xint), at), 5)), RANK(NEG(TS_MAX(RATIO(ADD(dltt, dlc), at), 5))))",
+      "hypothesis": "Improving operating profitability after interest should predict higher returns when the firm has not recently carried high funded-debt intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Profit improvement is more credible when it remains visible after interest expense rather than being offset by financing costs. Conditioning on the recent maximum debt burden focuses on balance-sheet claim risk without using debt issuance changes, helping separate durable operating momentum from levered profit recoveries.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Surplus Claim Coverage",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(xsga, lct)), 1)",
+      "hypothesis": "Gross profitability is more durable when it comfortably covers both operating overhead and current liability claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic liquidity-profit recombination with a coverage mechanism that is not just profitability multiplied by current ratio. The denominator combines SG&A operating commitments with near-term claims, so the signal rewards firms whose gross surplus has room to absorb both business reinvestment needs and short-term financial pressure.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained Cushion Net Profit Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(SUB(RATIO(re, at), RATIO(lct, at))))",
+      "hypothesis": "A downside floor in operating profitability after interest is more valuable when accumulated retained capital exceeds short-term claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids mechanically welding the current-ratio and debt-ceiling archive signals. The quality leg is a monotone retained-capital cushion: higher retained earnings improve the score and higher current liabilities reduce it, including for deficit firms.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Overhead Liquid Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), MIN(RANK(NEG(ABS(DELTA(RATIO(xsga, sale), 1)))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High operating margins are more persistent when they are not produced by abrupt SG&A intensity changes and the firm has adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from Sloan accruals and cash-based operating-profitability templates. The signal favors firms with strong industry-adjusted margins only when overhead intensity is stable and current liabilities are covered, reducing exposure to margins inflated by temporary cost cuts or liquidity stress.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(oancf, ADD(TS_SUM(COALESCE(xrd, 0), 5), lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when operating cash flow can fund both recent R&D commitments and current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-binary R&D reporting count with a continuous self-funding measure. The quality leg asks whether cash generation is sufficient relative to cumulative intangible investment and short-term claims, rather than simply restricting the signal to R&D reporters.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquid Gross Operating Conversion",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High gross profitability is more durable when it converts through overhead into operating income and is backed by adequate liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit can overstate operating strength if SG&A absorbs the surplus or if the firm lacks short-term financial flexibility. This signal rewards firms with strong gross economics only when those economics survive overhead costs and are paired with current-liability coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Core Pretax Claim Coverage",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(pi, at))), RANK(RATIO(oiadp, ADD(ABS(pi), lct))))",
+      "hypothesis": "Pretax profitability should predict higher returns when it is backed by core operating income and not vulnerable to current-claim pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from EBITDA-conversion and current-ratio recombinations by asking whether pretax profits are genuinely operating in nature. The quality leg is high when operating income is large relative to total pretax-income scale and current liabilities, reducing exposure to firms whose profitability comes from nonoperating gains or fragile short-term financing.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Interest Burden Stable Profit",
+      "expression": "MUL(RANK(MA(RATIO(oibdp, at), 3)), RANK(NEG(VOL(RATIO(xint, ADD(ABS(oibdp), lct)), 5))))",
+      "hypothesis": "Sustained operating profitability is more durable when the interest burden is stable relative to operating scale and near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the debt-ceiling recombination with a fixed-charge stability mechanism rather than a debt-level signal. High operating profitability should be more valuable when interest expense does not fluctuate sharply relative to the firm\u2019s operating cash-generating base and current-liability pressure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Claim Backed Net Momentum",
+      "expression": "MUL(RANK(TREND(RATIO(SUB(oibdp, xint), at), 5)), RANK(TS_MIN(RATIO(oancf, ADD(ADD(dltt, dlc), lct)), 5)))",
+      "hypothesis": "Improving operating profitability after interest expense should predict higher returns when operating cash flow has maintained coverage of total financial and current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another act/lct variant by conditioning profit momentum on a downside cash-coverage floor against both funded debt and current liabilities. The signal favors firms whose after-interest operating improvement is supported by cash capacity to service the full claims structure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Retained Funded RND Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(SUB(re, TS_SUM(COALESCE(xrd, 0), 5)), ADD(ABS(re), lt))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when accumulated retained earnings are sufficient to support recent R&D commitments relative to total claims.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the near-binary R&D reporting count and current-ratio variant with a continuous retained-funding test. The quality leg rewards firms whose accumulated internal capital exceeds multi-period R&D spending, separating self-financed intangible profitability from R&D activity that may strain the balance sheet.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Net-Claim Stable Profit",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(SUB(TS_MAX(RATIO(SUB(lt, re), at), 5), TS_MIN(RATIO(SUB(lt, re), at), 5)))))",
+      "hypothesis": "After-interest operating profitability is more valuable when the firm\u2019s net claim burden is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the arbitrary mean-minus-volatility construction and does not reuse a simple peak-debt ceiling. The quality leg penalizes a wide recent range in liabilities net of retained earnings, aiming to identify firms whose profitability is not being accompanied by recapitalization, restructuring, or unstable claim dynamics.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Interest-Stable Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(VOL(RATIO(xint, ADD(ABS(oibdp), lct)), 5)))))",
+      "hypothesis": "Gross profitability is more durable when it converts through SG&A into operating income and the firm\u2019s interest burden is stable.",
+      "expected_sign": "positive",
+      "reasoning": "The conversion leg tests whether gross economics remain after operating overhead, while the quality leg focuses on fixed-charge stability rather than debt levels or current-ratio liquidity. Stable interest burden should help distinguish repeatable operating profitability from profit streams exposed to refinancing or rate shocks.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Demand-Stable Liquid Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, sale))), MIN(RANK(NEG(VOL(RATIO(sale, at), 5))), RANK(RATIO(act, lct))))",
+      "hypothesis": "High operating margins are more valuable when the underlying sales base is stable and short-term liquidity is sound.",
+      "expected_sign": "positive",
+      "reasoning": "High margins can be cyclical or temporarily boosted if revenue is unstable. Conditioning on low sales-intensity volatility and a current-liability cushion targets firms with both durable demand and financial flexibility.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Covered Overhead Gross Profit",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), RANK(RATIO(oancf, ADD(xsga, lct))))",
+      "hypothesis": "Gross profitability should be rewarded when operating cash flow can fund both overhead commitments and current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit is less valuable if the firm cannot convert operations into cash sufficient to cover SG&A needs and near-term claims. This signal targets firms whose product-level profitability is financially usable, not merely high before overhead and working-capital pressures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Net Overhead Interest Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), RANK(RATIO(SUB(SUB(SUB(revt, cogs), xsga), xint), ADD(ADD(ABS(SUB(revt, cogs)), xsga), lct))))",
+      "hypothesis": "Gross profitability should predict higher returns when the gross surplus survives both overhead and interest costs while remaining large relative to current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This directly fixes the missing-overhead critique by requiring gross profit to convert after SG&A and interest expense, rather than just swapping liquidity denominators. It also avoids reusing the act/lct conditioner, making the quality test about claim-adjusted conversion of gross economics into equity-relevant operating surplus.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover-Mix Stable Net Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(VOL(RATIO(dlc, lct), 5))))",
+      "hypothesis": "Sustained operating profitability after interest expense is more durable when the short-term debt share of current liabilities is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from low-debt intensity and instead tests rollover-composition stability: firms are not rewarded merely for having little debt. High after-interest operating profitability should be more reliable when current obligations are not being repeatedly reshuffled toward or away from short-term interest-bearing debt.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Seasoned Gross Operating Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga)))), RANK(RATIO(re, ADD(ABS(re), ABS(ceq)))))",
+      "hypothesis": "Strong gross-to-operating conversion is more valuable when the equity base is seasoned by retained earnings rather than fragile or recently rebuilt capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the inverse-leverage ceq/lt conditioner with a retained-earnings share of equity, so the signal is not just profitability times low leverage. The profitability leg asks whether gross surplus survives overhead into operating income, while the quality leg distinguishes seasoned internally generated capital from firms with weak accumulated profitability histories.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Float Funded Profit",
+      "expression": "MUL(RANK(MA(RATIO(oiadp, at), 3)), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(dltt, lt))))",
+      "hypothesis": "Sustained operating profitability is more durable when liabilities are tilted toward non-debt operating float rather than long-term funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "This reinterprets the poor maturity-mix evidence by separating current operating liabilities from interest-bearing debt. Profitable firms with supplier/accrual float and less long-term funded debt may have scalable operating economics, whereas similar profits backed by funded leverage are less equity-resilient.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stable Operating-Float Converter",
+      "expression": "MUL(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(VOL(RATIO(SUB(lct, dlc), cogs), 5))))",
+      "hypothesis": "Gross-to-operating conversion is more durable when non-debt operating liabilities are stable relative to the cost base.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg measures how much gross surplus remains after SG&A, while the quality leg focuses on the stability of operating float rather than leverage level or current-ratio liquidity. Stable non-debt current liabilities relative to COGS suggest repeatable supplier and accrued-cost financing, not temporary working-capital support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Float Supported Margin",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), sale))), RANK(RATIO(SUB(lct, dlc), ADD(cogs, xsga))))",
+      "hypothesis": "High operating margins are more durable when routine non-debt operating liabilities help fund the cost base rather than short-term debt or a simple liquidity ratio.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the net-working-capital rescaling with an operating-float mechanism based on non-debt current liabilities relative to operating costs. The signal favors firms whose profitability after COGS and SG&A is paired with scalable supplier/accrual financing, not just a higher act/lct-style cushion.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Demand-Stable Net Operating Yield",
+      "expression": "MUL(RANK(MA(RATIO(SUB(oibdp, xint), at), 3)), RANK(NEG(VOL(RATIO(sale, ADD(at, lct)), 5))))",
+      "hypothesis": "Sustained operating profitability after interest expense is more valuable when sales generation is stable relative to the asset base and current-claim burden.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another gross-conversion-plus-filter permutation and tests demand stability as the independent quality dimension. Stable sales relative to assets and current liabilities should make after-interest operating profits less cyclical and more persistent.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Current-Debt Overhead Leakage Trap",
+      "expression": "MIN(RANK(RATIO(SUB(SUB(revt, cogs), oiadp), ADD(ABS(SUB(revt, cogs)), xsga))), RANK(RATIO(dlc, lct)))",
+      "hypothesis": "Firms whose gross surplus leaks away before operating income and whose current liabilities are dominated by short-term debt should earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This removes the high-gross-profitability leg that made the prior negative sign fragile. The signal is high only for the bad-quality corner: poor gross-to-operating conversion combined with high current-debt rollover pressure.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-After-Overhead Surplus",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(SUB(revt, cogs), xsga), at))), RANK(WINSOR(RATIO(SUB(oancf, xsga), lct), 1)))",
+      "hypothesis": "Operating surplus after overhead is more valuable when operating cash flow covers SG&A and leaves capacity for current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the problematic cash-coverage volatility leg with a direct cash-after-overhead coverage measure. It rewards firms whose accounting operating surplus is supported by cash available after sustaining overhead commitments, while winsorization limits small-denominator instability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Float Gross Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(SUB(revt, cogs), at))), MIN(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(ADD(dltt, dlc), lt)))))",
+      "hypothesis": "Gross profitability is most valuable when it converts through overhead into operating income and the liability structure reflects operating float rather than funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "The first two components preserve the strong gross-to-operating conversion mechanism, while the quality leg replaces generic liquidity or leverage with a liability-mix decomposition. It favors firms whose profitability is supported by routine operating liabilities and penalizes firms where funded debt dominates the claims structure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover-Clean Operating Converter",
+      "expression": "MUL(RANK(RATIO(oiadp, ADD(ABS(SUB(revt, cogs)), xsga))), RANK(NEG(TS_MAX(RATIO(dlc, lct), 5))))",
+      "hypothesis": "Gross-to-operating conversion should predict higher returns when recent current liabilities have not been dominated by short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the fragile negative hollow-profitability setup by focusing on the positive-quality mirror: firms whose gross surplus converts into operating income and whose current claims are not heavily short-term-debt financed. It tests rollover risk as a conditioner of operating conversion, not just low debt intensity.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation Gap Rollover Trap",
+      "expression": "MUL(RANK(RATIO(SUB(ebitda, oiadp), at)), RANK(TS_MAX(RATIO(dlc, lct), 5)))",
+      "hypothesis": "Firms with a large EBITDA-to-operating-income gap and persistent short-term-debt rollover pressure should earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This no longer treats depreciation as a liquidity claim; instead, the EBITDA-to-operating-income gap is a signal that headline profitability is noncash or capital-consumption-heavy. The quality leg captures actual near-term rollover pressure through the recent peak share of current liabilities represented by debt, isolating a fragile-profitability corner.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover-Stable Net Profit Floor",
+      "expression": "MUL(RANK(TS_MIN(RATIO(SUB(oibdp, xint), at), 5)), RANK(NEG(VOL(SUB(RATIO(dlc, lct), RATIO(dltt, lt)), 5))))",
+      "hypothesis": "A downside floor in operating profitability after interest expense is more valuable when the firm\u2019s debt maturity mix is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing interest-expense volatility as the conditioner and instead tests whether financing structure is being reshuffled between short-term and long-term debt. Stable rollover composition should make an after-interest profit floor more durable and less exposed to refinancing-driven reversals.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Margin Floor Operating Float",
+      "expression": "MUL(RANK(TS_MIN(IND_ADJ(RATIO(oiadp, sale)), 5)), RANK(SUB(RATIO(SUB(lct, dlc), lt), RATIO(ADD(dltt, dlc), lt))))",
+      "hypothesis": "Persistent industry-adjusted operating margins should predict higher returns when liabilities are tilted toward non-debt operating float rather than funded debt.",
+      "expected_sign": "positive",
+      "reasoning": "This restores industry comparability for the operating-margin floor and replaces the weak demand-volatility recombination with a liability-mix mechanism. The quality leg rewards firms funded more by routine operating liabilities and less by debt claims, helping separate scalable operating profitability from levered profitability.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RND Adjusted Overhead Converter",
+      "expression": "MUL(RANK(IND_ADJ(RATIO(ADD(oibdp, COALESCE(xrd, 0)), at))), RANK(RATIO(ADD(oiadp, COALESCE(xrd, 0)), ADD(ADD(ABS(ADD(oibdp, COALESCE(xrd, 0))), ABS(SUB(xsga, COALESCE(xrd, 0)))), lct))))",
+      "hypothesis": "R&D-adjusted operating profitability is more durable when it converts into R&D-adjusted operating income after non-R&D overhead and current claims.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the weak retained-capital-minus-current-claims leg and handles R&D consistently by adding it back to profitability while excluding it from the overhead burden. Treating unreported R&D as zero is economically justified, and the conversion leg tests whether intangible-adjusted profitability survives non-R&D SG&A and near-term liability pressure.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Stable Cash Operating Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and coherently signed, but it is essentially a two-leg quality composite (operating profitability \u00d7 low cash-flow volatility) that closely tracks published QMJ/\"safety-adjusted profitability\" constructions, so it is acceptable as a generation-0 baseline rather than a novel interaction."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cash Validated Profit Trend",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression matches the hypothesis and the sign is correct, though \"profitability improvement validated by low accruals\" is a well-trodden combination of the accruals anomaly with fundamental-momentum, and the rank product means firms with deteriorating profitability *and* low accruals are also pushed to the short leg, which slightly muddies attribution."
+    },
+    {
+      "generation": 0,
+      "target_name": "Gross Profit Per Liability Burden",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Dividing an industry-demeaned (sign-changing) gross-profitability measure by lt/at is not monotone in either leg \u2014 low-liability firms with below-industry profitability get extreme negative scores while high-liability firms with the same profitability get near-zero scores \u2014 so the signal does not implement the stated \"profitability premium is stronger with light liabilities\" hypothesis and 1% winsorization will not repair the small-denominator instability."
+    },
+    {
+      "generation": 0,
+      "target_name": "Retained Stable Net Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This stacks three separately published quality effects (net profitability, retained-earnings-to-assets, earnings volatility) into a single product-of-ranks, so any result is uninterpretable as an interaction and largely rediscovers known profitability/retained-earnings anomalies."
+    },
+    {
+      "generation": 0,
+      "target_name": "Accrual Financed Profit Spike",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The construction genuinely isolates the \"profit spike unsupported by cash\" corner and the negative expected sign follows naturally from the expression, though it is close to the established result that the accruals anomaly is concentrated among firms with large earnings increases, and the rank-product also assigns low scores to sharply deteriorating high-accrual firms, which weakens the short leg's purity."
+    },
+    {
+      "generation": 0,
+      "target_name": "Deleveraging EBITDA Gate",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The hard 0/1 gate collapses roughly half the cross-section (all firms that increased liability intensity) to an identical value of zero regardless of profitability, producing a degenerate, mechanically unstable short leg whose spread will mostly reflect the known leverage-change/debt-issuance effect rather than the claimed profitability-conditional-on-deleveraging interaction; it is also largely redundant with the first proposal's profitability leg."
+    },
+    {
+      "generation": 1,
+      "target_name": "Liability-Light Operating Surplus",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is structurally the archived \"Debt-Light EBITDA Strength\" with cosmetic substitutions (operating surplus for EBITDA, total liabilities for debt, industry-adjustment, no smoothing), and profitability-times-low-leverage is itself the standard QMJ/Piotroski quality composite rather than a new mechanism."
+    },
+    {
+      "generation": 1,
+      "target_name": "Interest-Clean Operating Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Same rank(profitability) \u00d7 rank(low leverage) template as the archived signal, with the interest-expense term adding little independent information since xint/at is largely a mechanical function of the debt/at term already in the SUMRANK."
+    },
+    {
+      "generation": 1,
+      "target_name": "Liquidity-Backed Operating Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The profitability leg is essentially identical to the archived signal's (oibdp \u2248 ebitda, same 3-period MA) but the current-ratio quality leg is a genuinely different balance-sheet dimension; the concern is that high current ratios often flag bloated inventory/receivables and idle assets, so the expected positive sign on that leg is not obviously right."
+    },
+    {
+      "generation": 1,
+      "target_name": "Deficit Profit Rebound Trap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression is internally consistent with the stated negative sign and the \"turnaround trap\" framing is a real interaction hypothesis, but any negative slope will be hard to attribute to the interaction because low retained-earnings/assets is a standalone distress proxy with its own documented negative return relation."
+    },
+    {
+      "generation": 1,
+      "target_name": "Debt-Financed Profit Acceleration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The second leg (\u0394debt/at plus \u0394interest/at) is effectively net debt issuance, a well-documented external-financing anomaly with a strong negative main effect, so a negative slope would almost certainly be a rediscovery rather than evidence for the profit-acceleration interaction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Operating Profit Reliability Ratio",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The construction is sound (the |m| term makes it a bounded monotone transform of signed profitability-to-instability, so no sign pathology) and the current-liability volatility term is a real cross-theme addition, though the core profitability/earnings-volatility ratio is close to the known earnings-smoothness and profit-persistence literature."
+    },
+    {
+      "generation": 2,
+      "target_name": "Cash-Covered Operating Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic swap of the second leg in the archived \"Liquidity-Backed Operating Yield\" (act/lct \u2192 oancf/lct) with an identical profitability leg, and the new leg is itself highly correlated with the profitability leg (oancf \u2248 oibdp scaled), so it double-counts rather than adding an independent conditioning dimension."
+    },
+    {
+      "generation": 2,
+      "target_name": "Maturity-Matched Operating Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Liability maturity mix (lct/lt) is a genuinely distinct conditioning variable from the archived total-debt-intensity and current-ratio legs, though it reuses the same rank-product template and carries a latent tension \u2014 low current-liability share often means *more* long-term debt, which cuts against the earlier debt-light result and should be diagnosed if the sign disappoints."
+    },
+    {
+      "generation": 2,
+      "target_name": "Productive Liquidity Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The contrast with the archived liquidity-cushion result is well motivated, but the second leg is essentially current-asset turnover \u2014 a known DuPont/asset-turnover anomaly component that is also mechanically a factor of the profitability leg itself (oibdp/at = margin \u00d7 turnover) \u2014 so any success may be a rediscovery rather than a true interaction."
+    },
+    {
+      "generation": 2,
+      "target_name": "Retained Momentum Operating Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_RANK of re/at over a 5-period window is near-degenerate for the typical firm (RE/AT drifts monotonically upward for any profitable firm, pinning the rank at its maximum and creating massive ties), so the second leg mostly re-expresses profitability rather than providing the independent \"quality backing\" the hypothesis claims."
+    },
+    {
+      "generation": 2,
+      "target_name": "Liquidity-Strained Profit Spike",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The dominant driver of the second leg is (ib \u2212 oancf)/at, i.e. the Sloan accrual anomaly, and the overall construction is a close cousin of the archived \"Cutback Liquidity Profit Accel Trap\" (which already failed with a sign-contradicting fmb_tstat), so this is largely a repackaged known effect on a template that has not worked here."
+    },
+    {
+      "generation": 2,
+      "target_name": "Internally Funded RND Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "R&D-added-back operating profitability is coherent (xrd sits inside SG&A/oibdp) and the bounded re/(|re|+lt) self-financing leg is a non-obvious construction that handles deficit firms gracefully, but both legs edge toward known anomalies (R&D-adjusted profitability, retained-earnings-to-value), so the incremental content over the archived RE-based signals needs to be demonstrated rather than assumed."
+    },
+    {
+      "generation": 3,
+      "target_name": "Residual Cash Operating Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a leg-swap recombination of two archive signals (the residual cash-conversion quality leg from \"Residual Cash Conversion Margin\" and the profitability leg from \"Liquidity-Backed Operating Yield\"), and the quality leg is itself close to the published cash-based-operating-profitability/accruals anomaly, so the incremental information is mostly a coverage adjustment rather than a new mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "Downside Cash Coverage Profit",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The TS_MIN \"worst-case coverage floor\" is a genuinely new conditioning construct rather than another contemporaneous-level interaction, the sign direction matches the expression, and it plausibly separates durable from fragile profitability \u2014 though coverage should be checked given the five-period oancf history requirement."
+    },
+    {
+      "generation": 3,
+      "target_name": "Balanced Liquidity Operating Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It conjoins two already-tested archive legs, one of which (sale/act productivity) delivered a significantly negative FF5 alpha, and act/lct versus sale/act are partly mechanically opposed in act, so the MIN gate mostly selects on low lct and high sale rather than testing a coherent new \"healthy working capital\" mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "Seasoned Margin Expansion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The economic claim \u2014 profit-trend momentum validated by retained-capital backing \u2014 is essentially the already-failed \"Retention-Backed Profit Momentum\" (fmb 1.00, ls_talpha \u22120.27) with re level substituted for \u0394re and sales-scaling for asset-scaling, and both legs come directly from archive signals, making it a cosmetic variant."
+    },
+    {
+      "generation": 3,
+      "target_name": "Maintenance-Light Operating Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Since dp is strictly positive and |oiadp| sits in the denominator, the second leg is monotonically decreasing in profitability and therefore largely double-counts leg one rather than acting as an independent conditioner; economically it also reduces to profitability \u00d7 low capital intensity, a well-worn combination, and it is internally odd to penalize depreciation in a measure already net of depreciation."
+    },
+    {
+      "generation": 3,
+      "target_name": "Stable Capital Structure Profit",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Leverage-intensity *stability* is a substantively different conditioning mechanism from the archive's debt-*level* composite, the sign is coherent with the expression, and the recapitalization/financing-stress rationale is testable \u2014 though the result should be checked for collinearity with debt level and for coverage loss from the five-period VOL window."
+    },
+    {
+      "generation": 4,
+      "target_name": "Claim-Stress Profit Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a one-leg swap on the archive's \"Liquid Profitability Floor\" (same TS_MIN(oibdp/at) leg) where the replacement conditioner is the lct/sale intensity leg that already produced essentially zero alpha in \"Current-Claim Clean Margin,\" so it reads as a cosmetic recombination unlikely to add information."
+    },
+    {
+      "generation": 4,
+      "target_name": "Debt-Buffered EBITDA Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The x/(|x|+debt) construction is internally inconsistent because for loss-making firms (negative TS_MIN) higher debt makes the score *less* negative, reversing the intended penalty, and this exact denominator form already failed in \"Operating Profit Reliability Ratio\" while the simpler MUL version (\"Debt-Light EBITDA Strength\") already worked."
+    },
+    {
+      "generation": 4,
+      "target_name": "Fixed-Claim Coverage Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It stacks two constructions that already failed in the archive (fixed-charge coverage of current liabilities, and the signed x/(|x|+vol) normalizer with its sign-flip pathology for negative numerators) and additionally mismatches scaling by dividing an lct-scaled numerator against an at-scaled volatility term."
+    },
+    {
+      "generation": 4,
+      "target_name": "Liquid Sustained RND Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The intangible-adjusted profitability leg conditioned jointly on R&D commitment and liquidity is a defensible extension of the archive's promising fmb-but-weak-alpha R&D signal, though COALESCE(xrd,0) creates a large tied mass of non-R&D firms in the TREND leg and a rising R&D/sales trend arguably points the other way (investment/asset-growth anomaly), so the conditioning sign is not clearly justified."
+    },
+    {
+      "generation": 4,
+      "target_name": "Consistent Profit Stable Claims",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_SUM(INDICATOR(oiadp/at,0),5) is nearly saturated and highly redundant with the MA profitability level, so the MIN gate collapses for most firms into NEG(VOL(lct/at)) \u2014 a leg already tested via \"Stable Capital Structure Profit\" and \"Maintenance-Stable EBITDA Quality\" with ~zero alpha."
+    },
+    {
+      "generation": 4,
+      "target_name": "Current-Claim Disciplined Margin Trend",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "It is a single-variable substitution (act\u2192lct) on the archive's \"Working-Capital Efficient Margin Expansion\" rather than a substantive re-diagnosis of why that signal's alpha was insignificant, and the new leg's direction (falling current liabilities per sale) mechanically implies *higher* working-capital accruals, which conflicts with the well-known accrual anomaly's negative return prediction."
+    },
+    {
+      "generation": 5,
+      "target_name": "Bottleneck Smooth Liquid Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a pure operator swap (MIN for MUL) on the archive's \"Liquidity-Backed Smooth Operating Profit\" using identical legs \u2014 a cosmetic variant of an already-tested signal rather than a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Dual-Claim Net Profit Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It mechanically welds together two already-evaluated archive signals (\"Liquid Net Operating Floor\" and \"Trough EBITDA Debt Ceiling\") whose legs are highly correlated conditioners, so the marginal information over prior tests is minimal."
+    },
+    {
+      "generation": 5,
+      "target_name": "Liquid Accrual-Clean Operating Profit",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The accrual conditioner (ib \u2212 oancf)/at is literally the Sloan (1996) accruals measure and its interaction with profitability is the published cash-based operating profitability anomaly (Ball et al. 2016), and it also closely echoes the archive's \"Residual Cash Conversion Margin.\""
+    },
+    {
+      "generation": 5,
+      "target_name": "Liquid EBITDA Conversion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The depreciation-conversion leg is a genuinely new and economically sensible way to discount EBITDA quality (though the |ebitda|+dp denominator is arbitrary and largely reduces to inverse depreciation intensity, overlapping \"Hollow Levered EBITDA Trap\"), and the recycled act/lct conditioner limits its incremental value."
+    },
+    {
+      "generation": 5,
+      "target_name": "Liquid RND Persistence Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_COUNT(xrd,5) is effectively a near-binary R&D-reporting dummy with massive rank ties, so under MIN the signal collapses to the already-tested profitability\u00d7current-ratio construct restricted to R&D reporters \u2014 a weak variant of \"Liquid Sustained RND Profit.\""
+    },
+    {
+      "generation": 5,
+      "target_name": "Debt-Ceiling Net Profit Momentum",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Pairing an interest-adjusted profitability trend with a peak-leverage conditioner is a coherent and reasonably distinct construction (level-based floor versus trend), though both components are individually close to known profitability-growth and leverage effects and the archive's trend-based legs have generally produced weak alphas."
+    },
+    {
+      "generation": 6,
+      "target_name": "Conversion-Floor Liquid EBITDA",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-parameterization of the archived \"Liquid EBITDA Conversion\" (IND_ADJ\u2192MA(3) on the profitability leg, contemporaneous conversion\u2192TS_MIN(5) on the conversion leg), with both substitutions already shown elsewhere in the archive to move results only marginally, so it tests no new economic channel."
+    },
+    {
+      "generation": 6,
+      "target_name": "Debt-Safe EBITDA Conversion",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Mechanically it just swaps the act/lct leg of archived \"Liquid EBITDA Conversion\" for the NEG(TS_MAX(debt/at,5)) leg of archived \"Trough EBITDA Debt Ceiling\" and \"Debt-Ceiling Net Profit Momentum,\" and since both conditioning legs already delivered near-identical ~3% alphas with t\u22482.9-3.1, the recombination's outcome is largely pre-determined rather than informative."
+    },
+    {
+      "generation": 6,
+      "target_name": "Liquid Net Profit Momentum",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_MIN(act/lct,5) is near-collinear with the plain current ratio already used in eight archived signals, and pairing it with the after-interest profit trend leg from \"Debt-Ceiling Net Profit Momentum\" yields a signal that sits between two existing entries without introducing a distinct mechanism; the recurring act/lct leg also raises the concern that the liquidity/size dimension, not profitability quality, is driving the repeated ~4% alphas."
+    },
+    {
+      "generation": 6,
+      "target_name": "Liquid Gross Operating Conversion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The gross-profit leg is essentially Novy-Marx gross profitability (a known anomaly) and the liquidity leg is heavily reused, but the overhead-absorption conversion ratio oiadp/(|gross profit|+xsga) is a genuinely new intermediate-margin quality measure not present in the archive, making this the most substantively novel proposal of the batch."
+    },
+    {
+      "generation": 6,
+      "target_name": "RND Reserve Liquid Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is archived \"Self-Funded RND Profit\" with oancf replaced by act in the numerator and the R&D accumulation window shortened from 5 to 3 \u2014 a parameter/denominator tweak that also collapses toward the already heavily-tested current-ratio leg rather than a new economic hypothesis."
+    },
+    {
+      "generation": 6,
+      "target_name": "Smooth Net Profit Debt Ceiling",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It bolts the MA-minus-VOL smoothness leg from \"Liquidity-Backed Smooth Operating Profit\" onto the debt-ceiling leg from \"Trough EBITDA Debt Ceiling,\" so it is a two-component recombination of archived legs; the SUB(mean, volatility) construction is also scale-arbitrary (subtracting a standard deviation from a level with no scaling coefficient), making any result hard to interpret economically."
+    },
+    {
+      "generation": 7,
+      "target_name": "After-Interest Gross Conversion Liquidity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-clone of the archived \"Liquid Gross Operating Conversion\" (same gross-profitability leg, same act/lct conditioner) with only the conversion denominator swapped from xsga to lct, and that swap actually contradicts the stated hypothesis of testing whether gross surplus \"survives overhead,\" since overhead no longer appears in the ratio."
+    },
+    {
+      "generation": 7,
+      "target_name": "Interest-Stable Gross Converter",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It reuses the archived gross-to-operating conversion leg but replaces the recurring liquidity conditioner with a genuinely different fixed-charge-stability measure, making it a defensible (if leg-swap-style) test of whether the conversion mechanism survives without current-ratio conditioning."
+    },
+    {
+      "generation": 7,
+      "target_name": "Demand-Stable Liquid Margin",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The demand-stability conditioner (low asset-turnover volatility) is a new ingredient relative to the archive's overhead-, cash-, and claim-based margin conditioners and is internally consistent, though VOL(sale/at) conflates revenue instability with asset-base churn and the act/lct leg is heavily reused."
+    },
+    {
+      "generation": 7,
+      "target_name": "Current-Debt-Clean Operating Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Profitability \u00d7 low-debt-intensity has already been tested twice in the archive (Debt-Light EBITDA Strength, Liquidity-Backed Operating Yield), and narrowing the debt measure to dlc/act is a cosmetic denominator change rather than a new mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Gross Conversion Equity Cushion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The base signal is identical to the archived Liquid Gross Operating Conversion and the substituted ceq/lt conditioner is essentially inverse book leverage, i.e., the same low-leverage-supports-profitability idea already covered by Debt-Light EBITDA Strength and Internally Funded RND Profit."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash-Covered Overhead Gross Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing the archive's weak accrual-based gross-surplus-over-(xsga+lct) ratio with a cash-flow-funded coverage conditioner interacted with industry-adjusted gross profitability is a coherent and reasonably distinct construction, though oancf will cut coverage and the mechanism overlaps the earlier residual-cash-conversion theme."
+    },
+    {
+      "generation": 8,
+      "target_name": "Net-Working-Capital Gross Converter",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-scaling of the archive's best signal (Liquid Gross Operating Conversion), swapping act/lct for the monotonically related (act\u2212lct)/at while leaving the other two legs identical, so it tests essentially the same construct rather than a new mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Stable Sales-Asset Gross Converter",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It is the fourth permutation of the same \"IND_ADJ gross profit \u00d7 gross-to-operating conversion \u00d7 third quality filter\" template already probed with liquidity (0.044/3.83), interest-burden stability (0.029/2.89) and sales-stability legs (Demand-Stable Liquid Margin), so the incremental information from substituting VOL(sale/act) is minimal and likely to load on the same spread."
+    },
+    {
+      "generation": 8,
+      "target_name": "Operating-Float Funded Profit",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The liability-mix leg reduces cleanly to (lct \u2212 dlc \u2212 dltt)/lt, which is a genuinely different economic decomposition (non-debt operating float vs. funded debt) and is motivated by an explicit diagnosis of why the earlier NEG(lct/lt) maturity-mix interaction produced a reliably wrong-signed alpha."
+    },
+    {
+      "generation": 8,
+      "target_name": "Current-Debt Hollow Gross Trap",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The construct is internally coherent, but it is structurally the same \"hollow profitability trap\" design as the archived Hollow Levered EBITDA Trap (which delivered contradictory fmb and alpha signs), and the expected negative sign is fragile because the dominant leg is high industry-adjusted gross profitability, whose known premium runs the other way."
+    },
+    {
+      "generation": 8,
+      "target_name": "Cash-Overhead Stability Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This simply multiplies an archived profitability leg by the volatility of an archived cash-coverage ratio, ignoring that the closely related VOL(oancf/lct) stability leg already produced a significantly negative FF5 alpha (\u22120.025, t=\u22122.11) contradicting the assumed positive sign, and the 3-year VOL window makes the quality leg noisier still."
+    },
+    {
+      "generation": 8,
+      "target_name": "Stable Operating-Float Converter",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Stability of non-debt current liabilities scaled by COGS is a reasonably distinct quality construct not present in the archive and pairs sensibly with the conversion leg, though the conversion ratio alone is a recycled component and the mechanism overlaps with the companion operating-float proposal."
+    },
+    {
+      "generation": 9,
+      "target_name": "Depreciation-Claim Covered EBITDA",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Adding depreciation (ebitda \u2212 oiadp) to a *liquidity* denominator is economically incoherent \u2014 a noncash charge is not a near-term claim \u2014 and because dp is small relative to lct the leg ranks nearly identically to act/lct, making this a cosmetic variant of the already-tested Liquidity-Backed Operating Yield / Liquid EBITDA Conversion signals."
+    },
+    {
+      "generation": 9,
+      "target_name": "Operating-Float Gross Converter",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It preserves the archive's strongest mechanism (industry-adjusted gross profitability \u00d7 gross-to-operating conversion) while substituting a genuinely different conditioner \u2014 non-debt operating float versus funded debt share of total liabilities \u2014 rather than the generic current ratio, so the test is informative even though both legs are individually familiar."
+    },
+    {
+      "generation": 9,
+      "target_name": "Interest-Stable Net Profit Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical crossover of two existing archive legs (TS_MIN of after-interest profitability from Liquid Net Operating Floor and VOL of interest burden from Interest Burden Stable Profit), and the volatility leg degenerates toward a low/no-debt indicator (zero xint \u21d2 zero volatility), so it largely re-tests the already-documented Debt-Light EBITDA / Trough EBITDA Debt Ceiling effect with redundant xint on both sides."
+    },
+    {
+      "generation": 9,
+      "target_name": "Rollover-Clean Operating Converter",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning gross-to-operating conversion on the recent *maximum* short-term-debt share of current liabilities is a defensible rollover-risk conditioner that is distinct from the previously tested volatility and float-stability versions, though the omission of the industry adjustment that helped related signals is a weakness given Stable Operating-Float Converter's sharply negative alpha."
+    },
+    {
+      "generation": 9,
+      "target_name": "Demand-Stable Operating Margin Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Both legs are lifted verbatim from mediocre archive signals (Demand-Stable Net Operating Yield's VOL(sale/(at+lct)) and margin-floor variants), and it drops the IND_ADJ that was needed to make raw operating margin comparable across industries, so it reads as a downgraded recombination rather than a new mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Seasoned RND Operating Converter",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Three-leg complexity built entirely from archive components, one of which (re/at \u2212 lct/at) already delivered ~zero/negative alpha in Retained Cushion Net Profit Floor, and the R&D treatment is internally inconsistent since xrd is added back in the numerator while xsga (which contains xrd) remains in the denominator."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Stable Cash Operating Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oibdp,at))),rank(neg(vol(ratio(oancf,at),5))))",
+        "variables": [
+          "at",
+          "oancf",
+          "oibdp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash Validated Profit Trend",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(oiadp,at),5)),rank(neg(ratio(sub(ib,oancf),at))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "oiadp"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Accrual Financed Profit Spike",
+      "metadata": {
+        "normalized_expression": "mul(rank(delta(ratio(ib,at),1)),rank(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Liability-Light Gross Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),rank(neg(ratio(lt,at))))",
+        "variables": [
+          "at",
+          "cogs",
+          "lt",
+          "revt"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Net Profit Signal To Noise",
+      "metadata": {
+        "normalized_expression": "ratio(ma(ratio(ni,at),3),add(abs(ma(ratio(ni,at),3)),vol(ratio(ni,at),5)))",
+        "variables": [
+          "at",
+          "ni"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Light EBITDA Strength",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(ebitda,at),3)),rank(neg(ma(ratio(add(dltt,dlc),at),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ebitda"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Backed Operating Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(oibdp,at),3)),rank(ratio(act,lct)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deficit Profit Rebound Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(delta(ratio(oibdp,at),1)),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Profit Reliability Ratio",
+      "metadata": {
+        "normalized_expression": "ratio(ma(ratio(oiadp,at),3),add(abs(ma(ratio(oiadp,at),3)),add(vol(ratio(oiadp,at),5),vol(ratio(lct,at),5))))",
+        "variables": [
+          "at",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Stable Operating Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(sub(revt,cogs),xsga),sale))),rank(neg(vol(ratio(sub(act,lct),sale),5))))",
+        "variables": [
+          "act",
+          "cogs",
+          "lct",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Charge Coverage Profit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(oiadp,xint),add(lct,abs(xint))),1)",
+        "variables": [
+          "lct",
+          "oiadp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cutback Liquidity Profit Accel Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(accel(ratio(oiadp,at))),min(rank(neg(delta(ratio(xsga,sale),1))),rank(delta(ratio(lct,act),1))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oiadp",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maturity-Matched Operating Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(oiadp,at),3)),rank(neg(ratio(lct,lt))))",
+        "variables": [
+          "at",
+          "lct",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Productive Liquidity Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oibdp,at))),rank(ratio(sale,act)))",
+        "variables": [
+          "act",
+          "at",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internally Funded RND Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(add(oibdp,coalesce(xrd,0)),at))),rank(ratio(re,add(abs(re),lt))))",
+        "variables": [
+          "at",
+          "lt",
+          "oibdp",
+          "re",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Residual Cash Conversion Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(sub(revt,cogs),xsga),sale))),rank(ratio(sub(oancf,oibdp),add(abs(oibdp),lct))))",
+        "variables": [
+          "cogs",
+          "lct",
+          "oancf",
+          "oibdp",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retention-Backed Profit Momentum",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(oiadp,at),5)),rank(ratio(delta(re,1),add(abs(delta(re,1)),lct))))",
+        "variables": [
+          "at",
+          "lct",
+          "oiadp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working-Capital Efficient Margin Expansion",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(oiadp,sale),5)),rank(neg(trend(ratio(act,sale),5))))",
+        "variables": [
+          "act",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Downside Cash Coverage Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oiadp,at))),rank(ts_min(ratio(oancf,lct),5)))",
+        "variables": [
+          "at",
+          "lct",
+          "oancf",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Capital Structure Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(ebitda,at),3)),rank(neg(vol(ratio(add(dltt,dlc),at),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ebitda"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid Profitability Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ratio(oibdp,at),5)),rank(ratio(act,lct)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Claim Clean Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oiadp,sale))),rank(neg(ratio(lct,sale))))",
+        "variables": [
+          "lct",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Coverage Stable Margin Trend",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(oiadp,sale),5)),rank(neg(vol(ratio(oancf,lct),5))))",
+        "variables": [
+          "lct",
+          "oancf",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Stable EBITDA Quality",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(ebitda,at))),rank(neg(sumrank(vol(ratio(dp,sale),5),vol(ratio(lct,sale),5)))))",
+        "variables": [
+          "at",
+          "dp",
+          "ebitda",
+          "lct",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid Sustained RND Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(add(oibdp,coalesce(xrd,0)),at))),min(rank(trend(ratio(coalesce(xrd,0),sale),5)),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oibdp",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid Net Operating Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ratio(sub(oibdp,xint),at),5)),rank(ratio(act,lct)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Trough EBITDA Debt Ceiling",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ratio(ebitda,at),5)),rank(neg(ts_max(ratio(add(dltt,dlc),at),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ebitda"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hollow Levered EBITDA Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,at)),min(rank(ratio(sub(ebitda,oiadp),at)),rank(ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Backed Smooth Operating Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(ma(ratio(oiadp,at),3),vol(ratio(oiadp,at),5))),rank(ratio(act,lct)))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Validated Margin Expansion",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(oiadp,sale),5)),min(rank(trend(ratio(oancf,sale),5)),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "lct",
+          "oancf",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid EBITDA Conversion",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(ebitda,at))),min(rank(ratio(oiadp,add(abs(ebitda),dp))),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "at",
+          "dp",
+          "ebitda",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Ceiling Net Profit Momentum",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(sub(oibdp,xint),at),5)),rank(neg(ts_max(ratio(add(dltt,dlc),at),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Surplus Claim Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(xsga,lct)),1)",
+        "variables": [
+          "cogs",
+          "lct",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained Cushion Net Profit Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ratio(sub(oibdp,xint),at),5)),rank(sub(ratio(re,at),ratio(lct,at))))",
+        "variables": [
+          "at",
+          "lct",
+          "oibdp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Overhead Liquid Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(sub(revt,cogs),xsga),sale))),min(rank(neg(abs(delta(ratio(xsga,sale),1)))),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "cogs",
+          "lct",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded RND Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(add(oibdp,coalesce(xrd,0)),at))),rank(ratio(oancf,add(ts_sum(coalesce(xrd,0),5),lct))))",
+        "variables": [
+          "at",
+          "lct",
+          "oancf",
+          "oibdp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquid Gross Operating Conversion",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),min(rank(ratio(oiadp,add(abs(sub(revt,cogs)),xsga))),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "at",
+          "cogs",
+          "lct",
+          "oiadp",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Core Pretax Claim Coverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(pi,at))),rank(ratio(oiadp,add(abs(pi),lct))))",
+        "variables": [
+          "at",
+          "lct",
+          "oiadp",
+          "pi"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Interest Burden Stable Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(oibdp,at),3)),rank(neg(vol(ratio(xint,add(abs(oibdp),lct)),5))))",
+        "variables": [
+          "at",
+          "lct",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Claim Backed Net Momentum",
+      "metadata": {
+        "normalized_expression": "mul(rank(trend(ratio(sub(oibdp,xint),at),5)),rank(ts_min(ratio(oancf,add(add(dltt,dlc),lct)),5)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "lct",
+          "oancf",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Retained Funded RND Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(add(oibdp,coalesce(xrd,0)),at))),rank(ratio(sub(re,ts_sum(coalesce(xrd,0),5)),add(abs(re),lt))))",
+        "variables": [
+          "at",
+          "lt",
+          "oibdp",
+          "re",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net-Claim Stable Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(sub(oibdp,xint),at),3)),rank(neg(sub(ts_max(ratio(sub(lt,re),at),5),ts_min(ratio(sub(lt,re),at),5)))))",
+        "variables": [
+          "at",
+          "lt",
+          "oibdp",
+          "re",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Interest-Stable Gross Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),min(rank(ratio(oiadp,add(abs(sub(revt,cogs)),xsga))),rank(neg(vol(ratio(xint,add(abs(oibdp),lct)),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "lct",
+          "oiadp",
+          "oibdp",
+          "revt",
+          "xint",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Demand-Stable Liquid Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oiadp,sale))),min(rank(neg(vol(ratio(sale,at),5))),rank(ratio(act,lct))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Covered Overhead Gross Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),rank(ratio(oancf,add(xsga,lct))))",
+        "variables": [
+          "at",
+          "cogs",
+          "lct",
+          "oancf",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net Overhead Interest Gross Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),rank(ratio(sub(sub(sub(revt,cogs),xsga),xint),add(add(abs(sub(revt,cogs)),xsga),lct))))",
+        "variables": [
+          "at",
+          "cogs",
+          "lct",
+          "revt",
+          "xint",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover-Mix Stable Net Operating Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(sub(oibdp,xint),at),3)),rank(neg(vol(ratio(dlc,lct),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "lct",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Seasoned Gross Operating Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(oiadp,add(abs(sub(revt,cogs)),xsga)))),rank(ratio(re,add(abs(re),abs(ceq)))))",
+        "variables": [
+          "ceq",
+          "cogs",
+          "oiadp",
+          "re",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Float Funded Profit",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(oiadp,at),3)),rank(sub(ratio(sub(lct,dlc),lt),ratio(dltt,lt))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "lct",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stable Operating-Float Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(oiadp,add(abs(sub(revt,cogs)),xsga))),rank(neg(vol(ratio(sub(lct,dlc),cogs),5))))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "oiadp",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Float Supported Margin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(sub(revt,cogs),xsga),sale))),rank(ratio(sub(lct,dlc),add(cogs,xsga))))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "revt",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Demand-Stable Net Operating Yield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(sub(oibdp,xint),at),3)),rank(neg(vol(ratio(sale,add(at,lct)),5))))",
+        "variables": [
+          "at",
+          "lct",
+          "oibdp",
+          "sale",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Current-Debt Overhead Leakage Trap",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(sub(sub(revt,cogs),oiadp),add(abs(sub(revt,cogs)),xsga))),rank(ratio(dlc,lct)))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "oiadp",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-After-Overhead Surplus",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(sub(revt,cogs),xsga),at))),rank(winsor(ratio(sub(oancf,xsga),lct),1)))",
+        "variables": [
+          "at",
+          "cogs",
+          "lct",
+          "oancf",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Float Gross Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(sub(revt,cogs),at))),min(rank(ratio(oiadp,add(abs(sub(revt,cogs)),xsga))),rank(sub(ratio(sub(lct,dlc),lt),ratio(add(dltt,dlc),lt)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dlc",
+          "dltt",
+          "lct",
+          "lt",
+          "oiadp",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover-Clean Operating Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(oiadp,add(abs(sub(revt,cogs)),xsga))),rank(neg(ts_max(ratio(dlc,lct),5))))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "lct",
+          "oiadp",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation Gap Rollover Trap",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(ebitda,oiadp),at)),rank(ts_max(ratio(dlc,lct),5)))",
+        "variables": [
+          "at",
+          "dlc",
+          "ebitda",
+          "lct",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover-Stable Net Profit Floor",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ratio(sub(oibdp,xint),at),5)),rank(neg(vol(sub(ratio(dlc,lct),ratio(dltt,lt)),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "lct",
+          "lt",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Margin Floor Operating Float",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(ind_adj(ratio(oiadp,sale)),5)),rank(sub(ratio(sub(lct,dlc),lt),ratio(add(dltt,dlc),lt))))",
+        "variables": [
+          "dlc",
+          "dltt",
+          "lct",
+          "lt",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RND Adjusted Overhead Converter",
+      "metadata": {
+        "normalized_expression": "mul(rank(ind_adj(ratio(add(oibdp,coalesce(xrd,0)),at))),rank(ratio(add(oiadp,coalesce(xrd,0)),add(add(abs(add(oibdp,coalesce(xrd,0))),abs(sub(xsga,coalesce(xrd,0)))),lct))))",
+        "variables": [
+          "at",
+          "lct",
+          "oiadp",
+          "oibdp",
+          "xrd",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

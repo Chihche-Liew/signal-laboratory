@@ -1,0 +1,3279 @@
+{
+  "pair": "profit_intangible",
+  "evaluated": [
+    {
+      "name": "Capitalized Intangible Yield x Intensity",
+      "expression": "MUL(IND_RANK(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)))",
+      "hypothesis": "Firms with high operating yield on a capitalized intangible asset base and high accumulated intangible investment intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The first component adds back R&D and advertising and scales profitability by book assets plus a recent intangible-investment stock. Multiplying by accumulated intangible intensity emphasizes firms where accounting understatement of productive assets should be economically material.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 5.368864411731022,
+      "ls_alpha": 0.02935131643585123,
+      "ls_talpha": 3.0698188000395197,
+      "ls_sharpe": 0.26356085842243926,
+      "coverage": 0.1448267724757662,
+      "error": null
+    },
+    {
+      "name": "Productive Intangible Overhead",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, xsga)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), xsga)))",
+      "hypothesis": "Firms whose SG&A is more explicitly intangible-investment-oriented and produces high operating profit per SG&A dollar earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "SG&A can mix maintenance overhead with productive intangible creation, so the intangible share of SG&A helps identify higher-quality overhead. The profitability-per-SG&A component validates that the intangible-heavy expense base is already generating operating returns.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.812798915307887,
+      "ls_alpha": 0.015222464781235456,
+      "ls_talpha": 1.6994207512946962,
+      "ls_sharpe": 0.03506267344516153,
+      "coverage": 0.12395041137435438,
+      "error": null
+    },
+    {
+      "name": "Brand-Customer Intangible Payoff",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_RANK(RATIO(MUL(GROWTH(sale, 1), ADD(TS_SUM(COALESCE(xad, 0), 5), SUB(COALESCE(intan, COALESCE(gdwl, 0)), COALESCE(gdwl, 0)))), at)))",
+      "hypothesis": "Firms with profitable operations and sales traction on advertising, brand, or customer-related intangible capital earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the weakest-link MIN structure with a continuous payoff interaction, avoiding a huge forced minimum group among firms with missing advertising. The intangible base combines accumulated advertising with identifiable non-goodwill intangibles, so the signal is less about advertising disclosure availability and more about whether brand/customer intangible assets are producing profitable growth.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.9133700492191638,
+      "ls_alpha": 0.01833977080418607,
+      "ls_talpha": 1.987324744007715,
+      "ls_sharpe": 0.06151762797524116,
+      "coverage": 0.13037501434258936,
+      "error": null
+    },
+    {
+      "name": "Cash-Funded Intangible Compounder",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, at), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Firms with sustained operating cash-flow profitability and meaningful recent intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Operating cash flow provides a cleaner validation that intangible spending is funded by productive operations rather than external financing or accounting accruals. The accumulated R&D-plus-advertising leg captures a recent intangible investment base while avoiding an unstable single-year expense spike.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.868761278708277,
+      "ls_alpha": 0.03623395067283745,
+      "ls_talpha": 2.8623286165309847,
+      "ls_sharpe": 0.37763550558753356,
+      "coverage": 0.09118203160405043,
+      "error": null
+    },
+    {
+      "name": "Durable Intangible Profitability",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(VOL(RATIO(oibdp, at), 5)))))",
+      "hypothesis": "Firms with large cumulative intangible investment, sustained profitability, and low profitability volatility earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Productive intangible assets should generate durable earnings power, not just a one-period profitability spike. The interaction rewards firms where cumulative R&D and advertising are accompanied by both high and stable operating profitability, consistent with an underrecognized intangible moat.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.045092457906355,
+      "ls_alpha": 0.01319085470238571,
+      "ls_talpha": 1.3988825066751036,
+      "ls_sharpe": 0.08263212745158781,
+      "coverage": 0.13256447767797813,
+      "error": null
+    },
+    {
+      "name": "Signed Intangible Profit Validation",
+      "expression": "WINSOR(MUL(RATIO(oibdp, at), RATIO(ADD(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0)), at)), 1)",
+      "hypothesis": "Firms earn higher future returns when a large intangible asset base is paired with positive current operating profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the masked profitability sort with a signed interaction: high values require both profitability and intangible capital, while unprofitable intangible-heavy firms become explicitly low rather than arbitrary. Using cumulative R&D and advertising plus identifiable non-goodwill intangibles also reduces dependence on a single zero-heavy R&D reporting channel.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.7630722751309356,
+      "ls_alpha": 0.01671488591434118,
+      "ls_talpha": 0.8174837968020748,
+      "ls_sharpe": 0.19167682501524066,
+      "coverage": 0.1448408571048854,
+      "error": null
+    },
+    {
+      "name": "Lagged Intangible Margin Inflection",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(oibdp, sale), 1), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)))",
+      "hypothesis": "Firms with prior intangible investment followed by improving operating margins are more likely to have productive intangible capital.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts the mechanism from contemporaneous sales-growth scaling to a time-sequenced payoff test: past R&D and advertising should show up in subsequent margin improvement. It avoids division by intangible intensity and does not reward firms merely for having near-zero R&D or advertising.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.423670027211811,
+      "ls_alpha": 0.03501606839233361,
+      "ls_talpha": 3.8717976756396943,
+      "ls_sharpe": 0.2107638999490832,
+      "coverage": 0.12956775356666148,
+      "error": null
+    },
+    {
+      "name": "Recognized Intangible Margin Validation",
+      "expression": "WINSOR(MUL(RATIO(oiadp, sale), RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), 1)",
+      "hypothesis": "Firms with meaningful identifiable non-goodwill intangible assets and strong operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg is scaled by sales rather than by an asset denominator that double-counts recognized intangibles already included in total assets. The signal tests whether recognized technology, customer, contractual, or brand-related intangibles are associated with profitable operations rather than acquisition goodwill.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.697096284018506,
+      "ls_alpha": 0.004391043282486231,
+      "ls_talpha": 0.17312050759994707,
+      "ls_sharpe": 0.07152844398927141,
+      "coverage": 0.14324671441201162,
+      "error": null
+    },
+    {
+      "name": "Intangible Profitability Acceleration",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(oibdp, at))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Intangible-intensive firms with accelerating operating profitability earn higher future returns as intangible investments become economically validated.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids a static low-profitability short by focusing on improvement in profitability rather than simply rewarding or penalizing the profitability level. The positive sign is consistent with markets underreacting when intangible-heavy firms begin converting investment into operating results.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.9185940478852896,
+      "ls_alpha": 0.019461137771685677,
+      "ls_talpha": 2.2273619978727437,
+      "ls_sharpe": 0.10218458092831359,
+      "coverage": 0.11995254357051642,
+      "error": null
+    },
+    {
+      "name": "Intangible Harvest Operating Leverage",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(TREND(RATIO(oibdp, sale), 3)), IND_RANK(NEG(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)))))",
+      "hypothesis": "Firms with prior intangible investment, improving operating margins, and easing intangible expense intensity are entering a profitable harvest phase.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether past R&D and advertising are beginning to scale, rather than simply rewarding current high spending. The margin-trend leg validates productivity, while the declining spending-intensity trend captures operating leverage from previously built intangible assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.340692755528511,
+      "ls_alpha": 0.019345817365344086,
+      "ls_talpha": 2.577039788760919,
+      "ls_sharpe": 0.09501896426116695,
+      "coverage": 0.11796176121219025,
+      "error": null
+    },
+    {
+      "name": "Internal Intangibles over Goodwill Profit",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_RANK(SUB(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at), RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Profitable firms with internally built intangible investment rather than acquisition goodwill earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Internally generated R&D and advertising are more likely to be understated by accounting, while goodwill may reflect acquisition premia already paid. The interaction rewards profitability when it is paired with internal intangible formation and penalizes goodwill-heavy profitability that is less clearly an underrecognized productive asset base.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.1618112396514535,
+      "ls_alpha": 0.03214861236283858,
+      "ls_talpha": 3.5572328672343967,
+      "ls_sharpe": 0.24505530423920216,
+      "coverage": 0.1448267724757662,
+      "error": null
+    },
+    {
+      "name": "Cash Payoff to Intangible Ramp",
+      "expression": "MUL(IND_RANK(WINSOR(ADD(MA(RATIO(oancf, sale), 3), ACCEL(RATIO(oancf, sale))), 1)), IND_RANK(LAG(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)))",
+      "hypothesis": "Firms with prior increases in intangible investment intensity and subsequently strong or improving cash margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cash-profitability plus accruals construction with a payoff-timing mechanism: intangible spending is useful when a prior ramp is followed by cash-margin validation. The signal avoids the Sloan accruals leg and is not just current cash profitability multiplied by intangible intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.8842368437902586,
+      "ls_alpha": 0.007452518339089562,
+      "ls_talpha": 0.6796316203603395,
+      "ls_sharpe": 0.04956972617648742,
+      "coverage": 0.06547211470439407,
+      "error": null
+    },
+    {
+      "name": "Gross-to-Operating Intangible Conversion",
+      "expression": "MUL(IND_RANK(WINSOR(TREND(RATIO(oibdp, SUB(revt, cogs)), 3), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), sale), 1)))",
+      "hypothesis": "Firms whose prior intangible investment is followed by better conversion of gross profit into operating profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the DuPont margin-times-turnover collapse by measuring operating drop-through from gross profit rather than asset turnover. The interaction tests whether R&D and advertising create scalable products or brands whose gross profits increasingly survive operating-expense absorption.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.5547816678804924,
+      "ls_alpha": 0.03335329708207288,
+      "ls_talpha": 3.524595178899259,
+      "ls_sharpe": 0.18990876117611655,
+      "coverage": 0.11803935565246605,
+      "error": null
+    },
+    {
+      "name": "Goodwill-Light Intangible Cash High",
+      "expression": "MUL(IND_RANK(TS_RANK(MA(RATIO(oancf, sale), 3), 5)), IND_RANK(SUB(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at), RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Firms with identifiable non-goodwill intangible assets and cash margins near their own historical highs earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the zero-advertising weakest-link problem by relying on recognized non-goodwill intangibles rather than advertising availability. The profitability validation comes from a firm-specific cash-margin high, while the intangible leg distinguishes productive identifiable intangibles from goodwill-heavy acquisition accounting.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.23809538262514388,
+      "ls_alpha": 0.031506498881796796,
+      "ls_talpha": 2.7541781841145774,
+      "ls_sharpe": 0.2480706294407652,
+      "coverage": 0.08002556076428873,
+      "error": null
+    },
+    {
+      "name": "Debt-Light Self-Funded Intangible Ramp",
+      "expression": "MUL(IND_RANK(RATIO(oancf, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3)))), MUL(IND_RANK(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)), IND_RANK(NEG(TREND(RATIO(COALESCE(xint, 0), sale), 3)))))",
+      "hypothesis": "Firms ramping intangible investment while generating operating cash flow and reducing interest burden are more likely to have validated, internally funded intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This revises the near-pretax-income double sort into a financing-resilience mechanism: intangible expansion is most valuable when it is not accompanied by rising debt-service pressure. The cash-flow leg validates self-funding capacity, while the interest-trend leg filters out firms whose intangible investment depends on increasingly costly financing.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.239718810420403,
+      "ls_alpha": -0.006051808771846842,
+      "ls_talpha": -0.5344368227949685,
+      "ls_sharpe": -0.10119445724106335,
+      "coverage": 0.07567310081416379,
+      "error": null
+    },
+    {
+      "name": "Cash-Validated Intangible Turnover Improvement",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, sale), 3)), IND_RANK(WINSOR(DELTA(RATIO(sale, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3))), 1), 1)))",
+      "hypothesis": "Firms with strong cash margins and improving sales generation on an intangible-adjusted asset base earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The adjusted turnover change tests whether reported assets plus recent intangible investment are becoming more productive, while cash margin validates that the sales efficiency is not low-quality revenue. This shifts away from a pure profitability-level \u00d7 intangible-intensity double sort toward improvement in the productivity of the broader asset base.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.8868788294546373,
+      "ls_alpha": 0.03678239324870364,
+      "ls_talpha": 2.555079365847919,
+      "ls_sharpe": 0.4904065042676652,
+      "coverage": 0.08290898873807502,
+      "error": null
+    },
+    {
+      "name": "Goodwill Margin Decay",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(RATIO(COALESCE(gdwl, 0), at)))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating operating margins earn lower future returns because acquired intangibles are not being productively validated.",
+      "expected_sign": "negative",
+      "reasoning": "This is a negative validation test for acquired intangible capital: high goodwill is penalized only when operating margins are worsening. The interaction targets unproductive acquisition intangibles rather than simply shorting low-profitability firms or high-goodwill firms in isolation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.6267634135536327,
+      "ls_alpha": -0.04243213003499381,
+      "ls_talpha": -4.4191075152434465,
+      "ls_sharpe": -0.22797848630486478,
+      "coverage": 0.12957012680087204,
+      "error": null
+    },
+    {
+      "name": "Rising Intangible Spend Absorption",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 1), 1)), IND_RANK(WINSOR(DELTA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1), 1)))",
+      "hypothesis": "Firms that raise intangible investment intensity while also improving intangible-adjusted operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior splice of lagged margin inflection and goodwill adjustment with a simultaneous absorption test: the firm is spending more on R&D/advertising, yet profitability before expensed intangibles is improving. High values therefore indicate current validation of a rising intangible burden rather than a static profitability-by-intensity sort.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.7689365080674622,
+      "ls_alpha": 0.0008639068091331669,
+      "ls_talpha": 0.10335532753707066,
+      "ls_sharpe": -0.047705358954630434,
+      "coverage": 0.1295769369512154,
+      "error": null
+    },
+    {
+      "name": "Profitable Intangible Reinvestment Share",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)))",
+      "hypothesis": "Firms with strong pre-intangible operating profitability that reinvest a meaningful share of that surplus into R&D and advertising earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the volatility-of-spend variant by asking whether intangible investment is funded out of a current economic surplus. The second leg is a reinvestment share of pre-intangible profit rather than raw intangible intensity, so the signal targets productive reinvestment capacity instead of a generic profitability-level \u00d7 intangible-stock interaction.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.9037098503831498,
+      "ls_alpha": 0.0262888198519854,
+      "ls_talpha": 2.854398959498562,
+      "ls_sharpe": 0.10590314033733413,
+      "coverage": 0.14253324797944902,
+      "error": null
+    },
+    {
+      "name": "Intangible Gross-Margin Upgrade",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(SUB(revt, cogs), revt), 1), 1)), MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1))))",
+      "hypothesis": "Firms with prior intangible investment, current operating profitability, and improving gross margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the drop-through idea into a product-differentiation or production-efficiency mechanism: successful intangibles should raise gross margin through pricing power, better products, or lower delivery costs. The operating-margin leg requires that the gross-margin improvement is already reaching operating profitability rather than remaining an isolated revenue-cost effect.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.8522684377138674,
+      "ls_alpha": 0.024560928721577148,
+      "ls_talpha": 2.464500049667918,
+      "ls_sharpe": 0.02457367325063971,
+      "coverage": 0.12970638139978719,
+      "error": null
+    },
+    {
+      "name": "Lagged Intangible Profit Dollar Payoff",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(oibdp, 1), at), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)))",
+      "hypothesis": "Firms whose prior intangible investment is followed by an increase in operating profit dollars relative to assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a denominator tweak to margin inflection; it tests whether prior R&D and advertising translate into absolute operating-profit expansion rather than merely improved sales-scaled margins. Scaling the profit change by assets preserves broad coverage and avoids rewarding near-zero intangible spenders through an unstable profit-per-intangible denominator.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.945670209583007,
+      "ls_alpha": 0.030314214480540114,
+      "ls_talpha": 2.956734739771924,
+      "ls_sharpe": 0.11911374047203528,
+      "coverage": 0.13174643416400658,
+      "error": null
+    },
+    {
+      "name": "Intangible Cost-Mix Upgrade",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(SUB(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), TREND(RATIO(cogs, revt), 3)), 1)))",
+      "hypothesis": "Profitable firms shifting their cost structure away from production costs and toward intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A rising intangible-spend share is more credible when it coincides with a falling cost-of-goods burden, suggesting a transition toward higher-value, asset-light products or brands. Current profitability helps filter out firms that are merely increasing R&D or advertising without evidence of economic payoff.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.4067400655553692,
+      "ls_alpha": 0.0017201814060616473,
+      "ls_talpha": 0.2038715168583454,
+      "ls_sharpe": -0.13885321534121436,
+      "coverage": 0.11821476861585552,
+      "error": null
+    },
+    {
+      "name": "Acquired Intangible Cash Decay",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(TREND(RATIO(oancf, sale), 3)), 1)), IND_RANK(SUB(RATIO(COALESCE(gdwl, 0), at), RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at))))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating cash margins and little internal intangible formation earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "High signal values identify acquired-intangible stories whose cash productivity is worsening, while giving less weight to firms with internally generated intangible investment. This refines the goodwill-decay idea by distinguishing acquisition-heavy intangibles from internally built intangible capital.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.8361129088110283,
+      "ls_alpha": -0.041826078882261704,
+      "ls_talpha": -3.636798347321281,
+      "ls_sharpe": -0.19846055543626392,
+      "coverage": 0.0705204481986946,
+      "error": null
+    },
+    {
+      "name": "Profitable Intangible Investment Mix",
+      "expression": "WINSOR(MUL(RATIO(oibdp, sale), COALESCE(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), ADD(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), ABS(DELTA(at, 1)))), 0)), 1)",
+      "hypothesis": "Firms whose investment mix is dominated by expensed intangibles rather than balance-sheet asset accumulation, and that are already operating-profitable, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the scale problem by comparing dollar intangible investment to dollar asset accumulation, rather than subtracting an investment-intensity level from an asset-growth rate. The signed profitability interaction makes non-investing firms neutral and focuses the long leg on profitable firms where accounting is most likely to understate productive asset formation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.451345348955214,
+      "ls_alpha": 0.009706989079746464,
+      "ls_talpha": 0.4536663791990839,
+      "ls_sharpe": 0.16965043270532426,
+      "coverage": 0.14255842489890022,
+      "error": null
+    },
+    {
+      "name": "Self-Funded Intangible Reinvestment",
+      "expression": "WINSOR(MUL(COALESCE(RATIO(SUB(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(ABS(oibdp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0), COALESCE(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(ABS(oancf), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0)), 1)",
+      "hypothesis": "Firms that reinvest meaningfully in R&D and advertising while still generating cash surplus after those investments have more validated intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the goodwill-vs-internal spread with a direct self-funding test, avoiding duplication of goodwill decay and internal-minus-goodwill rankings. The first component asks whether operating cash flow covers intangible spend, while the second requires the spend to be economically meaningful rather than incidental.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.3806138693641978,
+      "ls_alpha": -0.004191194507881741,
+      "ls_talpha": -0.4615844966726008,
+      "ls_sharpe": 0.12014383882714619,
+      "coverage": 0.14850012629733364,
+      "error": null
+    },
+    {
+      "name": "Intangible Expense Productivity Mix",
+      "expression": "WINSOR(MUL(COALESCE(RATIO(oibdp, ADD(dp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0), COALESCE(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(dp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0)), 1)",
+      "hypothesis": "Firms whose productive expense base is more intangible than depreciating physical capital, and that generate high operating profit per dollar of that base, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from gross-profit dollar recombinations and tests a different accounting channel: expensed intangible investment versus depreciated tangible capital. High values require both an intangible-heavy investment-expense mix and realized operating profit productivity from that mix.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.118091624135775,
+      "ls_alpha": 0.005213439221988114,
+      "ls_talpha": 0.23553495636406135,
+      "ls_sharpe": 0.19542624622744686,
+      "coverage": 0.14850012629733364,
+      "error": null
+    },
+    {
+      "name": "Sustained Intangible Margin Breakout",
+      "expression": "WINSOR(MUL(SUB(RATIO(oibdp, sale), MA(RATIO(oibdp, sale), 5)), MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 5)), 1)",
+      "hypothesis": "Firms with sustained intangible investment whose operating margins break above their own historical norm earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the reporting-availability count and replaces it with the actual five-year average magnitude of R&D and advertising intensity. The signed margin-breakout interaction makes persistent intangible spend valuable only when profitability is improving relative to the firm\u2019s own baseline, rather than merely rewarding disclosure persistence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.6313141626821506,
+      "ls_alpha": 0.003122167929073086,
+      "ls_talpha": 0.38080436763166065,
+      "ls_sharpe": -0.0421086155741293,
+      "coverage": 0.14255842489890022,
+      "error": null
+    },
+    {
+      "name": "Expensed Intangible Recognition Gap",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(SUB(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), sale)), 1)))",
+      "hypothesis": "Profitable firms whose internal intangible investment is expensed rather than recognized as balance-sheet intangible asset growth earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The second leg compares two flow-scaled quantities: current expensed R&D/advertising intensity versus the change in identifiable non-goodwill intangible assets. High values identify profitable firms where accounting is most likely understating internally generated productive capital.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.1728034674193872,
+      "ls_alpha": 0.027643484352926854,
+      "ls_talpha": 2.6634308171235173,
+      "ls_sharpe": 0.08549906170678226,
+      "coverage": 0.1308517764586723,
+      "error": null
+    },
+    {
+      "name": "Intangible Cash Dropthrough",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), IND_RANK(WINSOR(SUB(RATIO(DELTA(oancf, 1), at), RATIO(DELTA(sale, 1), at)), 1))))",
+      "hypothesis": "Firms with prior intangible investment, current cash margins, and cash-flow expansion exceeding sales expansion earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the failed self-funding/reinvestment-share construction with a cash drop-through test rather than another operating-surplus allocation ratio. The interaction asks whether past R&D and advertising are producing incremental cash economics beyond simple revenue growth.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.11725698417233,
+      "ls_alpha": 0.03137535135139992,
+      "ls_talpha": 2.760877884769594,
+      "ls_sharpe": 0.2100340354450163,
+      "coverage": 0.07961576512658212,
+      "error": null
+    },
+    {
+      "name": "Intangible Overhead Discipline",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)), IND_RANK(WINSOR(NEG(TREND(RATIO(SUB(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 3)), 1))))",
+      "hypothesis": "Profitable firms that sustain intangible investment while reducing non-intangible SG&A overhead intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the intangible-share-of-SG&A leg by explicitly separating intangible spending from residual SG&A overhead. The mechanism is overhead discipline: R&D and advertising are more credible when administrative or maintenance SG&A is being scaled down while operating margins remain positive.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.0852508646120493,
+      "ls_alpha": 0.023456358285944594,
+      "ls_talpha": 2.192833643962994,
+      "ls_sharpe": 0.027816770050645687,
+      "coverage": 0.09987874836865944,
+      "error": null
+    },
+    {
+      "name": "Profitability Outruns Intangible Spend",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(SUB(TS_RANK(RATIO(oibdp, sale), 5), TS_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 5)), 1)))",
+      "hypothesis": "Intangible-intensive firms whose profitability is high relative to their own history beyond what is explained by a concurrent spending spike earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This decouples the profitability-rank leg from the intangible-spending leg by using reported operating margin, not an add-back margin mechanically boosted by R&D and advertising. The relative time-series spread penalizes cases where the apparent profitability signal is merely synchronized with rising intangible expense intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.1993568976852282,
+      "ls_alpha": 0.008072721776118232,
+      "ls_talpha": 0.9697576432626459,
+      "ls_sharpe": -0.041527529132398974,
+      "coverage": 0.13021280894350218,
+      "error": null
+    },
+    {
+      "name": "Acquisition Platform Internal Innovation",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(TREND(RATIO(SUB(revt, cogs), revt), 3), 1)), IND_RANK(WINSOR(MUL(RATIO(COALESCE(gdwl, 0), at), MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)), 1))))",
+      "hypothesis": "Goodwill-heavy firms that remain operating-profitable, improve gross margins, and continue internal intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not the mirror image of goodwill cash decay; it tests whether acquired platforms are being productively enhanced with internal R&D and advertising. Gross-margin improvement provides a product or pricing-power validation channel, while operating margin ensures the improvement reaches profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.6945780498021492,
+      "ls_alpha": 0.003335945714307585,
+      "ls_talpha": 0.3907952990668189,
+      "ls_sharpe": -0.11602690929747848,
+      "coverage": 0.11820981577924217,
+      "error": null
+    },
+    {
+      "name": "Intangible Demand Resilience",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(RATIO(sale, TS_MAX(sale, 5)), 1))))",
+      "hypothesis": "Intangible-intensive firms with current profitability and sales near their own historical peak earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the harvest-phase duplicate with a demand-resilience mechanism rather than using lagged intensity and falling spend intensity again. Productive intangible assets should support durable customer demand, so sales remaining close to a firm\u2019s own peak validates the intangible base alongside current profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.9173982315981117,
+      "ls_alpha": 0.02098046643785184,
+      "ls_talpha": 2.032886918443918,
+      "ls_sharpe": 0.033748217250153485,
+      "coverage": 0.14253273205896846,
+      "error": null
+    },
+    {
+      "name": "Goodwill Demand Drawdown",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(WINSOR(NEG(RATIO(sale, TS_MAX(sale, 5))), 1))))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating operating margins and sales below their recent peak earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "High values identify acquired-intangible firms where both demand and profitability validation are weakening, consistent with future impairment or poor acquisition productivity. The sales drawdown condition makes this more specific than a generic goodwill or low-profitability short.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.3775447789293146,
+      "ls_alpha": -0.0451065328629586,
+      "ls_talpha": -4.806674450647425,
+      "ls_sharpe": -0.2602461031550079,
+      "coverage": 0.12957012680087204,
+      "error": null
+    },
+    {
+      "name": "Research-to-Market Profit Transition",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at), 1)), IND_RANK(WINSOR(TREND(RATIO(COALESCE(xad, 0), sale), 3), 1))))",
+      "hypothesis": "Firms with prior research investment, rising commercialization spending, and current operating profitability earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This captures a pipeline transition from research creation to market deployment, rather than just high current R&D or advertising intensity. Operating margin filters for firms whose commercialization phase is already profitable instead of purely promotional.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.9397170983897865,
+      "ls_alpha": 0.007133117309843277,
+      "ls_talpha": 0.7914456295305827,
+      "ls_sharpe": -0.15348462882128308,
+      "coverage": 0.11832213166785947,
+      "error": null
+    },
+    {
+      "name": "Goodwill-to-Internal Rotation Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)), IND_RANK(WINSOR(NEG(TREND(RATIO(COALESCE(gdwl, 0), at), 3)), 1))))",
+      "hypothesis": "Profitable firms shifting intangible formation away from acquisition goodwill and toward internal R&D and advertising earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the collapsed internal-share construction with a dynamic rotation mechanism, so the signal is not just internal intangible intensity scaled by assets. Operating profitability validates the transition, while rising internal spend and falling goodwill intensity identify firms building rather than buying productive intangible capital.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.458063492214599,
+      "ls_alpha": -0.002903044028621829,
+      "ls_talpha": -0.33748121037259887,
+      "ls_sharpe": -0.049491051363429586,
+      "coverage": 0.11831248395487305,
+      "error": null
+    },
+    {
+      "name": "Recognized Intangible Amortization Cash Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), MUL(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(SUB(oibdp, oiadp), sale), 1))))",
+      "hypothesis": "Cash-profitable firms with identifiable non-goodwill intangibles and a large operating-income drag from depreciation or amortization earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the expensed-gap leg that degenerates into raw R&D/advertising intensity for firms with missing intangibles. The mechanism is accounting conservatism from recognized intangible amortization: strong cash margins plus a non-goodwill intangible base suggest productive assets whose earnings are understated by noncash charges.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.019244007172621,
+      "ls_alpha": -0.003797143880285311,
+      "ls_talpha": -0.3723074318815127,
+      "ls_sharpe": -0.035320267743883076,
+      "coverage": 0.08841571757935063,
+      "error": null
+    },
+    {
+      "name": "Gross-Margin Floor Intangible Moat",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Intangible-intensive firms with current operating profitability and a high worst-case gross margin over time earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the asset-turnover construction with a product-differentiation moat test. A high gross-margin floor indicates that accumulated intangible investment supports durable pricing power or product advantage, while operating profitability confirms that the moat reaches the bottom line.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.394745051877191,
+      "ls_alpha": 0.019410412674385733,
+      "ls_talpha": 1.9830880635732122,
+      "ls_sharpe": -0.01796025235975567,
+      "coverage": 0.1425044080245859,
+      "error": null
+    },
+    {
+      "name": "Intangible Cost-Base Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(cogs, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)), IND_RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(cogs, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1))))",
+      "hypothesis": "Firms with intangible-heavy value-creation costs, strong gross profit per total production-and-intangible cost, and positive operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a reinvestment share of gross profit; it measures whether an intangible-heavy cost structure is producing strong product-level economics. The operating-margin leg filters for firms where gross-level intangible productivity is not offset by excessive downstream operating costs.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.731449390999494,
+      "ls_alpha": 0.018912980804722337,
+      "ls_talpha": 1.8328166829458834,
+      "ls_sharpe": -0.049201802333016964,
+      "coverage": 0.14241670154289116,
+      "error": null
+    },
+    {
+      "name": "Intangible Cash Moat Expansion",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5)), IND_RANK(WINSOR(RATIO(DELTA(oancf, 1), at), 1))))",
+      "hypothesis": "Firms with prior intangible investment, durable gross-margin floors, and expanding operating cash flow earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A high worst-case gross margin suggests that intangible assets support persistent product differentiation or pricing power. Cash-flow expansion provides current validation that this moat is converting into economic profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.6875024132553227,
+      "ls_alpha": 0.03460428831904312,
+      "ls_talpha": 2.2958855572136625,
+      "ls_sharpe": 0.2159664946455303,
+      "coverage": 0.08015129058540052,
+      "error": null
+    },
+    {
+      "name": "Balanced Intangible Commercialization Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), ADD(COALESCE(xad, 0), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0))), sale), 1)), IND_RANK(WINSOR(NEG(ABS(SUB(RATIO(COALESCE(xrd, 0), sale), RATIO(ADD(COALESCE(xad, 0), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0)), sale)))), 1))))",
+      "hypothesis": "Profitable firms with a meaningful and balanced intangible system across research and commercialization/customer assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the lagged-margin-plus-cash add-on with a distinct complementarity mechanism: intangible productivity is more credible when R&D is matched by advertising or recognized customer/brand assets. The profitability leg validates the balanced intangible base, while the materiality leg prevents zero-intangible firms from scoring highly merely because the two sides are equally absent.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.955145969672025,
+      "ls_alpha": 0.015037644883522943,
+      "ls_talpha": 1.7223358238174968,
+      "ls_sharpe": 0.0415152266725585,
+      "coverage": 0.14254454663797322,
+      "error": null
+    },
+    {
+      "name": "Recognized Customer Asset Cash Retention",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), MUL(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(sale, TS_MAX(sale, 5)), 1))))",
+      "hypothesis": "Firms with identifiable non-goodwill intangible assets, strong cash margins, and sales close to recent peaks earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the internal-minus-goodwill leg and instead tests whether recognized customer, technology, or contractual intangible assets are economically validated by cash profitability and demand retention. The sales-retention condition helps separate productive recognized intangibles from stale or impaired intangible balances.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.2895848105334506,
+      "ls_alpha": 0.002753429650874068,
+      "ls_talpha": 0.24729687046430873,
+      "ls_sharpe": 0.021080817996326814,
+      "coverage": 0.0889590850294735,
+      "error": null
+    },
+    {
+      "name": "Intangible Neglect Demand Failure",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), 1)), MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(WINSOR(NEG(RATIO(sale, TS_MAX(sale, 5))), 1))))",
+      "hypothesis": "Firms with little internal intangible reinvestment, deteriorating margins, and sales below recent peaks earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This fixes the sign problem by treating the absence of internal intangible investment as the adverse condition, rather than using accumulated R&D and advertising intensity as a negative-return amplifier. High values identify firms whose franchise appears to be weakening without sufficient intangible reinvestment to replenish demand or profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.2580509285438146,
+      "ls_alpha": -0.03622759103869936,
+      "ls_talpha": -3.5263064412649534,
+      "ls_sharpe": -0.12873549454613473,
+      "coverage": 0.12957012680087204,
+      "error": null
+    },
+    {
+      "name": "Hybrid Intangible Stack Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MIN(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1))))",
+      "hypothesis": "Firms that combine current expensed intangible investment with a recognized non-goodwill intangible asset base, while remaining profitable, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the expensed-minus-recognized gap and cash-trend substitution with a hybrid-stack test: the firm must have both ongoing internal intangible spending and an existing identifiable intangible base. The weakest-link structure focuses on firms where current profitability validates a multi-layer intangible platform, not merely high R&D or advertising intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.9802616368534804,
+      "ls_alpha": 0.001027377506163803,
+      "ls_talpha": 0.10347020745825826,
+      "ls_sharpe": -0.045903687513026405,
+      "coverage": 0.14253273205896846,
+      "error": null
+    },
+    {
+      "name": "Cost-Stable Intangible Moat",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(NEG(VOL(RATIO(cogs, revt), 5)))))",
+      "hypothesis": "Intangible-intensive firms with current operating profitability and stable cost-of-goods intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the distorted SG&A denominator and avoids double-counting R&D or advertising inside operating costs. Stable COGS intensity, paired with accumulated intangible investment and profitability, is consistent with durable product economics or pricing power rather than a transient margin spike.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.3318093883850066,
+      "ls_alpha": 0.006907921685313287,
+      "ls_talpha": 0.7268954266159242,
+      "ls_sharpe": -0.05944162623471812,
+      "coverage": 0.1302694054202193,
+      "error": null
+    },
+    {
+      "name": "Intangible Gross Cash Conversion",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), MUL(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5)), IND_RANK(WINSOR(RATIO(oancf, SUB(revt, cogs)), 1))))",
+      "hypothesis": "Firms with accumulated intangible investment, durable gross margins, and strong cash conversion of gross profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A high gross-margin floor suggests persistent pricing power or product differentiation from intangible assets. Cash conversion of gross profit validates that this product-level moat becomes realized operating cash flow rather than merely accounting margin.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.119387362678423,
+      "ls_alpha": 0.03716404360577592,
+      "ls_talpha": 2.6112185369477627,
+      "ls_sharpe": 0.3173547329443571,
+      "coverage": 0.0890807390787889,
+      "error": null
+    },
+    {
+      "name": "Goodwill Debt Coverage Failure",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(RATIO(COALESCE(xint, 0), sale), 1)), IND_RANK(WINSOR(NEG(RATIO(oibdp, sale)), 1))))",
+      "hypothesis": "Goodwill-heavy firms with high interest burden and weak operating margins earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This targets acquisition overhang: goodwill is most problematic when the acquired asset base is paired with debt-service pressure and inadequate operating profitability. The interaction is not a generic low-profitability short, because the adverse profitability signal is conditioned on both goodwill intensity and financing burden.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.9054205002208686,
+      "ls_alpha": -0.02528884927580818,
+      "ls_talpha": -2.66330459946444,
+      "ls_sharpe": -0.09157288380433222,
+      "coverage": 0.14253273205896846,
+      "error": null
+    },
+    {
+      "name": "Intangible Spend Absorption Coverage",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, ADD(ABS(oibdp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1)))",
+      "hypothesis": "Firms with meaningful R&D and advertising intensity that still retain strong operating profit after absorbing those expenses earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the sales-growth-minus-asset-growth construction with a direct absorption test, avoiding the asset-turnover and asset-growth anomaly bundle. High values require both material intangible spending and evidence that current operating economics survive that spending burden.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.8756509270799446,
+      "ls_alpha": 0.01804771982696947,
+      "ls_talpha": 1.794503254754046,
+      "ls_sharpe": -0.011990347155524366,
+      "coverage": 0.1425382008160624,
+      "error": null
+    },
+    {
+      "name": "Intangible Fixed-Charge Coverage",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, ADD(ABS(oibdp), ADD(COALESCE(xint, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))))), 1)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Intangible-intensive firms whose operating profit covers both financing costs and ongoing intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from residual-SG&A trend mechanics and instead tests whether the firm has an operating-profit cushion against fixed financial charges plus expensed intangible investment. The accumulated intangible leg ensures the coverage ratio is evaluated where the accounting-understatement channel is economically material.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.93388779058156,
+      "ls_alpha": 0.005055805040891225,
+      "ls_talpha": 0.5079049359348397,
+      "ls_sharpe": -0.013805496095039674,
+      "coverage": 0.14480551655196722,
+      "error": null
+    },
+    {
+      "name": "Goodwill with Internal Reinvestment Neglect",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(NEG(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale)), 1)), IND_RANK(WINSOR(NEG(RATIO(oibdp, sale)), 1))))",
+      "hypothesis": "Goodwill-heavy firms with weak operating margins and little internal intangible reinvestment earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids another goodwill-plus-sales-drawdown template and addresses the sign issue by treating low internal reinvestment, not high internal intangible intensity, as the adverse condition. High values identify acquired-intangible firms that are neither currently profitable nor replenishing their intangible base internally.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.11504086373050222,
+      "ls_alpha": -0.026111546829597078,
+      "ls_talpha": -2.3457082272762917,
+      "ls_sharpe": 0.0069751534635574776,
+      "coverage": 0.14253273205896846,
+      "error": null
+    },
+    {
+      "name": "Recognized Intangible Renewal Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), at), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1))))",
+      "hypothesis": "Profitable firms that are both expanding identifiable non-goodwill intangible assets and continuing internal R&D or advertising investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated intangible-level decay template with a positive renewal mechanism. The signal requires current operating profitability, balance-sheet growth in identifiable non-goodwill intangibles, and ongoing expensed intangible investment, targeting firms building a validated intangible platform rather than firms merely carrying stale intangible assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.4104833978195503,
+      "ls_alpha": 0.019750095579814227,
+      "ls_talpha": 2.190278424339657,
+      "ls_sharpe": -0.05523033096696961,
+      "coverage": 0.1308437280991756,
+      "error": null
+    },
+    {
+      "name": "Lagged Intangible Dual Inflection",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), SUMRANK(WINSOR(DELTA(RATIO(oibdp, sale), 1), 1), WINSOR(RATIO(DELTA(oancf, 1), at), 1)))",
+      "hypothesis": "Prior intangible investment is most return-predictive when followed by both operating-margin improvement and operating cash-flow expansion.",
+      "expected_sign": "positive",
+      "reasoning": "The lagged intangible leg preserves the economic timing from investment to payoff. Combining accrual operating-margin inflection with cash-flow inflection seeks validated commercialization rather than a purely accounting margin improvement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.9727158102517274,
+      "ls_alpha": 0.014430398928594587,
+      "ls_talpha": 1.3513267969717573,
+      "ls_sharpe": 0.09455609187383204,
+      "coverage": 0.07856184276889981,
+      "error": null
+    },
+    {
+      "name": "Organic Intangible Profit Minus Levered Goodwill",
+      "expression": "SUB(MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at))), MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(WINSOR(RATIO(COALESCE(xint, 0), sale), 1))))",
+      "hypothesis": "Profitable internally built intangible firms outperform firms whose intangible base is acquisition-goodwill-heavy and paired with financing burden.",
+      "expected_sign": "positive",
+      "reasoning": "This is a signed source-of-intangibles spread: the long side emphasizes organic intangible investment with operating profitability, while the subtractive leg penalizes goodwill supported by interest expense. It targets the accounting-understatement story for internally generated assets while avoiding a pure profitability or pure goodwill sort.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.9008154094191183,
+      "ls_alpha": 0.036138659469745364,
+      "ls_talpha": 3.7432318951689174,
+      "ls_sharpe": 0.14790851241814926,
+      "coverage": 0.14253273205896846,
+      "error": null
+    },
+    {
+      "name": "Research-to-Brand Gross Cash Payoff",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at), 1)), MUL(IND_RANK(WINSOR(RATIO(COALESCE(xad, 0), sale), 1)), IND_RANK(WINSOR(RATIO(oancf, SUB(revt, cogs)), 1))))",
+      "hypothesis": "Firms with prior research investment, current commercialization spending, and strong cash conversion of gross profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal tests a research-to-market pipeline: past R&D creates products, current advertising helps commercialize them, and cash conversion confirms economic payoff. Using advertising intensity as a current state rather than a trend reduces dependence on zero-inflated advertising changes.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.029743380776526,
+      "ls_alpha": 0.04382714133648634,
+      "ls_talpha": 3.8198694502199078,
+      "ls_sharpe": 0.3972391097478318,
+      "coverage": 0.08254665778457967,
+      "error": null
+    },
+    {
+      "name": "Intangible-Adjusted Gross Cash Yield",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(MUL(RATIO(oancf, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), RATIO(SUB(revt, cogs), revt)), 1)))",
+      "hypothesis": "Firms with large accumulated intangible investment, strong gross economics, and high cash return on an intangible-adjusted asset base earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior gross-margin-floor plus cash-conversion aggregation with a cash yield on the capitalized intangible asset base. The gross-margin component checks product-level pricing power, while the intangible-intensity leg keeps the signal focused on firms where accounting understatement is economically material.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.6964589014595775,
+      "ls_alpha": 0.035612396059126895,
+      "ls_talpha": 2.632501814665374,
+      "ls_sharpe": 0.3148266063982812,
+      "coverage": 0.0889590850294735,
+      "error": null
+    },
+    {
+      "name": "Intangible Renewal Sales Validation",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(MUL(GROWTH(sale, 1), ADD(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), at))), 1)))",
+      "hypothesis": "Profitable firms whose sales growth is supported by both expensed intangible investment and renewal of identifiable non-goodwill intangible assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the expensed-minus-recognized gap and instead tests whether multiple forms of intangible formation are accompanied by commercial growth. The operating-margin leg requires that the sales response is already profitable, not just expansion financed by intangible spending.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.2698209539178045,
+      "ls_alpha": 0.02059265831669109,
+      "ls_talpha": 2.145708276424817,
+      "ls_sharpe": -0.022838229478590356,
+      "coverage": 0.12975317538737374,
+      "error": null
+    },
+    {
+      "name": "Goodwill Interest-Covered Profit",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(WINSOR(SUB(RATIO(oibdp, sale), RATIO(COALESCE(xint, 0), sale)), 1)))",
+      "hypothesis": "Goodwill-heavy firms earn higher future returns when operating margins comfortably exceed interest burden, indicating that acquired intangible assets are economically covered.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from another goodwill-deterioration short and tests the cross-sectional validation side of acquisition intangibles. By using operating margin net of interest burden, the signal focuses on whether goodwill-backed assets are productive enough to cover financing costs rather than simply reproducing a distressed-acquirer tail trade.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.3778970933504557,
+      "ls_alpha": -0.015019336971017146,
+      "ls_talpha": -1.634646432266895,
+      "ls_sharpe": -0.11350438407027981,
+      "coverage": 0.14253273205896846,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Capitalized Intangible Yield x Intensity",
+      "expression": "MUL(IND_RANK(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)))",
+      "hypothesis": "Firms with high operating yield on a capitalized intangible asset base and high accumulated intangible investment intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The first component adds back R&D and advertising and scales profitability by book assets plus a recent intangible-investment stock. Multiplying by accumulated intangible intensity emphasizes firms where accounting understatement of productive assets should be economically material.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed R&D Ramp",
+      "expression": "MUL(IND_RANK(RATIO(oancf, at)), IND_RANK(TREND(RATIO(COALESCE(xrd, 0), sale), 5)))",
+      "hypothesis": "Firms increasing R&D intensity while already generating strong operating cash flow are undervalued profitable innovators.",
+      "expected_sign": "positive",
+      "reasoning": "Rising R&D intensity alone may reflect speculative investment, while cash profitability alone is a standard quality effect. Their interaction identifies firms able to fund expanding intangible investment from current productive operations.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Productive Intangible Overhead",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, xsga)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), xsga)))",
+      "hypothesis": "Firms whose SG&A is more explicitly intangible-investment-oriented and produces high operating profit per SG&A dollar earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "SG&A can mix maintenance overhead with productive intangible creation, so the intangible share of SG&A helps identify higher-quality overhead. The profitability-per-SG&A component validates that the intangible-heavy expense base is already generating operating returns.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D Capitalization Profitability Gap",
+      "expression": "WINSOR(SUB(RATIO(oibdp, at), RATIO(oibdp, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), 1)",
+      "hypothesis": "Firms whose reported operating profitability is high specifically because they have a large unrecognized R&D asset base earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This measures the profitability gap created by capitalizing recent R&D, so non-R&D firms are neutral rather than mechanically turned into a masked operating-profitability sort. Positive values require both current operating profits and accumulated R&D investment, while unprofitable R&D-heavy firms receive low values.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Backed Gross Margin Traction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), revt)), IND_RANK(RATIO(MUL(GROWTH(revt, 1), TS_SUM(COALESCE(xrd, 0), 3)), revt)))",
+      "hypothesis": "R&D-intensive firms whose recent research base is accompanied by sales growth and strong gross margins are more likely to have productive intangible capital.",
+      "expected_sign": "positive",
+      "reasoning": "The revised signal multiplies sales growth by accumulated R&D intensity rather than dividing by it, so near-zero R&D firms no longer receive artificial boosts. Pairing that R&D-backed growth channel with gross margin focuses on commercially validated innovation with pricing power.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Brand-Customer Intangible Payoff",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, sale)), IND_RANK(RATIO(MUL(GROWTH(sale, 1), ADD(TS_SUM(COALESCE(xad, 0), 5), SUB(COALESCE(intan, COALESCE(gdwl, 0)), COALESCE(gdwl, 0)))), at)))",
+      "hypothesis": "Firms with profitable operations and sales traction on advertising, brand, or customer-related intangible capital earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the weakest-link MIN structure with a continuous payoff interaction, avoiding a huge forced minimum group among firms with missing advertising. The intangible base combines accumulated advertising with identifiable non-goodwill intangibles, so the signal is less about advertising disclosure availability and more about whether brand/customer intangible assets are producing profitable growth.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Funded Intangible Compounder",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, at), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Firms with sustained operating cash-flow profitability and meaningful recent intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Operating cash flow provides a cleaner validation that intangible spending is funded by productive operations rather than external financing or accounting accruals. The accumulated R&D-plus-advertising leg captures a recent intangible investment base while avoiding an unstable single-year expense spike.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Durable Intangible Profitability",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), MUL(IND_RANK(MA(RATIO(oibdp, at), 3)), IND_RANK(NEG(VOL(RATIO(oibdp, at), 5)))))",
+      "hypothesis": "Firms with large cumulative intangible investment, sustained profitability, and low profitability volatility earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Productive intangible assets should generate durable earnings power, not just a one-period profitability spike. The interaction rewards firms where cumulative R&D and advertising are accompanied by both high and stable operating profitability, consistent with an underrecognized intangible moat.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Signed Intangible Profit Validation",
+      "expression": "WINSOR(MUL(RATIO(oibdp, at), RATIO(ADD(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0)), at)), 1)",
+      "hypothesis": "Firms earn higher future returns when a large intangible asset base is paired with positive current operating profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the masked profitability sort with a signed interaction: high values require both profitability and intangible capital, while unprofitable intangible-heavy firms become explicitly low rather than arbitrary. Using cumulative R&D and advertising plus identifiable non-goodwill intangibles also reduces dependence on a single zero-heavy R&D reporting channel.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Intangible Margin Inflection",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(oibdp, sale), 1), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)))",
+      "hypothesis": "Firms with prior intangible investment followed by improving operating margins are more likely to have productive intangible capital.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts the mechanism from contemporaneous sales-growth scaling to a time-sequenced payoff test: past R&D and advertising should show up in subsequent margin improvement. It avoids division by intangible intensity and does not reward firms merely for having near-zero R&D or advertising.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognized Intangible Margin Validation",
+      "expression": "WINSOR(MUL(RATIO(oiadp, sale), RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), 1)",
+      "hypothesis": "Firms with meaningful identifiable non-goodwill intangible assets and strong operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability leg is scaled by sales rather than by an asset denominator that double-counts recognized intangibles already included in total assets. The signal tests whether recognized technology, customer, contractual, or brand-related intangibles are associated with profitable operations rather than acquisition goodwill.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Profitability Acceleration",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(oibdp, at))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Intangible-intensive firms with accelerating operating profitability earn higher future returns as intangible investments become economically validated.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids a static low-profitability short by focusing on improvement in profitability rather than simply rewarding or penalizing the profitability level. The positive sign is consistent with markets underreacting when intangible-heavy firms begin converting investment into operating results.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Harvest Operating Leverage",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(TREND(RATIO(oibdp, sale), 3)), IND_RANK(NEG(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)))))",
+      "hypothesis": "Firms with prior intangible investment, improving operating margins, and easing intangible expense intensity are entering a profitable harvest phase.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether past R&D and advertising are beginning to scale, rather than simply rewarding current high spending. The margin-trend leg validates productivity, while the declining spending-intensity trend captures operating leverage from previously built intangible assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Internal Intangibles over Goodwill Profit",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_RANK(SUB(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at), RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Profitable firms with internally built intangible investment rather than acquisition goodwill earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "Internally generated R&D and advertising are more likely to be understated by accounting, while goodwill may reflect acquisition premia already paid. The interaction rewards profitability when it is paired with internal intangible formation and penalizes goodwill-heavy profitability that is less clearly an underrecognized productive asset base.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Payoff to Intangible Ramp",
+      "expression": "MUL(IND_RANK(WINSOR(ADD(MA(RATIO(oancf, sale), 3), ACCEL(RATIO(oancf, sale))), 1)), IND_RANK(LAG(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)))",
+      "hypothesis": "Firms with prior increases in intangible investment intensity and subsequently strong or improving cash margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cash-profitability plus accruals construction with a payoff-timing mechanism: intangible spending is useful when a prior ramp is followed by cash-margin validation. The signal avoids the Sloan accruals leg and is not just current cash profitability multiplied by intangible intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-to-Operating Intangible Conversion",
+      "expression": "MUL(IND_RANK(WINSOR(TREND(RATIO(oibdp, SUB(revt, cogs)), 3), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), sale), 1)))",
+      "hypothesis": "Firms whose prior intangible investment is followed by better conversion of gross profit into operating profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the DuPont margin-times-turnover collapse by measuring operating drop-through from gross profit rather than asset turnover. The interaction tests whether R&D and advertising create scalable products or brands whose gross profits increasingly survive operating-expense absorption.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill-Light Intangible Cash High",
+      "expression": "MUL(IND_RANK(TS_RANK(MA(RATIO(oancf, sale), 3), 5)), IND_RANK(SUB(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at), RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Firms with identifiable non-goodwill intangible assets and cash margins near their own historical highs earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the zero-advertising weakest-link problem by relying on recognized non-goodwill intangibles rather than advertising availability. The profitability validation comes from a firm-specific cash-margin high, while the intangible leg distinguishes productive identifiable intangibles from goodwill-heavy acquisition accounting.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Light Self-Funded Intangible Ramp",
+      "expression": "MUL(IND_RANK(RATIO(oancf, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3)))), MUL(IND_RANK(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)), IND_RANK(NEG(TREND(RATIO(COALESCE(xint, 0), sale), 3)))))",
+      "hypothesis": "Firms ramping intangible investment while generating operating cash flow and reducing interest burden are more likely to have validated, internally funded intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This revises the near-pretax-income double sort into a financing-resilience mechanism: intangible expansion is most valuable when it is not accompanied by rising debt-service pressure. The cash-flow leg validates self-funding capacity, while the interest-trend leg filters out firms whose intangible investment depends on increasingly costly financing.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Validated Intangible Turnover Improvement",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, sale), 3)), IND_RANK(WINSOR(DELTA(RATIO(sale, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3))), 1), 1)))",
+      "hypothesis": "Firms with strong cash margins and improving sales generation on an intangible-adjusted asset base earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The adjusted turnover change tests whether reported assets plus recent intangible investment are becoming more productive, while cash margin validates that the sales efficiency is not low-quality revenue. This shifts away from a pure profitability-level \u00d7 intangible-intensity double sort toward improvement in the productivity of the broader asset base.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Margin Decay",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(RATIO(COALESCE(gdwl, 0), at)))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating operating margins earn lower future returns because acquired intangibles are not being productively validated.",
+      "expected_sign": "negative",
+      "reasoning": "This is a negative validation test for acquired intangible capital: high goodwill is penalized only when operating margins are worsening. The interaction targets unproductive acquisition intangibles rather than simply shorting low-profitability firms or high-goodwill firms in isolation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Rising Intangible Spend Absorption",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 1), 1)), IND_RANK(WINSOR(DELTA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1), 1)))",
+      "hypothesis": "Firms that raise intangible investment intensity while also improving intangible-adjusted operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior splice of lagged margin inflection and goodwill adjustment with a simultaneous absorption test: the firm is spending more on R&D/advertising, yet profitability before expensed intangibles is improving. High values therefore indicate current validation of a rising intangible burden rather than a static profitability-by-intensity sort.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Intangible Reinvestment Share",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(oibdp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)))",
+      "hypothesis": "Firms with strong pre-intangible operating profitability that reinvest a meaningful share of that surplus into R&D and advertising earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the volatility-of-spend variant by asking whether intangible investment is funded out of a current economic surplus. The second leg is a reinvestment share of pre-intangible profit rather than raw intangible intensity, so the signal targets productive reinvestment capacity instead of a generic profitability-level \u00d7 intangible-stock interaction.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Gross-Margin Upgrade",
+      "expression": "MUL(IND_RANK(WINSOR(DELTA(RATIO(SUB(revt, cogs), revt), 1), 1)), MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1))))",
+      "hypothesis": "Firms with prior intangible investment, current operating profitability, and improving gross margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the drop-through idea into a product-differentiation or production-efficiency mechanism: successful intangibles should raise gross margin through pricing power, better products, or lower delivery costs. The operating-margin leg requires that the gross-margin improvement is already reaching operating profitability rather than remaining an isolated revenue-cost effect.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Intangible Profit Dollar Payoff",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(oibdp, 1), at), 1)), IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)))",
+      "hypothesis": "Firms whose prior intangible investment is followed by an increase in operating profit dollars relative to assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a denominator tweak to margin inflection; it tests whether prior R&D and advertising translate into absolute operating-profit expansion rather than merely improved sales-scaled margins. Scaling the profit change by assets preserves broad coverage and avoids rewarding near-zero intangible spenders through an unstable profit-per-intangible denominator.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Cost-Mix Upgrade",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(SUB(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), TREND(RATIO(cogs, revt), 3)), 1)))",
+      "hypothesis": "Profitable firms shifting their cost structure away from production costs and toward intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A rising intangible-spend share is more credible when it coincides with a falling cost-of-goods burden, suggesting a transition toward higher-value, asset-light products or brands. Current profitability helps filter out firms that are merely increasing R&D or advertising without evidence of economic payoff.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Acquired Intangible Cash Decay",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(TREND(RATIO(oancf, sale), 3)), 1)), IND_RANK(SUB(RATIO(COALESCE(gdwl, 0), at), RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at))))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating cash margins and little internal intangible formation earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "High signal values identify acquired-intangible stories whose cash productivity is worsening, while giving less weight to firms with internally generated intangible investment. This refines the goodwill-decay idea by distinguishing acquisition-heavy intangibles from internally built intangible capital.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Intangible Investment Mix",
+      "expression": "WINSOR(MUL(RATIO(oibdp, sale), COALESCE(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), ADD(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), ABS(DELTA(at, 1)))), 0)), 1)",
+      "hypothesis": "Firms whose investment mix is dominated by expensed intangibles rather than balance-sheet asset accumulation, and that are already operating-profitable, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the scale problem by comparing dollar intangible investment to dollar asset accumulation, rather than subtracting an investment-intensity level from an asset-growth rate. The signed profitability interaction makes non-investing firms neutral and focuses the long leg on profitable firms where accounting is most likely to understate productive asset formation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded Intangible Reinvestment",
+      "expression": "WINSOR(MUL(COALESCE(RATIO(SUB(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(ABS(oibdp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0), COALESCE(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(ABS(oancf), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0)), 1)",
+      "hypothesis": "Firms that reinvest meaningfully in R&D and advertising while still generating cash surplus after those investments have more validated intangible productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the goodwill-vs-internal spread with a direct self-funding test, avoiding duplication of goodwill decay and internal-minus-goodwill rankings. The first component asks whether operating cash flow covers intangible spend, while the second requires the spend to be economically meaningful rather than incidental.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Expense Productivity Mix",
+      "expression": "WINSOR(MUL(COALESCE(RATIO(oibdp, ADD(dp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0), COALESCE(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(dp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 0)), 1)",
+      "hypothesis": "Firms whose productive expense base is more intangible than depreciating physical capital, and that generate high operating profit per dollar of that base, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from gross-profit dollar recombinations and tests a different accounting channel: expensed intangible investment versus depreciated tangible capital. High values require both an intangible-heavy investment-expense mix and realized operating profit productivity from that mix.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Intangible Margin Breakout",
+      "expression": "WINSOR(MUL(SUB(RATIO(oibdp, sale), MA(RATIO(oibdp, sale), 5)), MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 5)), 1)",
+      "hypothesis": "Firms with sustained intangible investment whose operating margins break above their own historical norm earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the reporting-availability count and replaces it with the actual five-year average magnitude of R&D and advertising intensity. The signed margin-breakout interaction makes persistent intangible spend valuable only when profitability is improving relative to the firm\u2019s own baseline, rather than merely rewarding disclosure persistence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensed Intangible Recognition Gap",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(SUB(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), sale)), 1)))",
+      "hypothesis": "Profitable firms whose internal intangible investment is expensed rather than recognized as balance-sheet intangible asset growth earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The second leg compares two flow-scaled quantities: current expensed R&D/advertising intensity versus the change in identifiable non-goodwill intangible assets. High values identify profitable firms where accounting is most likely understating internally generated productive capital.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Cash Dropthrough",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), IND_RANK(WINSOR(SUB(RATIO(DELTA(oancf, 1), at), RATIO(DELTA(sale, 1), at)), 1))))",
+      "hypothesis": "Firms with prior intangible investment, current cash margins, and cash-flow expansion exceeding sales expansion earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the failed self-funding/reinvestment-share construction with a cash drop-through test rather than another operating-surplus allocation ratio. The interaction asks whether past R&D and advertising are producing incremental cash economics beyond simple revenue growth.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Overhead Discipline",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)), IND_RANK(WINSOR(NEG(TREND(RATIO(SUB(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), sale), 3)), 1))))",
+      "hypothesis": "Profitable firms that sustain intangible investment while reducing non-intangible SG&A overhead intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the intangible-share-of-SG&A leg by explicitly separating intangible spending from residual SG&A overhead. The mechanism is overhead discipline: R&D and advertising are more credible when administrative or maintenance SG&A is being scaled down while operating margins remain positive.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability Outruns Intangible Spend",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(SUB(TS_RANK(RATIO(oibdp, sale), 5), TS_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 5)), 1)))",
+      "hypothesis": "Intangible-intensive firms whose profitability is high relative to their own history beyond what is explained by a concurrent spending spike earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This decouples the profitability-rank leg from the intangible-spending leg by using reported operating margin, not an add-back margin mechanically boosted by R&D and advertising. The relative time-series spread penalizes cases where the apparent profitability signal is merely synchronized with rising intangible expense intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Acquisition Platform Internal Innovation",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(TREND(RATIO(SUB(revt, cogs), revt), 3), 1)), IND_RANK(WINSOR(MUL(RATIO(COALESCE(gdwl, 0), at), MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3)), 1))))",
+      "hypothesis": "Goodwill-heavy firms that remain operating-profitable, improve gross margins, and continue internal intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not the mirror image of goodwill cash decay; it tests whether acquired platforms are being productively enhanced with internal R&D and advertising. Gross-margin improvement provides a product or pricing-power validation channel, while operating margin ensures the improvement reaches profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Demand Resilience",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(RATIO(sale, TS_MAX(sale, 5)), 1))))",
+      "hypothesis": "Intangible-intensive firms with current profitability and sales near their own historical peak earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the harvest-phase duplicate with a demand-resilience mechanism rather than using lagged intensity and falling spend intensity again. Productive intangible assets should support durable customer demand, so sales remaining close to a firm\u2019s own peak validates the intangible base alongside current profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Demand Drawdown",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(WINSOR(NEG(RATIO(sale, TS_MAX(sale, 5))), 1))))",
+      "hypothesis": "Goodwill-heavy firms with deteriorating operating margins and sales below their recent peak earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "High values identify acquired-intangible firms where both demand and profitability validation are weakening, consistent with future impairment or poor acquisition productivity. The sales drawdown condition makes this more specific than a generic goodwill or low-profitability short.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Research-to-Market Profit Transition",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at), 1)), IND_RANK(WINSOR(TREND(RATIO(COALESCE(xad, 0), sale), 3), 1))))",
+      "hypothesis": "Firms with prior research investment, rising commercialization spending, and current operating profitability earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This captures a pipeline transition from research creation to market deployment, rather than just high current R&D or advertising intensity. Operating margin filters for firms whose commercialization phase is already profitable instead of purely promotional.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill-to-Internal Rotation Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(TREND(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 3), 1)), IND_RANK(WINSOR(NEG(TREND(RATIO(COALESCE(gdwl, 0), at), 3)), 1))))",
+      "hypothesis": "Profitable firms shifting intangible formation away from acquisition goodwill and toward internal R&D and advertising earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the collapsed internal-share construction with a dynamic rotation mechanism, so the signal is not just internal intangible intensity scaled by assets. Operating profitability validates the transition, while rising internal spend and falling goodwill intensity identify firms building rather than buying productive intangible capital.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognized Intangible Amortization Cash Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), MUL(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(SUB(oibdp, oiadp), sale), 1))))",
+      "hypothesis": "Cash-profitable firms with identifiable non-goodwill intangibles and a large operating-income drag from depreciation or amortization earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the expensed-gap leg that degenerates into raw R&D/advertising intensity for firms with missing intangibles. The mechanism is accounting conservatism from recognized intangible amortization: strong cash margins plus a non-goodwill intangible base suggest productive assets whose earnings are understated by noncash charges.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-Margin Floor Intangible Moat",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Intangible-intensive firms with current operating profitability and a high worst-case gross margin over time earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the asset-turnover construction with a product-differentiation moat test. A high gross-margin floor indicates that accumulated intangible investment supports durable pricing power or product advantage, while operating profitability confirms that the moat reaches the bottom line.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Cost-Base Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), ADD(cogs, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)), IND_RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(cogs, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1))))",
+      "hypothesis": "Firms with intangible-heavy value-creation costs, strong gross profit per total production-and-intangible cost, and positive operating margins earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a reinvestment share of gross profit; it measures whether an intangible-heavy cost structure is producing strong product-level economics. The operating-margin leg filters for firms where gross-level intangible productivity is not offset by excessive downstream operating costs.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Cash Moat Expansion",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), MUL(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5)), IND_RANK(WINSOR(RATIO(DELTA(oancf, 1), at), 1))))",
+      "hypothesis": "Firms with prior intangible investment, durable gross-margin floors, and expanding operating cash flow earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A high worst-case gross margin suggests that intangible assets support persistent product differentiation or pricing power. Cash-flow expansion provides current validation that this moat is converting into economic profitability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Balanced Intangible Commercialization Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), ADD(COALESCE(xad, 0), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0))), sale), 1)), IND_RANK(WINSOR(NEG(ABS(SUB(RATIO(COALESCE(xrd, 0), sale), RATIO(ADD(COALESCE(xad, 0), COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0)), sale)))), 1))))",
+      "hypothesis": "Profitable firms with a meaningful and balanced intangible system across research and commercialization/customer assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the lagged-margin-plus-cash add-on with a distinct complementarity mechanism: intangible productivity is more credible when R&D is matched by advertising or recognized customer/brand assets. The profitability leg validates the balanced intangible base, while the materiality leg prevents zero-intangible firms from scoring highly merely because the two sides are equally absent.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognized Customer Asset Cash Retention",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf, sale), 1)), MUL(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(sale, TS_MAX(sale, 5)), 1))))",
+      "hypothesis": "Firms with identifiable non-goodwill intangible assets, strong cash margins, and sales close to recent peaks earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the internal-minus-goodwill leg and instead tests whether recognized customer, technology, or contractual intangible assets are economically validated by cash profitability and demand retention. The sales-retention condition helps separate productive recognized intangibles from stale or impaired intangible balances.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Neglect Demand Failure",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), 1)), MUL(IND_RANK(WINSOR(NEG(DELTA(RATIO(oibdp, sale), 1)), 1)), IND_RANK(WINSOR(NEG(RATIO(sale, TS_MAX(sale, 5))), 1))))",
+      "hypothesis": "Firms with little internal intangible reinvestment, deteriorating margins, and sales below recent peaks earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This fixes the sign problem by treating the absence of internal intangible investment as the adverse condition, rather than using accumulated R&D and advertising intensity as a negative-return amplifier. High values identify firms whose franchise appears to be weakening without sufficient intangible reinvestment to replenish demand or profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hybrid Intangible Stack Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MIN(IND_RANK(RATIO(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), at)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1))))",
+      "hypothesis": "Firms that combine current expensed intangible investment with a recognized non-goodwill intangible asset base, while remaining profitable, earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the expensed-minus-recognized gap and cash-trend substitution with a hybrid-stack test: the firm must have both ongoing internal intangible spending and an existing identifiable intangible base. The weakest-link structure focuses on firms where current profitability validates a multi-layer intangible platform, not merely high R&D or advertising intensity.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cost-Stable Intangible Moat",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(NEG(VOL(RATIO(cogs, revt), 5)))))",
+      "hypothesis": "Intangible-intensive firms with current operating profitability and stable cost-of-goods intensity earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the distorted SG&A denominator and avoids double-counting R&D or advertising inside operating costs. Stable COGS intensity, paired with accumulated intangible investment and profitability, is consistent with durable product economics or pricing power rather than a transient margin spike.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Gross Cash Conversion",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), MUL(IND_RANK(TS_MIN(RATIO(SUB(revt, cogs), revt), 5)), IND_RANK(WINSOR(RATIO(oancf, SUB(revt, cogs)), 1))))",
+      "hypothesis": "Firms with accumulated intangible investment, durable gross margins, and strong cash conversion of gross profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "A high gross-margin floor suggests persistent pricing power or product differentiation from intangible assets. Cash conversion of gross profit validates that this product-level moat becomes realized operating cash flow rather than merely accounting margin.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Debt Coverage Failure",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(RATIO(COALESCE(xint, 0), sale), 1)), IND_RANK(WINSOR(NEG(RATIO(oibdp, sale)), 1))))",
+      "hypothesis": "Goodwill-heavy firms with high interest burden and weak operating margins earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This targets acquisition overhang: goodwill is most problematic when the acquired asset base is paired with debt-service pressure and inadequate operating profitability. The interaction is not a generic low-profitability short, because the adverse profitability signal is conditioned on both goodwill intensity and financing burden.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Spend Absorption Coverage",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, ADD(ABS(oibdp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1)))",
+      "hypothesis": "Firms with meaningful R&D and advertising intensity that still retain strong operating profit after absorbing those expenses earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the sales-growth-minus-asset-growth construction with a direct absorption test, avoiding the asset-turnover and asset-growth anomaly bundle. High values require both material intangible spending and evidence that current operating economics survive that spending burden.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Fixed-Charge Coverage",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, ADD(ABS(oibdp), ADD(COALESCE(xint, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))))), 1)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at)))",
+      "hypothesis": "Intangible-intensive firms whose operating profit covers both financing costs and ongoing intangible investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from residual-SG&A trend mechanics and instead tests whether the firm has an operating-profit cushion against fixed financial charges plus expensed intangible investment. The accumulated intangible leg ensures the coverage ratio is evaluated where the accounting-understatement channel is economically material.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill with Internal Reinvestment Neglect",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), MUL(IND_RANK(WINSOR(NEG(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale)), 1)), IND_RANK(WINSOR(NEG(RATIO(oibdp, sale)), 1))))",
+      "hypothesis": "Goodwill-heavy firms with weak operating margins and little internal intangible reinvestment earn lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids another goodwill-plus-sales-drawdown template and addresses the sign issue by treating low internal reinvestment, not high internal intangible intensity, as the adverse condition. High values identify acquired-intangible firms that are neither currently profitable nor replenishing their intangible base internally.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognized Intangible Renewal Profit",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), MUL(IND_RANK(WINSOR(RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), at), 1)), IND_RANK(WINSOR(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), 1))))",
+      "hypothesis": "Profitable firms that are both expanding identifiable non-goodwill intangible assets and continuing internal R&D or advertising investment earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the repeated intangible-level decay template with a positive renewal mechanism. The signal requires current operating profitability, balance-sheet growth in identifiable non-goodwill intangibles, and ongoing expensed intangible investment, targeting firms building a validated intangible platform rather than firms merely carrying stale intangible assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Intangible Dual Inflection",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 3), at), 1)), SUMRANK(WINSOR(DELTA(RATIO(oibdp, sale), 1), 1), WINSOR(RATIO(DELTA(oancf, 1), at), 1)))",
+      "hypothesis": "Prior intangible investment is most return-predictive when followed by both operating-margin improvement and operating cash-flow expansion.",
+      "expected_sign": "positive",
+      "reasoning": "The lagged intangible leg preserves the economic timing from investment to payoff. Combining accrual operating-margin inflection with cash-flow inflection seeks validated commercialization rather than a purely accounting margin improvement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Intangible Profit Minus Levered Goodwill",
+      "expression": "SUB(MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at))), MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(WINSOR(RATIO(COALESCE(xint, 0), sale), 1))))",
+      "hypothesis": "Profitable internally built intangible firms outperform firms whose intangible base is acquisition-goodwill-heavy and paired with financing burden.",
+      "expected_sign": "positive",
+      "reasoning": "This is a signed source-of-intangibles spread: the long side emphasizes organic intangible investment with operating profitability, while the subtractive leg penalizes goodwill supported by interest expense. It targets the accounting-understatement story for internally generated assets while avoiding a pure profitability or pure goodwill sort.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Research-to-Brand Gross Cash Payoff",
+      "expression": "MUL(IND_RANK(LAG(RATIO(TS_SUM(COALESCE(xrd, 0), 3), at), 1)), MUL(IND_RANK(WINSOR(RATIO(COALESCE(xad, 0), sale), 1)), IND_RANK(WINSOR(RATIO(oancf, SUB(revt, cogs)), 1))))",
+      "hypothesis": "Firms with prior research investment, current commercialization spending, and strong cash conversion of gross profit earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal tests a research-to-market pipeline: past R&D creates products, current advertising helps commercialize them, and cash conversion confirms economic payoff. Using advertising intensity as a current state rather than a trend reduces dependence on zero-inflated advertising changes.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible-Adjusted Gross Cash Yield",
+      "expression": "MUL(IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), at)), IND_RANK(WINSOR(MUL(RATIO(oancf, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), RATIO(SUB(revt, cogs), revt)), 1)))",
+      "hypothesis": "Firms with large accumulated intangible investment, strong gross economics, and high cash return on an intangible-adjusted asset base earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the prior gross-margin-floor plus cash-conversion aggregation with a cash yield on the capitalized intangible asset base. The gross-margin component checks product-level pricing power, while the intangible-intensity leg keeps the signal focused on firms where accounting understatement is economically material.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Renewal Sales Validation",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oibdp, sale), 1)), IND_RANK(WINSOR(MUL(GROWTH(sale, 1), ADD(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale), RATIO(DELTA(COALESCE(SUB(intan, COALESCE(gdwl, 0)), 0), 1), at))), 1)))",
+      "hypothesis": "Profitable firms whose sales growth is supported by both expensed intangible investment and renewal of identifiable non-goodwill intangible assets earn higher future returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids reusing the expensed-minus-recognized gap and instead tests whether multiple forms of intangible formation are accompanied by commercial growth. The operating-margin leg requires that the sales response is already profitable, not just expansion financed by intangible spending.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Interest-Covered Profit",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(WINSOR(SUB(RATIO(oibdp, sale), RATIO(COALESCE(xint, 0), sale)), 1)))",
+      "hypothesis": "Goodwill-heavy firms earn higher future returns when operating margins comfortably exceed interest burden, indicating that acquired intangible assets are economically covered.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from another goodwill-deterioration short and tests the cross-sectional validation side of acquisition intangibles. By using operating margin net of interest burden, the signal focuses on whether goodwill-backed assets are productive enough to cover financing costs rather than simply reproducing a distressed-acquirer tail trade.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "R&D-Conditioned Operating Profitability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the well-known operating profitability anomaly (Novy-Marx/Fama-French RMW) masked to the R&D-intensive subsample, and the masking is mechanically damaging because all non-R&D firms (including every non-reporter, coerced to zero) collapse to a signal value of exactly 0 that sits in the middle of the industry-adjusted profitability distribution, muddling both the FMB slope and the portfolio legs."
+    },
+    {
+      "generation": 0,
+      "target_name": "Capitalized Intangible Yield x Intensity",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The interaction of intangible-capitalized profitability (Peters-Taylor style) with accumulated intangible intensity is economically coherent and not a direct rediscovery, though the multiplicative rank form will be dominated by the intensity leg and will floor all zero-R&D/zero-advertising firms at a common value, so a demeaned or double-sorted version should be tested alongside it."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cash-Backed R&D Ramp",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Cash profitability and R&D increases are each known effects, but their conditional combination (\"can the firm self-fund the intangible ramp?\") is a defensible and non-trivial interaction; the main weakness is the large tie mass at TREND=0 for non-R&D firms, which will make the low-signal leg compositionally arbitrary."
+    },
+    {
+      "generation": 0,
+      "target_name": "Gross-Margin R&D Sales Conversion",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "The expression is internally inconsistent with the hypothesis and numerically unsafe \u2014 dividing sales growth by R&D intensity makes the signal explode for firms with near-zero or zero R&D (division by zero after COALESCE), so it mechanically rewards the least R&D-intensive growers rather than the \"R&D-intensive firms converting research into sales\" the hypothesis describes."
+    },
+    {
+      "generation": 0,
+      "target_name": "Brand Payoff Weakest Link",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because xad is missing for the majority of Compustat firms and is coerced to zero, the MIN operator pins a huge mass of firms at the identical minimum rank, so the signal degenerates into little more than advertising-intensity availability (a known effect) with an arbitrarily composed short leg."
+    },
+    {
+      "generation": 0,
+      "target_name": "Productive Intangible Overhead",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "\"Intangible share of SG&A\" as a quality discriminator on overhead-scaled profitability is a genuinely fresh angle rather than a repackaged published anomaly, but both components share a small, occasionally near-zero xsga denominator (which in Compustat frequently already subsumes xrd), so the ratio instability and mechanical overlap need to be checked before the result is believed."
+    },
+    {
+      "generation": 1,
+      "target_name": "Continuous Industry Intangible Profitability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "IND_RANK applied to an already industry-demeaned ratio is a near-identity transform, so this collapses to the archive's \"profitability \u00d7 intangible intensity\" interaction, and the stated repair fails on its own terms because ranking still ties all zero-R&D/ad firms at the same value."
+    },
+    {
+      "generation": 1,
+      "target_name": "Profit-Margined Intangible Sales Traction",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-scaling (winsorization, xrd added, sale instead of at denominator) of the archive's failed Brand-Customer Intangible Payoff with an identical margin leg, and the reasoning misdescribes the prior signal, which also multiplied growth by intangible stock rather than dividing."
+    },
+    {
+      "generation": 1,
+      "target_name": "Cash-Funded Intangible Compounder",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Substituting smoothed cash-flow profitability for accrual operating profitability is an economically motivated change to the validation leg rather than a rescaling, though the signal remains close to a cash-based-operating-profitability \u00d7 R&D-intensity double sort and risks loading on two separately published anomalies."
+    },
+    {
+      "generation": 1,
+      "target_name": "Non-Goodwill Intangible Operating Yield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The yield denominator double-counts identifiable intangibles that are already inside `at` (and the ABS wrapper is an arbitrary sign patch), so the first leg mechanically penalizes exactly the firms the second leg rewards, muddying the intended interaction."
+    },
+    {
+      "generation": 1,
+      "target_name": "Unvalidated Intangible Spending Drag",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Reversing the profitability rank of an already-tested interaction produces a signal dominated by the well-known low-profitability/RMW leg, and the predicted direction contradicts the established R&D-intensive-loser evidence (Chan-Lakonishok-Sougiannis), so it is both largely redundant and sign-contestable."
+    },
+    {
+      "generation": 1,
+      "target_name": "Durable Intangible Profitability",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Adding a profitability-stability dimension is a genuine third economic ingredient rather than a rescaling of the archive winner, and the triple rank product is internally consistent with the stated moat hypothesis, though the 5-year VOL requirement and extreme-tail concentration of a triple product warrant coverage and portfolio-stability checks."
+    },
+    {
+      "generation": 2,
+      "target_name": "Cash-Earnings Intangible Conservatism",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Two of the three legs reproduce the archived \"Cash-Funded Intangible Compounder\" almost verbatim, and the only new leg \u2014 (oancf \u2212 ni)/at \u2014 is the classic Sloan (1996) accruals anomaly, so this is a known-anomaly bolt-on to an existing signal rather than a new mechanism."
+    },
+    {
+      "generation": 2,
+      "target_name": "Intangible Harvest Operating Leverage",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The declining-spend-intensity trend leg is a genuinely different economic idea (harvest/operating-leverage phase) rather than a cosmetic re-parameterization of the archived margin-inflection signal, though the level leg (high intangible intensity) and the trend leg (falling intangible intensity) partially offset each other and the triple-rank product risks thin, unstable extreme buckets."
+    },
+    {
+      "generation": 2,
+      "target_name": "Scalable Intangible Sales Profitability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "By the DuPont identity margin \u00d7 turnover \u2248 oibdp/at, so despite the stated claim to the contrary this collapses to essentially operating profitability \u00d7 cumulative intangible intensity \u2014 i.e., the archived \"Capitalized Intangible Yield x Intensity\" construction in disguise."
+    },
+    {
+      "generation": 2,
+      "target_name": "Internal Intangibles over Goodwill Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The internally-generated-minus-acquired intangible differencing is a substantively new distinction (not just another profitability \u00d7 R&D-intensity double sort), though subtracting a goodwill stock from a five-year expense flow is dimensionally awkward and the profitability leg remains heavily overlapped with the archive."
+    },
+    {
+      "generation": 2,
+      "target_name": "Brand-Customer Margin Inflection",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Structurally this is the archived \"Lagged Intangible Margin Inflection\" with only the intangible proxy swapped (xad + non-goodwill intan for xrd + xad), and the stated rationale is internally inconsistent since COALESCE(xad,0) still stacks all non-advertisers at the bottom of the rank rather than avoiding the arbitrary-bucket problem."
+    },
+    {
+      "generation": 2,
+      "target_name": "Financing-Resilient Intangible Profit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "oibdp \u2212 dp \u2212 xint is just a near-pretax-income numerator, so this is the fourth profitability-level \u00d7 intangible-intensity double sort in the archive with a cosmetically different profitability definition and no new economic channel."
+    },
+    {
+      "generation": 3,
+      "target_name": "Internal-Intangible Margin Inflection",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is a near-mechanical splice of two already-tested archive winners (Lagged Intangible Margin Inflection's delta-margin leg with Internal Intangibles over Goodwill Profit's internal-minus-goodwill leg), so it is a cosmetic recombination rather than a new mechanism, and the goodwill subtraction is unlikely to change the second leg's cross-sectional ranking much."
+    },
+    {
+      "generation": 3,
+      "target_name": "Stable Intangible Spend Profitability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Structurally identical to the archive's Durable Intangible Profitability (intensity \u00d7 3yr-MA profitability \u00d7 negative volatility) with only the volatility target swapped from profitability to spend intensity, and that parent already showed a weak FF5 alpha (t=1.40), so the variant is cosmetic and unlikely to fix the portfolio-side failure."
+    },
+    {
+      "generation": 3,
+      "target_name": "Internal Intangible Gross Dropthrough",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The gross-to-operating dropthrough leg is the level version of the archive's already-tested Gross-to-Operating Intangible Conversion (and is close to Productive Intangible Overhead's oibdp/xsga), while the second leg is copied verbatim from Internal Intangibles over Goodwill Profit, making this a recombination of three prior signals with no new economic content."
+    },
+    {
+      "generation": 3,
+      "target_name": "Cash-Validated Intangible Turnover Improvement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The change-in-asset-turnover leg is a genuinely new construct in this archive and is economically coherent when paired with cash margin, though the intangible adjustment to the denominator is likely immaterial to the ranking and the margin \u00d7 turnover product risks being a restatement of a DuPont ROA improvement."
+    },
+    {
+      "generation": 3,
+      "target_name": "Intangible-Adjusted Profit Recapture",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archive's Lagged Intangible Margin Inflection with the profitability delta re-scaled from sales to a lightly intangible-adjusted asset base \u2014 a denominator tweak, not a substantively different mechanism \u2014 and the INTERACTION_TYPE is mislabeled as \"ratio\" when the expression is a multiplicative composite."
+    },
+    {
+      "generation": 3,
+      "target_name": "Goodwill Margin Decay",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Internally consistent (high signal = deteriorating margins plus heavy goodwill, expected negative) and a genuinely new short-side conditional direction for this archive, though the COALESCE(gdwl,0) mass of zero-goodwill firms will pile up at the bottom of the product and may make the long leg an uninformative mixture."
+    },
+    {
+      "generation": 4,
+      "target_name": "Profitable Intangible Asset-Gap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The second leg subtracts a growth rate (GROWTH(at,1)) from a level ratio (R&D+ad/sale) with no scale reconciliation, so the \"off-balance-sheet gap\" is mechanically dominated by whichever component has wider dispersion, and the resulting signal is essentially a bundle of three well-known anomalies (gross/operating profitability, R&D intensity, and low asset growth) rather than a new interaction."
+    },
+    {
+      "generation": 4,
+      "target_name": "Cash Source Validation Spread",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Algebraically this reduces to approximately rank(cash-margin trend)\u00d7(rank RD + rank GW) \u2212 rank GW, which is very close to the already-tested \"Internal Intangibles over Goodwill Profit\" with a cash-trend substituted for the profitability level, and it also largely duplicates the Acquired Intangible Cash Decay proposal in this same batch."
+    },
+    {
+      "generation": 4,
+      "target_name": "Gross Profit Dollar Intangible Payoff",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic recombination of two archive signals \u2014 \"Lagged Intangible Profit Dollar Payoff\" (profit-dollar change scaled by assets \u00d7 lagged intangible intensity) and \"Intangible Gross-Margin Upgrade\" (margin improvement \u00d7 operating margin \u00d7 lagged intangible intensity) \u2014 with gross-profit dollars swapped in for operating-profit dollars."
+    },
+    {
+      "generation": 4,
+      "target_name": "Intangible Cost-Mix Upgrade",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The cost-mix rotation (rising intangible spend share against falling COGS burden) is a genuinely different construct from prior margin-level or margin-change legs and the sign logic is internally consistent, though the differencing of two trends on incomparable scales is crude and the direction sits in tension with the archive's \"Intangible Harvest Operating Leverage,\" which rewarded *falling* intangible intensity."
+    },
+    {
+      "generation": 4,
+      "target_name": "Persistent Intangible Profit High",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_COUNT(xrd)/TS_COUNT(xad) on unimputed fields is a reporting-availability count, so the signal is precisely the disclosure proxy the reasoning claims to avoid, and it is near-binary (mostly 0 or 5) making the multiplicative intangible leg a coverage artifact layered onto an own-history profitability rank already tried in \"Goodwill-Light Intangible Cash High.\""
+    },
+    {
+      "generation": 4,
+      "target_name": "Acquired Intangible Cash Decay",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expected negative sign matches the expression's natural direction, and replacing the accrual margin change with a cash-margin trend plus netting internal intangible formation out of goodwill intensity is a substantive attempt to fix the fmb/alpha disagreement in \"Goodwill Margin Decay,\" though it overlaps materially with the Cash Source Validation Spread submitted alongside it."
+    },
+    {
+      "generation": 5,
+      "target_name": "Intangible Cash Conversion Share",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-mechanical restatement of the already-tested \"Self-Funded Intangible Reinvestment\" (identical reinvestment-share leg up to the ABS denominator, and a first leg that differs only by adding back the intangible spend already captured in leg two), which failed with fmb 1.38 and negative alpha, so it offers no new economic content."
+    },
+    {
+      "generation": 5,
+      "target_name": "Intangible SG&A Operating Leverage",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The intangible-share-of-SG&A leg is essentially the archived \"Productive Intangible Overhead\" second leg with 3-year smoothing, and swapping the level of oibdp/xsga for its 3-year trend recreates the margin-trend \u00d7 intangible-intensity structure already tested in \"Intangible Harvest Operating Leverage,\" making this a hybrid variant of two weak-to-moderate predecessors rather than a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Intangible-Adjusted Margin High",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The two legs are mechanically coupled \u2014 adding xrd+xad back into the margin numerator means a firm whose intangible intensity is rising automatically ranks high in its own time-series of \"intangible-adjusted margin\" \u2014 so the interaction can fire on spending escalation rather than productivity, and the design otherwise overlaps \"Sustained Intangible Margin Breakout\" (fmb 1.63, alpha 0.003) and the TS_RANK construction of \"Goodwill-Light Intangible Cash High.\""
+    },
+    {
+      "generation": 5,
+      "target_name": "Goodwill Cash Recovery",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is the mirror image of the already-evaluated \"Acquired Intangible Cash Decay\" (goodwill weight \u00d7 cash-margin trend, sign flipped) and therefore mostly re-tests the same axis, and the denominator ADD(at, gdwl) double-counts goodwill since it is already inside total assets."
+    },
+    {
+      "generation": 5,
+      "target_name": "Expensed Intangible Recognition Gap",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expensed-versus-recognized intangible \"gap\" leg is a genuinely new comparison in this archive and a coherent test of accounting understatement, though the reviewer should note two risks: for firms with missing intan the leg degenerates to plain R&D/advertising intensity (already paired with margins in several archived signals), and high values can be driven mechanically by amortization-driven declines in intangible assets rather than by internal capital formation."
+    },
+    {
+      "generation": 5,
+      "target_name": "Maturing Intangible Cash Dropthrough",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Two of the three legs (lagged intangible intensity, negative trend in intangible spend intensity) are identical to \"Intangible Harvest Operating Leverage,\" so the only change is substituting a cash-conversion trend for the margin trend \u2014 a cosmetic variant \u2014 and the ABS(oibdp) denominator makes the conversion ratio non-monotonic for loss-making firms."
+    },
+    {
+      "generation": 6,
+      "target_name": "Profitable Internal Build Share",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The internal-share leg multiplied by the total-intangible-base leg economically collapses back to internal intangible intensity over assets, so the signal is close to a repackaging of the archived \"Internal Intangibles over Goodwill Profit\" and the gen-0/gen-1 profitability \u00d7 intangible-intensity constructions rather than a substantively new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Lagged Expensed-Gap Margin Inflection",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because COALESCE sets missing intan to zero, the \"expensed gap\" leg reduces to plain intangible spending intensity for most firms, making this a near-duplicate of the archived \"Lagged Intangible Margin Inflection\" with a sales rather than asset scaler, i.e., a leg-swap between two already-evaluated signals."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Margin Intangible Asset Productivity High",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic level-versus-change variant of the archived \"Cash-Validated Intangible Turnover Improvement\" (DELTA replaced by TS_RANK) crossed with the TS_RANK cash-margin leg already used in \"Goodwill-Light Intangible Cash High,\" and the turnover leg is essentially the well-known asset-turnover profitability component."
+    },
+    {
+      "generation": 6,
+      "target_name": "Goodwill Demand Drawdown",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding a sales-drawdown condition to the goodwill-plus-margin-decay short is an economically coherent impairment-prediction refinement with a correctly signed expression, though it inherits the archived version's weak Fama-MacBeth evidence without diagnosing the alpha/FMB disagreement and the COALESCE(gdwl,0) zero mass will leave a heavily tied, unstable short leg."
+    },
+    {
+      "generation": 6,
+      "target_name": "Research-to-Market Profit Transition",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The R&D-stock-then-rising-advertising sequencing is a genuinely distinct commercialization mechanism not present in the archive and is internally consistent with a positive sign, but the xad trend leg is heavily zero-inflated by the COALESCE, so coverage and effective discrimination should be checked closely."
+    },
+    {
+      "generation": 6,
+      "target_name": "Gross-Profit Intangible Reinvestment",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Replacing the (oibdp + intangibles) denominator with gross profit makes this a scaler-level variant of the archived \"Profitable Intangible Reinvestment Share,\" and both legs individually are close to the well-documented gross-profitability and R&D-intensity anomalies."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash-Backed Lagged Margin Payoff",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archive's \"Lagged Intangible Margin Inflection\" (fmb 4.42, alpha 0.035, t 3.87) with a third cash-margin rank multiplied on \u2014 a cosmetic third-leg extension that is more likely to thin coverage and dilute the existing spread than to identify a new mechanism, and the cash-validation channel is itself already covered by \"Cash-Funded Intangible Compounder\" and \"Intangible Cash Dropthrough.\""
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash Yield on Internal Intangibles",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The second leg is byte-for-byte the internal-minus-goodwill leg of \"Internal Intangibles over Goodwill Profit\" (fmb 5.16, t 3.56) and the first leg merely swaps oibdp/at for oancf on the capitalized-intangible denominator already used in \"Capitalized Intangible Yield x Intensity,\" making this a hybrid of two archived signals rather than a new hypothesis."
+    },
+    {
+      "generation": 7,
+      "target_name": "Internal Intangible Demand Failure",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It is \"Goodwill Demand Drawdown\" with the goodwill leg replaced by internal intangible intensity, and the substitution is internally incoherent with the archive's own evidence \u2014 accumulated R&D/advertising intensity has repeatedly loaded *positively* across these tests, so using it as a multiplicative amplifier of a negative-return signal works against the expected sign rather than sharpening it."
+    },
+    {
+      "generation": 7,
+      "target_name": "Intangible Cash Moat Expansion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Two of three legs overlap with \"Gross-Margin Floor Intangible Moat,\" but replacing static operating margin with contemporaneous cash-flow expansion (\u0394OCF/at) changes the validation channel from level profitability to realized cash inflection, which is an economically distinct and testable claim \u2014 though the triple rank product risks the near-zero Sharpe seen in the earlier moat variant."
+    },
+    {
+      "generation": 7,
+      "target_name": "Expensed-Gap Cash Inflection",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The intangible leg is identical to \"Expensed Intangible Recognition Gap\" (fmb 3.17, alpha 0.028, t 2.66) and only the conditioning leg is swapped from oibdp/sale level to a 3-year cash-margin trend \u2014 a substitution the archive has already tested repeatedly with weak results (Cash Payoff to Intangible Ramp, Debt-Light Self-Funded Intangible Ramp), so the prior for improvement is poor."
+    },
+    {
+      "generation": 7,
+      "target_name": "Intangible Cost Productivity Trend",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The denominator ADD(xsga, xrd+xad) double-counts because Compustat xsga generally already contains xrd and xad, so the \"cost productivity\" ratio is mechanically distorted in a way that varies with R&D intensity \u2014 precisely the variable in the third leg \u2014 and beyond that the construct is a near-rearrangement of \"Intangible Cost-Base Productivity\" and \"Gross-to-Operating Intangible Conversion.\""
+    },
+    {
+      "generation": 8,
+      "target_name": "Scalable Intangible Growth Spread",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is very close to the archived \"Cash-Validated Intangible Turnover Improvement\" (same 3-year cash-margin leg times an asset-turnover-improvement leg, here re-expressed as sales growth minus asset growth) with an intangible-intensity leg bolted on from \"Cash-Funded Intangible Compounder,\" and the growth-spread leg is itself largely the well-known asset-growth/efficient-growth anomaly."
+    },
+    {
+      "generation": 8,
+      "target_name": "Intangible Gross Cash Conversion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It reuses two legs from \"Gross-Margin Floor Intangible Moat\" but substitutes a genuinely different third leg \u2014 cash conversion of gross profit rather than accounting operating margin \u2014 which directly addresses the accrual-versus-cash validation question, though the oancf/(revt\u2212cogs) ratio is unstable for low-gross-profit firms even after winsorization and the incremental content over the archived version is modest."
+    },
+    {
+      "generation": 8,
+      "target_name": "Residual Overhead Cash Dropthrough",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Two of three legs are identical to the archived \"Intangible Overhead Discipline,\" with only the profitability leg swapped from oibdp/sale to DELTA(oancf)/at \u2014 a cosmetic substitution that does not diagnose why that signal delivered only a 2.2 t-alpha."
+    },
+    {
+      "generation": 8,
+      "target_name": "Net-Acquired Intangible Demand Failure",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical recombination of two archived signals \u2014 the goodwill-minus-internal-intangibles leg from \"Acquired Intangible Cash Decay\" spliced onto the margin-decay and sales-drawdown legs of \"Goodwill Demand Drawdown\" \u2014 and does nothing to resolve that family's persistent fmb_tstat/ls_talpha contradiction (near-zero cross-sectional slope with a large tail-driven spread alpha)."
+    },
+    {
+      "generation": 8,
+      "target_name": "Identifiable Intangible Cash Decay",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Fourth reuse of the same \"intangible level \u00d7 NEG cash/margin trend \u00d7 NEG sales-vs-peak\" template, and because the product is dominated by the two decay legs that already generate the archive's -3.5 to -4.8 t-alphas with near-zero FMB slopes, the swap of goodwill for identifiable intangibles is unlikely to produce economically distinct information."
+    },
+    {
+      "generation": 8,
+      "target_name": "Goodwill Debt Coverage Failure",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The interest-burden leg is new to this archive and the acquisition-overhang-plus-debt-service mechanism is coherent, but the multiplicative NEG(oibdp/sale) leg means the signal will likely load heavily on generic low profitability (already in FF5 as RMW) and financial distress, so the incremental content beyond known anomalies is uncertain."
+    },
+    {
+      "generation": 9,
+      "target_name": "Smoothed Gross-Cash Intangible Moat",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The three component legs are identical to the archive's \"Intangible Gross Cash Conversion\" (fmb 4.12, alpha 3.7%, talpha 2.61), so swapping the double MUL for SUMRANK is a cosmetic aggregation change rather than a substantively different mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Lagged Intangible Dual Inflection",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding a cash-flow inflection leg to the archive's best-performing lagged-intangible margin inflection is incremental and reuses tested legs, but the accrual-vs-cash dual-confirmation is an economically distinct restriction and the SUMRANK form plausibly protects the strong existing talpha from the coverage loss that MUL-with-oancf variants suffered."
+    },
+    {
+      "generation": 9,
+      "target_name": "Organic Intangible Profit Minus Levered Goodwill",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The signed long-minus-short construction across two intangible-source blocks is structurally new and internally consistent, though the first term closely reproduces \"Internal Intangibles over Goodwill Profit\" and the subtracted term comes from a family whose FMB slopes were consistently near zero, so the marginal contribution may be small and the composite scale is somewhat arbitrary."
+    },
+    {
+      "generation": 9,
+      "target_name": "Research-to-Brand Gross Cash Payoff",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing the failed xad-trend leg with an xad level and gross-profit cash conversion is a defensible diagnosis-driven revision of \"Research-to-Market Profit Transition,\" but IND_RANK on COALESCE(xad,0) makes the middle leg largely an advertising-disclosure indicator, so any result needs a selection check."
+    },
+    {
+      "generation": 9,
+      "target_name": "Cash-Backed Expensed Recognition Gap",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The recognition-gap leg is verbatim from the archive's \"Expensed Intangible Recognition Gap\" and only the profitability validator is swapped from accrual margin to smoothed cash ROA, which is exactly the kind of oibdp-to-oancf substitution already run repeatedly in this archive."
+    },
+    {
+      "generation": 9,
+      "target_name": "Goodwill Financing Cash Deterioration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the fifth variant of goodwill-heavy-plus-deterioration in the archive, all of which produced sizable negative alphas with essentially zero FMB slopes; recombining the same interest-burden and cash-margin-trend legs does not address that diagnostic disagreement and likely just reproduces a distressed-acquirer/leverage portfolio tilt."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capitalized Intangible Yield x Intensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(add(oibdp,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: intangibles (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Backed R&D Ramp",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oancf,at)),ind_rank(trend(ratio(coalesce(xrd,0),sale),5)))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xrd"
+        ],
+        "missing_theme": "intangibles"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Productive Intangible Overhead",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,xsga)),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),xsga)))",
+        "variables": [
+          "oibdp",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: intangibles (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "R&D Capitalization Profitability Gap",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ratio(oibdp,at),ratio(oibdp,add(at,ts_sum(coalesce(xrd,0),5)))),1)",
+        "variables": [
+          "at",
+          "oibdp",
+          "xrd"
+        ],
+        "missing_theme": "intangibles"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "R&D-Backed Gross Margin Traction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(revt,cogs),revt)),ind_rank(ratio(mul(growth(revt,1),ts_sum(coalesce(xrd,0),3)),revt)))",
+        "variables": [
+          "cogs",
+          "revt",
+          "xrd"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Brand-Customer Intangible Payoff",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,sale)),ind_rank(ratio(mul(growth(sale,1),add(ts_sum(coalesce(xad,0),5),sub(coalesce(intan,coalesce(gdwl,0)),coalesce(gdwl,0)))),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oiadp",
+          "sale",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Funded Intangible Compounder",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oancf,at),3)),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Durable Intangible Profitability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),mul(ind_rank(ma(ratio(oibdp,at),3)),ind_rank(neg(vol(ratio(oibdp,at),5)))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Signed Intangible Profit Validation",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(oibdp,at),ratio(add(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),coalesce(sub(intan,coalesce(gdwl,0)),0)),at)),1)",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Intangible Margin Inflection",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(delta(ratio(oibdp,sale),1),1)),ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognized Intangible Margin Validation",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(oiadp,sale),ratio(coalesce(sub(intan,coalesce(gdwl,0)),0),at)),1)",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Profitability Acceleration",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(accel(ratio(oibdp,at))),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Harvest Operating Leverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)),mul(ind_rank(trend(ratio(oibdp,sale),3)),ind_rank(neg(trend(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3)))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internal Intangibles over Goodwill Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_rank(sub(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at),ratio(coalesce(gdwl,0),at))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Payoff to Intangible Ramp",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(add(ma(ratio(oancf,sale),3),accel(ratio(oancf,sale))),1)),ind_rank(lag(trend(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3),1)))",
+        "variables": [
+          "oancf",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-to-Operating Intangible Conversion",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(trend(ratio(oibdp,sub(revt,cogs)),3),1)),ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),sale),1)))",
+        "variables": [
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill-Light Intangible Cash High",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ts_rank(ma(ratio(oancf,sale),3),5)),ind_rank(sub(ratio(coalesce(sub(intan,coalesce(gdwl,0)),0),at),ratio(coalesce(gdwl,0),at))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Light Self-Funded Intangible Ramp",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oancf,add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3)))),mul(ind_rank(trend(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3)),ind_rank(neg(trend(ratio(coalesce(xint,0),sale),3)))))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xad",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Validated Intangible Turnover Improvement",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oancf,sale),3)),ind_rank(winsor(delta(ratio(sale,add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3))),1),1)))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Margin Decay",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(neg(delta(ratio(oibdp,sale),1)),1)),ind_rank(ratio(coalesce(gdwl,0),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rising Intangible Spend Absorption",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(delta(ratio(add(oibdp,add(coalesce(xrd,0),coalesce(xad,0))),sale),1),1)),ind_rank(winsor(delta(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),1),1)))",
+        "variables": [
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Intangible Reinvestment Share",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(add(oibdp,add(coalesce(xrd,0),coalesce(xad,0))),sale),1)),ind_rank(winsor(ratio(add(coalesce(xrd,0),coalesce(xad,0)),add(oibdp,add(coalesce(xrd,0),coalesce(xad,0)))),1)))",
+        "variables": [
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Gross-Margin Upgrade",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(delta(ratio(sub(revt,cogs),revt),1),1)),mul(ind_rank(winsor(ratio(oibdp,sale),1)),ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Intangible Profit Dollar Payoff",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(oibdp,1),at),1)),ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Cost-Mix Upgrade",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),ind_rank(winsor(sub(trend(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3),trend(ratio(cogs,revt),3)),1)))",
+        "variables": [
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Acquired Intangible Cash Decay",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(neg(trend(ratio(oancf,sale),3)),1)),ind_rank(sub(ratio(coalesce(gdwl,0),at),ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oancf",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Intangible Investment Mix",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(oibdp,sale),coalesce(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),add(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),abs(delta(at,1)))),0)),1)",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded Intangible Reinvestment",
+      "metadata": {
+        "normalized_expression": "winsor(mul(coalesce(ratio(sub(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(abs(oibdp),add(coalesce(xrd,0),coalesce(xad,0)))),0),coalesce(ratio(add(coalesce(xrd,0),coalesce(xad,0)),add(abs(oancf),add(coalesce(xrd,0),coalesce(xad,0)))),0)),1)",
+        "variables": [
+          "oancf",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Expense Productivity Mix",
+      "metadata": {
+        "normalized_expression": "winsor(mul(coalesce(ratio(oibdp,add(dp,add(coalesce(xrd,0),coalesce(xad,0)))),0),coalesce(ratio(add(coalesce(xrd,0),coalesce(xad,0)),add(dp,add(coalesce(xrd,0),coalesce(xad,0)))),0)),1)",
+        "variables": [
+          "dp",
+          "oibdp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Intangible Margin Breakout",
+      "metadata": {
+        "normalized_expression": "winsor(mul(sub(ratio(oibdp,sale),ma(ratio(oibdp,sale),5)),ma(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),5)),1)",
+        "variables": [
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensed Intangible Recognition Gap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),ind_rank(winsor(sub(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),ratio(delta(coalesce(sub(intan,coalesce(gdwl,0)),0),1),sale)),1)))",
+        "variables": [
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Cash Dropthrough",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)),mul(ind_rank(winsor(ratio(oancf,sale),1)),ind_rank(winsor(sub(ratio(delta(oancf,1),at),ratio(delta(sale,1),at)),1))))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Overhead Discipline",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(ma(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3),1)),ind_rank(winsor(neg(trend(ratio(sub(xsga,add(coalesce(xrd,0),coalesce(xad,0))),sale),3)),1))))",
+        "variables": [
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitability Outruns Intangible Spend",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),ind_rank(winsor(sub(ts_rank(ratio(oibdp,sale),5),ts_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),5)),1)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Acquisition Platform Internal Innovation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(trend(ratio(sub(revt,cogs),revt),3),1)),ind_rank(winsor(mul(ratio(coalesce(gdwl,0),at),ma(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3)),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "gdwl",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Demand Resilience",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),ind_rank(winsor(ratio(sale,ts_max(sale,5)),1))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Demand Drawdown",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(gdwl,0),at)),mul(ind_rank(winsor(neg(delta(ratio(oibdp,sale),1)),1)),ind_rank(winsor(neg(ratio(sale,ts_max(sale,5))),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research-to-Market Profit Transition",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(lag(ratio(ts_sum(coalesce(xrd,0),3),at),1)),ind_rank(winsor(trend(ratio(coalesce(xad,0),sale),3),1))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill-to-Internal Rotation Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(trend(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),3),1)),ind_rank(winsor(neg(trend(ratio(coalesce(gdwl,0),at),3)),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognized Intangible Amortization Cash Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,sale),1)),mul(ind_rank(ratio(coalesce(sub(intan,coalesce(gdwl,0)),0),at)),ind_rank(winsor(ratio(sub(oibdp,oiadp),sale),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "oiadp",
+          "oibdp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-Margin Floor Intangible Moat",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),ind_rank(ts_min(ratio(sub(revt,cogs),revt),5))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Cost-Base Productivity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(ratio(add(coalesce(xrd,0),coalesce(xad,0)),add(cogs,add(coalesce(xrd,0),coalesce(xad,0)))),1)),ind_rank(winsor(ratio(sub(revt,cogs),add(cogs,add(coalesce(xrd,0),coalesce(xad,0)))),1))))",
+        "variables": [
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Cash Moat Expansion",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)),mul(ind_rank(ts_min(ratio(sub(revt,cogs),revt),5)),ind_rank(winsor(ratio(delta(oancf,1),at),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oancf",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Balanced Intangible Commercialization Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(ratio(add(coalesce(xrd,0),add(coalesce(xad,0),coalesce(sub(intan,coalesce(gdwl,0)),0))),sale),1)),ind_rank(winsor(neg(abs(sub(ratio(coalesce(xrd,0),sale),ratio(add(coalesce(xad,0),coalesce(sub(intan,coalesce(gdwl,0)),0)),sale)))),1))))",
+        "variables": [
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognized Customer Asset Cash Retention",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,sale),1)),mul(ind_rank(ratio(coalesce(sub(intan,coalesce(gdwl,0)),0),at)),ind_rank(winsor(ratio(sale,ts_max(sale,5)),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Neglect Demand Failure",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(neg(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),1)),mul(ind_rank(winsor(neg(delta(ratio(oibdp,sale),1)),1)),ind_rank(winsor(neg(ratio(sale,ts_max(sale,5))),1))))",
+        "variables": [
+          "at",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hybrid Intangible Stack Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),min(ind_rank(ratio(coalesce(sub(intan,coalesce(gdwl,0)),0),at)),ind_rank(winsor(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cost-Stable Intangible Moat",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),ind_rank(neg(vol(ratio(cogs,revt),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oibdp",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Gross Cash Conversion",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),mul(ind_rank(ts_min(ratio(sub(revt,cogs),revt),5)),ind_rank(winsor(ratio(oancf,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oancf",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Debt Coverage Failure",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(gdwl,0),at)),mul(ind_rank(winsor(ratio(coalesce(xint,0),sale),1)),ind_rank(winsor(neg(ratio(oibdp,sale)),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Spend Absorption Coverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,add(abs(oibdp),add(coalesce(xrd,0),coalesce(xad,0)))),1)),ind_rank(winsor(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),1)))",
+        "variables": [
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Fixed-Charge Coverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,add(abs(oibdp),add(coalesce(xint,0),add(coalesce(xrd,0),coalesce(xad,0))))),1)),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill with Internal Reinvestment Neglect",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(gdwl,0),at)),mul(ind_rank(winsor(neg(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale)),1)),ind_rank(winsor(neg(ratio(oibdp,sale)),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognized Intangible Renewal Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),mul(ind_rank(winsor(ratio(delta(coalesce(sub(intan,coalesce(gdwl,0)),0),1),at),1)),ind_rank(winsor(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Intangible Dual Inflection",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),3),at),1)),sumrank(winsor(delta(ratio(oibdp,sale),1),1),winsor(ratio(delta(oancf,1),at),1)))",
+        "variables": [
+          "at",
+          "oancf",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Intangible Profit Minus Levered Goodwill",
+      "metadata": {
+        "normalized_expression": "sub(mul(ind_rank(winsor(ratio(oibdp,sale),1)),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at))),mul(ind_rank(ratio(coalesce(gdwl,0),at)),ind_rank(winsor(ratio(coalesce(xint,0),sale),1))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale",
+          "xad",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research-to-Brand Gross Cash Payoff",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(ratio(ts_sum(coalesce(xrd,0),3),at),1)),mul(ind_rank(winsor(ratio(coalesce(xad,0),sale),1)),ind_rank(winsor(ratio(oancf,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oancf",
+          "revt",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible-Adjusted Gross Cash Yield",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),at)),ind_rank(winsor(mul(ratio(oancf,add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5))),ratio(sub(revt,cogs),revt)),1)))",
+        "variables": [
+          "at",
+          "cogs",
+          "oancf",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Renewal Sales Validation",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oibdp,sale),1)),ind_rank(winsor(mul(growth(sale,1),add(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale),ratio(delta(coalesce(sub(intan,coalesce(gdwl,0)),0),1),at))),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Interest-Covered Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(gdwl,0),at)),ind_rank(winsor(sub(ratio(oibdp,sale),ratio(coalesce(xint,0),sale)),1)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oibdp",
+          "sale",
+          "xint"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,3180 @@
+{
+  "pair": "invest_quality",
+  "evaluated": [
+    {
+      "name": "Lagged Capex Sales Yield",
+      "expression": "WINSOR(RATIO(DELTA(sale, 1), LAG(capx, 1)), 1)",
+      "hypothesis": "Firms generating greater incremental sales from prior capital expenditure earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Sales created per unit of lagged capex measure realized investment productivity rather than investment intensity alone. Lagging capex also distinguishes output following investment from contemporaneous spending driven by current demand.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.7390095125452604,
+      "ls_alpha": 0.038107409951486204,
+      "ls_talpha": 3.781685726714408,
+      "ls_sharpe": 0.17377266305763484,
+      "coverage": 0.12084735605199488,
+      "error": null
+    },
+    {
+      "name": "Inventory Margin Divergence",
+      "expression": "MUL(IND_RANK(GROWTH(invt, 1)), IND_RANK(NEG(TREND(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Rapid inventory accumulation combined with deteriorating gross margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Inventory growth is particularly concerning when firms are losing pricing power or facing rising production costs. The joint signal targets potentially unproductive stock accumulation rather than inventory investment associated with healthy margins.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.5212782901265753,
+      "ls_alpha": -0.013085607089308109,
+      "ls_talpha": -1.5515672843791335,
+      "ls_sharpe": -0.216296200336094,
+      "coverage": 0.09697163964481557,
+      "error": null
+    },
+    {
+      "name": "Distress-Financed Equity Issuance",
+      "expression": "MUL(IND_RANK(RATIO(sstk, at)), INDICATOR(NEG(MA(RATIO(oancf, at), 3)), 0))",
+      "hypothesis": "Equity issuance predicts lower returns when the issuing firm has persistently negative operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "External equity raised during a cash-flow shortfall is more likely to fund fragile expansion or ongoing operating deficits than high-return investment. The zero cash-flow threshold creates a direct quality condition, leaving issuance by internally healthy firms unpenalized.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.297549410513098,
+      "ls_alpha": 0.07997029729617525,
+      "ls_talpha": 2.1492771855061297,
+      "ls_sharpe": -1.3697972563412508,
+      "coverage": 0.0893634119100862,
+      "error": null
+    },
+    {
+      "name": "Labor-Intensity Expansion",
+      "expression": "WINSOR(GROWTH(RATIO(emp, sale), 1), 1)",
+      "hypothesis": "Growth in employees relative to sales predicts lower returns because it identifies hiring that has not generated proportional operating output.",
+      "expected_sign": "negative",
+      "reasoning": "The employee-to-sales ratio measures the productivity of labor investment rather than rewarding hiring and profitability separately. Its negative sign aligns with the established hiring anomaly while concentrating it in firms where headcount growth outpaces realized demand, and winsorization limits instability from unusually low sales.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.4629348960410225,
+      "ls_alpha": -0.016090848706173392,
+      "ls_talpha": -1.4584225476341979,
+      "ls_sharpe": -0.08861049495520437,
+      "coverage": 0.12300235589928242,
+      "error": null
+    },
+    {
+      "name": "Debt-Financed Capex Gap",
+      "expression": "MUL(WINSOR(RATIO(DELTA(ADD(dltt, dlc), 1), capx), 1), INDICATOR(SUB(capx, oancf), 0))",
+      "hypothesis": "Debt raised to support capital expenditure that exceeds internal operating cash flow predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The funding-gap condition distinguishes capex that cannot be covered internally, while debt growth relative to capex directly measures reliance on external borrowing rather than an ambiguous static leverage tilt. Winsorization reduces the influence of firms with unusually small capex denominators without weakening the financing-source mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.6154535517965467,
+      "ls_alpha": 0.006130671718906678,
+      "ls_talpha": 0.3534229103381718,
+      "ls_sharpe": -0.025826824009089245,
+      "coverage": 0.08109609576144497,
+      "error": null
+    },
+    {
+      "name": "Inventory Cash-Margin Squeeze",
+      "expression": "MIN(IND_RANK(GROWTH(invt, 1)), IND_RANK(NEG(TREND(RATIO(oancf, sale), 3))))",
+      "hypothesis": "Inventory accumulation accompanied by deteriorating operating cash margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This tests whether cash conversion provides a stronger validation channel than the gross-margin trend used in the prior inventory signal. The minimum operator is a continuous conjunction: the signal is large only when both inventory growth and cash-margin deterioration are pronounced, without creating a large zero-valued portfolio group.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.049931229051542445,
+      "ls_alpha": -0.011221452621659309,
+      "ls_talpha": -0.8266785213632901,
+      "ls_sharpe": -0.09335339917466298,
+      "coverage": 0.05473431333460456,
+      "error": null
+    },
+    {
+      "name": "Margin-Deteriorating Equity Finance",
+      "expression": "MIN(IND_RANK(RATIO(sstk, at)), IND_RANK(NEG(TREND(RATIO(ib, sale), 3))))",
+      "hypothesis": "Heavy equity issuance combined with deteriorating earnings margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Issuance is more concerning when operating performance is worsening, because the proceeds are more likely to finance a weak business or low-quality expansion. The continuous conjunction replaces the prior negative-cash-flow indicator, reducing zero stacking and making both portfolio tails more economically interpretable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2107960308024097,
+      "ls_alpha": 0.005857332033483943,
+      "ls_talpha": 0.6218180145495056,
+      "ls_sharpe": 0.20626797221303914,
+      "coverage": 0.1044982487595208,
+      "error": null
+    },
+    {
+      "name": "Prior-Capex Cash Payoff",
+      "expression": "IND_RANK(RATIO(DELTA(oancf, 1), MA(LAG(capx, 1), 3)))",
+      "hypothesis": "Firms generating larger operating-cash-flow improvements per dollar of sustained prior capital expenditure earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is a realized marginal cash payoff to past investment, rather than a linear combination of capex intensity and sales growth with conflicting expected signs. Averaging lagged capex stabilizes the denominator, while industry ranking limits capital-intensity differences and extreme ratios.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.4498908291919859,
+      "ls_alpha": 0.023122577408650757,
+      "ls_talpha": 1.928895831635722,
+      "ls_sharpe": 0.21736858508220566,
+      "coverage": 0.07939644733029724,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Mismatched Capacity Build",
+      "expression": "MIN(IND_RANK(GROWTH(ppent, 1)), IND_RANK(RATIO(lct, act)))",
+      "hypothesis": "Fixed-capital expansion undertaken by firms with weak short-term liquidity predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "A large capacity build is less disciplined when current liabilities are high relative to current assets, because the firm may be unable to absorb investment delays or operating shortfalls. This replaces the near-mechanical financing-deficit reconstruction with a distinct maturity-mismatch mechanism and does not require inferring the source of funds from debt issuance.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.5040101071875592,
+      "ls_alpha": -0.009522537351420623,
+      "ls_talpha": -1.0812680938428803,
+      "ls_sharpe": -0.17925263051287726,
+      "coverage": 0.11336588997933841,
+      "error": null
+    },
+    {
+      "name": "Cash-Productivity-Validated Hiring",
+      "expression": "MUL(WINSOR(DELTA(RATIO(oancf, emp), 1), 1), INDICATOR(GROWTH(emp, 1), 0))",
+      "hypothesis": "Among firms increasing employment, improvements in operating cash flow per employee predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal does not claim that hiring itself has a positive return relation; it distinguishes productive hirers from firms whose cash output per worker deteriorates. Because the gated productivity change is signed, productive and unproductive hirers can populate opposite portfolio tails while non-hirers remain near the middle at zero.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.7593293865046775,
+      "ls_alpha": 0.011620782202075033,
+      "ls_talpha": 0.9864453730572414,
+      "ls_sharpe": 0.17070087672900883,
+      "coverage": 0.07929682308550165,
+      "error": null
+    },
+    {
+      "name": "Uncertainty-Defying Fixed Investment",
+      "expression": "MIN(IND_RANK(GROWTH(ppegt, 1)), IND_RANK(VOL(RATIO(oancf, at), 3)))",
+      "hypothesis": "Aggressive gross fixed-capital expansion under volatile operating cash flows predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow uncertainty raises the option value of delaying irreversible fixed investment, so rapid expansion despite unstable fundamentals can indicate poor discipline or overconfidence. The construction tests that real-options interaction directly rather than repackaging a trend in profitability with a noisy PP&E denominator.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.1767163470231876,
+      "ls_alpha": 0.003935319550182302,
+      "ls_talpha": 0.2820226161755279,
+      "ls_sharpe": -0.023796474258588406,
+      "coverage": 0.07446321569520904,
+      "error": null
+    },
+    {
+      "name": "Capex Cash-Flow Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(DELTA(capx, 1), LAG(at, 1))), IND_RANK(RATIO(DELTA(oancf, 1), LAG(at, 1))))))",
+      "hypothesis": "Firms whose changes in capital expenditure are aligned with changes in operating cash generation earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal rewards adaptive capital allocation\u2014expansion when cash generation strengthens and retrenchment when it weakens\u2014while penalizing both overinvestment and failure to reinvest improving cash flows. Because it measures rank alignment rather than adding investment and profitability levels, neither isolated anomaly determines the signal.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.4956083737199708,
+      "ls_alpha": -0.016146258003750268,
+      "ls_talpha": -1.2613809667988505,
+      "ls_sharpe": -0.1456303571214105,
+      "coverage": 0.08033005703191361,
+      "error": null
+    },
+    {
+      "name": "Post-Build Margin Erosion",
+      "expression": "MUL(WINSOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 1), INDICATOR(LAG(GROWTH(ppent, 1), 1), 0))",
+      "hypothesis": "Gross-margin deterioration following a prior increase in net fixed assets predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The lagged investment condition asks whether a completed capacity build is followed by adverse pricing, cost pressure, or poor utilization rather than merely combining contemporaneous investment and profitability. The signed margin change places successful and unsuccessful builders on opposite sides of zero, helping produce economically interpretable portfolio tails.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.5726401897870699,
+      "ls_alpha": -0.01136788946163023,
+      "ls_talpha": -1.48250281272286,
+      "ls_sharpe": -0.054786699713215176,
+      "coverage": 0.11797027390011945,
+      "error": null
+    },
+    {
+      "name": "Capital Replacement Discipline",
+      "expression": "NEG(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))))",
+      "hypothesis": "Firms whose capital expenditure remains close to the depreciation-implied replacement need earn higher returns than firms exhibiting extreme underinvestment or expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the archived incremental-cash-payoff mechanism and instead measures investment discipline relative to consumed capital. The normalized absolute gap is bounded and symmetric, penalizing both aggressive expansion beyond replacement needs and potential undermaintenance without requiring a long history or unstable payoff denominator.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.65797979225967,
+      "ls_alpha": 0.0035656951066533916,
+      "ls_talpha": 0.415525126261485,
+      "ls_sharpe": 0.29909687644440924,
+      "coverage": 0.13341012293765947,
+      "error": null
+    },
+    {
+      "name": "Inventory-Dependent Liquidity",
+      "expression": "IND_RANK(RATIO(SUB(lct, SUB(act, invt)), at))",
+      "hypothesis": "Firms whose current liabilities cannot be covered without liquidating inventory earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting inventory from current assets isolates quick assets, so the signal measures the liability shortfall that depends on successful inventory conversion. This replaces the previously tested gross-margin channel with a distinct liquidity-quality mechanism and uses broadly reported balance-sheet variables without temporal coverage loss.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.5748267184930227,
+      "ls_alpha": -0.054769123216035887,
+      "ls_talpha": -4.76085288010996,
+      "ls_sharpe": -0.17280815653453394,
+      "coverage": 0.12351414901599518,
+      "error": null
+    },
+    {
+      "name": "Cash-Buffer Fragility",
+      "expression": "IND_RANK(RATIO(VOL(RATIO(oancf, at), 3), MA(RATIO(che, at), 3)))",
+      "hypothesis": "Firms with volatile operating cash generation relative to their available cash buffer earn lower risk-adjusted returns.",
+      "expected_sign": "negative",
+      "reasoning": "This continuous buffer-adequacy ratio applies across profitable and unprofitable firms, eliminating the large zero mass created by a negative-cash-flow indicator. High values require both unstable cash generation and limited liquidity, so the signal is not equivalent to a simple loss or distress screen.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.3647480811623396,
+      "ls_alpha": -0.06155329162382717,
+      "ls_talpha": -3.8395260580005406,
+      "ls_sharpe": -0.364761202647095,
+      "coverage": 0.08130886136762677,
+      "error": null
+    },
+    {
+      "name": "Workforce Gross-Profit Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(GROWTH(emp, 1)), IND_RANK(RATIO(DELTA(SUB(sale, cogs), 1), LAG(at, 1))))))",
+      "hypothesis": "Firms whose workforce growth is aligned with changes in gross-profit-producing activity earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-distance construction evaluates capacity-planning consistency rather than treating hiring or profitability changes as independently favorable. It replaces sparse intangible reporting and the zero-valued investment gate with broadly available operating variables, while penalizing both unsupported hiring and potentially unsustainable understaffing.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.0288272553340205,
+      "ls_alpha": 0.025793601057281595,
+      "ls_talpha": 2.8027150283543905,
+      "ls_sharpe": 0.17836991936028884,
+      "coverage": 0.12495145188277956,
+      "error": null
+    },
+    {
+      "name": "Fragility-Weighted Replacement Imbalance",
+      "expression": "NEG(MUL(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))), IND_RANK(NEG(RATIO(re, at)))))",
+      "hypothesis": "Large deviations from replacement-level capital spending predict lower returns primarily among firms with weak accumulated profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier symmetric replacement signal had an exceptionally strong cross-sectional slope but negligible FF5 alpha, plausibly because its short portfolio pooled financially strong and fragile firms. Weighting the bounded replacement gap by retained-earnings weakness concentrates the low-signal tail in firms where either overexpansion or undermaintenance is least sustainable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.946947850097845,
+      "ls_alpha": 0.003040130884882567,
+      "ls_talpha": 0.3779964837798611,
+      "ls_sharpe": 0.16811454455444416,
+      "coverage": 0.13162235528843258,
+      "error": null
+    },
+    {
+      "name": "Downside Cash-Buffer Shock",
+      "expression": "IND_RANK(WINSOR(RATIO(NEG(DELTA(oancf, 1)), LAG(che, 1)), 1))",
+      "hypothesis": "A decline in operating cash flow that is large relative to the firm's prior cash reserve predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the strong portfolio evidence from Cash-Buffer Fragility by isolating adverse cash-flow shocks rather than treating upside and downside volatility symmetrically. The signed one-period construction also avoids a three-year history, potentially improving coverage and Fama-MacBeth power while retaining the buffer-adequacy mechanism.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.378513909580736,
+      "ls_alpha": -0.003208147987000232,
+      "ls_talpha": -0.2917172691112265,
+      "ls_sharpe": -0.08552833394127289,
+      "coverage": 0.08074893287007802,
+      "error": null
+    },
+    {
+      "name": "Capacity-Weighted Margin Realization",
+      "expression": "MUL(IND_RANK(LAG(GROWTH(ppent, 1), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 1)))",
+      "hypothesis": "Gross-margin erosion predicts lower returns more strongly when it follows a large fixed-capacity expansion.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the binary builder indicator with lagged investment magnitude removes the zero-valued mass in the prior post-build signal. The signed industry-standardized margin outcome places successful large builders in the low-signal tail and unsuccessful large builders in the high-signal tail, improving the economic interpretation of the spread.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.4239684228091094,
+      "ls_alpha": -0.008446205075356965,
+      "ls_talpha": -1.147373929192418,
+      "ls_sharpe": -0.031401509872831905,
+      "coverage": 0.11785821597174241,
+      "error": null
+    },
+    {
+      "name": "Fixed-Asset Funding Mismatch",
+      "expression": "IND_RANK(RATIO(SUB(ppent, ADD(dltt, ceq)), at))",
+      "hypothesis": "Firms whose net fixed assets exceed their long-term debt and equity capital earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Long-lived operating assets should generally be supported by permanent capital rather than short-term or residual financing sources. The scaled funding residual measures an asset-liability maturity mismatch, not leverage or physical investment in isolation, and uses current broadly reported balance-sheet items.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.036428576761215,
+      "ls_alpha": -0.02489075054543563,
+      "ls_talpha": -2.7274693910500973,
+      "ls_sharpe": -0.03664223913723173,
+      "coverage": 0.1428823713686421,
+      "error": null
+    },
+    {
+      "name": "Inventory Turnover Decay",
+      "expression": "IND_RANK(TREND(RATIO(invt, cogs), 3))",
+      "hypothesis": "Firms experiencing a persistent increase in inventory relative to realized product throughput earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Inventory divided by cost of goods sold measures the stock committed per unit of operating throughput, so an upward trend indicates slowing turnover and rising obsolescence or markdown risk. This abandons the inventory-adjusted working-capital difference and its accrual-sign ambiguity, while retaining continuous coverage without an indicator-generated zero mass.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.4108798452945672,
+      "ls_alpha": -0.01732199827350738,
+      "ls_talpha": -2.264733124395696,
+      "ls_sharpe": -0.193389965849027,
+      "coverage": 0.11511062986048684,
+      "error": null
+    },
+    {
+      "name": "Workforce Gross-Profit Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), emp), 1))",
+      "hypothesis": "Firms generating more gross profit per employee earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic timing change with a distinct unit-economics mechanism that measures the output quality of the existing labor investment. Gross profit per employee distinguishes productive labor capacity from costly workforce intensity without relying on persistent employment-growth ranks, and industry ranking reduces structural differences in labor intensity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.1708612675600176,
+      "ls_alpha": 0.035434419096842695,
+      "ls_talpha": 3.9258284802844923,
+      "ls_sharpe": 0.16307367814784443,
+      "coverage": 0.1383971650788698,
+      "error": null
+    },
+    {
+      "name": "Workforce Cash Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(oancf, emp), 1))",
+      "hypothesis": "Firms generating more operating cash flow per employee earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit per employee produced strong and consistent evidence, but it does not verify that labor output converts into cash after overhead and working-capital needs. This cash-based unit-productivity measure tests that distinct quality channel without relying on hiring rates, temporal gates, or sparse observations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.7939800356061797,
+      "ls_alpha": 0.03609921027587219,
+      "ls_talpha": 3.7146578234708714,
+      "ls_sharpe": 0.34911332894562336,
+      "coverage": 0.08938936271025823,
+      "error": null
+    },
+    {
+      "name": "Capital-Commitment Gross Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), LAG(ADD(capx, dp), 1)), 1))",
+      "hypothesis": "Firms generating greater gross profit from their prior capital-spending and replacement commitment earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the monotone capex-to-depreciation construction and instead measures realized operating output per dollar of prior capital commitment. Lagging the stabilized capex-plus-depreciation denominator establishes investment-before-output timing, while industry ranking limits structural differences in capital intensity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.5277350778428068,
+      "ls_alpha": 0.005577144197468836,
+      "ls_talpha": 0.6225000864666386,
+      "ls_sharpe": 0.003164427494222073,
+      "coverage": 0.12131416090280306,
+      "error": null
+    },
+    {
+      "name": "Cash Coverage Improvement",
+      "expression": "IND_RANK(TREND(RATIO(che, lct), 3))",
+      "hypothesis": "Firms with persistently improving cash coverage of current liabilities earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the volatility-over-cash template with a distinct balance-sheet resilience mechanism that tracks whether liquid investment is keeping pace with near-term obligations. The continuous coverage trend applies across the full cross-section and avoids reducing the signal to either earnings volatility or a negative-cash-flow screen.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.8047317190040804,
+      "ls_alpha": -0.013309496670994299,
+      "ls_talpha": -1.5959421266958707,
+      "ls_sharpe": -0.12100633663078823,
+      "coverage": 0.1037765275992693,
+      "error": null
+    },
+    {
+      "name": "Cumulative Investment Profit Backing",
+      "expression": "IND_RANK(WINSOR(RATIO(re, ADD(ppent, invt)), 1))",
+      "hypothesis": "Firms with greater accumulated retained earnings relative to their physical and inventory investment stock earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the weak capacity-weighted profitability-change template and asks whether the existing operating investment base has generated cumulative profits over the firm's history. Combining net fixed assets and inventory captures both long-lived and working-capital commitments, while the signed retained-earnings numerator distinguishes validated investment from expansion associated with accumulated losses.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.3726778653017138,
+      "ls_alpha": 0.0008373000647655809,
+      "ls_talpha": 0.09484386126446563,
+      "ls_sharpe": 0.039483259460492824,
+      "coverage": 0.13823258644557204,
+      "error": null
+    },
+    {
+      "name": "Short-Term-Funded Capacity Growth",
+      "expression": "MUL(IND_RANK(GROWTH(ppent, 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lct, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "Fixed-capacity growth accompanied by increasing current liabilities predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This directly measures the contemporaneous co-movement of long-lived investment and short-term funding rather than inferring mismatch from a potentially negative permanent-capital denominator. Signed current-liability growth places capacity builders that reduce short-term obligations opposite builders that expand them, producing continuous and economically distinct portfolio tails.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.960481430967551,
+      "ls_alpha": 0.010832768887744463,
+      "ls_talpha": 1.5423571287868403,
+      "ls_sharpe": -0.058538775928673924,
+      "coverage": 0.1140261134183075,
+      "error": null
+    },
+    {
+      "name": "Inventory Cash Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(oancf, invt), 1))",
+      "hypothesis": "Firms generating more operating cash flow per dollar of inventory investment earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the sparse acquisition-only design and its non-acquirer ranking problem with a broadly observable investment-productivity mechanism. Cash flow per unit of inventory distinguishes productive working-capital deployment from inventory that absorbs funding without supporting cash generation, while industry ranking controls for normal turnover differences.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.9144227848003545,
+      "ls_alpha": 0.03801367538277145,
+      "ls_talpha": 2.889489970180665,
+      "ls_sharpe": 0.42332866528553553,
+      "coverage": 0.06785262339373317,
+      "error": null
+    },
+    {
+      "name": "Inventory Turnover Recovery",
+      "expression": "IND_RANK(RATIO(RATIO(cogs, invt), TS_MAX(RATIO(cogs, invt), 3)))",
+      "hypothesis": "Firms whose current inventory turnover is close to its recent firm-specific peak earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The strong turnover-decay result indicates that deterioration in inventory throughput is informative, but a linear trend may be sensitive to a single old observation. Distance from the recent turnover maximum measures whether inventory efficiency has recovered or remains impaired while controlling for each firm's normal turnover level.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.646803641122607,
+      "ls_alpha": 0.012528951683413484,
+      "ls_talpha": 1.4242160712672798,
+      "ls_sharpe": 0.19303719326653518,
+      "coverage": 0.11491937813834428,
+      "error": null
+    },
+    {
+      "name": "Dual-Validated Capital Payoff",
+      "expression": "MIN(IND_RANK(WINSOR(RATIO(DELTA(sale, 1), LAG(ADD(capx, dp), 1)), 1)), IND_RANK(WINSOR(RATIO(DELTA(oancf, 1), LAG(ADD(capx, dp), 1)), 1)))",
+      "hypothesis": "Prior capital commitments predict higher returns when followed by both incremental sales and incremental operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-based capex productivity generated strong portfolio alpha but an opposing Fama-MacBeth slope, whereas the cash-payoff version produced moderately consistent evidence. Requiring both outcomes prevents sales expansion without cash realization from entering the high-signal tail, and capex plus depreciation provides a more stable one-period capital denominator.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.0641246013943704,
+      "ls_alpha": 0.04167568596568798,
+      "ls_talpha": 2.890004712567854,
+      "ls_sharpe": 0.3947309958709519,
+      "coverage": 0.07902565528092076,
+      "error": null
+    },
+    {
+      "name": "Debt-Share-Funded Capacity Growth",
+      "expression": "MUL(IND_RANK(GROWTH(ppent, 1)), IND_ZSCORE(WINSOR(DELTA(RATIO(dlc, lct), 1), 1)))",
+      "hypothesis": "Fixed-capacity growth accompanied by a rising share of interest-bearing short-term debt in current liabilities predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier current-liability funding signal had a strong negative cross-sectional slope but positive FF5 alpha, potentially because trade credit and other operating liabilities can accompany healthy expansion. Focusing on a shift toward short-term debt isolates refinancing-dependent capacity growth, while the signed debt-share change places deleveraging builders in the opposite portfolio tail.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.224108788698332,
+      "ls_alpha": -0.02018125130659769,
+      "ls_talpha": -2.4695788588716834,
+      "ls_sharpe": -0.3210815129569241,
+      "coverage": 0.11331878643946354,
+      "error": null
+    },
+    {
+      "name": "Cash-Conversion-Weighted Labor Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(sale, cogs), emp), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, SUB(sale, cogs)), 1)))",
+      "hypothesis": "Gross profit per employee predicts higher returns when that operating output converts efficiently into cash.",
+      "expected_sign": "positive",
+      "reasoning": "The second component is cash conversion of gross profit and does not share the employee denominator, making it economically distinct from the labor-productivity level. Signed industry standardization places productive firms with poor cash conversion in the low-signal tail and avoids the coverage-degrading MIN bottleneck.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.1462570100285183,
+      "ls_alpha": 0.03507278613743026,
+      "ls_talpha": 2.884867501317175,
+      "ls_sharpe": 0.31604564877624913,
+      "coverage": 0.08756362331366231,
+      "error": null
+    },
+    {
+      "name": "Margin-Risk Capital Inflexibility",
+      "expression": "MUL(IND_RANK(RATIO(ppent, ADD(ppent, che))), IND_RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)))",
+      "hypothesis": "Firms combining an inflexible fixed-capital-heavy asset mix with unstable gross margins earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons gross profit scaled by operating assets and instead tests a real-options mechanism: volatile unit economics are more damaging when capital is committed to fixed assets rather than held in liquid form. The bounded PP&E share avoids unstable operating-asset denominators, while the joint construction becomes large only when both inflexibility and margin risk are high.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.9465093813138703,
+      "ls_alpha": -0.005227718454650942,
+      "ls_talpha": -0.6953104541406614,
+      "ls_sharpe": 0.05416633502071417,
+      "coverage": 0.12960624123451103,
+      "error": null
+    },
+    {
+      "name": "Internal-Liquidity Liability Coverage",
+      "expression": "IND_RANK(WINSOR(RATIO(ADD(che, oancf), ADD(che, lt)), 1))",
+      "hypothesis": "Firms with greater cash plus operating cash generation relative to their total liability burden earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the volatility-times-low-cash construction with a current internal-resource coverage measure that applies continuously across firms. Including cash in both the resource pool and the positive scaling base limits low-cash explosions, while signed operating cash flow distinguishes firms that replenish liquidity from those consuming it.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.4054599232447285,
+      "ls_alpha": 0.03395746457179072,
+      "ls_talpha": 2.133132110852653,
+      "ls_sharpe": 0.15377096000231186,
+      "coverage": 0.09092200768184959,
+      "error": null
+    },
+    {
+      "name": "Slow-Inventory Short-Debt Mismatch",
+      "expression": "MUL(IND_RANK(RATIO(dlc, lct)), IND_RANK(RATIO(invt, cogs)))",
+      "hypothesis": "Firms combining slow-moving inventory with a high short-term-debt share of current liabilities earn lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Short-term borrowing is less fragile when inventory converts rapidly into sales-related cash needs, but dangerous when inventory turnover is slow. The interaction measures a maturity mismatch between the funding source and the liquidity of the investment it may support, rather than treating inventory or debt intensity independently.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.3271497320489016,
+      "ls_alpha": -0.03845945037169082,
+      "ls_talpha": -3.5875559956707748,
+      "ls_sharpe": -0.20422488888887927,
+      "coverage": 0.12145691609977324,
+      "error": null
+    },
+    {
+      "name": "Low-Buffer Cash-Flow Instability",
+      "expression": "MUL(IND_RANK(VOL(RATIO(oancf, at), 3)), IND_RANK(NEG(TS_RANK(RATIO(che, at), 3))))",
+      "hypothesis": "Persistent operating-cash-flow instability predicts lower returns when the firm's cash reserve is near the bottom of its own recent range.",
+      "expected_sign": "negative",
+      "reasoning": "The original cash-buffer fragility signal had strong portfolio evidence, but its ratio could be dominated by extreme low-cash denominators. Combining volatility with firm-specific cash-buffer position preserves the funding-risk interaction while avoiding division by cash and distinguishing temporarily low reserves from structurally cash-light business models.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.3468576699652812,
+      "ls_alpha": -0.004307440043377973,
+      "ls_talpha": -0.330254535586519,
+      "ls_sharpe": -0.062284385135446235,
+      "coverage": 0.08141973267889852,
+      "error": null
+    },
+    {
+      "name": "Inventory-Mix Instability",
+      "expression": "IND_RANK(VOL(RATIO(invt, act), 3))",
+      "hypothesis": "Firms with unstable inventory shares of current assets earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons inventory-turnover improvement and instead measures instability in working-capital composition. Large fluctuations in the inventory share can indicate poor purchasing discipline, demand forecasting errors, or recurrent inventory liquidation, while the bounded share avoids turnover-denominator extremes.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.7215857090522166,
+      "ls_alpha": -0.017541314711490997,
+      "ls_talpha": -2.1215916330845017,
+      "ls_sharpe": -0.1437749385997658,
+      "coverage": 0.11290279975599025,
+      "error": null
+    },
+    {
+      "name": "Margin-Risk Labor Rigidity",
+      "expression": "MUL(IND_RANK(RATIO(emp, sale)), IND_RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)))",
+      "hypothesis": "Labor-intensive firms with unstable gross margins earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces profitability-per-worker and conversion-ratio recombinations with an operating-leverage mechanism. A large workforce per unit of sales is a more consequential commitment when unit margins are unstable, and industry ranking limits structural differences in labor intensity.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.476120366237781,
+      "ls_alpha": -0.026642025147583737,
+      "ls_talpha": -3.156214085165785,
+      "ls_sharpe": -0.26695802512248984,
+      "coverage": 0.1254822824652249,
+      "error": null
+    },
+    {
+      "name": "Fixed-Capital Cash Surplus",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(oancf, dp), ppegt), 1))",
+      "hypothesis": "Firms generating greater operating cash flow after capital consumption per dollar of installed gross fixed assets earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeated capacity-growth-times-funding-change template and measures the realized economic surplus of the installed capital stock. Subtracting depreciation distinguishes cash generation that merely offsets capital consumption from cash returns that represent productive capacity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.7211435561298662,
+      "ls_alpha": 0.035313263240225885,
+      "ls_talpha": 2.727781798992704,
+      "ls_sharpe": 0.35091154554828224,
+      "coverage": 0.08315642420055026,
+      "error": null
+    },
+    {
+      "name": "Internally Funded Capital Commitment",
+      "expression": "IND_RANK(WINSOR(RATIO(ADD(che, oancf), ADD(capx, dp)), 1))",
+      "hypothesis": "Firms able to cover capital expenditure and replacement needs with cash reserves and operating cash generation earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the lagged payoff functional-form revision with a distinct financing-capacity mechanism. The positive capital-commitment denominator is stabilized by depreciation, while cash plus operating cash flow measures the firm's ability to invest without fragile external funding.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.6279909800419454,
+      "ls_alpha": 0.04248114899464877,
+      "ls_talpha": 3.453090561265303,
+      "ls_sharpe": 0.44024202873202056,
+      "coverage": 0.08864746905921694,
+      "error": null
+    },
+    {
+      "name": "Cash-Productive Replacement Discipline",
+      "expression": "MUL(IND_RANK(NEG(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))))), IND_RANK(WINSOR(RATIO(SUB(oancf, dp), ppegt), 1)))",
+      "hypothesis": "Replacement-level capital spending predicts higher returns when the installed fixed-capital stock also generates cash flow beyond capital consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Replacement discipline had exceptional cross-sectional evidence but negligible alpha, while fixed-capital cash surplus produced consistent slope and portfolio evidence. Their interaction distinguishes disciplined maintenance of productive assets from mechanically balanced spending on low-return capacity.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.193561781351535,
+      "ls_alpha": 0.017705817690664233,
+      "ls_talpha": 1.479929888247897,
+      "ls_sharpe": 0.2775893255831195,
+      "coverage": 0.08249702623435007,
+      "error": null
+    },
+    {
+      "name": "Fixed-Asset Long-Debt Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(ppent, at)), IND_RANK(RATIO(dltt, lt)))))",
+      "hypothesis": "Firms whose long-term-debt share is aligned with their fixed-asset intensity earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Long-lived productive assets require durable funding, while asset-light firms have less need for long-maturity borrowing. Rank-distance measures maturity matching without assuming that either tangibility or leverage has a favorable standalone return sign, and it avoids unstable residual funding denominators.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.9920370197199766,
+      "ls_alpha": -0.005277754761296983,
+      "ls_talpha": -0.6049155328962611,
+      "ls_sharpe": -0.13547159778659526,
+      "coverage": 0.1442286658626562,
+      "error": null
+    },
+    {
+      "name": "Labor-Weighted Margin Drawdown",
+      "expression": "MUL(IND_RANK(RATIO(emp, sale)), IND_RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 3), TS_MIN(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Labor-intensive firms experiencing large gross-margin drawdowns relative to their own recent average earn lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting the recent minimum from the firm's own average margin removes the persistent margin level that dominated the prior construction. The resulting downside excursion becomes economically important when a large workforce creates operating rigidity, directly testing downside operating leverage rather than low gross profitability.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.8458723049730552,
+      "ls_alpha": -0.031036010235439906,
+      "ls_talpha": -3.548901307351891,
+      "ls_sharpe": -0.3012993557069536,
+      "coverage": 0.13659077270029477,
+      "error": null
+    },
+    {
+      "name": "Inventory Short-Debt Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(invt, act)), IND_RANK(RATIO(dlc, lct)))))",
+      "hypothesis": "Firms whose short-term-debt share is aligned with the inventory share of current assets earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory is a relatively short-duration operating asset, so greater inventory exposure can support greater use of short-maturity financing, while inventory-light firms should rely less on short debt. Rank distance tests asset-liability maturity matching rather than multiplying two previously evaluated adverse characteristics.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.5334460120796538,
+      "ls_alpha": 0.0013181963981665759,
+      "ls_talpha": 0.16478374663006637,
+      "ls_sharpe": -0.20730618559921254,
+      "coverage": 0.12277891073915308,
+      "error": null
+    },
+    {
+      "name": "Workforce Demand-Volatility Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(VOL(GROWTH(emp, 1), 3)), IND_RANK(VOL(GROWTH(sale, 1), 3)))))",
+      "hypothesis": "Firms whose workforce adjustment volatility is aligned with demand volatility earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the gross-profit-per-employee level with a workforce flexibility mechanism. The signal rewards stable staffing in stable businesses and more adaptive staffing in volatile businesses, while penalizing both excessive workforce churn and rigid employment policies unsupported by demand conditions.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.12680793637151408,
+      "ls_alpha": -0.00469507309013174,
+      "ls_talpha": -0.5038831586573226,
+      "ls_sharpe": -0.024700221185393164,
+      "coverage": 0.11252994402469155,
+      "error": null
+    },
+    {
+      "name": "Excess Capex Volatility",
+      "expression": "SUB(IND_RANK(VOL(RATIO(capx, at), 3)), IND_RANK(VOL(RATIO(sale, at), 3)))",
+      "hypothesis": "Capital-expenditure volatility that exceeds the volatility of underlying demand predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons internal-funding coverage and instead measures whether investment policy is unusually erratic relative to the operating environment. The rank spread avoids unstable volatility ratios and isolates lumpy or poorly timed capital allocation beyond what sales variability can economically justify.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.21077693460551197,
+      "ls_alpha": 0.0314329037420355,
+      "ls_talpha": 2.5689906357270824,
+      "ls_sharpe": 0.041569486329879765,
+      "coverage": 0.12373743939998036,
+      "error": null
+    },
+    {
+      "name": "Capex Acceleration Cash-Flow Divergence",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(capx, at))), IND_RANK(NEG(TREND(RATIO(oancf, at), 3))))",
+      "hypothesis": "Accelerating capital expenditure during a deterioration in operating cash returns predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The signal targets escalation of investment commitments rather than a high capex level or ordinary asset growth. Capex acceleration is most concerning when the firm's internally generated operating return is already trending downward, indicating delayed retrenchment or managerial overconfidence.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.19791309320751446,
+      "ls_alpha": -0.02038628944528301,
+      "ls_talpha": -1.9166077196728715,
+      "ls_sharpe": -0.17316636642074312,
+      "coverage": 0.07145968143354903,
+      "error": null
+    },
+    {
+      "name": "Persistent Fixed-Capital Cash Efficiency",
+      "expression": "IND_RANK(WINSOR(RATIO(MA(RATIO(SUB(oancf, dp), ppegt), 3), VOL(RATIO(SUB(oancf, dp), ppegt), 3)), 1))",
+      "hypothesis": "Firms with persistently positive and stable cash surplus per unit of gross fixed capital earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Current fixed-capital cash surplus produced strong joint evidence, but a single observation can reflect working-capital timing or temporary demand. The mean-to-volatility ratio rewards a durable capital payoff and penalizes unstable or negative cash productivity rather than merely smoothing the archived level.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.7104086010797712,
+      "ls_alpha": 0.03441861550249435,
+      "ls_talpha": 2.572939142302638,
+      "ls_sharpe": 0.27943183738464117,
+      "coverage": 0.07443473688468227,
+      "error": null
+    },
+    {
+      "name": "Short-Debt Unproductive-Capital Burden",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(SUB(oancf, dp), ppegt)), 1)), IND_RANK(RATIO(dlc, lct)))",
+      "hypothesis": "Low cash surplus from installed fixed assets combined with heavy short-term-debt reliance predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Poorly productive fixed capital becomes especially fragile when a large share of current liabilities is interest-bearing debt that must be refinanced. The interaction links realized capital quality to funding maturity without relying on investment-growth or debt-issuance anomalies.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.4657443981437566,
+      "ls_alpha": -0.032908872804045045,
+      "ls_talpha": -2.6048769859703302,
+      "ls_sharpe": -0.334091931747602,
+      "coverage": 0.0784538606123192,
+      "error": null
+    },
+    {
+      "name": "Labor-Intensity Acceleration with Margin Decay",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(emp, sale))), IND_RANK(NEG(TREND(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Accelerating labor intensity combined with deteriorating gross margins predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the linear blend of archived labor signals and instead targets a worsening cost structure: employees are accelerating relative to sales while unit economics deteriorate. Neither a high productivity level nor a static labor burden drives the construction; it requires simultaneous labor-intensity acceleration and margin decay.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.0195444410669938,
+      "ls_alpha": -0.0175265669024142,
+      "ls_talpha": -2.1022574717647333,
+      "ls_sharpe": -0.05749495177875181,
+      "coverage": 0.11148221271277592,
+      "error": null
+    },
+    {
+      "name": "Inventory Gross Return",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), invt), 1))",
+      "hypothesis": "Firms generating greater gross profit per dollar committed to inventory earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces another inventory-growth\u2013margin-deterioration interaction with a direct economic return on inventory investment. Gross profit per inventory dollar combines realized throughput and margin economics in one productivity measure, without recycling the archived margin trend or drawdown channels.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.7710377128803025,
+      "ls_alpha": 0.031072994351817124,
+      "ls_talpha": 3.038108360422403,
+      "ls_sharpe": 0.12428917849052708,
+      "coverage": 0.11502441954818574,
+      "error": null
+    },
+    {
+      "name": "Net-Cash Current-Liability Cushion",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(che, dlc), lct), 1))",
+      "hypothesis": "Firms holding more cash net of short-term debt relative to current liabilities earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeated cash-plus-operating-cash-flow coverage template and measures a structural near-term liquidity cushion. Current liabilities provide a positive, broadly reported scale, while subtracting short-term debt from cash directly captures resources remaining after the most immediate interest-bearing claim.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.2375367433633466,
+      "ls_alpha": 0.05615040691524498,
+      "ls_talpha": 4.776162738231273,
+      "ls_sharpe": 0.21523859064056458,
+      "coverage": 0.12462095322293461,
+      "error": null
+    },
+    {
+      "name": "Stress-Adjusted Workforce Gross Profit",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(SUB(sale, cogs), MUL(sale, SUB(MA(RATIO(SUB(sale, cogs), sale), 3), TS_MIN(RATIO(SUB(sale, cogs), sale), 3)))), emp), 1))",
+      "hypothesis": "Firms generating high gross profit per employee after charging for their recent margin drawdown earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The margin drawdown is converted into a dollar stress charge using current sales before calculating workforce productivity. This creates an integrated downside-adjusted unit-economics measure rather than mechanically blending archived productivity and labor-risk ranks.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.1262357138020542,
+      "ls_alpha": 0.037367429112452145,
+      "ls_talpha": 3.9658954715391066,
+      "ls_sharpe": 0.16036969310028898,
+      "coverage": 0.13670241789228735,
+      "error": null
+    },
+    {
+      "name": "Conservative Inventory Gross Return",
+      "expression": "IND_RANK(WINSOR(SUB(MA(RATIO(SUB(sale, cogs), invt), 3), VOL(RATIO(SUB(sale, cogs), invt), 3)), 1))",
+      "hypothesis": "Firms with high and stable gross profit per dollar of inventory earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Current inventory gross return produced strong joint evidence, but a single-period ratio can reflect temporary pricing or inventory liquidation. Subtracting volatility from the rolling mean estimates a conservative inventory payoff without the near-zero volatility denominator of a mean-to-volatility ratio.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.3640426586197574,
+      "ls_alpha": 0.02835863346623147,
+      "ls_talpha": 2.813143732776395,
+      "ls_sharpe": 0.06314059283694266,
+      "coverage": 0.10588782898185363,
+      "error": null
+    },
+    {
+      "name": "Externally Supported Cash Stock",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(che, re), at), 1))",
+      "hypothesis": "Cash balances that substantially exceed accumulated retained earnings predict lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Cash unsupported by cumulative retained profits is more likely to reflect external financing, persistent losses, or funds awaiting uncertain deployment than internally earned liquidity. The asset-scaled difference is stable and distinguishes the provenance of cash accumulation rather than rotating cash plus operating cash flow across alternative denominators.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.6810095400108644,
+      "ls_alpha": 0.02411595214096769,
+      "ls_talpha": 2.522926503763361,
+      "ls_sharpe": 0.008708665681881661,
+      "coverage": 0.14276845612653508,
+      "error": null
+    },
+    {
+      "name": "Inventory Net-Working-Capital Support",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(act, lct), invt), 1))",
+      "hypothesis": "Firms with greater net working capital support per dollar of inventory investment earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory is less fragile when it is backed by a broad surplus of current assets over current obligations, rather than requiring immediate liquidation or refinancing. This replaces gross profitability with a balance-sheet funding mechanism and uses economically matched working-capital quantities rather than an arbitrary gross-profit denominator.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 0.01419712463455396,
+      "ls_alpha": 0.04864131580680596,
+      "ls_talpha": 4.053130208158706,
+      "ls_sharpe": 0.12703385802423625,
+      "coverage": 0.10166811537137607,
+      "error": null
+    },
+    {
+      "name": "Uncovered Short-Debt Deficit",
+      "expression": "MUL(WINSOR(RATIO(SUB(dlc, che), lct), 1), INDICATOR(SUB(dlc, che), 0))",
+      "hypothesis": "Firms whose short-term debt exceeds available cash earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The prior net-cash cushion generated strong portfolio alpha but no monotone Fama-MacBeth slope, indicating that the economically relevant effect may reside in the actual uncovered-debt tail. The zero threshold directly isolates firms unable to repay short-term borrowing from cash, while the current-liability scale measures deficit severity without using repeatedly unsuccessful volatility conditioners.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.445515603896623,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.12463034297568075,
+      "error": null
+    },
+    {
+      "name": "Tangible-Equity Intangible Support",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ceq, intan), at), 1))",
+      "hypothesis": "Firms with greater common equity remaining after deducting intangible assets earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Intangible investment is more credible when supported by a substantial tangible equity cushion and more fragile when it absorbs most or all common equity. The asset-scaled residual avoids unstable debt-adjusted PP&E denominators and tests balance-sheet support for opaque investment rather than cosmetically rescaling fixed-capital cash profitability.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.5026554510428377,
+      "ls_alpha": 0.03928039634639501,
+      "ls_talpha": 3.4215220542343916,
+      "ls_sharpe": 7.279144172408681e-05,
+      "coverage": 0.129580290434339,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Lagged Capex Sales Yield",
+      "expression": "WINSOR(RATIO(DELTA(sale, 1), LAG(capx, 1)), 1)",
+      "hypothesis": "Firms generating greater incremental sales from prior capital expenditure earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Sales created per unit of lagged capex measure realized investment productivity rather than investment intensity alone. Lagging capex also distinguishes output following investment from contemporaneous spending driven by current demand.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Margin Divergence",
+      "expression": "MUL(IND_RANK(GROWTH(invt, 1)), IND_RANK(NEG(TREND(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Rapid inventory accumulation combined with deteriorating gross margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Inventory growth is particularly concerning when firms are losing pricing power or facing rising production costs. The joint signal targets potentially unproductive stock accumulation rather than inventory investment associated with healthy margins.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Distress-Financed Equity Issuance",
+      "expression": "MUL(IND_RANK(RATIO(sstk, at)), INDICATOR(NEG(MA(RATIO(oancf, at), 3)), 0))",
+      "hypothesis": "Equity issuance predicts lower returns when the issuing firm has persistently negative operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "External equity raised during a cash-flow shortfall is more likely to fund fragile expansion or ongoing operating deficits than high-return investment. The zero cash-flow threshold creates a direct quality condition, leaving issuance by internally healthy firms unpenalized.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Labor-Intensity Expansion",
+      "expression": "WINSOR(GROWTH(RATIO(emp, sale), 1), 1)",
+      "hypothesis": "Growth in employees relative to sales predicts lower returns because it identifies hiring that has not generated proportional operating output.",
+      "expected_sign": "negative",
+      "reasoning": "The employee-to-sales ratio measures the productivity of labor investment rather than rewarding hiring and profitability separately. Its negative sign aligns with the established hiring anomaly while concentrating it in firms where headcount growth outpaces realized demand, and winsorization limits instability from unusually low sales.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Validated Asset Expansion",
+      "expression": "MUL(WINSOR(RATIO(DELTA(oancf, 1), LAG(at, 1)), 1), INDICATOR(GROWTH(at, 1), 0))",
+      "hypothesis": "Asset expansion predicts stronger returns when it coincides with an improvement in operating cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "The positive-asset-growth condition removes a standalone cash-flow-change signal outside expanding firms, while the signed cash-flow response separates productive expansion from expansion accompanied by operating deterioration. Scaling by lagged assets avoids the unstable small-denominator problem of dividing cash-flow changes by incremental assets and should preserve broad coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Financed Capex Gap",
+      "expression": "MUL(WINSOR(RATIO(DELTA(ADD(dltt, dlc), 1), capx), 1), INDICATOR(SUB(capx, oancf), 0))",
+      "hypothesis": "Debt raised to support capital expenditure that exceeds internal operating cash flow predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The funding-gap condition distinguishes capex that cannot be covered internally, while debt growth relative to capex directly measures reliance on external borrowing rather than an ambiguous static leverage tilt. Winsorization reduces the influence of firms with unusually small capex denominators without weakening the financing-source mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Cash-Margin Squeeze",
+      "expression": "MIN(IND_RANK(GROWTH(invt, 1)), IND_RANK(NEG(TREND(RATIO(oancf, sale), 3))))",
+      "hypothesis": "Inventory accumulation accompanied by deteriorating operating cash margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This tests whether cash conversion provides a stronger validation channel than the gross-margin trend used in the prior inventory signal. The minimum operator is a continuous conjunction: the signal is large only when both inventory growth and cash-margin deterioration are pronounced, without creating a large zero-valued portfolio group.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Deteriorating Equity Finance",
+      "expression": "MIN(IND_RANK(RATIO(sstk, at)), IND_RANK(NEG(TREND(RATIO(ib, sale), 3))))",
+      "hypothesis": "Heavy equity issuance combined with deteriorating earnings margins predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Issuance is more concerning when operating performance is worsening, because the proceeds are more likely to finance a weak business or low-quality expansion. The continuous conjunction replaces the prior negative-cash-flow indicator, reducing zero stacking and making both portfolio tails more economically interpretable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Prior-Capex Cash Payoff",
+      "expression": "IND_RANK(RATIO(DELTA(oancf, 1), MA(LAG(capx, 1), 3)))",
+      "hypothesis": "Firms generating larger operating-cash-flow improvements per dollar of sustained prior capital expenditure earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is a realized marginal cash payoff to past investment, rather than a linear combination of capex intensity and sales growth with conflicting expected signs. Averaging lagged capex stabilizes the denominator, while industry ranking limits capital-intensity differences and extreme ratios.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Mismatched Capacity Build",
+      "expression": "MIN(IND_RANK(GROWTH(ppent, 1)), IND_RANK(RATIO(lct, act)))",
+      "hypothesis": "Fixed-capital expansion undertaken by firms with weak short-term liquidity predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "A large capacity build is less disciplined when current liabilities are high relative to current assets, because the firm may be unable to absorb investment delays or operating shortfalls. This replaces the near-mechanical financing-deficit reconstruction with a distinct maturity-mismatch mechanism and does not require inferring the source of funds from debt issuance.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Productivity-Validated Hiring",
+      "expression": "MUL(WINSOR(DELTA(RATIO(oancf, emp), 1), 1), INDICATOR(GROWTH(emp, 1), 0))",
+      "hypothesis": "Among firms increasing employment, improvements in operating cash flow per employee predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal does not claim that hiring itself has a positive return relation; it distinguishes productive hirers from firms whose cash output per worker deteriorates. Because the gated productivity change is signed, productive and unproductive hirers can populate opposite portfolio tails while non-hirers remain near the middle at zero.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncertainty-Defying Fixed Investment",
+      "expression": "MIN(IND_RANK(GROWTH(ppegt, 1)), IND_RANK(VOL(RATIO(oancf, at), 3)))",
+      "hypothesis": "Aggressive gross fixed-capital expansion under volatile operating cash flows predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow uncertainty raises the option value of delaying irreversible fixed investment, so rapid expansion despite unstable fundamentals can indicate poor discipline or overconfidence. The construction tests that real-options interaction directly rather than repackaging a trend in profitability with a noisy PP&E denominator.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Capex Cash-Flow Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(DELTA(capx, 1), LAG(at, 1))), IND_RANK(RATIO(DELTA(oancf, 1), LAG(at, 1))))))",
+      "hypothesis": "Firms whose changes in capital expenditure are aligned with changes in operating cash generation earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The signal rewards adaptive capital allocation\u2014expansion when cash generation strengthens and retrenchment when it weakens\u2014while penalizing both overinvestment and failure to reinvest improving cash flows. Because it measures rank alignment rather than adding investment and profitability levels, neither isolated anomaly determines the signal.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Post-Build Margin Erosion",
+      "expression": "MUL(WINSOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 1), INDICATOR(LAG(GROWTH(ppent, 1), 1), 0))",
+      "hypothesis": "Gross-margin deterioration following a prior increase in net fixed assets predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The lagged investment condition asks whether a completed capacity build is followed by adverse pricing, cost pressure, or poor utilization rather than merely combining contemporaneous investment and profitability. The signed margin change places successful and unsuccessful builders on opposite sides of zero, helping produce economically interpretable portfolio tails.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Capital Replacement Discipline",
+      "expression": "NEG(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))))",
+      "hypothesis": "Firms whose capital expenditure remains close to the depreciation-implied replacement need earn higher returns than firms exhibiting extreme underinvestment or expansion.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the archived incremental-cash-payoff mechanism and instead measures investment discipline relative to consumed capital. The normalized absolute gap is bounded and symmetric, penalizing both aggressive expansion beyond replacement needs and potential undermaintenance without requiring a long history or unstable payoff denominator.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory-Dependent Liquidity",
+      "expression": "IND_RANK(RATIO(SUB(lct, SUB(act, invt)), at))",
+      "hypothesis": "Firms whose current liabilities cannot be covered without liquidating inventory earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting inventory from current assets isolates quick assets, so the signal measures the liability shortfall that depends on successful inventory conversion. This replaces the previously tested gross-margin channel with a distinct liquidity-quality mechanism and uses broadly reported balance-sheet variables without temporal coverage loss.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Buffer Fragility",
+      "expression": "IND_RANK(RATIO(VOL(RATIO(oancf, at), 3), MA(RATIO(che, at), 3)))",
+      "hypothesis": "Firms with volatile operating cash generation relative to their available cash buffer earn lower risk-adjusted returns.",
+      "expected_sign": "negative",
+      "reasoning": "This continuous buffer-adequacy ratio applies across profitable and unprofitable firms, eliminating the large zero mass created by a negative-cash-flow indicator. High values require both unstable cash generation and limited liquidity, so the signal is not equivalent to a simple loss or distress screen.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Workforce Gross-Profit Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(GROWTH(emp, 1)), IND_RANK(RATIO(DELTA(SUB(sale, cogs), 1), LAG(at, 1))))))",
+      "hypothesis": "Firms whose workforce growth is aligned with changes in gross-profit-producing activity earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-distance construction evaluates capacity-planning consistency rather than treating hiring or profitability changes as independently favorable. It replaces sparse intangible reporting and the zero-valued investment gate with broadly available operating variables, while penalizing both unsupported hiring and potentially unsustainable understaffing.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Fragility-Weighted Replacement Imbalance",
+      "expression": "NEG(MUL(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))), IND_RANK(NEG(RATIO(re, at)))))",
+      "hypothesis": "Large deviations from replacement-level capital spending predict lower returns primarily among firms with weak accumulated profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier symmetric replacement signal had an exceptionally strong cross-sectional slope but negligible FF5 alpha, plausibly because its short portfolio pooled financially strong and fragile firms. Weighting the bounded replacement gap by retained-earnings weakness concentrates the low-signal tail in firms where either overexpansion or undermaintenance is least sustainable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Downside Cash-Buffer Shock",
+      "expression": "IND_RANK(WINSOR(RATIO(NEG(DELTA(oancf, 1)), LAG(che, 1)), 1))",
+      "hypothesis": "A decline in operating cash flow that is large relative to the firm's prior cash reserve predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the strong portfolio evidence from Cash-Buffer Fragility by isolating adverse cash-flow shocks rather than treating upside and downside volatility symmetrically. The signed one-period construction also avoids a three-year history, potentially improving coverage and Fama-MacBeth power while retaining the buffer-adequacy mechanism.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Capacity-Weighted Margin Realization",
+      "expression": "MUL(IND_RANK(LAG(GROWTH(ppent, 1), 1)), IND_ZSCORE(WINSOR(NEG(DELTA(RATIO(SUB(sale, cogs), sale), 1)), 1)))",
+      "hypothesis": "Gross-margin erosion predicts lower returns more strongly when it follows a large fixed-capacity expansion.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the binary builder indicator with lagged investment magnitude removes the zero-valued mass in the prior post-build signal. The signed industry-standardized margin outcome places successful large builders in the low-signal tail and unsuccessful large builders in the high-signal tail, improving the economic interpretation of the spread.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Asset Funding Mismatch",
+      "expression": "IND_RANK(RATIO(SUB(ppent, ADD(dltt, ceq)), at))",
+      "hypothesis": "Firms whose net fixed assets exceed their long-term debt and equity capital earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Long-lived operating assets should generally be supported by permanent capital rather than short-term or residual financing sources. The scaled funding residual measures an asset-liability maturity mismatch, not leverage or physical investment in isolation, and uses current broadly reported balance-sheet items.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Turnover Decay",
+      "expression": "IND_RANK(TREND(RATIO(invt, cogs), 3))",
+      "hypothesis": "Firms experiencing a persistent increase in inventory relative to realized product throughput earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Inventory divided by cost of goods sold measures the stock committed per unit of operating throughput, so an upward trend indicates slowing turnover and rising obsolescence or markdown risk. This abandons the inventory-adjusted working-capital difference and its accrual-sign ambiguity, while retaining continuous coverage without an indicator-generated zero mass.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Workforce Gross-Profit Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), emp), 1))",
+      "hypothesis": "Firms generating more gross profit per employee earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic timing change with a distinct unit-economics mechanism that measures the output quality of the existing labor investment. Gross profit per employee distinguishes productive labor capacity from costly workforce intensity without relying on persistent employment-growth ranks, and industry ranking reduces structural differences in labor intensity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Workforce Cash Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(oancf, emp), 1))",
+      "hypothesis": "Firms generating more operating cash flow per employee earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit per employee produced strong and consistent evidence, but it does not verify that labor output converts into cash after overhead and working-capital needs. This cash-based unit-productivity measure tests that distinct quality channel without relying on hiring rates, temporal gates, or sparse observations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Capital-Commitment Gross Yield",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), LAG(ADD(capx, dp), 1)), 1))",
+      "hypothesis": "Firms generating greater gross profit from their prior capital-spending and replacement commitment earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the monotone capex-to-depreciation construction and instead measures realized operating output per dollar of prior capital commitment. Lagging the stabilized capex-plus-depreciation denominator establishes investment-before-output timing, while industry ranking limits structural differences in capital intensity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Coverage Improvement",
+      "expression": "IND_RANK(TREND(RATIO(che, lct), 3))",
+      "hypothesis": "Firms with persistently improving cash coverage of current liabilities earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the volatility-over-cash template with a distinct balance-sheet resilience mechanism that tracks whether liquid investment is keeping pace with near-term obligations. The continuous coverage trend applies across the full cross-section and avoids reducing the signal to either earnings volatility or a negative-cash-flow screen.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cumulative Investment Profit Backing",
+      "expression": "IND_RANK(WINSOR(RATIO(re, ADD(ppent, invt)), 1))",
+      "hypothesis": "Firms with greater accumulated retained earnings relative to their physical and inventory investment stock earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the weak capacity-weighted profitability-change template and asks whether the existing operating investment base has generated cumulative profits over the firm's history. Combining net fixed assets and inventory captures both long-lived and working-capital commitments, while the signed retained-earnings numerator distinguishes validated investment from expansion associated with accumulated losses.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Term-Funded Capacity Growth",
+      "expression": "MUL(IND_RANK(GROWTH(ppent, 1)), IND_ZSCORE(WINSOR(RATIO(DELTA(lct, 1), LAG(at, 1)), 1)))",
+      "hypothesis": "Fixed-capacity growth accompanied by increasing current liabilities predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This directly measures the contemporaneous co-movement of long-lived investment and short-term funding rather than inferring mismatch from a potentially negative permanent-capital denominator. Signed current-liability growth places capacity builders that reduce short-term obligations opposite builders that expand them, producing continuous and economically distinct portfolio tails.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Cash Productivity",
+      "expression": "IND_RANK(WINSOR(RATIO(oancf, invt), 1))",
+      "hypothesis": "Firms generating more operating cash flow per dollar of inventory investment earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the sparse acquisition-only design and its non-acquirer ranking problem with a broadly observable investment-productivity mechanism. Cash flow per unit of inventory distinguishes productive working-capital deployment from inventory that absorbs funding without supporting cash generation, while industry ranking controls for normal turnover differences.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Turnover Recovery",
+      "expression": "IND_RANK(RATIO(RATIO(cogs, invt), TS_MAX(RATIO(cogs, invt), 3)))",
+      "hypothesis": "Firms whose current inventory turnover is close to its recent firm-specific peak earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The strong turnover-decay result indicates that deterioration in inventory throughput is informative, but a linear trend may be sensitive to a single old observation. Distance from the recent turnover maximum measures whether inventory efficiency has recovered or remains impaired while controlling for each firm's normal turnover level.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual-Validated Capital Payoff",
+      "expression": "MIN(IND_RANK(WINSOR(RATIO(DELTA(sale, 1), LAG(ADD(capx, dp), 1)), 1)), IND_RANK(WINSOR(RATIO(DELTA(oancf, 1), LAG(ADD(capx, dp), 1)), 1)))",
+      "hypothesis": "Prior capital commitments predict higher returns when followed by both incremental sales and incremental operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-based capex productivity generated strong portfolio alpha but an opposing Fama-MacBeth slope, whereas the cash-payoff version produced moderately consistent evidence. Requiring both outcomes prevents sales expansion without cash realization from entering the high-signal tail, and capex plus depreciation provides a more stable one-period capital denominator.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Share-Funded Capacity Growth",
+      "expression": "MUL(IND_RANK(GROWTH(ppent, 1)), IND_ZSCORE(WINSOR(DELTA(RATIO(dlc, lct), 1), 1)))",
+      "hypothesis": "Fixed-capacity growth accompanied by a rising share of interest-bearing short-term debt in current liabilities predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier current-liability funding signal had a strong negative cross-sectional slope but positive FF5 alpha, potentially because trade credit and other operating liabilities can accompany healthy expansion. Focusing on a shift toward short-term debt isolates refinancing-dependent capacity growth, while the signed debt-share change places deleveraging builders in the opposite portfolio tail.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Conversion-Weighted Labor Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(sale, cogs), emp), 1)), IND_ZSCORE(WINSOR(RATIO(oancf, SUB(sale, cogs)), 1)))",
+      "hypothesis": "Gross profit per employee predicts higher returns when that operating output converts efficiently into cash.",
+      "expected_sign": "positive",
+      "reasoning": "The second component is cash conversion of gross profit and does not share the employee denominator, making it economically distinct from the labor-productivity level. Signed industry standardization places productive firms with poor cash conversion in the low-signal tail and avoids the coverage-degrading MIN bottleneck.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Risk Capital Inflexibility",
+      "expression": "MUL(IND_RANK(RATIO(ppent, ADD(ppent, che))), IND_RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)))",
+      "hypothesis": "Firms combining an inflexible fixed-capital-heavy asset mix with unstable gross margins earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons gross profit scaled by operating assets and instead tests a real-options mechanism: volatile unit economics are more damaging when capital is committed to fixed assets rather than held in liquid form. The bounded PP&E share avoids unstable operating-asset denominators, while the joint construction becomes large only when both inflexibility and margin risk are high.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Internal-Liquidity Liability Coverage",
+      "expression": "IND_RANK(WINSOR(RATIO(ADD(che, oancf), ADD(che, lt)), 1))",
+      "hypothesis": "Firms with greater cash plus operating cash generation relative to their total liability burden earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the volatility-times-low-cash construction with a current internal-resource coverage measure that applies continuously across firms. Including cash in both the resource pool and the positive scaling base limits low-cash explosions, while signed operating cash flow distinguishes firms that replenish liquidity from those consuming it.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Slow-Inventory Short-Debt Mismatch",
+      "expression": "MUL(IND_RANK(RATIO(dlc, lct)), IND_RANK(RATIO(invt, cogs)))",
+      "hypothesis": "Firms combining slow-moving inventory with a high short-term-debt share of current liabilities earn lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Short-term borrowing is less fragile when inventory converts rapidly into sales-related cash needs, but dangerous when inventory turnover is slow. The interaction measures a maturity mismatch between the funding source and the liquidity of the investment it may support, rather than treating inventory or debt intensity independently.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Low-Buffer Cash-Flow Instability",
+      "expression": "MUL(IND_RANK(VOL(RATIO(oancf, at), 3)), IND_RANK(NEG(TS_RANK(RATIO(che, at), 3))))",
+      "hypothesis": "Persistent operating-cash-flow instability predicts lower returns when the firm's cash reserve is near the bottom of its own recent range.",
+      "expected_sign": "negative",
+      "reasoning": "The original cash-buffer fragility signal had strong portfolio evidence, but its ratio could be dominated by extreme low-cash denominators. Combining volatility with firm-specific cash-buffer position preserves the funding-risk interaction while avoiding division by cash and distinguishing temporarily low reserves from structurally cash-light business models.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory-Mix Instability",
+      "expression": "IND_RANK(VOL(RATIO(invt, act), 3))",
+      "hypothesis": "Firms with unstable inventory shares of current assets earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons inventory-turnover improvement and instead measures instability in working-capital composition. Large fluctuations in the inventory share can indicate poor purchasing discipline, demand forecasting errors, or recurrent inventory liquidation, while the bounded share avoids turnover-denominator extremes.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Risk Labor Rigidity",
+      "expression": "MUL(IND_RANK(RATIO(emp, sale)), IND_RANK(VOL(RATIO(SUB(sale, cogs), sale), 3)))",
+      "hypothesis": "Labor-intensive firms with unstable gross margins earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces profitability-per-worker and conversion-ratio recombinations with an operating-leverage mechanism. A large workforce per unit of sales is a more consequential commitment when unit margins are unstable, and industry ranking limits structural differences in labor intensity.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Capital Cash Surplus",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(oancf, dp), ppegt), 1))",
+      "hypothesis": "Firms generating greater operating cash flow after capital consumption per dollar of installed gross fixed assets earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeated capacity-growth-times-funding-change template and measures the realized economic surplus of the installed capital stock. Subtracting depreciation distinguishes cash generation that merely offsets capital consumption from cash returns that represent productive capacity.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Internally Funded Capital Commitment",
+      "expression": "IND_RANK(WINSOR(RATIO(ADD(che, oancf), ADD(capx, dp)), 1))",
+      "hypothesis": "Firms able to cover capital expenditure and replacement needs with cash reserves and operating cash generation earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the lagged payoff functional-form revision with a distinct financing-capacity mechanism. The positive capital-commitment denominator is stabilized by depreciation, while cash plus operating cash flow measures the firm's ability to invest without fragile external funding.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Productive Replacement Discipline",
+      "expression": "MUL(IND_RANK(NEG(ABS(RATIO(SUB(capx, dp), ADD(capx, dp))))), IND_RANK(WINSOR(RATIO(SUB(oancf, dp), ppegt), 1)))",
+      "hypothesis": "Replacement-level capital spending predicts higher returns when the installed fixed-capital stock also generates cash flow beyond capital consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Replacement discipline had exceptional cross-sectional evidence but negligible alpha, while fixed-capital cash surplus produced consistent slope and portfolio evidence. Their interaction distinguishes disciplined maintenance of productive assets from mechanically balanced spending on low-return capacity.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Asset Long-Debt Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(ppent, at)), IND_RANK(RATIO(dltt, lt)))))",
+      "hypothesis": "Firms whose long-term-debt share is aligned with their fixed-asset intensity earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Long-lived productive assets require durable funding, while asset-light firms have less need for long-maturity borrowing. Rank-distance measures maturity matching without assuming that either tangibility or leverage has a favorable standalone return sign, and it avoids unstable residual funding denominators.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Labor-Weighted Margin Drawdown",
+      "expression": "MUL(IND_RANK(RATIO(emp, sale)), IND_RANK(SUB(MA(RATIO(SUB(sale, cogs), sale), 3), TS_MIN(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Labor-intensive firms experiencing large gross-margin drawdowns relative to their own recent average earn lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting the recent minimum from the firm's own average margin removes the persistent margin level that dominated the prior construction. The resulting downside excursion becomes economically important when a large workforce creates operating rigidity, directly testing downside operating leverage rather than low gross profitability.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Short-Debt Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(RATIO(invt, act)), IND_RANK(RATIO(dlc, lct)))))",
+      "hypothesis": "Firms whose short-term-debt share is aligned with the inventory share of current assets earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory is a relatively short-duration operating asset, so greater inventory exposure can support greater use of short-maturity financing, while inventory-light firms should rely less on short debt. Rank distance tests asset-liability maturity matching rather than multiplying two previously evaluated adverse characteristics.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Workforce Demand-Volatility Alignment",
+      "expression": "NEG(ABS(SUB(IND_RANK(VOL(GROWTH(emp, 1), 3)), IND_RANK(VOL(GROWTH(sale, 1), 3)))))",
+      "hypothesis": "Firms whose workforce adjustment volatility is aligned with demand volatility earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the gross-profit-per-employee level with a workforce flexibility mechanism. The signal rewards stable staffing in stable businesses and more adaptive staffing in volatile businesses, while penalizing both excessive workforce churn and rigid employment policies unsupported by demand conditions.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Excess Capex Volatility",
+      "expression": "SUB(IND_RANK(VOL(RATIO(capx, at), 3)), IND_RANK(VOL(RATIO(sale, at), 3)))",
+      "hypothesis": "Capital-expenditure volatility that exceeds the volatility of underlying demand predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons internal-funding coverage and instead measures whether investment policy is unusually erratic relative to the operating environment. The rank spread avoids unstable volatility ratios and isolates lumpy or poorly timed capital allocation beyond what sales variability can economically justify.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Capex Acceleration Cash-Flow Divergence",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(capx, at))), IND_RANK(NEG(TREND(RATIO(oancf, at), 3))))",
+      "hypothesis": "Accelerating capital expenditure during a deterioration in operating cash returns predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The signal targets escalation of investment commitments rather than a high capex level or ordinary asset growth. Capex acceleration is most concerning when the firm's internally generated operating return is already trending downward, indicating delayed retrenchment or managerial overconfidence.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Fixed-Capital Cash Efficiency",
+      "expression": "IND_RANK(WINSOR(RATIO(MA(RATIO(SUB(oancf, dp), ppegt), 3), VOL(RATIO(SUB(oancf, dp), ppegt), 3)), 1))",
+      "hypothesis": "Firms with persistently positive and stable cash surplus per unit of gross fixed capital earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Current fixed-capital cash surplus produced strong joint evidence, but a single observation can reflect working-capital timing or temporary demand. The mean-to-volatility ratio rewards a durable capital payoff and penalizes unstable or negative cash productivity rather than merely smoothing the archived level.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Short-Debt Unproductive-Capital Burden",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(SUB(oancf, dp), ppegt)), 1)), IND_RANK(RATIO(dlc, lct)))",
+      "hypothesis": "Low cash surplus from installed fixed assets combined with heavy short-term-debt reliance predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Poorly productive fixed capital becomes especially fragile when a large share of current liabilities is interest-bearing debt that must be refinanced. The interaction links realized capital quality to funding maturity without relying on investment-growth or debt-issuance anomalies.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Labor-Intensity Acceleration with Margin Decay",
+      "expression": "MUL(IND_RANK(ACCEL(RATIO(emp, sale))), IND_RANK(NEG(TREND(RATIO(SUB(sale, cogs), sale), 3))))",
+      "hypothesis": "Accelerating labor intensity combined with deteriorating gross margins predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the linear blend of archived labor signals and instead targets a worsening cost structure: employees are accelerating relative to sales while unit economics deteriorate. Neither a high productivity level nor a static labor burden drives the construction; it requires simultaneous labor-intensity acceleration and margin decay.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Gross Return",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(sale, cogs), invt), 1))",
+      "hypothesis": "Firms generating greater gross profit per dollar committed to inventory earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces another inventory-growth\u2013margin-deterioration interaction with a direct economic return on inventory investment. Gross profit per inventory dollar combines realized throughput and margin economics in one productivity measure, without recycling the archived margin trend or drawdown channels.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Net-Cash Current-Liability Cushion",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(che, dlc), lct), 1))",
+      "hypothesis": "Firms holding more cash net of short-term debt relative to current liabilities earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the repeated cash-plus-operating-cash-flow coverage template and measures a structural near-term liquidity cushion. Current liabilities provide a positive, broadly reported scale, while subtracting short-term debt from cash directly captures resources remaining after the most immediate interest-bearing claim.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Stress-Adjusted Workforce Gross Profit",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(SUB(sale, cogs), MUL(sale, SUB(MA(RATIO(SUB(sale, cogs), sale), 3), TS_MIN(RATIO(SUB(sale, cogs), sale), 3)))), emp), 1))",
+      "hypothesis": "Firms generating high gross profit per employee after charging for their recent margin drawdown earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "The margin drawdown is converted into a dollar stress charge using current sales before calculating workforce productivity. This creates an integrated downside-adjusted unit-economics measure rather than mechanically blending archived productivity and labor-risk ranks.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Conservative Inventory Gross Return",
+      "expression": "IND_RANK(WINSOR(SUB(MA(RATIO(SUB(sale, cogs), invt), 3), VOL(RATIO(SUB(sale, cogs), invt), 3)), 1))",
+      "hypothesis": "Firms with high and stable gross profit per dollar of inventory earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Current inventory gross return produced strong joint evidence, but a single-period ratio can reflect temporary pricing or inventory liquidation. Subtracting volatility from the rolling mean estimates a conservative inventory payoff without the near-zero volatility denominator of a mean-to-volatility ratio.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Externally Supported Cash Stock",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(che, re), at), 1))",
+      "hypothesis": "Cash balances that substantially exceed accumulated retained earnings predict lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Cash unsupported by cumulative retained profits is more likely to reflect external financing, persistent losses, or funds awaiting uncertain deployment than internally earned liquidity. The asset-scaled difference is stable and distinguishes the provenance of cash accumulation rather than rotating cash plus operating cash flow across alternative denominators.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Inventory Net-Working-Capital Support",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(act, lct), invt), 1))",
+      "hypothesis": "Firms with greater net working capital support per dollar of inventory investment earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory is less fragile when it is backed by a broad surplus of current assets over current obligations, rather than requiring immediate liquidation or refinancing. This replaces gross profitability with a balance-sheet funding mechanism and uses economically matched working-capital quantities rather than an arbitrary gross-profit denominator.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Uncovered Short-Debt Deficit",
+      "expression": "MUL(WINSOR(RATIO(SUB(dlc, che), lct), 1), INDICATOR(SUB(dlc, che), 0))",
+      "hypothesis": "Firms whose short-term debt exceeds available cash earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The prior net-cash cushion generated strong portfolio alpha but no monotone Fama-MacBeth slope, indicating that the economically relevant effect may reside in the actual uncovered-debt tail. The zero threshold directly isolates firms unable to repay short-term borrowing from cash, while the current-liability scale measures deficit severity without using repeatedly unsuccessful volatility conditioners.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "Tangible-Equity Intangible Support",
+      "expression": "IND_RANK(WINSOR(RATIO(SUB(ceq, intan), at), 1))",
+      "hypothesis": "Firms with greater common equity remaining after deducting intangible assets earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "Intangible investment is more credible when supported by a substantial tangible equity cushion and more fragile when it absorbs most or all common equity. The asset-scaled residual avoids unstable debt-adjusted PP&E denominators and tests balance-sheet support for opaque investment rather than cosmetically rescaling fixed-capital cash profitability.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Cash-Supported Hiring",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "A rank-product of hiring growth and cash-flow-to-assets is close to additive, so the signal is dominated by the well-known cash-based profitability anomaly while its positive expected sign on employment growth directly contradicts the established negative hiring-rate anomaly (Belo-Lin-Bazdresch) without any argument for why conditioning flips it."
+    },
+    {
+      "generation": 0,
+      "target_name": "Accrual-Funded Expansion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a straight multiplication of two of the most heavily published anomalies (asset growth and the earnings-minus-cash-flow accrual measure), which are already mechanically overlapping since accruals are a component of asset growth, so it offers little beyond a rediscovery of both."
+    },
+    {
+      "generation": 0,
+      "target_name": "Lagged Capex Sales Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Investment productivity measured as incremental sales per unit of lagged capex is a coherent and reasonably fresh construction, but the near-zero and highly skewed capex denominator makes the ratio unstable and 1% winsorization is a thin defense, so cross-sectional ranking of the ratio (or scaling by assets) would be a safer implementation."
+    },
+    {
+      "generation": 0,
+      "target_name": "Inventory Margin Divergence",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The interaction is internally consistent (high inventory build times deteriorating gross margin trend yields a large product with a correctly negative expected sign) and the joint condition is an economically motivated refinement of the inventory-growth anomaly rather than a mechanical restatement of it."
+    },
+    {
+      "generation": 0,
+      "target_name": "Leveraged Fixed-Asset Build",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The rank product behaves near-additively and therefore mostly reproduces the known physical-investment anomaly plus a leverage tilt whose own return sign is ambiguous, and the \"limited financing flexibility\" story is not tested since the signal cannot distinguish debt-funded from internally funded PP&E growth."
+    },
+    {
+      "generation": 0,
+      "target_name": "Distress-Financed Equity Issuance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conditional construction is internally consistent and the mechanism (issuance to plug an operating cash deficit) is a defensible sharpening of the issuance anomaly, but stacking all positive-cash-flow firms at exactly zero pools healthy heavy issuers with distressed non-issuers in the long leg, so the spread's long side will be economically muddled and the ex-post finding that issuance underperformance concentrates in unprofitable firms is already partly documented."
+    },
+    {
+      "generation": 1,
+      "target_name": "Asset-Scaled Capex Conversion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expression decomposes into asset-scaled sales change minus capex-to-assets, so it is largely the well-documented capital investment (CAPEX/assets) anomaly with an added sales-growth term whose own documented return relation is negative \u2014 directly opposing the stated positive expected sign and making the composite's direction economically ambiguous."
+    },
+    {
+      "generation": 1,
+      "target_name": "Inventory Cash-Margin Squeeze",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The sign logic is internally consistent (high MIN = both inventory build and cash-margin deterioration = low returns) and swapping gross margin for operating cash margin plus a continuous conjunction is a substantive rather than cosmetic revision of the archived inventory signal, though inventory growth alone is a known anomaly so the incremental content rests entirely on the cash-conversion validation channel."
+    },
+    {
+      "generation": 1,
+      "target_name": "Borrowing Funding-Deficit Conjunction",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Debt issuance scaled by assets and the capex-minus-operating-cash-flow gap are near-mechanical complements that together reconstruct the published net external financing / financing-deficit anomaly, so the MIN conjunction adds little beyond a known signal."
+    },
+    {
+      "generation": 1,
+      "target_name": "Demand-Unconfirmed Hiring",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the documented employment-growth (hiring rate) anomaly with a sales-growth filter, and since both legs of the conjunction are themselves known negative predictors the signal is unlikely to isolate anything beyond hiring-rate plus growth-anomaly exposure."
+    },
+    {
+      "generation": 1,
+      "target_name": "Improving Fixed-Capital Cash Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Despite the cross-theme framing, this is a univariate trend-in-cash-profitability signal closely related to published fundamental-trend/change-in-profitability anomalies, with the only distinguishing feature being an idiosyncratic gross-PP&E denominator that adds capital-intensity noise rather than a new mechanism."
+    },
+    {
+      "generation": 1,
+      "target_name": "Margin-Deteriorating Equity Finance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conditioning of equity issuance on a deteriorating net-margin trend is economically coherent, sign-consistent, and a genuine reconstruction of the archived signal whose indicator produced a perverse alpha/Sharpe mismatch \u2014 though the issuance leg is a well-known anomaly, so the test's value hinges on whether the margin-trend interaction is incrementally informative."
+    },
+    {
+      "generation": 2,
+      "target_name": "Depreciation-Stabilized Cash Payoff",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic denominator tweak to the archived \"Prior-Capex Cash Payoff\" (LAG(capx+dp,1) instead of MA(LAG(capx,1),3)) with the identical mechanism, expected sign, and numerator, so it cannot diagnose why that signal's cross-sectional and portfolio evidence was only marginal."
+    },
+    {
+      "generation": 2,
+      "target_name": "Thin-Margin Inventory Build",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Replacing the archived Inventory Margin Divergence's margin *trend* with the margin *level* both re-treads that already-tested interaction and injects a direct rediscovery of the gross-profitability anomaly (IND_RANK(cogs/sale) is inverse gross margin), so any result will be hard to attribute to the inventory-quality mechanism."
+    },
+    {
+      "generation": 2,
+      "target_name": "Capex Cash-Flow Alignment",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The negative absolute rank-distance construction is genuinely distinct from the archive and from level-based investment/profitability anomalies, and the hypothesis matches the expression's direction, though the short leg deliberately pools over- and under-investors whose returns may partially offset \u2014 a diagnosis worth tracking if the spread is weak."
+    },
+    {
+      "generation": 2,
+      "target_name": "Operating Cash Runway Burn",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Multiplying by INDICATOR(NEG(oancf),0) zeroes the large majority of firms, leaving a degenerate cross-section (huge point mass at zero plus a distressed tail) whose predictive content is essentially the well-documented negative-cash-flow/financial-distress effect rather than a novel \"runway\" interaction."
+    },
+    {
+      "generation": 2,
+      "target_name": "Post-Build Margin Erosion",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The lagged-capacity-build conditioning on a signed gross-margin change is internally consistent and economically distinct from the archive's contemporaneous inventory\u2013margin combinations, but the signal is largely a change-in-profitability measure with a mass of non-builders at zero, so the effective sort spans only part of the cross-section."
+    },
+    {
+      "generation": 2,
+      "target_name": "Intangible Expansion Cash Decay",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Structurally near-identical to Post-Build Margin Erosion (signed profitability change \u00d7 investment indicator) with the same zero-mass issue, and its likely drivers \u2014 change in cash ROA plus acquisition-driven intangible growth \u2014 overlap heavily with published profitability-change and post-merger underperformance anomalies while intan's sparse reporting will further thin coverage."
+    },
+    {
+      "generation": 3,
+      "target_name": "Fragility-Weighted Replacement Imbalance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The construction is internally consistent (bounded non-negative imbalance scaled by a non-negative fragility rank, then negated, so higher = disciplined-and-solvent = higher returns as expected), but because the imbalance term is bounded in [0,1] the product will be substantially driven by the retained-earnings-to-assets rank, a well-known distress/profitability characteristic, so any alpha may be a rediscovery rather than a genuine interaction effect."
+    },
+    {
+      "generation": 3,
+      "target_name": "Downside Cash-Buffer Shock",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Sign logic is correct (cash-flow decline scaled by prior cash yields a high signal predicting low returns), but the name and reasoning claim to \"isolate adverse shocks\" while the expression is a fully symmetric signed ratio, and the construct is close to a cash-flow-change/liquidity-scaled earnings-shock predictor whose incremental content over known cash-flow news signals should be checked."
+    },
+    {
+      "generation": 3,
+      "target_name": "Capacity-Weighted Margin Realization",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is a substantive redesign rather than a cosmetic tweak \u2014 the non-negative capacity rank times a signed industry z-scored margin change produces an economically interpretable monotone spread (large builders with margin erosion at the top, large builders with margin gains at the bottom, non-builders near zero) that matches the stated negative expected sign."
+    },
+    {
+      "generation": 3,
+      "target_name": "Inventory-Liquidity Deterioration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical first difference of an already-evaluated level signal, and the differenced quantity is essentially the negative of the change in inventory-adjusted net working capital scaled by assets \u2014 i.e., a working-capital accrual measure whose expected sign here is the opposite of the well-documented accruals anomaly, an inconsistency the proposal does not address."
+    },
+    {
+      "generation": 3,
+      "target_name": "Lagged Workforce Payoff Alignment",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Inserting a single LAG into the already-tested Workforce Gross-Profit Alignment expression is a cosmetic timing variant of a prior signal rather than a substantively different mechanism, and the two employment-growth ranks are persistent enough that the resulting signal will be highly correlated with the original."
+    },
+    {
+      "generation": 3,
+      "target_name": "Fixed-Asset Funding Mismatch",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The maturity-mismatch framing is coherent and the expression matches the stated negative sign, but the measure is a simple linear combination of tangibility, book leverage, and equity-to-assets, so it risks being a repackaging of known leverage/asset-composition effects unless it demonstrates incremental power over those components."
+    },
+    {
+      "generation": 4,
+      "target_name": "Replacement Overexpansion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Stripping the ABS from the archived replacement-discipline signal leaves a monotone transform of capx/dp, which is essentially the long-published capital-investment/abnormal-investment anomaly rather than a new cross-theme mechanism."
+    },
+    {
+      "generation": 4,
+      "target_name": "Workforce Cash Productivity",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It is only a one-term substitution on the archived gross-profit-per-employee signal, but the accrual-versus-cash distinction is an economically meaningful test with clean, well-covered construction, so it is worth a single run."
+    },
+    {
+      "generation": 4,
+      "target_name": "Earnings-Volatility Cash Cushion",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Swapping oancf volatility for ib volatility in the archived Cash-Buffer Fragility expression is a cosmetic numerator substitution on two highly correlated volatility measures, and the earnings-volatility return relation is itself a documented anomaly."
+    },
+    {
+      "generation": 4,
+      "target_name": "Capacity-Weighted Cash Realization",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Structurally identical to the archived Capacity-Weighted Margin Realization with only the deterioration variable replaced, and that template already delivered a negligible, insignificant FF5 alpha, so this is a cosmetic rather than diagnostic revision."
+    },
+    {
+      "generation": 4,
+      "target_name": "Permanent-Capital Coverage Burden",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The denominator (at \u2212 lct) can be near zero or negative, so the ratio flips sign and explodes exactly for the distressed firms the hypothesis targets, and the underlying construct duplicates the already-tested fixed-asset funding mismatch."
+    },
+    {
+      "generation": 4,
+      "target_name": "Acquisition Cash Realization",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The stated design intent fails the expression: IND_RANK of a variable that is zero for most firms assigns non-acquirers a non-zero mid-low percentile, so the signal is largely the (already well-known) cash-flow-change predictor scaled by an arbitrary constant rather than an acquirer-only interaction."
+    },
+    {
+      "generation": 5,
+      "target_name": "Cash-Validated Workforce Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The two components share the same denominator (emp) and both proxy labor productivity, so they are almost certainly highly correlated and the MIN \"bottleneck\" adds little independent information \u2014 it reads as a cosmetic recombination of two already-tested archive signals, and it cuts coverage to the intersection while the archive shows MIN composites consistently degraded relative to their parents."
+    },
+    {
+      "generation": 5,
+      "target_name": "Operating-Investment Gross Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Gross profit scaled by an operating-asset base is essentially the published gross-profitability / gross-profits-to-operating-assets anomaly (Novy-Marx), and its denominator duplicates the archive's \"Cumulative Investment Profit Backing,\" so it is a known-anomaly rediscovery rather than a genuine cross-theme construct."
+    },
+    {
+      "generation": 5,
+      "target_name": "Refinancing-Adjusted Cash Fragility",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Relative to archived \"Cash-Buffer Fragility\" (VOL divided by che/at) this merely swaps the cash-buffer scaler from assets to current liabilities, and the lct/che term is itself close to the archived inventory-dependent-liquidity signal, so it is a near-mechanical repackaging of two existing results whose product is likely dominated by the extreme right skew of lct/che at low-cash firms."
+    },
+    {
+      "generation": 5,
+      "target_name": "Inventory Turnover Recovery",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The distance-from-recent-peak construction is a legitimately different functional form from the archived linear turnover trend and its positive sign is internally consistent, but if TS_MAX includes the current observation the signal has a large mass point at exactly 1.0, which will produce a bloated, undifferentiated long leg and should be checked in the coverage/portfolio diagnostics."
+    },
+    {
+      "generation": 5,
+      "target_name": "Dual-Validated Capital Payoff",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Diagnostically motivated and the capx+dp denominator is a real stability improvement, but the sales-payoff parent had a Fama-MacBeth slope of the wrong sign, so intersecting it with the cash version risks inheriting that sign conflict rather than resolving it, and MIN composites have repeatedly weakened evidence in this archive."
+    },
+    {
+      "generation": 5,
+      "target_name": "Debt-Share-Funded Capacity Growth",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is the best-motivated proposal in the batch: it diagnoses the parent signal's slope/alpha conflict as trade-credit contamination and substitutes a genuinely different construct (change in the interest-bearing share of current liabilities) whose signed z-score correctly orients deleveraging builders into the opposite tail, consistent with the stated negative expected sign."
+    },
+    {
+      "generation": 6,
+      "target_name": "Inventory Turnover Breakout",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical re-parameterization of the archived \"Inventory Turnover Recovery\" (lagging TS_MAX by one period) and shares the same inventory-turnover-improvement content as \"Inventory Turnover Decay\" reversed, so it offers a cosmetic rather than substantive change of mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Slow-Inventory Short-Debt Mismatch",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The maturity-mismatch interaction between inventory holding period and short-term debt share is a genuinely new pairing in this archive and its two positively-signed rank components multiply consistently with the stated negative expected sign, though each leg individually overlaps well-known inventory-growth and debt-maturity effects so incremental information may be modest."
+    },
+    {
+      "generation": 6,
+      "target_name": "Earnings-Conversion-Weighted Labor Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Swapping oancf for ib in the conversion leg of the archived \"Cash-Conversion-Weighted Labor Productivity\" is a single-input substitution, and since gross-profit-per-employee times earnings-to-gross-profit largely telescopes toward income per employee, the signal is close to both a cosmetic variant and a repackaged profitability-per-worker measure."
+    },
+    {
+      "generation": 6,
+      "target_name": "Equity-Eroding Capacity Growth",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the third instance of the identical MUL(IND_RANK(GROWTH(ppent,1)), IND_ZSCORE(funding-change)) template already tested with \u0394lct and \u0394(dlc/lct), and the \u0394ceq/lagged-at leg is close to a signed net-equity-issuance/leverage-growth measure, so it is an incremental template permutation rather than a new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cash-Weighted Sales Capital Payoff",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Replacing MIN with a signed z-score multiplier and changing the cash-flow scaler is a functional-form tweak on the archive's best-performing \"Dual-Validated Capital Payoff\" rather than a new economic channel, and the product form also introduces non-monotonic middle-ranking for firms with low sales payoff and sharply negative cash z-scores."
+    },
+    {
+      "generation": 6,
+      "target_name": "Low-Buffer Cash-Flow Instability",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The revision is motivated by a concrete diagnosed flaw in the archived Cash-Buffer Fragility ratio (explosive low-cash denominators) and substitutes a within-firm buffer-position measure that is economically distinct from the cross-sectional level, though the 3-period TS_RANK yields a very coarse conditioning variable that may dilute the effect."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash-Productive Replacement Discipline",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The composite is a coherent attempt to give the strong-slope/no-alpha replacement-discipline term an economic quality filter, but because the multiplied rank of fixed-capital cash surplus already carries essentially all the alpha in the archive, the test risks simply reproducing that component with added noise rather than isolating a genuine interaction."
+    },
+    {
+      "generation": 7,
+      "target_name": "Downside-Margin Labor Exposure",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Over a 3-period window TS_MIN of gross margin is nearly collinear with the margin level itself, so the expression mostly computes labor intensity times low gross profitability \u2014 a restatement of the gross-profitability anomaly rather than the claimed \"downside operating leverage,\" since the floor is never normalized against the firm's own average margin."
+    },
+    {
+      "generation": 7,
+      "target_name": "Short-Debt Inventory-Mix Instability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic recombination of two archived signals \u2014 it is the archived Slow-Inventory Short-Debt Mismatch with invt/cogs swapped for the archived Inventory-Mix Instability term \u2014 and the multiplicative form offers no new mechanism beyond the two already-tested components."
+    },
+    {
+      "generation": 7,
+      "target_name": "Workforce Gross-Profit Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "A 3-period rolling minimum of gross profit per employee is highly correlated with its current level, making this a near-rediscovery of the archived Workforce Gross-Profit Productivity signal (fmb 3.17, ls_talpha 3.93) with the winsorization dropped, which if anything degrades robustness."
+    },
+    {
+      "generation": 7,
+      "target_name": "Fixed-Asset Long-Debt Alignment",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Maturity-matching of asset life to debt maturity is an economically grounded mechanism not yet represented in the archive, and the rank-distance construction sensibly avoids imposing a standalone sign on either tangibility or leverage, though the interpretation of alignment-distance signals remains diffuse and both legs are slow-moving characteristics."
+    },
+    {
+      "generation": 7,
+      "target_name": "Operating-Cash-Funded Capital Commitment",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Deleting `che` from the numerator of the archived Internally Funded Capital Commitment is precisely the kind of cosmetic single-term variant the objective warns against, and the resulting oancf/(capx+dp) ratio also overlaps heavily with the archived Fixed-Capital Cash Surplus and with well-known cash-flow-to-investment measures."
+    },
+    {
+      "generation": 8,
+      "target_name": "Risk-Adjusted Workforce Productivity",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical linear blend of two already-archived signals (Workforce Gross-Profit Productivity minus Labor-Weighted Margin Drawdown) with no new economic mechanism, and the subtraction of a rank-level from a product-of-ranks (mean ~0.25) is an arbitrary, unstandardized weighting whose result will largely track the first archived term."
+    },
+    {
+      "generation": 8,
+      "target_name": "Inventory-Build Margin Drawdown",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the archived Inventory Margin Divergence (inventory growth \u00d7 margin deterioration, which already delivered a weak ls_talpha of -1.55) with the deterioration proxy cosmetically swapped from a 3-period trend to a 3-period drawdown, and the drawdown leg is directly recycled from Labor-Weighted Margin Drawdown."
+    },
+    {
+      "generation": 8,
+      "target_name": "Working-Capital Funding Coverage",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the third rotation of the same archived template \u2014 numerator (che+oancf) over a rotating denominator (already tested against che+lt and capx+dp) \u2014 so it is a denominator swap rather than a new mechanism, and it additionally risks near-zero-denominator instability for low-inventory, low-short-debt firms."
+    },
+    {
+      "generation": 8,
+      "target_name": "Capex Acceleration Cash-Flow Divergence",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The acceleration (second-difference) framing of investment is genuinely absent from the archive and the conditioning on a deteriorating cash-return trend is economically coherent with the stated negative sign, though it sits close to the published abnormal-capital-investment anomaly and the rank-product form means the low end is populated by decelerating-capex/improving-cash firms rather than a clean opposite pole."
+    },
+    {
+      "generation": 8,
+      "target_name": "Persistent Fixed-Capital Cash Efficiency",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The mean-to-volatility transform of the archived Fixed-Capital Cash Surplus is a substantive reranking rather than pure smoothing and is sign-consistent, but it overlaps with the documented earnings/cash-flow-volatility anomaly and needs a check that small-denominator (near-zero VOL) firms are not driving the tails despite the winsorization."
+    },
+    {
+      "generation": 8,
+      "target_name": "Short-Debt Unproductive-Capital Burden",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Pairing realized fixed-capital cash productivity with short-maturity funding reliance is a new leg combination in this archive and the sign logic is internally consistent, but it is close to a generic low-profitability \u00d7 leverage/distress interaction and the dlc/lct leg has already been used twice, so the incremental information beyond the profitability leg alone should be verified."
+    },
+    {
+      "generation": 9,
+      "target_name": "Stress-Adjusted Workforce Gross Profit",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression is internally coherent and algebraically reduces to revenue-per-employee scaled by margin net of its recent drawdown, which is a genuine integration rather than a rank product, though it remains a fairly close refinement of the archived Workforce Gross-Profit Productivity signal and inherits its correlation with known labor-productivity/gross-profitability effects."
+    },
+    {
+      "generation": 9,
+      "target_name": "Payroll Rollover Burden",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical re-pairing of two components already tested in the archive (IND_RANK(emp/sale) from Margin-Risk Labor Rigidity and IND_RANK(dlc/lct) from Slow-Inventory Short-Debt Mismatch), with no new economic content beyond swapping the partner variable."
+    },
+    {
+      "generation": 9,
+      "target_name": "Conservative Inventory Gross Return",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A defensible mean-minus-volatility stabilization of the archived Inventory Gross Return that avoids the near-zero-denominator problem, though because the volatility term scales with the level of GP/invt the rank ordering may end up close to the smoothed mean, making the incremental information modest."
+    },
+    {
+      "generation": 9,
+      "target_name": "Working-Capital Gross Coverage",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Gross profit over a partial-asset denominator is largely a rescaling of the well-known gross-profitability anomaly (Novy-Marx) and is highly correlated with the already-archived GP/invt signal, with the invt+lct denominator being an arbitrary rather than economically motivated normalization."
+    },
+    {
+      "generation": 9,
+      "target_name": "Volatility-Conditioned Net-Cash Deficit",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Signs and construction are internally consistent, but VOL(oancf/at,3) as a conditioner has already failed repeatedly in the archive (Cash-Buffer Fragility, Low-Buffer Cash-Flow Instability, Uncertainty-Defying Fixed Investment), so this is a formulaic rank product of two archived pieces rather than a substantive diagnosis of the cushion signal's fmb/alpha disagreement."
+    },
+    {
+      "generation": 9,
+      "target_name": "Debt-Adjusted Fixed-Capital Cash Return",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Adding dlc to the denominator of the archived Fixed-Capital Cash Surplus is a cosmetic scaling tweak that will barely change cross-sectional ranks since gross PP&E typically dominates short-term debt."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:invest_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Capex Sales Yield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(delta(sale,1),lag(capx,1)),1)",
+        "variables": [
+          "capx",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Margin Divergence",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(growth(invt,1)),ind_rank(neg(trend(ratio(sub(sale,cogs),sale),3))))",
+        "variables": [
+          "cogs",
+          "invt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Distress-Financed Equity Issuance",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sstk,at)),indicator(neg(ma(ratio(oancf,at),3)),0))",
+        "variables": [
+          "at",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Labor-Intensity Expansion",
+      "metadata": {
+        "normalized_expression": "winsor(growth(ratio(emp,sale),1),1)",
+        "variables": [
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Validated Asset Expansion",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(delta(oancf,1),lag(at,1)),1),indicator(growth(at,1),0))",
+        "variables": [
+          "at",
+          "oancf"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Financed Capex Gap",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(delta(add(dltt,dlc),1),capx),1),indicator(sub(capx,oancf),0))",
+        "variables": [
+          "capx",
+          "dlc",
+          "dltt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Cash-Margin Squeeze",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(growth(invt,1)),ind_rank(neg(trend(ratio(oancf,sale),3))))",
+        "variables": [
+          "invt",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Deteriorating Equity Finance",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sstk,at)),ind_rank(neg(trend(ratio(ib,sale),3))))",
+        "variables": [
+          "at",
+          "ib",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Prior-Capex Cash Payoff",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(delta(oancf,1),ma(lag(capx,1),3)))",
+        "variables": [
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Mismatched Capacity Build",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(growth(ppent,1)),ind_rank(ratio(lct,act)))",
+        "variables": [
+          "act",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Productivity-Validated Hiring",
+      "metadata": {
+        "normalized_expression": "mul(winsor(delta(ratio(oancf,emp),1),1),indicator(growth(emp,1),0))",
+        "variables": [
+          "emp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncertainty-Defying Fixed Investment",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(growth(ppegt,1)),ind_rank(vol(ratio(oancf,at),3)))",
+        "variables": [
+          "at",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capex Cash-Flow Alignment",
+      "metadata": {
+        "normalized_expression": "neg(abs(sub(ind_rank(ratio(delta(capx,1),lag(at,1))),ind_rank(ratio(delta(oancf,1),lag(at,1))))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Post-Build Margin Erosion",
+      "metadata": {
+        "normalized_expression": "mul(winsor(neg(delta(ratio(sub(sale,cogs),sale),1)),1),indicator(lag(growth(ppent,1),1),0))",
+        "variables": [
+          "cogs",
+          "ppent",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capital Replacement Discipline",
+      "metadata": {
+        "normalized_expression": "neg(abs(ratio(sub(capx,dp),add(capx,dp))))",
+        "variables": [
+          "capx",
+          "dp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory-Dependent Liquidity",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(sub(lct,sub(act,invt)),at))",
+        "variables": [
+          "act",
+          "at",
+          "invt",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Buffer Fragility",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(vol(ratio(oancf,at),3),ma(ratio(che,at),3)))",
+        "variables": [
+          "at",
+          "che",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Workforce Gross-Profit Alignment",
+      "metadata": {
+        "normalized_expression": "neg(abs(sub(ind_rank(growth(emp,1)),ind_rank(ratio(delta(sub(sale,cogs),1),lag(at,1))))))",
+        "variables": [
+          "at",
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fragility-Weighted Replacement Imbalance",
+      "metadata": {
+        "normalized_expression": "neg(mul(abs(ratio(sub(capx,dp),add(capx,dp))),ind_rank(neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Downside Cash-Buffer Shock",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(neg(delta(oancf,1)),lag(che,1)),1))",
+        "variables": [
+          "che",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capacity-Weighted Margin Realization",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(lag(growth(ppent,1),1)),ind_zscore(winsor(neg(delta(ratio(sub(sale,cogs),sale),1)),1)))",
+        "variables": [
+          "cogs",
+          "ppent",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Asset Funding Mismatch",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(sub(ppent,add(dltt,ceq)),at))",
+        "variables": [
+          "at",
+          "ceq",
+          "dltt",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Turnover Decay",
+      "metadata": {
+        "normalized_expression": "ind_rank(trend(ratio(invt,cogs),3))",
+        "variables": [
+          "cogs",
+          "invt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Workforce Gross-Profit Productivity",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(sale,cogs),emp),1))",
+        "variables": [
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Workforce Cash Productivity",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(oancf,emp),1))",
+        "variables": [
+          "emp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capital-Commitment Gross Yield",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(sale,cogs),lag(add(capx,dp),1)),1))",
+        "variables": [
+          "capx",
+          "cogs",
+          "dp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Coverage Improvement",
+      "metadata": {
+        "normalized_expression": "ind_rank(trend(ratio(che,lct),3))",
+        "variables": [
+          "che",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cumulative Investment Profit Backing",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(re,add(ppent,invt)),1))",
+        "variables": [
+          "invt",
+          "ppent",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Term-Funded Capacity Growth",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(growth(ppent,1)),ind_zscore(winsor(ratio(delta(lct,1),lag(at,1)),1)))",
+        "variables": [
+          "at",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Cash Productivity",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(oancf,invt),1))",
+        "variables": [
+          "invt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Turnover Recovery",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(ratio(cogs,invt),ts_max(ratio(cogs,invt),3)))",
+        "variables": [
+          "cogs",
+          "invt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual-Validated Capital Payoff",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(winsor(ratio(delta(sale,1),lag(add(capx,dp),1)),1)),ind_rank(winsor(ratio(delta(oancf,1),lag(add(capx,dp),1)),1)))",
+        "variables": [
+          "capx",
+          "dp",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Share-Funded Capacity Growth",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(growth(ppent,1)),ind_zscore(winsor(delta(ratio(dlc,lct),1),1)))",
+        "variables": [
+          "dlc",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Conversion-Weighted Labor Productivity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(sale,cogs),emp),1)),ind_zscore(winsor(ratio(oancf,sub(sale,cogs)),1)))",
+        "variables": [
+          "cogs",
+          "emp",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Risk Capital Inflexibility",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ppent,add(ppent,che))),ind_rank(vol(ratio(sub(sale,cogs),sale),3)))",
+        "variables": [
+          "che",
+          "cogs",
+          "ppent",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internal-Liquidity Liability Coverage",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(add(che,oancf),add(che,lt)),1))",
+        "variables": [
+          "che",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Slow-Inventory Short-Debt Mismatch",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(dlc,lct)),ind_rank(ratio(invt,cogs)))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "invt",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Low-Buffer Cash-Flow Instability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(vol(ratio(oancf,at),3)),ind_rank(neg(ts_rank(ratio(che,at),3))))",
+        "variables": [
+          "at",
+          "che",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory-Mix Instability",
+      "metadata": {
+        "normalized_expression": "ind_rank(vol(ratio(invt,act),3))",
+        "variables": [
+          "act",
+          "invt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Risk Labor Rigidity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(emp,sale)),ind_rank(vol(ratio(sub(sale,cogs),sale),3)))",
+        "variables": [
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Capital Cash Surplus",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(oancf,dp),ppegt),1))",
+        "variables": [
+          "dp",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internally Funded Capital Commitment",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(add(che,oancf),add(capx,dp)),1))",
+        "variables": [
+          "capx",
+          "che",
+          "dp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Productive Replacement Discipline",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(abs(ratio(sub(capx,dp),add(capx,dp))))),ind_rank(winsor(ratio(sub(oancf,dp),ppegt),1)))",
+        "variables": [
+          "capx",
+          "dp",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Asset Long-Debt Alignment",
+      "metadata": {
+        "normalized_expression": "neg(abs(sub(ind_rank(ratio(ppent,at)),ind_rank(ratio(dltt,lt)))))",
+        "variables": [
+          "at",
+          "dltt",
+          "lt",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Labor-Weighted Margin Drawdown",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(emp,sale)),ind_rank(sub(ma(ratio(sub(sale,cogs),sale),3),ts_min(ratio(sub(sale,cogs),sale),3))))",
+        "variables": [
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Short-Debt Alignment",
+      "metadata": {
+        "normalized_expression": "neg(abs(sub(ind_rank(ratio(invt,act)),ind_rank(ratio(dlc,lct)))))",
+        "variables": [
+          "act",
+          "dlc",
+          "invt",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Workforce Demand-Volatility Alignment",
+      "metadata": {
+        "normalized_expression": "neg(abs(sub(ind_rank(vol(growth(emp,1),3)),ind_rank(vol(growth(sale,1),3)))))",
+        "variables": [
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Excess Capex Volatility",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(vol(ratio(capx,at),3)),ind_rank(vol(ratio(sale,at),3)))",
+        "variables": [
+          "at",
+          "capx",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capex Acceleration Cash-Flow Divergence",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(accel(ratio(capx,at))),ind_rank(neg(trend(ratio(oancf,at),3))))",
+        "variables": [
+          "at",
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Fixed-Capital Cash Efficiency",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(ma(ratio(sub(oancf,dp),ppegt),3),vol(ratio(sub(oancf,dp),ppegt),3)),1))",
+        "variables": [
+          "dp",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Short-Debt Unproductive-Capital Burden",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(neg(ratio(sub(oancf,dp),ppegt)),1)),ind_rank(ratio(dlc,lct)))",
+        "variables": [
+          "dlc",
+          "dp",
+          "lct",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Labor-Intensity Acceleration with Margin Decay",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(accel(ratio(emp,sale))),ind_rank(neg(trend(ratio(sub(sale,cogs),sale),3))))",
+        "variables": [
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Gross Return",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(sale,cogs),invt),1))",
+        "variables": [
+          "cogs",
+          "invt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net-Cash Current-Liability Cushion",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(che,dlc),lct),1))",
+        "variables": [
+          "che",
+          "dlc",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Stress-Adjusted Workforce Gross Profit",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(sub(sale,cogs),mul(sale,sub(ma(ratio(sub(sale,cogs),sale),3),ts_min(ratio(sub(sale,cogs),sale),3)))),emp),1))",
+        "variables": [
+          "cogs",
+          "emp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conservative Inventory Gross Return",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(sub(ma(ratio(sub(sale,cogs),invt),3),vol(ratio(sub(sale,cogs),invt),3)),1))",
+        "variables": [
+          "cogs",
+          "invt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Externally Supported Cash Stock",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(che,re),at),1))",
+        "variables": [
+          "at",
+          "che",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Inventory Net-Working-Capital Support",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(act,lct),invt),1))",
+        "variables": [
+          "act",
+          "invt",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Uncovered Short-Debt Deficit",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(dlc,che),lct),1),indicator(sub(dlc,che),0))",
+        "variables": [
+          "che",
+          "dlc",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Tangible-Equity Intangible Support",
+      "metadata": {
+        "normalized_expression": "ind_rank(winsor(ratio(sub(ceq,intan),at),1))",
+        "variables": [
+          "at",
+          "ceq",
+          "intan"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2797 @@
+{
+  "pair": "profit_intangible",
+  "evaluated": [
+    {
+      "name": "Profitable Intangible Intensity",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale)))",
+      "hypothesis": "Firms that spend heavily on knowledge and brand building AND still post high operating profitability have an understated asset base, so their measured profitability is a conservative floor on true economic returns and is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The product of two industry ranks fires only in the joint corner (high intangible intensity and high profitability), which is exactly the \"already-validated\" innovator; either theme alone leaves the rank product near the middle. Industry ranking removes sector-level R&D norms so the interaction reflects within-industry differentiation rather than a tech-sector dummy.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.1718549327760956,
+      "ls_alpha": 0.023359030028860188,
+      "ls_talpha": 2.4441296956561884,
+      "ls_sharpe": 0.1063854406640707,
+      "coverage": 0.14323206227036378,
+      "error": null
+    },
+    {
+      "name": "Return On Intangible Capital",
+      "expression": "RATIO(MA(oiadp, 3), ADD(TS_SUM(COALESCE(xrd, 0), 5), COALESCE(intan, 0)))",
+      "hypothesis": "Operating income per dollar of accumulated intangible capital (five-year R&D stock plus booked purchased intangibles) measures how productively the invisible asset base converts into profit; high values indicate hidden productive capital the market does not capitalize.",
+      "expected_sign": "positive",
+      "reasoning": "This is a genuine ratio interaction\u2014profitability numerator over an intangible-capital denominator\u2014so it cannot be replicated by either theme alone; scaling by intangible rather than book capital directly targets the mismeasurement channel. Smoothing income over three years suppresses transitory earnings noise, and the denominator is defined only for firms with some intangible base, restricting the signal to the population the story is about.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.9032843525892998,
+      "ls_alpha": -0.02768228668555973,
+      "ls_talpha": -2.5850674397739533,
+      "ls_sharpe": 0.008475587993196976,
+      "coverage": 0.10628900874753493,
+      "error": null
+    },
+    {
+      "name": "Hidden Capital ROA Wedge",
+      "expression": "WINSOR(SUB(RATIO(ib, SUB(at, COALESCE(intan, 0))), RATIO(ib, at)), 1)",
+      "hypothesis": "The gap between ROA computed on tangible-only assets and reported ROA equals profitability multiplied by the intangible share of the balance sheet; it measures the dollar magnitude by which conservative accounting understates the earning power per unit of hard capital.",
+      "expected_sign": "positive",
+      "reasoning": "Algebraically the wedge is ib*intan/(at*(at-intan)), a naturally multiplicative profitability-by-intangible-share term rather than a bolted-on composite, and it is zero for pure tangible firms and negative for intangible-heavy loss makers\u2014precisely the desired asymmetry. Winsorizing controls the explosive tail when intangibles approach total assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.528708634439132,
+      "ls_alpha": -0.015201152090315796,
+      "ls_talpha": -0.8633807941906061,
+      "ls_sharpe": -0.09858117460107702,
+      "coverage": 0.1459637580308182,
+      "error": null
+    },
+    {
+      "name": "Cash Profitability Of Intangible Firms",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), INDICATOR(IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), 0.7))",
+      "hypothesis": "Cash-based profitability should be far more informative for intangible-intensive firms, whose accrual earnings are mechanically depressed by expensed R&D and advertising, so the profitability premium is concentrated in the top intangible-intensity tercile.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the profitability signal on only where the accounting distortion exists, making the effect explicitly conditional rather than additive; operating cash flow bypasses the expensing bias that makes reported earnings understate intangible-rich firms. Firms outside the intangible group receive zero and sit in the middle of the sort, so the long-short spread is driven by the interaction, not by a generic profitability tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.3116310253910366,
+      "ls_alpha": 0.003069593810932768,
+      "ls_talpha": 0.20117412746186056,
+      "ls_sharpe": 0.19459133271529108,
+      "coverage": 0.09104216556177136,
+      "error": null
+    },
+    {
+      "name": "Intangible Weighted Cash Profitability",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Cash profitability is most informative where expensed intangible spending distorts accrual earnings, so the profitability premium should scale continuously with intangible intensity rather than switching on at a threshold.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the gen-0 conditional signal, whose strong FMB slope (3.31) collapsed to zero FF5 alpha because the hard indicator assigned zero to ~70% of firms and produced a degenerate, tie-heavy portfolio sort. Replacing the 0/1 gate with a continuous IND_RANK weight preserves the same interaction (signed profitability amplified by intangible intensity) while restoring a monotone, well-populated cross-sectional spread.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.7272852055330135,
+      "ls_alpha": 0.03675712198485542,
+      "ls_talpha": 2.964437380847823,
+      "ls_sharpe": 0.4662240078115596,
+      "coverage": 0.09104216556177136,
+      "error": null
+    },
+    {
+      "name": "Profit On Capitalized Intangible Stock",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), TS_SUM(COALESCE(xrd, 0), 5)), at)))",
+      "hypothesis": "The relevant measure of hidden capital is the accumulated intangible stock (five-year R&D plus booked purchased intangibles), not the single-year spending flow, so profitable firms with the largest hidden stock relative to reported assets are the most understated.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner used a one-year flow intensity scaled by sales; this isolates the design choice of stock-versus-flow intangible measurement while holding the rank-product structure and profitability leg fixed. Coalescing missing R&D and intangibles to zero should also widen coverage beyond the 0.143 of the winner, testing whether the effect survives outside the intangible-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.1526357064107966,
+      "ls_alpha": 0.005791298984902685,
+      "ls_talpha": 0.5650081630879288,
+      "ls_sharpe": 0.09924874551808535,
+      "coverage": 0.14555189871118937,
+      "error": null
+    },
+    {
+      "name": "Organization Capital Productivity",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_RANK(RATIO(ADD(xsga, COALESCE(xad, 0)), at)))",
+      "hypothesis": "SG&A and advertising build organization and brand capital that is fully expensed; firms that sustain high operating profitability despite heavy organization-capital spending own productive assets that never appear on the balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the intangible channel from R&D (science capital) to selling/brand/organizational capital, a distinct and much broader population than R&D reporters, so it tests whether the mechanism is about innovation specifically or about expensed investment generally. Using oibdp (pre-depreciation operating income) keeps the profitability leg from being mechanically depressed by the same expensing.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.488184357333858,
+      "ls_alpha": 0.034371261616602394,
+      "ls_talpha": 2.8183249895588536,
+      "ls_sharpe": 0.28233393371697363,
+      "coverage": 0.12402093770404655,
+      "error": null
+    },
+    {
+      "name": "Intangible Spend With Rising Profit Path",
+      "expression": "MUL(IND_RANK(MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 3)), IND_RANK(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "Intangible investment is \"validated\" only when the profitability path is improving; sustained heavy spenders whose operating return on assets is trending upward have demonstrated that the invisible capital is productive.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the level of profitability with its five-year slope, testing whether the market underreacts to the slow accumulation of evidence that intangible outlays are paying off rather than to the static profitability level. It also repairs the gen-0 proposal rejected for lacking a profitability-exclusive variable by using oiadp and xad explicitly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.580000792349527,
+      "ls_alpha": 0.016009964896940215,
+      "ls_talpha": 1.7941934017795327,
+      "ls_sharpe": 0.05869057223881008,
+      "coverage": 0.12165884737586334,
+      "error": null
+    },
+    {
+      "name": "Fully Capitalized Intangible ROA",
+      "expression": "RATIO(ADD(oiadp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Restating the income statement and balance sheet as if intangible outlays were investment yields the firm's true return on total (tangible plus intangible) capital; the market prices reported ROA and therefore misprices firms whose adjusted return is much higher.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike gen-0's Return On Intangible Capital, which divided profit only by intangible capital and mechanically ranked low-intangible firms highest (producing a perverse negative alpha), this scales adjusted profit by the full adjusted capital base so the intangible term enters both numerator and denominator consistently. It tests whether the interaction is better expressed as an accounting restatement than as a rank product.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.2181169364474953,
+      "ls_alpha": 0.034269410022819635,
+      "ls_talpha": 3.06344549942533,
+      "ls_sharpe": 0.29571282653724057,
+      "coverage": 0.14557047184848942,
+      "error": null
+    },
+    {
+      "name": "Unvalidated Intangible Buildup",
+      "expression": "MUL(IND_RANK(RATIO(DELTA(COALESCE(intan, 0), 1), at)), IND_RANK(NEG(DELTA(RATIO(oiadp, 1), 1))))",
+      "hypothesis": "Firms that rapidly add booked intangible assets (largely acquisition-driven) while their operating profitability deteriorates are capitalizing value that is not being validated by earnings, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This is the mirror image of the core story: acquired intangibles overstate rather than understate the productive asset base, so the same profitability-by-intangible interaction should reverse sign when the intangible leg is a purchased-asset increase and the profitability leg is deteriorating. Testing the short side explicitly tells us whether the archive's positive alphas come from the long leg (productive innovators) or the short leg (unvalidated intangible growth).",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.1902941654966437,
+      "ls_alpha": -0.013654046265594124,
+      "ls_talpha": -1.6891096686261435,
+      "ls_sharpe": -0.057323821653268076,
+      "coverage": 0.1325756731524062,
+      "error": null
+    },
+    {
+      "name": "Cash Profit On Total Expensed Intangibles",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "The full expensed-investment budget (R&D, advertising and SG&A-based organization capital) measures the size of the off-balance-sheet asset base, and firms generating strong operating cash flow despite that spending own validated hidden capital.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the two best archive mechanisms \u2014 the cash-profitability leg from Intangible Weighted Cash Profitability (Sharpe 0.47, alpha 3.7%) and the SG&A intangible leg from Organization Capital Productivity (FMB 4.49) \u2014 and tests whether their information is complementary rather than redundant. Cash flow is the right profitability leg because it is immune to the expensing distortion that the intangible leg measures.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.874253310065482,
+      "ls_alpha": 0.04424980093861871,
+      "ls_talpha": 2.9133274545717702,
+      "ls_sharpe": 0.4030989484553908,
+      "coverage": 0.07651456711795263,
+      "error": null
+    },
+    {
+      "name": "Funds From Operations Intangible Weight",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(ib, dp), at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "Income before extraordinary items plus depreciation is a cash-earnings proxy available for a much longer history than oancf, so if the intangible-weighted cash-profitability effect is real it should survive with this proxy over a broader sample.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best Sharpe signal has only 0.091 coverage because statement-of-cash-flows data begins in 1988, which is a genuine robustness risk rather than an edge. Holding the intangible leg identical to Signal 1 isolates the single design choice of cash-flow measurement versus coverage, telling us whether the alpha is a cash-flow effect or a sample-period artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.309694656132506,
+      "ls_alpha": 0.028812562008361256,
+      "ls_talpha": 2.546217940055794,
+      "ls_sharpe": 0.228940509090007,
+      "coverage": 0.12109995071927569,
+      "error": null
+    },
+    {
+      "name": "Cash Return On Capitalized Intangible Base",
+      "expression": "RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))",
+      "hypothesis": "Restating both the numerator and the capital base as if intangible outlays were investment gives the firm's true cash return on total capital; the market anchors on reported ratios and underprices firms whose restated return is high.",
+      "expected_sign": "positive",
+      "reasoning": "Fully Capitalized Intangible ROA already delivered a 3.4% alpha with t = 3.06 and the best coverage in the archive, so the restatement structure is worth refining rather than abandoning; this version uses cash flow (which dominated accrual income in the rank-product family) and adds advertising to the capital stock. It keeps the intangible term in both numerator and denominator, avoiding the perverse low-intangible tilt that sank Return On Intangible Capital.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.46370434618194,
+      "ls_alpha": 0.05296925869379959,
+      "ls_talpha": 3.6813760215398865,
+      "ls_sharpe": 0.5927563925169426,
+      "coverage": 0.09110067094426655,
+      "error": null
+    },
+    {
+      "name": "Reliable Profit Intangible Intensity",
+      "expression": "MUL(IND_RANK(RATIO(MA(RATIO(oiadp, at), 5), VOL(RATIO(oiadp, at), 5))), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Investors discount intangible-intensive firms because their earnings are perceived as fragile and hard to verify; firms whose profitability is not just high but stable relative to its own volatility have demonstrably durable intangible capital and are the most underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment channel absent from the archive: the profitability leg is a signal-to-noise ratio (five-year mean divided by five-year volatility) rather than a level or a trend, directly addressing the verification friction that generates the mispricing. The trend-based validation attempt in gen 1 was only marginal (t-alpha 1.79), suggesting reliability rather than direction of change is the missing state variable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.4483171361800946,
+      "ls_alpha": 0.018706668233644475,
+      "ls_talpha": 2.021673744370812,
+      "ls_sharpe": 0.05970778256967873,
+      "coverage": 0.13308798218959955,
+      "error": null
+    },
+    {
+      "name": "Organic Minus Acquired Intangible Weight",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(SUB(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), DELTA(COALESCE(gdwl, 0), 1)), at)))",
+      "hypothesis": "Internally generated intangibles are understated by accounting while acquired goodwill is if anything overstated, so cash profitability should be rewarded where intangible capital is organic and penalized where the intangible base is being bought.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 short-side test (Unvalidated Intangible Buildup) had the right sign but was weak (t-alpha -1.69), probably because it discarded the profitability level; embedding goodwill growth as a negative weight on cash profitability puts both effects on one continuous scale. It tests whether the archive alpha can be strengthened by separating the direction of the accounting bias rather than treating all intangibles alike.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.705666798784481,
+      "ls_alpha": 0.036387646228682506,
+      "ls_talpha": 2.7635432516316136,
+      "ls_sharpe": 0.38245788719109247,
+      "coverage": 0.08418068113060052,
+      "error": null
+    },
+    {
+      "name": "Brand Capital Margin Power",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(xad, 0), COALESCE(intan, 0)), at)))",
+      "hypothesis": "Brand and purchased-intangible capital shows up economically as durable pricing power, so the correct validation of that capital is a persistently high operating margin rather than a high return on reported assets.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal scales profits by assets, which mechanically favors asset-light firms and may confound the intangible tilt; margin scaling changes the economic content of the profitability leg to pricing power and provides an independent read on whether the asset-light channel is doing the work. Pairing it with the advertising-plus-booked-intangible leg also isolates the brand channel from the R&D channel that dominates the current archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.3142024377385344,
+      "ls_alpha": -0.02901223811552194,
+      "ls_talpha": -3.0391853947211,
+      "ls_sharpe": -0.12032742359234215,
+      "coverage": 0.1433415921883861,
+      "error": null
+    },
+    {
+      "name": "FFO Return On Capitalized Intangible Base",
+      "expression": "RATIO(ADD(ADD(ib, dp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))",
+      "hypothesis": "The restated return on total (tangible plus intangible) capital is the core mispricing signal, and it should survive when cash earnings are proxied by income plus depreciation, which is available decades earlier than the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "Cash Return On Capitalized Intangible Base is the archive leader (alpha 5.3%, t-alpha 3.68, Sharpe 0.59) but its 0.091 coverage is entirely a post-1988 oancf artifact, so the key open question is whether the result is a sample-period effect. Holding the capitalization structure fixed and swapping only the earnings measure isolates that single design choice and should lift coverage toward 0.15.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.6625459291741134,
+      "ls_alpha": 0.029043187284220416,
+      "ls_talpha": 2.929367974863636,
+      "ls_sharpe": 0.24578797601862035,
+      "coverage": 0.14135251236764576,
+      "error": null
+    },
+    {
+      "name": "Full Intangible Investment Restatement",
+      "expression": "RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))",
+      "hypothesis": "If SG&A-based organization capital is a genuine productive asset, then capitalizing it alongside R&D and advertising in both the earnings numerator and the capital base yields the most complete restatement of true return on capital.",
+      "expected_sign": "positive",
+      "reasoning": "Adding SG&A to the intangible leg raised alpha from 3.7% to 4.4% in the rank-product family, and the restatement family produces the highest alphas overall, so this tests whether the two improvements compound inside the accounting-restatement structure. It also directly tests the limit of the capitalization logic: if treating all SG&A as investment over-inflates the base for retail and service firms, the ratio should degrade relative to Signal 1's narrower base.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.795818428828731,
+      "ls_alpha": 0.07394678666176735,
+      "ls_talpha": 4.02724562150104,
+      "ls_sharpe": 0.5574211762909366,
+      "coverage": 0.07656822284793058,
+      "error": null
+    },
+    {
+      "name": "Return On Intangible Adjusted Equity",
+      "expression": "WINSOR(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(ceq, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 1)",
+      "hypothesis": "Understated book equity, not understated total assets, is what distorts the valuation anchor investors use; restating shareholders' equity for accumulated intangible investment therefore gives a sharper measure of hidden earning power per dollar of true owners' capital.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive ratio scales by total assets, which mixes in leverage and working capital; equity scaling changes the economic denominator to the claim investors actually price and makes the hidden-capital adjustment proportionally much larger. Winsorizing controls the tail from small or negative reported equity, which is exactly the population where intangible understatement is most severe.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.5975067287085287,
+      "ls_alpha": 0.04185467030051544,
+      "ls_talpha": 3.4454356540733584,
+      "ls_sharpe": 0.5452207853199944,
+      "coverage": 0.09108993979827096,
+      "error": null
+    },
+    {
+      "name": "Committed Intangible Spend Cash Profit",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(TS_MIN(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 5)))",
+      "hypothesis": "A five-year minimum intangible-spending intensity identifies firms with a committed, non-discretionary innovation and brand budget; profitability earned on top of a persistent commitment reflects durable hidden capital, whereas profitability alongside one-off spending spikes does not.",
+      "expected_sign": "positive",
+      "reasoning": "The current-year intensity weight cannot distinguish a committed innovator from a firm with a transitory spending burst, and committed spenders are the ones whose intangible stock is genuinely large relative to reported assets. Using the window minimum rather than a moving average makes the persistence requirement strict, testing whether commitment is the state variable that sharpens the conditional weight.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.671187048100151,
+      "ls_alpha": 0.03930459319456363,
+      "ls_talpha": 3.109929330465689,
+      "ls_sharpe": 0.4735086708573911,
+      "coverage": 0.09104216556177136,
+      "error": null
+    },
+    {
+      "name": "Adjusted Turnover Times Cash Margin",
+      "expression": "MUL(IND_RANK(RATIO(sale, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(oancf, sale)))",
+      "hypothesis": "Validated intangible productivity requires both that the hidden capital base spins fast into revenue and that each revenue dollar converts into cash; firms strong on both dimensions have demonstrably productive intangible assets rather than merely favorable scaling.",
+      "expected_sign": "positive",
+      "reasoning": "This decomposes the winning restated return into a DuPont pair and requires joint strength via a rank product, which is a different portfolio object than their arithmetic product because it screens out firms achieving a high ratio through one extreme component. It also diagnoses which leg drives the archive leader, informing later consolidation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.3117306554546224,
+      "ls_alpha": 0.0068775751504488,
+      "ls_talpha": 0.7021434530885908,
+      "ls_sharpe": 0.2587503830645979,
+      "coverage": 0.08895970413405017,
+      "error": null
+    },
+    {
+      "name": "Organic Versus Goodwill Weighted Profit",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), SUB(IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), IND_RANK(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Profitability signals hidden value when the intangible base is internally built and expensed, but signals overstatement when the intangible base was purchased and booked as goodwill, so the profitability weight should be positive in the first case and negative in the second.",
+      "expected_sign": "positive",
+      "reasoning": "Brand Capital Margin Power produced a reliable wrong-signed alpha (-2.9%, t -3.04) using booked intangibles, which is informative evidence that capitalized intangibles carry the opposite mispricing to expensed ones; this signal converts that finding into a signed weight instead of discarding it. The rank difference keeps the weight continuous and centered, avoiding the degenerate portfolios that ruined the gen-0 indicator version.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.2203580582830518,
+      "ls_alpha": 0.031870672490557764,
+      "ls_talpha": 2.4631091935455154,
+      "ls_sharpe": 0.31560526810432216,
+      "coverage": 0.09104216556177136,
+      "error": null
+    },
+    {
+      "name": "Smoothed Full Intangible Restatement",
+      "expression": "MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)",
+      "hypothesis": "True return on total intangible-inclusive capital is a slow-moving economic state; averaging it over three years removes transitory cash-flow timing noise and should sharpen the statistical reliability of the mispricing signal without changing its economic content.",
+      "expected_sign": "positive",
+      "reasoning": "Full Intangible Investment Restatement is the archive leader (alpha 7.4%, t-alpha 4.03) but a single-year oancf denominator-free ratio is noisy, and noise in the sorting variable attenuates both the FMB slope and portfolio purity. This isolates the timing choice only, so a higher t-alpha would confirm the mechanism is a persistent state rather than a one-year cash-flow spike.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.716616446229913,
+      "ls_alpha": 0.0757997909953897,
+      "ls_talpha": 4.254583496045811,
+      "ls_sharpe": 0.5227911284145401,
+      "coverage": 0.07765083038433186,
+      "error": null
+    },
+    {
+      "name": "Within Industry Intangible Restated Return",
+      "expression": "IND_ZSCORE(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))))",
+      "hypothesis": "If accounting understatement of intangible capital is mispriced firm by firm, the restated return should predict returns among peers with similar intangible technology, not merely across intangible-heavy versus tangible-heavy industries.",
+      "expected_sign": "positive",
+      "reasoning": "The raw restatement ratio mechanically favors asset-light industries, so part of the 7.4% alpha could be a static sector tilt that FF5 does not absorb; industry z-scoring strips that tilt and tests the firm-level mispricing claim directly. This is the key robustness diagnostic before consolidating on the restatement family in later generations.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.017398093158566,
+      "ls_alpha": 0.05581406866870024,
+      "ls_talpha": 3.456132376257164,
+      "ls_sharpe": 0.5073199426299394,
+      "coverage": 0.07651203910759789,
+      "error": null
+    },
+    {
+      "name": "Self Funded Innovator",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Firms that fund a large intangible investment program entirely out of operating cash flow and still retain surplus cash have proven both the productivity and the financial sustainability of that program, and face no external-financing discount.",
+      "expected_sign": "positive",
+      "reasoning": "All archive profitability legs measure cash flow gross of intangible spending, which conflates high-margin firms with firms whose investment is barely covered; subtracting the intangible outlay creates a genuine \"free cash flow after hidden investment\" state that is a different economic object. Weighting it by intangible intensity keeps the interaction focused on firms where the hidden investment program is large enough to matter.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.389817398177773,
+      "ls_alpha": 0.017281491432785644,
+      "ls_talpha": 1.515100694112919,
+      "ls_sharpe": 0.25021253898738144,
+      "coverage": 0.09104216556177136,
+      "error": null
+    },
+    {
+      "name": "Intangible Payoff Inflection",
+      "expression": "MUL(TS_RANK(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 5), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "The moment intangible investment begins to pay off is when a firm's own restated return on total capital reaches the top of its five-year history; among intangible-intensive firms this inflection is hard for investors to observe because reported earnings remain depressed by expensing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cross-sectional level of restated profitability with the firm's position in its own history, a genuinely different information channel that identifies validation events rather than persistently high-quality firms. The gen-1 five-year TREND version was weak (t-alpha 1.79), which suggests a slope estimate is too noisy while a within-firm rank of the restated level is more robust.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.2553746510740968,
+      "ls_alpha": 0.03714972341359527,
+      "ls_talpha": 2.727932500727789,
+      "ls_sharpe": 0.3961429763003581,
+      "coverage": 0.08141178750349794,
+      "error": null
+    },
+    {
+      "name": "Capitalized Intangibles Accrual Trap",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "Firms whose balance sheets are loaded with purchased intangibles and whose reported earnings exceed operating cash flow are capitalizing and accruing value that has not been validated by cash, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Booked intangibles have delivered reliably wrong-signed alphas in this archive (Brand Capital Margin Power, t -3.04; Profit On Capitalized Intangible Stock, near zero), which points to an overstatement channel that deserves an explicit short-side test rather than repeated repair attempts. Pairing the booked-intangible leg with accruals rather than a profitability level identifies exactly the firms whose intangible-related earnings lack cash backing.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.6919785860398054,
+      "ls_alpha": -0.05073525502225083,
+      "ls_talpha": -3.539327858977415,
+      "ls_sharpe": -0.31792646666993274,
+      "coverage": 0.09109267417681792,
+      "error": null
+    },
+    {
+      "name": "Hidden Capital Share Times Restated Return",
+      "expression": "MUL(IND_RANK(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "Mispricing should be strongest where a high restated return coexists with a large hidden share of true capital, because that is where reported financial statements diverge most from economic reality.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two independently successful archive families \u2014 the restated-return ratio (alpha 5.3%, t 3.68) and the intangible-intensity conditioning weight (Sharpe 0.47) \u2014 but expresses the weight as the intangible fraction of total adjusted capital, which is the exact magnitude of the accounting distortion. If the product beats both parents, the mispricing is genuinely interactive rather than driven by the profitability restatement alone.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.993880514557,
+      "ls_alpha": 0.03947606370158324,
+      "ls_talpha": 3.1026945244422985,
+      "ls_sharpe": 0.3925490159596757,
+      "coverage": 0.09109948432716128,
+      "error": null
+    },
+    {
+      "name": "Restated Return Minus Accrual Trap",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Expensed intangible capital is understated and purchased intangible capital backed by accruals is overstated, so combining a high restated cash return on total capital with the absence of capitalized-intangible accrual inflation should produce the widest mispricing spread.",
+      "expected_sign": "positive",
+      "reasoning": "The archive contains two independently reliable and economically opposite effects \u2014 the smoothed restatement (alpha 7.6%, t 4.26) and the capitalized-intangible accrual trap (alpha -5.1%, t -3.54) \u2014 and they exploit different accounting distortions, so their ranks should be additively informative. Combining via SUMRANK keeps both legs on a common monotone scale, which also repairs the accrual trap's weak FMB slope by embedding it in a continuously ranked composite.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8029319508508843,
+      "ls_alpha": 0.08163500335418662,
+      "ls_talpha": 4.780398881743529,
+      "ls_sharpe": 0.575562892430918,
+      "coverage": 0.07754945200990238,
+      "error": null
+    },
+    {
+      "name": "Hidden Share Weighted Restated Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "Mispricing of validated intangible productivity should scale with the fraction of true capital that accounting leaves off the balance sheet, so the restated return deserves a larger weight the larger the hidden share.",
+      "expected_sign": "positive",
+      "reasoning": "Hidden Capital Share Times Restated Return produced the archive's strongest FMB slope (4.99) but only a 3.9% alpha because the rank product compressed the profitability tails, while the smoothed restatement produced the strongest alpha but a weaker slope; this version keeps the restated return in signed z-score units so tail magnitude survives, and uses the hidden share only as a positive weight. It directly targets the observed disagreement between cross-sectional and portfolio evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.4951918611936215,
+      "ls_alpha": 0.03646099408245154,
+      "ls_talpha": 2.548491940021257,
+      "ls_sharpe": 0.26181966722658956,
+      "coverage": 0.07757638305898745,
+      "error": null
+    },
+    {
+      "name": "EBITDA Intangible Restatement Long History",
+      "expression": "RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))",
+      "hypothesis": "If the restatement effect reflects genuine economic returns on hidden capital, it should appear with a pre-depreciation accrual earnings measure available across the full sample, not only in the post-1988 cash-flow-statement era.",
+      "expected_sign": "positive",
+      "reasoning": "The best signals in the archive all rely on oancf and are stuck near 0.078-0.091 coverage, which is a real fragility; the earlier FFO test (alpha 2.9%) was ambiguous because ib+dp is net of interest, taxes and special items, whereas ebitda is much closer to the operating cash concept. Coalescing SG&A to zero also removes the reporting screen that costs the leader coverage, so this jointly tests the sample-period and reporting-screen dependencies.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.4437213021204696,
+      "ls_alpha": 0.04297737498786516,
+      "ls_talpha": 4.079160253091754,
+      "ls_sharpe": 0.3379344967429105,
+      "coverage": 0.14484642904607542,
+      "error": null
+    },
+    {
+      "name": "Cash Backed Profit Of Intangible Firms",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(oancf, ib), at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "For intangible-intensive firms, reported earnings are depressed by expensing while operating cash flow is not, so a large positive cash-flow-minus-earnings gap is the cleanest evidence that hidden investment is real and productive.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel worked strongly on the short side with booked intangibles, so its long-side mirror \u2014 negative accruals paired with heavy expensed intangible spending \u2014 is a distinct earnings-quality mechanism rather than another profitability level. It isolates the wedge between cash and accounting income that the expensing convention itself creates.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.5746556530679158,
+      "ls_alpha": 0.019298495564605597,
+      "ls_talpha": 1.409755388954939,
+      "ls_sharpe": 0.18560597631239745,
+      "coverage": 0.07651456711795263,
+      "error": null
+    },
+    {
+      "name": "Booked Intangible Accrual Overstatement",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "The overstatement channel is strongest where capitalized purchased intangibles dominate the true capital base and earnings run ahead of cash, so firms high on both dimensions should underperform monotonically.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-4 accrual trap had a reliable -5.1% alpha but an essentially flat FMB slope (-0.69), which indicates a non-monotone signal driven by extreme portfolios: the rank-product structure squashed the signed accrual information. Replacing the accrual rank with a signed industry z-score and expressing the intangible leg as a share of intangible-adjusted capital should restore cross-sectional monotonicity while preserving the portfolio effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.3956524324806545,
+      "ls_alpha": -0.014761152062133489,
+      "ls_talpha": -1.2856148285620965,
+      "ls_sharpe": -0.2313325968519579,
+      "coverage": 0.09103968914346469,
+      "error": null
+    },
+    {
+      "name": "Reinvestment At High Hidden Return",
+      "expression": "MUL(IND_RANK(GROWTH(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), 1)), IND_ZSCORE(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "Firms expanding their intangible capital stock while already earning a high restated return on total capital are reinvesting at high marginal returns, compounding off-balance-sheet value that reported statements never show.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has established the level of restated return but never tested whether the hidden capital base is growing, which is the difference between a static high-quality firm and one actively compounding unrecognized assets. Conditioning growth on an already-validated return also avoids the failure mode of gen-1's unvalidated intangible buildup, where spending growth without demonstrated productivity predicted poorly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.547064645928978,
+      "ls_alpha": 0.040790534182759686,
+      "ls_talpha": 3.207605689585258,
+      "ls_sharpe": 0.3160557729304615,
+      "coverage": 0.0570434702214826,
+      "error": null
+    },
+    {
+      "name": "Long History Restatement Versus Booked Intangibles",
+      "expression": "SUMRANK(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Going long high restated returns on intangible-inclusive capital and short high-margin firms whose intangible base is purchased and capitalized exploits both directions of the accounting distortion, and neither leg requires cash-flow-statement data.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 two-leg construction delivered the archive's best alpha (8.2%, t 4.78) but sits on 0.078 coverage because both legs use oancf; here the long leg uses the ebitda restatement (alpha 4.3%, t 4.08 at 0.145 coverage) and the short leg uses the margin-times-booked-intangibles combination that produced a reliable -2.9% alpha. This tests whether the two-sided mispricing survives on triple the sample, which is the main robustness gap in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.1697431523080066,
+      "ls_alpha": 0.05951874514741375,
+      "ls_talpha": 5.465431675601516,
+      "ls_sharpe": 0.3540790244381033,
+      "coverage": 0.14300815278180196,
+      "error": null
+    },
+    {
+      "name": "Industry Neutral Two Sided Intangible Signal",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The two-sided intangible mispricing operates within industries, so neutralizing the long leg by industry should preserve the portfolio alpha while sharpening the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 combination has the best alpha but its FMB t-stat fell to 2.80, whereas the industry-neutral restated return alone had the higher slope (4.02); the likely cause is that the raw restatement ratio carries a static asset-light sector tilt that adds cross-sectional noise. This isolates that single design choice on the leading two-leg structure, addressing the disagreement between the cross-sectional and portfolio evidence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.130326625094522,
+      "ls_alpha": 0.05880376917660345,
+      "ls_talpha": 3.7748762228565504,
+      "ls_sharpe": 0.460480798346885,
+      "coverage": 0.07749450647872302,
+      "error": null
+    },
+    {
+      "name": "Profitability Misclassification Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))), IND_RANK(RATIO(ib, at)))",
+      "hypothesis": "Investors and standard profitability screens rank firms on reported earnings, so the mispricing is concentrated in firms whose restated intangible-inclusive return is far better than their reported return \u2014 the firms conventional accounting misclassifies as mediocre.",
+      "expected_sign": "positive",
+      "reasoning": "This is the sharpest expression of the economic story: the signal is the rank distance between economic and reported profitability, so it is zero for firms with no intangible distortion and large exactly where expensing hides productive capital. It also tests incremental content beyond the reported-profitability factor that FF5's RMW leg already spans, which the level-based restatement ratios cannot do.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.1663320350732902,
+      "ls_alpha": 0.03864057197531301,
+      "ls_talpha": 2.968331115610846,
+      "ls_sharpe": 0.2761249530746349,
+      "coverage": 0.0765625993146925,
+      "error": null
+    },
+    {
+      "name": "Smoothed EBITDA Intangible Restatement",
+      "expression": "MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)",
+      "hypothesis": "The restated return on intangible-inclusive capital is a persistent economic state, so a three-year average of the long-history version should be a cleaner sort variable than its single-year value while retaining full sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing raised both alpha and t-alpha in the oancf restatement family (7.4% to 7.6%, t 4.03 to 4.26), and the ebitda variant is the only strong archive signal with coverage near 0.145, so combining the two established improvements is the natural consolidation step. If alpha rises toward the oancf versions, the earlier coverage penalty was pure measurement noise rather than a sample-period effect.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.478008600711839,
+      "ls_alpha": 0.04388339116774005,
+      "ls_talpha": 4.017756561072631,
+      "ls_sharpe": 0.3087800297935334,
+      "coverage": 0.14526035204762647,
+      "error": null
+    },
+    {
+      "name": "Validated Intangible Reinvestment Refined",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 3)), IND_RANK(GROWTH(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 1)))",
+      "hypothesis": "Firms that are expanding current intangible outlays while already earning a high restated return on total capital are reinvesting at high marginal returns, and the market recognizes this compounding only slowly.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 reinvestment signal had the second-best FMB slope (4.55) but only 0.057 coverage because growth of a five-year rolling stock requires ten years of data; using growth of the current-year intangible flow preserves the economic content of expansion at far lower data cost. Smoothing the restated-return leg also stabilizes the conditioning variable that the interaction relies on.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.210761957076791,
+      "ls_alpha": 0.03635313718182147,
+      "ls_talpha": 2.8478851962245604,
+      "ls_sharpe": 0.16039022226529773,
+      "coverage": 0.05384744602852669,
+      "error": null
+    },
+    {
+      "name": "Goodwill Accrual Overstatement",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Goodwill specifically records overpayment for acquired intangibles, so goodwill-heavy firms whose reported income exceeds operating cash flow have the least validated asset base and should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The booked-intangible accrual trap produced a reliable -5.1% alpha but a flat FMB slope, and one plausible reason is that intan pools genuinely productive purchased technology together with goodwill; restricting the intangible leg to goodwill should make the short side economically cleaner and the slope more monotone. This isolates which component of capitalized intangibles carries the overstatement effect, a question the archive has repeatedly bumped into but never resolved.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.7285407417032901,
+      "ls_alpha": -0.03858052693575956,
+      "ls_talpha": -2.770146096215668,
+      "ls_sharpe": -0.36114779161334065,
+      "coverage": 0.09109267417681792,
+      "error": null
+    },
+    {
+      "name": "Signed Two Sided Intangible Composite",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Understated expensed intangible capital and overstated accrual-backed purchased intangible capital are two sides of one accounting distortion, and their combination is best expressed in comparable signed standard-deviation units so the cross-section stays monotone.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 SUMRANK combination gave the largest alpha (8.2%, t 4.78) but its FMB slope collapsed to 2.80, which is what happens when both legs are flattened to uniform ranks and the predictive content is pushed into the tails. Differencing two industry z-scores keeps the long leg's magnitude information intact while retaining the short leg's proven rank-product form, targeting simultaneous improvement in slope and alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.2221065366532127,
+      "ls_alpha": 0.059070571870628016,
+      "ls_talpha": 4.066982040800269,
+      "ls_sharpe": 0.43526281700595026,
+      "coverage": 0.07748212438718965,
+      "error": null
+    },
+    {
+      "name": "Long History Signed Two Sided Composite",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The same two-sided distortion should be identifiable without cash-flow-statement data, using pre-depreciation operating earnings for the understatement leg and high margins on a purchased intangible base for the overstatement leg.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-6 long-history two-leg signal achieved the archive's best t-alpha (5.47) at double the coverage but an almost flat FMB slope (1.17), so the ranking transform is again the suspect rather than the economics. Recasting both legs as industry z-scores and smoothing the long leg tests whether the full-sample version can carry a strong cross-sectional slope as well as a reliable alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.3968235090183894,
+      "ls_alpha": 0.04757124291823645,
+      "ls_talpha": 5.3477646933503395,
+      "ls_sharpe": 0.2732390118642512,
+      "coverage": 0.1431784581324339,
+      "error": null
+    },
+    {
+      "name": "Three Channel Intangible Productivity Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))))",
+      "hypothesis": "Validated intangible productivity has three separable ingredients \u2014 a high restated return on total capital, a large hidden share of that capital, and the absence of accrual-inflated purchased intangibles \u2014 and each contributes independent information.",
+      "expected_sign": "positive",
+      "reasoning": "The hidden-capital-share channel produced the archive's strongest FMB slope (4.99) while the accrual-trap channel produced the strongest short-side alpha, and the restated return is strong on both, so the three have been individually validated but never assembled. Nesting SUMRANK gives each channel equal, monotone weight, which is the natural test of whether the diagnostics are complementary rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.068837403357919,
+      "ls_alpha": 0.07903726717919193,
+      "ls_talpha": 4.580619403627642,
+      "ls_sharpe": 0.5907606153342332,
+      "coverage": 0.07754945200990238,
+      "error": null
+    },
+    {
+      "name": "Hidden Equity Weighted Restated Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ceq)))",
+      "hypothesis": "The mispricing is largest where accumulated intangible investment is large relative to reported book equity, because that is where the book value investors anchor on understates true owners' capital the most.",
+      "expected_sign": "positive",
+      "reasoning": "Hidden capital scaled by total assets has been the workhorse weight, but equity is the claim being priced and the intangible-adjusted equity ratio already delivered a strong standalone result (alpha 4.2%, t 3.45, Sharpe 0.55); expressing the weight relative to ceq makes the understatement of book value, not of assets, the conditioning variable. This directly links the intangible mispricing to the value channel while keeping the profitability leg in signed units for tail magnitude.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.842099588577682,
+      "ls_alpha": 0.031210051846690207,
+      "ls_talpha": 2.3683666497117377,
+      "ls_sharpe": 0.32029396493205065,
+      "coverage": 0.09112017273843162,
+      "error": null
+    },
+    {
+      "name": "Expensed Versus Capitalized Intangible Contrast",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "Firms whose intangible capital is self-built and expensed are underpriced while firms whose intangible capital arrives on the balance sheet through acquisition are overpriced, independently of accruals or margins.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong short leg in the archive has bundled booked intangibles with a second, non-monotone variable (accruals or margins), leaving unresolved whether the booked-intangible share alone carries the negative information. Pairing a continuous, monotone booked-intangible share against the long-history restated return gives a parsimonious two-channel signal whose FMB slope should be much better behaved than the rank-product versions.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.7298299772004873,
+      "ls_alpha": 0.054163504036278544,
+      "ls_talpha": 4.950024408322133,
+      "ls_sharpe": 0.28677424824555614,
+      "coverage": 0.14519627472394128,
+      "error": null
+    },
+    {
+      "name": "Recognition Shortfall Weighted Return",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ADD(dp, COALESCE(intan, 0)))))",
+      "hypothesis": "The degree of accounting mismeasurement is best measured by comparing accumulated intangible outlays with what the books actually recognize \u2014 depreciation and amortization charges plus capitalized intangible assets \u2014 and profitability is most underpriced where this recognition shortfall is largest.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a new conditioning variable built from the accounting recognition machinery itself rather than from asset or equity scaling, so it distinguishes firms whose spending never enters the books from firms that already amortize a comparable amount. If it outperforms the asset-share and equity-share weights, the mispricing is specifically about non-recognition rather than about being asset-light.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.735300633048725,
+      "ls_alpha": 0.041107003954418485,
+      "ls_talpha": 3.3572957097037848,
+      "ls_sharpe": 0.4303934224002157,
+      "coverage": 0.08931816568394134,
+      "error": null
+    },
+    {
+      "name": "Recognition Shortfall Three Channel",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(dp, COALESCE(intan, 0))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))))",
+      "hypothesis": "Combining a high restated return on total capital, a large gap between intangible outlays and what the books actually recognize, and the absence of accrual-inflated purchased intangibles should deliver the strongest joint cross-sectional and portfolio evidence.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel structure produced the best joint result so far (alpha 7.9%, t 4.58, FMB 3.07, Sharpe 0.59), and the recognition-shortfall weight has a stronger standalone slope (FMB 4.74) than the hidden-asset-share weight it replaces. This swaps one conditioning channel inside the proven architecture, so an improvement is attributable specifically to measuring non-recognition rather than asset lightness.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.326926495947562,
+      "ls_alpha": 0.07818043820978016,
+      "ls_talpha": 4.508476859739498,
+      "ls_sharpe": 0.596320642653637,
+      "coverage": 0.07661393340250795,
+      "error": null
+    },
+    {
+      "name": "Hidden Share Scaled Two Sided Composite",
+      "expression": "MUL(SUB(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "The two-sided accounting distortion should be priced in proportion to how much of a firm's true capital base is unrecognized, so the signed composite deserves multiplicative amplification by the hidden capital share rather than equal-weight rank addition.",
+      "expected_sign": "positive",
+      "reasoning": "The signed z-score composite delivered alpha 5.9% with FMB 3.22, while the hidden-share weight is the archive's strongest slope channel (FMB 4.99) but a weak standalone alpha generator; multiplying rather than adding tests whether the distortion magnitude genuinely scales the mispricing. This is the direct structural alternative to Signal 1 and distinguishes amplification from aggregation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.100239452645236,
+      "ls_alpha": 0.04014068399095465,
+      "ls_talpha": 2.93105462007894,
+      "ls_sharpe": 0.3286357728741557,
+      "coverage": 0.07748212438718965,
+      "error": null
+    },
+    {
+      "name": "Long History Three Channel Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))",
+      "hypothesis": "All three ingredients of validated intangible productivity can be measured without cash-flow-statement data, giving a signal with the same economics at nearly double the sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's strongest results cluster at 0.077-0.078 coverage because they need oancf, whereas the ebitda restatement and the continuous booked-intangible short leg both work at 0.145 coverage (alpha 5.4%, t 4.95). Adding the hidden-share channel, which requires no cash-flow data either, should raise the cross-sectional slope of the long-history family whose main weakness has been weak FMB t-stats.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.6931055208792087,
+      "ls_alpha": 0.05861668086805898,
+      "ls_talpha": 4.798511883301079,
+      "ls_sharpe": 0.4166842401974573,
+      "coverage": 0.14519627472394128,
+      "error": null
+    },
+    {
+      "name": "Monotone Expensed Minus Booked Contrast",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "The core mispricing is the contrast between productive expensed intangible capital and unproductive capitalized intangible capital, and both sides are monotone in returns when measured as industry-standardized continuous quantities.",
+      "expected_sign": "positive",
+      "reasoning": "Every long-history composite so far has had a strong alpha but a weak FMB slope (1.17 to 2.73), and the suspect is the non-monotone rank-product or raw-ratio legs; replacing both with industry z-scores of two economically opposite continuous quantities is the cleanest fix. It is deliberately parsimonious, so if it matches the multi-channel versions the extra machinery is unnecessary.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.7454397957992622,
+      "ls_alpha": 0.038268440108857986,
+      "ls_talpha": 3.9539628372891014,
+      "ls_sharpe": 0.12344062235379755,
+      "coverage": 0.14471590116449443,
+      "error": null
+    },
+    {
+      "name": "Marginal Product Of Intangible Spend",
+      "expression": "MUL(IND_RANK(RATIO(DELTA(oancf, 1), LAG(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 1))), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "The incremental cash flow generated per dollar of last year's intangible outlay measures the marginal, not average, productivity of intangible investment, and heavy spenders with high marginal productivity are the firms whose future hidden capital is most underestimated.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal measures average returns on an accumulated intangible stock; none tests the marginal return on the most recent investment, which is the quantity that determines whether continued spending creates value. The denominator restricts the sample to genuine intangible spenders, an economically justified restriction rather than a coverage patch, and the intensity leg keeps the interaction focused on firms where the spend is material.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.8792294939641483,
+      "ls_alpha": 0.03205276882805531,
+      "ls_talpha": 2.594555647053128,
+      "ls_sharpe": 0.3070861621805857,
+      "coverage": 0.05204301414777779,
+      "error": null
+    },
+    {
+      "name": "Restated Return Times Recognition Shortfall",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(dp, COALESCE(intan, 0)))))",
+      "hypothesis": "Profitability is most underpriced where cumulative intangible spending dwarfs the depreciation and amortization the accounts actually charge, because that is where reported statements are furthest from economic reality.",
+      "expected_sign": "positive",
+      "reasoning": "The recognition-shortfall weight applied to the narrow R&D-plus-advertising restatement gave FMB 4.74 with alpha 4.1%; pairing it with the SG&A-inclusive smoothed restatement, which carries the archive's largest single-leg alpha, tests whether the two best-performing components are complementary in multiplicative form. Comparing it against Signal 1 isolates weighting versus rank-aggregation using the same two ingredients.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.37648480529909,
+      "ls_alpha": 0.042852473260922036,
+      "ls_talpha": 2.9264786227615334,
+      "ls_sharpe": 0.31230568174341433,
+      "coverage": 0.07659190359798816,
+      "error": null
+    },
+    {
+      "name": "Industry Neutral Long History Three Channel",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), SUMRANK(IND_ZSCORE(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))), NEG(IND_ZSCORE(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Validated intangible productivity is a within-industry phenomenon: relative to peers using the same technology, firms with higher restated returns, larger unrecognized capital shares and smaller purchased intangible bases are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history three-channel composite is the archive's best all-around signal (FMB 3.69, alpha 5.9%, t-alpha 4.80 at 0.145 coverage), and industry neutralization previously improved the restatement's cross-sectional slope (3.72 to 4.02) by stripping the asset-light sector tilt. Applying it to all three channels before ranking should raise both the slope and the Sharpe, whose 0.417 is the composite's weakest diagnostic.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.685316529500352,
+      "ls_alpha": 0.04858836489889726,
+      "ls_talpha": 4.679871743671344,
+      "ls_sharpe": 0.31817444257663213,
+      "coverage": 0.14467390523737708,
+      "error": null
+    },
+    {
+      "name": "Cash Preferred Intangible Composite",
+      "expression": "COALESCE(SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))), SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The cash-flow-based restatement is the economically superior measure of intangible productivity, but where cash-flow data are unavailable the earnings-based restatement captures the same economics, so a preference-ordered fallback should dominate either version alone.",
+      "expected_sign": "positive",
+      "reasoning": "The two three-channel composites are the archive's best alpha (7.9%, Sharpe 0.59 at 0.078 coverage) and best coverage-robust signal (5.9%, t 4.80 at 0.145 coverage), and both output comparable rank-sum scales, so COALESCE is a measurement-availability fallback rather than a coverage patch. This is the natural final consolidation: it keeps the strongest measurement where it exists and triples the usable sample where it does not.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.5021538091904154,
+      "ls_alpha": 0.058797913127335906,
+      "ls_talpha": 4.791356291215316,
+      "ls_sharpe": 0.39593313760842763,
+      "coverage": 0.14526091956015508,
+      "error": null
+    },
+    {
+      "name": "Committed Spend Four Channel Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), SUMRANK(TS_MIN(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 5), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Persistent, non-discretionary intangible spending is a fourth independent mark of validated hidden capital, distinguishing committed innovators and brand builders from firms whose intangible share reflects one-off outlays.",
+      "expected_sign": "positive",
+      "reasoning": "The committed-spend floor performed well standalone (FMB 3.67, alpha 3.9%, t 3.11, Sharpe 0.47) and measures persistence rather than magnitude, so it carries information not spanned by the level, share or booked-intangible channels. Adding it to the coverage-robust composite tests whether commitment is incrementally priced without sacrificing the 0.145 coverage.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.3767935948314265,
+      "ls_alpha": 0.05235970312430635,
+      "ls_talpha": 4.0954851777285635,
+      "ls_sharpe": 0.3342747477342337,
+      "coverage": 0.14519627472394128,
+      "error": null
+    },
+    {
+      "name": "Goodwill Only Short Leg Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Only goodwill unambiguously records overpayment for acquired intangibles, whereas identifiable purchased intangibles such as patents and licensed technology may be genuinely productive, so restricting the short leg to goodwill should sharpen the overstatement channel.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has repeatedly bundled goodwill with other capitalized intangibles and never resolved which component drives the reliably negative side, and the standalone goodwill accrual test still produced a -3.9% alpha. Substituting goodwill for total booked intangibles inside the best coverage-robust structure isolates that question while keeping everything else fixed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.6444824418477935,
+      "ls_alpha": 0.054686054154494526,
+      "ls_talpha": 4.403391197959304,
+      "ls_sharpe": 0.37437575721061395,
+      "coverage": 0.14519627472394128,
+      "error": null
+    },
+    {
+      "name": "Weakest Link Intangible Quality",
+      "expression": "MIN(IND_RANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))",
+      "hypothesis": "A firm qualifies as a validated intangible producer only if it is strong on both dimensions at once \u2014 high restated return on total capital and a self-built rather than purchased intangible base \u2014 so the binding constraint, not the average, should determine the signal.",
+      "expected_sign": "positive",
+      "reasoning": "All prior combinations have been additive rank sums or products, which let one extreme channel compensate for a weak one; a minimum imposes a conjunctive requirement that should produce cleaner extreme portfolios and a monotone cross-section. It is a deliberate structural test at full coverage, and if it matches the multi-channel sums it shows the effect is driven by joint qualification rather than aggregation of separate signals.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.5276764192776637,
+      "ls_alpha": 0.04368744706377938,
+      "ls_talpha": 4.219966927480691,
+      "ls_sharpe": 0.20648200467583006,
+      "coverage": 0.14518141621410122,
+      "error": null
+    },
+    {
+      "name": "Hidden Share Weighted Long History Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "Restated profitability should be priced in proportion to how much of the firm's true capital base is unrecognized, and this scaling relationship should hold across the full sample, not only in the cash-flow-statement era.",
+      "expected_sign": "positive",
+      "reasoning": "The hidden-share weighting structure has generated the archive's strongest cross-sectional slopes (FMB 4.99, 4.50, 4.38) but every version used oancf and was confined to 0.077-0.091 coverage, leaving its robustness untested. Rebuilding it on the ebitda restatement gives the highest-slope mechanism a full-sample test and tells us whether the weak alphas of the weighted family were a small-sample artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.9030874596035403,
+      "ls_alpha": 0.024899812511820767,
+      "ls_talpha": 2.879987688375957,
+      "ls_sharpe": 0.10256358319503335,
+      "coverage": 0.14506719141970584,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Profitable Intangible Intensity",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), sale)))",
+      "hypothesis": "Firms that spend heavily on knowledge and brand building AND still post high operating profitability have an understated asset base, so their measured profitability is a conservative floor on true economic returns and is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The product of two industry ranks fires only in the joint corner (high intangible intensity and high profitability), which is exactly the \"already-validated\" innovator; either theme alone leaves the rank product near the middle. Industry ranking removes sector-level R&D norms so the interaction reflects within-industry differentiation rather than a tech-sector dummy.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Return On Intangible Capital",
+      "expression": "RATIO(MA(oiadp, 3), ADD(TS_SUM(COALESCE(xrd, 0), 5), COALESCE(intan, 0)))",
+      "hypothesis": "Operating income per dollar of accumulated intangible capital (five-year R&D stock plus booked purchased intangibles) measures how productively the invisible asset base converts into profit; high values indicate hidden productive capital the market does not capitalize.",
+      "expected_sign": "positive",
+      "reasoning": "This is a genuine ratio interaction\u2014profitability numerator over an intangible-capital denominator\u2014so it cannot be replicated by either theme alone; scaling by intangible rather than book capital directly targets the mismeasurement channel. Smoothing income over three years suppresses transitory earnings noise, and the denominator is defined only for firms with some intangible base, restricting the signal to the population the story is about.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Capital ROA Wedge",
+      "expression": "WINSOR(SUB(RATIO(ib, SUB(at, COALESCE(intan, 0))), RATIO(ib, at)), 1)",
+      "hypothesis": "The gap between ROA computed on tangible-only assets and reported ROA equals profitability multiplied by the intangible share of the balance sheet; it measures the dollar magnitude by which conservative accounting understates the earning power per unit of hard capital.",
+      "expected_sign": "positive",
+      "reasoning": "Algebraically the wedge is ib*intan/(at*(at-intan)), a naturally multiplicative profitability-by-intangible-share term rather than a bolted-on composite, and it is zero for pure tangible firms and negative for intangible-heavy loss makers\u2014precisely the desired asymmetry. Winsorizing controls the explosive tail when intangibles approach total assets.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Validated R&D Margin Trend",
+      "expression": "MUL(IND_RANK(MA(RATIO(COALESCE(xrd, 0), at), 3)), IND_RANK(TREND(RATIO(SUB(revt, cogs), at), 5)))",
+      "hypothesis": "Sustained R&D investment is only informative when it is being validated by an improving gross profitability path; heavy spenders with rising gross profit-to-assets are building real intangible capital, while heavy spenders with flat or falling margins are burning cash.",
+      "expected_sign": "positive",
+      "reasoning": "The interaction is state (R&D intensity level) times slope (five-year gross margin trend), so it identifies innovation that is demonstrably converting into unit economics rather than innovation intensity per se. Investors extrapolate current earnings and underweight the slow-moving trend evidence that intangible spending has begun to pay off.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Profitability Of Intangible Firms",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), INDICATOR(IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), 0.7))",
+      "hypothesis": "Cash-based profitability should be far more informative for intangible-intensive firms, whose accrual earnings are mechanically depressed by expensed R&D and advertising, so the profitability premium is concentrated in the top intangible-intensity tercile.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the profitability signal on only where the accounting distortion exists, making the effect explicitly conditional rather than additive; operating cash flow bypasses the expensing bias that makes reported earnings understate intangible-rich firms. Firms outside the intangible group receive zero and sit in the middle of the sort, so the long-short spread is driven by the interaction, not by a generic profitability tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Intangibles Profit Gearing",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(SUB(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "Identifiable non-goodwill intangibles (patents, technology, customer lists) represent verifiable productive assets, and when a firm with a large stock of them also earns high gross profitability, the intangibles are demonstrably productive and undervalued; goodwill, by contrast, mostly reflects overpayment and is stripped out.",
+      "expected_sign": "positive",
+      "reasoning": "Separating identifiable intangibles from goodwill isolates asset quality within the recorded intangible base, a distinction that neither a pure profitability nor a pure R&D signal can make. The rank product rewards only firms where booked intangible assets are matched by realized gross profit, filtering out acquisitive balance-sheet inflation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Weighted Cash Profitability",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Cash profitability is most informative where expensed intangible spending distorts accrual earnings, so the profitability premium should scale continuously with intangible intensity rather than switching on at a threshold.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the gen-0 conditional signal, whose strong FMB slope (3.31) collapsed to zero FF5 alpha because the hard indicator assigned zero to ~70% of firms and produced a degenerate, tie-heavy portfolio sort. Replacing the 0/1 gate with a continuous IND_RANK weight preserves the same interaction (signed profitability amplified by intangible intensity) while restoring a monotone, well-populated cross-sectional spread.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit On Capitalized Intangible Stock",
+      "expression": "MUL(IND_RANK(RATIO(oiadp, at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), TS_SUM(COALESCE(xrd, 0), 5)), at)))",
+      "hypothesis": "The relevant measure of hidden capital is the accumulated intangible stock (five-year R&D plus booked purchased intangibles), not the single-year spending flow, so profitable firms with the largest hidden stock relative to reported assets are the most understated.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner used a one-year flow intensity scaled by sales; this isolates the design choice of stock-versus-flow intangible measurement while holding the rank-product structure and profitability leg fixed. Coalescing missing R&D and intangibles to zero should also widen coverage beyond the 0.143 of the winner, testing whether the effect survives outside the intangible-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organization Capital Productivity",
+      "expression": "MUL(IND_RANK(RATIO(oibdp, at)), IND_RANK(RATIO(ADD(xsga, COALESCE(xad, 0)), at)))",
+      "hypothesis": "SG&A and advertising build organization and brand capital that is fully expensed; firms that sustain high operating profitability despite heavy organization-capital spending own productive assets that never appear on the balance sheet.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the intangible channel from R&D (science capital) to selling/brand/organizational capital, a distinct and much broader population than R&D reporters, so it tests whether the mechanism is about innovation specifically or about expensed investment generally. Using oibdp (pre-depreciation operating income) keeps the profitability leg from being mechanically depressed by the same expensing.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Spend With Rising Profit Path",
+      "expression": "MUL(IND_RANK(MA(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 3)), IND_RANK(TREND(RATIO(oiadp, at), 5)))",
+      "hypothesis": "Intangible investment is \"validated\" only when the profitability path is improving; sustained heavy spenders whose operating return on assets is trending upward have demonstrated that the invisible capital is productive.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the level of profitability with its five-year slope, testing whether the market underreacts to the slow accumulation of evidence that intangible outlays are paying off rather than to the static profitability level. It also repairs the gen-0 proposal rejected for lacking a profitability-exclusive variable by using oiadp and xad explicitly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Fully Capitalized Intangible ROA",
+      "expression": "RATIO(ADD(oiadp, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Restating the income statement and balance sheet as if intangible outlays were investment yields the firm's true return on total (tangible plus intangible) capital; the market prices reported ROA and therefore misprices firms whose adjusted return is much higher.",
+      "expected_sign": "positive",
+      "reasoning": "Unlike gen-0's Return On Intangible Capital, which divided profit only by intangible capital and mechanically ranked low-intangible firms highest (producing a perverse negative alpha), this scales adjusted profit by the full adjusted capital base so the intangible term enters both numerator and denominator consistently. It tests whether the interaction is better expressed as an accounting restatement than as a rank product.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Unvalidated Intangible Buildup",
+      "expression": "MUL(IND_RANK(RATIO(DELTA(COALESCE(intan, 0), 1), at)), IND_RANK(NEG(DELTA(RATIO(oiadp, 1), 1))))",
+      "hypothesis": "Firms that rapidly add booked intangible assets (largely acquisition-driven) while their operating profitability deteriorates are capitalizing value that is not being validated by earnings, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This is the mirror image of the core story: acquired intangibles overstate rather than understate the productive asset base, so the same profitability-by-intangible interaction should reverse sign when the intangible leg is a purchased-asset increase and the profitability leg is deteriorating. Testing the short side explicitly tells us whether the archive's positive alphas come from the long leg (productive innovators) or the short leg (unvalidated intangible growth).",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Profit On Total Expensed Intangibles",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "The full expensed-investment budget (R&D, advertising and SG&A-based organization capital) measures the size of the off-balance-sheet asset base, and firms generating strong operating cash flow despite that spending own validated hidden capital.",
+      "expected_sign": "positive",
+      "reasoning": "This merges the two best archive mechanisms \u2014 the cash-profitability leg from Intangible Weighted Cash Profitability (Sharpe 0.47, alpha 3.7%) and the SG&A intangible leg from Organization Capital Productivity (FMB 4.49) \u2014 and tests whether their information is complementary rather than redundant. Cash flow is the right profitability leg because it is immune to the expensing distortion that the intangible leg measures.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Funds From Operations Intangible Weight",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(ib, dp), at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "Income before extraordinary items plus depreciation is a cash-earnings proxy available for a much longer history than oancf, so if the intangible-weighted cash-profitability effect is real it should survive with this proxy over a broader sample.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best Sharpe signal has only 0.091 coverage because statement-of-cash-flows data begins in 1988, which is a genuine robustness risk rather than an edge. Holding the intangible leg identical to Signal 1 isolates the single design choice of cash-flow measurement versus coverage, telling us whether the alpha is a cash-flow effect or a sample-period artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Return On Capitalized Intangible Base",
+      "expression": "RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))",
+      "hypothesis": "Restating both the numerator and the capital base as if intangible outlays were investment gives the firm's true cash return on total capital; the market anchors on reported ratios and underprices firms whose restated return is high.",
+      "expected_sign": "positive",
+      "reasoning": "Fully Capitalized Intangible ROA already delivered a 3.4% alpha with t = 3.06 and the best coverage in the archive, so the restatement structure is worth refining rather than abandoning; this version uses cash flow (which dominated accrual income in the rank-product family) and adds advertising to the capital stock. It keeps the intangible term in both numerator and denominator, avoiding the perverse low-intangible tilt that sank Return On Intangible Capital.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Reliable Profit Intangible Intensity",
+      "expression": "MUL(IND_RANK(RATIO(MA(RATIO(oiadp, at), 5), VOL(RATIO(oiadp, at), 5))), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Investors discount intangible-intensive firms because their earnings are perceived as fragile and hard to verify; firms whose profitability is not just high but stable relative to its own volatility have demonstrably durable intangible capital and are the most underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment channel absent from the archive: the profitability leg is a signal-to-noise ratio (five-year mean divided by five-year volatility) rather than a level or a trend, directly addressing the verification friction that generates the mispricing. The trend-based validation attempt in gen 1 was only marginal (t-alpha 1.79), suggesting reliability rather than direction of change is the missing state variable.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Minus Acquired Intangible Weight",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(RATIO(SUB(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), DELTA(COALESCE(gdwl, 0), 1)), at)))",
+      "hypothesis": "Internally generated intangibles are understated by accounting while acquired goodwill is if anything overstated, so cash profitability should be rewarded where intangible capital is organic and penalized where the intangible base is being bought.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 short-side test (Unvalidated Intangible Buildup) had the right sign but was weak (t-alpha -1.69), probably because it discarded the profitability level; embedding goodwill growth as a negative weight on cash profitability puts both effects on one continuous scale. It tests whether the archive alpha can be strengthened by separating the direction of the accounting bias rather than treating all intangibles alike.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Brand Capital Margin Power",
+      "expression": "MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(xad, 0), COALESCE(intan, 0)), at)))",
+      "hypothesis": "Brand and purchased-intangible capital shows up economically as durable pricing power, so the correct validation of that capital is a persistently high operating margin rather than a high return on reported assets.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal scales profits by assets, which mechanically favors asset-light firms and may confound the intangible tilt; margin scaling changes the economic content of the profitability leg to pricing power and provides an independent read on whether the asset-light channel is doing the work. Pairing it with the advertising-plus-booked-intangible leg also isolates the brand channel from the R&D channel that dominates the current archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FFO Return On Capitalized Intangible Base",
+      "expression": "RATIO(ADD(ADD(ib, dp), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))",
+      "hypothesis": "The restated return on total (tangible plus intangible) capital is the core mispricing signal, and it should survive when cash earnings are proxied by income plus depreciation, which is available decades earlier than the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "Cash Return On Capitalized Intangible Base is the archive leader (alpha 5.3%, t-alpha 3.68, Sharpe 0.59) but its 0.091 coverage is entirely a post-1988 oancf artifact, so the key open question is whether the result is a sample-period effect. Holding the capitalization structure fixed and swapping only the earnings measure isolates that single design choice and should lift coverage toward 0.15.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Full Intangible Investment Restatement",
+      "expression": "RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))",
+      "hypothesis": "If SG&A-based organization capital is a genuine productive asset, then capitalizing it alongside R&D and advertising in both the earnings numerator and the capital base yields the most complete restatement of true return on capital.",
+      "expected_sign": "positive",
+      "reasoning": "Adding SG&A to the intangible leg raised alpha from 3.7% to 4.4% in the rank-product family, and the restatement family produces the highest alphas overall, so this tests whether the two improvements compound inside the accounting-restatement structure. It also directly tests the limit of the capitalization logic: if treating all SG&A as investment over-inflates the base for retail and service firms, the ratio should degrade relative to Signal 1's narrower base.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Return On Intangible Adjusted Equity",
+      "expression": "WINSOR(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(ceq, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 1)",
+      "hypothesis": "Understated book equity, not understated total assets, is what distorts the valuation anchor investors use; restating shareholders' equity for accumulated intangible investment therefore gives a sharper measure of hidden earning power per dollar of true owners' capital.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive ratio scales by total assets, which mixes in leverage and working capital; equity scaling changes the economic denominator to the claim investors actually price and makes the hidden-capital adjustment proportionally much larger. Winsorizing controls the tail from small or negative reported equity, which is exactly the population where intangible understatement is most severe.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Committed Intangible Spend Cash Profit",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), IND_RANK(TS_MIN(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 5)))",
+      "hypothesis": "A five-year minimum intangible-spending intensity identifies firms with a committed, non-discretionary innovation and brand budget; profitability earned on top of a persistent commitment reflects durable hidden capital, whereas profitability alongside one-off spending spikes does not.",
+      "expected_sign": "positive",
+      "reasoning": "The current-year intensity weight cannot distinguish a committed innovator from a firm with a transitory spending burst, and committed spenders are the ones whose intangible stock is genuinely large relative to reported assets. Using the window minimum rather than a moving average makes the persistence requirement strict, testing whether commitment is the state variable that sharpens the conditional weight.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Adjusted Turnover Times Cash Margin",
+      "expression": "MUL(IND_RANK(RATIO(sale, ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(oancf, sale)))",
+      "hypothesis": "Validated intangible productivity requires both that the hidden capital base spins fast into revenue and that each revenue dollar converts into cash; firms strong on both dimensions have demonstrably productive intangible assets rather than merely favorable scaling.",
+      "expected_sign": "positive",
+      "reasoning": "This decomposes the winning restated return into a DuPont pair and requires joint strength via a rank product, which is a different portfolio object than their arithmetic product because it screens out firms achieving a high ratio through one extreme component. It also diagnoses which leg drives the archive leader, informing later consolidation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Organic Versus Goodwill Weighted Profit",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), SUB(IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)), IND_RANK(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Profitability signals hidden value when the intangible base is internally built and expensed, but signals overstatement when the intangible base was purchased and booked as goodwill, so the profitability weight should be positive in the first case and negative in the second.",
+      "expected_sign": "positive",
+      "reasoning": "Brand Capital Margin Power produced a reliable wrong-signed alpha (-2.9%, t -3.04) using booked intangibles, which is informative evidence that capitalized intangibles carry the opposite mispricing to expensed ones; this signal converts that finding into a signed weight instead of discarding it. The rank difference keeps the weight continuous and centered, avoiding the degenerate portfolios that ruined the gen-0 indicator version.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Full Intangible Restatement",
+      "expression": "MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)",
+      "hypothesis": "True return on total intangible-inclusive capital is a slow-moving economic state; averaging it over three years removes transitory cash-flow timing noise and should sharpen the statistical reliability of the mispricing signal without changing its economic content.",
+      "expected_sign": "positive",
+      "reasoning": "Full Intangible Investment Restatement is the archive leader (alpha 7.4%, t-alpha 4.03) but a single-year oancf denominator-free ratio is noisy, and noise in the sorting variable attenuates both the FMB slope and portfolio purity. This isolates the timing choice only, so a higher t-alpha would confirm the mechanism is a persistent state rather than a one-year cash-flow spike.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Within Industry Intangible Restated Return",
+      "expression": "IND_ZSCORE(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))))",
+      "hypothesis": "If accounting understatement of intangible capital is mispriced firm by firm, the restated return should predict returns among peers with similar intangible technology, not merely across intangible-heavy versus tangible-heavy industries.",
+      "expected_sign": "positive",
+      "reasoning": "The raw restatement ratio mechanically favors asset-light industries, so part of the 7.4% alpha could be a static sector tilt that FF5 does not absorb; industry z-scoring strips that tilt and tests the firm-level mispricing claim directly. This is the key robustness diagnostic before consolidating on the restatement family in later generations.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Self Funded Innovator",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "Firms that fund a large intangible investment program entirely out of operating cash flow and still retain surplus cash have proven both the productivity and the financial sustainability of that program, and face no external-financing discount.",
+      "expected_sign": "positive",
+      "reasoning": "All archive profitability legs measure cash flow gross of intangible spending, which conflates high-margin firms with firms whose investment is barely covered; subtracting the intangible outlay creates a genuine \"free cash flow after hidden investment\" state that is a different economic object. Weighting it by intangible intensity keeps the interaction focused on firms where the hidden investment program is large enough to matter.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Intangible Payoff Inflection",
+      "expression": "MUL(TS_RANK(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 5), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "The moment intangible investment begins to pay off is when a firm's own restated return on total capital reaches the top of its five-year history; among intangible-intensive firms this inflection is hard for investors to observe because reported earnings remain depressed by expensing.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cross-sectional level of restated profitability with the firm's position in its own history, a genuinely different information channel that identifies validation events rather than persistently high-quality firms. The gen-1 five-year TREND version was weak (t-alpha 1.79), which suggests a slope estimate is too noisy while a within-firm rank of the restated level is more robust.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Capitalized Intangibles Accrual Trap",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "Firms whose balance sheets are loaded with purchased intangibles and whose reported earnings exceed operating cash flow are capitalizing and accruing value that has not been validated by cash, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Booked intangibles have delivered reliably wrong-signed alphas in this archive (Brand Capital Margin Power, t -3.04; Profit On Capitalized Intangible Stock, near zero), which points to an overstatement channel that deserves an explicit short-side test rather than repeated repair attempts. Pairing the booked-intangible leg with accruals rather than a profitability level identifies exactly the firms whose intangible-related earnings lack cash backing.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Capital Share Times Restated Return",
+      "expression": "MUL(IND_RANK(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "Mispricing should be strongest where a high restated return coexists with a large hidden share of true capital, because that is where reported financial statements diverge most from economic reality.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two independently successful archive families \u2014 the restated-return ratio (alpha 5.3%, t 3.68) and the intangible-intensity conditioning weight (Sharpe 0.47) \u2014 but expresses the weight as the intangible fraction of total adjusted capital, which is the exact magnitude of the accounting distortion. If the product beats both parents, the mispricing is genuinely interactive rather than driven by the profitability restatement alone.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Restated Return Minus Accrual Trap",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Expensed intangible capital is understated and purchased intangible capital backed by accruals is overstated, so combining a high restated cash return on total capital with the absence of capitalized-intangible accrual inflation should produce the widest mispricing spread.",
+      "expected_sign": "positive",
+      "reasoning": "The archive contains two independently reliable and economically opposite effects \u2014 the smoothed restatement (alpha 7.6%, t 4.26) and the capitalized-intangible accrual trap (alpha -5.1%, t -3.54) \u2014 and they exploit different accounting distortions, so their ranks should be additively informative. Combining via SUMRANK keeps both legs on a common monotone scale, which also repairs the accrual trap's weak FMB slope by embedding it in a continuously ranked composite.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Share Weighted Restated Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "Mispricing of validated intangible productivity should scale with the fraction of true capital that accounting leaves off the balance sheet, so the restated return deserves a larger weight the larger the hidden share.",
+      "expected_sign": "positive",
+      "reasoning": "Hidden Capital Share Times Restated Return produced the archive's strongest FMB slope (4.99) but only a 3.9% alpha because the rank product compressed the profitability tails, while the smoothed restatement produced the strongest alpha but a weaker slope; this version keeps the restated return in signed z-score units so tail magnitude survives, and uses the hidden share only as a positive weight. It directly targets the observed disagreement between cross-sectional and portfolio evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "EBITDA Intangible Restatement Long History",
+      "expression": "RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))",
+      "hypothesis": "If the restatement effect reflects genuine economic returns on hidden capital, it should appear with a pre-depreciation accrual earnings measure available across the full sample, not only in the post-1988 cash-flow-statement era.",
+      "expected_sign": "positive",
+      "reasoning": "The best signals in the archive all rely on oancf and are stuck near 0.078-0.091 coverage, which is a real fragility; the earlier FFO test (alpha 2.9%) was ambiguous because ib+dp is net of interest, taxes and special items, whereas ebitda is much closer to the operating cash concept. Coalescing SG&A to zero also removes the reporting screen that costs the leader coverage, so this jointly tests the sample-period and reporting-screen dependencies.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Backed Profit Of Intangible Firms",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(oancf, ib), at)), IND_RANK(RATIO(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), at)))",
+      "hypothesis": "For intangible-intensive firms, reported earnings are depressed by expensing while operating cash flow is not, so a large positive cash-flow-minus-earnings gap is the cleanest evidence that hidden investment is real and productive.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual channel worked strongly on the short side with booked intangibles, so its long-side mirror \u2014 negative accruals paired with heavy expensed intangible spending \u2014 is a distinct earnings-quality mechanism rather than another profitability level. It isolates the wedge between cash and accounting income that the expensing convention itself creates.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Booked Intangible Accrual Overstatement",
+      "expression": "MUL(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "The overstatement channel is strongest where capitalized purchased intangibles dominate the true capital base and earnings run ahead of cash, so firms high on both dimensions should underperform monotonically.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-4 accrual trap had a reliable -5.1% alpha but an essentially flat FMB slope (-0.69), which indicates a non-monotone signal driven by extreme portfolios: the rank-product structure squashed the signed accrual information. Replacing the accrual rank with a signed industry z-score and expressing the intangible leg as a share of intangible-adjusted capital should restore cross-sectional monotonicity while preserving the portfolio effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Reinvestment At High Hidden Return",
+      "expression": "MUL(IND_RANK(GROWTH(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), 1)), IND_ZSCORE(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))))",
+      "hypothesis": "Firms expanding their intangible capital stock while already earning a high restated return on total capital are reinvesting at high marginal returns, compounding off-balance-sheet value that reported statements never show.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has established the level of restated return but never tested whether the hidden capital base is growing, which is the difference between a static high-quality firm and one actively compounding unrecognized assets. Conditioning growth on an already-validated return also avoids the failure mode of gen-1's unvalidated intangible buildup, where spending growth without demonstrated productivity predicted poorly.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Long History Restatement Versus Booked Intangibles",
+      "expression": "SUMRANK(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Going long high restated returns on intangible-inclusive capital and short high-margin firms whose intangible base is purchased and capitalized exploits both directions of the accounting distortion, and neither leg requires cash-flow-statement data.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 two-leg construction delivered the archive's best alpha (8.2%, t 4.78) but sits on 0.078 coverage because both legs use oancf; here the long leg uses the ebitda restatement (alpha 4.3%, t 4.08 at 0.145 coverage) and the short leg uses the margin-times-booked-intangibles combination that produced a reliable -2.9% alpha. This tests whether the two-sided mispricing survives on triple the sample, which is the main robustness gap in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Neutral Two Sided Intangible Signal",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The two-sided intangible mispricing operates within industries, so neutralizing the long leg by industry should preserve the portfolio alpha while sharpening the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 combination has the best alpha but its FMB t-stat fell to 2.80, whereas the industry-neutral restated return alone had the higher slope (4.02); the likely cause is that the raw restatement ratio carries a static asset-light sector tilt that adds cross-sectional noise. This isolates that single design choice on the leading two-leg structure, addressing the disagreement between the cross-sectional and portfolio evidence.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability Misclassification Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))), IND_RANK(RATIO(ib, at)))",
+      "hypothesis": "Investors and standard profitability screens rank firms on reported earnings, so the mispricing is concentrated in firms whose restated intangible-inclusive return is far better than their reported return \u2014 the firms conventional accounting misclassifies as mediocre.",
+      "expected_sign": "positive",
+      "reasoning": "This is the sharpest expression of the economic story: the signal is the rank distance between economic and reported profitability, so it is zero for firms with no intangible distortion and large exactly where expensing hides productive capital. It also tests incremental content beyond the reported-profitability factor that FF5's RMW leg already spans, which the level-based restatement ratios cannot do.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed EBITDA Intangible Restatement",
+      "expression": "MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)",
+      "hypothesis": "The restated return on intangible-inclusive capital is a persistent economic state, so a three-year average of the long-history version should be a cleaner sort variable than its single-year value while retaining full sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing raised both alpha and t-alpha in the oancf restatement family (7.4% to 7.6%, t 4.03 to 4.26), and the ebitda variant is the only strong archive signal with coverage near 0.145, so combining the two established improvements is the natural consolidation step. If alpha rises toward the oancf versions, the earlier coverage penalty was pure measurement noise rather than a sample-period effect.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Validated Intangible Reinvestment Refined",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 3)), IND_RANK(GROWTH(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 1)))",
+      "hypothesis": "Firms that are expanding current intangible outlays while already earning a high restated return on total capital are reinvesting at high marginal returns, and the market recognizes this compounding only slowly.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 reinvestment signal had the second-best FMB slope (4.55) but only 0.057 coverage because growth of a five-year rolling stock requires ten years of data; using growth of the current-year intangible flow preserves the economic content of expansion at far lower data cost. Smoothing the restated-return leg also stabilizes the conditioning variable that the interaction relies on.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Accrual Overstatement",
+      "expression": "MUL(IND_RANK(RATIO(COALESCE(gdwl, 0), at)), IND_RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Goodwill specifically records overpayment for acquired intangibles, so goodwill-heavy firms whose reported income exceeds operating cash flow have the least validated asset base and should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The booked-intangible accrual trap produced a reliable -5.1% alpha but a flat FMB slope, and one plausible reason is that intan pools genuinely productive purchased technology together with goodwill; restricting the intangible leg to goodwill should make the short side economically cleaner and the slope more monotone. This isolates which component of capitalized intangibles carries the overstatement effect, a question the archive has repeatedly bumped into but never resolved.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Signed Two Sided Intangible Composite",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Understated expensed intangible capital and overstated accrual-backed purchased intangible capital are two sides of one accounting distortion, and their combination is best expressed in comparable signed standard-deviation units so the cross-section stays monotone.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-5 SUMRANK combination gave the largest alpha (8.2%, t 4.78) but its FMB slope collapsed to 2.80, which is what happens when both legs are flattened to uniform ranks and the predictive content is pushed into the tails. Differencing two industry z-scores keeps the long leg's magnitude information intact while retaining the short leg's proven rank-product form, targeting simultaneous improvement in slope and alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Long History Signed Two Sided Composite",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(MA(RATIO(oibdp, sale), 3)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The same two-sided distortion should be identifiable without cash-flow-statement data, using pre-depreciation operating earnings for the understatement leg and high margins on a purchased intangible base for the overstatement leg.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-6 long-history two-leg signal achieved the archive's best t-alpha (5.47) at double the coverage but an almost flat FMB slope (1.17), so the ranking transform is again the suspect rather than the economics. Recasting both legs as industry z-scores and smoothing the long leg tests whether the full-sample version can carry a strong cross-sectional slope as well as a reliable alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Three Channel Intangible Productivity Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))))",
+      "hypothesis": "Validated intangible productivity has three separable ingredients \u2014 a high restated return on total capital, a large hidden share of that capital, and the absence of accrual-inflated purchased intangibles \u2014 and each contributes independent information.",
+      "expected_sign": "positive",
+      "reasoning": "The hidden-capital-share channel produced the archive's strongest FMB slope (4.99) while the accrual-trap channel produced the strongest short-side alpha, and the restated return is strong on both, so the three have been individually validated but never assembled. Nesting SUMRANK gives each channel equal, monotone weight, which is the natural test of whether the diagnostics are complementary rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Equity Weighted Restated Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ceq)))",
+      "hypothesis": "The mispricing is largest where accumulated intangible investment is large relative to reported book equity, because that is where the book value investors anchor on understates true owners' capital the most.",
+      "expected_sign": "positive",
+      "reasoning": "Hidden capital scaled by total assets has been the workhorse weight, but equity is the claim being priced and the intangible-adjusted equity ratio already delivered a strong standalone result (alpha 4.2%, t 3.45, Sharpe 0.55); expressing the weight relative to ceq makes the understatement of book value, not of assets, the conditioning variable. This directly links the intangible mispricing to the value channel while keeping the profitability leg in signed units for tail magnitude.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensed Versus Capitalized Intangible Contrast",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "Firms whose intangible capital is self-built and expensed are underpriced while firms whose intangible capital arrives on the balance sheet through acquisition are overpriced, independently of accruals or margins.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong short leg in the archive has bundled booked intangibles with a second, non-monotone variable (accruals or margins), leaving unresolved whether the booked-intangible share alone carries the negative information. Pairing a continuous, monotone booked-intangible share against the long-history restated return gives a parsimonious two-channel signal whose FMB slope should be much better behaved than the rank-product versions.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognition Shortfall Weighted Return",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5)))), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 5), ADD(dp, COALESCE(intan, 0)))))",
+      "hypothesis": "The degree of accounting mismeasurement is best measured by comparing accumulated intangible outlays with what the books actually recognize \u2014 depreciation and amortization charges plus capitalized intangible assets \u2014 and profitability is most underpriced where this recognition shortfall is largest.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a new conditioning variable built from the accounting recognition machinery itself rather than from asset or equity scaling, so it distinguishes firms whose spending never enters the books from firms that already amortize a comparable amount. If it outperforms the asset-share and equity-share weights, the mispricing is specifically about non-recognition rather than about being asset-light.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Recognition Shortfall Three Channel",
+      "expression": "SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(dp, COALESCE(intan, 0))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))))",
+      "hypothesis": "Combining a high restated return on total capital, a large gap between intangible outlays and what the books actually recognize, and the absence of accrual-inflated purchased intangibles should deliver the strongest joint cross-sectional and portfolio evidence.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel structure produced the best joint result so far (alpha 7.9%, t 4.58, FMB 3.07, Sharpe 0.59), and the recognition-shortfall weight has a stronger standalone slope (FMB 4.74) than the hidden-asset-share weight it replaces. This swaps one conditioning channel inside the proven architecture, so an improvement is attributable specifically to measuring non-recognition rather than asset lightness.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Share Scaled Two Sided Composite",
+      "expression": "MUL(SUB(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "The two-sided accounting distortion should be priced in proportion to how much of a firm's true capital base is unrecognized, so the signed composite deserves multiplicative amplification by the hidden capital share rather than equal-weight rank addition.",
+      "expected_sign": "positive",
+      "reasoning": "The signed z-score composite delivered alpha 5.9% with FMB 3.22, while the hidden-share weight is the archive's strongest slope channel (FMB 4.99) but a weak standalone alpha generator; multiplying rather than adding tests whether the distortion magnitude genuinely scales the mispricing. This is the direct structural alternative to Signal 1 and distinguishes amplification from aggregation.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Long History Three Channel Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))",
+      "hypothesis": "All three ingredients of validated intangible productivity can be measured without cash-flow-statement data, giving a signal with the same economics at nearly double the sample coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's strongest results cluster at 0.077-0.078 coverage because they need oancf, whereas the ebitda restatement and the continuous booked-intangible short leg both work at 0.145 coverage (alpha 5.4%, t 4.95). Adding the hidden-share channel, which requires no cash-flow data either, should raise the cross-sectional slope of the long-history family whose main weakness has been weak FMB t-stats.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Monotone Expensed Minus Booked Contrast",
+      "expression": "SUB(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_ZSCORE(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))",
+      "hypothesis": "The core mispricing is the contrast between productive expensed intangible capital and unproductive capitalized intangible capital, and both sides are monotone in returns when measured as industry-standardized continuous quantities.",
+      "expected_sign": "positive",
+      "reasoning": "Every long-history composite so far has had a strong alpha but a weak FMB slope (1.17 to 2.73), and the suspect is the non-monotone rank-product or raw-ratio legs; replacing both with industry z-scores of two economically opposite continuous quantities is the cleanest fix. It is deliberately parsimonious, so if it matches the multi-channel versions the extra machinery is unnecessary.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Marginal Product Of Intangible Spend",
+      "expression": "MUL(IND_RANK(RATIO(DELTA(oancf, 1), LAG(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), 1))), IND_RANK(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at)))",
+      "hypothesis": "The incremental cash flow generated per dollar of last year's intangible outlay measures the marginal, not average, productivity of intangible investment, and heavy spenders with high marginal productivity are the firms whose future hidden capital is most underestimated.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal measures average returns on an accumulated intangible stock; none tests the marginal return on the most recent investment, which is the quantity that determines whether continued spending creates value. The denominator restricts the sample to genuine intangible spenders, an economically justified restriction rather than a coverage patch, and the intensity leg keeps the interaction focused on firms where the spend is material.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Restated Return Times Recognition Shortfall",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(dp, COALESCE(intan, 0)))))",
+      "hypothesis": "Profitability is most underpriced where cumulative intangible spending dwarfs the depreciation and amortization the accounts actually charge, because that is where reported statements are furthest from economic reality.",
+      "expected_sign": "positive",
+      "reasoning": "The recognition-shortfall weight applied to the narrow R&D-plus-advertising restatement gave FMB 4.74 with alpha 4.1%; pairing it with the SG&A-inclusive smoothed restatement, which carries the archive's largest single-leg alpha, tests whether the two best-performing components are complementary in multiplicative form. Comparing it against Signal 1 isolates weighting versus rank-aggregation using the same two ingredients.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Neutral Long History Three Channel",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), SUMRANK(IND_ZSCORE(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))), NEG(IND_ZSCORE(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Validated intangible productivity is a within-industry phenomenon: relative to peers using the same technology, firms with higher restated returns, larger unrecognized capital shares and smaller purchased intangible bases are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history three-channel composite is the archive's best all-around signal (FMB 3.69, alpha 5.9%, t-alpha 4.80 at 0.145 coverage), and industry neutralization previously improved the restatement's cross-sectional slope (3.72 to 4.02) by stripping the asset-light sector tilt. Applying it to all three channels before ranking should raise both the slope and the Sharpe, whose 0.417 is the composite's weakest diagnostic.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Preferred Intangible Composite",
+      "expression": "COALESCE(SUMRANK(MA(RATIO(ADD(oancf, ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(xsga, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))), SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "The cash-flow-based restatement is the economically superior measure of intangible productivity, but where cash-flow data are unavailable the earnings-based restatement captures the same economics, so a preference-ordered fallback should dominate either version alone.",
+      "expected_sign": "positive",
+      "reasoning": "The two three-channel composites are the archive's best alpha (7.9%, Sharpe 0.59 at 0.078 coverage) and best coverage-robust signal (5.9%, t 4.80 at 0.145 coverage), and both output comparable rank-sum scales, so COALESCE is a measurement-availability fallback rather than a coverage patch. This is the natural final consolidation: it keeps the strongest measurement where it exists and triples the usable sample where it does not.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Committed Spend Four Channel Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), SUMRANK(TS_MIN(RATIO(ADD(COALESCE(xrd, 0), COALESCE(xad, 0)), at), 5), NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at)))))",
+      "hypothesis": "Persistent, non-discretionary intangible spending is a fourth independent mark of validated hidden capital, distinguishing committed innovators and brand builders from firms whose intangible share reflects one-off outlays.",
+      "expected_sign": "positive",
+      "reasoning": "The committed-spend floor performed well standalone (FMB 3.67, alpha 3.9%, t 3.11, Sharpe 0.47) and measures persistence rather than magnitude, so it carries information not spanned by the level, share or booked-intangible channels. Adding it to the coverage-robust composite tests whether commitment is incrementally priced without sacrificing the 0.145 coverage.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill Only Short Leg Composite",
+      "expression": "SUMRANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3), SUMRANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), NEG(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Only goodwill unambiguously records overpayment for acquired intangibles, whereas identifiable purchased intangibles such as patents and licensed technology may be genuinely productive, so restricting the short leg to goodwill should sharpen the overstatement channel.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has repeatedly bundled goodwill with other capitalized intangibles and never resolved which component drives the reliably negative side, and the standalone goodwill accrual test still produced a -3.9% alpha. Substituting goodwill for total booked intangibles inside the best coverage-robust structure isolates that question while keeping everything else fixed.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest Link Intangible Quality",
+      "expression": "MIN(IND_RANK(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(NEG(RATIO(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), at))))",
+      "hypothesis": "A firm qualifies as a validated intangible producer only if it is strong on both dimensions at once \u2014 high restated return on total capital and a self-built rather than purchased intangible base \u2014 so the binding constraint, not the average, should determine the signal.",
+      "expected_sign": "positive",
+      "reasoning": "All prior combinations have been additive rank sums or products, which let one extreme channel compensate for a weak one; a minimum imposes a conjunctive requirement that should produce cleaner extreme portfolios and a monotone cross-section. It is a deliberate structural test at full coverage, and if it matches the multi-channel sums it shows the effect is driven by joint qualification rather than aggregation of separate signals.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Hidden Share Weighted Long History Return",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(ADD(ebitda, ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0)))), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5))), 3)), IND_RANK(RATIO(TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5), ADD(at, TS_SUM(ADD(COALESCE(xsga, 0), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), 5)))))",
+      "hypothesis": "Restated profitability should be priced in proportion to how much of the firm's true capital base is unrecognized, and this scaling relationship should hold across the full sample, not only in the cash-flow-statement era.",
+      "expected_sign": "positive",
+      "reasoning": "The hidden-share weighting structure has generated the archive's strongest cross-sectional slopes (FMB 4.99, 4.50, 4.38) but every version used oancf and was confined to 0.077-0.091 coverage, leaving its robustness untested. Rebuilding it on the ebitda restatement gives the highest-slope mechanism a full-sample test and tells us whether the weak alphas of the weighted family were a small-sample artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Intangible Intensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,at)),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),sale)))",
+        "variables": [
+          "at",
+          "oiadp",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Return On Intangible Capital",
+      "metadata": {
+        "normalized_expression": "ratio(ma(oiadp,3),add(ts_sum(coalesce(xrd,0),5),coalesce(intan,0)))",
+        "variables": [
+          "intan",
+          "oiadp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Capital ROA Wedge",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ratio(ib,sub(at,coalesce(intan,0))),ratio(ib,at)),1)",
+        "variables": [
+          "at",
+          "ib",
+          "intan"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Validated R&D Margin Trend",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(coalesce(xrd,0),at),3)),ind_rank(trend(ratio(sub(revt,cogs),at),5)))",
+        "variables": [
+          "at",
+          "cogs",
+          "revt",
+          "xrd"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Profitability Of Intangible Firms",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),indicator(ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)),0.7))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Organic Intangibles Profit Gearing",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(revt,cogs),at)),ind_rank(ratio(sub(coalesce(intan,0),coalesce(gdwl,0)),at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "gdwl",
+          "intan",
+          "revt"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Weighted Cash Profitability",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit On Capitalized Intangible Stock",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oiadp,at)),ind_rank(ratio(add(coalesce(intan,0),ts_sum(coalesce(xrd,0),5)),at)))",
+        "variables": [
+          "at",
+          "intan",
+          "oiadp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organization Capital Productivity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(oibdp,at)),ind_rank(ratio(add(xsga,coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "xad",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Spend With Rising Profit Path",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at),3)),ind_rank(trend(ratio(oiadp,at),5)))",
+        "variables": [
+          "at",
+          "oiadp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fully Capitalized Intangible ROA",
+      "metadata": {
+        "normalized_expression": "ratio(add(oiadp,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "at",
+          "oiadp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Unvalidated Intangible Buildup",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(delta(coalesce(intan,0),1),at)),ind_rank(neg(delta(ratio(oiadp,1),1))))",
+        "variables": [
+          "at",
+          "intan",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Profit On Total Expensed Intangibles",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),ind_rank(ratio(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funds From Operations Intangible Weight",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(add(ib,dp),at)),ind_rank(ratio(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),at)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Return On Capitalized Intangible Base",
+      "metadata": {
+        "normalized_expression": "ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Reliable Profit Intangible Intensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ma(ratio(oiadp,at),5),vol(ratio(oiadp,at),5))),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oiadp",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Minus Acquired Intangible Weight",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),ind_rank(ratio(sub(add(coalesce(xrd,0),coalesce(xad,0)),delta(coalesce(gdwl,0),1)),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Brand Capital Margin Power",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oibdp,sale),3)),ind_rank(ratio(add(coalesce(xad,0),coalesce(intan,0)),at)))",
+        "variables": [
+          "at",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FFO Return On Capitalized Intangible Base",
+      "metadata": {
+        "normalized_expression": "ratio(add(add(ib,dp),add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Full Intangible Investment Restatement",
+      "metadata": {
+        "normalized_expression": "ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Return On Intangible Adjusted Equity",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(ceq,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5))),1)",
+        "variables": [
+          "ceq",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Committed Intangible Spend Cash Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),ind_rank(ts_min(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at),5)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Adjusted Turnover Times Cash Margin",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sale,add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))),ind_rank(ratio(oancf,sale)))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organic Versus Goodwill Weighted Profit",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),sub(ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)),ind_rank(ratio(coalesce(gdwl,0),at))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Full Intangible Restatement",
+      "metadata": {
+        "normalized_expression": "ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Within Industry Intangible Restated Return",
+      "metadata": {
+        "normalized_expression": "ind_zscore(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self Funded Innovator",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(oancf,add(coalesce(xrd,0),coalesce(xad,0))),at)),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Intangible Payoff Inflection",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5))),5),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capitalized Intangibles Accrual Trap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Capital Share Times Restated Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Restated Return Minus Accrual Trap",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3),neg(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Share Weighted Restated Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_rank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5)))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBITDA Intangible Restatement Long History",
+      "metadata": {
+        "normalized_expression": "ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5)))",
+        "variables": [
+          "at",
+          "ebitda",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Backed Profit Of Intangible Firms",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(oancf,ib),at)),ind_rank(ratio(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Booked Intangible Accrual Overstatement",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Reinvestment At High Hidden Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(growth(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),1)),ind_zscore(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Long History Restatement Versus Booked Intangibles",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(mul(ind_rank(ma(ratio(oibdp,sale),3)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Neutral Two Sided Intangible Signal",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),neg(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitability Misclassification Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5)))),ind_rank(ratio(ib,at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed EBITDA Intangible Restatement",
+      "metadata": {
+        "normalized_expression": "ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)",
+        "variables": [
+          "at",
+          "ebitda",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Validated Intangible Reinvestment Refined",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5))),3)),ind_rank(growth(add(coalesce(xrd,0),coalesce(xad,0)),1)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Accrual Overstatement",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(coalesce(gdwl,0),at)),ind_rank(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Signed Two Sided Intangible Composite",
+      "metadata": {
+        "normalized_expression": "sub(ind_zscore(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_zscore(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Long History Signed Two Sided Composite",
+      "metadata": {
+        "normalized_expression": "sub(ind_zscore(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_zscore(mul(ind_rank(ma(ratio(oibdp,sale),3)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "oibdp",
+          "sale",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Three Channel Intangible Productivity Composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at))))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Equity Weighted Restated Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5))),3)),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),ceq)))",
+        "variables": [
+          "at",
+          "ceq",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensed Versus Capitalized Intangible Contrast",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3),neg(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognition Shortfall Weighted Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5)))),ind_rank(ratio(ts_sum(add(coalesce(xrd,0),coalesce(xad,0)),5),add(dp,coalesce(intan,0)))))",
+        "variables": [
+          "at",
+          "dp",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Recognition Shortfall Three Channel",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(dp,coalesce(intan,0))),neg(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at))))))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Share Scaled Two Sided Composite",
+      "metadata": {
+        "normalized_expression": "mul(sub(ind_zscore(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_zscore(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at))))),ind_rank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Long History Three Channel Composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Monotone Expensed Minus Booked Contrast",
+      "metadata": {
+        "normalized_expression": "sub(ind_zscore(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_zscore(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Marginal Product Of Intangible Spend",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(delta(oancf,1),lag(add(coalesce(xrd,0),coalesce(xad,0)),1))),ind_rank(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Restated Return Times Recognition Shortfall",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_rank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(dp,coalesce(intan,0)))))",
+        "variables": [
+          "at",
+          "dp",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Neutral Long History Three Channel",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),sumrank(ind_zscore(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5)))),neg(ind_zscore(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Preferred Intangible Composite",
+      "metadata": {
+        "normalized_expression": "coalesce(sumrank(ma(ratio(add(oancf,add(xsga,add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(xsga,add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))),sumrank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Committed Spend Four Channel Composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),sumrank(ts_min(ratio(add(coalesce(xrd,0),coalesce(xad,0)),at),5),neg(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill Only Short Leg Composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3),sumrank(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),neg(ratio(coalesce(gdwl,0),at))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest Link Intangible Quality",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_rank(neg(ratio(add(coalesce(intan,0),coalesce(gdwl,0)),at))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Hidden Share Weighted Long History Return",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(add(ebitda,add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0)))),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5))),3)),ind_rank(ratio(ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5),add(at,ts_sum(add(coalesce(xsga,0),add(coalesce(xrd,0),coalesce(xad,0))),5)))))",
+        "variables": [
+          "at",
+          "ebitda",
+          "xad",
+          "xrd",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

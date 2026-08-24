@@ -1,0 +1,2858 @@
+{
+  "pair": "value_distress",
+  "evaluated": [
+    {
+      "name": "Solvency_Scored_BookToMarket",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(RATIO(re, at), RATIO(wcap, at)))",
+      "hypothesis": "Cheapness earns a premium only when the balance sheet shows accumulated earnings capacity and working-capital slack; cheap firms with depleted retained earnings and negative working capital are distressed traps whose low price reflects default risk rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Retained-earnings-to-assets and working-capital-to-assets are the two classic Altman channels that separate solvent from failing firms, and combining their ranks with the book-to-market rank isolates cheap-and-solvent firms in the top of the composite. The composite deliberately down-weights high book-to-market firms that are cheap because of cumulative losses and liquidity strain, which is the trap side of the value spread.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.449439927403923,
+      "ls_alpha": -0.0017885108810093203,
+      "ls_talpha": -0.1525423887587088,
+      "ls_sharpe": 0.30581400973231243,
+      "coverage": 0.12053568848969026,
+      "error": null
+    },
+    {
+      "name": "Cheapness_Per_NetLiability_Burden",
+      "expression": "RATIO(RATIO(ceq, MUL(prcc_f, csho)), ADD(1, RATIO(SUB(lt, che), at)))",
+      "hypothesis": "Observed book-to-market must be deflated by the net-liability burden the equity claim sits behind; a given level of cheapness is worth far less when net liabilities are a large fraction of assets because the equity is a levered residual option on a distressed asset base.",
+      "expected_sign": "positive",
+      "reasoning": "The denominator converts raw cheapness into cheapness per unit of net (cash-adjusted) liability intensity, so unlevered cheap firms rank far above equally cheap but heavily indebted firms. Netting cash against liabilities captures the fact that liquid reserves offset nominal leverage in default risk, making this more than a leverage-only or value-only sort.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.394920460325227,
+      "ls_alpha": 0.0024598806096353364,
+      "ls_talpha": 0.2630868951054124,
+      "ls_sharpe": 0.21729744356302716,
+      "coverage": 0.14061144418937335,
+      "error": null
+    },
+    {
+      "name": "Value_With_Deleveraging_Trend",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), NEG(TREND(RATIO(SUB(lt, che), at), 5)))",
+      "hypothesis": "Cheap firms whose net-liability ratio is on a multi-year downward path are repairing their balance sheets and will see distress risk premia unwind, whereas equally cheap firms with a rising net-liability trend are on a deteriorating path toward default.",
+      "expected_sign": "positive",
+      "reasoning": "The distress state is dynamic, so the trend in net liabilities over five years distinguishes recovering value stocks from decaying ones even when current leverage levels are identical. Combining the earnings-yield rank with the negated leverage trend rank buys cheap-and-improving firms and shorts expensive-and-deteriorating ones.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.835116721684298,
+      "ls_alpha": -0.022419101866237932,
+      "ls_talpha": -2.0257747302911513,
+      "ls_sharpe": 0.02194861542019921,
+      "coverage": 0.11863348967787576,
+      "error": null
+    },
+    {
+      "name": "SalesYield_Minus_LossPersistence",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), NEG(TS_SUM(INDICATOR(NEG(pi), 0), 5)))",
+      "hypothesis": "Sales-to-price identifies operationally large but low-priced firms; whether such cheapness is a recovery option or a distress trap depends on whether losses are one-off or chronic, and chronic pretax losses signal a persistent, non-mean-reverting distress state.",
+      "expected_sign": "positive",
+      "reasoning": "Counting loss years over five fiscal years measures the persistence rather than the level of distress, which is precisely what separates temporarily depressed cyclical value from structurally impaired firms. Sales-to-price is the valuation anchor least contaminated by transitory earnings, so pairing it with loss persistence isolates the healthy-cheap corner.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.029349172112681,
+      "ls_alpha": -0.02889314208988589,
+      "ls_talpha": -2.651608825625584,
+      "ls_sharpe": 0.2336753998117718,
+      "coverage": 0.14252437414718344,
+      "error": null
+    },
+    {
+      "name": "IndustryRelative_Value_Health_Gap",
+      "expression": "SUB(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_RANK(SUMRANK(RATIO(oancf, lt), RATIO(re, at))))",
+      "hypothesis": "Within an industry, the gap between how cheap a firm looks and how healthy its fundamentals are measures unjustified-looking cheapness; a large positive gap identifies firms the market prices as distressed for reasons the market sees but accounting health metrics lag, and these lottery-like traps underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-relative ranking removes sector-level valuation and leverage norms, so the residual gap is a firm-specific mismatch between price-implied and accounting-implied distress. When price is far cheaper than fundamentals warrant, the market is typically anticipating deterioration in cash-flow coverage and retained earnings, so high-gap firms should earn lower subsequent returns while low-gap (expensive-yet-weak already, or cheap-and-confirmed-healthy) firms do better.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -1.060065396452019,
+      "ls_alpha": -0.022647717605033618,
+      "ls_talpha": -1.8812630293466597,
+      "ls_sharpe": -0.2183514846397387,
+      "coverage": 0.09058108742829737,
+      "error": null
+    },
+    {
+      "name": "WithinCheap_Coverage_Spread",
+      "expression": "MUL(INDICATOR(RANK(RATIO(ceq, MUL(prcc_f, csho))), 0.7), ZSCORE(SUMRANK(RATIO(oancf, lt), RATIO(re, at))))",
+      "hypothesis": "The value premium is entirely a within-cheap phenomenon: among the cheapest 30% of firms, those whose operating cash flow covers total liabilities and which have accumulated retained earnings earn high returns, while cheap firms with no coverage and depleted equity are lottery-like distress traps.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator restricts the active signal to high book-to-market firms and the centered z-score puts healthy-cheap firms at the top and distressed-cheap firms at the bottom, so both extreme legs load on HML in the same direction and the FF5 alpha reflects the trap-versus-value interaction rather than the value level. Expensive firms receive exactly zero and populate the middle, which is the direct structural fix for gen-0's absorbed alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.7575864068097701,
+      "ls_alpha": -0.010655447844160504,
+      "ls_talpha": -0.630557478090793,
+      "ls_sharpe": -0.18871362134881553,
+      "coverage": 0.09058144857263375,
+      "error": null
+    },
+    {
+      "name": "Value_NetLeverage_Product",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(RATIO(SUB(lt, che), at), 1)))",
+      "hypothesis": "The pure cross-product of cheapness and net-liability intensity isolates the corner where low price and high net debt reinforce each other; such firms are levered residual claims on impaired assets and underperform, whereas the mismatched corners (cheap-and-unlevered) outperform.",
+      "expected_sign": "negative",
+      "reasoning": "A product of two demeaned channels is close to orthogonal to each channel's own level, so it should survive HML and CMA loadings where the gen-0 additive composites did not. Winsorizing both inputs prevents the extreme book-to-market and negative-equity tails from hijacking the decile assignment, a likely cause of the inverted gen-0 long legs.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.17136641436974517,
+      "ls_alpha": 0.06217122647437323,
+      "ls_talpha": 4.687840952089524,
+      "ls_sharpe": 0.1459051868492545,
+      "coverage": 0.14061144418937335,
+      "error": null
+    },
+    {
+      "name": "NetCash_To_Price_Graham",
+      "expression": "RATIO(SUB(che, lt), MUL(prcc_f, csho))",
+      "hypothesis": "Valuation should be measured against liquid resources net of every claim on the firm; a firm whose cash exceeds total liabilities and still trades at a low market cap is cheap for liquidity-rich reasons, the opposite of distress-driven cheapness.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a value level plus a leverage level but a single price-scaled solvency surplus, so it mechanically ranks cheap-and-liquid firms above cheap-and-encumbered firms with identical book-to-market. The Graham net-liquidity channel is economically distinct from earnings- or book-based value and should generate FF5 alpha not spanned by HML.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.489428124553872,
+      "ls_alpha": 0.038738922895069736,
+      "ls_talpha": 3.3526183538755885,
+      "ls_sharpe": -0.07368278968394751,
+      "coverage": 0.14152926672428467,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_Cheap_And_Liquid",
+      "expression": "MIN(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(act, lct), RATIO(re, at))))",
+      "hypothesis": "Compensated cheapness requires cheapness AND survivability simultaneously, not on average; a conjunctive (minimum) rule demands both conditions, so the long leg contains only firms that are cheap on EBITDA yield and liquid and solvent.",
+      "expected_sign": "positive",
+      "reasoning": "MIN implements an economic AND rather than the additive averaging of gen-0's SUMRANK, which allowed extreme cheapness to compensate for extreme distress and thereby filled the long leg with traps. The current-ratio and retained-earnings channels capture short-term liquidity and long-run accumulated solvency, the two distinct legs of bankruptcy risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.2387440637684097,
+      "ls_alpha": -0.022158689416912715,
+      "ls_talpha": -1.7946577079393318,
+      "ls_sharpe": 0.262204962089617,
+      "coverage": 0.12021690122475395,
+      "error": null
+    },
+    {
+      "name": "WithinCheap_Balance_Deterioration",
+      "expression": "MUL(INDICATOR(RANK(RATIO(revt, MUL(prcc_f, csho))), 0.7), NEG(ZSCORE(DELTA(RATIO(lt, at), 1))))",
+      "hypothesis": "Among firms already priced cheaply on sales, the direction of balance-sheet change, not its level, tells whether the market's pessimism is being confirmed; cheap firms adding liabilities relative to assets are deteriorating toward default while cheap firms shedding liabilities are repairing.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's five-year leverage TREND had a weak slope and a negative alpha, suggesting the slow-moving trend was subsumed by the leverage level; a one-year change conditioned on cheapness isolates fresh, news-bearing distress dynamics instead. Restricting to the cheap subsample makes this a within-value comparison, which cannot be replicated by HML or CMA.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.0858016143461213,
+      "ls_alpha": 0.008589360222722692,
+      "ls_talpha": 0.6849165961121589,
+      "ls_sharpe": -0.18487031015629599,
+      "coverage": 0.1298712695853733,
+      "error": null
+    },
+    {
+      "name": "TaxValidated_Cheap_Earnings",
+      "expression": "MUL(INDICATOR(RANK(RATIO(ib, MUL(prcc_f, csho))), 0.7), ZSCORE(WINSOR(RATIO(txt, at), 1)))",
+      "hypothesis": "Cash taxes paid are a hard, non-manipulable confirmation that a cheap firm's reported earnings are real; distressed firms with loss carryforwards pay no tax, so among high earnings-yield firms the tax-paying ones are genuine value while the non-taxpayers are impaired firms whose accounting income will not persist.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel is an information source distinct from leverage, liquidity, or retained earnings, and it directly attacks the risk that a high earnings yield reflects transitory or low-quality income. Conditioning on the cheap subsample again keeps both portfolio legs inside the value region so the alpha measures earnings validation rather than the value premium itself.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.4269202564169918,
+      "ls_alpha": -0.0004356739104153936,
+      "ls_talpha": -0.033712945144354675,
+      "ls_sharpe": -0.0391791206441792,
+      "coverage": 0.1427037596982732,
+      "error": null
+    },
+    {
+      "name": "ClaimAdjusted_EBITDA_EV_Yield",
+      "expression": "WINSOR(RATIO(ebitda, ADD(SUB(MUL(prcc_f, csho), che), lt)), 1)",
+      "hypothesis": "True cheapness must be measured against every claim on operating cash flow, so operating profit relative to enterprise value (market cap plus liabilities minus cash) separates firms that are genuinely cheap from firms whose low equity price merely reflects a large liability stack sitting ahead of shareholders.",
+      "expected_sign": "positive",
+      "reasoning": "Equity-only value metrics label heavily indebted firms as cheap even when the whole enterprise is expensive, which is precisely the trap that gen-0 composites failed to exclude; embedding liabilities and cash in the denominator makes the distress structure part of the valuation ratio itself. Because HML is built from book-to-market, an EBITDA/EV yield is not mechanically spanned by it, giving a realistic chance of FF5 alpha alongside a monotone cross-sectional slope.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.8756599009228077,
+      "ls_alpha": -0.010980254573265218,
+      "ls_talpha": -0.928894703248396,
+      "ls_sharpe": 0.25880878956593356,
+      "coverage": 0.14060112577976222,
+      "error": null
+    },
+    {
+      "name": "CashYield_With_Liquidity_Buffer",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "Cheapness measured in realized operating cash flow, combined with a working-capital buffer large relative to total claims, identifies firms whose low price is not a solvency verdict; cash-flow-cheap firms with no buffer are the traps.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow-to-price is much less collinear with HML than book-to-market, so the value half of this composite should not be fully absorbed by FF5, addressing the zero-alpha problem of Solvency_Scored_BookToMarket. The distress half uses net working capital scaled by total liabilities, which measures the runway to meet claims rather than another profitability level already captured by RMW.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.688347829398756,
+      "ls_alpha": 0.049497472232717096,
+      "ls_talpha": 2.929349518262655,
+      "ls_sharpe": 0.3044635888309484,
+      "coverage": 0.07875092762502404,
+      "error": null
+    },
+    {
+      "name": "Cheap_With_Improving_Solvency",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(DELTA(RATIO(pi, at), 1), NEG(DELTA(RATIO(lt, act), 1))))",
+      "hypothesis": "Among cheap firms the market underreacts to fundamental inflections: rising pretax profitability together with a falling ratio of total liabilities to current assets signals that distress risk is receding and the discount is about to be re-rated.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of solvency and profitability are spanned by HML, RMW and CMA, which is why the gen-0 level composites had no alpha, whereas one-year changes in those quantities are largely orthogonal to factor loadings and are the documented source of Piotroski-style abnormal returns within value. Pairing book-to-market with a two-channel improvement score keeps the strong value-driven FMB slope while sourcing alpha from the change component.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.286205361027571,
+      "ls_alpha": -0.016870004156717314,
+      "ls_talpha": -1.8060757005060843,
+      "ls_sharpe": 0.16489596450707944,
+      "coverage": 0.10997335167533825,
+      "error": null
+    },
+    {
+      "name": "Unexplained_Cheapness_Gap",
+      "expression": "SUB(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(re, at), RATIO(oancf, lt))))",
+      "hypothesis": "When a firm's price-implied pessimism far exceeds what its accumulated earnings and debt-servicing capacity justify, the market is anticipating deterioration that accounting has not yet recorded, so this excess cheapness predicts low, not high, returns.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 industry-relative version of this gap was directionally correct on both the slope (-1.06) and the FF5 alpha (-2.3%, t = -1.88) but was crippled by IND_RANK coverage of only 0.091; replacing industry ranks with full cross-sectional ranks should raise coverage to ~0.14 and sharpen both statistics. It is also the one archive construction whose FMB and alpha agreed in sign, making it worth a properly powered test.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.2725906882212268,
+      "ls_alpha": -0.025753584615700154,
+      "ls_talpha": -2.400418211781299,
+      "ls_sharpe": -0.22326739891946568,
+      "coverage": 0.09058144857263375,
+      "error": null
+    },
+    {
+      "name": "Cheap_With_Stable_Earnings",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), NEG(VOL(RATIO(pi, at), 5)))",
+      "hypothesis": "Earnings instability, not the level of leverage, is the distress feature that turns a high earnings yield into a lottery ticket; cheap firms with stable pretax profitability are compensated value, cheap firms with wildly volatile profitability are option-like claims that investors overpay for.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment distress channel that no archive signal has tested, and fundamental earnings volatility is a core input to reduced-form default models yet is not a spanned FF5 characteristic. Because the volatility component is nearly uncorrelated with book-to-market, it can add alpha where solvency-level channels were absorbed, while the earnings-yield component supplies the cross-sectional slope.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.6418159878701055,
+      "ls_alpha": -0.01766968928727087,
+      "ls_talpha": -1.4075868015291848,
+      "ls_sharpe": 0.050870730624990514,
+      "coverage": 0.13062791856215852,
+      "error": null
+    },
+    {
+      "name": "Payout_Validated_Cheapness",
+      "expression": "SUMRANK(RATIO(dvc, MUL(prcc_f, csho)), RATIO(SUB(oancf, dvc), lt))",
+      "hypothesis": "A cash dividend actually paid while liabilities remain serviceable is the most credible signal that a low valuation is not a distress verdict; cheap firms whose cash flow after dividends cannot cover their claims are the firms whose payout is about to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield is a valuation metric with a hard cash constraint, so it is far less contaminated by accounting distortions than book or accrual earnings, and it is structurally different from every value proxy tried so far. The second channel makes the interaction explicit by asking whether the payout is sustainable relative to total claims, which distinguishes a healthy high-yield firm from a firm liquidating itself into distress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.4510670372340382,
+      "ls_alpha": 0.006030098120867279,
+      "ls_talpha": 0.4654128591585363,
+      "ls_sharpe": 0.13190085116248657,
+      "coverage": 0.09064026350741729,
+      "error": null
+    },
+    {
+      "name": "EbitdaYield_Liability_Runway",
+      "expression": "SUMRANK(RATIO(ebitda, MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "Cheapness in operating-profit terms is compensated only when net working capital provides a runway large relative to all outstanding claims; the same yield with no runway is a firm being priced for liquidation.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the exact economic structure of the only archive signal with an aligned slope, alpha and Sharpe, but replaces the coverage-limiting oancf with ebitda, which is reported for a much longer and broader panel, so we learn whether the +4.9% alpha survives a near-doubling of coverage. Normalizing the buffer by total liabilities rather than assets is retained deliberately, since that is what makes the distress channel a solvency-runway measure rather than another asset-scaled profitability level already priced by RMW.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.727436449993115,
+      "ls_alpha": 0.02767056076700581,
+      "ls_talpha": 2.427027596479698,
+      "ls_sharpe": 0.3551262843290879,
+      "coverage": 0.12122526780400304,
+      "error": null
+    },
+    {
+      "name": "CashYield_Runway_Extended",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "The relevant valuation input is cash actually generated by operations relative to price, and when the cash-flow statement is unavailable operating profit is the economically correct fallback measure of the same quantity, so the healthy-cheap versus trap-cheap distinction should hold on the extended sample.",
+      "expected_sign": "positive",
+      "reasoning": "The COALESCE is economically justified rather than a coverage patch: both arguments measure the same cash-generation-to-price concept, with the accrual-free version preferred when reported. Paired with Signal 1, this isolates whether the alpha requires realized operating cash flow specifically or merely a cash-based yield, while restoring the coverage lost to post-1988 cash-flow reporting.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.143722979649883,
+      "ls_alpha": 0.05294689678951415,
+      "ls_talpha": 3.906740127779476,
+      "ls_sharpe": 0.3862350624802479,
+      "coverage": 0.12129888965657856,
+      "error": null
+    },
+    {
+      "name": "Cheapness_Beyond_Solvency_Wide",
+      "expression": "SUB(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(re, lt), RATIO(SUB(act, lct), lt))))",
+      "hypothesis": "When price-implied pessimism exceeds what accumulated earnings and liquid resources relative to claims can justify, the market is discounting deterioration the accounts have not yet booked, and such excess cheapness continues to earn low returns.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-2 version of this gap was sign-consistent on both the slope and a -2.6% alpha (t = -2.40) but ran on only 9% of observations because of oancf; scaling retained earnings and net working capital by total liabilities preserves the claim-relative solvency concept while widening the panel. If both statistics strengthen with coverage, the trap side of the value spread is the more reliable half of the interaction and deserves consolidation in later generations.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.2116184133575632,
+      "ls_alpha": -0.02609374372820148,
+      "ls_talpha": -2.3810268634933287,
+      "ls_sharpe": -0.04411783843249744,
+      "coverage": 0.12033948393093434,
+      "error": null
+    },
+    {
+      "name": "MarketDistress_Versus_Coverage_Gap",
+      "expression": "SUB(RANK(RATIO(lt, MUL(prcc_f, csho))), RANK(RATIO(ebitda, lt)))",
+      "hypothesis": "Firms whose equity market value has collapsed relative to their liabilities while their operating profit still covers those liabilities look like accounting-healthy bargains, but the market's leverage-based verdict contains forward-looking information the income statement lags, so this mismatch predicts underperformance.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the book-to-market side of the gap mechanism with market leverage, a price-based distress measure with much higher information content about default proximity, testing whether the \"market knows first\" effect is stronger when the price channel is expressed against claims instead of book equity. Both inputs are ratio-scaled and widely reported, so coverage should be near the archive maximum rather than the 0.09 of previous gap tests.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.24030311676469543,
+      "ls_alpha": -0.03299149155839565,
+      "ls_talpha": -3.299678226098286,
+      "ls_sharpe": 0.004490408493570736,
+      "coverage": 0.1413117030576337,
+      "error": null
+    },
+    {
+      "name": "Rollover_Risk_Adjusted_SalesYield",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), RATIO(SUB(che, dlc), lct))",
+      "hypothesis": "Distress is triggered by refinancing, not by leverage per se; a cheap firm holding cash in excess of the debt maturing within a year can survive to realize its value, whereas an equally cheap firm whose short-term debt exceeds its cash is one credit market closure from restructuring.",
+      "expected_sign": "positive",
+      "reasoning": "No archive signal has used the maturity structure of debt, yet the timing of claims is what converts weak fundamentals into actual default, and cash net of current debt scaled by current liabilities is the sharpest available proxy for that pressure. Sales-to-price is chosen as the value channel because it is the least sensitive to the depressed transitory earnings typical of firms under refinancing stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.0050485882354065,
+      "ls_alpha": 0.007020912343379834,
+      "ls_talpha": 0.7220041301745889,
+      "ls_sharpe": 0.36094395517029426,
+      "coverage": 0.12161778010561099,
+      "error": null
+    },
+    {
+      "name": "Levered_EbitdaYield_Premium",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(RATIO(lt, at), 1)))",
+      "hypothesis": "Coherently priced firms \u2014 cheap on operating yield and genuinely levered, or expensive and genuinely unlevered \u2014 earn positive abnormal returns relative to firms whose price and balance sheet contradict each other, because leverage amplifies the payoff to a correctly identified operating-yield discount.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 book-to-market version of this cross-product produced the archive's largest FF5 alpha (+6.2%, t = 4.69) with the sign opposite to the trap hypothesis and a flat FMB slope, which means the relation is real but non-monotone and mis-signed in the archive; restating it with the correct sign and an EBITDA-yield value channel tests whether it replicates outside book-to-market. Winsorized z-scores keep the product from being determined by negative-equity outliers, which is what likely flattened the earlier Fama-MacBeth slope.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.6073070766824626,
+      "ls_alpha": -0.0017718092663990496,
+      "ls_talpha": -0.13837500691892146,
+      "ls_sharpe": -0.1542223791621973,
+      "coverage": 0.14131247693835453,
+      "error": null
+    },
+    {
+      "name": "CashYield_Runway_Plus_RetainedBuffer",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), SUMRANK(RATIO(SUB(act, lct), lt), RATIO(re, lt)))",
+      "hypothesis": "Solvency has a flow-liquidity leg and a stock-of-past-earnings leg; a cheap firm is a compensated value opportunity only if it has both a working-capital runway and accumulated retained earnings relative to its claims, since retained earnings measure the cumulative equity cushion that liquidity alone cannot reveal.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best signal uses only the working-capital runway, and retained-earnings-to-claims is the one solvency dimension that repeatedly carried predictive weight in gen-0 composites without duplicating current liquidity. Adding it as a nested channel tests whether the distress side of the interaction is under-specified rather than over-specified, at unchanged coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.338812643495903,
+      "ls_alpha": 0.023312520201897547,
+      "ls_talpha": 1.7902367957708243,
+      "ls_sharpe": 0.4240883324298665,
+      "coverage": 0.12010128344506107,
+      "error": null
+    },
+    {
+      "name": "SmoothedCashYield_Runway",
+      "expression": "SUMRANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "A single year of operating cash flow scaled by price is noisy for exactly the firms at issue, since distressed firms swing between negative and windfall cash years; a three-year average identifies durable cash-generating capacity, so the healthy-cheap classification should be more stable and the trap side more cleanly separated.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice \u2014 measurement horizon of the valuation channel \u2014 while holding the winning distress channel fixed, so the comparison against CashYield_Runway_Extended is interpretable. If smoothing raises both the alpha t-stat and Sharpe, the portfolio's turnover and composition instability were costing signal, which is a diagnosis we can then apply to the whole family.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.298267230169281,
+      "ls_alpha": 0.0483548839105937,
+      "ls_talpha": 3.7098843435667423,
+      "ls_sharpe": 0.38341199948340765,
+      "coverage": 0.12161896672271627,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_Runway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness and solvency must hold jointly rather than on average, so a multiplicative rank interaction should concentrate the long leg on firms that are simultaneously cash-cheap and claim-solvent and the short leg on firms failing both, sharpening the trap-versus-value spread.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets extreme cheapness compensate for extreme illiquidity, which is precisely the trap the theme warns about, whereas the rank product penalizes any firm weak on either dimension without generating the mass-at-zero degeneracy that ruined the gen-1 INDICATOR gates. Comparing it to Signal 1 and to the archive additive version tells us whether the interaction is genuinely multiplicative.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.841738911695991,
+      "ls_alpha": 0.05957104827013299,
+      "ls_talpha": 3.7609122552079137,
+      "ls_sharpe": 0.47241008277815705,
+      "coverage": 0.12129888965657856,
+      "error": null
+    },
+    {
+      "name": "CashYield_On_LiquidityAdjusted_EV",
+      "expression": "WINSOR(RATIO(oancf, ADD(MUL(prcc_f, csho), SUB(lt, act))), 1)",
+      "hypothesis": "The economically correct price for a claim on operating cash flow is market equity plus liabilities not already covered by current assets; firms whose liquid assets already extinguish their claims are effectively cheaper than their equity price suggests, while firms with uncovered claims are far more expensive than book-based value metrics imply.",
+      "expected_sign": "positive",
+      "reasoning": "This embeds both winning channels in a single economically motivated denominator instead of averaging two ranks, so it tests whether the interaction survives as a hard valuation identity rather than a statistical composite. It also fixes the flaw in the gen-2 EBITDA/EV test, which subtracted only cash and therefore ignored the receivables and inventory that actually service near-term claims.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.6800679148237267,
+      "ls_alpha": -0.008228504922239949,
+      "ls_talpha": -0.4941260012175408,
+      "ls_sharpe": 0.20905286841097462,
+      "coverage": 0.07876490907004714,
+      "error": null
+    },
+    {
+      "name": "CashYield_With_Claims_Turnover",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(revt, lt))",
+      "hypothesis": "A firm that generates a large volume of revenue relative to its outstanding claims retains operating and refinancing options that a low-turnover firm with the same balance sheet does not, so revenue productivity of claims is a distinct survival dimension from static liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "Revenue-to-claims is the Altman turnover channel expressed against liabilities rather than assets, and it has never been tested in this archive; it should be nearly uncorrelated with the working-capital runway while capturing the same cheap-and-viable versus cheap-and-shrinking distinction. Both inputs are broadly reported, so coverage should match the best of the family rather than the 0.08\u20130.09 of the oancf-only constructions.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.497152638657757,
+      "ls_alpha": 0.026250334042840922,
+      "ls_talpha": 2.3423400945619943,
+      "ls_sharpe": 0.6102968308845064,
+      "coverage": 0.14187018697783688,
+      "error": null
+    },
+    {
+      "name": "CashYield_WorstCase_Solvency",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), TS_MIN(RATIO(SUB(act, lct), lt), 5))",
+      "hypothesis": "What separates a resilient cheap firm from a lottery-like one is not today's liquidity but the worst liquidity it has run in recent memory; a firm that never dipped into a negative claim-adjusted buffer over five years has demonstrated capacity to survive its own downside.",
+      "expected_sign": "positive",
+      "reasoning": "Current-level solvency can be window-dressed or temporarily flattered by asset sales, whereas the five-year minimum is a demonstrated-resilience statistic and is a genuinely different temporal concept from the levels, changes and trends already tested. If it improves on the current-level version, the trap-versus-value distinction is about tail survivability, which would then guide the final consolidation generations.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.91722028754496,
+      "ls_alpha": 0.05173761469530153,
+      "ls_talpha": 3.7072171679075767,
+      "ls_sharpe": 0.4136239590108148,
+      "coverage": 0.12216945387547083,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "A cheap firm is compensated value only if it has never lacked a claim-adjusted liquidity buffer in recent memory, so cheapness should be multiplied by demonstrated worst-case solvency rather than by a possibly window-dressed current snapshot.",
+      "expected_sign": "positive",
+      "reasoning": "This crosses the archive's two strongest ingredients \u2014 the multiplicative rank structure that lifted alpha to +6.0% and the five-year minimum runway that gave the strongest FMB slope \u2014 so it directly tests whether their contributions are additive in evidence. The worst-case statistic also stabilizes portfolio composition, which should raise Sharpe relative to the current-level conjunctive version.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.150927099096668,
+      "ls_alpha": 0.05500779174920447,
+      "ls_talpha": 3.8909668350846762,
+      "ls_sharpe": 0.551108491923418,
+      "coverage": 0.12216945387547083,
+      "error": null
+    },
+    {
+      "name": "Triple_Conjunctive_Cheap_Solvent_Productive",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), MUL(RANK(RATIO(SUB(act, lct), lt)), RANK(RATIO(revt, lt))))",
+      "hypothesis": "Survival requires both a liquidity stock and an operating flow large relative to claims, so a firm that is cash-cheap, liquid against its liabilities, and generating substantial revenue per unit of liabilities is the cleanest possible healthy-cheap firm, while failure on any one leg marks a trap.",
+      "expected_sign": "positive",
+      "reasoning": "Claims turnover delivered the archive's highest Sharpe (0.610) at full coverage, and the conjunctive structure delivered the highest alpha, so combining the two as a strict three-way conjunction should preserve alpha while improving spread quality. Unlike the failed additive enrichment with retained earnings, multiplication cannot let a strong leg mask a fatal weakness on another.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.346259918165448,
+      "ls_alpha": 0.05002909811586859,
+      "ls_talpha": 3.3857820111732138,
+      "ls_sharpe": 0.3951241365676296,
+      "coverage": 0.12129765144742523,
+      "error": null
+    },
+    {
+      "name": "StrictMin_CashYield_Runway",
+      "expression": "MIN(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "The binding constraint on a cheap firm's return is its weakest dimension, so the return-relevant score is the minimum of cheapness and claim-adjusted liquidity rather than their product.",
+      "expected_sign": "positive",
+      "reasoning": "The product and the minimum encode different economics \u2014 the product still rewards an extreme on one axis while the minimum is governed purely by the bottleneck \u2014 and separating them is the cleanest way to learn what the multiplicative gain in gen 4 actually came from. This is deliberately a single-axis design test against Conjunctive_CashYield_Runway, holding both channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.397704666591759,
+      "ls_alpha": 0.04917082353141992,
+      "ls_talpha": 3.3639994701453295,
+      "ls_sharpe": 0.4178969908134393,
+      "coverage": 0.12129888965657856,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_Runway",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Durable cash-generating capacity, measured over three years, is the valuation input that should be interacted with solvency, because a one-year cash windfall or shortfall misclassifies precisely the distressed firms whose cash flows are most erratic.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing improved the FMB slope in the additive family while leaving alpha essentially unchanged, so testing it inside the superior multiplicative structure tells us whether horizon and structure improvements compound. It should also reduce month-to-month rebalancing of the long leg, a Sharpe-relevant diagnostic.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.757254752347379,
+      "ls_alpha": 0.055031427196940576,
+      "ls_talpha": 4.02094654412971,
+      "ls_sharpe": 0.42238308551647813,
+      "coverage": 0.12161896672271627,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_LowAccrualBuild",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(NEG(RATIO(DELTA(wcap, 1), lt))))",
+      "hypothesis": "Firms approaching distress conceal deterioration by building working capital \u2014 stuffing receivables and inventory \u2014 so a cheap firm whose working capital is expanding relative to its claims is a trap, while a cheap firm shrinking working-capital investment is converting operations into cash.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces an earnings-quality distress channel that is a flow-of-accruals concept rather than another solvency level, so it is unlikely to be spanned by RMW or CMA and should add alpha where levels were absorbed. Scaling the working-capital change by total liabilities keeps the claim-relative normalization that has been the consistent discriminator in this archive, and using wcap rather than the oancf-minus-earnings accrual definition preserves full coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.7273750019837792,
+      "ls_alpha": -0.02089617497435406,
+      "ls_talpha": -2.0838820920056644,
+      "ls_sharpe": 0.14022286031147793,
+      "coverage": 0.11091356515910575,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_FlowAndStock_Solvency",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(pi, lt), RATIO(SUB(act, lct), lt))))",
+      "hypothesis": "Solvency has a flow leg \u2014 pretax profit available to service claims \u2014 and a stock leg \u2014 liquid assets net of current obligations relative to claims \u2014 and a cheap firm needs both, since profitable firms can still fail on liquidity and liquid firms can still erode their cushion through losses.",
+      "expected_sign": "positive",
+      "reasoning": "Enriching the distress side additively hurt when the added channel was retained earnings, a slow-moving stock variable largely redundant with book equity, whereas pretax-income coverage of claims is a current flow measure that is economically complementary to the liquidity stock. Placing the enriched solvency score inside the multiplicative structure tests whether the earlier degradation came from the added channel itself or from additive dilution of the interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.058660941971294,
+      "ls_alpha": 0.04086081339377417,
+      "ls_talpha": 2.701559546837448,
+      "ls_sharpe": 0.5296502717956494,
+      "coverage": 0.12129703234284855,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_WorstRunway",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "Compensated cheapness requires durable cash generation, not a single year's figure, interacted with a liquidity cushion the firm has never lost; combining a three-year average yield with a five-year minimum claim-adjusted buffer should identify healthy-cheap firms with the least measurement noise on either axis.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation channel gave the archive's most reliable alpha (t = 4.02) and the minimum-runway distress channel gave its strongest slope (t = 6.15), and the two refinements act on different arguments of the product, so their gains plausibly compound rather than overlap. Both refinements also reduce turnover in the extreme deciles, which is where Sharpe has been improving through this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.855795621022478,
+      "ls_alpha": 0.052624247891983805,
+      "ls_talpha": 3.7345680343472094,
+      "ls_sharpe": 0.4666183861493048,
+      "coverage": 0.12255453692215874,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_Worst3yrRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Resilience should be measured over the recent credit cycle rather than deep history, since a liquidity crunch five years ago may reflect a company that no longer exists in economic terms, while a crunch in the last three years is live information about fragility.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design parameter \u2014 the resilience window \u2014 against the current leader, and a shorter window also loses fewer young firms, so it distinguishes whether the gen-5 improvement came from downside conditioning or from implicitly requiring a long reporting history. If the three-year version matches the five-year version at higher coverage, the effect is genuinely about downside solvency rather than firm-age selection.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 6.170647259841182,
+      "ls_alpha": 0.05754056587202702,
+      "ls_talpha": 3.8465242849192327,
+      "ls_sharpe": 0.5421835086030795,
+      "coverage": 0.1218297202390239,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstRunway",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "A firm that looks cheap even on its worst recent cash-flow year, and that never ran out of a claim-adjusted buffer, is the purest form of compensated value, whereas a firm that is only cheap on a peak cash year is a cyclical trap dressed as value.",
+      "expected_sign": "positive",
+      "reasoning": "All previous valuation channels used current or averaged cash flow, so the downside of the cash-flow distribution has never been tested even though it is exactly what a distressed-equity valuation should be based on. Applying the same worst-case logic to both legs makes the signal a joint tail-survivability score, a substantively different economic statement from the mean-based versions.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 6.103021046145139,
+      "ls_alpha": 0.06042769131563673,
+      "ls_talpha": 4.330088222593429,
+      "ls_sharpe": 0.424723640676636,
+      "coverage": 0.12255453692215874,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_IndustryNormedRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), IND_RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "The liquidity buffer that constitutes safety is industry-specific \u2014 a level that is comfortable for a utility with predictable cash flows is dangerous for a retailer with inventory risk \u2014 so solvency should be judged against industry peers while cheapness is judged market-wide.",
+      "expected_sign": "positive",
+      "reasoning": "Every version so far ranks the buffer across the whole market, which mechanically loads the short leg with entire capital-intensive industries rather than genuinely fragile firms, an instability in portfolio composition that could be capping the alpha. Industry-ranking only the distress leg keeps the market-wide valuation sort intact and directly tests whether the trap identification is firm-specific or sectoral.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.8518284953529465,
+      "ls_alpha": 0.024966216452171477,
+      "ls_talpha": 2.3375066565971876,
+      "ls_sharpe": 0.37222862979897003,
+      "coverage": 0.12129532980526272,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_TotalClaimCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), lt)))",
+      "hypothesis": "The Graham solvency test is whether current assets cover *all* liabilities, not merely current ones; a cheap firm whose liquid assets exceed total claims cannot be forced into distress by any creditor, while a firm passing only the current-liability test remains hostage to its long-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the economic content of the distress channel rather than its statistics, imposing a strictly harder solvency bar that includes long-term claims in the deficit calculation. Comparing it with the current-liabilities version tells us whether the value-trap discrimination comes from near-term liquidity pressure or from total balance-sheet encumbrance, which is the key open question for consolidating this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.626419124534032,
+      "ls_alpha": 0.06214475347944338,
+      "ls_talpha": 3.981675630393838,
+      "ls_sharpe": 0.4452553415097275,
+      "coverage": 0.1213487275750004,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_StableSolvency",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(NEG(VOL(RATIO(SUB(act, lct), lt), 5))))",
+      "hypothesis": "What makes a cheap firm lottery-like is not the level of its liquidity but the instability of it; firms whose claim-adjusted buffer swings violently are being managed near a solvency boundary, and their equity behaves like an option that investors overpay for.",
+      "expected_sign": "positive",
+      "reasoning": "The second-moment version of the *winning* distress variable has not been tested \u2014 the earlier volatility attempt used earnings volatility combined additively with book-to-market and was therefore confounded by the HML-spanned value leg. If instability rather than level drives the trap side, that reframes the mechanism from solvency distance to solvency stability and would be the sharpest new economic finding available in the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.2418303668011457,
+      "ls_alpha": -0.045254577209409654,
+      "ls_talpha": -3.318595676724312,
+      "ls_sharpe": 0.0594711239561519,
+      "coverage": 0.11178882425437109,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstTotalCoverage",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lt), lt), 3)))",
+      "hypothesis": "The healthiest cheap firm is one that looks cheap even in its worst recent cash-flow year and whose liquid assets covered all outstanding claims even at their worst recent point; failing either test on the downside marks a lottery-like trap.",
+      "expected_sign": "positive",
+      "reasoning": "This crosses the two refinements that independently pushed the frontier \u2014 total-claim coverage (largest alpha) and two-sided worst-case conditioning (most reliable alpha) \u2014 using a three-year window on both legs so coverage stays near the archive maximum rather than selecting for long-lived firms. If both improvements are sourced in different economics, the combination should dominate on alpha reliability and slope simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.586118957714901,
+      "ls_alpha": 0.057943393108862595,
+      "ls_talpha": 3.978127821789867,
+      "ls_sharpe": 0.3700514603267454,
+      "coverage": 0.12225055657501442,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstTotalCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lt), lt), 5)))",
+      "hypothesis": "Current cheapness combined with never having failed the total-claim liquidity test over five years captures the tradable version of the mechanism: the valuation must be current to be exploitable, while solvency must be demonstrated over a cycle to be credible.",
+      "expected_sign": "positive",
+      "reasoning": "Holding the valuation leg at its current value isolates whether the gain in Signal 1 comes from the solvency leg alone, which matters for implementation because worst-case cash yield discards timely valuation information. Comparing the two also tells us whether the timeliness of the price signal or the durability of the solvency signal is the binding source of return predictability.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.205048997294709,
+      "ls_alpha": 0.05437355847262048,
+      "ls_talpha": 3.473929551953447,
+      "ls_sharpe": 0.4284624360226055,
+      "coverage": 0.12220799313536845,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_AssetScaledCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), at)))",
+      "hypothesis": "If the trap discriminator is the size of the liquidity surplus relative to the firm's own asset base rather than relative to its creditors' claims, then asset scaling should work equally well; if the claim-relative normalization is essential, the economics are about creditor pressure, not balance-sheet composition.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal in this family scales the buffer by total liabilities, and the one time it was scaled by current liabilities the alpha vanished, so pinning down the denominator is the last unresolved measurement question in the mechanism. Asset scaling also removes the mechanical explosion of the ratio for near-zero-liability firms, so if performance holds up the signal becomes more stable in the extreme deciles.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.234911845641937,
+      "ls_alpha": 0.06112916607232036,
+      "ls_talpha": 4.076819728226422,
+      "ls_sharpe": 0.40479003398967256,
+      "coverage": 0.12134826324656789,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_HardCashCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "Only cash is certain in distress \u2014 receivables and inventory of a failing firm are collected at deep discounts \u2014 so the credible solvency test is cash net of debt maturing within a year measured against total claims.",
+      "expected_sign": "positive",
+      "reasoning": "All current versions rely on net working capital, which for a deteriorating firm can be inflated by exactly the soft assets that evaporate in a workout, so replacing it with hard cash net of maturing debt tests whether the trap discrimination requires asset quality. The rollover-risk concept previously appeared only with a sales-yield valuation leg that was HML-spanned, so it has never been fairly tested inside the winning multiplicative structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.8823115906710095,
+      "ls_alpha": 0.07354042964900401,
+      "ls_talpha": 4.744612130004288,
+      "ls_sharpe": 0.5322618411252099,
+      "coverage": 0.1405882277677483,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_BroadValue_TotalCoverage",
+      "expression": "MUL(RANK(SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(ceq, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), lt)))",
+      "hypothesis": "A composite cheapness leg that blends cash-flow yield with book-to-market measures the discount more robustly across business models, and interacting that broader valuation state with total-claim solvency should identify healthy-cheap firms with less sensitivity to the accounting idiosyncrasies of any single yield.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market alone is HML-spanned, but as one of two inputs to the cheapness leg it may stabilize the sort without dominating it, which would raise Sharpe and slope even if it trims the alpha slightly. This is the informative test of whether the family's alpha requires a purely cash-based valuation channel or merely a valuation channel that is not exclusively book-based.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.325654309608333,
+      "ls_alpha": 0.03008115618162323,
+      "ls_talpha": 2.3064360616352695,
+      "ls_sharpe": 0.44519069095621516,
+      "coverage": 0.12044834315233192,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_SolventAndProfitPersistent",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(SUB(act, lt), lt), TS_SUM(INDICATOR(pi, 0), 5))))",
+      "hypothesis": "Balance-sheet solvency and income-statement viability are distinct survival conditions; a cheap firm with claim-covering liquid assets that has also been profitable in most of the last five years is durably healthy, while a liquid but chronically loss-making cheap firm is merely burning its cushion.",
+      "expected_sign": "positive",
+      "reasoning": "Loss persistence was tested once, additively and against a sales-yield value leg that FF5 spans, so its failure then is uninformative about its value inside the multiplicative structure with a claim-scaled solvency partner. Counting profitable years is a slow-moving, hard-to-manipulate viability statistic that is conceptually orthogonal to the liquidity buffer, which is the property that distinguished the successful channels from the failed accrual and volatility ones.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.1655945696524315,
+      "ls_alpha": 0.03718384264464077,
+      "ls_talpha": 2.350962656399657,
+      "ls_sharpe": 0.5182854687772129,
+      "coverage": 0.12134687026127039,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstHardCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "A cheap firm is safe only if it has held cash in excess of maturing debt relative to total claims at every point in the recent past; a firm whose current cash position is a one-off, perhaps financed by an asset sale or an equity raise, is still a trap.",
+      "expected_sign": "positive",
+      "reasoning": "Worst-case conditioning raised alpha reliability when applied to the net-working-capital buffer, and applying it to the stronger hard-cash channel is the single most likely way to improve on the archive leader. A three-year window is used so the coverage advantage of the cash-based channel is largely preserved.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.558300624049203,
+      "ls_alpha": 0.07756481565024553,
+      "ls_talpha": 4.820915534668305,
+      "ls_sharpe": 0.5764220197467128,
+      "coverage": 0.14080739078788898,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_TotalDebtNetCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, ADD(dltt, dlc)), lt)))",
+      "hypothesis": "What protects a cheap firm's equity is cash net of all interest-bearing debt, not merely the tranche maturing this year, because long-term debt covenants and eventual refinancing exert pressure well before maturity.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one economic choice against the leader \u2014 which debt is netted against cash \u2014 and thereby tells us whether the mechanism is near-term refinancing pressure or total debt overhang. Both variants keep total liabilities as the scaling denominator, so the comparison is clean.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.628192967581365,
+      "ls_alpha": 0.06535610821789983,
+      "ls_talpha": 4.881031585302731,
+      "ls_sharpe": 0.5356425214729975,
+      "coverage": 0.1404794717304468,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_HardCash_And_ClaimCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), MUL(RANK(RATIO(SUB(che, dlc), lt)), RANK(RATIO(SUB(act, lt), lt))))",
+      "hypothesis": "Hard cash against maturing debt and total current assets against all claims measure different survival resources \u2014 immediate settlement capacity versus overall liquidation coverage \u2014 so a cheap firm strong on both is the most reliably healthy, and weakness on either is disqualifying.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier three-way conjunction diluted performance, but its third leg was claims turnover, the weakest of the solvency channels, whereas here both solvency legs individually produced 6%-plus alphas. This is the decisive test of whether the two best distress channels are complements or substitutes, which determines the form of the final consolidated signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.896570771818986,
+      "ls_alpha": 0.06608363174716654,
+      "ls_talpha": 4.302189556895076,
+      "ls_sharpe": 0.31073315702649035,
+      "coverage": 0.12034763547452715,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_HardCash",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "Durable cash-generating capacity measured over three years, interacted with unencumbered cash against total claims, should be the most economically coherent statement of the healthy-cheap concept: sustained cash generation plus settlement capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation leg raised the alpha t-stat when paired with the working-capital buffer, so pairing it with the superior hard-cash leg tests whether the two best-performing modifications to opposite arguments of the product compound. It also reduces annual rebalancing noise in the long leg, the diagnostic that has tracked Sharpe throughout this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.802581332071693,
+      "ls_alpha": 0.06508741146464742,
+      "ls_talpha": 4.623146919549259,
+      "ls_sharpe": 0.43823238674366494,
+      "coverage": 0.14096871912215925,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_CashBurn_Adjusted",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(SUB(che, dlc), lt), DELTA(RATIO(SUB(che, dlc), lt), 1))))",
+      "hypothesis": "Both the level of unencumbered cash and its direction of travel matter: a cheap firm with a modest but growing net cash position is repairing itself, while one with a comparable but rapidly burning position is on a path to the very distress its price implies.",
+      "expected_sign": "positive",
+      "reasoning": "Change-based distress channels have failed twice in this archive, but both attempts used working-capital or leverage accounting aggregates rather than the cash channel that has now proved to be the active ingredient, so a burn-rate test on the right variable is a genuinely new question rather than a repeat. Combining level and change additively inside the solvency leg preserves the multiplicative interaction with cheapness that has been essential throughout.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.059121295926165,
+      "ls_alpha": 0.038164735169381396,
+      "ls_talpha": 3.28864430811682,
+      "ls_sharpe": 0.48788842373493124,
+      "coverage": 0.12833196923958273,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_Worst5yrHardCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 5)))",
+      "hypothesis": "Demonstrated liquidity resilience over a full business cycle is a stronger safety credential than resilience over three years, so a cheap firm that never let cash fall below its maturing debt across five years should be the most reliably compensated value opportunity.",
+      "expected_sign": "positive",
+      "reasoning": "The three-year window produced the archive's best signal and the corresponding window test on the working-capital channel showed five years and three years were near-equivalent, so this determines whether the cash channel rewards a longer memory or merely loses young firms. It is the single cheapest remaining test of the leader's key parameter at essentially unchanged coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.4039898296382685,
+      "ls_alpha": 0.07707787670350039,
+      "ls_talpha": 4.924413085443228,
+      "ls_sharpe": 0.5473224369820576,
+      "coverage": 0.14087946487902284,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstTotalDebtNetCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, ADD(dltt, dlc)), lt), 3)))",
+      "hypothesis": "A cheap firm is genuinely safe only if it has consistently held cash against its entire interest-bearing debt load, not just the maturing tranche, because long-term debt overhang suppresses investment and forces distressed refinancing well before maturity.",
+      "expected_sign": "positive",
+      "reasoning": "Netting total debt and applying worst-case conditioning were each independently strong in gen 8 (alpha +6.5% with t = 4.88, and +7.8% with t = 4.82) but have never been combined, and they act on different features of the same channel so their gains may compound. If the total-debt version wins under downside conditioning, the economics are debt overhang rather than rollover timing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.540127718641042,
+      "ls_alpha": 0.061639989747339835,
+      "ls_talpha": 4.508998375771038,
+      "ls_sharpe": 0.5349659199673769,
+      "coverage": 0.14074140455842574,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_WorstHardCash",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "Sustained cash-generating capacity interacted with never-breached cash coverage of maturing debt is the fullest statement of healthy cheapness: the firm both earns cash durably and has always been able to settle its near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation leg improved alpha reliability against both the working-capital leg (t = 4.02) and the hard-cash leg (t = 4.62), and worst-case conditioning improved the hard-cash leg further, so combining refinements on opposite arguments of the product is the natural final consolidation. Smoothing should also cut turnover in the long leg, where Sharpe gains have consistently come from in this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.4217335860017375,
+      "ls_alpha": 0.07467581932954373,
+      "ls_talpha": 5.014507197907393,
+      "ls_sharpe": 0.4864437386172749,
+      "coverage": 0.14125046329659155,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstHardCash",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "The purest joint tail-survivability score is cheapness measured on the firm's worst recent cash-flow year combined with liquidity measured at its worst recent point; a firm passing both downside tests cannot be a lottery-like trap.",
+      "expected_sign": "positive",
+      "reasoning": "Two-sided worst-case conditioning delivered the most reliable alpha of the working-capital family (t = 4.33), so applying it to the superior hard-cash channel tests whether the downside logic is fully general across both themes. It also guards against the risk that the leader's long leg is populated by firms enjoying a single windfall cash-flow year.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.117475101539489,
+      "ls_alpha": 0.08647664257017047,
+      "ls_talpha": 5.788963494321604,
+      "ls_sharpe": 0.4292100992299198,
+      "coverage": 0.14125046329659155,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_LiquiditySources_Coverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(ADD(che, COALESCE(oancf, ebitda)), lt)))",
+      "hypothesis": "The resources available to satisfy creditors are the cash already on hand plus the cash the business will generate this year, so total liquidity sources relative to total claims is the economically complete solvency test that a stock-only measure understates for cash-generative firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every solvency leg tested so far is either a pure stock (cash, working capital) or a pure flow (pretax income, revenue) scaled by claims, and adding them within a single measure is different from stacking two ranked legs, which failed because the legs were substitutes. This directly tests whether cash-generation capacity is a genuine component of the safety credential or is already fully impounded in the valuation leg.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.989067800464252,
+      "ls_alpha": 0.04317291544180948,
+      "ls_talpha": 3.5706537488592307,
+      "ls_sharpe": 0.5553981330174877,
+      "coverage": 0.14115424412696762,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CashYield_NetCash_Share_Of_Capital",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, dlc), ADD(lt, MUL(prcc_f, csho)))))",
+      "hypothesis": "What insulates a cheap firm is the share of its entire capital structure \u2014 creditors' claims plus equity market value \u2014 that is already backed by unencumbered cash, since that fraction is the part of firm value that cannot be impaired by operating deterioration.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling net cash by total capital rather than liabilities alone removes the mechanical instability of dividing by very small liability balances, which is the most plausible remaining source of unstable extreme-decile composition in the leader. It is also economically distinct: it measures the cash-backed fraction of firm value rather than creditor coverage, and the denominator is strictly positive, so the ranking cannot be distorted by sign flips.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.794729937161074,
+      "ls_alpha": 0.06467133214584884,
+      "ls_talpha": 4.418449979993069,
+      "ls_sharpe": 0.6257358108763109,
+      "coverage": 0.14059395448508247,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Solvency_Scored_BookToMarket",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(RATIO(re, at), RATIO(wcap, at)))",
+      "hypothesis": "Cheapness earns a premium only when the balance sheet shows accumulated earnings capacity and working-capital slack; cheap firms with depleted retained earnings and negative working capital are distressed traps whose low price reflects default risk rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Retained-earnings-to-assets and working-capital-to-assets are the two classic Altman channels that separate solvent from failing firms, and combining their ranks with the book-to-market rank isolates cheap-and-solvent firms in the top of the composite. The composite deliberately down-weights high book-to-market firms that are cheap because of cumulative losses and liquidity strain, which is the trap side of the value spread.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtService_Gated_EarningsYield",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), INDICATOR(RATIO(oancf, ADD(dltt, dlc)), 0.15))",
+      "hypothesis": "The earnings-yield value premium is conditional on the firm generating enough operating cash flow to service its debt; when cash-flow coverage of total debt falls below a critical threshold, a high earnings yield is a symptom of imminent restructuring risk rather than a compensated value opportunity.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the valuation signal on only for firms whose operating cash flow exceeds roughly 15% of total debt, effectively removing the distressed left tail from the cheap portfolio. This is a genuine conditional interaction: the same earnings yield receives full weight in solvent firms and zero weight in cash-strapped firms.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheapness_Per_NetLiability_Burden",
+      "expression": "RATIO(RATIO(ceq, MUL(prcc_f, csho)), ADD(1, RATIO(SUB(lt, che), at)))",
+      "hypothesis": "Observed book-to-market must be deflated by the net-liability burden the equity claim sits behind; a given level of cheapness is worth far less when net liabilities are a large fraction of assets because the equity is a levered residual option on a distressed asset base.",
+      "expected_sign": "positive",
+      "reasoning": "The denominator converts raw cheapness into cheapness per unit of net (cash-adjusted) liability intensity, so unlevered cheap firms rank far above equally cheap but heavily indebted firms. Netting cash against liabilities captures the fact that liquid reserves offset nominal leverage in default risk, making this more than a leverage-only or value-only sort.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Value_With_Deleveraging_Trend",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), NEG(TREND(RATIO(SUB(lt, che), at), 5)))",
+      "hypothesis": "Cheap firms whose net-liability ratio is on a multi-year downward path are repairing their balance sheets and will see distress risk premia unwind, whereas equally cheap firms with a rising net-liability trend are on a deteriorating path toward default.",
+      "expected_sign": "positive",
+      "reasoning": "The distress state is dynamic, so the trend in net liabilities over five years distinguishes recovering value stocks from decaying ones even when current leverage levels are identical. Combining the earnings-yield rank with the negated leverage trend rank buys cheap-and-improving firms and shorts expensive-and-deteriorating ones.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesYield_Minus_LossPersistence",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), NEG(TS_SUM(INDICATOR(NEG(pi), 0), 5)))",
+      "hypothesis": "Sales-to-price identifies operationally large but low-priced firms; whether such cheapness is a recovery option or a distress trap depends on whether losses are one-off or chronic, and chronic pretax losses signal a persistent, non-mean-reverting distress state.",
+      "expected_sign": "positive",
+      "reasoning": "Counting loss years over five fiscal years measures the persistence rather than the level of distress, which is precisely what separates temporarily depressed cyclical value from structurally impaired firms. Sales-to-price is the valuation anchor least contaminated by transitory earnings, so pairing it with loss persistence isolates the healthy-cheap corner.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryRelative_Value_Health_Gap",
+      "expression": "SUB(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), IND_RANK(SUMRANK(RATIO(oancf, lt), RATIO(re, at))))",
+      "hypothesis": "Within an industry, the gap between how cheap a firm looks and how healthy its fundamentals are measures unjustified-looking cheapness; a large positive gap identifies firms the market prices as distressed for reasons the market sees but accounting health metrics lag, and these lottery-like traps underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-relative ranking removes sector-level valuation and leverage norms, so the residual gap is a firm-specific mismatch between price-implied and accounting-implied distress. When price is far cheaper than fundamentals warrant, the market is typically anticipating deterioration in cash-flow coverage and retained earnings, so high-gap firms should earn lower subsequent returns while low-gap (expensive-yet-weak already, or cheap-and-confirmed-healthy) firms do better.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "WithinCheap_Coverage_Spread",
+      "expression": "MUL(INDICATOR(RANK(RATIO(ceq, MUL(prcc_f, csho))), 0.7), ZSCORE(SUMRANK(RATIO(oancf, lt), RATIO(re, at))))",
+      "hypothesis": "The value premium is entirely a within-cheap phenomenon: among the cheapest 30% of firms, those whose operating cash flow covers total liabilities and which have accumulated retained earnings earn high returns, while cheap firms with no coverage and depleted equity are lottery-like distress traps.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator restricts the active signal to high book-to-market firms and the centered z-score puts healthy-cheap firms at the top and distressed-cheap firms at the bottom, so both extreme legs load on HML in the same direction and the FF5 alpha reflects the trap-versus-value interaction rather than the value level. Expensive firms receive exactly zero and populate the middle, which is the direct structural fix for gen-0's absorbed alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Value_NetLeverage_Product",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(RATIO(SUB(lt, che), at), 1)))",
+      "hypothesis": "The pure cross-product of cheapness and net-liability intensity isolates the corner where low price and high net debt reinforce each other; such firms are levered residual claims on impaired assets and underperform, whereas the mismatched corners (cheap-and-unlevered) outperform.",
+      "expected_sign": "negative",
+      "reasoning": "A product of two demeaned channels is close to orthogonal to each channel's own level, so it should survive HML and CMA loadings where the gen-0 additive composites did not. Winsorizing both inputs prevents the extreme book-to-market and negative-equity tails from hijacking the decile assignment, a likely cause of the inverted gen-0 long legs.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCash_To_Price_Graham",
+      "expression": "RATIO(SUB(che, lt), MUL(prcc_f, csho))",
+      "hypothesis": "Valuation should be measured against liquid resources net of every claim on the firm; a firm whose cash exceeds total liabilities and still trades at a low market cap is cheap for liquidity-rich reasons, the opposite of distress-driven cheapness.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a value level plus a leverage level but a single price-scaled solvency surplus, so it mechanically ranks cheap-and-liquid firms above cheap-and-encumbered firms with identical book-to-market. The Graham net-liquidity channel is economically distinct from earnings- or book-based value and should generate FF5 alpha not spanned by HML.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_Cheap_And_Liquid",
+      "expression": "MIN(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(act, lct), RATIO(re, at))))",
+      "hypothesis": "Compensated cheapness requires cheapness AND survivability simultaneously, not on average; a conjunctive (minimum) rule demands both conditions, so the long leg contains only firms that are cheap on EBITDA yield and liquid and solvent.",
+      "expected_sign": "positive",
+      "reasoning": "MIN implements an economic AND rather than the additive averaging of gen-0's SUMRANK, which allowed extreme cheapness to compensate for extreme distress and thereby filled the long leg with traps. The current-ratio and retained-earnings channels capture short-term liquidity and long-run accumulated solvency, the two distinct legs of bankruptcy risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "WithinCheap_Balance_Deterioration",
+      "expression": "MUL(INDICATOR(RANK(RATIO(revt, MUL(prcc_f, csho))), 0.7), NEG(ZSCORE(DELTA(RATIO(lt, at), 1))))",
+      "hypothesis": "Among firms already priced cheaply on sales, the direction of balance-sheet change, not its level, tells whether the market's pessimism is being confirmed; cheap firms adding liabilities relative to assets are deteriorating toward default while cheap firms shedding liabilities are repairing.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's five-year leverage TREND had a weak slope and a negative alpha, suggesting the slow-moving trend was subsumed by the leverage level; a one-year change conditioned on cheapness isolates fresh, news-bearing distress dynamics instead. Restricting to the cheap subsample makes this a within-value comparison, which cannot be replicated by HML or CMA.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxValidated_Cheap_Earnings",
+      "expression": "MUL(INDICATOR(RANK(RATIO(ib, MUL(prcc_f, csho))), 0.7), ZSCORE(WINSOR(RATIO(txt, at), 1)))",
+      "hypothesis": "Cash taxes paid are a hard, non-manipulable confirmation that a cheap firm's reported earnings are real; distressed firms with loss carryforwards pay no tax, so among high earnings-yield firms the tax-paying ones are genuine value while the non-taxpayers are impaired firms whose accounting income will not persist.",
+      "expected_sign": "positive",
+      "reasoning": "The tax channel is an information source distinct from leverage, liquidity, or retained earnings, and it directly attacks the risk that a high earnings yield reflects transitory or low-quality income. Conditioning on the cheap subsample again keeps both portfolio legs inside the value region so the alpha measures earnings validation rather than the value premium itself.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ClaimAdjusted_EBITDA_EV_Yield",
+      "expression": "WINSOR(RATIO(ebitda, ADD(SUB(MUL(prcc_f, csho), che), lt)), 1)",
+      "hypothesis": "True cheapness must be measured against every claim on operating cash flow, so operating profit relative to enterprise value (market cap plus liabilities minus cash) separates firms that are genuinely cheap from firms whose low equity price merely reflects a large liability stack sitting ahead of shareholders.",
+      "expected_sign": "positive",
+      "reasoning": "Equity-only value metrics label heavily indebted firms as cheap even when the whole enterprise is expensive, which is precisely the trap that gen-0 composites failed to exclude; embedding liabilities and cash in the denominator makes the distress structure part of the valuation ratio itself. Because HML is built from book-to-market, an EBITDA/EV yield is not mechanically spanned by it, giving a realistic chance of FF5 alpha alongside a monotone cross-sectional slope.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_With_Liquidity_Buffer",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "Cheapness measured in realized operating cash flow, combined with a working-capital buffer large relative to total claims, identifies firms whose low price is not a solvency verdict; cash-flow-cheap firms with no buffer are the traps.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow-to-price is much less collinear with HML than book-to-market, so the value half of this composite should not be fully absorbed by FF5, addressing the zero-alpha problem of Solvency_Scored_BookToMarket. The distress half uses net working capital scaled by total liabilities, which measures the runway to meet claims rather than another profitability level already captured by RMW.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap_With_Improving_Solvency",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUMRANK(DELTA(RATIO(pi, at), 1), NEG(DELTA(RATIO(lt, act), 1))))",
+      "hypothesis": "Among cheap firms the market underreacts to fundamental inflections: rising pretax profitability together with a falling ratio of total liabilities to current assets signals that distress risk is receding and the discount is about to be re-rated.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of solvency and profitability are spanned by HML, RMW and CMA, which is why the gen-0 level composites had no alpha, whereas one-year changes in those quantities are largely orthogonal to factor loadings and are the documented source of Piotroski-style abnormal returns within value. Pairing book-to-market with a two-channel improvement score keeps the strong value-driven FMB slope while sourcing alpha from the change component.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Unexplained_Cheapness_Gap",
+      "expression": "SUB(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(re, at), RATIO(oancf, lt))))",
+      "hypothesis": "When a firm's price-implied pessimism far exceeds what its accumulated earnings and debt-servicing capacity justify, the market is anticipating deterioration that accounting has not yet recorded, so this excess cheapness predicts low, not high, returns.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 industry-relative version of this gap was directionally correct on both the slope (-1.06) and the FF5 alpha (-2.3%, t = -1.88) but was crippled by IND_RANK coverage of only 0.091; replacing industry ranks with full cross-sectional ranks should raise coverage to ~0.14 and sharpen both statistics. It is also the one archive construction whose FMB and alpha agreed in sign, making it worth a properly powered test.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap_With_Stable_Earnings",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), NEG(VOL(RATIO(pi, at), 5)))",
+      "hypothesis": "Earnings instability, not the level of leverage, is the distress feature that turns a high earnings yield into a lottery ticket; cheap firms with stable pretax profitability are compensated value, cheap firms with wildly volatile profitability are option-like claims that investors overpay for.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment distress channel that no archive signal has tested, and fundamental earnings volatility is a core input to reduced-form default models yet is not a spanned FF5 characteristic. Because the volatility component is nearly uncorrelated with book-to-market, it can add alpha where solvency-level channels were absorbed, while the earnings-yield component supplies the cross-sectional slope.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout_Validated_Cheapness",
+      "expression": "SUMRANK(RATIO(dvc, MUL(prcc_f, csho)), RATIO(SUB(oancf, dvc), lt))",
+      "hypothesis": "A cash dividend actually paid while liabilities remain serviceable is the most credible signal that a low valuation is not a distress verdict; cheap firms whose cash flow after dividends cannot cover their claims are the firms whose payout is about to be cut.",
+      "expected_sign": "positive",
+      "reasoning": "Dividend yield is a valuation metric with a hard cash constraint, so it is far less contaminated by accounting distortions than book or accrual earnings, and it is structurally different from every value proxy tried so far. The second channel makes the interaction explicit by asking whether the payout is sustainable relative to total claims, which distinguishes a healthy high-yield firm from a firm liquidating itself into distress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "EbitdaYield_Liability_Runway",
+      "expression": "SUMRANK(RATIO(ebitda, MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "Cheapness in operating-profit terms is compensated only when net working capital provides a runway large relative to all outstanding claims; the same yield with no runway is a firm being priced for liquidation.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the exact economic structure of the only archive signal with an aligned slope, alpha and Sharpe, but replaces the coverage-limiting oancf with ebitda, which is reported for a much longer and broader panel, so we learn whether the +4.9% alpha survives a near-doubling of coverage. Normalizing the buffer by total liabilities rather than assets is retained deliberately, since that is what makes the distress channel a solvency-runway measure rather than another asset-scaled profitability level already priced by RMW.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_Runway_Extended",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "The relevant valuation input is cash actually generated by operations relative to price, and when the cash-flow statement is unavailable operating profit is the economically correct fallback measure of the same quantity, so the healthy-cheap versus trap-cheap distinction should hold on the extended sample.",
+      "expected_sign": "positive",
+      "reasoning": "The COALESCE is economically justified rather than a coverage patch: both arguments measure the same cash-generation-to-price concept, with the accrual-free version preferred when reported. Paired with Signal 1, this isolates whether the alpha requires realized operating cash flow specifically or merely a cash-based yield, while restoring the coverage lost to post-1988 cash-flow reporting.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheapness_Beyond_Solvency_Wide",
+      "expression": "SUB(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(SUMRANK(RATIO(re, lt), RATIO(SUB(act, lct), lt))))",
+      "hypothesis": "When price-implied pessimism exceeds what accumulated earnings and liquid resources relative to claims can justify, the market is discounting deterioration the accounts have not yet booked, and such excess cheapness continues to earn low returns.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-2 version of this gap was sign-consistent on both the slope and a -2.6% alpha (t = -2.40) but ran on only 9% of observations because of oancf; scaling retained earnings and net working capital by total liabilities preserves the claim-relative solvency concept while widening the panel. If both statistics strengthen with coverage, the trap side of the value spread is the more reliable half of the interaction and deserves consolidation in later generations.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "MarketDistress_Versus_Coverage_Gap",
+      "expression": "SUB(RANK(RATIO(lt, MUL(prcc_f, csho))), RANK(RATIO(ebitda, lt)))",
+      "hypothesis": "Firms whose equity market value has collapsed relative to their liabilities while their operating profit still covers those liabilities look like accounting-healthy bargains, but the market's leverage-based verdict contains forward-looking information the income statement lags, so this mismatch predicts underperformance.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the book-to-market side of the gap mechanism with market leverage, a price-based distress measure with much higher information content about default proximity, testing whether the \"market knows first\" effect is stronger when the price channel is expressed against claims instead of book equity. Both inputs are ratio-scaled and widely reported, so coverage should be near the archive maximum rather than the 0.09 of previous gap tests.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Rollover_Risk_Adjusted_SalesYield",
+      "expression": "SUMRANK(RATIO(revt, MUL(prcc_f, csho)), RATIO(SUB(che, dlc), lct))",
+      "hypothesis": "Distress is triggered by refinancing, not by leverage per se; a cheap firm holding cash in excess of the debt maturing within a year can survive to realize its value, whereas an equally cheap firm whose short-term debt exceeds its cash is one credit market closure from restructuring.",
+      "expected_sign": "positive",
+      "reasoning": "No archive signal has used the maturity structure of debt, yet the timing of claims is what converts weak fundamentals into actual default, and cash net of current debt scaled by current liabilities is the sharpest available proxy for that pressure. Sales-to-price is chosen as the value channel because it is the least sensitive to the depressed transitory earnings typical of firms under refinancing stress.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Levered_EbitdaYield_Premium",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ebitda, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(RATIO(lt, at), 1)))",
+      "hypothesis": "Coherently priced firms \u2014 cheap on operating yield and genuinely levered, or expensive and genuinely unlevered \u2014 earn positive abnormal returns relative to firms whose price and balance sheet contradict each other, because leverage amplifies the payoff to a correctly identified operating-yield discount.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 book-to-market version of this cross-product produced the archive's largest FF5 alpha (+6.2%, t = 4.69) with the sign opposite to the trap hypothesis and a flat FMB slope, which means the relation is real but non-monotone and mis-signed in the archive; restating it with the correct sign and an EBITDA-yield value channel tests whether it replicates outside book-to-market. Winsorized z-scores keep the product from being determined by negative-equity outliers, which is what likely flattened the earlier Fama-MacBeth slope.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_Runway_Plus_RetainedBuffer",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), SUMRANK(RATIO(SUB(act, lct), lt), RATIO(re, lt)))",
+      "hypothesis": "Solvency has a flow-liquidity leg and a stock-of-past-earnings leg; a cheap firm is a compensated value opportunity only if it has both a working-capital runway and accumulated retained earnings relative to its claims, since retained earnings measure the cumulative equity cushion that liquidity alone cannot reveal.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's best signal uses only the working-capital runway, and retained-earnings-to-claims is the one solvency dimension that repeatedly carried predictive weight in gen-0 composites without duplicating current liquidity. Adding it as a nested channel tests whether the distress side of the interaction is under-specified rather than over-specified, at unchanged coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedCashYield_Runway",
+      "expression": "SUMRANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "A single year of operating cash flow scaled by price is noisy for exactly the firms at issue, since distressed firms swing between negative and windfall cash years; a three-year average identifies durable cash-generating capacity, so the healthy-cheap classification should be more stable and the trap side more cleanly separated.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice \u2014 measurement horizon of the valuation channel \u2014 while holding the winning distress channel fixed, so the comparison against CashYield_Runway_Extended is interpretable. If smoothing raises both the alpha t-stat and Sharpe, the portfolio's turnover and composition instability were costing signal, which is a diagnosis we can then apply to the whole family.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_Runway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness and solvency must hold jointly rather than on average, so a multiplicative rank interaction should concentrate the long leg on firms that are simultaneously cash-cheap and claim-solvent and the short leg on firms failing both, sharpening the trap-versus-value spread.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets extreme cheapness compensate for extreme illiquidity, which is precisely the trap the theme warns about, whereas the rank product penalizes any firm weak on either dimension without generating the mass-at-zero degeneracy that ruined the gen-1 INDICATOR gates. Comparing it to Signal 1 and to the archive additive version tells us whether the interaction is genuinely multiplicative.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_On_LiquidityAdjusted_EV",
+      "expression": "WINSOR(RATIO(oancf, ADD(MUL(prcc_f, csho), SUB(lt, act))), 1)",
+      "hypothesis": "The economically correct price for a claim on operating cash flow is market equity plus liabilities not already covered by current assets; firms whose liquid assets already extinguish their claims are effectively cheaper than their equity price suggests, while firms with uncovered claims are far more expensive than book-based value metrics imply.",
+      "expected_sign": "positive",
+      "reasoning": "This embeds both winning channels in a single economically motivated denominator instead of averaging two ranks, so it tests whether the interaction survives as a hard valuation identity rather than a statistical composite. It also fixes the flaw in the gen-2 EBITDA/EV test, which subtracted only cash and therefore ignored the receivables and inventory that actually service near-term claims.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_With_Claims_Turnover",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(revt, lt))",
+      "hypothesis": "A firm that generates a large volume of revenue relative to its outstanding claims retains operating and refinancing options that a low-turnover firm with the same balance sheet does not, so revenue productivity of claims is a distinct survival dimension from static liquidity.",
+      "expected_sign": "positive",
+      "reasoning": "Revenue-to-claims is the Altman turnover channel expressed against liabilities rather than assets, and it has never been tested in this archive; it should be nearly uncorrelated with the working-capital runway while capturing the same cheap-and-viable versus cheap-and-shrinking distinction. Both inputs are broadly reported, so coverage should match the best of the family rather than the 0.08\u20130.09 of the oancf-only constructions.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_WorstCase_Solvency",
+      "expression": "SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), TS_MIN(RATIO(SUB(act, lct), lt), 5))",
+      "hypothesis": "What separates a resilient cheap firm from a lottery-like one is not today's liquidity but the worst liquidity it has run in recent memory; a firm that never dipped into a negative claim-adjusted buffer over five years has demonstrated capacity to survive its own downside.",
+      "expected_sign": "positive",
+      "reasoning": "Current-level solvency can be window-dressed or temporarily flattered by asset sales, whereas the five-year minimum is a demonstrated-resilience statistic and is a genuinely different temporal concept from the levels, changes and trends already tested. If it improves on the current-level version, the trap-versus-value distinction is about tail survivability, which would then guide the final consolidation generations.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "A cheap firm is compensated value only if it has never lacked a claim-adjusted liquidity buffer in recent memory, so cheapness should be multiplied by demonstrated worst-case solvency rather than by a possibly window-dressed current snapshot.",
+      "expected_sign": "positive",
+      "reasoning": "This crosses the archive's two strongest ingredients \u2014 the multiplicative rank structure that lifted alpha to +6.0% and the five-year minimum runway that gave the strongest FMB slope \u2014 so it directly tests whether their contributions are additive in evidence. The worst-case statistic also stabilizes portfolio composition, which should raise Sharpe relative to the current-level conjunctive version.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Triple_Conjunctive_Cheap_Solvent_Productive",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), MUL(RANK(RATIO(SUB(act, lct), lt)), RANK(RATIO(revt, lt))))",
+      "hypothesis": "Survival requires both a liquidity stock and an operating flow large relative to claims, so a firm that is cash-cheap, liquid against its liabilities, and generating substantial revenue per unit of liabilities is the cleanest possible healthy-cheap firm, while failure on any one leg marks a trap.",
+      "expected_sign": "positive",
+      "reasoning": "Claims turnover delivered the archive's highest Sharpe (0.610) at full coverage, and the conjunctive structure delivered the highest alpha, so combining the two as a strict three-way conjunction should preserve alpha while improving spread quality. Unlike the failed additive enrichment with retained earnings, multiplication cannot let a strong leg mask a fatal weakness on another.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "StrictMin_CashYield_Runway",
+      "expression": "MIN(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "The binding constraint on a cheap firm's return is its weakest dimension, so the return-relevant score is the minimum of cheapness and claim-adjusted liquidity rather than their product.",
+      "expected_sign": "positive",
+      "reasoning": "The product and the minimum encode different economics \u2014 the product still rewards an extreme on one axis while the minimum is governed purely by the bottleneck \u2014 and separating them is the cleanest way to learn what the multiplicative gain in gen 4 actually came from. This is deliberately a single-axis design test against Conjunctive_CashYield_Runway, holding both channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_Runway",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Durable cash-generating capacity, measured over three years, is the valuation input that should be interacted with solvency, because a one-year cash windfall or shortfall misclassifies precisely the distressed firms whose cash flows are most erratic.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing improved the FMB slope in the additive family while leaving alpha essentially unchanged, so testing it inside the superior multiplicative structure tells us whether horizon and structure improvements compound. It should also reduce month-to-month rebalancing of the long leg, a Sharpe-relevant diagnostic.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_LowAccrualBuild",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(NEG(RATIO(DELTA(wcap, 1), lt))))",
+      "hypothesis": "Firms approaching distress conceal deterioration by building working capital \u2014 stuffing receivables and inventory \u2014 so a cheap firm whose working capital is expanding relative to its claims is a trap, while a cheap firm shrinking working-capital investment is converting operations into cash.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces an earnings-quality distress channel that is a flow-of-accruals concept rather than another solvency level, so it is unlikely to be spanned by RMW or CMA and should add alpha where levels were absorbed. Scaling the working-capital change by total liabilities keeps the claim-relative normalization that has been the consistent discriminator in this archive, and using wcap rather than the oancf-minus-earnings accrual definition preserves full coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_FlowAndStock_Solvency",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(pi, lt), RATIO(SUB(act, lct), lt))))",
+      "hypothesis": "Solvency has a flow leg \u2014 pretax profit available to service claims \u2014 and a stock leg \u2014 liquid assets net of current obligations relative to claims \u2014 and a cheap firm needs both, since profitable firms can still fail on liquidity and liquid firms can still erode their cushion through losses.",
+      "expected_sign": "positive",
+      "reasoning": "Enriching the distress side additively hurt when the added channel was retained earnings, a slow-moving stock variable largely redundant with book equity, whereas pretax-income coverage of claims is a current flow measure that is economically complementary to the liquidity stock. Placing the enriched solvency score inside the multiplicative structure tests whether the earlier degradation came from the added channel itself or from additive dilution of the interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_WorstRunway",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "Compensated cheapness requires durable cash generation, not a single year's figure, interacted with a liquidity cushion the firm has never lost; combining a three-year average yield with a five-year minimum claim-adjusted buffer should identify healthy-cheap firms with the least measurement noise on either axis.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation channel gave the archive's most reliable alpha (t = 4.02) and the minimum-runway distress channel gave its strongest slope (t = 6.15), and the two refinements act on different arguments of the product, so their gains plausibly compound rather than overlap. Both refinements also reduce turnover in the extreme deciles, which is where Sharpe has been improving through this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_Worst3yrRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Resilience should be measured over the recent credit cycle rather than deep history, since a liquidity crunch five years ago may reflect a company that no longer exists in economic terms, while a crunch in the last three years is live information about fragility.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design parameter \u2014 the resilience window \u2014 against the current leader, and a shorter window also loses fewer young firms, so it distinguishes whether the gen-5 improvement came from downside conditioning or from implicitly requiring a long reporting history. If the three-year version matches the five-year version at higher coverage, the effect is genuinely about downside solvency rather than firm-age selection.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstRunway",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "A firm that looks cheap even on its worst recent cash-flow year, and that never ran out of a claim-adjusted buffer, is the purest form of compensated value, whereas a firm that is only cheap on a peak cash year is a cyclical trap dressed as value.",
+      "expected_sign": "positive",
+      "reasoning": "All previous valuation channels used current or averaged cash flow, so the downside of the cash-flow distribution has never been tested even though it is exactly what a distressed-equity valuation should be based on. Applying the same worst-case logic to both legs makes the signal a joint tail-survivability score, a substantively different economic statement from the mean-based versions.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_IndustryNormedRunway",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), IND_RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "The liquidity buffer that constitutes safety is industry-specific \u2014 a level that is comfortable for a utility with predictable cash flows is dangerous for a retailer with inventory risk \u2014 so solvency should be judged against industry peers while cheapness is judged market-wide.",
+      "expected_sign": "positive",
+      "reasoning": "Every version so far ranks the buffer across the whole market, which mechanically loads the short leg with entire capital-intensive industries rather than genuinely fragile firms, an instability in portfolio composition that could be capping the alpha. Industry-ranking only the distress leg keeps the market-wide valuation sort intact and directly tests whether the trap identification is firm-specific or sectoral.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_TotalClaimCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), lt)))",
+      "hypothesis": "The Graham solvency test is whether current assets cover *all* liabilities, not merely current ones; a cheap firm whose liquid assets exceed total claims cannot be forced into distress by any creditor, while a firm passing only the current-liability test remains hostage to its long-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the economic content of the distress channel rather than its statistics, imposing a strictly harder solvency bar that includes long-term claims in the deficit calculation. Comparing it with the current-liabilities version tells us whether the value-trap discrimination comes from near-term liquidity pressure or from total balance-sheet encumbrance, which is the key open question for consolidating this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_StableSolvency",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(NEG(VOL(RATIO(SUB(act, lct), lt), 5))))",
+      "hypothesis": "What makes a cheap firm lottery-like is not the level of its liquidity but the instability of it; firms whose claim-adjusted buffer swings violently are being managed near a solvency boundary, and their equity behaves like an option that investors overpay for.",
+      "expected_sign": "positive",
+      "reasoning": "The second-moment version of the *winning* distress variable has not been tested \u2014 the earlier volatility attempt used earnings volatility combined additively with book-to-market and was therefore confounded by the HML-spanned value leg. If instability rather than level drives the trap side, that reframes the mechanism from solvency distance to solvency stability and would be the sharpest new economic finding available in the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstTotalCoverage",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(act, lt), lt), 3)))",
+      "hypothesis": "The healthiest cheap firm is one that looks cheap even in its worst recent cash-flow year and whose liquid assets covered all outstanding claims even at their worst recent point; failing either test on the downside marks a lottery-like trap.",
+      "expected_sign": "positive",
+      "reasoning": "This crosses the two refinements that independently pushed the frontier \u2014 total-claim coverage (largest alpha) and two-sided worst-case conditioning (most reliable alpha) \u2014 using a three-year window on both legs so coverage stays near the archive maximum rather than selecting for long-lived firms. If both improvements are sourced in different economics, the combination should dominate on alpha reliability and slope simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstTotalCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(act, lt), lt), 5)))",
+      "hypothesis": "Current cheapness combined with never having failed the total-claim liquidity test over five years captures the tradable version of the mechanism: the valuation must be current to be exploitable, while solvency must be demonstrated over a cycle to be credible.",
+      "expected_sign": "positive",
+      "reasoning": "Holding the valuation leg at its current value isolates whether the gain in Signal 1 comes from the solvency leg alone, which matters for implementation because worst-case cash yield discards timely valuation information. Comparing the two also tells us whether the timeliness of the price signal or the durability of the solvency signal is the binding source of return predictability.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_AssetScaledCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), at)))",
+      "hypothesis": "If the trap discriminator is the size of the liquidity surplus relative to the firm's own asset base rather than relative to its creditors' claims, then asset scaling should work equally well; if the claim-relative normalization is essential, the economics are about creditor pressure, not balance-sheet composition.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful signal in this family scales the buffer by total liabilities, and the one time it was scaled by current liabilities the alpha vanished, so pinning down the denominator is the last unresolved measurement question in the mechanism. Asset scaling also removes the mechanical explosion of the ratio for near-zero-liability firms, so if performance holds up the signal becomes more stable in the extreme deciles.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_HardCashCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "Only cash is certain in distress \u2014 receivables and inventory of a failing firm are collected at deep discounts \u2014 so the credible solvency test is cash net of debt maturing within a year measured against total claims.",
+      "expected_sign": "positive",
+      "reasoning": "All current versions rely on net working capital, which for a deteriorating firm can be inflated by exactly the soft assets that evaporate in a workout, so replacing it with hard cash net of maturing debt tests whether the trap discrimination requires asset quality. The rollover-risk concept previously appeared only with a sales-yield valuation leg that was HML-spanned, so it has never been fairly tested inside the winning multiplicative structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_BroadValue_TotalCoverage",
+      "expression": "MUL(RANK(SUMRANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), RATIO(ceq, MUL(prcc_f, csho)))), RANK(RATIO(SUB(act, lt), lt)))",
+      "hypothesis": "A composite cheapness leg that blends cash-flow yield with book-to-market measures the discount more robustly across business models, and interacting that broader valuation state with total-claim solvency should identify healthy-cheap firms with less sensitivity to the accounting idiosyncrasies of any single yield.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market alone is HML-spanned, but as one of two inputs to the cheapness leg it may stabilize the sort without dominating it, which would raise Sharpe and slope even if it trims the alpha slightly. This is the informative test of whether the family's alpha requires a purely cash-based valuation channel or merely a valuation channel that is not exclusively book-based.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_SolventAndProfitPersistent",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(SUB(act, lt), lt), TS_SUM(INDICATOR(pi, 0), 5))))",
+      "hypothesis": "Balance-sheet solvency and income-statement viability are distinct survival conditions; a cheap firm with claim-covering liquid assets that has also been profitable in most of the last five years is durably healthy, while a liquid but chronically loss-making cheap firm is merely burning its cushion.",
+      "expected_sign": "positive",
+      "reasoning": "Loss persistence was tested once, additively and against a sales-yield value leg that FF5 spans, so its failure then is uninformative about its value inside the multiplicative structure with a claim-scaled solvency partner. Counting profitable years is a slow-moving, hard-to-manipulate viability statistic that is conceptually orthogonal to the liquidity buffer, which is the property that distinguished the successful channels from the failed accrual and volatility ones.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstHardCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "A cheap firm is safe only if it has held cash in excess of maturing debt relative to total claims at every point in the recent past; a firm whose current cash position is a one-off, perhaps financed by an asset sale or an equity raise, is still a trap.",
+      "expected_sign": "positive",
+      "reasoning": "Worst-case conditioning raised alpha reliability when applied to the net-working-capital buffer, and applying it to the stronger hard-cash channel is the single most likely way to improve on the archive leader. A three-year window is used so the coverage advantage of the cash-based channel is largely preserved.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_TotalDebtNetCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, ADD(dltt, dlc)), lt)))",
+      "hypothesis": "What protects a cheap firm's equity is cash net of all interest-bearing debt, not merely the tranche maturing this year, because long-term debt covenants and eventual refinancing exert pressure well before maturity.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one economic choice against the leader \u2014 which debt is netted against cash \u2014 and thereby tells us whether the mechanism is near-term refinancing pressure or total debt overhang. Both variants keep total liabilities as the scaling denominator, so the comparison is clean.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_HardCash_AssetScaled",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, dlc), at)))",
+      "hypothesis": "If the safety signal is the share of the balance sheet held in unencumbered cash, asset scaling should work as well as claim scaling; if creditor pressure is what matters, dividing by total liabilities is essential.",
+      "expected_sign": "positive",
+      "reasoning": "When this denominator test was run on the working-capital channel the asset-scaled version held up (alpha +6.1%, t = 4.08), so repeating it on the stronger hard-cash channel resolves whether the family's normalization is about creditor claims or balance-sheet composition. Asset scaling also removes the instability of dividing by very small liability balances, which should tighten the extreme deciles.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_HardCash_And_ClaimCoverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), MUL(RANK(RATIO(SUB(che, dlc), lt)), RANK(RATIO(SUB(act, lt), lt))))",
+      "hypothesis": "Hard cash against maturing debt and total current assets against all claims measure different survival resources \u2014 immediate settlement capacity versus overall liquidation coverage \u2014 so a cheap firm strong on both is the most reliably healthy, and weakness on either is disqualifying.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier three-way conjunction diluted performance, but its third leg was claims turnover, the weakest of the solvency channels, whereas here both solvency legs individually produced 6%-plus alphas. This is the decisive test of whether the two best distress channels are complements or substitutes, which determines the form of the final consolidated signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_HardCash",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(RATIO(SUB(che, dlc), lt)))",
+      "hypothesis": "Durable cash-generating capacity measured over three years, interacted with unencumbered cash against total claims, should be the most economically coherent statement of the healthy-cheap concept: sustained cash generation plus settlement capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation leg raised the alpha t-stat when paired with the working-capital buffer, so pairing it with the superior hard-cash leg tests whether the two best-performing modifications to opposite arguments of the product compound. It also reduces annual rebalancing noise in the long leg, the diagnostic that has tracked Sharpe throughout this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_CashBurn_Adjusted",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(SUMRANK(RATIO(SUB(che, dlc), lt), DELTA(RATIO(SUB(che, dlc), lt), 1))))",
+      "hypothesis": "Both the level of unencumbered cash and its direction of travel matter: a cheap firm with a modest but growing net cash position is repairing itself, while one with a comparable but rapidly burning position is on a path to the very distress its price implies.",
+      "expected_sign": "positive",
+      "reasoning": "Change-based distress channels have failed twice in this archive, but both attempts used working-capital or leverage accounting aggregates rather than the cash channel that has now proved to be the active ingredient, so a burn-rate test on the right variable is a genuinely new question rather than a repeat. Combining level and change additively inside the solvency leg preserves the multiplicative interaction with cheapness that has been essential throughout.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_Worst5yrHardCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 5)))",
+      "hypothesis": "Demonstrated liquidity resilience over a full business cycle is a stronger safety credential than resilience over three years, so a cheap firm that never let cash fall below its maturing debt across five years should be the most reliably compensated value opportunity.",
+      "expected_sign": "positive",
+      "reasoning": "The three-year window produced the archive's best signal and the corresponding window test on the working-capital channel showed five years and three years were near-equivalent, so this determines whether the cash channel rewards a longer memory or merely loses young firms. It is the single cheapest remaining test of the leader's key parameter at essentially unchanged coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_WorstTotalDebtNetCash",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(TS_MIN(RATIO(SUB(che, ADD(dltt, dlc)), lt), 3)))",
+      "hypothesis": "A cheap firm is genuinely safe only if it has consistently held cash against its entire interest-bearing debt load, not just the maturing tranche, because long-term debt overhang suppresses investment and forces distressed refinancing well before maturity.",
+      "expected_sign": "positive",
+      "reasoning": "Netting total debt and applying worst-case conditioning were each independently strong in gen 8 (alpha +6.5% with t = 4.88, and +7.8% with t = 4.82) but have never been combined, and they act on different features of the same channel so their gains may compound. If the total-debt version wins under downside conditioning, the economics are debt overhang rather than rollover timing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_SmoothedYield_WorstHardCash",
+      "expression": "MUL(RANK(MA(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "Sustained cash-generating capacity interacted with never-breached cash coverage of maturing debt is the fullest statement of healthy cheapness: the firm both earns cash durably and has always been able to settle its near-term claims.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing the valuation leg improved alpha reliability against both the working-capital leg (t = 4.02) and the hard-cash leg (t = 4.62), and worst-case conditioning improved the hard-cash leg further, so combining refinements on opposite arguments of the product is the natural final consolidation. Smoothing should also cut turnover in the long leg, where Sharpe gains have consistently come from in this family.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_WorstYield_WorstHardCash",
+      "expression": "MUL(RANK(TS_MIN(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho))), 3)), RANK(TS_MIN(RATIO(SUB(che, dlc), lt), 3)))",
+      "hypothesis": "The purest joint tail-survivability score is cheapness measured on the firm's worst recent cash-flow year combined with liquidity measured at its worst recent point; a firm passing both downside tests cannot be a lottery-like trap.",
+      "expected_sign": "positive",
+      "reasoning": "Two-sided worst-case conditioning delivered the most reliable alpha of the working-capital family (t = 4.33), so applying it to the superior hard-cash channel tests whether the downside logic is fully general across both themes. It also guards against the risk that the leader's long leg is populated by firms enjoying a single windfall cash-flow year.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_LiquiditySources_Coverage",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(ADD(che, COALESCE(oancf, ebitda)), lt)))",
+      "hypothesis": "The resources available to satisfy creditors are the cash already on hand plus the cash the business will generate this year, so total liquidity sources relative to total claims is the economically complete solvency test that a stock-only measure understates for cash-generative firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every solvency leg tested so far is either a pure stock (cash, working capital) or a pure flow (pretax income, revenue) scaled by claims, and adding them within a single measure is different from stacking two ranked legs, which failed because the legs were substitutes. This directly tests whether cash-generation capacity is a genuine component of the safety credential or is already fully impounded in the valuation leg.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CashYield_NetCash_Share_Of_Capital",
+      "expression": "MUL(RANK(COALESCE(RATIO(oancf, MUL(prcc_f, csho)), RATIO(ebitda, MUL(prcc_f, csho)))), RANK(RATIO(SUB(che, dlc), ADD(lt, MUL(prcc_f, csho)))))",
+      "hypothesis": "What insulates a cheap firm is the share of its entire capital structure \u2014 creditors' claims plus equity market value \u2014 that is already backed by unencumbered cash, since that fraction is the part of firm value that cannot be impaired by operating deterioration.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling net cash by total capital rather than liabilities alone removes the mechanical instability of dividing by very small liability balances, which is the most plausible remaining source of unstable extreme-decile composition in the leader. It is also economically distinct: it measures the cash-backed fraction of firm value rather than creditor coverage, and the denominator is strictly positive, so the ranking cannot be distorted by sign flips.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Solvency_Scored_BookToMarket",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),sumrank(ratio(re,at),ratio(wcap,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "re",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "DebtService_Gated_EarningsYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),indicator(ratio(oancf,add(dltt,dlc)),0.15))",
+        "variables": [
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheapness_Per_NetLiability_Burden",
+      "metadata": {
+        "normalized_expression": "ratio(ratio(ceq,mul(prcc_f,csho)),add(1,ratio(sub(lt,che),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value_With_Deleveraging_Trend",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),neg(trend(ratio(sub(lt,che),at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SalesYield_Minus_LossPersistence",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(revt,mul(prcc_f,csho)),neg(ts_sum(indicator(neg(pi),0),5)))",
+        "variables": [
+          "csho",
+          "pi",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryRelative_Value_Health_Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(ceq,mul(prcc_f,csho))),ind_rank(sumrank(ratio(oancf,lt),ratio(re,at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WithinCheap_Coverage_Spread",
+      "metadata": {
+        "normalized_expression": "mul(indicator(rank(ratio(ceq,mul(prcc_f,csho))),0.7),zscore(sumrank(ratio(oancf,lt),ratio(re,at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value_NetLeverage_Product",
+      "metadata": {
+        "normalized_expression": "mul(zscore(winsor(ratio(ceq,mul(prcc_f,csho)),1)),zscore(winsor(ratio(sub(lt,che),at),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCash_To_Price_Graham",
+      "metadata": {
+        "normalized_expression": "ratio(sub(che,lt),mul(prcc_f,csho))",
+        "variables": [
+          "che",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_Cheap_And_Liquid",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ebitda,mul(prcc_f,csho))),rank(sumrank(ratio(act,lct),ratio(re,at))))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "ebitda",
+          "lct",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WithinCheap_Balance_Deterioration",
+      "metadata": {
+        "normalized_expression": "mul(indicator(rank(ratio(revt,mul(prcc_f,csho))),0.7),neg(zscore(delta(ratio(lt,at),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "lt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxValidated_Cheap_Earnings",
+      "metadata": {
+        "normalized_expression": "mul(indicator(rank(ratio(ib,mul(prcc_f,csho))),0.7),zscore(winsor(ratio(txt,at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ClaimAdjusted_EBITDA_EV_Yield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ebitda,add(sub(mul(prcc_f,csho),che),lt)),1)",
+        "variables": [
+          "che",
+          "csho",
+          "ebitda",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_With_Liquidity_Buffer",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oancf,mul(prcc_f,csho)),ratio(sub(act,lct),lt))",
+        "variables": [
+          "act",
+          "csho",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap_With_Improving_Solvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),sumrank(delta(ratio(pi,at),1),neg(delta(ratio(lt,act),1))))",
+        "variables": [
+          "act",
+          "at",
+          "ceq",
+          "csho",
+          "lt",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Unexplained_Cheapness_Gap",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(ceq,mul(prcc_f,csho))),rank(sumrank(ratio(re,at),ratio(oancf,lt))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap_With_Stable_Earnings",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),neg(vol(ratio(pi,at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout_Validated_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(dvc,mul(prcc_f,csho)),ratio(sub(oancf,dvc),lt))",
+        "variables": [
+          "csho",
+          "dvc",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EbitdaYield_Liability_Runway",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,mul(prcc_f,csho)),ratio(sub(act,lct),lt))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_Runway_Extended",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),ratio(sub(act,lct),lt))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheapness_Beyond_Solvency_Wide",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(ceq,mul(prcc_f,csho))),rank(sumrank(ratio(re,lt),ratio(sub(act,lct),lt))))",
+        "variables": [
+          "act",
+          "ceq",
+          "csho",
+          "lct",
+          "lt",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarketDistress_Versus_Coverage_Gap",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(lt,mul(prcc_f,csho))),rank(ratio(ebitda,lt)))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rollover_Risk_Adjusted_SalesYield",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(revt,mul(prcc_f,csho)),ratio(sub(che,dlc),lct))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "lct",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Levered_EbitdaYield_Premium",
+      "metadata": {
+        "normalized_expression": "mul(zscore(winsor(ratio(ebitda,mul(prcc_f,csho)),1)),zscore(winsor(ratio(lt,at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_Runway_Plus_RetainedBuffer",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),sumrank(ratio(sub(act,lct),lt),ratio(re,lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedCashYield_Runway",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3),ratio(sub(act,lct),lt))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_Runway",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_On_LiquidityAdjusted_EV",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(oancf,add(mul(prcc_f,csho),sub(lt,act))),1)",
+        "variables": [
+          "act",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_With_Claims_Turnover",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),ratio(revt,lt))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_WorstCase_Solvency",
+      "metadata": {
+        "normalized_expression": "sumrank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),ts_min(ratio(sub(act,lct),lt),5))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_WorstRunway",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(act,lct),lt),5)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Triple_Conjunctive_Cheap_Solvent_Productive",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),mul(rank(ratio(sub(act,lct),lt)),rank(ratio(revt,lt))))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StrictMin_CashYield_Runway",
+      "metadata": {
+        "normalized_expression": "min(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_SmoothedYield_Runway",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_LowAccrualBuild",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(neg(ratio(delta(wcap,1),lt))))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_FlowAndStock_Solvency",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(sumrank(ratio(pi,lt),ratio(sub(act,lct),lt))))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_SmoothedYield_WorstRunway",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ts_min(ratio(sub(act,lct),lt),5)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_Worst3yrRunway",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_WorstYield_WorstRunway",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ts_min(ratio(sub(act,lct),lt),5)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_IndustryNormedRunway",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),ind_rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_TotalClaimCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(act,lt),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_StableSolvency",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(neg(vol(ratio(sub(act,lct),lt),5))))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lct",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_WorstYield_WorstTotalCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ts_min(ratio(sub(act,lt),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_WorstTotalCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(act,lt),lt),5)))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_AssetScaledCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(act,lt),at)))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_HardCashCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(che,dlc),lt)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_BroadValue_TotalCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(sumrank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),ratio(ceq,mul(prcc_f,csho)))),rank(ratio(sub(act,lt),lt)))",
+        "variables": [
+          "act",
+          "ceq",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_SolventAndProfitPersistent",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(sumrank(ratio(sub(act,lt),lt),ts_sum(indicator(pi,0),5))))",
+        "variables": [
+          "act",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_WorstHardCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(che,dlc),lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_TotalDebtNetCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(che,add(dltt,dlc)),lt)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: distress (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Conjunctive_CashYield_HardCash_AssetScaled",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(che,dlc),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_HardCash_And_ClaimCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),mul(rank(ratio(sub(che,dlc),lt)),rank(ratio(sub(act,lt),lt))))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_SmoothedYield_HardCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ratio(sub(che,dlc),lt)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_CashBurn_Adjusted",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(sumrank(ratio(sub(che,dlc),lt),delta(ratio(sub(che,dlc),lt),1))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_Worst5yrHardCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(che,dlc),lt),5)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_WorstTotalDebtNetCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ts_min(ratio(sub(che,add(dltt,dlc)),lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_SmoothedYield_WorstHardCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ts_min(ratio(sub(che,dlc),lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_WorstYield_WorstHardCash",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_min(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho))),3)),rank(ts_min(ratio(sub(che,dlc),lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_LiquiditySources_Coverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(add(che,coalesce(oancf,ebitda)),lt)))",
+        "variables": [
+          "che",
+          "csho",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CashYield_NetCash_Share_Of_Capital",
+      "metadata": {
+        "normalized_expression": "mul(rank(coalesce(ratio(oancf,mul(prcc_f,csho)),ratio(ebitda,mul(prcc_f,csho)))),rank(ratio(sub(che,dlc),add(lt,mul(prcc_f,csho)))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "ebitda",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    }
+  ]
+}

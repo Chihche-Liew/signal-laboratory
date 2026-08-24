@@ -1,0 +1,2777 @@
+{
+  "pair": "profit_distress",
+  "evaluated": [
+    {
+      "name": "Leverage-Weighted Operating Profitability",
+      "expression": "MUL(IND_ZSCORE(RATIO(oiadp, at)), RANK(RATIO(lt, at)))",
+      "hypothesis": "The return premium to operating profitability is amplified for firms carrying heavy liability loads, because equity in a levered firm is a levered claim on operating cash flows and investors under-react to profitability precisely where solvency is in question.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-demeaned profitability z-score is scaled by a non-negative distress intensity weight (cross-sectional rank of liabilities-to-assets), so the signal preserves the monotone profitability ordering but stretches it among high-leverage firms and compresses it among unlevered firms. High-profit/high-leverage names are the deleveraging winners that get repriced upward, while low-profit/high-leverage names bear the largest downside, producing a wider spread than profitability alone.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.0994551850000653,
+      "ls_alpha": -0.013912469842401527,
+      "ls_talpha": -1.44203955099717,
+      "ls_sharpe": 0.09003734860790173,
+      "coverage": 0.14485231053955377,
+      "error": null
+    },
+    {
+      "name": "EBITDA Coverage of Total Liabilities",
+      "expression": "WINSOR(RATIO(oibdp, SUB(lt, che)), 1)",
+      "hypothesis": "Operating cash earnings measured per dollar of net obligations is a direct debt-service capacity metric; firms whose operating profit easily covers net debt are systematically underpriced relative to their low true default risk.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profitability by net liabilities (liabilities less cash) rather than by assets embeds distress in the denominator, so the same profit level maps to a very different signal for a cash-rich versus a debt-burdened firm. Winsorizing controls the exploding tail for near-zero net debt firms, keeping portfolio composition stable while retaining the economically meaningful coverage ordering.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.9073980922587033,
+      "ls_alpha": -0.007383503727781814,
+      "ls_talpha": -0.7413250644346648,
+      "ls_sharpe": -0.022087472445849635,
+      "coverage": 0.14349358236195825,
+      "error": null
+    },
+    {
+      "name": "Turnaround Trend Under Working-Capital Deficit",
+      "expression": "MUL(ZSCORE(TREND(RATIO(oibdp, at), 5)), INDICATOR(RATIO(lct, act), 1))",
+      "hypothesis": "A multi-year improvement in operating margin resolves distress risk most sharply for firms with a liquidity squeeze (current liabilities exceeding current assets), where each incremental dollar of operating profit directly reduces refinancing probability.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the profitability trend on only for firms with negative working capital, the subset where near-term solvency is genuinely state-dependent and where information about operating improvement is slowest to be incorporated. For liquid firms the signal is flat at zero, sharpening the conditional rather than diluting it with a broad profitability-trend effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3137563348268864,
+      "ls_alpha": 0.00949402066564421,
+      "ls_talpha": 0.49245575656900736,
+      "ls_sharpe": 0.01265560648153597,
+      "coverage": 0.10423507772238856,
+      "error": null
+    },
+    {
+      "name": "Gross Profits per Dollar of Liabilities",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), lt), 1)",
+      "hypothesis": "Gross profit measured per dollar of total obligations is the cleanest flow-to-stock solvency margin; firms whose production margin comfortably services their liability stock are underpriced because screens classify them by leverage level rather than by leverage serviceability.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs gen-0 signal 2 in two ways: gross profit (revt minus cogs) is far more widely reported and less tail-prone than oibdp, and total liabilities avoids the near-zero/negative denominators created by subtracting cash, which likely destroyed the earlier signal's monotonicity. Distress enters the denominator, so the interaction is structural rather than a weighting scheme that contaminates the long leg with levered names.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.7206963070081747,
+      "ls_alpha": 0.04500559199083447,
+      "ls_talpha": 3.4903106123060943,
+      "ls_sharpe": 0.2673636539586106,
+      "coverage": 0.1449754091662147,
+      "error": null
+    },
+    {
+      "name": "Gross Profitability Net of Net-Debt Burden",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), at), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))",
+      "hypothesis": "Profitability is rewarded and net indebtedness is penalized, and the two effects reinforce each other: the market underprices high-margin firms that have already funded themselves out of default risk with cash, and overprices low-margin firms whose net debt keeps growing.",
+      "expected_sign": "positive",
+      "reasoning": "This directly tests the additive-versus-multiplicative design choice that failed in gen 0: by subtracting rather than weighting by distress, the long leg is high-margin *and* cash-rich, so the profitability spread is no longer offset by the negative distress premium. Cash-netted debt is the economically correct distress stock, and rank aggregation keeps both legs stable and fully covered.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.7453660212777498,
+      "ls_alpha": 0.04984240665953793,
+      "ls_talpha": 3.8784554192632457,
+      "ls_sharpe": 0.2288928787252221,
+      "coverage": 0.14349812246218716,
+      "error": null
+    },
+    {
+      "name": "Margin Strength Against Rollover Pressure",
+      "expression": "SUMRANK(RATIO(oibdp, at), NEG(RATIO(dlc, act)))",
+      "hypothesis": "Distress risk is driven by debt *maturity* as much as debt level: operating margin is most valuable when a firm has little short-term debt to roll relative to its liquid asset base, and near-term rollover need is the channel through which weak profitability becomes insolvency.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a maturity-structure distress channel distinct from the total-liability stock used in signals 1 and 2, so the batch teaches two separable lessons about which distress dimension interacts with profitability. Scaling current debt by current assets captures the funding-gap concept without the exploding denominators of a cash-only scaling.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.8944102554489737,
+      "ls_alpha": 0.033699648289520094,
+      "ls_talpha": 2.9542313274415513,
+      "ls_sharpe": 0.270919393519872,
+      "coverage": 0.12394551012978908,
+      "error": null
+    },
+    {
+      "name": "Margin Erosion With Rising Leverage",
+      "expression": "SUMRANK(NEG(DELTA(RATIO(SUB(revt, cogs), at), 1)), DELTA(RATIO(lt, at), 1))",
+      "hypothesis": "Firms drifting into distress \u2014 deteriorating gross margin financed by an expanding liability stock \u2014 experience predictable negative abnormal returns, because analysts and investors extrapolate the current earnings level and update too slowly on the joint trajectory.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage 5-year TREND construction with one-year changes in both themes, keeping coverage high while capturing the dynamic interaction that a level-based signal cannot: it is the *co-movement* of falling profitability and rising leverage, not either state, that signals impending distress. It is the short-side mirror of the level composites, so comparing it with signal 2 reveals whether the anomaly lives in states or in transitions.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.5579822470078304,
+      "ls_alpha": -0.0013712368402054747,
+      "ls_talpha": -0.14018354529567567,
+      "ls_sharpe": -0.12284448112201407,
+      "coverage": 0.1319132828474188,
+      "error": null
+    },
+    {
+      "name": "Untaxed Reported Profit",
+      "expression": "SUB(IND_RANK(RATIO(oibdp, at)), IND_RANK(RATIO(txt, at)))",
+      "hypothesis": "Firms reporting strong operating profit while paying almost no tax are typically sheltering behind loss carryforwards or aggressive accruals from a prior distress episode, so their reported profitability is low quality and does not earn the usual profitability premium.",
+      "expected_sign": "negative",
+      "reasoning": "Cash taxes paid are an independent, hard-to-manipulate validation of accounting profit, and the book-tax gap therefore identifies where the profitability signal is contaminated by distress history rather than confirmed by it. This is a mechanism no prior proposal touched: distress sharpens profitability by *invalidating* it, predicting a sign opposite to the coverage-style ratios.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.7193198551764945,
+      "ls_alpha": 0.02879286154435063,
+      "ls_talpha": 2.7506319534707853,
+      "ls_sharpe": 0.38127394053024466,
+      "coverage": 0.14481469993652116,
+      "error": null
+    },
+    {
+      "name": "Profitable Accumulated-Deficit Phoenix",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(re, at)))",
+      "hypothesis": "Firms currently generating high gross margins while still carrying an accumulated deficit are mechanically flagged as distressed by retained-earnings-based scores, and the market underprices the divergence between stale distress history and current operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the theme-invalid gen-0 \"Phoenix\" idea by using revt minus cogs as the profitability leg while retaining retained earnings \u2014 the Altman accumulated-distress channel \u2014 as the distress leg. Unlike signals 1-3, which reward safety, this deliberately goes long *stigmatized* profitable firms, so its outcome discriminates between a risk-premium story and a mispriced-classification story.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.0107265763940243,
+      "ls_alpha": 0.02477641321349457,
+      "ls_talpha": 2.704597471982037,
+      "ls_sharpe": 0.1404004628918875,
+      "coverage": 0.14332007830434687,
+      "error": null
+    },
+    {
+      "name": "Industry-Relative Liability Coverage",
+      "expression": "IND_RANK(RATIO(SUB(revt, cogs), lt))",
+      "hypothesis": "What constitutes a safe liability load per dollar of gross profit is industry-specific (utilities versus software), so the mispriced component of profitability-adjusted solvency is the firm's position within its industry rather than its raw coverage level.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one design choice on the archive's best signal \u2014 industry conditioning \u2014 and removes the winsorization/scale sensitivity of the raw ratio by mapping to a bounded within-industry rank. If the raw ratio's power partly reflects an industry-composition tilt, this will weaken; if it reflects genuine firm-level serviceability mispricing, both FMB and alpha should strengthen.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.627428783319268,
+      "ls_alpha": 0.030384463044747304,
+      "ls_talpha": 3.4993334818008797,
+      "ls_sharpe": 0.1637497470146625,
+      "coverage": 0.14496055065637467,
+      "error": null
+    },
+    {
+      "name": "Liability Coverage Plus Net-Debt Safety",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), lt), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))",
+      "hypothesis": "Serviceability (profit flow per liability) and solvency stock (cash-netted debt) are distinct dimensions of the same profitability-distress interaction, and firms scoring well on both are the most systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The two strongest archive signals load on different aspects of the same story \u2014 one on flow coverage with a strong FMB slope, one on net-debt stock with the larger alpha \u2014 so combining them should raise alpha without sacrificing the cross-sectional slope. It also directly tests whether the archive's ratio and composite winners are redundant or additive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.006779376405421,
+      "ls_alpha": 0.05084350056268305,
+      "ls_talpha": 3.8039429965420606,
+      "ls_sharpe": 0.17333998640157053,
+      "coverage": 0.14344384762763254,
+      "error": null
+    },
+    {
+      "name": "Coverage of All Senior Fixed Claims",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Default is triggered by the near-term senior claims a firm must actually settle in cash \u2014 interest, taxes, and maturing short-term debt \u2014 so gross profit measured against the full bundle of non-deferrable obligations is a sharper distress-adjusted profitability metric than profit against total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This operationalizes the corrected interpretation of the tax result: taxes belong in the denominator as a senior claim, alongside interest and rollover need, rather than as an earnings-quality validator. It is a genuinely different distress construct from total-liability leverage (cash-flow-based rather than balance-sheet-based) and should improve on signal-1-style coverage if the mechanism is liquidity-driven default rather than leverage per se.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.647153871568219,
+      "ls_alpha": 0.0567327460554117,
+      "ls_talpha": 4.821902909999986,
+      "ls_sharpe": 0.3916774401542849,
+      "coverage": 0.12359411669048155,
+      "error": null
+    },
+    {
+      "name": "Margin Strength Versus Implied Borrowing Cost",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), at), NEG(RATIO(xint, ADD(dltt, dlc))))",
+      "hypothesis": "The interest rate a firm actually pays on its debt is a creditor-revealed distress assessment; profitable firms that nonetheless borrow at high implied spreads are being overpriced by equity investors who ignore the credit market's signal, while profitable cheap borrowers are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces an entirely new distress proxy \u2014 the implied cost of debt from the income statement over the debt stock \u2014 rather than another leverage or liquidity measure, so it tests whether creditor-revealed risk adds information beyond balance-sheet ratios. Because the credit-spread leg is scale-free, it should not be redundant with the total-liability denominator that already works.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.580496796174637,
+      "ls_alpha": 0.020540196875788248,
+      "ls_talpha": 1.8651658435059988,
+      "ls_sharpe": 0.14029081629365636,
+      "coverage": 0.11193740935277156,
+      "error": null
+    },
+    {
+      "name": "Coverage Against Volatility-Scaled Leverage",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), lt), NEG(MUL(VOL(RATIO(SUB(revt, cogs), at), 5), RATIO(lt, at))))",
+      "hypothesis": "True default probability is leverage multiplied by cash-flow uncertainty, in the spirit of a distance-to-default: the same debt load is benign for a firm with stable margins and dangerous for one with volatile margins, and the market prices leverage without conditioning on margin stability.",
+      "expected_sign": "positive",
+      "reasoning": "This is the first proposal in which profitability enters distress through its *second moment*, an interaction that no level or change specification can capture, and it explains why the plain leverage leg has been only modestly informative. The coverage leg keeps the archive's proven flow effect while the volatility-times-leverage leg penalizes exactly the firms whose apparent coverage is unreliable.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.790193303059651,
+      "ls_alpha": 0.03875378939476426,
+      "ls_talpha": 3.3837394749418443,
+      "ls_sharpe": 0.10535075921597564,
+      "coverage": 0.13248167244084869,
+      "error": null
+    },
+    {
+      "name": "Improving Liability Coverage",
+      "expression": "WINSOR(DELTA(RATIO(SUB(revt, cogs), lt), 1), 1)",
+      "hypothesis": "Investors anchor on a firm's current solvency label, so the year-over-year improvement in gross profit per dollar of liabilities \u2014 whether achieved by margin expansion or debt reduction \u2014 is repriced with a delay.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the failed \"Margin Erosion With Rising Leverage\" signal, whose problem was aggregating two separately noisy one-year rank changes; taking the change of the single ratio that already works keeps the two themes locked into one economically coherent quantity. Comparing it against signal 1 cleanly separates whether the anomaly resides in the level of distress-adjusted profitability or in its improvement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.528341053321224,
+      "ls_alpha": -0.008556588837523216,
+      "ls_talpha": -1.058619475846218,
+      "ls_sharpe": -0.004123233113949294,
+      "coverage": 0.13190956821995878,
+      "error": null
+    },
+    {
+      "name": "EBITDA Coverage of Senior Fixed Claims",
+      "expression": "WINSOR(RATIO(oibdp, ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The cash actually available to meet interest, taxes and maturing debt is operating income before depreciation, not gross profit, so an EBITDA numerator should be the economically correct measure of claim-servicing capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the numerator choice in the archive's best signal while holding the senior-claims denominator fixed, resolving whether the earlier failure of oibdp-based coverage (gen 0) was caused by the numerator or by the cash-netted total-liability denominator. If EBITDA underperforms gross profit here, the evidence favors gross profit's known robustness to accounting discretion rather than its closeness to distributable cash.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.579764903247302,
+      "ls_alpha": 0.03293536223817674,
+      "ls_talpha": 2.8143176278999515,
+      "ls_sharpe": 0.18643508043675464,
+      "coverage": 0.12299446231592989,
+      "error": null
+    },
+    {
+      "name": "Discretionary Cash Over Senior Claims",
+      "expression": "WINSOR(RATIO(SUB(SUB(revt, cogs), xsga), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Overhead is largely committed in the short run, so the profit genuinely available to service senior claims is gross profit net of SG&A; deducting it should sharpen the distinction between firms that can and cannot fund their obligations internally.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a second numerator design choice \u2014 whether committed overhead belongs above or below the coverage line \u2014 against the same denominator. Comparing signals 1, 2 and the archive winner tells us whether the mechanism is about broad production profitability (gross) or about true residual cash after running the business (net of overhead).",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.6754064161664295,
+      "ls_alpha": 0.03914709460919166,
+      "ls_talpha": 3.2821797480341672,
+      "ls_sharpe": 0.21923062191028955,
+      "coverage": 0.10433738475368305,
+      "error": null
+    },
+    {
+      "name": "Senior Claims Coverage Without the Tax Claim",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(xint, dlc)), 1)",
+      "hypothesis": "If the winning signal works because of contractual default risk alone, then interest plus maturing debt is the sufficient denominator and the tax term is superfluous; if taxes matter, it is because the government's cash claim genuinely competes with creditors for internal funds.",
+      "expected_sign": "positive",
+      "reasoning": "The surprise sign-flip of the earlier book-tax signal suggested taxes act as a senior cash claim rather than an earnings-quality validator, and this proposal is the direct attribution test of that interpretation. It is deliberately a one-term deletion because the resulting comparison identifies which distress channel \u2014 contractual or fiscal \u2014 carries the alpha, guiding all later refinement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.341557575549548,
+      "ls_alpha": 0.04437354933376829,
+      "ls_talpha": 3.9613897236878928,
+      "ls_sharpe": 0.25466000577599407,
+      "coverage": 0.11751012442351046,
+      "error": null
+    },
+    {
+      "name": "Claims Coverage With Cash Reserve Backstop",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), RATIO(che, lct))",
+      "hypothesis": "Flow coverage and stock liquidity are substitutable defenses against distress: a firm can meet senior claims from current profit or from an existing cash reserve, and the market underprices firms defended on both fronts.",
+      "expected_sign": "positive",
+      "reasoning": "Composites in this archive reliably lift alpha (the net-debt composites reached 5.0-5.1%) even while dulling the FMB slope, so this tests whether adding a pure stock-liquidity leg to the strongest flow ratio raises abnormal-return magnitude without collapsing the slope. Cash-to-current-liabilities is the one distress dimension the winning denominator omits entirely, so it is the least redundant addition available.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.4097487782829763,
+      "ls_alpha": 0.06185302401486913,
+      "ls_talpha": 4.900214383216696,
+      "ls_sharpe": 0.22549193612338464,
+      "coverage": 0.11591856133303946,
+      "error": null
+    },
+    {
+      "name": "Operating Plus Financial Leverage Fragility",
+      "expression": "SUMRANK(RATIO(xsga, revt), RATIO(lt, at))",
+      "hypothesis": "Fragility compounds when a rigid cost structure meets a rigid capital structure: firms with high fixed overhead per dollar of sales and high balance-sheet leverage have doubly convex exposure to demand shocks and earn negative abnormal returns as that fragility is repeatedly revealed.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal so far treats profitability as a level to be compared with obligations; this instead uses the *cost structure* of profitability as the interacting variable, so distress risk is amplified by how profits are produced rather than by how large they are. It is the batch's genuinely new mechanism and, being short-side oriented, it also probes whether the family's alpha is concentrated in the long leg.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.21328463267533684,
+      "ls_alpha": 0.020527541520143192,
+      "ls_talpha": 1.3717863382771744,
+      "ls_sharpe": 0.12601037334783705,
+      "coverage": 0.12156262820623942,
+      "error": null
+    },
+    {
+      "name": "Weakest-Link Solvency Screen",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Distress is determined by the binding constraint, not by an average of defenses: a firm is only as safe as its weaker of profit-based serviceability and cash-based liquidity, and linear composites overstate the safety of firms that are strong on one dimension and fragile on the other.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces additive rank aggregation with a non-linear minimum, a structurally different interaction that no prior proposal tested and one that directly matches the option-like nature of default. If it beats the additive composite in signal 4, the evidence says the profitability-distress interaction is complementary rather than substitutable, which would redirect later generations toward min/max style conditioning.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.33724183998958,
+      "ls_alpha": 0.04912817555606783,
+      "ls_talpha": 4.324658318375958,
+      "ls_sharpe": 0.20840158371124373,
+      "coverage": 0.1245609516710458,
+      "error": null
+    },
+    {
+      "name": "Cash Plus Profit Resources Over Senior Claims",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), che), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm meets interest, taxes and maturing debt out of total available resources \u2014 this year's gross profit plus its existing cash stock \u2014 so the economically complete coverage measure adds the liquidity buffer to the numerator rather than treating it as a separate score.",
+      "expected_sign": "positive",
+      "reasoning": "The cash backstop produced the archive's largest alpha (6.2%) but only through a SUMRANK that destroyed the FMB slope; embedding cash in the numerator keeps the continuous dispersion of a ratio, which is exactly what the strongest FMB signals share. This should retain the winner's 4.6 FMB t-stat while capturing the incremental alpha the liquidity dimension demonstrably carries.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.9226841477218226,
+      "ls_alpha": 0.06098151237322665,
+      "ls_talpha": 5.141291630334612,
+      "ls_sharpe": 0.2878527250388755,
+      "coverage": 0.12283829318646522,
+      "error": null
+    },
+    {
+      "name": "Coverage of All Current Obligations",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), lct)), 1)",
+      "hypothesis": "Payables and accrued expenses are as capable of triggering a liquidity crisis as maturing debt, so the relevant near-term claim bundle is total current liabilities plus interest and taxes, not just short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This is the last unexplored denominator-breadth choice in the winning family and it separates contractual debt distress from broader trade-credit and operating-claim pressure. If the broader bundle is stronger, the mechanism is general working-capital strain; if weaker, it is specifically debt rollover risk, which would sharpen every later refinement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.7177790621159765,
+      "ls_alpha": 0.04119658870820703,
+      "ls_talpha": 3.051779933063989,
+      "ls_sharpe": 0.23049137213937856,
+      "coverage": 0.11932291421604438,
+      "error": null
+    },
+    {
+      "name": "Weakest-Link Claims and Liquidity Screen",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Default is governed by the binding constraint, so a firm's true safety is the lower of its flow-based claim coverage and its stock-based liquidity, measured within industry where both norms are set.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 weakest-link construction preserved both FMB and alpha better than any additive composite, but it used the inferior total-liability coverage leg; upgrading it to the senior-claims coverage that won attribution is a direct consolidation of the two best structural findings. Comparing it with signal 1 isolates whether liquidity and coverage are complements (MIN wins) or substitutes (summed numerator wins).",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.452325687313608,
+      "ls_alpha": 0.047056951699248575,
+      "ls_talpha": 4.511594339951735,
+      "ls_sharpe": 0.23849441314714015,
+      "coverage": 0.11590917158029332,
+      "error": null
+    },
+    {
+      "name": "Worst-Case Claims Coverage Over Five Years",
+      "expression": "WINSOR(TS_MIN(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 5), 1)",
+      "hypothesis": "Default is triggered in the bad state, so what matters is the *lowest* coverage a firm has sustained over a business-cycle window; firms that never approached a breach are far safer than their current coverage suggests, and the market prices only the latest report.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier temporal attempts failed because they used first differences, which the evidence shows are uninformative here (DELTA coverage gave a negative alpha); this instead uses a distance-from-extreme statistic that is the natural summary of default risk and preserves the level information that works. It tests whether the anomaly reflects a persistent solvency state rather than a single-year snapshot, at a modest coverage cost.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.1938909863033045,
+      "ls_alpha": 0.03470186349053876,
+      "ls_talpha": 2.970051437302505,
+      "ls_sharpe": 0.17519359625489053,
+      "coverage": 0.12830715346446794,
+      "error": null
+    },
+    {
+      "name": "Profitability Inside the Funding Gap",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), INDICATOR(RATIO(dlc, che), 1))",
+      "hypothesis": "Profitability should be most sharply mispriced among firms with an actual funding gap \u2014 short-term debt exceeding cash on hand \u2014 because for those firms operating profit is the marginal determinant of survival, whereas for cash-covered firms it is merely a valuation input.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 conditional failed because a continuous leverage *weight* pushed both portfolio legs into levered names and imported the negative distress premium into the long leg; a binary funding-gap trigger instead keeps the sort purely on profitability within the distressed subset. This is the cleanest available test of the core economic story \u2014 that the profitability premium is state-dependent \u2014 and its outcome determines whether conditioning is worth pursuing at all in later generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.020707003449598967,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.14319378097070645,
+      "error": null
+    },
+    {
+      "name": "Working Capital Plus Profit Over Senior Claims",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), wcap), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The buffer available to absorb senior claims is net working capital \u2014 receivables and inventory as well as cash, less current obligations \u2014 so the correct resource pool is gross profit plus net current assets.",
+      "expected_sign": "positive",
+      "reasoning": "Paired with signal 1, this identifies which liquidity concept the market misprices: pure cash reserves or the broader convertible working-capital cushion, a distinction Altman-style scores treat as central but which the archive has never tested. It also brings the one untouched distress variable, wcap, into the strongest-performing functional form rather than into a weak rank composite.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.3272764838718132,
+      "ls_alpha": 0.059666706590754834,
+      "ls_talpha": 4.3220697437437305,
+      "ls_sharpe": 0.2911593593897418,
+      "coverage": 0.1155880626731945,
+      "error": null
+    },
+    {
+      "name": "Claims Coverage With Capped Cash Credit",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Cash reserves help service senior claims, but only up to the size of those claims \u2014 a firm holding ten times its obligations in cash is no safer than one holding exactly one year's worth \u2014 so the liquidity credit in a coverage ratio should be capped at the claim bundle itself.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the FMB collapse of the unbounded cash numerator: capping cash at the denominator's value adds at most 1.0 to coverage, removing the skewed cash-rich tail that flattened the cross-sectional slope while retaining the liquidity information that lifted alpha to 6.1%. It is the economically correct statement of how a cash buffer substitutes for current profit in avoiding default.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.053206206870581,
+      "ls_alpha": 0.05584333795742472,
+      "ls_talpha": 4.646839382926212,
+      "ls_sharpe": 0.37707514487588817,
+      "coverage": 0.12283829318646522,
+      "error": null
+    },
+    {
+      "name": "Coverage of Cash-Netted Senior Claims",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), MAX(SUB(ADD(ADD(xint, txt), dlc), che), xint)), 1)",
+      "hypothesis": "Cash on hand extinguishes maturing debt and tax liabilities, so the profit-based hurdle is the claim bundle net of cash; interest, however, keeps accruing regardless, which is the natural floor on the remaining obligation.",
+      "expected_sign": "positive",
+      "reasoning": "This puts liquidity on the obligation side rather than the resource side and uses MAX with interest expense as an economically motivated floor, which is exactly what the gen-0 failure of a raw cash-netted denominator (negative and near-zero denominators) lacked. Compared with signal 1 it identifies whether the market misprices cash as an added resource or as a reduction in the effective obligation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.074641431913139,
+      "ls_alpha": 0.046458046917920805,
+      "ls_talpha": 3.9814368780254696,
+      "ls_sharpe": 0.2366248770304375,
+      "coverage": 0.11609418066462114,
+      "error": null
+    },
+    {
+      "name": "Weakest Link Against Net Debt Stock",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "The binding constraint on a profitable firm may be its total net indebtedness rather than its near-term liquidity: a firm with strong claim coverage but a large net debt stock is still one refinancing cycle from distress.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN structure is the only aggregation that has preserved both a high FMB slope and a high alpha, so the productive question is which second defense belongs inside it; this swaps the cash-to-current-liabilities leg for the net-debt leg that generated the archive's best composite alphas. The comparison with the gen-4 weakest-link result isolates flow liquidity versus solvency stock as the complementary constraint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.2683653213812374,
+      "ls_alpha": 0.03605903657388269,
+      "ls_talpha": 4.034673840696588,
+      "ls_sharpe": 0.17644841205797546,
+      "coverage": 0.12264544211083293,
+      "error": null
+    },
+    {
+      "name": "Sustained Senior Claims Coverage",
+      "expression": "WINSOR(MA(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "Creditors and equity investors should care about a firm's normal capacity to service senior claims, not a single year's realization; averaging over three years removes transitory margin and rollover noise and should sharpen the priced component of distress-adjusted profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Worst-case coverage over five years already showed that multi-year information carries a strong cross-sectional slope (fmb 4.19) but a lower alpha, suggesting the minimum is too conservative a summary while a single year is too noisy; a three-year mean is the intermediate statistic that has not been tested. If it beats both, the mechanism is a persistent solvency state, which would make smoothing the default preprocessing in final refinements.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.835073983092251,
+      "ls_alpha": 0.05254266038593422,
+      "ls_talpha": 4.517416031139923,
+      "ls_sharpe": 0.3449443760296017,
+      "coverage": 0.12700677589322346,
+      "error": null
+    },
+    {
+      "name": "Coverage Including Maintenance Capital Charge",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp)), 1)",
+      "hypothesis": "Replacing worn-out productive capacity is effectively non-discretionary for a going concern, so depreciation belongs alongside interest, taxes and maturing debt in the bundle of claims that gross profit must cover.",
+      "expected_sign": "positive",
+      "reasoning": "Adding taxes to the claim bundle produced the largest single improvement in the archive, which suggests that broadening the definition of non-deferrable claims is the productive direction, and depreciation is the one economically defensible term not yet included. It also differentiates asset-heavy from asset-light firms with identical financial obligations, an interaction the current winner treats as irrelevant.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.9323278557127033,
+      "ls_alpha": 0.057200856821941926,
+      "ls_talpha": 4.771510801307581,
+      "ls_sharpe": 0.39610872210508535,
+      "coverage": 0.12433570078923452,
+      "error": null
+    },
+    {
+      "name": "Profitability Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Firms are penalized for a funding gap \u2014 short-term debt large relative to cash \u2014 and rewarded for asset profitability, and the mispricing is largest where these two ranks diverge: profitable firms with no rollover gap versus weakly profitable firms that must refinance imminently.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the degenerate indicator conditional, whose zero mass produced undefined portfolio legs, by expressing the same funding-gap economics as a continuous two-sided rank difference \u2014 the structure that already worked for the tax and retained-earnings signals. Because both legs are industry ranks, it also avoids the scale skew that broke the FMB slope in the cash-numerator ratios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.388265368960181,
+      "ls_alpha": 0.05022264746446094,
+      "ls_talpha": 5.191146077891769,
+      "ls_sharpe": 0.29454157481542537,
+      "coverage": 0.14319378097070645,
+      "error": null
+    },
+    {
+      "name": "Sustained Coverage of Claims and Maintenance Capital",
+      "expression": "WINSOR(MA(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp)), 3), 1)",
+      "hypothesis": "The priced quantity is a firm's normal-year capacity to cover all non-deferrable claims including capital maintenance, so combining the broadest defensible obligation bundle with three-year smoothing should isolate the persistent solvency state most cleanly.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing produced the best FMB slope in the archive and the depreciation-inclusive denominator produced the best alpha and Sharpe, and the two modifications operate on different axes (timing versus obligation definition), so their gains should be additive rather than redundant. This is the primary consolidation candidate for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.743456543390195,
+      "ls_alpha": 0.05402142678337523,
+      "ls_talpha": 4.274888430084368,
+      "ls_sharpe": 0.3399062989026918,
+      "coverage": 0.1272099453784669,
+      "error": null
+    },
+    {
+      "name": "Sustained Coverage With Capped Cash Credit",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "A firm's average ability to meet senior claims from gross profit plus a bounded cash buffer is the fullest statement of distress-adjusted profitability, since both the flow and the reserve are persistent firm attributes rather than one-year accidents.",
+      "expected_sign": "positive",
+      "reasoning": "Capping cash restored the cross-sectional slope while keeping most of the liquidity alpha, and smoothing independently raised the slope further, so this pairing tests whether the liquidity channel survives when transitory cash balances are averaged out. Comparing it with signal 1 tells us whether the incremental defense worth adding is a cash reserve or a broader obligation definition.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.194325756755166,
+      "ls_alpha": 0.04881349532266466,
+      "ls_talpha": 4.21999881914736,
+      "ls_sharpe": 0.26738408910082967,
+      "coverage": 0.12625765935545435,
+      "error": null
+    },
+    {
+      "name": "Full Resource Coverage of All Fixed Charges",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(ADD(xint, txt), dlc), dp)), 3), 1)",
+      "hypothesis": "Distress-adjusted profitability is fully described by average available resources \u2014 gross profit plus a capped cash buffer \u2014 measured against the complete fixed-charge bundle of interest, taxes, maturing debt and capital maintenance.",
+      "expected_sign": "positive",
+      "reasoning": "This stacks all three validated refinements simultaneously to test whether they compound or interfere; if it dominates signals 1 and 2, the mechanism is a single unified serviceability construct, whereas if it underperforms them, the refinements are substitutes and later generations should keep the simpler form. The risk of over-fitting is limited because every term is an economically named claim or resource, not a free parameter.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.243248821561509,
+      "ls_alpha": 0.051545154509285006,
+      "ls_talpha": 4.16249955502197,
+      "ls_sharpe": 0.29727477135518593,
+      "coverage": 0.1264608288406978,
+      "error": null
+    },
+    {
+      "name": "Fixed-Charge Coverage Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp))), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Coverage capacity and imminent refinancing need are separately mispriced: investors reward neither the profitable fixed-charge coverer nor penalize the cash-poor rollover case fully, so the divergence of the two industry ranks is the sharpest spread.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-difference structure delivered the archive's most reliable alpha (t 5.19) and its best coverage, but it used only crude asset-scaled profitability; substituting the validated fixed-charge coverage leg should raise the alpha magnitude while preserving that reliability. It also keeps both legs scale-free, avoiding the skew that has repeatedly damaged FMB slopes in level ratios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.9749582138385766,
+      "ls_alpha": 0.044732031035632676,
+      "ls_talpha": 4.7240673370953425,
+      "ls_sharpe": 0.2055076887922871,
+      "coverage": 0.12299590689327546,
+      "error": null
+    },
+    {
+      "name": "Realized Cash Coverage of Senior Claims",
+      "expression": "WINSOR(RATIO(oancf, ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "What ultimately settles senior claims is realized operating cash flow, not accrual gross profit; if the anomaly is genuinely about default avoidance rather than about the gross-profitability factor, a cash numerator should perform at least as well.",
+      "expected_sign": "positive",
+      "reasoning": "This is the decisive discriminating test between the two economic readings of the archive's winner \u2014 a cash-serviceability story versus a gross-profitability story dressed in a leverage denominator \u2014 because operating cash flow is the cleanest measure of funds actually available to creditors. Prior numerator substitutions (EBITDA, gross profit less SG&A) weakened the signal, so a strong result here would materially change the interpretation, while a weak one would confirm that accrual gross profit's robustness is essential.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.8172461594120723,
+      "ls_alpha": 0.0448638204180512,
+      "ls_talpha": 2.9960003531941615,
+      "ls_sharpe": 0.388576953282882,
+      "coverage": 0.07828665078457059,
+      "error": null
+    },
+    {
+      "name": "Weakest Link of Coverage and Earnings Cushion",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(re, at)))",
+      "hypothesis": "A firm needs both current claim-servicing capacity and an accumulated earnings cushion to be genuinely out of distress; firms strong on current coverage but carrying an accumulated deficit have no equity buffer to absorb a shock, and the market treats the two as interchangeable.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings is the Altman distress channel that the winning family entirely omits, and the MIN aggregation has consistently preserved both statistical forms of evidence where additive composites did not. Comparing this against the liquidity and net-debt versions of the weakest-link structure identifies which second constraint is truly binding for profitable firms, which is the key open question for the final refinement rounds.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.3412827319303537,
+      "ls_alpha": 0.013024320752815946,
+      "ls_talpha": 1.5995714731688682,
+      "ls_sharpe": 0.16535008657499017,
+      "coverage": 0.1221299859587082,
+      "error": null
+    },
+    {
+      "name": "Senior Claim Burden per Dollar of Profit",
+      "expression": "WINSOR(RATIO(ADD(ADD(xint, txt), dlc), MAX(SUB(revt, cogs), xint)), 1)",
+      "hypothesis": "The mispricing may live in the distressed tail rather than the safe tail: expressing the same economics as a burden (claims per dollar of gross profit, floored at interest expense) puts the cross-sectional dispersion on firms whose obligations dwarf their profits, which is where overpricing should be largest.",
+      "expected_sign": "negative",
+      "reasoning": "Coverage and burden are monotone inverses in ranking but have opposite skew, so this is the sharpest available test of which tail carries the alpha \u2014 a question every prior specification confounded. The MAX floor at interest expense keeps the denominator strictly positive for loss-making firms without discarding them, repairing the negative-denominator problem that sank the gen-0 cash-netted ratio.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.971461161554055,
+      "ls_alpha": -0.05580875948383681,
+      "ls_talpha": -4.501964514114906,
+      "ls_sharpe": -0.34080697196062915,
+      "coverage": 0.12343253039597103,
+      "error": null
+    },
+    {
+      "name": "Industry-Neutral Continuous Claims Coverage",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 1))",
+      "hypothesis": "Normal claim-servicing capacity differs structurally across industries (leverage norms, tax profiles, working-capital cycles), so the priced signal is the firm's standardized deviation from its industry's coverage, measured on a continuous scale rather than a rank.",
+      "expected_sign": "positive",
+      "reasoning": "Industry ranking of coverage preserved the FMB slope but cut alpha from 4.5% to 3.0% because ranks discard magnitude; an industry z-score removes the same composition tilt while keeping the dispersion that the strongest FMB signals rely on. This is the one standardization choice never tested on the archive's best variable, and it should improve both metrics if industry structure is noise rather than signal.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.897267082963593,
+      "ls_alpha": 0.005181620748898538,
+      "ls_talpha": 0.5969555820462441,
+      "ls_sharpe": 0.11491474007116076,
+      "coverage": 0.12344016601908328,
+      "error": null
+    },
+    {
+      "name": "Tail-Trimmed Claims Coverage",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 5)",
+      "hypothesis": "Extremely high coverage ratios (near-zero obligations) carry no additional information about distress, so trimming five percent in each tail rather than one percent should make the signal more linear in expected returns without losing economic content.",
+      "expected_sign": "positive",
+      "reasoning": "Every diagnostic in this archive points to skew as the binding statistical problem \u2014 the uncapped cash numerator collapsed the FMB slope purely through tail dominance, and capping fixed it \u2014 so the winsorization intensity on the core variable is a first-order, not cosmetic, design choice. It isolates that single parameter while holding economics fixed, which is exactly what the final consolidation rounds need.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.648252255522245,
+      "ls_alpha": 0.0567327460554117,
+      "ls_talpha": 4.821902909999986,
+      "ls_sharpe": 0.3916774401542849,
+      "coverage": 0.12359411669048155,
+      "error": null
+    },
+    {
+      "name": "Coverage Including Cuttable Research Spend",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "R&D is discretionary in a liquidity crisis, so a firm's true resource pool for meeting senior claims includes the research budget it could suspend; ignoring this understates the solvency of research-intensive firms, which the market also misjudges.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces cost flexibility as a distress buffer \u2014 an economic channel absent from every prior proposal, and consistent with the surprising positive alpha of the SG&A-intensity signal that I had hypothesized would be negative. Treating unreported R&D as zero is the standard and economically correct missing-data convention here, so coverage should be preserved rather than patched.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.80110446308074,
+      "ls_alpha": 0.06218315442938165,
+      "ls_talpha": 4.987909499111708,
+      "ls_sharpe": 0.39659142742587294,
+      "coverage": 0.12359411669048155,
+      "error": null
+    },
+    {
+      "name": "Weakest Link of Coverage and Margin Stability",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "High coverage is only credible if the profit stream that produces it is stable; a firm with strong average coverage but volatile margins can breach its obligations in a single bad year, and the market prices coverage without conditioning on its reliability.",
+      "expected_sign": "positive",
+      "reasoning": "The volatility-times-leverage idea was tested only inside a SUMRANK that collapsed the FMB slope to 1.79, so the second-moment channel has never had a fair test in the MIN aggregation that consistently preserves both forms of evidence. Because the retained-earnings and funding-gap constraints both failed as the binding second leg, margin reliability is the most plausible remaining complement to flow coverage.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.1570664101309505,
+      "ls_alpha": 0.008691574997731835,
+      "ls_talpha": 1.1602198188967436,
+      "ls_sharpe": 0.12557679173944092,
+      "coverage": 0.1133387525620611,
+      "error": null
+    },
+    {
+      "name": "Claims Coverage Net of Net Leverage",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(SUB(lt, che), at)))",
+      "hypothesis": "Flow serviceability and the stock of net obligations are separately mispriced, and the widest spread comes from firms that cover their near-term claims easily while also carrying little net indebtedness relative to assets.",
+      "expected_sign": "positive",
+      "reasoning": "The two-sided rank-difference structure has produced the archive's most reliable portfolio evidence (t-alpha 5.19 with the highest coverage, 0.143) because both legs are scale-free and neither tail can dominate; this pairs it with the strongest coverage leg and the net-leverage stock that generated the best composite alphas. Unlike the gen-6 version, both legs here use universally reported items, so it should hold coverage near 0.14 rather than shrinking it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.3280380860639598,
+      "ls_alpha": 0.045230160479822035,
+      "ls_talpha": 4.033300993722345,
+      "ls_sharpe": 0.12863192091575995,
+      "coverage": 0.12266705917896828,
+      "error": null
+    },
+    {
+      "name": "Sustained Coverage With Research Resources",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "The persistent component of a firm's resource pool \u2014 including its research budget, which is discretionary in a crisis \u2014 is what determines its ability to meet senior claims, so smoothing the R&D-augmented coverage ratio should capture the priced state most precisely.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the archive's best cross-sectional slope (4.84) and the R&D-augmented resource pool produced its best alpha and Sharpe, and these operate on different axes (timing versus resource definition). Earlier stacking failures involved two *obligation-side* terms that proxied the same latent quantity, so this pairing has a better prior of being complementary rather than redundant.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.5557509364988182,
+      "ls_alpha": 0.05741252790783178,
+      "ls_talpha": 4.847039206385004,
+      "ls_sharpe": 0.2941976660401988,
+      "coverage": 0.12700677589322346,
+      "error": null
+    },
+    {
+      "name": "Research and Capped Cash Resource Coverage",
+      "expression": "WINSOR(RATIO(ADD(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm facing senior claims can draw on current profit, suspendable research spending, and its cash reserve up to the size of those claims; the complete bounded resource pool should dominate any single component.",
+      "expected_sign": "positive",
+      "reasoning": "Both the capped cash credit (fmb 4.05, alpha 5.6%) and the R&D addition (alpha 6.2%) improved the base ratio, and both are resource-side terms with a bounded contribution, so the skew problem that broke the uncapped cash version is already controlled. This tests whether the market underprices total defensive capacity or only its profit component.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.1237615813771233,
+      "ls_alpha": 0.059821827246420184,
+      "ls_talpha": 4.866667928597098,
+      "ls_sharpe": 0.35692469294818807,
+      "coverage": 0.12283829318646522,
+      "error": null
+    },
+    {
+      "name": "Research Resources Over All Fixed Charges",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(ADD(xint, txt), dlc), dp)), 1)",
+      "hypothesis": "The full fixed-charge bundle including capital maintenance, measured against the full resource pool including suspendable research, is the most complete statement of distress-adjusted profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The depreciation-inclusive denominator and the R&D-inclusive numerator are the two highest-Sharpe designs in the archive (0.396 and 0.397) and they modify opposite sides of the ratio, so this is the single most promising untested pairing. If it fails, the evidence will confirm that only one adjustment per ratio side is sustainable, which is the key lesson for the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.946268579931138,
+      "ls_alpha": 0.0630620317185047,
+      "ls_talpha": 4.983871463261436,
+      "ls_sharpe": 0.37022787396468937,
+      "coverage": 0.12433570078923452,
+      "error": null
+    },
+    {
+      "name": "Discretionary Spending Cushion Against Claims",
+      "expression": "WINSOR(RATIO(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm whose discretionary overhead and research outlays are large relative to its senior claims can survive a downturn by cutting spending rather than defaulting, so cost flexibility is an unpriced substitute for profitability as a distress defense.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the flexibility channel entirely from the profit level, testing whether the R&D result reflects genuine cut-capacity economics or merely a research-intensity tilt on top of coverage. It is the batch's distinct mechanism and its outcome interprets the archive's best-performing modification, which no other test can do.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.0450518804718478,
+      "ls_alpha": 0.07112483911290605,
+      "ls_talpha": 4.758429543797579,
+      "ls_sharpe": 0.34862903454491134,
+      "coverage": 0.1043404802765664,
+      "error": null
+    },
+    {
+      "name": "Operating Income Plus Suspendable Research Over Claims",
+      "expression": "WINSOR(RATIO(ADD(oiadp, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The correct measure of funds a firm could direct to senior claims under stress is operating income after all real operating costs, with research added back because it was actually deducted and can actually be halted.",
+      "expected_sign": "positive",
+      "reasoning": "In gross profit, R&D was never deducted, so adding it is a research-intensity tilt rather than a true add-back; using operating income as the base makes the add-back economically exact and therefore provides the clean test of the cut-capacity hypothesis. Prior operating-income numerators underperformed gross profit, so a strong result here would specifically credit the R&D add-back rather than the profit definition.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.8759569762867194,
+      "ls_alpha": 0.05093531199383705,
+      "ls_talpha": 4.569312913307015,
+      "ls_sharpe": 0.2593071088543559,
+      "coverage": 0.12360959430489828,
+      "error": null
+    },
+    {
+      "name": "Research-Tilted Profitability Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), at)), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Firms with high research-inclusive profitability and no imminent refinancing gap are the most underpriced, and the mispricing is best measured by the divergence of the two industry ranks rather than by a single levered ratio.",
+      "expected_sign": "positive",
+      "reasoning": "The two-sided rank-difference structure delivered the archive's most reliable portfolio evidence (t-alpha 5.19) at its highest coverage (0.143), and industry *ranks* in this two-leg form did not suffer the alpha destruction that industry z-scoring of a continuous ratio caused. Upgrading its profitability leg with the validated research-inclusive resource pool targets a higher alpha while keeping the reliability and breadth advantages.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.925495703361747,
+      "ls_alpha": 0.0529714973271337,
+      "ls_talpha": 5.394197298291512,
+      "ls_sharpe": 0.29215991323697393,
+      "coverage": 0.14319378097070645,
+      "error": null
+    },
+    {
+      "name": "Coverage With Capped Discretionary Cushion",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm meets senior claims from gross profit plus the discretionary overhead and research it could suspend, but suspendable spending only helps up to the size of the claims themselves, so the cushion credit must be capped at the obligation bundle.",
+      "expected_sign": "positive",
+      "reasoning": "This is the direct application of the fix that repaired the cash channel: capping converts an unbounded industry tilt into a bounded serviceability credit, which restored the FMB slope from 0.92 to 4.05 without sacrificing alpha. Given the cushion's 7.1% raw alpha and the base ratio's 4.65 slope, the capped combination is the single most likely specification to be strong on both criteria.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.5877867706492808,
+      "ls_alpha": 0.059064883717055316,
+      "ls_talpha": 4.440690238901539,
+      "ls_sharpe": 0.33354892742107733,
+      "coverage": 0.10433738475368305,
+      "error": null
+    },
+    {
+      "name": "Weakest Link of Claim Coverage and Cost Flexibility",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))))",
+      "hypothesis": "Survival requires either enough profit or enough cuttable spending, and a firm is genuinely safe only when neither defense is weak; the market prices profit coverage but ignores whether the firm has any slack to cut.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN aggregation has been the only combining operator that preserved both a high FMB slope and a high alpha (fmb 4.45, \u03b1 4.7% with the liquidity leg), and the two legs it failed with \u2014 margin volatility and retained earnings \u2014 were not defenses against imminent claims, whereas cost flexibility is. Ranking both legs removes the scale skew that flattened the cushion's slope in level form.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.660209436995942,
+      "ls_alpha": 0.03863180187657274,
+      "ls_talpha": 3.7212602016177914,
+      "ls_sharpe": 0.3461475647474007,
+      "coverage": 0.10433439241489582,
+      "error": null
+    },
+    {
+      "name": "Research-Tilted Profitability Net of Claim-to-Cash Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), at)), IND_RANK(RATIO(ADD(ADD(xint, txt), dlc), che)))",
+      "hypothesis": "The distress leg of the best rank-difference signal should measure all imminent cash claims against cash on hand, not just maturing debt, because interest and taxes must be settled in cash on the same horizon.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-difference family has produced the archive's most reliable portfolio evidence (t-alpha 5.39) at its highest coverage (0.143) because both legs are scale-free and neither tail can dominate the sort; broadening the gap leg to the full senior-claim bundle applies the one denominator finding that has held up everywhere else. This keeps breadth near 0.14 while targeting a larger alpha than the debt-only gap version.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.7199651953317003,
+      "ls_alpha": 0.05865990188063247,
+      "ls_talpha": 5.2854380865817205,
+      "ls_sharpe": 0.32162519258779415,
+      "coverage": 0.12426821839037763,
+      "error": null
+    },
+    {
+      "name": "Fully Bounded Resource Coverage",
+      "expression": "WINSOR(RATIO(ADD(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The complete set of defenses against senior claims is current profit, the cash reserve, and suspendable spending, each contributing at most one claim-bundle's worth of protection; firms defended on all three are the most systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier stacking failed when it combined two *obligation-side* terms that proxied the same latent quantity, whereas these three terms are economically distinct resources and each is individually bounded, which controls the skew that caused every previous slope collapse. If it dominates signal 1, defenses are additive; if not, the evidence says one bounded cushion is sufficient and the simpler specification should be preferred.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.495484538449877,
+      "ls_alpha": 0.06327471718649041,
+      "ls_talpha": 4.502736235585491,
+      "ls_sharpe": 0.3337040164928227,
+      "coverage": 0.10433305102164638,
+      "error": null
+    },
+    {
+      "name": "Coverage With Accumulated Research Buffer",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(TS_SUM(COALESCE(xrd, 0), 5), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "What protects a research-intensive firm in distress is the accumulated intangible capital it has built, which supports asset sales, licensing and continued revenue even if current spending is halted, so the five-year R&D stock is the economically relevant buffer rather than one year's flow.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D channel was the strongest discovery of the last two generations, but it has only been tested as a single-year flow; the cumulative stock is the natural measure of a firm's intangible collateral and is a genuinely different construct, again capped so it cannot become an intangible-intensity tilt. This distinguishes a collateral-value story from a spending-flexibility story, which is the last open interpretive question in the winning family.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.663882258298704,
+      "ls_alpha": 0.05776354212337666,
+      "ls_talpha": 4.597459931102947,
+      "ls_sharpe": 0.39481987103597144,
+      "coverage": 0.12359411669048155,
+      "error": null
+    },
+    {
+      "name": "Sustained Coverage With Capped Cushion",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "Both the profit stream and the discretionary spending base are persistent firm attributes, so the three-year average of capped-cushion coverage should measure the priced solvency state with less measurement noise than a single fiscal year.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing produced the archive's highest FMB slope (4.84) when applied to the base ratio, and the cushion's principal weakness is precisely its slope, so this pairing targets the trade-off from the timing side rather than the bounding side. Comparing it with signal 1 isolates whether the residual slope weakness in the cushion channel is transitory-noise driven or structural.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.7684092218649914,
+      "ls_alpha": 0.05483983019162984,
+      "ls_talpha": 4.316824841632982,
+      "ls_sharpe": 0.25903131536971313,
+      "coverage": 0.10820807815906365,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Leverage-Weighted Operating Profitability",
+      "expression": "MUL(IND_ZSCORE(RATIO(oiadp, at)), RANK(RATIO(lt, at)))",
+      "hypothesis": "The return premium to operating profitability is amplified for firms carrying heavy liability loads, because equity in a levered firm is a levered claim on operating cash flows and investors under-react to profitability precisely where solvency is in question.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-demeaned profitability z-score is scaled by a non-negative distress intensity weight (cross-sectional rank of liabilities-to-assets), so the signal preserves the monotone profitability ordering but stretches it among high-leverage firms and compresses it among unlevered firms. High-profit/high-leverage names are the deleveraging winners that get repriced upward, while low-profit/high-leverage names bear the largest downside, producing a wider spread than profitability alone.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "EBITDA Coverage of Total Liabilities",
+      "expression": "WINSOR(RATIO(oibdp, SUB(lt, che)), 1)",
+      "hypothesis": "Operating cash earnings measured per dollar of net obligations is a direct debt-service capacity metric; firms whose operating profit easily covers net debt are systematically underpriced relative to their low true default risk.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling profitability by net liabilities (liabilities less cash) rather than by assets embeds distress in the denominator, so the same profit level maps to a very different signal for a cash-rich versus a debt-burdened firm. Winsorizing controls the exploding tail for near-zero net debt firms, keeping portfolio composition stable while retaining the economically meaningful coverage ordering.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Profitable Deficit Phoenix",
+      "expression": "SUB(RANK(RATIO(oancf, at)), RANK(RATIO(re, at)))",
+      "hypothesis": "Firms generating strong current cash profitability while still carrying an accumulated-deficit stigma (low or negative retained earnings) are classified as distressed by mechanical screens and are therefore underpriced relative to their improved fundamentals.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings scaled by assets is the classic Altman accumulated-distress channel, and subtracting its rank from the cash-profitability rank isolates the divergence between backward-looking distress history and forward-looking cash generation. The long leg holds recovering firms whose distress label lags the fundamentals, and the short leg holds firms coasting on legacy equity while burning cash today.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Turnaround Trend Under Working-Capital Deficit",
+      "expression": "MUL(ZSCORE(TREND(RATIO(oibdp, at), 5)), INDICATOR(RATIO(lct, act), 1))",
+      "hypothesis": "A multi-year improvement in operating margin resolves distress risk most sharply for firms with a liquidity squeeze (current liabilities exceeding current assets), where each incremental dollar of operating profit directly reduces refinancing probability.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator switches the profitability trend on only for firms with negative working capital, the subset where near-term solvency is genuinely state-dependent and where information about operating improvement is slowest to be incorporated. For liquid firms the signal is flat at zero, sharpening the conditional rather than diluting it with a broad profitability-trend effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Non-Cash Earnings in Levered Firms",
+      "expression": "MUL(RANK(RATIO(SUB(ib, oancf), at)), RANK(RATIO(ADD(dltt, dlc), at)))",
+      "hypothesis": "Accrual-inflated earnings are a stronger negative signal for highly indebted firms, because managers facing covenant and refinancing pressure have the greatest incentive to report profits unsupported by cash, and such earnings subsequently reverse.",
+      "expected_sign": "negative",
+      "reasoning": "Both factors enter as non-negative cross-sectional ranks, so the product is highest exactly where large accruals coincide with heavy interest-bearing debt \u2014 the joint condition for opportunistic reporting ahead of distress. Neither leg alone identifies this population: low-leverage accrual firms have little motive to manage earnings, and levered firms with cash-backed profits are not at risk of reversal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Profitability When Liquidity Buffer Is Thin",
+      "expression": "MUL(IND_ZSCORE(RATIO(oancf, at)), RANK(NEG(RATIO(che, lct))))",
+      "hypothesis": "Internal cash generation is priced most inefficiently for firms with a thin cash cushion relative to current liabilities, since for such firms operating cash flow is the marginal source of funding and the only thing standing between the firm and a liquidity event.",
+      "expected_sign": "positive",
+      "reasoning": "This uses a liquidity-based distress channel that is economically distinct from the leverage-stock channel in Signal 1: the weight is the rank of cash-to-current-liabilities reversed, so cash-poor firms receive full weight while cash-hoarders are neutralized. Strong cash profitability in a cash-poor firm signals a resolvable liquidity state that the market discounts too heavily, while weak cash profitability in the same state is a genuine run-rate toward default.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Profits per Dollar of Liabilities",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), lt), 1)",
+      "hypothesis": "Gross profit measured per dollar of total obligations is the cleanest flow-to-stock solvency margin; firms whose production margin comfortably services their liability stock are underpriced because screens classify them by leverage level rather than by leverage serviceability.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs gen-0 signal 2 in two ways: gross profit (revt minus cogs) is far more widely reported and less tail-prone than oibdp, and total liabilities avoids the near-zero/negative denominators created by subtracting cash, which likely destroyed the earlier signal's monotonicity. Distress enters the denominator, so the interaction is structural rather than a weighting scheme that contaminates the long leg with levered names.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross Profitability Net of Net-Debt Burden",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), at), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))",
+      "hypothesis": "Profitability is rewarded and net indebtedness is penalized, and the two effects reinforce each other: the market underprices high-margin firms that have already funded themselves out of default risk with cash, and overprices low-margin firms whose net debt keeps growing.",
+      "expected_sign": "positive",
+      "reasoning": "This directly tests the additive-versus-multiplicative design choice that failed in gen 0: by subtracting rather than weighting by distress, the long leg is high-margin *and* cash-rich, so the profitability spread is no longer offset by the negative distress premium. Cash-netted debt is the economically correct distress stock, and rank aggregation keeps both legs stable and fully covered.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Strength Against Rollover Pressure",
+      "expression": "SUMRANK(RATIO(oibdp, at), NEG(RATIO(dlc, act)))",
+      "hypothesis": "Distress risk is driven by debt *maturity* as much as debt level: operating margin is most valuable when a firm has little short-term debt to roll relative to its liquid asset base, and near-term rollover need is the channel through which weak profitability becomes insolvency.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a maturity-structure distress channel distinct from the total-liability stock used in signals 1 and 2, so the batch teaches two separable lessons about which distress dimension interacts with profitability. Scaling current debt by current assets captures the funding-gap concept without the exploding denominators of a cash-only scaling.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Erosion With Rising Leverage",
+      "expression": "SUMRANK(NEG(DELTA(RATIO(SUB(revt, cogs), at), 1)), DELTA(RATIO(lt, at), 1))",
+      "hypothesis": "Firms drifting into distress \u2014 deteriorating gross margin financed by an expanding liability stock \u2014 experience predictable negative abnormal returns, because analysts and investors extrapolate the current earnings level and update too slowly on the joint trajectory.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-coverage 5-year TREND construction with one-year changes in both themes, keeping coverage high while capturing the dynamic interaction that a level-based signal cannot: it is the *co-movement* of falling profitability and rising leverage, not either state, that signals impending distress. It is the short-side mirror of the level composites, so comparing it with signal 2 reveals whether the anomaly lives in states or in transitions.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Untaxed Reported Profit",
+      "expression": "SUB(IND_RANK(RATIO(oibdp, at)), IND_RANK(RATIO(txt, at)))",
+      "hypothesis": "Firms reporting strong operating profit while paying almost no tax are typically sheltering behind loss carryforwards or aggressive accruals from a prior distress episode, so their reported profitability is low quality and does not earn the usual profitability premium.",
+      "expected_sign": "negative",
+      "reasoning": "Cash taxes paid are an independent, hard-to-manipulate validation of accounting profit, and the book-tax gap therefore identifies where the profitability signal is contaminated by distress history rather than confirmed by it. This is a mechanism no prior proposal touched: distress sharpens profitability by *invalidating* it, predicting a sign opposite to the coverage-style ratios.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Accumulated-Deficit Phoenix",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(re, at)))",
+      "hypothesis": "Firms currently generating high gross margins while still carrying an accumulated deficit are mechanically flagged as distressed by retained-earnings-based scores, and the market underprices the divergence between stale distress history and current operating strength.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the theme-invalid gen-0 \"Phoenix\" idea by using revt minus cogs as the profitability leg while retaining retained earnings \u2014 the Altman accumulated-distress channel \u2014 as the distress leg. Unlike signals 1-3, which reward safety, this deliberately goes long *stigmatized* profitable firms, so its outcome discriminates between a risk-premium story and a mispriced-classification story.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Relative Liability Coverage",
+      "expression": "IND_RANK(RATIO(SUB(revt, cogs), lt))",
+      "hypothesis": "What constitutes a safe liability load per dollar of gross profit is industry-specific (utilities versus software), so the mispriced component of profitability-adjusted solvency is the firm's position within its industry rather than its raw coverage level.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates exactly one design choice on the archive's best signal \u2014 industry conditioning \u2014 and removes the winsorization/scale sensitivity of the raw ratio by mapping to a bounded within-industry rank. If the raw ratio's power partly reflects an industry-composition tilt, this will weaken; if it reflects genuine firm-level serviceability mispricing, both FMB and alpha should strengthen.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Liability Coverage Plus Net-Debt Safety",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), lt), NEG(RATIO(SUB(ADD(dltt, dlc), che), at)))",
+      "hypothesis": "Serviceability (profit flow per liability) and solvency stock (cash-netted debt) are distinct dimensions of the same profitability-distress interaction, and firms scoring well on both are the most systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The two strongest archive signals load on different aspects of the same story \u2014 one on flow coverage with a strong FMB slope, one on net-debt stock with the larger alpha \u2014 so combining them should raise alpha without sacrificing the cross-sectional slope. It also directly tests whether the archive's ratio and composite winners are redundant or additive.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage of All Senior Fixed Claims",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Default is triggered by the near-term senior claims a firm must actually settle in cash \u2014 interest, taxes, and maturing short-term debt \u2014 so gross profit measured against the full bundle of non-deferrable obligations is a sharper distress-adjusted profitability metric than profit against total liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This operationalizes the corrected interpretation of the tax result: taxes belong in the denominator as a senior claim, alongside interest and rollover need, rather than as an earnings-quality validator. It is a genuinely different distress construct from total-liability leverage (cash-flow-based rather than balance-sheet-based) and should improve on signal-1-style coverage if the mechanism is liquidity-driven default rather than leverage per se.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin Strength Versus Implied Borrowing Cost",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), at), NEG(RATIO(xint, ADD(dltt, dlc))))",
+      "hypothesis": "The interest rate a firm actually pays on its debt is a creditor-revealed distress assessment; profitable firms that nonetheless borrow at high implied spreads are being overpriced by equity investors who ignore the credit market's signal, while profitable cheap borrowers are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces an entirely new distress proxy \u2014 the implied cost of debt from the income statement over the debt stock \u2014 rather than another leverage or liquidity measure, so it tests whether creditor-revealed risk adds information beyond balance-sheet ratios. Because the credit-spread leg is scale-free, it should not be redundant with the total-liability denominator that already works.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage Against Volatility-Scaled Leverage",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), lt), NEG(MUL(VOL(RATIO(SUB(revt, cogs), at), 5), RATIO(lt, at))))",
+      "hypothesis": "True default probability is leverage multiplied by cash-flow uncertainty, in the spirit of a distance-to-default: the same debt load is benign for a firm with stable margins and dangerous for one with volatile margins, and the market prices leverage without conditioning on margin stability.",
+      "expected_sign": "positive",
+      "reasoning": "This is the first proposal in which profitability enters distress through its *second moment*, an interaction that no level or change specification can capture, and it explains why the plain leverage leg has been only modestly informative. The coverage leg keeps the archive's proven flow effect while the volatility-times-leverage leg penalizes exactly the firms whose apparent coverage is unreliable.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Improving Liability Coverage",
+      "expression": "WINSOR(DELTA(RATIO(SUB(revt, cogs), lt), 1), 1)",
+      "hypothesis": "Investors anchor on a firm's current solvency label, so the year-over-year improvement in gross profit per dollar of liabilities \u2014 whether achieved by margin expansion or debt reduction \u2014 is repriced with a delay.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the failed \"Margin Erosion With Rising Leverage\" signal, whose problem was aggregating two separately noisy one-year rank changes; taking the change of the single ratio that already works keeps the two themes locked into one economically coherent quantity. Comparing it against signal 1 cleanly separates whether the anomaly resides in the level of distress-adjusted profitability or in its improvement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "EBITDA Coverage of Senior Fixed Claims",
+      "expression": "WINSOR(RATIO(oibdp, ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The cash actually available to meet interest, taxes and maturing debt is operating income before depreciation, not gross profit, so an EBITDA numerator should be the economically correct measure of claim-servicing capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the numerator choice in the archive's best signal while holding the senior-claims denominator fixed, resolving whether the earlier failure of oibdp-based coverage (gen 0) was caused by the numerator or by the cash-netted total-liability denominator. If EBITDA underperforms gross profit here, the evidence favors gross profit's known robustness to accounting discretion rather than its closeness to distributable cash.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Discretionary Cash Over Senior Claims",
+      "expression": "WINSOR(RATIO(SUB(SUB(revt, cogs), xsga), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Overhead is largely committed in the short run, so the profit genuinely available to service senior claims is gross profit net of SG&A; deducting it should sharpen the distinction between firms that can and cannot fund their obligations internally.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a second numerator design choice \u2014 whether committed overhead belongs above or below the coverage line \u2014 against the same denominator. Comparing signals 1, 2 and the archive winner tells us whether the mechanism is about broad production profitability (gross) or about true residual cash after running the business (net of overhead).",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Senior Claims Coverage Without the Tax Claim",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(xint, dlc)), 1)",
+      "hypothesis": "If the winning signal works because of contractual default risk alone, then interest plus maturing debt is the sufficient denominator and the tax term is superfluous; if taxes matter, it is because the government's cash claim genuinely competes with creditors for internal funds.",
+      "expected_sign": "positive",
+      "reasoning": "The surprise sign-flip of the earlier book-tax signal suggested taxes act as a senior cash claim rather than an earnings-quality validator, and this proposal is the direct attribution test of that interpretation. It is deliberately a one-term deletion because the resulting comparison identifies which distress channel \u2014 contractual or fiscal \u2014 carries the alpha, guiding all later refinement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Claims Coverage With Cash Reserve Backstop",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), RATIO(che, lct))",
+      "hypothesis": "Flow coverage and stock liquidity are substitutable defenses against distress: a firm can meet senior claims from current profit or from an existing cash reserve, and the market underprices firms defended on both fronts.",
+      "expected_sign": "positive",
+      "reasoning": "Composites in this archive reliably lift alpha (the net-debt composites reached 5.0-5.1%) even while dulling the FMB slope, so this tests whether adding a pure stock-liquidity leg to the strongest flow ratio raises abnormal-return magnitude without collapsing the slope. Cash-to-current-liabilities is the one distress dimension the winning denominator omits entirely, so it is the least redundant addition available.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Plus Financial Leverage Fragility",
+      "expression": "SUMRANK(RATIO(xsga, revt), RATIO(lt, at))",
+      "hypothesis": "Fragility compounds when a rigid cost structure meets a rigid capital structure: firms with high fixed overhead per dollar of sales and high balance-sheet leverage have doubly convex exposure to demand shocks and earn negative abnormal returns as that fragility is repeatedly revealed.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal so far treats profitability as a level to be compared with obligations; this instead uses the *cost structure* of profitability as the interacting variable, so distress risk is amplified by how profits are produced rather than by how large they are. It is the batch's genuinely new mechanism and, being short-side oriented, it also probes whether the family's alpha is concentrated in the long leg.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest-Link Solvency Screen",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), lt)), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Distress is determined by the binding constraint, not by an average of defenses: a firm is only as safe as its weaker of profit-based serviceability and cash-based liquidity, and linear composites overstate the safety of firms that are strong on one dimension and fragile on the other.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces additive rank aggregation with a non-linear minimum, a structurally different interaction that no prior proposal tested and one that directly matches the option-like nature of default. If it beats the additive composite in signal 4, the evidence says the profitability-distress interaction is complementary rather than substitutable, which would redirect later generations toward min/max style conditioning.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Plus Profit Resources Over Senior Claims",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), che), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm meets interest, taxes and maturing debt out of total available resources \u2014 this year's gross profit plus its existing cash stock \u2014 so the economically complete coverage measure adds the liquidity buffer to the numerator rather than treating it as a separate score.",
+      "expected_sign": "positive",
+      "reasoning": "The cash backstop produced the archive's largest alpha (6.2%) but only through a SUMRANK that destroyed the FMB slope; embedding cash in the numerator keeps the continuous dispersion of a ratio, which is exactly what the strongest FMB signals share. This should retain the winner's 4.6 FMB t-stat while capturing the incremental alpha the liquidity dimension demonstrably carries.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage of All Current Obligations",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), lct)), 1)",
+      "hypothesis": "Payables and accrued expenses are as capable of triggering a liquidity crisis as maturing debt, so the relevant near-term claim bundle is total current liabilities plus interest and taxes, not just short-term debt.",
+      "expected_sign": "positive",
+      "reasoning": "This is the last unexplored denominator-breadth choice in the winning family and it separates contractual debt distress from broader trade-credit and operating-claim pressure. If the broader bundle is stronger, the mechanism is general working-capital strain; if weaker, it is specifically debt rollover risk, which would sharpen every later refinement.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest-Link Claims and Liquidity Screen",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(che, lct)))",
+      "hypothesis": "Default is governed by the binding constraint, so a firm's true safety is the lower of its flow-based claim coverage and its stock-based liquidity, measured within industry where both norms are set.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-3 weakest-link construction preserved both FMB and alpha better than any additive composite, but it used the inferior total-liability coverage leg; upgrading it to the senior-claims coverage that won attribution is a direct consolidation of the two best structural findings. Comparing it with signal 1 isolates whether liquidity and coverage are complements (MIN wins) or substitutes (summed numerator wins).",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Worst-Case Claims Coverage Over Five Years",
+      "expression": "WINSOR(TS_MIN(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 5), 1)",
+      "hypothesis": "Default is triggered in the bad state, so what matters is the *lowest* coverage a firm has sustained over a business-cycle window; firms that never approached a breach are far safer than their current coverage suggests, and the market prices only the latest report.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier temporal attempts failed because they used first differences, which the evidence shows are uninformative here (DELTA coverage gave a negative alpha); this instead uses a distance-from-extreme statistic that is the natural summary of default risk and preserves the level information that works. It tests whether the anomaly reflects a persistent solvency state rather than a single-year snapshot, at a modest coverage cost.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability Inside the Funding Gap",
+      "expression": "MUL(IND_RANK(RATIO(SUB(revt, cogs), at)), INDICATOR(RATIO(dlc, che), 1))",
+      "hypothesis": "Profitability should be most sharply mispriced among firms with an actual funding gap \u2014 short-term debt exceeding cash on hand \u2014 because for those firms operating profit is the marginal determinant of survival, whereas for cash-covered firms it is merely a valuation input.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 conditional failed because a continuous leverage *weight* pushed both portfolio legs into levered names and imported the negative distress premium into the long leg; a binary funding-gap trigger instead keeps the sort purely on profitability within the distressed subset. This is the cleanest available test of the core economic story \u2014 that the profitability premium is state-dependent \u2014 and its outcome determines whether conditioning is worth pursuing at all in later generations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Working Capital Plus Profit Over Senior Claims",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), wcap), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The buffer available to absorb senior claims is net working capital \u2014 receivables and inventory as well as cash, less current obligations \u2014 so the correct resource pool is gross profit plus net current assets.",
+      "expected_sign": "positive",
+      "reasoning": "Paired with signal 1, this identifies which liquidity concept the market misprices: pure cash reserves or the broader convertible working-capital cushion, a distinction Altman-style scores treat as central but which the archive has never tested. It also brings the one untouched distress variable, wcap, into the strongest-performing functional form rather than into a weak rank composite.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Claims Coverage With Capped Cash Credit",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "Cash reserves help service senior claims, but only up to the size of those claims \u2014 a firm holding ten times its obligations in cash is no safer than one holding exactly one year's worth \u2014 so the liquidity credit in a coverage ratio should be capped at the claim bundle itself.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the FMB collapse of the unbounded cash numerator: capping cash at the denominator's value adds at most 1.0 to coverage, removing the skewed cash-rich tail that flattened the cross-sectional slope while retaining the liquidity information that lifted alpha to 6.1%. It is the economically correct statement of how a cash buffer substitutes for current profit in avoiding default.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage of Cash-Netted Senior Claims",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), MAX(SUB(ADD(ADD(xint, txt), dlc), che), xint)), 1)",
+      "hypothesis": "Cash on hand extinguishes maturing debt and tax liabilities, so the profit-based hurdle is the claim bundle net of cash; interest, however, keeps accruing regardless, which is the natural floor on the remaining obligation.",
+      "expected_sign": "positive",
+      "reasoning": "This puts liquidity on the obligation side rather than the resource side and uses MAX with interest expense as an economically motivated floor, which is exactly what the gen-0 failure of a raw cash-netted denominator (negative and near-zero denominators) lacked. Compared with signal 1 it identifies whether the market misprices cash as an added resource or as a reduction in the effective obligation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest Link Against Net Debt Stock",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(NEG(RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "The binding constraint on a profitable firm may be its total net indebtedness rather than its near-term liquidity: a firm with strong claim coverage but a large net debt stock is still one refinancing cycle from distress.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN structure is the only aggregation that has preserved both a high FMB slope and a high alpha, so the productive question is which second defense belongs inside it; this swaps the cash-to-current-liabilities leg for the net-debt leg that generated the archive's best composite alphas. The comparison with the gen-4 weakest-link result isolates flow liquidity versus solvency stock as the complementary constraint.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Senior Claims Coverage",
+      "expression": "WINSOR(MA(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "Creditors and equity investors should care about a firm's normal capacity to service senior claims, not a single year's realization; averaging over three years removes transitory margin and rollover noise and should sharpen the priced component of distress-adjusted profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Worst-case coverage over five years already showed that multi-year information carries a strong cross-sectional slope (fmb 4.19) but a lower alpha, suggesting the minimum is too conservative a summary while a single year is too noisy; a three-year mean is the intermediate statistic that has not been tested. If it beats both, the mechanism is a persistent solvency state, which would make smoothing the default preprocessing in final refinements.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage Including Maintenance Capital Charge",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp)), 1)",
+      "hypothesis": "Replacing worn-out productive capacity is effectively non-discretionary for a going concern, so depreciation belongs alongside interest, taxes and maturing debt in the bundle of claims that gross profit must cover.",
+      "expected_sign": "positive",
+      "reasoning": "Adding taxes to the claim bundle produced the largest single improvement in the archive, which suggests that broadening the definition of non-deferrable claims is the productive direction, and depreciation is the one economically defensible term not yet included. It also differentiates asset-heavy from asset-light firms with identical financial obligations, an interaction the current winner treats as irrelevant.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Firms are penalized for a funding gap \u2014 short-term debt large relative to cash \u2014 and rewarded for asset profitability, and the mispricing is largest where these two ranks diverge: profitable firms with no rollover gap versus weakly profitable firms that must refinance imminently.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the degenerate indicator conditional, whose zero mass produced undefined portfolio legs, by expressing the same funding-gap economics as a continuous two-sided rank difference \u2014 the structure that already worked for the tax and retained-earnings signals. Because both legs are industry ranks, it also avoids the scale skew that broke the FMB slope in the cash-numerator ratios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Coverage of Claims and Maintenance Capital",
+      "expression": "WINSOR(MA(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp)), 3), 1)",
+      "hypothesis": "The priced quantity is a firm's normal-year capacity to cover all non-deferrable claims including capital maintenance, so combining the broadest defensible obligation bundle with three-year smoothing should isolate the persistent solvency state most cleanly.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing produced the best FMB slope in the archive and the depreciation-inclusive denominator produced the best alpha and Sharpe, and the two modifications operate on different axes (timing versus obligation definition), so their gains should be additive rather than redundant. This is the primary consolidation candidate for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Coverage With Capped Cash Credit",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "A firm's average ability to meet senior claims from gross profit plus a bounded cash buffer is the fullest statement of distress-adjusted profitability, since both the flow and the reserve are persistent firm attributes rather than one-year accidents.",
+      "expected_sign": "positive",
+      "reasoning": "Capping cash restored the cross-sectional slope while keeping most of the liquidity alpha, and smoothing independently raised the slope further, so this pairing tests whether the liquidity channel survives when transitory cash balances are averaged out. Comparing it with signal 1 tells us whether the incremental defense worth adding is a cash reserve or a broader obligation definition.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Full Resource Coverage of All Fixed Charges",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(ADD(xint, txt), dlc), dp)), 3), 1)",
+      "hypothesis": "Distress-adjusted profitability is fully described by average available resources \u2014 gross profit plus a capped cash buffer \u2014 measured against the complete fixed-charge bundle of interest, taxes, maturing debt and capital maintenance.",
+      "expected_sign": "positive",
+      "reasoning": "This stacks all three validated refinements simultaneously to test whether they compound or interfere; if it dominates signals 1 and 2, the mechanism is a single unified serviceability construct, whereas if it underperforms them, the refinements are substitutes and later generations should keep the simpler form. The risk of over-fitting is limited because every term is an economically named claim or resource, not a free parameter.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Charge Coverage Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(ADD(xint, txt), dlc), dp))), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Coverage capacity and imminent refinancing need are separately mispriced: investors reward neither the profitable fixed-charge coverer nor penalize the cash-poor rollover case fully, so the divergence of the two industry ranks is the sharpest spread.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-difference structure delivered the archive's most reliable alpha (t 5.19) and its best coverage, but it used only crude asset-scaled profitability; substituting the validated fixed-charge coverage leg should raise the alpha magnitude while preserving that reliability. It also keeps both legs scale-free, avoiding the skew that has repeatedly damaged FMB slopes in level ratios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Realized Cash Coverage of Senior Claims",
+      "expression": "WINSOR(RATIO(oancf, ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "What ultimately settles senior claims is realized operating cash flow, not accrual gross profit; if the anomaly is genuinely about default avoidance rather than about the gross-profitability factor, a cash numerator should perform at least as well.",
+      "expected_sign": "positive",
+      "reasoning": "This is the decisive discriminating test between the two economic readings of the archive's winner \u2014 a cash-serviceability story versus a gross-profitability story dressed in a leverage denominator \u2014 because operating cash flow is the cleanest measure of funds actually available to creditors. Prior numerator substitutions (EBITDA, gross profit less SG&A) weakened the signal, so a strong result here would materially change the interpretation, while a weak one would confirm that accrual gross profit's robustness is essential.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest Link of Coverage and Earnings Cushion",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(re, at)))",
+      "hypothesis": "A firm needs both current claim-servicing capacity and an accumulated earnings cushion to be genuinely out of distress; firms strong on current coverage but carrying an accumulated deficit have no equity buffer to absorb a shock, and the market treats the two as interchangeable.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings is the Altman distress channel that the winning family entirely omits, and the MIN aggregation has consistently preserved both statistical forms of evidence where additive composites did not. Comparing this against the liquidity and net-debt versions of the weakest-link structure identifies which second constraint is truly binding for profitable firms, which is the key open question for the final refinement rounds.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Senior Claim Burden per Dollar of Profit",
+      "expression": "WINSOR(RATIO(ADD(ADD(xint, txt), dlc), MAX(SUB(revt, cogs), xint)), 1)",
+      "hypothesis": "The mispricing may live in the distressed tail rather than the safe tail: expressing the same economics as a burden (claims per dollar of gross profit, floored at interest expense) puts the cross-sectional dispersion on firms whose obligations dwarf their profits, which is where overpricing should be largest.",
+      "expected_sign": "negative",
+      "reasoning": "Coverage and burden are monotone inverses in ranking but have opposite skew, so this is the sharpest available test of which tail carries the alpha \u2014 a question every prior specification confounded. The MAX floor at interest expense keeps the denominator strictly positive for loss-making firms without discarding them, repairing the negative-denominator problem that sank the gen-0 cash-netted ratio.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-Neutral Continuous Claims Coverage",
+      "expression": "IND_ZSCORE(WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 1))",
+      "hypothesis": "Normal claim-servicing capacity differs structurally across industries (leverage norms, tax profiles, working-capital cycles), so the priced signal is the firm's standardized deviation from its industry's coverage, measured on a continuous scale rather than a rank.",
+      "expected_sign": "positive",
+      "reasoning": "Industry ranking of coverage preserved the FMB slope but cut alpha from 4.5% to 3.0% because ranks discard magnitude; an industry z-score removes the same composition tilt while keeping the dispersion that the strongest FMB signals rely on. This is the one standardization choice never tested on the archive's best variable, and it should improve both metrics if industry structure is noise rather than signal.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Tail-Trimmed Claims Coverage",
+      "expression": "WINSOR(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc)), 5)",
+      "hypothesis": "Extremely high coverage ratios (near-zero obligations) carry no additional information about distress, so trimming five percent in each tail rather than one percent should make the signal more linear in expected returns without losing economic content.",
+      "expected_sign": "positive",
+      "reasoning": "Every diagnostic in this archive points to skew as the binding statistical problem \u2014 the uncapped cash numerator collapsed the FMB slope purely through tail dominance, and capping fixed it \u2014 so the winsorization intensity on the core variable is a first-order, not cosmetic, design choice. It isolates that single parameter while holding economics fixed, which is exactly what the final consolidation rounds need.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage Including Cuttable Research Spend",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "R&D is discretionary in a liquidity crisis, so a firm's true resource pool for meeting senior claims includes the research budget it could suspend; ignoring this understates the solvency of research-intensive firms, which the market also misjudges.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces cost flexibility as a distress buffer \u2014 an economic channel absent from every prior proposal, and consistent with the surprising positive alpha of the SG&A-intensity signal that I had hypothesized would be negative. Treating unreported R&D as zero is the standard and economically correct missing-data convention here, so coverage should be preserved rather than patched.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest Link of Coverage and Margin Stability",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "High coverage is only credible if the profit stream that produces it is stable; a firm with strong average coverage but volatile margins can breach its obligations in a single bad year, and the market prices coverage without conditioning on its reliability.",
+      "expected_sign": "positive",
+      "reasoning": "The volatility-times-leverage idea was tested only inside a SUMRANK that collapsed the FMB slope to 1.79, so the second-moment channel has never had a fair test in the MIN aggregation that consistently preserves both forms of evidence. Because the retained-earnings and funding-gap constraints both failed as the binding second leg, margin reliability is the most plausible remaining complement to flow coverage.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Claims Coverage Net of Net Leverage",
+      "expression": "SUB(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(SUB(lt, che), at)))",
+      "hypothesis": "Flow serviceability and the stock of net obligations are separately mispriced, and the widest spread comes from firms that cover their near-term claims easily while also carrying little net indebtedness relative to assets.",
+      "expected_sign": "positive",
+      "reasoning": "The two-sided rank-difference structure has produced the archive's most reliable portfolio evidence (t-alpha 5.19 with the highest coverage, 0.143) because both legs are scale-free and neither tail can dominate; this pairs it with the strongest coverage leg and the net-leverage stock that generated the best composite alphas. Unlike the gen-6 version, both legs here use universally reported items, so it should hold coverage near 0.14 rather than shrinking it.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Coverage With Research Resources",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "The persistent component of a firm's resource pool \u2014 including its research budget, which is discretionary in a crisis \u2014 is what determines its ability to meet senior claims, so smoothing the R&D-augmented coverage ratio should capture the priced state most precisely.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the archive's best cross-sectional slope (4.84) and the R&D-augmented resource pool produced its best alpha and Sharpe, and these operate on different axes (timing versus resource definition). Earlier stacking failures involved two *obligation-side* terms that proxied the same latent quantity, so this pairing has a better prior of being complementary rather than redundant.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Research and Capped Cash Resource Coverage",
+      "expression": "WINSOR(RATIO(ADD(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), MIN(che, ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm facing senior claims can draw on current profit, suspendable research spending, and its cash reserve up to the size of those claims; the complete bounded resource pool should dominate any single component.",
+      "expected_sign": "positive",
+      "reasoning": "Both the capped cash credit (fmb 4.05, alpha 5.6%) and the R&D addition (alpha 6.2%) improved the base ratio, and both are resource-side terms with a bounded contribution, so the skew problem that broke the uncapped cash version is already controlled. This tests whether the market underprices total defensive capacity or only its profit component.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Research Resources Over All Fixed Charges",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), ADD(ADD(ADD(xint, txt), dlc), dp)), 1)",
+      "hypothesis": "The full fixed-charge bundle including capital maintenance, measured against the full resource pool including suspendable research, is the most complete statement of distress-adjusted profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The depreciation-inclusive denominator and the R&D-inclusive numerator are the two highest-Sharpe designs in the archive (0.396 and 0.397) and they modify opposite sides of the ratio, so this is the single most promising untested pairing. If it fails, the evidence will confirm that only one adjustment per ratio side is sustainable, which is the key lesson for the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Discretionary Spending Cushion Against Claims",
+      "expression": "WINSOR(RATIO(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm whose discretionary overhead and research outlays are large relative to its senior claims can survive a downturn by cutting spending rather than defaulting, so cost flexibility is an unpriced substitute for profitability as a distress defense.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the flexibility channel entirely from the profit level, testing whether the R&D result reflects genuine cut-capacity economics or merely a research-intensity tilt on top of coverage. It is the batch's distinct mechanism and its outcome interprets the archive's best-performing modification, which no other test can do.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating Income Plus Suspendable Research Over Claims",
+      "expression": "WINSOR(RATIO(ADD(oiadp, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The correct measure of funds a firm could direct to senior claims under stress is operating income after all real operating costs, with research added back because it was actually deducted and can actually be halted.",
+      "expected_sign": "positive",
+      "reasoning": "In gross profit, R&D was never deducted, so adding it is a research-intensity tilt rather than a true add-back; using operating income as the base makes the add-back economically exact and therefore provides the clean test of the cut-capacity hypothesis. Prior operating-income numerators underperformed gross profit, so a strong result here would specifically credit the R&D add-back rather than the profit definition.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Research-Tilted Profitability Net of Rollover Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), at)), IND_RANK(RATIO(dlc, che)))",
+      "hypothesis": "Firms with high research-inclusive profitability and no imminent refinancing gap are the most underpriced, and the mispricing is best measured by the divergence of the two industry ranks rather than by a single levered ratio.",
+      "expected_sign": "positive",
+      "reasoning": "The two-sided rank-difference structure delivered the archive's most reliable portfolio evidence (t-alpha 5.19) at its highest coverage (0.143), and industry *ranks* in this two-leg form did not suffer the alpha destruction that industry z-scoring of a continuous ratio caused. Upgrading its profitability leg with the validated research-inclusive resource pool targets a higher alpha while keeping the reliability and breadth advantages.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage With Capped Discretionary Cushion",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "A firm meets senior claims from gross profit plus the discretionary overhead and research it could suspend, but suspendable spending only helps up to the size of the claims themselves, so the cushion credit must be capped at the obligation bundle.",
+      "expected_sign": "positive",
+      "reasoning": "This is the direct application of the fix that repaired the cash channel: capping converts an unbounded industry tilt into a bounded serviceability credit, which restored the FMB slope from 0.92 to 4.05 without sacrificing alpha. Given the cushion's 7.1% raw alpha and the base ratio's 4.65 slope, the capped combination is the single most likely specification to be strong on both criteria.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Weakest Link of Claim Coverage and Cost Flexibility",
+      "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), ADD(ADD(xint, txt), dlc))), IND_RANK(RATIO(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))))",
+      "hypothesis": "Survival requires either enough profit or enough cuttable spending, and a firm is genuinely safe only when neither defense is weak; the market prices profit coverage but ignores whether the firm has any slack to cut.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN aggregation has been the only combining operator that preserved both a high FMB slope and a high alpha (fmb 4.45, \u03b1 4.7% with the liquidity leg), and the two legs it failed with \u2014 margin volatility and retained earnings \u2014 were not defenses against imminent claims, whereas cost flexibility is. Ranking both legs removes the scale skew that flattened the cushion's slope in level form.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Research-Tilted Profitability Net of Claim-to-Cash Gap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(SUB(revt, cogs), COALESCE(xrd, 0)), at)), IND_RANK(RATIO(ADD(ADD(xint, txt), dlc), che)))",
+      "hypothesis": "The distress leg of the best rank-difference signal should measure all imminent cash claims against cash on hand, not just maturing debt, because interest and taxes must be settled in cash on the same horizon.",
+      "expected_sign": "positive",
+      "reasoning": "The rank-difference family has produced the archive's most reliable portfolio evidence (t-alpha 5.39) at its highest coverage (0.143) because both legs are scale-free and neither tail can dominate the sort; broadening the gap leg to the full senior-claim bundle applies the one denominator finding that has held up everywhere else. This keeps breadth near 0.14 while targeting a larger alpha than the debt-only gap version.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Fully Bounded Resource Coverage",
+      "expression": "WINSOR(RATIO(ADD(ADD(SUB(revt, cogs), MIN(che, ADD(ADD(xint, txt), dlc))), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "The complete set of defenses against senior claims is current profit, the cash reserve, and suspendable spending, each contributing at most one claim-bundle's worth of protection; firms defended on all three are the most systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier stacking failed when it combined two *obligation-side* terms that proxied the same latent quantity, whereas these three terms are economically distinct resources and each is individually bounded, which controls the skew that caused every previous slope collapse. If it dominates signal 1, defenses are additive; if not, the evidence says one bounded cushion is sufficient and the simpler specification should be preferred.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage With Accumulated Research Buffer",
+      "expression": "WINSOR(RATIO(ADD(SUB(revt, cogs), MIN(TS_SUM(COALESCE(xrd, 0), 5), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 1)",
+      "hypothesis": "What protects a research-intensive firm in distress is the accumulated intangible capital it has built, which supports asset sales, licensing and continued revenue even if current spending is halted, so the five-year R&D stock is the economically relevant buffer rather than one year's flow.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D channel was the strongest discovery of the last two generations, but it has only been tested as a single-year flow; the cumulative stock is the natural measure of a firm's intangible collateral and is a genuinely different construct, again capped so it cannot become an intangible-intensity tilt. This distinguishes a collateral-value story from a spending-flexibility story, which is the last open interpretive question in the winning family.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sustained Coverage With Capped Cushion",
+      "expression": "WINSOR(MA(RATIO(ADD(SUB(revt, cogs), MIN(ADD(xsga, COALESCE(xrd, 0)), ADD(ADD(xint, txt), dlc))), ADD(ADD(xint, txt), dlc)), 3), 1)",
+      "hypothesis": "Both the profit stream and the discretionary spending base are persistent firm attributes, so the three-year average of capped-cushion coverage should measure the priced solvency state with less measurement noise than a single fiscal year.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing produced the archive's highest FMB slope (4.84) when applied to the base ratio, and the cushion's principal weakness is precisely its slope, so this pairing targets the trade-off from the timing side rather than the bounding side. Comparing it with signal 1 isolates whether the residual slope weakness in the cushion channel is transitory-noise driven or structural.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Leverage-Weighted Operating Profitability",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oiadp,at)),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "lt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBITDA Coverage of Total Liabilities",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(oibdp,sub(lt,che)),1)",
+        "variables": [
+          "che",
+          "lt",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Profitable Deficit Phoenix",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(oancf,at)),rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "oancf",
+          "re"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Turnaround Trend Under Working-Capital Deficit",
+      "metadata": {
+        "normalized_expression": "mul(zscore(trend(ratio(oibdp,at),5)),indicator(ratio(lct,act),1))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Non-Cash Earnings in Levered Firms",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(ib,oancf),at)),rank(ratio(add(dltt,dlc),at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash Profitability When Liquidity Buffer Is Thin",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(oancf,at)),rank(neg(ratio(che,lct))))",
+        "variables": [
+          "at",
+          "che",
+          "lct",
+          "oancf"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Profits per Dollar of Liabilities",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),lt),1)",
+        "variables": [
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross Profitability Net of Net-Debt Burden",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),at),neg(ratio(sub(add(dltt,dlc),che),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dltt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Strength Against Rollover Pressure",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oibdp,at),neg(ratio(dlc,act)))",
+        "variables": [
+          "act",
+          "at",
+          "dlc",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Erosion With Rising Leverage",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(delta(ratio(sub(revt,cogs),at),1)),delta(ratio(lt,at),1))",
+        "variables": [
+          "at",
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Untaxed Reported Profit",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(oibdp,at)),ind_rank(ratio(txt,at)))",
+        "variables": [
+          "at",
+          "oibdp",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Accumulated-Deficit Phoenix",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(sub(revt,cogs),at)),ind_rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "re",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Relative Liability Coverage",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(sub(revt,cogs),lt))",
+        "variables": [
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liability Coverage Plus Net-Debt Safety",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),lt),neg(ratio(sub(add(dltt,dlc),che),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dltt",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage of All Senior Fixed Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin Strength Versus Implied Borrowing Cost",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),at),neg(ratio(xint,add(dltt,dlc))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dlc",
+          "dltt",
+          "revt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage Against Volatility-Scaled Leverage",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),lt),neg(mul(vol(ratio(sub(revt,cogs),at),5),ratio(lt,at))))",
+        "variables": [
+          "at",
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Improving Liability Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(delta(ratio(sub(revt,cogs),lt),1),1)",
+        "variables": [
+          "cogs",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBITDA Coverage of Senior Fixed Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(oibdp,add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "dlc",
+          "oibdp",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discretionary Cash Over Senior Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(sub(revt,cogs),xsga),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Senior Claims Coverage Without the Tax Claim",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(xint,dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Claims Coverage With Cash Reserve Backstop",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),ratio(che,lct))",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Plus Financial Leverage Fragility",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(xsga,revt),ratio(lt,at))",
+        "variables": [
+          "at",
+          "lt",
+          "revt",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest-Link Solvency Screen",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),lt)),ind_rank(ratio(che,lct)))",
+        "variables": [
+          "che",
+          "cogs",
+          "lct",
+          "lt",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Plus Profit Resources Over Senior Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),che),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage of All Current Obligations",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(add(xint,txt),lct)),1)",
+        "variables": [
+          "cogs",
+          "lct",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest-Link Claims and Liquidity Screen",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(ratio(che,lct)))",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "lct",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Worst-Case Claims Coverage Over Five Years",
+      "metadata": {
+        "normalized_expression": "winsor(ts_min(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),5),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitability Inside the Funding Gap",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(revt,cogs),at)),indicator(ratio(dlc,che),1))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Working Capital Plus Profit Over Senior Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),wcap),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "wcap",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Claims Coverage With Capped Cash Credit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),min(che,add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage of Cash-Netted Senior Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),max(sub(add(add(xint,txt),dlc),che),xint)),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest Link Against Net Debt Stock",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(neg(ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dltt",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Senior Claims Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),3),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage Including Maintenance Capital Charge",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(add(add(xint,txt),dlc),dp)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "dp",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitability Net of Rollover Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(sub(revt,cogs),at)),ind_rank(ratio(dlc,che)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Coverage of Claims and Maintenance Capital",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(sub(revt,cogs),add(add(add(xint,txt),dlc),dp)),3),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "dp",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Coverage With Capped Cash Credit",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(add(sub(revt,cogs),min(che,add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),3),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Full Resource Coverage of All Fixed Charges",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(add(sub(revt,cogs),min(che,add(add(xint,txt),dlc))),add(add(add(xint,txt),dlc),dp)),3),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Charge Coverage Net of Rollover Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(sub(revt,cogs),add(add(add(xint,txt),dlc),dp))),ind_rank(ratio(dlc,che)))",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Realized Cash Coverage of Senior Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(oancf,add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "dlc",
+          "oancf",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest Link of Coverage and Earnings Cushion",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "dlc",
+          "re",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Senior Claim Burden per Dollar of Profit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(add(xint,txt),dlc),max(sub(revt,cogs),xint)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-Neutral Continuous Claims Coverage",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),1))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Tail-Trimmed Claims Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(revt,cogs),add(add(xint,txt),dlc)),5)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage Including Cuttable Research Spend",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),coalesce(xrd,0)),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest Link of Coverage and Margin Stability",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(neg(vol(ratio(sub(revt,cogs),at),5))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Claims Coverage Net of Net Leverage",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(ratio(sub(lt,che),at)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "lt",
+          "revt",
+          "txt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Coverage With Research Resources",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(add(sub(revt,cogs),coalesce(xrd,0)),add(add(xint,txt),dlc)),3),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research and Capped Cash Resource Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(add(sub(revt,cogs),coalesce(xrd,0)),min(che,add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research Resources Over All Fixed Charges",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),coalesce(xrd,0)),add(add(add(xint,txt),dlc),dp)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "dp",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discretionary Spending Cushion Against Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(xsga,coalesce(xrd,0)),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "dlc",
+          "txt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating Income Plus Suspendable Research Over Claims",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(oiadp,coalesce(xrd,0)),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "dlc",
+          "oiadp",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research-Tilted Profitability Net of Rollover Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(add(sub(revt,cogs),coalesce(xrd,0)),at)),ind_rank(ratio(dlc,che)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage With Capped Discretionary Cushion",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),min(add(xsga,coalesce(xrd,0)),add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Weakest Link of Claim Coverage and Cost Flexibility",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(sub(revt,cogs),add(add(xint,txt),dlc))),ind_rank(ratio(add(xsga,coalesce(xrd,0)),add(add(xint,txt),dlc))))",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Research-Tilted Profitability Net of Claim-to-Cash Gap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(add(sub(revt,cogs),coalesce(xrd,0)),at)),ind_rank(ratio(add(add(xint,txt),dlc),che)))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fully Bounded Resource Coverage",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(add(sub(revt,cogs),min(che,add(add(xint,txt),dlc))),min(add(xsga,coalesce(xrd,0)),add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "che",
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage With Accumulated Research Buffer",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(revt,cogs),min(ts_sum(coalesce(xrd,0),5),add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sustained Coverage With Capped Cushion",
+      "metadata": {
+        "normalized_expression": "winsor(ma(ratio(add(sub(revt,cogs),min(add(xsga,coalesce(xrd,0)),add(add(xint,txt),dlc))),add(add(xint,txt),dlc)),3),1)",
+        "variables": [
+          "cogs",
+          "dlc",
+          "revt",
+          "txt",
+          "xint",
+          "xrd",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

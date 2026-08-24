@@ -1,0 +1,2882 @@
+{
+  "pair": "accrual_intangible",
+  "evaluated": [
+    {
+      "name": "RDCapital_Weighted_AccrualPurity",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1))), RANK(RATIO(TS_SUM(xrd, 5), at)))",
+      "hypothesis": "Low total accruals (earnings backed by cash) are far more informative about future returns when the firm has a large stock of expensed R&D capital, because investors cannot distinguish conservative expensing from genuine cash generation at intangible-heavy firms.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual component is signed so that cash-backed earnings score high, and its weight scales with the five-year accumulated R&D-to-assets stock, so the signal is near zero for tangible firms and large only where accounting opacity is greatest. This isolates the interaction: the accrual effect is conditioned on intangible intensity rather than being an isolated accrual bet.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3881779086252302,
+      "ls_alpha": 0.024442132801413666,
+      "ls_talpha": 2.173193167695672,
+      "ls_sharpe": 0.2016282464547614,
+      "coverage": 0.0502968296892838,
+      "error": null
+    },
+    {
+      "name": "RDCapitalized_Accrual_Bloat",
+      "expression": "RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "After treating R&D as capital investment rather than expense, the residual gap between accounting earnings and operating cash flow is pure accounting-driven accrual bloat, which predicts lower returns; the portion of the earnings-cash gap explained by intangible investment is not a red flag.",
+      "expected_sign": "negative",
+      "reasoning": "Standard accruals mechanically mislabel R&D-intensive firms because expensed intangible outlays depress both earnings and cash flow, so subtracting R&D from the accrual numerator and adding the R&D stock to the deflator removes the intangible distortion. What remains is discretionary working-capital and reserve accrual, the component with the classic negative return relation. Unreported R&D is economically zero R&D, justifying the COALESCE.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -1.2482678563667111,
+      "ls_alpha": -0.07279033875453496,
+      "ls_talpha": -4.326029110869992,
+      "ls_sharpe": -0.41964046944257116,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "Goodwill_Growth_With_WC_Accrual",
+      "expression": "SUMRANK(GROWTH(gdwl, 1), RATIO(SUB(DELTA(wcap, 1), dp), at))",
+      "hypothesis": "Firms that simultaneously buy intangibles through acquisition (goodwill growth) and inflate working-capital accruals are recognizing value that is neither internally productive nor cash-supported, and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Acquired intangibles are the least productive form of intangible investment and are frequently paired with post-deal accrual management of receivables, inventories and payables. Combining the two ranked channels identifies overreaching managements whose growth is booked rather than earned, whereas either signal alone confounds real expansion with accounting expansion.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.08120883351186,
+      "ls_alpha": 0.02702652293453473,
+      "ls_talpha": 2.141365788228452,
+      "ls_sharpe": 0.342756492883697,
+      "coverage": 0.03430442981706698,
+      "error": null
+    },
+    {
+      "name": "AccrualVol_x_RDIntensity",
+      "expression": "MUL(VOL(RATIO(SUB(ib, oancf), at), 5), RANK(RATIO(xrd, sale)))",
+      "hypothesis": "Accrual instability is a measure of low earnings quality, and its return penalty is amplified at R&D-intensive firms where investors already have limited ability to verify fundamentals.",
+      "expected_sign": "negative",
+      "reasoning": "Volatile accruals indicate estimation noise or repeated management of reported earnings; at intangible-intensive firms this noise cannot be cross-checked against tangible capital or matched revenue, producing more severe subsequent disappointment. The multiplicative form makes the signal an interaction: high accrual volatility is benign for low-R&D firms in this construction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.06162243317177709,
+      "ls_alpha": 0.02266182657291549,
+      "ls_talpha": 2.4374579776791556,
+      "ls_sharpe": 0.019674684388563804,
+      "coverage": 0.0423048087090679,
+      "error": null
+    },
+    {
+      "name": "Innovation_Rising_Accruals_Falling",
+      "expression": "SUB(TS_RANK(RATIO(xrd, sale), 5), TS_RANK(RATIO(SUB(ib, oancf), at), 5))",
+      "hypothesis": "Firms whose R&D intensity is at a five-year high while their accrual ratio is at a five-year low are increasing real intangible investment while shrinking accounting-driven earnings, a combination that markets underprice.",
+      "expected_sign": "positive",
+      "reasoning": "Both components are measured relative to the firm's own history, which removes cross-sectional level effects from industry R&D norms and permanent accrual scale differences. The difference of within-firm positions cleanly separates productive intangible investment (rising) from accounting earnings inflation (falling), which is exactly the intended discrimination.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3617879056517026,
+      "ls_alpha": 0.008341479984915122,
+      "ls_talpha": 1.0239614713174197,
+      "ls_sharpe": 0.17584070391468373,
+      "coverage": 0.04153092798823206,
+      "error": null
+    },
+    {
+      "name": "IntangibleAdj_GrossProfit_Less_Accruals",
+      "expression": "SUB(RANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Gross profitability measured against an intangible-augmented capital base captures true economic productivity, and subtracting the accrual rank strips out the portion of reported performance that comes from accounting recognition rather than operations.",
+      "expected_sign": "positive",
+      "reasoning": "Deflating gross profit by assets plus capitalized R&D corrects the understated capital base of intangible-intensive firms, which otherwise appear spuriously profitable or unprofitable. Netting the accrual rank ensures the surviving score rewards firms that are productive on true invested capital and simultaneously conservative in accrual recognition, an interaction neither theme delivers alone.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.444903064706152,
+      "ls_alpha": 0.03983855513287561,
+      "ls_talpha": 2.83522552600023,
+      "ls_sharpe": 0.5117271116554764,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "IntangibleCapital_Profit_Minus_RDAdjAccrual",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Firms that are highly productive on their intangible-augmented capital base while showing little R&D-adjusted accrual bloat are the cleanest cases of productive intangible investment, and are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the two channels that individually delivered the best cross-sectional slope and the best portfolio alpha, but on a *common* intangible-augmented deflator so both legs speak the same economic units. Using SUMRANK rather than the raw difference of ratios preserves the tail information that drove the accrual-bloat alpha while giving the FMB regression a well-behaved regressor.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 5.338607244345168,
+      "ls_alpha": 0.05514400582701612,
+      "ls_talpha": 3.437900158510996,
+      "ls_sharpe": 0.5223567301089284,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "IndNeutral_RDAdj_AccrualBloat",
+      "expression": "IND_RANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Once R&D is capitalized, the residual earnings-minus-cash gap is discretionary accrual recognition, and its return penalty is a within-industry phenomenon because normal levels of intangible-adjusted accrual differ sharply across sectors.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the gen-0 signal that produced a -7.3% alpha but a statistically weak FMB slope: industry-relative ranking removes both the heavy tails and the sector composition that made the level regression noisy. If the alpha survives while the FMB t-stat improves, the mechanism is genuinely cross-sectional rather than an industry bet.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.5187048086169108,
+      "ls_alpha": -0.05020092017969805,
+      "ls_talpha": -3.1377190939754294,
+      "ls_sharpe": -0.43328752810483,
+      "coverage": 0.09109638880427794,
+      "error": null
+    },
+    {
+      "name": "CashFlowComponent_Accrual_With_RDStock",
+      "expression": "SUMRANK(RATIO(ADD(recch, invch), at), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Receivable and inventory build-ups are the demand-overstatement component of accruals; innovation-intensive firms that grow their R&D stock *without* stuffing the working-capital channel are converting intangible investment into real cash sales.",
+      "expected_sign": "positive",
+      "reasoning": "This uses the cash-flow-statement accrual components directly rather than the aggregate ib-minus-oancf gap, so it targets the specific accrual most likely to be inflated when a firm markets new R&D-driven products. It is a distinct data channel from every gen-0 proposal and tests whether component accruals, not total accruals, carry the intangible interaction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3362128161411913,
+      "ls_alpha": 0.050486492599629416,
+      "ls_talpha": 4.26053334464621,
+      "ls_sharpe": 0.39398604212107635,
+      "coverage": 0.07717638991041144,
+      "error": null
+    },
+    {
+      "name": "Amortization_Drag_On_Intangible_Firms",
+      "expression": "MUL(RANK(RATIO(dp, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(ADD(COALESCE(intan, 0), TS_SUM(COALESCE(xrd, 0), 5)), at)))",
+      "hypothesis": "Intangible-heavy firms carrying large non-cash depreciation and amortization charges have GAAP earnings mechanically depressed relative to cash generation, and the market underweights the conservative-accounting component of their reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This flips the usual direction of the accrual story: the non-cash charge is not managerial discretion but an accounting drag concentrated exactly where intangible capital is large, so high scorers are conservatively reported rather than aggressively reported firms. Conditioning D&A intensity on the intangible share prevents the signal from becoming a plain tangible-capital-intensity proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 5.2206668766300615,
+      "ls_alpha": 0.017827843618349055,
+      "ls_talpha": 1.6620805318821492,
+      "ls_sharpe": 0.19540389181300302,
+      "coverage": 0.14134817863560908,
+      "error": null
+    },
+    {
+      "name": "Accrual_Penalty_Internal_Vs_Acquired",
+      "expression": "MUL(NEG(WINSOR(RATIO(SUB(ib, oancf), at), 1)), SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Low accruals are a credible quality signal when a firm's intangible base is internally generated through R&D, but are far less informative when the intangible base is purchased goodwill whose carrying value is itself an accounting estimate.",
+      "expected_sign": "positive",
+      "reasoning": "The conditioning term is signed rather than strictly positive, so the accrual leg is rewarded for internal-innovation firms and reversed for goodwill-heavy firms; this addresses the gen-0 goodwill failure where an additive goodwill rank produced an FMB slope and a portfolio alpha with opposite signs. It directly implements the stated task of separating productive intangible investment from accounting-driven balance-sheet value.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.08875976261432729,
+      "ls_alpha": 0.04644008567840236,
+      "ls_talpha": 3.5551296996798487,
+      "ls_sharpe": 0.3410277369580201,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Chronic_Innovation_Clean_Accrual_State",
+      "expression": "SUMRANK(MA(RATIO(COALESCE(xrd, 0), at), 3), NEG(MA(WINSOR(RATIO(SUB(ib, oancf), at), 1), 3)))",
+      "hypothesis": "Persistent, sustained R&D commitment combined with a chronically low accrual state identifies firms whose intangible investment is a real business model rather than a one-year reporting choice, and this persistent state is priced more slowly than annual fluctuations.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 tested a within-firm *change* framing (TS_RANK divergence) that was weak, suggesting the information is in the persistent level, not the recent direction; three-year smoothing of both legs tests that alternative directly. Smoothing also lowers turnover, which should raise the long-short Sharpe if the effect is a slow-moving quality premium rather than a news-driven one.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.1588006050606385,
+      "ls_alpha": 0.0629607180030252,
+      "ls_talpha": 4.030626496595569,
+      "ls_sharpe": 0.3520874798026711,
+      "coverage": 0.0912132963851722,
+      "error": null
+    },
+    {
+      "name": "BSAccrual_IntangibleProfit_LongHistory",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)))",
+      "hypothesis": "The same economic content \u2014 productivity on intangible-augmented capital net of accounting-driven earnings \u2014 should hold when accruals are measured from the balance sheet rather than the cash-flow statement, and the balance-sheet construction extends the sample to firms and years where `oancf` is unavailable.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice (accrual measurement source) in the best-performing structure, and directly attacks the 0.091 coverage ceiling that every `oancf`-based signal shares. If alpha and FMB survive with materially higher coverage, the mechanism is robust rather than an artifact of the post-1988 cash-flow-statement sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.800037353171222,
+      "ls_alpha": 0.03797734134783533,
+      "ls_talpha": 3.6471530108775068,
+      "ls_sharpe": 0.4494814072976907,
+      "coverage": 0.11204838384813942,
+      "error": null
+    },
+    {
+      "name": "TripleChannel_Intangible_Accrual_Quality",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), MA(RATIO(COALESCE(xrd, 0), at), 3)))",
+      "hypothesis": "Productive intangible investment shows up in three complementary ways \u2014 high output per unit of intangible-augmented capital, low R&D-adjusted accrual bloat, and a sustained commitment of resources to R&D \u2014 and combining all three isolates real innovators from accounting-driven earnings better than any pair.",
+      "expected_sign": "positive",
+      "reasoning": "The persistent-R&D leg alone generated the largest gen-1 alpha (6.3%, t=4.03) but a weak FMB slope, while the profitability-minus-accrual pair generated the best slope; adding the third channel in rank space should retain the slope while lifting alpha. Nesting SUMRANK keeps every leg on a uniform scale so no single heavy-tailed ratio dominates.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.164219739879336,
+      "ls_alpha": 0.05235226758516085,
+      "ls_talpha": 3.1741708466425607,
+      "ls_sharpe": 0.4361262180738834,
+      "coverage": 0.09109633721222987,
+      "error": null
+    },
+    {
+      "name": "RDAddback_CashProfitability_IntangibleCapital",
+      "expression": "RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Treating R&D as investment on both sides of the profitability ratio \u2014 adding it back to operating cash flow and capitalizing it into the asset base \u2014 yields the economically correct return on intangible-inclusive capital, which is understated by GAAP for research-intensive firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior signal measured the earnings-versus-cash *gap*; this instead measures the cash-based return level after removing the expense-treatment distortion, so it tests whether the payoff comes from accrual avoidance or from correctly measured intangible-inclusive profitability. Its parsimony makes it a clean benchmark against the multi-channel composites at identical coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.2988915949886595,
+      "ls_alpha": 0.057676197268487786,
+      "ls_talpha": 4.083958903039264,
+      "ls_sharpe": 0.6099711731109272,
+      "coverage": 0.09110005183968989,
+      "error": null
+    },
+    {
+      "name": "InternalMinusAcquired_Tilt_With_CleanAccrual",
+      "expression": "SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Intangible capital built internally through R&D is productive, whereas intangible capital recorded as purchased goodwill is an accounting estimate; firms tilted toward internal intangibles with low adjusted accruals are the cleanest quality cases.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the gen-1 conditional whose signed multiplier produced a 3.6-t alpha but a zero FMB slope, by making the internal-versus-acquired tilt an additive ranked channel that admits a single monotone cross-sectional slope. It preserves the economic conditioning idea while making it estimable in the Fama-MacBeth framework.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.8512959386993352,
+      "ls_alpha": 0.06828125813205335,
+      "ls_talpha": 4.567868391573098,
+      "ls_sharpe": 0.47579220541963346,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "Asymmetric_IncomeIncreasing_Accrual_RD",
+      "expression": "MUL(NEG(MUL(WINSOR(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1), INDICATOR(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), 0))), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)))",
+      "hypothesis": "Only income-increasing accruals represent aggressive recognition; income-decreasing accruals are conservatism and carry no penalty, and the penalty for aggressive recognition is largest where R&D capital makes fundamentals hardest to verify.",
+      "expected_sign": "positive",
+      "reasoning": "All prior accrual legs were symmetric in sign, which imposes that conservative accruals are rewarded exactly as much as aggressive accruals are punished \u2014 an assumption the data has never been asked about here. The indicator gates the penalty to the aggressive half only, and the R&D-stock rank scales it, testing an asymmetry mechanism no archive signal covers.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.1551420345469974,
+      "ls_alpha": 0.024320894555402657,
+      "ls_talpha": 1.7359466854188783,
+      "ls_sharpe": 0.2761247218044894,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "OffBalanceSheet_Capital_Share_CleanAccrual",
+      "expression": "SUMRANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The share of a firm's economic capital that is invisible on the balance sheet \u2014 accumulated R&D relative to reported book equity plus that R&D \u2014 measures how much value is missing from reported book, and this mismeasurement is only a buy signal when reported earnings are not simultaneously inflated by accruals.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a valuation/book-mismeasurement channel rather than a profitability channel, so it tests a different reason intangible firms are mispriced while retaining the accrual-quality filter that separates real hidden capital from accounting-driven earnings. Bounding the ratio between zero and one via the ABS(ceq) denominator prevents negative-equity firms from producing sign-flipped extremes.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.283387245594276,
+      "ls_alpha": 0.06745334174477541,
+      "ls_talpha": 4.235091007035179,
+      "ls_sharpe": 0.42502712281674404,
+      "coverage": 0.09108560606623428,
+      "error": null
+    },
+    {
+      "name": "CashProfit_Plus_HiddenCapitalShare",
+      "expression": "SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Firms that earn a high cash return on intangible-inclusive capital *and* whose economic capital is largely off the balance sheet are doubly mispriced: their profitability is understated by expensing and their book value is understated by non-capitalization.",
+      "expected_sign": "positive",
+      "reasoning": "This pairs the archive's best all-round ratio (Sharpe 0.610) with the highest-alpha intangible-composition leg (6.7%, t=4.24) whose weakness was a flat FMB slope; the monotone cash-profitability leg supplies cross-sectional slope while the capital-share leg supplies tail alpha. Both legs are already intangible-augmented on the same R&D stock, so the composite has one internally consistent definition of capital.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.0816252239411,
+      "ls_alpha": 0.05721182575542413,
+      "ls_talpha": 3.8431815887759346,
+      "ls_sharpe": 0.5508767220203458,
+      "coverage": 0.09108808248454096,
+      "error": null
+    },
+    {
+      "name": "SyntheticCashProfit_RDAdj_LongHistory",
+      "expression": "RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Cash-based profitability with R&D treated as investment is the core mechanism, and it can be reconstructed from balance-sheet accrual components (earnings plus depreciation less working-capital accrual) for the many firm-years where the cash-flow statement is unavailable.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-2 coverage repair worked but substituted the accrual leg rather than rebuilding the cash-flow leg, losing alpha; here the entire winning numerator is reconstructed so the economic content is preserved at higher coverage. Comparing it against RDAddback_CashProfitability isolates whether the effect is specific to reported `oancf` or general to cash-based intangible-inclusive earnings.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.734786814002466,
+      "ls_alpha": 0.046109926413061,
+      "ls_talpha": 4.279795184921293,
+      "ls_sharpe": 0.3238355684281666,
+      "coverage": 0.11205767041678946,
+      "error": null
+    },
+    {
+      "name": "BrandAndRD_Capital_CashProfitability",
+      "expression": "RATIO(ADD(ADD(oancf, COALESCE(xrd, 0)), COALESCE(xad, 0)), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))",
+      "hypothesis": "Advertising builds brand capital exactly as R&D builds knowledge capital, so both expensed outlays should be added back to cash earnings and capitalized into the asset base; the profitability mismeasurement is larger when both channels are present.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal has used R&D as the sole proxy for expensed intangible investment, leaving consumer-facing firms with large brand capital misclassified as low-intangible. This tests whether broadening the definition of intangible capital strengthens or dilutes the winning ratio, a first-order question for the theme that has never been asked.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.46370434618194,
+      "ls_alpha": 0.05296925869379959,
+      "ls_talpha": 3.6813760215398865,
+      "ls_sharpe": 0.5927563925169426,
+      "coverage": 0.09110067094426655,
+      "error": null
+    },
+    {
+      "name": "IndNeutral_CashProfit_Minus_RDAdjAccrual",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Because intangible intensity and normal accrual levels are industry characteristics, the tradable component of the effect is the within-industry deviation: the firm that is cash-profitable and accrual-clean *relative to its own sector peers*.",
+      "expected_sign": "positive",
+      "reasoning": "The single earlier industry test (IND_RANK on accrual bloat) improved the FMB slope but cost alpha, which is ambiguous when applied to a single weak leg; applying industry neutralization to both legs of a strong composite is the decisive test of whether the effect is a sector bet on pharma/tech or a genuine firm-level quality effect. If alpha holds after neutralization, the signal is far more attractive for portfolio use.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.716025472563474,
+      "ls_alpha": 0.050326302574936144,
+      "ls_talpha": 3.900123960773615,
+      "ls_sharpe": 0.4449136446269883,
+      "coverage": 0.09104340377092471,
+      "error": null
+    },
+    {
+      "name": "TaxConfirmed_Earnings_With_RDStock",
+      "expression": "SUMRANK(NEG(SUB(RANK(RATIO(ib, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(txp, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Taxes payable are an independent, hard-to-manipulate confirmation of reported income; intangible-intensive firms whose book earnings are corroborated by tax liabilities are reporting real economic profit rather than accrual recognition.",
+      "expected_sign": "positive",
+      "reasoning": "Every accrual leg tested so far comes from the earnings-versus-cash gap; the book-versus-tax gap is a distinct and complementary earnings-quality instrument that no archive signal uses, and it is especially informative for R&D firms whose book-tax differences are large by construction. Pairing it with R&D-stock intensity keeps the required two-theme interaction while testing a genuinely new accounting channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.21455784564626287,
+      "ls_alpha": 0.042612919338031865,
+      "ls_talpha": 4.132759546033226,
+      "ls_sharpe": 0.15405195326718507,
+      "coverage": 0.1256161638299295,
+      "error": null
+    },
+    {
+      "name": "RDAdj_CashMargin_With_Innovation_Intensity",
+      "expression": "SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), sale), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Intangible-inclusive profitability can be decomposed into margin and capital turnover; the margin form \u2014 cash generated per dollar of revenue after treating R&D as investment \u2014 better identifies innovators whose products command real pricing power.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals deflate by an asset base, which mechanically rewards asset-light firms and may partly be a size/turnover effect rather than an intangible effect; the revenue deflator removes that channel entirely. Combining the margin with R&D-stock intensity isolates whether the intangible interaction survives when capital intensity is not in the denominator.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.404763064449669,
+      "ls_alpha": 0.047692897935526044,
+      "ls_talpha": 3.6417692172417304,
+      "ls_sharpe": 0.27964030249413735,
+      "coverage": 0.08896006527838657,
+      "error": null
+    },
+    {
+      "name": "DualProfitability_IntangibleCapital",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Gross profit and R&D-added-back operating cash flow are two independent measurements of the same economic return on intangible-inclusive capital; their gap is precisely the accrual and expensing noise, so averaging them in rank space cancels that noise and retains the signal.",
+      "expected_sign": "positive",
+      "reasoning": "The two legs are the archive's best slope generator (fmb 4.45\u20135.34) and best Sharpe generator (0.610), and both are already deflated by the identical intangible-augmented capital base, so the composite is dimensionally coherent rather than a mixture of scales. The interaction is intrinsic: the difference between the two numerators is the accrual component that the intangible expense treatment distorts.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.083837795433461,
+      "ls_alpha": 0.036652573152441206,
+      "ls_talpha": 2.7045914033145846,
+      "ls_sharpe": 0.49975667567092785,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "DualProfit_With_Explicit_AccrualLeg",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Beyond having high cash-based and gross profitability, explicitly penalizing the R&D-adjusted earnings-minus-cash gap adds information because two firms with identical cash profitability differ in how aggressively they report the residual.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact nesting of Signal 1 plus the standalone accrual leg that produced a -7.3% short-side alpha, so the pair of evaluations cleanly identifies the marginal contribution of accrual recognition once cash profitability is controlled. The earlier triple failed only because its third leg was raw R&D intensity, a weak-slope variable, whereas this third leg is the strongest short-side variable in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.677643894866915,
+      "ls_alpha": 0.050418710083502044,
+      "ls_talpha": 3.5809260805192316,
+      "ls_sharpe": 0.5845948431832086,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "CashProfit_On_IntangibleAdjEquity",
+      "expression": "RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Book equity, not total assets, is the capital base most damaged by non-capitalization of R&D, so a cash return computed on intangible-adjusted book equity captures both the profitability mismeasurement and the value mismeasurement in a single ratio.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice \u2014 the deflator \u2014 against the archive's best ratio, and it embeds the hidden-capital-share idea (6.7% alpha, weak slope) directly into a monotone profitability ratio instead of as a separate skewed leg. If it improves alpha without losing slope, it explains why the composition legs worked and gives a more parsimonious signal.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.3973923556012853,
+      "ls_alpha": 0.03809515274790222,
+      "ls_talpha": 3.5187643804394515,
+      "ls_sharpe": 0.4955591500448174,
+      "coverage": 0.09109055890284763,
+      "error": null
+    },
+    {
+      "name": "AcquiredIntangible_AccrualBloat_Short",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at))",
+      "hypothesis": "The clearest case of accounting-driven rather than productive intangible value is a firm whose balance sheet is dominated by purchased intangibles and whose earnings exceed cash flow even after capitalizing R&D; such firms should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The archive shows acquired-intangible composition carries large tail information but only when it is aligned with the direction of the accounting-quality story, and prior attempts mixed it into long-side quality composites where its sign fought the profitability leg. Building it explicitly as a short-side \"accounting-driven earnings\" signal tests whether the two accounting distortions compound where the theory says they should.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.6866748513343409,
+      "ls_alpha": -0.06832333474303436,
+      "ls_talpha": -4.100037697504459,
+      "ls_sharpe": -0.39644907292498177,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "LongHistory_DualProfit_Synthetic",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The dual-profitability mechanism should not depend on the reported cash-flow statement; reconstructing cash earnings from earnings, depreciation and working-capital accruals extends the same economics to a materially longer sample.",
+      "expected_sign": "positive",
+      "reasoning": "The synthetic cash-profitability ratio already delivered a 4.6% alpha at t=4.28 with coverage 0.112 but a mediocre Sharpe (0.324), suggesting the accrual reconstruction is noisy year by year; pairing it with the stable gross-profit leg should suppress that noise while keeping the extra coverage. This is the highest-value robustness test available, since all top signals currently share the same post-1988 `oancf` sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.259819580742494,
+      "ls_alpha": 0.0426325213608562,
+      "ls_talpha": 4.105603245883598,
+      "ls_sharpe": 0.40156389051980945,
+      "coverage": 0.11205147937102276,
+      "error": null
+    },
+    {
+      "name": "LeanWorkingCapital_Innovation_Intensity",
+      "expression": "SUMRANK(NEG(RATIO(wcap, sale)), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Innovation-intensive firms that run lean working capital convert intangible investment into cash sales quickly, whereas R&D-heavy firms carrying large receivable and inventory balances are recognizing revenue that has not yet been collected.",
+      "expected_sign": "positive",
+      "reasoning": "This tests the accrual theme through the *stock* of working capital relative to sales rather than its flow, a construction not yet used, and it requires no cash-flow-statement variable so it can reach the high-coverage regime where only the weak Amortization_Drag signal has operated. It also probes whether the intangible interaction survives when the accrual leg carries no earnings information at all.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.734488108461689,
+      "ls_alpha": 0.012166733446815837,
+      "ls_talpha": 1.4358126459062033,
+      "ls_sharpe": 0.14090346681629806,
+      "coverage": 0.1225081040789086,
+      "error": null
+    },
+    {
+      "name": "InternalTilt_CashProfit_AccrualTriple",
+      "expression": "SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "The ideal firm on this theme is internally innovative rather than acquisitive, cash-profitable on intangible-inclusive capital, and conservative in accrual recognition; these three attributes are distinct and jointly identify productive intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The internal-minus-acquired tilt produced the archive's largest alpha (6.8%) but essentially no slope, while the cash-profit-plus-accrual pair produces slopes above 4 with 5-6% alpha; combining them should retain the composition tail information while restoring cross-sectional monotonicity. All legs are rank-normalized so the skewed composition leg cannot dominate the composite scale.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.9140570965425598,
+      "ls_alpha": 0.06308084208361767,
+      "ls_talpha": 4.189660511870495,
+      "ls_sharpe": 0.4868091557826996,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "HiddenCapital_GrossProfit_AccrualTriple",
+      "expression": "SUMRANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Mispricing is largest where reported book value omits most of the firm's economic capital, provided reported earnings are not simultaneously inflated by accruals and the firm is genuinely productive on that capital.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate counterpart to Signal 1 \u2014 a different composition leg (book-value omission rather than internal-versus-acquired) and a different profitability leg (gross profit rather than cash profit) \u2014 so the pair of results identifies which composition concept and which profitability concept carries the alpha. Both underlying two-leg versions already scored above t=4 on alpha, so the comparison is informative rather than speculative.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.696984010092033,
+      "ls_alpha": 0.05272803526647918,
+      "ls_talpha": 3.160893847570239,
+      "ls_sharpe": 0.4446277453580397,
+      "coverage": 0.09108560606623428,
+      "error": null
+    },
+    {
+      "name": "AcquisitionFlow_AccrualBloat_Short",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(DELTA(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), 1), at))",
+      "hypothesis": "Firms that add purchased intangibles to the balance sheet this year while also reporting earnings above cash flow are converting cash into accounting assets and accounting estimates simultaneously, and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the failure mode of the gen-4 short signal, whose acquired-intangible *stock* leg was zero for half the sample and destroyed the FMB slope (-0.69) despite a -6.8% alpha; the annual acquisition flow is centered near zero and continuous, so a linear slope can exist. It also sharpens the economics from \"has purchased intangibles\" to \"is currently buying growth instead of building it\".",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.2597755734271248,
+      "ls_alpha": -0.03995480838529018,
+      "ls_talpha": -3.419919692201255,
+      "ls_sharpe": -0.4316661104793306,
+      "coverage": 0.08422819740685984,
+      "error": null
+    },
+    {
+      "name": "IntangibleShare_Of_Investment_CashProfit",
+      "expression": "SUMRANK(RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp)), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The share of a firm's total capital consumption and replacement that takes intangible form \u2014 R&D relative to R&D plus depreciation and amortization \u2014 measures how much of its investment escapes the balance sheet, and this mismeasurement pays off only among firms that are actually cash-profitable.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a new composition measure built from an accruals-theme variable (dp) rather than from equity or goodwill, and it is bounded between zero and one so it avoids the skew that flattened previous composition legs. It tests whether the mispricing tracks the *flow* mix of tangible versus intangible investment, a concept absent from the archive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.296798255820576,
+      "ls_alpha": 0.05807688953670005,
+      "ls_talpha": 3.839120033121833,
+      "ls_sharpe": 0.5029147347214188,
+      "coverage": 0.08947882332158685,
+      "error": null
+    },
+    {
+      "name": "FourLeg_Balanced_IntangibleQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at)))))",
+      "hypothesis": "Productive intangible investment is identified jointly by two profitability measurements (gross and cash) and two accounting-quality measurements (accrual conservatism and internal-versus-acquired intangible composition), with the balanced pairing preventing any one dimension from dominating.",
+      "expected_sign": "positive",
+      "reasoning": "The nesting structure gives the profitability pair and the accounting-quality pair equal weight, which is the natural consolidation of the two evidence patterns the archive has established rather than a simple extension of one. If it beats both Signal 1 and the gen-4 triple, the effect is genuinely four-dimensional; if it does not, the archive tells us the marginal legs are redundant and later generations should prune.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.341464285647374,
+      "ls_alpha": 0.06134076974911204,
+      "ls_talpha": 4.203665123740766,
+      "ls_sharpe": 0.5376758866113327,
+      "coverage": 0.0910938607939232,
+      "error": null
+    },
+    {
+      "name": "LongHistory_Triple_SyntheticCash",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at))))",
+      "hypothesis": "The gen-4 finding that an explicit accrual leg adds slope beyond cash profitability should also hold in the balance-sheet-only construction, extending the strongest structure to the pre-1988 sample and to firms without cash-flow statements.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history dual composite already reached alpha 4.3% at t=4.11 with coverage 0.112, and the analogous cash-flow-based triple raised the slope from 4.08 to 5.68, so this tests whether the same marginal improvement transfers to the higher-coverage regime. A strong result here would give a signal with both the best statistical evidence and roughly 25% more usable observations than the `oancf`-restricted family.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.840076844712345,
+      "ls_alpha": 0.039949311947998604,
+      "ls_talpha": 3.917058244750427,
+      "ls_sharpe": 0.40398640960070453,
+      "coverage": 0.11204838384813942,
+      "error": null
+    },
+    {
+      "name": "FourLeg_InvestmentMix_Quality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "The minority fourth channel should measure how intangible-tilted a firm's investment flow is, since the share of capital consumption that escapes the balance sheet is a cleaner marker of expensing-driven mismeasurement than the stock of purchased intangibles.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the bounded, continuous investment-mix leg (which alone scored alpha 5.8%, t=3.84, slope 3.30) for the zero-inflated goodwill tilt in the best archive structure, at the quarter weight that gen 5 showed preserves the cross-sectional slope. It should retain the four-leg alpha while avoiding the slope damage that zero-inflated composition variables cause.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.440320795707766,
+      "ls_alpha": 0.05761509990752467,
+      "ls_talpha": 3.6355997306639534,
+      "ls_sharpe": 0.5600151262755649,
+      "coverage": 0.08947882332158685,
+      "error": null
+    },
+    {
+      "name": "AccrualWeighted_DualProfit",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The R&D-adjusted accrual leg is the actual mispricing channel \u2014 profitability legs mainly identify where the accounting distortion matters \u2014 so giving accruals half the composite weight rather than a quarter should strengthen the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice against the archive's best-slope signal (gen-4 triple, fmb 5.678), reversing which theme carries the dominant weight while holding the variable set fixed. Because the standalone accrual bloat measure had the archive's largest single-leg alpha (-7.3%), up-weighting it is the most direct test of whether the accrual theme or the intangible-profitability theme is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.730437448715945,
+      "ls_alpha": 0.06579339618153543,
+      "ls_talpha": 4.457820393918362,
+      "ls_sharpe": 0.6497371563800847,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "FiveLeg_MinorityComposition_Quality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Both composition concepts \u2014 internal-versus-acquired intangible origin and off-balance-sheet capital share \u2014 carry independent tail information, and at one-eighth weight each they can add alpha without the slope damage observed at half weight.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 5 established a monotone relationship between composition-leg weight and slope damage (half weight: fmb ~2; quarter weight: fmb 4.34), so this tests the natural next point on that curve where two composition legs share a quarter of the weight. It directly probes whether the 6.1% alpha ceiling can be raised while keeping the slope above 4.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.715850139986264,
+      "ls_alpha": 0.0648031935666348,
+      "ls_talpha": 4.197327539340326,
+      "ls_sharpe": 0.6014860543171313,
+      "coverage": 0.09108189143877427,
+      "error": null
+    },
+    {
+      "name": "SelfFunded_Innovation_CleanAccrual",
+      "expression": "SUMRANK(RATIO(oancf, ADD(COALESCE(xrd, 0), dp)), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Firms whose operating cash flow comfortably covers their total capital replacement needs \u2014 intangible R&D outlays plus tangible depreciation \u2014 fund innovation internally and need not manage earnings, whereas firms with thin coverage face pressure to report favorably.",
+      "expected_sign": "positive",
+      "reasoning": "This is a financing-capacity mechanism rather than a profitability-level mechanism: the deflator is the firm's annual investment requirement, not its capital stock, so it identifies innovation that is self-sustaining rather than merely large. Pairing it with the accrual leg tests the specific economic claim that internal funding and conservative recognition are complementary markers of genuine intangible investment.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.8295567137997,
+      "ls_alpha": 0.042858780494109364,
+      "ls_talpha": 3.2085356322554914,
+      "ls_sharpe": 0.5008750909324042,
+      "coverage": 0.08947882332158685,
+      "error": null
+    },
+    {
+      "name": "LongHistory_FourLeg_InvestmentMix",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "The four-leg quality structure is not specific to the cash-flow-statement era; built entirely from balance-sheet accruals and the investment mix, it should deliver comparable evidence on a materially larger sample.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history triple already reached fmb 4.84 with alpha 4.0% at coverage 0.112, and the missing ingredient relative to the best `oancf` signal is exactly the fourth minority leg that lifted alpha from 5.0% to 6.1%. Since the investment-mix leg needs only `xrd` and `dp`, it can be added without reintroducing the cash-flow-statement sample restriction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.484811399766571,
+      "ls_alpha": 0.05076611705115841,
+      "ls_talpha": 4.480309661952339,
+      "ls_sharpe": 0.3520425690925878,
+      "coverage": 0.11181038973045837,
+      "error": null
+    },
+    {
+      "name": "FourLeg_ProfitabilityImprovement",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), TREND(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)))",
+      "hypothesis": "Among accrual-clean, intangible-intensive firms, a rising five-year trajectory of cash return on intangible-inclusive capital signals that past R&D is beginning to pay off, information the market absorbs slowly because the payoff is invisible in book assets.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier change-based framings failed, but they applied changes to raw R&D intensity or to accruals; this applies a trend to the one quantity the archive has shown is correctly measured \u2014 intangible-inclusive cash profitability \u2014 and only at minority weight. Evaluated alongside Signals 1 and 3, it determines which of composition, investment mix, or improvement trajectory deserves the fourth slot in the final consolidated signal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.734815804041359,
+      "ls_alpha": 0.05016385707768166,
+      "ls_talpha": 3.7340625768666817,
+      "ls_sharpe": 0.535528498565702,
+      "coverage": 0.07275283611806573,
+      "error": null
+    },
+    {
+      "name": "PercentAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(ABS(ib), COALESCE(xrd, 0)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Accruals matter in proportion to the earnings they distort, not in proportion to the asset base, so scaling the R&D-adjusted accrual by the magnitude of income plus R&D identifies the firms whose reported profits are most fully manufactured by recognition choices.",
+      "expected_sign": "positive",
+      "reasoning": "The percent-accrual scaling flags a firm with small assets but earnings composed almost entirely of accruals, which an asset-scaled measure treats as unremarkable; it should therefore sharpen the dominant leg of the archive's best signal without changing any other design element. Adding R&D to the denominator keeps the intangible adjustment consistent across numerator and denominator.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.571155164975809,
+      "ls_alpha": 0.045295721188527344,
+      "ls_talpha": 3.654070033562388,
+      "ls_sharpe": 0.5710767997202876,
+      "coverage": 0.0910889595493579,
+      "error": null
+    },
+    {
+      "name": "AccrualDominant_ThreeQuarter_Weight",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "If the accrual leg is the mispricing channel, pushing its weight from one-half to three-quarters should continue to raise alpha, with the profitability legs retained only as much as is needed to keep the cross-sectional slope monotone.",
+      "expected_sign": "positive",
+      "reasoning": "The archive traces a clear weighting curve \u2014 accrual at one-quarter (alpha 5.0%, fmb 5.68), one-half (alpha 6.6%, fmb 5.73), and alone (alpha 7.3%, fmb 1.25) \u2014 and the interior optimum has not yet been located between one-half and one. This signal samples that interval directly and, together with gen 6, pins down where the slope begins to break down.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.144172338558557,
+      "ls_alpha": 0.06513464205120789,
+      "ls_talpha": 4.098067561756363,
+      "ls_sharpe": 0.5679268510080715,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "AccrualWeighted_With_InvestmentMix",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "With the accrual leg dominant, the residual weight is better spent on how intangible-tilted the firm's investment flow is than on a second profitability measurement, because investment mix identifies where the expensing distortion is largest.",
+      "expected_sign": "positive",
+      "reasoning": "The investment-mix leg is bounded, continuous and delivered alpha 5.8% with a slope above 3 on its own, and the four-leg tests showed it does no harm at minority weight; here it is combined for the first time with the accrual-dominant weighting that proved superior. This isolates whether the gen-6 four-leg disappointment came from the leg itself or from under-weighting accruals in that structure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.5770887773803453,
+      "ls_alpha": 0.06146234595009126,
+      "ls_talpha": 3.8783096777429353,
+      "ls_sharpe": 0.5325846465637403,
+      "coverage": 0.08947882332158685,
+      "error": null
+    },
+    {
+      "name": "LongHistory_AccrualWeighted_Synthetic",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The accrual-dominant weighting should transfer to the balance-sheet construction, giving the same economics roughly 25% more usable observations and a sample that predates the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history four-leg version already achieved fmb 5.485 and alpha 5.1% at t=4.48 with coverage 0.112, but it distributed weight evenly rather than concentrating it on the accrual leg that gen 6 identified as dominant. If this reproduces the 6%+ alpha at higher coverage it becomes the preferred final candidate on robustness grounds.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.764386366763999,
+      "ls_alpha": 0.04432802020573638,
+      "ls_talpha": 4.3501206824736105,
+      "ls_sharpe": 0.4388786138753588,
+      "coverage": 0.11204838384813942,
+      "error": null
+    },
+    {
+      "name": "ChronicAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(MA(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "A single year's accrual is partly transitory noise from lumpy working-capital timing; the three-year average isolates the firm's chronic recognition posture, which is what genuinely distinguishes accounting-driven from productive intangible earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The smoothed-accrual signal from gen 1 delivered alpha 6.3% at t=4.03 on its own, suggesting the persistent component carries the information, but it was never paired with the profitability legs that supply cross-sectional slope. Smoothing the dominant leg should also cut portfolio turnover, which the Sharpe diagnostic will reveal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.61580520612175,
+      "ls_alpha": 0.058005962450591544,
+      "ls_talpha": 3.887276048079786,
+      "ls_sharpe": 0.5271320695477465,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalComponent_Weighted_DualProfit",
+      "expression": "SUMRANK(RATIO(ADD(recch, invch), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The demand-overstatement components of accruals \u2014 receivable and inventory build-ups \u2014 are the part of the earnings-cash gap most likely to reverse, and they are the most diagnostic accrual signal for firms selling newly developed, R&D-driven products.",
+      "expected_sign": "positive",
+      "reasoning": "The component-accrual signal produced alpha 5.0% at t=4.26 in gen 1 but a slope of only 1.34 because it was paired with raw R&D intensity rather than with profitability legs; giving it the dominant slot alongside the two profitability legs tests whether component accruals can match or beat the aggregate earnings-minus-cash gap. It also isolates which part of the accrual aggregate is actually doing the work in the current leader.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.650516929197234,
+      "ls_alpha": 0.03151744218024616,
+      "ls_talpha": 2.482195339811463,
+      "ls_sharpe": 0.4322714860974485,
+      "coverage": 0.07717886632871812,
+      "error": null
+    },
+    {
+      "name": "CoalescedCashFlow_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Operating cash flow is the economically correct input wherever it is reported, and the earnings-plus-depreciation-less-working-capital-accrual reconstruction is the correct estimate of the same quantity where it is not; using each in its proper domain preserves the leader's alpha while extending it to the pre-cash-flow-statement sample.",
+      "expected_sign": "positive",
+      "reasoning": "The COALESCE here is not a coverage patch but an accounting identity \u2014 the reconstruction is precisely how operating cash flow was computed before the statement of cash flows existed \u2014 so the two inputs measure the same economic object. This should combine the gen-6 leader's 6.6% alpha and 0.650 Sharpe with the gen-7 long-history variant's 0.112 coverage and 5.76 slope, which no single signal in the archive achieves.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.759008499980805,
+      "ls_alpha": 0.06299474400194485,
+      "ls_talpha": 5.8462419929179354,
+      "ls_sharpe": 0.4859533409787926,
+      "coverage": 0.13047479336352913,
+      "error": null
+    },
+    {
+      "name": "BrandInclusive_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)))), RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))))",
+      "hypothesis": "Advertising is expensed intangible investment exactly as R&D is, so capitalizing both in the accrual adjustment and in the capital base gives a more complete separation of productive intangible investment from accounting-driven earnings, especially for consumer-facing firms.",
+      "expected_sign": "positive",
+      "reasoning": "The brand-inclusive cash-profitability ratio scored Sharpe 0.593 versus 0.610 for the R&D-only version, so brand capital was roughly neutral when applied to profitability alone; it has never been applied to the *accrual adjustment*, where treating advertising as investment changes which firms look accrual-bloated. This tests whether the expense-treatment correction, not just the capital base, needs the broader intangible definition.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.693033854159071,
+      "ls_alpha": 0.056820075880077606,
+      "ls_talpha": 3.7285942692468477,
+      "ls_sharpe": 0.5569096157010507,
+      "coverage": 0.09109819452595988,
+      "error": null
+    },
+    {
+      "name": "ShortHorizonCapital_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "Knowledge capital depreciates quickly, so a three-year accumulation of R&D is a better proxy for the productive intangible stock than a five-year sum, which over-weights obsolete research and understates measured returns for firms that have recently accelerated innovation.",
+      "expected_sign": "positive",
+      "reasoning": "The five-year window has been held fixed across all 42 archive signals and was never justified empirically, yet it enters all three legs of the leader through the deflator. Shortening it also relaxes the history requirement slightly, so if the economics favor recent R&D this should improve slope, alpha and coverage simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.602114615706546,
+      "ls_alpha": 0.06539818773356422,
+      "ls_talpha": 4.410315403332901,
+      "ls_sharpe": 0.6373176556155138,
+      "coverage": 0.09109509900307654,
+      "error": null
+    },
+    {
+      "name": "IndNeutral_AccrualWeighted_Leader",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))), SUMRANK(IND_ZSCORE(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), IND_ZSCORE(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Because intangible intensity and normal accrual levels are sector characteristics, the within-industry deviation is the component an investor can actually trade without taking a concentrated bet on pharmaceutical and technology sectors.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier industry-neutral test was run on a weaker, quarter-weight accrual structure and lost only modest alpha (5.0% versus 5.5%), so applying it to the current leader is the decisive tradability check for the final signal. A result that retains most of the 6.6% alpha would substantially strengthen the economic claim that this is a firm-level accounting-quality effect rather than a sector tilt.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.542455443677476,
+      "ls_alpha": 0.03845052021829199,
+      "ls_talpha": 2.949598267179678,
+      "ls_sharpe": 0.3976859046423705,
+      "coverage": 0.09103169237601605,
+      "error": null
+    },
+    {
+      "name": "UnexpectedAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(SUB(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), MA(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "A firm's normal accrual level reflects its business model, while the deviation from that norm reflects a discretionary reporting decision; the discretionary component should be the part that reverses and predicts returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 7 showed the chronic level (three-year average) works almost as well as the current level, which leaves open whether the two components carry the same information or whether the deviation is the active ingredient; this signal isolates the orthogonal component and completes the decomposition. It is a genuine earnings-management mechanism rather than a rescaling, and its failure would establish that the effect is a persistent business-model characteristic, not discretionary manipulation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.08059848872258,
+      "ls_alpha": 0.04063894562393784,
+      "ls_talpha": 3.0164805815274645,
+      "ls_sharpe": 0.6098294284753933,
+      "coverage": 0.0910975754213832,
+      "error": null
+    },
+    {
+      "name": "AccrualDominant_With_MinorityComposition",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Intangible-composition information \u2014 internally built versus purchased intangibles, and the share of economic capital missing from book equity \u2014 adds tail alpha, and at one-eighth weight each it can be carried alongside a dominant accrual leg without damaging the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The balanced five-leg version reached alpha 6.5% with fmb 4.72, and the accrual-dominant weighting independently lifted alpha from 5.0% to 6.6%; this combines the two changes that each worked while keeping composition legs at the minority weight the archive shows is safe. The gen-7 failure of the investment-mix addition at quarter weight suggests composition legs must be diluted further, which this structure does.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.730300778115621,
+      "ls_alpha": 0.06580026624309407,
+      "ls_talpha": 4.083211068369441,
+      "ls_sharpe": 0.5432898601547751,
+      "coverage": 0.09108189143877427,
+      "error": null
+    },
+    {
+      "name": "Coalesced_ShortHorizon_AccrualWeighted",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "Knowledge capital depreciates fast, so a three-year R&D accumulation better proxies the productive intangible stock, and combining that with the reported-or-reconstructed cash-flow measurement gives the most accurate available separation of productive intangible investment from accounting-driven earnings.",
+      "expected_sign": "positive",
+      "reasoning": "These are the two design changes that independently improved the leader in gen 8 \u2014 the shorter horizon raised alpha to 6.5% with Sharpe 0.637, and the COALESCE base raised the slope to 6.76 and the alpha t to 5.85 \u2014 and they act on different parts of the construction, so their effects should be close to additive. The shorter window also relaxes the history requirement, which should push coverage above 0.130.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.625913873162761,
+      "ls_alpha": 0.0616346995494072,
+      "ls_talpha": 5.667727614094668,
+      "ls_sharpe": 0.4638168140966668,
+      "coverage": 0.13047231694522246,
+      "error": null
+    },
+    {
+      "name": "Coalesced_ChronicAccrual_Weighted",
+      "expression": "SUMRANK(NEG(MA(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "In the extended sample the single-year accrual measure is noisier \u2014 partly reconstructed, partly from smaller and older firms \u2014 so averaging the dominant leg over three years isolates the firm's chronic recognition posture and should stabilize the long-short spread.",
+      "expected_sign": "positive",
+      "reasoning": "This targets the one deficiency of the gen-8 leader, its Sharpe of 0.486, using the mechanism the archive already validated: smoothing the accrual leg preserved the slope (5.616) in the `oancf` sample and smoothing lowers portfolio turnover. If Sharpe recovers toward 0.6 while the alpha t stays near 5, this becomes the best-rounded signal produced in the run.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.528882021375229,
+      "ls_alpha": 0.05721505464767616,
+      "ls_talpha": 5.031189690518239,
+      "ls_sharpe": 0.39357696546446763,
+      "coverage": 0.13047479336352913,
+      "error": null
+    },
+    {
+      "name": "Coalesced_BrandAndRD_AccrualWeighted",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))))",
+      "hypothesis": "Both expensed intangible investments \u2014 research and brand building \u2014 should be capitalized in the accrual adjustment and in the capital base, and the value of that broader definition should be larger in the extended sample where consumer-goods firms are more heavily represented.",
+      "expected_sign": "positive",
+      "reasoning": "Brand inclusion was roughly neutral on the post-1988 cash-flow sample (alpha 5.7% versus 6.6%), but that sample is tilted toward the technology and pharmaceutical firms for which R&D alone already captures intangible intensity. Testing it on the COALESCE base is the fair test of whether the intangible definition, rather than the sample, was the binding limitation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.5953274277416245,
+      "ls_alpha": 0.05919630372793128,
+      "ls_talpha": 5.28410007621691,
+      "ls_sharpe": 0.45325665474038995,
+      "coverage": 0.1304754124681058,
+      "error": null
+    },
+    {
+      "name": "Coalesced_TwoLeg_Parsimonious",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The entire effect is the contrast between cash-based and accrual-based measures of return on intangible-inclusive capital; the gross-profit leg is a third measurement of the same quantity and may be dispensable.",
+      "expected_sign": "positive",
+      "reasoning": "This is the minimal expression of the mechanism \u2014 one accrual leg, one cash-profitability leg, both on the identical intangible-augmented capital base \u2014 and it isolates exactly what the gross-profit leg contributes in the extended sample. A parsimonious signal that matches the three-leg result is preferable on overfitting grounds after fifty archive evaluations.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.82007306363293,
+      "ls_alpha": 0.06392450331994515,
+      "ls_talpha": 6.014413578718969,
+      "ls_sharpe": 0.4493926950723512,
+      "coverage": 0.1304809844092958,
+      "error": null
+    },
+    {
+      "name": "Harvesting_Firms_AccrualSupported",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(DELTA(COALESCE(xrd, 0), 1), at)))",
+      "hypothesis": "Firms that cut intangible investment while simultaneously reporting earnings above cash flow are harvesting the accounting benefit of reduced expensing and supporting reported profits with accruals \u2014 the purest case of accounting-driven rather than productive earnings, and a strong short.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive short combined accrual bloat with an intangible *stock* or *acquisition* variable; none used the direction of the firm's own intangible spending, which is the decision variable managers actually manipulate when defending near-term earnings. The R&D cut is scaled by assets so it is continuous and centered near zero, avoiding the zero-inflation that flattened the slope of earlier short signals.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.9619963102539344,
+      "ls_alpha": -0.061452558389122586,
+      "ls_talpha": -5.576835437401715,
+      "ls_sharpe": -0.3005961424145648,
+      "coverage": 0.12361160639477245,
+      "error": null
+    },
+    {
+      "name": "Coalesced_IndAdjAccrual_RawProfit",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Normal accrual levels are an industry characteristic driven by working-capital cycles, so the accrual leg should be measured relative to sector peers, whereas the level of return on intangible-inclusive capital is the genuine cross-sectional mispricing dimension and should be left unadjusted.",
+      "expected_sign": "negative",
+      "reasoning": "Full industry neutralization in gen 8 cut alpha from 6.6% to 3.8% because it also stripped the profitability legs, which are precisely where intangible-intensive firms should look different from their sector; this repairs that failure by neutralizing only the leg where industry variation is a nuisance. Note the expected direction is positive for the composite as written \u2014 the accrual leg is already negated \u2014 and a favorable result would deliver a more tradable version of the leader without the sector-bet concern.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 7.059136459679019,
+      "ls_alpha": 0.05738745763047347,
+      "ls_talpha": 5.199829226131051,
+      "ls_sharpe": 0.46003007108988636,
+      "coverage": 0.13034359478532342,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "RDCapital_Weighted_AccrualPurity",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1))), RANK(RATIO(TS_SUM(xrd, 5), at)))",
+      "hypothesis": "Low total accruals (earnings backed by cash) are far more informative about future returns when the firm has a large stock of expensed R&D capital, because investors cannot distinguish conservative expensing from genuine cash generation at intangible-heavy firms.",
+      "expected_sign": "positive",
+      "reasoning": "The accrual component is signed so that cash-backed earnings score high, and its weight scales with the five-year accumulated R&D-to-assets stock, so the signal is near zero for tangible firms and large only where accounting opacity is greatest. This isolates the interaction: the accrual effect is conditioned on intangible intensity rather than being an isolated accrual bet.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDCapitalized_Accrual_Bloat",
+      "expression": "RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "After treating R&D as capital investment rather than expense, the residual gap between accounting earnings and operating cash flow is pure accounting-driven accrual bloat, which predicts lower returns; the portion of the earnings-cash gap explained by intangible investment is not a red flag.",
+      "expected_sign": "negative",
+      "reasoning": "Standard accruals mechanically mislabel R&D-intensive firms because expensed intangible outlays depress both earnings and cash flow, so subtracting R&D from the accrual numerator and adding the R&D stock to the deflator removes the intangible distortion. What remains is discretionary working-capital and reserve accrual, the component with the classic negative return relation. Unreported R&D is economically zero R&D, justifying the COALESCE.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Goodwill_Growth_With_WC_Accrual",
+      "expression": "SUMRANK(GROWTH(gdwl, 1), RATIO(SUB(DELTA(wcap, 1), dp), at))",
+      "hypothesis": "Firms that simultaneously buy intangibles through acquisition (goodwill growth) and inflate working-capital accruals are recognizing value that is neither internally productive nor cash-supported, and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Acquired intangibles are the least productive form of intangible investment and are frequently paired with post-deal accrual management of receivables, inventories and payables. Combining the two ranked channels identifies overreaching managements whose growth is booked rather than earned, whereas either signal alone confounds real expansion with accounting expansion.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualVol_x_RDIntensity",
+      "expression": "MUL(VOL(RATIO(SUB(ib, oancf), at), 5), RANK(RATIO(xrd, sale)))",
+      "hypothesis": "Accrual instability is a measure of low earnings quality, and its return penalty is amplified at R&D-intensive firms where investors already have limited ability to verify fundamentals.",
+      "expected_sign": "negative",
+      "reasoning": "Volatile accruals indicate estimation noise or repeated management of reported earnings; at intangible-intensive firms this noise cannot be cross-checked against tangible capital or matched revenue, producing more severe subsequent disappointment. The multiplicative form makes the signal an interaction: high accrual volatility is benign for low-R&D firms in this construction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation_Rising_Accruals_Falling",
+      "expression": "SUB(TS_RANK(RATIO(xrd, sale), 5), TS_RANK(RATIO(SUB(ib, oancf), at), 5))",
+      "hypothesis": "Firms whose R&D intensity is at a five-year high while their accrual ratio is at a five-year low are increasing real intangible investment while shrinking accounting-driven earnings, a combination that markets underprice.",
+      "expected_sign": "positive",
+      "reasoning": "Both components are measured relative to the firm's own history, which removes cross-sectional level effects from industry R&D norms and permanent accrual scale differences. The difference of within-firm positions cleanly separates productive intangible investment (rising) from accounting earnings inflation (falling), which is exactly the intended discrimination.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleAdj_GrossProfit_Less_Accruals",
+      "expression": "SUB(RANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Gross profitability measured against an intangible-augmented capital base captures true economic productivity, and subtracting the accrual rank strips out the portion of reported performance that comes from accounting recognition rather than operations.",
+      "expected_sign": "positive",
+      "reasoning": "Deflating gross profit by assets plus capitalized R&D corrects the understated capital base of intangible-intensive firms, which otherwise appear spuriously profitable or unprofitable. Netting the accrual rank ensures the surviving score rewards firms that are productive on true invested capital and simultaneously conservative in accrual recognition, an interaction neither theme delivers alone.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleCapital_Profit_Minus_RDAdjAccrual",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Firms that are highly productive on their intangible-augmented capital base while showing little R&D-adjusted accrual bloat are the cleanest cases of productive intangible investment, and are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the two channels that individually delivered the best cross-sectional slope and the best portfolio alpha, but on a *common* intangible-augmented deflator so both legs speak the same economic units. Using SUMRANK rather than the raw difference of ratios preserves the tail information that drove the accrual-bloat alpha while giving the FMB regression a well-behaved regressor.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutral_RDAdj_AccrualBloat",
+      "expression": "IND_RANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Once R&D is capitalized, the residual earnings-minus-cash gap is discretionary accrual recognition, and its return penalty is a within-industry phenomenon because normal levels of intangible-adjusted accrual differ sharply across sectors.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the gen-0 signal that produced a -7.3% alpha but a statistically weak FMB slope: industry-relative ranking removes both the heavy tails and the sector composition that made the level regression noisy. If the alpha survives while the FMB t-stat improves, the mechanism is genuinely cross-sectional rather than an industry bet.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlowComponent_Accrual_With_RDStock",
+      "expression": "SUMRANK(RATIO(ADD(recch, invch), at), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Receivable and inventory build-ups are the demand-overstatement component of accruals; innovation-intensive firms that grow their R&D stock *without* stuffing the working-capital channel are converting intangible investment into real cash sales.",
+      "expected_sign": "positive",
+      "reasoning": "This uses the cash-flow-statement accrual components directly rather than the aggregate ib-minus-oancf gap, so it targets the specific accrual most likely to be inflated when a firm markets new R&D-driven products. It is a distinct data channel from every gen-0 proposal and tests whether component accruals, not total accruals, carry the intangible interaction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Amortization_Drag_On_Intangible_Firms",
+      "expression": "MUL(RANK(RATIO(dp, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(ADD(COALESCE(intan, 0), TS_SUM(COALESCE(xrd, 0), 5)), at)))",
+      "hypothesis": "Intangible-heavy firms carrying large non-cash depreciation and amortization charges have GAAP earnings mechanically depressed relative to cash generation, and the market underweights the conservative-accounting component of their reported profitability.",
+      "expected_sign": "positive",
+      "reasoning": "This flips the usual direction of the accrual story: the non-cash charge is not managerial discretion but an accounting drag concentrated exactly where intangible capital is large, so high scorers are conservatively reported rather than aggressively reported firms. Conditioning D&A intensity on the intangible share prevents the signal from becoming a plain tangible-capital-intensity proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual_Penalty_Internal_Vs_Acquired",
+      "expression": "MUL(NEG(WINSOR(RATIO(SUB(ib, oancf), at), 1)), SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))))",
+      "hypothesis": "Low accruals are a credible quality signal when a firm's intangible base is internally generated through R&D, but are far less informative when the intangible base is purchased goodwill whose carrying value is itself an accounting estimate.",
+      "expected_sign": "positive",
+      "reasoning": "The conditioning term is signed rather than strictly positive, so the accrual leg is rewarded for internal-innovation firms and reversed for goodwill-heavy firms; this addresses the gen-0 goodwill failure where an additive goodwill rank produced an FMB slope and a portfolio alpha with opposite signs. It directly implements the stated task of separating productive intangible investment from accounting-driven balance-sheet value.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Chronic_Innovation_Clean_Accrual_State",
+      "expression": "SUMRANK(MA(RATIO(COALESCE(xrd, 0), at), 3), NEG(MA(WINSOR(RATIO(SUB(ib, oancf), at), 1), 3)))",
+      "hypothesis": "Persistent, sustained R&D commitment combined with a chronically low accrual state identifies firms whose intangible investment is a real business model rather than a one-year reporting choice, and this persistent state is priced more slowly than annual fluctuations.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 tested a within-firm *change* framing (TS_RANK divergence) that was weak, suggesting the information is in the persistent level, not the recent direction; three-year smoothing of both legs tests that alternative directly. Smoothing also lowers turnover, which should raise the long-short Sharpe if the effect is a slow-moving quality premium rather than a news-driven one.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BSAccrual_IntangibleProfit_LongHistory",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)))",
+      "hypothesis": "The same economic content \u2014 productivity on intangible-augmented capital net of accounting-driven earnings \u2014 should hold when accruals are measured from the balance sheet rather than the cash-flow statement, and the balance-sheet construction extends the sample to firms and years where `oancf` is unavailable.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice (accrual measurement source) in the best-performing structure, and directly attacks the 0.091 coverage ceiling that every `oancf`-based signal shares. If alpha and FMB survive with materially higher coverage, the mechanism is robust rather than an artifact of the post-1988 cash-flow-statement sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleChannel_Intangible_Accrual_Quality",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), MA(RATIO(COALESCE(xrd, 0), at), 3)))",
+      "hypothesis": "Productive intangible investment shows up in three complementary ways \u2014 high output per unit of intangible-augmented capital, low R&D-adjusted accrual bloat, and a sustained commitment of resources to R&D \u2014 and combining all three isolates real innovators from accounting-driven earnings better than any pair.",
+      "expected_sign": "positive",
+      "reasoning": "The persistent-R&D leg alone generated the largest gen-1 alpha (6.3%, t=4.03) but a weak FMB slope, while the profitability-minus-accrual pair generated the best slope; adding the third channel in rank space should retain the slope while lifting alpha. Nesting SUMRANK keeps every leg on a uniform scale so no single heavy-tailed ratio dominates.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDAddback_CashProfitability_IntangibleCapital",
+      "expression": "RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Treating R&D as investment on both sides of the profitability ratio \u2014 adding it back to operating cash flow and capitalizing it into the asset base \u2014 yields the economically correct return on intangible-inclusive capital, which is understated by GAAP for research-intensive firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior signal measured the earnings-versus-cash *gap*; this instead measures the cash-based return level after removing the expense-treatment distortion, so it tests whether the payoff comes from accrual avoidance or from correctly measured intangible-inclusive profitability. Its parsimony makes it a clean benchmark against the multi-channel composites at identical coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "InternalMinusAcquired_Tilt_With_CleanAccrual",
+      "expression": "SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Intangible capital built internally through R&D is productive, whereas intangible capital recorded as purchased goodwill is an accounting estimate; firms tilted toward internal intangibles with low adjusted accruals are the cleanest quality cases.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the gen-1 conditional whose signed multiplier produced a 3.6-t alpha but a zero FMB slope, by making the internal-versus-acquired tilt an additive ranked channel that admits a single monotone cross-sectional slope. It preserves the economic conditioning idea while making it estimable in the Fama-MacBeth framework.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Asymmetric_IncomeIncreasing_Accrual_RD",
+      "expression": "MUL(NEG(MUL(WINSOR(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1), INDICATOR(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), 0))), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)))",
+      "hypothesis": "Only income-increasing accruals represent aggressive recognition; income-decreasing accruals are conservatism and carry no penalty, and the penalty for aggressive recognition is largest where R&D capital makes fundamentals hardest to verify.",
+      "expected_sign": "positive",
+      "reasoning": "All prior accrual legs were symmetric in sign, which imposes that conservative accruals are rewarded exactly as much as aggressive accruals are punished \u2014 an assumption the data has never been asked about here. The indicator gates the penalty to the aggressive half only, and the R&D-stock rank scales it, testing an asymmetry mechanism no archive signal covers.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "OffBalanceSheet_Capital_Share_CleanAccrual",
+      "expression": "SUMRANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The share of a firm's economic capital that is invisible on the balance sheet \u2014 accumulated R&D relative to reported book equity plus that R&D \u2014 measures how much value is missing from reported book, and this mismeasurement is only a buy signal when reported earnings are not simultaneously inflated by accruals.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a valuation/book-mismeasurement channel rather than a profitability channel, so it tests a different reason intangible firms are mispriced while retaining the accrual-quality filter that separates real hidden capital from accounting-driven earnings. Bounding the ratio between zero and one via the ABS(ceq) denominator prevents negative-equity firms from producing sign-flipped extremes.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProfit_Plus_HiddenCapitalShare",
+      "expression": "SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Firms that earn a high cash return on intangible-inclusive capital *and* whose economic capital is largely off the balance sheet are doubly mispriced: their profitability is understated by expensing and their book value is understated by non-capitalization.",
+      "expected_sign": "positive",
+      "reasoning": "This pairs the archive's best all-round ratio (Sharpe 0.610) with the highest-alpha intangible-composition leg (6.7%, t=4.24) whose weakness was a flat FMB slope; the monotone cash-profitability leg supplies cross-sectional slope while the capital-share leg supplies tail alpha. Both legs are already intangible-augmented on the same R&D stock, so the composite has one internally consistent definition of capital.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SyntheticCashProfit_RDAdj_LongHistory",
+      "expression": "RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Cash-based profitability with R&D treated as investment is the core mechanism, and it can be reconstructed from balance-sheet accrual components (earnings plus depreciation less working-capital accrual) for the many firm-years where the cash-flow statement is unavailable.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-2 coverage repair worked but substituted the accrual leg rather than rebuilding the cash-flow leg, losing alpha; here the entire winning numerator is reconstructed so the economic content is preserved at higher coverage. Comparing it against RDAddback_CashProfitability isolates whether the effect is specific to reported `oancf` or general to cash-based intangible-inclusive earnings.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandAndRD_Capital_CashProfitability",
+      "expression": "RATIO(ADD(ADD(oancf, COALESCE(xrd, 0)), COALESCE(xad, 0)), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))",
+      "hypothesis": "Advertising builds brand capital exactly as R&D builds knowledge capital, so both expensed outlays should be added back to cash earnings and capitalized into the asset base; the profitability mismeasurement is larger when both channels are present.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal has used R&D as the sole proxy for expensed intangible investment, leaving consumer-facing firms with large brand capital misclassified as low-intangible. This tests whether broadening the definition of intangible capital strengthens or dilutes the winning ratio, a first-order question for the theme that has never been asked.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutral_CashProfit_Minus_RDAdjAccrual",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Because intangible intensity and normal accrual levels are industry characteristics, the tradable component of the effect is the within-industry deviation: the firm that is cash-profitable and accrual-clean *relative to its own sector peers*.",
+      "expected_sign": "positive",
+      "reasoning": "The single earlier industry test (IND_RANK on accrual bloat) improved the FMB slope but cost alpha, which is ambiguous when applied to a single weak leg; applying industry neutralization to both legs of a strong composite is the decisive test of whether the effect is a sector bet on pharma/tech or a genuine firm-level quality effect. If alpha holds after neutralization, the signal is far more attractive for portfolio use.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxConfirmed_Earnings_With_RDStock",
+      "expression": "SUMRANK(NEG(SUB(RANK(RATIO(ib, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RANK(RATIO(txp, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Taxes payable are an independent, hard-to-manipulate confirmation of reported income; intangible-intensive firms whose book earnings are corroborated by tax liabilities are reporting real economic profit rather than accrual recognition.",
+      "expected_sign": "positive",
+      "reasoning": "Every accrual leg tested so far comes from the earnings-versus-cash gap; the book-versus-tax gap is a distinct and complementary earnings-quality instrument that no archive signal uses, and it is especially informative for R&D firms whose book-tax differences are large by construction. Pairing it with R&D-stock intensity keeps the required two-theme interaction while testing a genuinely new accounting channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDAdj_CashMargin_With_Innovation_Intensity",
+      "expression": "SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), sale), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Intangible-inclusive profitability can be decomposed into margin and capital turnover; the margin form \u2014 cash generated per dollar of revenue after treating R&D as investment \u2014 better identifies innovators whose products command real pricing power.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals deflate by an asset base, which mechanically rewards asset-light firms and may partly be a size/turnover effect rather than an intangible effect; the revenue deflator removes that channel entirely. Combining the margin with R&D-stock intensity isolates whether the intangible interaction survives when capital intensity is not in the denominator.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DualProfitability_IntangibleCapital",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Gross profit and R&D-added-back operating cash flow are two independent measurements of the same economic return on intangible-inclusive capital; their gap is precisely the accrual and expensing noise, so averaging them in rank space cancels that noise and retains the signal.",
+      "expected_sign": "positive",
+      "reasoning": "The two legs are the archive's best slope generator (fmb 4.45\u20135.34) and best Sharpe generator (0.610), and both are already deflated by the identical intangible-augmented capital base, so the composite is dimensionally coherent rather than a mixture of scales. The interaction is intrinsic: the difference between the two numerators is the accrual component that the intangible expense treatment distorts.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DualProfit_With_Explicit_AccrualLeg",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Beyond having high cash-based and gross profitability, explicitly penalizing the R&D-adjusted earnings-minus-cash gap adds information because two firms with identical cash profitability differ in how aggressively they report the residual.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact nesting of Signal 1 plus the standalone accrual leg that produced a -7.3% short-side alpha, so the pair of evaluations cleanly identifies the marginal contribution of accrual recognition once cash profitability is controlled. The earlier triple failed only because its third leg was raw R&D intensity, a weak-slope variable, whereas this third leg is the strongest short-side variable in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProfit_On_IntangibleAdjEquity",
+      "expression": "RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5)))",
+      "hypothesis": "Book equity, not total assets, is the capital base most damaged by non-capitalization of R&D, so a cash return computed on intangible-adjusted book equity captures both the profitability mismeasurement and the value mismeasurement in a single ratio.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice \u2014 the deflator \u2014 against the archive's best ratio, and it embeds the hidden-capital-share idea (6.7% alpha, weak slope) directly into a monotone profitability ratio instead of as a separate skewed leg. If it improves alpha without losing slope, it explains why the composition legs worked and gives a more parsimonious signal.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquiredIntangible_AccrualBloat_Short",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(gdwl, 0), COALESCE(intan, 0)), at))",
+      "hypothesis": "The clearest case of accounting-driven rather than productive intangible value is a firm whose balance sheet is dominated by purchased intangibles and whose earnings exceed cash flow even after capitalizing R&D; such firms should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The archive shows acquired-intangible composition carries large tail information but only when it is aligned with the direction of the accounting-quality story, and prior attempts mixed it into long-side quality composites where its sign fought the profitability leg. Building it explicitly as a short-side \"accounting-driven earnings\" signal tests whether the two accounting distortions compound where the theory says they should.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LongHistory_DualProfit_Synthetic",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The dual-profitability mechanism should not depend on the reported cash-flow statement; reconstructing cash earnings from earnings, depreciation and working-capital accruals extends the same economics to a materially longer sample.",
+      "expected_sign": "positive",
+      "reasoning": "The synthetic cash-profitability ratio already delivered a 4.6% alpha at t=4.28 with coverage 0.112 but a mediocre Sharpe (0.324), suggesting the accrual reconstruction is noisy year by year; pairing it with the stable gross-profit leg should suppress that noise while keeping the extra coverage. This is the highest-value robustness test available, since all top signals currently share the same post-1988 `oancf` sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LeanWorkingCapital_Innovation_Intensity",
+      "expression": "SUMRANK(NEG(RATIO(wcap, sale)), RATIO(TS_SUM(COALESCE(xrd, 0), 5), at))",
+      "hypothesis": "Innovation-intensive firms that run lean working capital convert intangible investment into cash sales quickly, whereas R&D-heavy firms carrying large receivable and inventory balances are recognizing revenue that has not yet been collected.",
+      "expected_sign": "positive",
+      "reasoning": "This tests the accrual theme through the *stock* of working capital relative to sales rather than its flow, a construction not yet used, and it requires no cash-flow-statement variable so it can reach the high-coverage regime where only the weak Amortization_Drag signal has operated. It also probes whether the intangible interaction survives when the accrual leg carries no earnings information at all.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "InternalTilt_CashProfit_AccrualTriple",
+      "expression": "SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), SUMRANK(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "The ideal firm on this theme is internally innovative rather than acquisitive, cash-profitable on intangible-inclusive capital, and conservative in accrual recognition; these three attributes are distinct and jointly identify productive intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The internal-minus-acquired tilt produced the archive's largest alpha (6.8%) but essentially no slope, while the cash-profit-plus-accrual pair produces slopes above 4 with 5-6% alpha; combining them should retain the composition tail information while restoring cross-sectional monotonicity. All legs are rank-normalized so the skewed composition leg cannot dominate the composite scale.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "HiddenCapital_GrossProfit_AccrualTriple",
+      "expression": "SUMRANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Mispricing is largest where reported book value omits most of the firm's economic capital, provided reported earnings are not simultaneously inflated by accruals and the firm is genuinely productive on that capital.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate counterpart to Signal 1 \u2014 a different composition leg (book-value omission rather than internal-versus-acquired) and a different profitability leg (gross profit rather than cash profit) \u2014 so the pair of results identifies which composition concept and which profitability concept carries the alpha. Both underlying two-leg versions already scored above t=4 on alpha, so the comparison is informative rather than speculative.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquisitionFlow_AccrualBloat_Short",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(DELTA(ADD(COALESCE(intan, 0), COALESCE(gdwl, 0)), 1), at))",
+      "hypothesis": "Firms that add purchased intangibles to the balance sheet this year while also reporting earnings above cash flow are converting cash into accounting assets and accounting estimates simultaneously, and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the failure mode of the gen-4 short signal, whose acquired-intangible *stock* leg was zero for half the sample and destroyed the FMB slope (-0.69) despite a -6.8% alpha; the annual acquisition flow is centered near zero and continuous, so a linear slope can exist. It also sharpens the economics from \"has purchased intangibles\" to \"is currently buying growth instead of building it\".",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleShare_Of_Investment_CashProfit",
+      "expression": "SUMRANK(RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp)), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The share of a firm's total capital consumption and replacement that takes intangible form \u2014 R&D relative to R&D plus depreciation and amortization \u2014 measures how much of its investment escapes the balance sheet, and this mismeasurement pays off only among firms that are actually cash-profitable.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a new composition measure built from an accruals-theme variable (dp) rather than from equity or goodwill, and it is bounded between zero and one so it avoids the skew that flattened previous composition legs. It tests whether the mispricing tracks the *flow* mix of tangible versus intangible investment, a concept absent from the archive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FourLeg_Balanced_IntangibleQuality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at)))))",
+      "hypothesis": "Productive intangible investment is identified jointly by two profitability measurements (gross and cash) and two accounting-quality measurements (accrual conservatism and internal-versus-acquired intangible composition), with the balanced pairing preventing any one dimension from dominating.",
+      "expected_sign": "positive",
+      "reasoning": "The nesting structure gives the profitability pair and the accounting-quality pair equal weight, which is the natural consolidation of the two evidence patterns the archive has established rather than a simple extension of one. If it beats both Signal 1 and the gen-4 triple, the effect is genuinely four-dimensional; if it does not, the archive tells us the marginal legs are redundant and later generations should prune.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LongHistory_Triple_SyntheticCash",
+      "expression": "SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at))))",
+      "hypothesis": "The gen-4 finding that an explicit accrual leg adds slope beyond cash profitability should also hold in the balance-sheet-only construction, extending the strongest structure to the pre-1988 sample and to firms without cash-flow statements.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history dual composite already reached alpha 4.3% at t=4.11 with coverage 0.112, and the analogous cash-flow-based triple raised the slope from 4.08 to 5.68, so this tests whether the same marginal improvement transfers to the higher-coverage regime. A strong result here would give a signal with both the best statistical evidence and roughly 25% more usable observations than the `oancf`-restricted family.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FourLeg_InvestmentMix_Quality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "The minority fourth channel should measure how intangible-tilted a firm's investment flow is, since the share of capital consumption that escapes the balance sheet is a cleaner marker of expensing-driven mismeasurement than the stock of purchased intangibles.",
+      "expected_sign": "positive",
+      "reasoning": "This substitutes the bounded, continuous investment-mix leg (which alone scored alpha 5.8%, t=3.84, slope 3.30) for the zero-inflated goodwill tilt in the best archive structure, at the quarter weight that gen 5 showed preserves the cross-sectional slope. It should retain the four-leg alpha while avoiding the slope damage that zero-inflated composition variables cause.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualWeighted_DualProfit",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The R&D-adjusted accrual leg is the actual mispricing channel \u2014 profitability legs mainly identify where the accounting distortion matters \u2014 so giving accruals half the composite weight rather than a quarter should strengthen the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single design choice against the archive's best-slope signal (gen-4 triple, fmb 5.678), reversing which theme carries the dominant weight while holding the variable set fixed. Because the standalone accrual bloat measure had the archive's largest single-leg alpha (-7.3%), up-weighting it is the most direct test of whether the accrual theme or the intangible-profitability theme is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveLeg_MinorityComposition_Quality",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Both composition concepts \u2014 internal-versus-acquired intangible origin and off-balance-sheet capital share \u2014 carry independent tail information, and at one-eighth weight each they can add alpha without the slope damage observed at half weight.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 5 established a monotone relationship between composition-leg weight and slope damage (half weight: fmb ~2; quarter weight: fmb 4.34), so this tests the natural next point on that curve where two composition legs share a quarter of the weight. It directly probes whether the 6.1% alpha ceiling can be raised while keeping the slope above 4.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SelfFunded_Innovation_CleanAccrual",
+      "expression": "SUMRANK(RATIO(oancf, ADD(COALESCE(xrd, 0), dp)), NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Firms whose operating cash flow comfortably covers their total capital replacement needs \u2014 intangible R&D outlays plus tangible depreciation \u2014 fund innovation internally and need not manage earnings, whereas firms with thin coverage face pressure to report favorably.",
+      "expected_sign": "positive",
+      "reasoning": "This is a financing-capacity mechanism rather than a profitability-level mechanism: the deflator is the firm's annual investment requirement, not its capital stock, so it identifies innovation that is self-sustaining rather than merely large. Pairing it with the accrual leg tests the specific economic claim that internal funding and conservative recognition are complementary markers of genuine intangible investment.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LongHistory_FourLeg_InvestmentMix",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "The four-leg quality structure is not specific to the cash-flow-statement era; built entirely from balance-sheet accruals and the investment mix, it should deliver comparable evidence on a materially larger sample.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history triple already reached fmb 4.84 with alpha 4.0% at coverage 0.112, and the missing ingredient relative to the best `oancf` signal is exactly the fourth minority leg that lifted alpha from 5.0% to 6.1%. Since the investment-mix leg needs only `xrd` and `dp`, it can be added without reintroducing the cash-flow-statement sample restriction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FourLeg_ProfitabilityImprovement",
+      "expression": "SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), TREND(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)))",
+      "hypothesis": "Among accrual-clean, intangible-intensive firms, a rising five-year trajectory of cash return on intangible-inclusive capital signals that past R&D is beginning to pay off, information the market absorbs slowly because the payoff is invisible in book assets.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier change-based framings failed, but they applied changes to raw R&D intensity or to accruals; this applies a trend to the one quantity the archive has shown is correctly measured \u2014 intangible-inclusive cash profitability \u2014 and only at minority weight. Evaluated alongside Signals 1 and 3, it determines which of composition, investment mix, or improvement trajectory deserves the fourth slot in the final consolidated signal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PercentAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(ABS(ib), COALESCE(xrd, 0)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Accruals matter in proportion to the earnings they distort, not in proportion to the asset base, so scaling the R&D-adjusted accrual by the magnitude of income plus R&D identifies the firms whose reported profits are most fully manufactured by recognition choices.",
+      "expected_sign": "positive",
+      "reasoning": "The percent-accrual scaling flags a firm with small assets but earnings composed almost entirely of accruals, which an asset-scaled measure treats as unremarkable; it should therefore sharpen the dominant leg of the archive's best signal without changing any other design element. Adding R&D to the denominator keeps the intangible adjustment consistent across numerator and denominator.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualDominant_ThreeQuarter_Weight",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "If the accrual leg is the mispricing channel, pushing its weight from one-half to three-quarters should continue to raise alpha, with the profitability legs retained only as much as is needed to keep the cross-sectional slope monotone.",
+      "expected_sign": "positive",
+      "reasoning": "The archive traces a clear weighting curve \u2014 accrual at one-quarter (alpha 5.0%, fmb 5.68), one-half (alpha 6.6%, fmb 5.73), and alone (alpha 7.3%, fmb 1.25) \u2014 and the interior optimum has not yet been located between one-half and one. This signal samples that interval directly and, together with gen 6, pins down where the slope begins to break down.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualWeighted_With_InvestmentMix",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(COALESCE(xrd, 0), ADD(COALESCE(xrd, 0), dp))))",
+      "hypothesis": "With the accrual leg dominant, the residual weight is better spent on how intangible-tilted the firm's investment flow is than on a second profitability measurement, because investment mix identifies where the expensing distortion is largest.",
+      "expected_sign": "positive",
+      "reasoning": "The investment-mix leg is bounded, continuous and delivered alpha 5.8% with a slope above 3 on its own, and the four-leg tests showed it does no harm at minority weight; here it is combined for the first time with the accrual-dominant weighting that proved superior. This isolates whether the gen-6 four-leg disappointment came from the leg itself or from under-weighting accruals in that structure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LongHistory_AccrualWeighted_Synthetic",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), dp), at)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The accrual-dominant weighting should transfer to the balance-sheet construction, giving the same economics roughly 25% more usable observations and a sample that predates the cash-flow statement.",
+      "expected_sign": "positive",
+      "reasoning": "The long-history four-leg version already achieved fmb 5.485 and alpha 5.1% at t=4.48 with coverage 0.112, but it distributed weight evenly rather than concentrating it on the accrual leg that gen 6 identified as dominant. If this reproduces the 6%+ alpha at higher coverage it becomes the preferred final candidate on robustness grounds.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(MA(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "A single year's accrual is partly transitory noise from lumpy working-capital timing; the three-year average isolates the firm's chronic recognition posture, which is what genuinely distinguishes accounting-driven from productive intangible earnings.",
+      "expected_sign": "positive",
+      "reasoning": "The smoothed-accrual signal from gen 1 delivered alpha 6.3% at t=4.03 on its own, suggesting the persistent component carries the information, but it was never paired with the profitability legs that supply cross-sectional slope. Smoothing the dominant leg should also cut portfolio turnover, which the Sharpe diagnostic will reveal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalComponent_Weighted_DualProfit",
+      "expression": "SUMRANK(RATIO(ADD(recch, invch), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "The demand-overstatement components of accruals \u2014 receivable and inventory build-ups \u2014 are the part of the earnings-cash gap most likely to reverse, and they are the most diagnostic accrual signal for firms selling newly developed, R&D-driven products.",
+      "expected_sign": "positive",
+      "reasoning": "The component-accrual signal produced alpha 5.0% at t=4.26 in gen 1 but a slope of only 1.34 because it was paired with raw R&D intensity rather than with profitability legs; giving it the dominant slot alongside the two profitability legs tests whether component accruals can match or beat the aggregate earnings-minus-cash gap. It also isolates which part of the accrual aggregate is actually doing the work in the current leader.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CoalescedCashFlow_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Operating cash flow is the economically correct input wherever it is reported, and the earnings-plus-depreciation-less-working-capital-accrual reconstruction is the correct estimate of the same quantity where it is not; using each in its proper domain preserves the leader's alpha while extending it to the pre-cash-flow-statement sample.",
+      "expected_sign": "positive",
+      "reasoning": "The COALESCE here is not a coverage patch but an accounting identity \u2014 the reconstruction is precisely how operating cash flow was computed before the statement of cash flows existed \u2014 so the two inputs measure the same economic object. This should combine the gen-6 leader's 6.6% alpha and 0.650 Sharpe with the gen-7 long-history variant's 0.112 coverage and 5.76 slope, which no single signal in the archive achieves.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandInclusive_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)))), RATIO(ADD(oancf, ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))))",
+      "hypothesis": "Advertising is expensed intangible investment exactly as R&D is, so capitalizing both in the accrual adjustment and in the capital base gives a more complete separation of productive intangible investment from accounting-driven earnings, especially for consumer-facing firms.",
+      "expected_sign": "positive",
+      "reasoning": "The brand-inclusive cash-profitability ratio scored Sharpe 0.593 versus 0.610 for the R&D-only version, so brand capital was roughly neutral when applied to profitability alone; it has never been applied to the *accrual adjustment*, where treating advertising as investment changes which firms look accrual-bloated. This tests whether the expense-treatment correction, not just the capital base, needs the broader intangible definition.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortHorizonCapital_AccrualWeighted_Leader",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "Knowledge capital depreciates quickly, so a three-year accumulation of R&D is a better proxy for the productive intangible stock than a five-year sum, which over-weights obsolete research and understates measured returns for firms that have recently accelerated innovation.",
+      "expected_sign": "positive",
+      "reasoning": "The five-year window has been held fixed across all 42 archive signals and was never justified empirically, yet it enters all three legs of the leader through the deflator. Shortening it also relaxes the history requirement slightly, so if the economics favor recent R&D this should improve slope, alpha and coverage simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutral_AccrualWeighted_Leader",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))), SUMRANK(IND_ZSCORE(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), IND_ZSCORE(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Because intangible intensity and normal accrual levels are sector characteristics, the within-industry deviation is the component an investor can actually trade without taking a concentrated bet on pharmaceutical and technology sectors.",
+      "expected_sign": "positive",
+      "reasoning": "The earlier industry-neutral test was run on a weaker, quarter-weight accrual structure and lost only modest alpha (5.0% versus 5.5%), so applying it to the current leader is the decisive tradability check for the final signal. A result that retains most of the 6.6% alpha would substantially strengthen the economic claim that this is a firm-level accounting-quality effect rather than a sector tilt.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "UnexpectedAccrual_Weighted_DualProfit",
+      "expression": "SUMRANK(NEG(SUB(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), MA(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "A firm's normal accrual level reflects its business model, while the deviation from that norm reflects a discretionary reporting decision; the discretionary component should be the part that reverses and predicts returns.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 7 showed the chronic level (three-year average) works almost as well as the current level, which leaves open whether the two components carry the same information or whether the deviation is the active ingredient; this signal isolates the orthogonal component and completes the decomposition. It is a genuine earnings-management mechanism rather than a rescaling, and its failure would establish that the effect is a persistent business-model characteristic, not discretionary manipulation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualDominant_With_MinorityComposition",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, oancf), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), SUMRANK(SUB(RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at)), RANK(RATIO(COALESCE(gdwl, 0), at))), RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))))))",
+      "hypothesis": "Intangible-composition information \u2014 internally built versus purchased intangibles, and the share of economic capital missing from book equity \u2014 adds tail alpha, and at one-eighth weight each it can be carried alongside a dominant accrual leg without damaging the cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "The balanced five-leg version reached alpha 6.5% with fmb 4.72, and the accrual-dominant weighting independently lifted alpha from 5.0% to 6.6%; this combines the two changes that each worked while keeping composition legs at the minority weight the archive shows is safe. The gen-7 failure of the investment-mix addition at quarter weight suggests composition legs must be diluted further, which this structure does.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Coalesced_ShortHorizon_AccrualWeighted",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3)))))",
+      "hypothesis": "Knowledge capital depreciates fast, so a three-year R&D accumulation better proxies the productive intangible stock, and combining that with the reported-or-reconstructed cash-flow measurement gives the most accurate available separation of productive intangible investment from accounting-driven earnings.",
+      "expected_sign": "positive",
+      "reasoning": "These are the two design changes that independently improved the leader in gen 8 \u2014 the shorter horizon raised alpha to 6.5% with Sharpe 0.637, and the COALESCE base raised the slope to 6.76 and the alpha t to 5.85 \u2014 and they act on different parts of the construction, so their effects should be close to additive. The shorter window also relaxes the history requirement, which should push coverage above 0.130.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Coalesced_ChronicAccrual_Weighted",
+      "expression": "SUMRANK(NEG(MA(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 3)), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "In the extended sample the single-year accrual measure is noisier \u2014 partly reconstructed, partly from smaller and older firms \u2014 so averaging the dominant leg over three years isolates the firm's chronic recognition posture and should stabilize the long-short spread.",
+      "expected_sign": "positive",
+      "reasoning": "This targets the one deficiency of the gen-8 leader, its Sharpe of 0.486, using the mechanism the archive already validated: smoothing the accrual leg preserved the slope (5.616) in the `oancf` sample and smoothing lowers portfolio turnover. If Sharpe recovers toward 0.6 while the alpha t stays near 5, this becomes the best-rounded signal produced in the run.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Coalesced_BrandAndRD_AccrualWeighted",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5)))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), ADD(COALESCE(xrd, 0), COALESCE(xad, 0))), ADD(at, ADD(TS_SUM(COALESCE(xrd, 0), 5), TS_SUM(COALESCE(xad, 0), 5))))))",
+      "hypothesis": "Both expensed intangible investments \u2014 research and brand building \u2014 should be capitalized in the accrual adjustment and in the capital base, and the value of that broader definition should be larger in the extended sample where consumer-goods firms are more heavily represented.",
+      "expected_sign": "positive",
+      "reasoning": "Brand inclusion was roughly neutral on the post-1988 cash-flow sample (alpha 5.7% versus 6.6%), but that sample is tilted toward the technology and pharmaceutical firms for which R&D alone already captures intangible intensity. Testing it on the COALESCE base is the fair test of whether the intangible definition, rather than the sample, was the binding limitation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Coalesced_TwoLeg_Parsimonious",
+      "expression": "SUMRANK(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "The entire effect is the contrast between cash-based and accrual-based measures of return on intangible-inclusive capital; the gross-profit leg is a third measurement of the same quantity and may be dispensable.",
+      "expected_sign": "positive",
+      "reasoning": "This is the minimal expression of the mechanism \u2014 one accrual leg, one cash-profitability leg, both on the identical intangible-augmented capital base \u2014 and it isolates exactly what the gross-profit leg contributes in the extended sample. A parsimonious signal that matches the three-leg result is preferable on overfitting grounds after fifty archive evaluations.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Harvesting_Firms_AccrualSupported",
+      "expression": "SUMRANK(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), NEG(RATIO(DELTA(COALESCE(xrd, 0), 1), at)))",
+      "hypothesis": "Firms that cut intangible investment while simultaneously reporting earnings above cash flow are harvesting the accounting benefit of reduced expensing and supporting reported profits with accruals \u2014 the purest case of accounting-driven rather than productive earnings, and a strong short.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive short combined accrual bloat with an intangible *stock* or *acquisition* variable; none used the direction of the firm's own intangible spending, which is the decision variable managers actually manipulate when defending near-term earnings. The R&D cut is scaled by assets so it is continuous and centered near zero, avoiding the zero-inflation that flattened the slope of earlier short signals.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Coalesced_IndAdjAccrual_RawProfit",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(SUB(SUB(ib, COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1))))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))), SUMRANK(RATIO(SUB(revt, cogs), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), RATIO(ADD(COALESCE(oancf, SUB(ADD(ib, dp), SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)))), COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))))",
+      "hypothesis": "Normal accrual levels are an industry characteristic driven by working-capital cycles, so the accrual leg should be measured relative to sector peers, whereas the level of return on intangible-inclusive capital is the genuine cross-sectional mispricing dimension and should be left unadjusted.",
+      "expected_sign": "negative",
+      "reasoning": "Full industry neutralization in gen 8 cut alpha from 6.6% to 3.8% because it also stripped the profitability legs, which are precisely where intangible-intensive firms should look different from their sector; this repairs that failure by neutralizing only the leg where industry variation is a nuisance. Note the expected direction is positive for the composite as written \u2014 the accrual leg is already negated \u2014 and a favorable result would deliver a more tradable version of the leader without the sector-bet concern.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDCapital_Weighted_AccrualPurity",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(winsor(ratio(sub(ib,oancf),at),1))),rank(ratio(ts_sum(xrd,5),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDCapitalized_Accrual_Bloat",
+      "metadata": {
+        "normalized_expression": "ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Goodwill_Growth_With_WC_Accrual",
+      "metadata": {
+        "normalized_expression": "sumrank(growth(gdwl,1),ratio(sub(delta(wcap,1),dp),at))",
+        "variables": [
+          "at",
+          "dp",
+          "gdwl",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualVol_x_RDIntensity",
+      "metadata": {
+        "normalized_expression": "mul(vol(ratio(sub(ib,oancf),at),5),rank(ratio(xrd,sale)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation_Rising_Accruals_Falling",
+      "metadata": {
+        "normalized_expression": "sub(ts_rank(ratio(xrd,sale),5),ts_rank(ratio(sub(ib,oancf),at),5))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleAdj_GrossProfit_Less_Accruals",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5)))),rank(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleCapital_Profit_Minus_RDAdjAccrual",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutral_RDAdj_AccrualBloat",
+      "metadata": {
+        "normalized_expression": "ind_rank(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlowComponent_Accrual_With_RDStock",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(recch,invch),at),ratio(ts_sum(coalesce(xrd,0),5),at))",
+        "variables": [
+          "at",
+          "invch",
+          "recch",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Amortization_Drag_On_Intangible_Firms",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dp,add(at,ts_sum(coalesce(xrd,0),5)))),rank(ratio(add(coalesce(intan,0),ts_sum(coalesce(xrd,0),5)),at)))",
+        "variables": [
+          "at",
+          "dp",
+          "intan",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual_Penalty_Internal_Vs_Acquired",
+      "metadata": {
+        "normalized_expression": "mul(neg(winsor(ratio(sub(ib,oancf),at),1)),sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Chronic_Innovation_Clean_Accrual_State",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(coalesce(xrd,0),at),3),neg(ma(winsor(ratio(sub(ib,oancf),at),1),3)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BSAccrual_IntangibleProfit_LongHistory",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)),dp),at)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "lct",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleChannel_Intangible_Accrual_Quality",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),ma(ratio(coalesce(xrd,0),at),3)))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDAddback_CashProfitability_IntangibleCapital",
+      "metadata": {
+        "normalized_expression": "ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "at",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InternalMinusAcquired_Tilt_With_CleanAccrual",
+      "metadata": {
+        "normalized_expression": "sumrank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asymmetric_IncomeIncreasing_Accrual_RD",
+      "metadata": {
+        "normalized_expression": "mul(neg(mul(winsor(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),1),indicator(sub(sub(ib,oancf),coalesce(xrd,0)),0))),rank(ratio(ts_sum(coalesce(xrd,0),5),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OffBalanceSheet_Capital_Share_CleanAccrual",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ts_sum(coalesce(xrd,0),5),add(abs(ceq),ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProfit_Plus_HiddenCapitalShare",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),ratio(ts_sum(coalesce(xrd,0),5),add(abs(ceq),ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "at",
+          "ceq",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SyntheticCashProfit_RDAdj_LongHistory",
+      "metadata": {
+        "normalized_expression": "ratio(add(sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandAndRD_Capital_CashProfitability",
+      "metadata": {
+        "normalized_expression": "ratio(add(add(oancf,coalesce(xrd,0)),coalesce(xad,0)),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5))))",
+        "variables": [
+          "at",
+          "oancf",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutral_CashProfit_Minus_RDAdjAccrual",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),ind_zscore(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxConfirmed_Earnings_With_RDStock",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(sub(rank(ratio(ib,add(at,ts_sum(coalesce(xrd,0),5)))),rank(ratio(txp,add(at,ts_sum(coalesce(xrd,0),5)))))),ratio(ts_sum(coalesce(xrd,0),5),at))",
+        "variables": [
+          "at",
+          "ib",
+          "txp",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDAdj_CashMargin_With_Innovation_Intensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(oancf,coalesce(xrd,0)),sale),ratio(ts_sum(coalesce(xrd,0),5),at))",
+        "variables": [
+          "at",
+          "oancf",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualProfitability_IntangibleCapital",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "at",
+          "cogs",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualProfit_With_Explicit_AccrualLeg",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),sumrank(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProfit_On_IntangibleAdjEquity",
+      "metadata": {
+        "normalized_expression": "ratio(add(oancf,coalesce(xrd,0)),add(abs(ceq),ts_sum(coalesce(xrd,0),5)))",
+        "variables": [
+          "ceq",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquiredIntangible_AccrualBloat_Short",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(coalesce(gdwl,0),coalesce(intan,0)),at))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongHistory_DualProfit_Synthetic",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LeanWorkingCapital_Innovation_Intensity",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(wcap,sale)),ratio(ts_sum(coalesce(xrd,0),5),at))",
+        "variables": [
+          "at",
+          "sale",
+          "wcap",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InternalTilt_CashProfit_AccrualTriple",
+      "metadata": {
+        "normalized_expression": "sumrank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at))),sumrank(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HiddenCapital_GrossProfit_AccrualTriple",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ts_sum(coalesce(xrd,0),5),add(abs(ceq),ts_sum(coalesce(xrd,0),5))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquisitionFlow_AccrualBloat_Short",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),ratio(delta(add(coalesce(intan,0),coalesce(gdwl,0)),1),at))",
+        "variables": [
+          "at",
+          "gdwl",
+          "ib",
+          "intan",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleShare_Of_Investment_CashProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(coalesce(xrd,0),add(coalesce(xrd,0),dp)),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "at",
+          "dp",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FourLeg_Balanced_IntangibleQuality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "gdwl",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongHistory_Triple_SyntheticCash",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),sumrank(ratio(add(sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)),dp),at))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FourLeg_InvestmentMix_Quality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),ratio(coalesce(xrd,0),add(coalesce(xrd,0),dp))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dp",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualWeighted_DualProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveLeg_MinorityComposition_Quality",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at))),ratio(ts_sum(coalesce(xrd,0),5),add(abs(ceq),ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "gdwl",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SelfFunded_Innovation_CleanAccrual",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oancf,add(coalesce(xrd,0),dp)),neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongHistory_FourLeg_InvestmentMix",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)),dp),at)),ratio(coalesce(xrd,0),add(coalesce(xrd,0),dp))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FourLeg_ProfitabilityImprovement",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),trend(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),5)))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PercentAccrual_Weighted_DualProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(abs(ib),coalesce(xrd,0)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualDominant_ThreeQuarter_Weight",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualWeighted_With_InvestmentMix",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),ratio(coalesce(xrd,0),add(coalesce(xrd,0),dp))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dp",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongHistory_AccrualWeighted_Synthetic",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)),dp),at)),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicAccrual_Weighted_DualProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ma(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),3)),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalComponent_Weighted_DualProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(recch,invch),add(at,ts_sum(coalesce(xrd,0),5))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "invch",
+          "oancf",
+          "recch",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CoalescedCashFlow_AccrualWeighted_Leader",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandInclusive_AccrualWeighted_Leader",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),add(coalesce(xrd,0),coalesce(xad,0))),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5))))),sumrank(ratio(sub(revt,cogs),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)))),ratio(add(oancf,add(coalesce(xrd,0),coalesce(xad,0))),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5))))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortHorizonCapital_AccrualWeighted_Leader",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),3)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),3))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),3)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutral_AccrualWeighted_Leader",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))),sumrank(ind_zscore(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5)))),ind_zscore(ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "UnexpectedAccrual_Weighted_DualProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(sub(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),ma(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),3))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualDominant_With_MinorityComposition",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,oancf),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(oancf,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),sumrank(sub(rank(ratio(ts_sum(coalesce(xrd,0),5),at)),rank(ratio(coalesce(gdwl,0),at))),ratio(ts_sum(coalesce(xrd,0),5),add(abs(ceq),ts_sum(coalesce(xrd,0),5))))))",
+        "variables": [
+          "at",
+          "ceq",
+          "cogs",
+          "gdwl",
+          "ib",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coalesced_ShortHorizon_AccrualWeighted",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),3)))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),3))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),3)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coalesced_ChronicAccrual_Weighted",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ma(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),3)),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coalesced_BrandAndRD_AccrualWeighted",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),add(coalesce(xrd,0),coalesce(xad,0))),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5))))),sumrank(ratio(sub(revt,cogs),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5)))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),add(coalesce(xrd,0),coalesce(xad,0))),add(at,add(ts_sum(coalesce(xrd,0),5),ts_sum(coalesce(xad,0),5))))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coalesced_TwoLeg_Parsimonious",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Harvesting_Firms_AccrualSupported",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),neg(ratio(delta(coalesce(xrd,0),1),at)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coalesced_IndAdjAccrual_RawProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(neg(ratio(sub(sub(ib,coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1))))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))))),sumrank(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,0),5))),ratio(add(coalesce(oancf,sub(add(ib,dp),sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)))),coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt",
+          "xrd"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,2846 @@
+{
+  "pair": "accrual_quality",
+  "evaluated": [
+    {
+      "name": "WorkingCapitalAccrualsVsRetainedProfitability",
+      "expression": "SUMRANK(NEG(IND_RANK(RATIO(SUB(DELTA(wcap, 1), dp), at))), IND_RANK(SUMRANK(RATIO(re, at), RATIO(SUB(revt, cogs), at))))",
+      "hypothesis": "Low balance-sheet (working-capital minus depreciation) accruals combined with a long record of accumulated profitability and high gross margins identify firms whose conservative accounting rests on a durable earnings franchise, and these firms outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings over assets is a cumulative measure of realized, non-manipulable past profit, so pairing it with low current working-capital accruals distinguishes structurally profitable conservative accounters from marginal firms that happen to report small accruals. Industry-relative ranking on both legs removes sector differences in working-capital intensity and margin norms, keeping the interaction rather than an industry bet.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.489992187303902,
+      "ls_alpha": 0.009420584904875275,
+      "ls_talpha": 0.9774389880492467,
+      "ls_sharpe": 0.21725251447113697,
+      "coverage": 0.11174693151134983,
+      "error": null
+    },
+    {
+      "name": "OperatingAssetAccrualsAndEarningsStability",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che))), NEG(VOL(RATIO(ni, at), 5)))",
+      "hypothesis": "Reported profit that is not backed by operating cash flow is least reliable, and the penalty is compounded when the firm's earnings series is itself unstable; cash-backed plus stable earnings should predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling the earnings-minus-cash-flow wedge by assets net of cash (`at` minus `che`) measures accruals against the operating base that actually generates them, avoiding the distortion from large cash balances that plagues plain accrual/assets. Pairing it with five-year earnings volatility makes the signal a joint statement about accrual content and earnings durability rather than either alone, and both legs use widely reported items so coverage should be far above the 0.11 of the prior winner.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.9110585452434956,
+      "ls_alpha": 0.03515505102239648,
+      "ls_talpha": 2.7810644456529356,
+      "ls_sharpe": 0.28798939881167784,
+      "coverage": 0.08426317681544163,
+      "error": null
+    },
+    {
+      "name": "AccrualsGatedByNoLossMarginHistory",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), SUB(at, che)), 1))), INDICATOR(TS_MIN(RATIO(ni, sale), 5), 0))",
+      "hypothesis": "The accrual effect is informative only where earnings are persistent: for firms with an unbroken five-year record of positive net margins, low accruals signal genuine cash-backed profit, whereas for loss-prone firms accruals mostly reflect write-offs and restructuring noise.",
+      "expected_sign": "positive",
+      "reasoning": "The hard gate sets non-persistent firms to exactly zero so they sit in the middle of the sort, leaving the long and short legs populated only by persistent-earnings firms with extreme accrual signs \u2014 a true conditional interaction, not a rank blend. If this beats Signal 1 it tells us the accrual anomaly is state-dependent on earnings persistence rather than additively combinable with it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.04821316587112465,
+      "ls_alpha": 0.02723671858051973,
+      "ls_talpha": 1.9464198990455142,
+      "ls_sharpe": 0.1430415063413525,
+      "coverage": 0.08951117153571779,
+      "error": null
+    },
+    {
+      "name": "GrossProfitPerUnitAccountingNoise",
+      "expression": "WINSOR(RATIO(MA(RATIO(SUB(revt, cogs), at), 3), ADD(ABS(RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), at)), VOL(RATIO(ni, at), 5))), 1)",
+      "hypothesis": "A signal-to-noise ratio of profitability \u2014 smoothed gross profitability divided by the sum of accrual magnitude and earnings volatility \u2014 identifies firms whose reported performance is economically real, and these firms earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is the most cash-proximate profitability line (revenue less cost of goods, unaffected by discretionary accruals), while the denominator aggregates the two channels of accounting noise, so the construct is multiplicative rather than additive and punishes high margins delivered with heavy accrual distortion. Building the accrual leg from working-capital components (`act`, `lct`, `che`, `dlc`, `dp`) instead of `wcap` should also lift coverage relative to the prior winner.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.282165962519057,
+      "ls_alpha": 0.017304758077574346,
+      "ls_talpha": 1.433726113607,
+      "ls_sharpe": 0.1361522726394095,
+      "coverage": 0.11197223398520918,
+      "error": null
+    },
+    {
+      "name": "AccrualVolatilityRelativeToEarningsVolatility",
+      "expression": "WINSOR(RATIO(VOL(RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), at), 5), VOL(RATIO(ni, at), 5)), 1)",
+      "hypothesis": "When accruals swing much more than reported earnings do, the accrual account is being used to absorb shocks and smooth the earnings series; such manufactured stability is low-quality and should be followed by weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "This is a second-moment interaction that no single-theme signal can express: the accruals theme supplies the variability of the accrual wedge, the quality theme supplies the variability of the earnings outcome, and only their ratio distinguishes genuinely smooth cash earnings (low numerator) from smoothed accounting earnings (low denominator, high numerator). It directly tests the \"durable cash earnings versus accounting noise\" story from the smoothing side rather than the level side.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.5574396106861945,
+      "ls_alpha": -0.0030567168993736456,
+      "ls_talpha": -0.4189428803337836,
+      "ls_sharpe": -0.07803701600734382,
+      "coverage": 0.10308313047340038,
+      "error": null
+    },
+    {
+      "name": "AccrualsWeightedByLeveragePressure",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), SUB(at, che)), 1))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Accrual information is strongest where managers face the greatest incentive and pressure to flatter reported earnings; among highly levered firms, a large earnings-minus-cash-flow wedge is a much more damaging signal than among debt-free firms.",
+      "expected_sign": "positive",
+      "reasoning": "The continuous leverage rank acts as an amplifier from zero to one on the signed accrual z-score, so low-leverage firms contribute little to either leg and the spread is formed among financially constrained firms where covenant and refinancing incentives bite. This tests a balance-sheet-risk conditioning channel that is economically distinct from the earnings-persistence conditioning in Signal 2.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.21413829211835161,
+      "ls_alpha": 0.05517983873725728,
+      "ls_talpha": 3.63705486207059,
+      "ls_sharpe": 0.24597631171254183,
+      "coverage": 0.09090957399826816,
+      "error": null
+    },
+    {
+      "name": "ChronicCashBackingTimesRetainedProfit",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(MA(RATIO(SUB(ib, oancf), SUB(at, che)), 3), 1))), RANK(RATIO(re, at)))",
+      "hypothesis": "Persistently low accruals matter most for firms with a long record of accumulated profit: chronic cash backing on top of a durable earnings franchise identifies real performance, whereas the same accrual reading at a firm with no retained profit is uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the retained-earnings quality channel that produced the strong Fama-MacBeth slope in generation 0 but replaces the additive double rank with a multiplicative weight and replaces sparse `wcap` accruals with a three-year average of cash-flow-based accruals, targeting the weak FF5 alpha by concentrating the spread in high-quality firms instead of tilting the whole portfolio toward profitable value stocks. Comparing it against generation 0 isolates whether the alpha shortfall came from the accrual measurement or from the additive combination structure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.2085535837441128,
+      "ls_alpha": 0.0595644826434609,
+      "ls_talpha": 4.2208290794646,
+      "ls_sharpe": 0.31517316904321113,
+      "coverage": 0.09100955938740014,
+      "error": null
+    },
+    {
+      "name": "RankedAccrualsTimesRetainedProfit",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(RATIO(SUB(ib, oancf), SUB(at, che)), 3)))), RANK(RATIO(re, at)))",
+      "hypothesis": "Persistently low accruals identify genuinely cash-backed profit, but only for firms with an accumulated stock of retained profit; the same accrual reading at a firm with no earnings franchise is uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the exact economic mechanism of the archive's best alpha (gen 1, 6.0%/yr, t = 4.22) but replaces the winsorized level z-score of accruals with a rank-then-standardize transform, so the cross-sectional distribution is bounded and symmetric. If the FMB t-stat rises from -0.21 toward the alpha's strength, we learn the cross-sectional failure was a functional-form/outlier problem, not an absence of a linear premium.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.2954561557616828,
+      "ls_alpha": 0.061106394277610894,
+      "ls_talpha": 3.9114502541213225,
+      "ls_sharpe": 0.3860269649573992,
+      "coverage": 0.09100955938740014,
+      "error": null
+    },
+    {
+      "name": "RankedAccrualsTimesEarningsStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "The stated economic story in its sharpest form: the accrual signal is most credible where earnings are stable, because stable earnings plus low accruals means cash-backed durable performance rather than a lucky accrual reversal.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 1 showed that low accruals plus low earnings volatility works additively (SUMRANK: FMB 1.91, alpha 3.5%, t = 2.78); this puts the same two ingredients into the multiplicative structure that generated the archive's largest alphas. It is the direct test of whether earnings stability is the amplifier the theme story claims, rather than retained earnings or leverage.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.191051390742432,
+      "ls_alpha": 0.05838568449101776,
+      "ls_talpha": 4.109279533758564,
+      "ls_sharpe": 0.4714686549329503,
+      "coverage": 0.08426317681544163,
+      "error": null
+    },
+    {
+      "name": "RankedAccrualsTimesEarningsInstability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(VOL(RATIO(ni, at), 5)))",
+      "hypothesis": "Mispricing of accruals is largest where the accounting is hardest to read: among firms with volatile earnings, investors cannot separate cash-backed from accrual-driven profit, so the accrual signal carries more unpriced information there.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate mirror image of Signal 2 and is included as an identifying contrast, not a variant: only one of \"stability amplifies\" and \"instability amplifies\" can dominate, and the answer tells us whether the archive's multiplicative alphas came from a quality-tilt or from an information-uncertainty channel. Both cannot be rationalized simultaneously, so the pair is maximally informative about the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.9485151218233936,
+      "ls_alpha": 0.03684621400591605,
+      "ls_talpha": 2.2259940637562883,
+      "ls_sharpe": 0.26668859957570634,
+      "coverage": 0.08426317681544163,
+      "error": null
+    },
+    {
+      "name": "CashBuildValidatedEarnings",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che))), SUMRANK(RATIO(DELTA(che, 1), SUB(at, che)), MA(RATIO(ni, at), 5)))",
+      "hypothesis": "Genuinely cash-backed profitability should show up on the balance sheet as an actual accumulation of cash; firms with low accruals, rising cash balances, and a solid multi-year earnings level have earnings that are validated twice over.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal validated earnings against the cash-flow statement; this adds an independent balance-sheet validation channel (change in the cash stock) that cannot be produced by accrual discretion. It tests whether the \"cash-backed\" idea is better measured by where the cash ended up than by the earnings-minus-cash-flow wedge alone.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.2754918953101617,
+      "ls_alpha": 0.020985974760778098,
+      "ls_talpha": 1.6684719231479666,
+      "ls_sharpe": 0.17132773482325786,
+      "coverage": 0.08412748972905508,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalReleaseWithStableMargins",
+      "expression": "MUL(ZSCORE(RANK(RATIO(ADD(recch, invch), SUB(at, che)))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Receivable and inventory build-ups are the specific accrual components most vulnerable to premature recognition and obsolescence; when a firm instead releases working capital while maintaining a stable gross margin, the reported profitability is real.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the aggregate earnings-minus-cash-flow wedge with the two cash-flow-statement components that carry the economics (as reported, cash-increasing working-capital changes are positive), and pairs them with gross-margin stability, a quality metric that is far harder to manipulate than net income. It tests whether disaggregating accruals to the receivable/inventory channel sharpens the interaction relative to the aggregate wedge.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.616769408076101,
+      "ls_alpha": -0.02231248035751992,
+      "ls_talpha": -1.5965901472037365,
+      "ls_sharpe": -0.0676730402038684,
+      "coverage": 0.07001701299376685,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralCashMarginTrendAndAccruals",
+      "expression": "SUMRANK(NEG(IND_RANK(RATIO(SUB(ib, oancf), SUB(at, che)))), IND_RANK(SUMRANK(TREND(RATIO(oancf, revt), 5), NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Durable cash earnings are revealed by a rising and steady cash margin on sales; combined with low accruals within the same industry, this distinguishes improving cash economics from accrual-driven reported growth.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 0 signal with the strongest FMB slope was industry-ranked and additive, so this keeps that cross-sectionally well-behaved structure but swaps the sparse `wcap` accrual leg for the higher-coverage cash-flow wedge and swaps the static profitability leg for a five-year cash-margin trend plus stability. It targets the one metric pair the archive has not yet delivered jointly \u2014 a strong FMB slope with a meaningful alpha \u2014 by using a temporal quality state instead of a level.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.0995210595676124,
+      "ls_alpha": 0.046292654462260635,
+      "ls_talpha": 3.4864064478019237,
+      "ls_sharpe": 0.4829640704091161,
+      "coverage": 0.07132358161077804,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(IND_RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), IND_RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accrual intensity and earnings stability are both strongly industry-determined, so the cash-backed-earnings interaction should be measured against industry peers: within an industry, the low-accrual firm with the steadiest earnings is the one whose reported profit is genuinely cash-supported.",
+      "expected_sign": "positive",
+      "reasoning": "The best FMB slope in the archive came from industry-ranked legs while the best alphas came from the multiplicative structure; this fuses the two so the spread is not partly an industry bet on capital intensity or working-capital cycles. If both metrics improve simultaneously it establishes industry-relative measurement as the right normalization for this interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": NaN,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.0,
+      "error": "Insufficient coverage: 0.0%"
+    },
+    {
+      "name": "AccrualsTimesDurableCashQualityWeight",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), SUMRANK(TREND(RATIO(oancf, revt), 5), RATIO(re, at)))))",
+      "hypothesis": "Durability of earnings has three observable faces \u2014 low volatility, a rising cash margin on sales, and an accumulated stock of retained profit \u2014 and the accrual signal should be amplified only where all three point the same way.",
+      "expected_sign": "positive",
+      "reasoning": "Each of the three quality channels individually amplified the accrual signal in earlier generations (stability t-alpha 4.11, retained earnings 3.91, cash-margin trend FMB 3.10), so aggregating them into a single well-behaved rank weight should reduce noise in the conditioning variable rather than merely stack correlated tilts. This tests whether the amplifier is best measured as a broad durability index instead of any one proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.7453162060428253,
+      "ls_alpha": 0.054599934382275325,
+      "ls_talpha": 3.6796809181949754,
+      "ls_sharpe": 0.4466740201746338,
+      "coverage": 0.07121621855877408,
+      "error": null
+    },
+    {
+      "name": "LongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "The cash-flow-statement accrual wedge and the balance-sheet working-capital accrual are two measurements of the same economic quantity, so using the balance-sheet construction where the cash-flow statement is unavailable should preserve the economics while roughly doubling the usable sample.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage has been stuck at 0.07\u20130.09 because `oancf` only exists after the cash-flow-statement mandate, which mechanically shortens the return series and inflates the standard errors on alpha; the COALESCE fallback is economically justified rather than a blanket patch because the two accrual definitions target the identical construct. If alpha holds while coverage and ls_talpha rise, the interaction is confirmed out of the post-1988 window rather than being a sample artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.1344368031226697,
+      "ls_alpha": 0.0593916437610567,
+      "ls_talpha": 5.757614510826954,
+      "ls_sharpe": 0.3904627797298539,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "FirmRelativeAccrualPositionTimesStability",
+      "expression": "MUL(NEG(ZSCORE(TS_RANK(RATIO(SUB(ib, oancf), SUB(at, che)), 5))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "What matters is whether a firm's accruals are unusually high *for that firm*, since a stable-earnings firm running its own historical accrual maximum is stretching recognition, whereas a structurally high-accrual business at its own low is tightening it.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior accrual leg was cross-sectional, which confounds business-model differences in working-capital intensity with genuine accrual discretion; the time-series rank within the firm's own five-year history strips out the firm's structural level. Comparing it directly against Signal 1's cross-sectional/industry version tells us whether the mispricing comes from firm-level accrual deviation or from cross-firm accrual level.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.3929243915077394,
+      "ls_alpha": 0.01744364447616732,
+      "ls_talpha": 1.5082303829817223,
+      "ls_sharpe": 0.3523094685451345,
+      "coverage": 0.081396103520889,
+      "error": null
+    },
+    {
+      "name": "ReceivableInventoryBuildupTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(ADD(recch, invch), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Receivables and inventory are the accrual components most exposed to premature revenue recognition and obsolescence; a firm whose stable earnings are accompanied by restrained receivable and inventory accrual has the most credibly cash-backed profit.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 2 version of this component channel produced a statistically meaningful alpha with the *opposite* sign (-2.2%, t = -1.60), which is strong evidence that the reported sign convention of `recch`/`invch` is the reverse of what I assumed, so this repairs the orientation and simultaneously swaps the weaker gross-margin-volatility weight for the earnings-stability weight that has proven strongest. It tests whether disaggregated working-capital accruals carry incremental information over the aggregate earnings-minus-cash-flow wedge.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.6151457258578313,
+      "ls_alpha": 0.026743549213530726,
+      "ls_talpha": 1.9145037393453797,
+      "ls_sharpe": 0.10322627186484588,
+      "coverage": 0.07122256438068493,
+      "error": null
+    },
+    {
+      "name": "ConjunctiveCashBackedQuality",
+      "expression": "MIN(RANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), MA(RATIO(oancf, at), 5))))",
+      "hypothesis": "Genuinely cash-backed performance requires *both* conditions to hold, so a firm should be rewarded only for its weaker credential: the long leg must be simultaneously low-accrual and durably cash-profitable, while any single failing puts a firm in the accounting-noise bucket.",
+      "expected_sign": "positive",
+      "reasoning": "Sum-of-ranks lets a very strong quality score offset bad accruals (and vice versa), and the multiplicative form lets a near-zero weight neutralize a strong accrual signal; the MIN operator encodes strict conjunction, which is the literal reading of the economic story. Because it changes the interaction's logical form rather than its inputs, it isolates whether the payoff comes from a joint requirement or from a tradeable continuum.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.3496251370888435,
+      "ls_alpha": 0.02751660200476956,
+      "ls_talpha": 1.92972198855236,
+      "ls_sharpe": 0.27917375802795213,
+      "coverage": 0.08426317681544163,
+      "error": null
+    },
+    {
+      "name": "LongSampleAccrualsTimesDurabilityIndex",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), SUMRANK(RATIO(re, at), TREND(RATIO(ni, sale), 5)))))",
+      "hypothesis": "Cash-backed reported performance is best identified by combining low accruals with a broad durability index \u2014 stable earnings, accumulated retained profit, and an improving net margin \u2014 all measured over the longest available sample.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel durability weight raised FMB to 2.75 with a 5.5% alpha in gen 3, and the COALESCE accrual leg independently raised ls_talpha to 5.76; this joins them while deliberately building the quality weight only from long-history items (`ni`, `sale`, `re`, `at`) so the coverage gain is not surrendered by an `oancf`-dependent trend term. It tests whether the amplifier is better proxied by a durability index than by earnings stability alone once the sample is extended.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.5923188228729623,
+      "ls_alpha": 0.04940404049272202,
+      "ls_talpha": 4.733058908778512,
+      "ls_sharpe": 0.34249016050233005,
+      "coverage": 0.11085248017420778,
+      "error": null
+    },
+    {
+      "name": "ChronicLongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Chronic, multi-year accrual restraint rather than a single year's reading is what identifies a genuinely cash-generating business, and this chronic state matters most where earnings are stable.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing of the accrual leg produced the archive's largest alphas (6.0\u20136.1%) in gens 1\u20132 but on the short post-1988 sample, so combining smoothing with the long-sample accrual definition isolates whether persistence of low accruals adds to the one-year level once statistical power is adequate. It is a single, targeted design change relative to the current leader.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.509008108120069,
+      "ls_alpha": 0.06249885441131295,
+      "ls_talpha": 5.259385512160067,
+      "ls_sharpe": 0.33905041975015804,
+      "coverage": 0.12404069745845189,
+      "error": null
+    },
+    {
+      "name": "IndustryAdjustedLongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Working-capital intensity is a structural industry attribute, so accrual discretion is measured more cleanly as a deviation from the industry mean; within-industry low accruals plus stable earnings should be the sharper signal.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-neutral additive composite gave the archive's best FMB (3.10) and Sharpe (0.48), but my gen 3 attempt to industry-neutralize the multiplicative form failed mechanically with zero coverage from nesting ZSCORE around IND_RANK; this repairs that by demeaning within industry first (IND_ADJ) and then ranking cross-sectionally. It cleanly answers whether industry normalization adds to the leader or merely reshuffles it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.311355006811593,
+      "ls_alpha": 0.04498605800777231,
+      "ls_talpha": 4.669359903389687,
+      "ls_sharpe": 0.4180785526883401,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalAccrualsExDepreciationTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Only the working-capital component of accruals reflects managerial recognition discretion; depreciation is a mechanical, pre-committed charge, so removing it should sharpen the interaction with earnings stability.",
+      "expected_sign": "positive",
+      "reasoning": "Every accrual leg so far nets out depreciation, which means capital-intensive firms score as low-accrual for reasons unrelated to earnings quality \u2014 a plausible source of the residual FF5 loading and of alpha dilution. Because working-capital items are available for the full Compustat history, this also delivers high coverage while testing a genuinely different accrual construct.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.1918546632064007,
+      "ls_alpha": 0.021010843709376906,
+      "ls_talpha": 2.2358905276573156,
+      "ls_sharpe": 0.1259726658213193,
+      "coverage": 0.11220888670964078,
+      "error": null
+    },
+    {
+      "name": "PersistenceOfAccrualConservatismTimesStability",
+      "expression": "MUL(NEG(MA(SIGN(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))), 5)), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "A firm that reports cash flow in excess of earnings in most of the last five years is running a conservative recognition policy as a matter of habit; that habitual conservatism, paired with stable earnings, is the cleanest marker of durable cash earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Averaging the *sign* of accruals over five years discards magnitude entirely and measures only how often the firm has been cash-backed, making it immune to scaling artifacts and outliers that plague level-based accrual measures. If it matches the leader's alpha, the mispriced attribute is a policy state rather than a magnitude, which would be a substantively new characterization of the mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.0497236542399926,
+      "ls_alpha": 0.005499014883223428,
+      "ls_talpha": 0.5524969750510015,
+      "ls_sharpe": 0.006121700688096888,
+      "coverage": 0.1241738565344837,
+      "error": null
+    },
+    {
+      "name": "AccrualDeteriorationTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(DELTA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 1)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "A widening gap between earnings and cash flow relative to last year is a fresh deterioration in earnings quality, and among otherwise stable-earnings firms such deterioration is precisely the case where investors are slowest to mark down expectations.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals use accrual *levels*, so the change dimension is untested inside the winning multiplicative structure, yet the economic story of \"accounting noise contaminating an otherwise durable earnings stream\" is fundamentally about a new distortion appearing. Contrasting it against Signal 2's smoothed level cleanly separates a stock interpretation from a flow interpretation of accrual quality.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.1788901266529461,
+      "ls_alpha": 0.008641374670888696,
+      "ls_talpha": 0.8016561048870994,
+      "ls_sharpe": 0.1147884662726768,
+      "coverage": 0.11839322551008026,
+      "error": null
+    },
+    {
+      "name": "IndustryAdjustedChronicAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Sustained accrual restraint relative to industry peers is the cleanest evidence of cash-backed earnings, because it removes both the transitory year-to-year noise in accruals and the structural working-capital intensity of the business model.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the archive's best alpha (6.2%, t = 5.26) and industry demeaning produced its best FMB (4.31) and Sharpe, and the two corrections address orthogonal contaminants \u2014 temporal noise and cross-industry heterogeneity \u2014 so combining them should improve both forms of evidence rather than trade one for the other. This is the single most informative consolidation available given the gen 4 results.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.325260061992308,
+      "ls_alpha": 0.051471448594017075,
+      "ls_talpha": 4.392046656410543,
+      "ls_sharpe": 0.3892198488152788,
+      "coverage": 0.12403791148785688,
+      "error": null
+    },
+    {
+      "name": "BothLegsIndustryRelativeCashBackedQuality",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(IND_ADJ(NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Earnings stability, like accrual intensity, is largely an industry attribute (utilities are stable, biotech is not), so the amplifier should also be measured relative to peers; a firm that is unusually steady *for its industry* is the one with genuine earnings durability.",
+      "expected_sign": "positive",
+      "reasoning": "So far only the accrual leg has been industry-neutralized, which means the quality weight still loads heavily on defensive sectors and may be what drags the FF5 alpha down when industry adjustment is applied. Demeaning both legs isolates the pure within-industry interaction and tells us whether the alpha loss from industry adjustment came from the accrual leg or the conditioning leg.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.214714114845034,
+      "ls_alpha": 0.046788564018412034,
+      "ls_talpha": 4.863933682656207,
+      "ls_sharpe": 0.39844223247529775,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "HighAccrualStableEarningsShortSide",
+      "expression": "NEG(MUL(MUL(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 0)))",
+      "hypothesis": "The mispricing is asymmetric: investors are most misled by firms reporting stable earnings that are *not* backed by cash, so the tradeable information is concentrated among positive-accrual firms rather than spread symmetrically across the accrual distribution.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator confines the signed signal to firms whose earnings exceed operating cash flow, setting all genuinely cash-backed firms to a neutral zero, so the spread is formed purely by grading the severity of unbacked stable earnings. If this retains most of the leader's alpha it establishes that the strategy is essentially a short-side accounting-noise screen, which matters for interpretation and for implementation risk.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.3127682458878933,
+      "ls_alpha": 0.012220610062950204,
+      "ls_talpha": 1.3561995642328448,
+      "ls_sharpe": 0.16022543494397498,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesDeleveragingCapacity",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(TREND(RATIO(lt, at), 5))))",
+      "hypothesis": "Cash earnings are validated by what the cash was used for: a firm with low accruals that has been steadily reducing its liability ratio has demonstrably converted reported profit into debt repayment, whereas low accruals alongside rising liabilities may reflect financing rather than operations.",
+      "expected_sign": "positive",
+      "reasoning": "A static leverage *level* weight produced a 5.5% alpha in gen 1, but level and trend say opposite things economically \u2014 level captures distress pressure while trend captures realized cash deployment \u2014 and the trend version is the one aligned with the cash-backing story. It introduces a liability-side quality channel that no archive signal has used and that is unlikely to be spanned by the RMW/CMA loadings that dilute profitability-based weights.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.920446622955779,
+      "ls_alpha": 0.04720772415600329,
+      "ls_talpha": 4.645631559343535,
+      "ls_sharpe": 0.32690456112955035,
+      "coverage": 0.11333199400376581,
+      "error": null
+    },
+    {
+      "name": "FiveYearAccrualBurdenTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(TS_SUM(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 5)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accruals that are never reversed accumulate into a stock of unrealized earnings; the five-year cumulative accrual burden, conditioned on stable earnings, measures how much of a firm's reported profit history remains uncollected in cash.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing over three years improved alpha over the one-year level, which suggests the mispriced attribute is a slow-moving stock rather than an annual flow, and the cumulative sum is the natural extension of that logic to a genuine balance-of-unreversed-accruals interpretation. Comparing it directly against Signal 1's three-year average identifies the horizon over which accrual quality is priced.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.7358519998449493,
+      "ls_alpha": 0.04141206155654695,
+      "ls_talpha": 3.818582689466678,
+      "ls_sharpe": 0.2257280052986519,
+      "coverage": 0.1241738565344837,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesWorstYearProfitability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(TS_MIN(RATIO(ni, at), 5)))",
+      "hypothesis": "Durability is best measured by the downside: a firm whose worst return on assets over five years is still healthy has genuinely resilient earnings, and low accruals at such a firm indicate real cash economics rather than a favorable point in an accounting cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Symmetric volatility penalizes upside surprises as much as downside collapses, whereas the five-year minimum ROA targets the economically relevant notion of earnings that never break \u2014 and the earlier hard no-loss gate hinted at this channel but destroyed the cross-sectional slope by being binary. Using the continuous worst-year level as the amplifier tests the downside-durability channel without the information loss of an indicator.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.034965300811708,
+      "ls_alpha": 0.04368508850446229,
+      "ls_talpha": 4.1765071873465525,
+      "ls_sharpe": 0.3900555084141995,
+      "coverage": 0.13045776798767073,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesStabilityAndWorstYearFloor",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), TS_MIN(RATIO(ni, at), 5))))",
+      "hypothesis": "Durable earnings have two distinct signatures \u2014 low dispersion and a high floor \u2014 and low accruals are most informative when both hold, because a stable series with a healthy worst year cannot be the product of a favorable accrual cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Volatility-based stability delivered the archive's most precise alpha (5.9%, t = 5.76) while worst-year ROA delivered its second-best FMB (4.04) with the widest coverage, and the two are conceptually complementary rather than redundant (dispersion versus downside level). Combining them in the rank weight while leaving the accrual leg un-demeaned preserves the alpha magnitude that industry adjustment erodes.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.3173361853410235,
+      "ls_alpha": 0.050124798610235013,
+      "ls_talpha": 4.564136840912494,
+      "ls_sharpe": 0.2985659249456212,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "IndustryAccrualsTimesStabilityAndWorstYearFloor",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), TS_MIN(RATIO(ni, at), 5))))",
+      "hypothesis": "Within-industry accrual deviation combined with the two-channel durability weight should give the strongest cross-sectional slope, because peer-relative accruals isolate discretion while the durability weight isolates firms whose earnings can be trusted.",
+      "expected_sign": "positive",
+      "reasoning": "Industry demeaning has raised FMB to 4.2\u20134.3 in every test but consistently costs about 1.4 percentage points of alpha; pairing it with the strongest available weight tests whether a better conditioning variable can recover that alpha while retaining the slope. Run alongside Signal 1 it isolates the industry-adjustment decision cleanly, holding the weight fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.415995399134897,
+      "ls_alpha": 0.04360848383028681,
+      "ls_talpha": 4.430167179409381,
+      "ls_sharpe": 0.4221788877874455,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "CashBackedStableEarningsLongSide",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))), 0))",
+      "hypothesis": "The premium is earned by identifying firms whose operating cash flow actually exceeds reported earnings; grading only these genuinely cash-backed firms \u2014 and treating everyone else as uniformly uninformative \u2014 should concentrate the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 5 mirror experiment restricted attention to positive-accrual firms and the alpha fell from 5.9% to 1.2% while the FMB slope survived, which is direct evidence that the portfolio payoff lives among negative-accrual firms. This proposal is the economically implied complement and tests whether discarding the uninformative half improves the spread rather than merely relabeling it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.403226257661093,
+      "ls_alpha": 0.05164634962130005,
+      "ls_talpha": 5.221321153370928,
+      "ls_sharpe": 0.27638518334682527,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "AccrualsGatedByMeasuredEarningsStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Earnings-quality information in accruals is switched on by an absolute standard of stability \u2014 a five-year ROA volatility below five percentage points \u2014 rather than by a firm's relative position in the volatility distribution.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful archive signal uses a relative [0,1] rank weight, so it remains untested whether the amplifier is a relative ordering or an absolute economic threshold; the one earlier hard gate used the flawed non-rank accrual leg and a loss-history criterion, confounding two changes at once. An absolute stability cut is also more stable through time than a rank weight, which matters for portfolio composition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.623476690966147,
+      "ls_alpha": 0.04965011778678612,
+      "ls_talpha": 5.408199045057225,
+      "ls_sharpe": 0.31640959574495164,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalIntensityDriftTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(DELTA(RATIO(SUB(SUB(act, che), SUB(lct, dlc)), sale), 1)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accrual quality is fundamentally about whether working capital is growing faster than the business: a rising working-capital-to-sales ratio means each dollar of revenue is being financed by uncollected receivables and unsold inventory, and among stable-earnings firms this drift is a warning that reported profit is not cash.",
+      "expected_sign": "positive",
+      "reasoning": "All accrual legs so far scale the accrual flow by an asset base, which mixes accrual discretion with balance-sheet size effects; scaling the working-capital *stock* by sales and taking its change measures operating efficiency deterioration directly and is invariant to asset composition. It uses only long-history items, so coverage should match the leaders while testing an economically different accrual construct.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.543538032336821,
+      "ls_alpha": 0.022207476269354383,
+      "ls_talpha": 2.1501180579379615,
+      "ls_sharpe": 0.28852639504620736,
+      "coverage": 0.10988827638809437,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesEarningsAndBalanceSheetDurability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), NEG(TREND(RATIO(lt, at), 5)))))",
+      "hypothesis": "Genuine cash earnings show up in two places at once \u2014 a steady income statement and a shrinking liability ratio \u2014 so conditioning low accruals on both income-statement stability and realized deleveraging should identify the most credibly cash-generative firms.",
+      "expected_sign": "positive",
+      "reasoning": "The deleveraging-trend weight independently produced a 4.7% alpha with t = 4.65 and a 2.92 FMB slope, and it is drawn from the liability side of the balance sheet, so its information should be largely orthogonal to ROA volatility rather than a second reading of profitability. This tests whether the amplifier is best broadened across financial-statement dimensions instead of stacking two earnings-based measures as in Signal 1.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.005647327707126,
+      "ls_alpha": 0.047786685011064374,
+      "ls_talpha": 4.824799332897435,
+      "ls_sharpe": 0.3260689892027114,
+      "coverage": 0.11332951758545913,
+      "error": null
+    },
+    {
+      "name": "IndustryAccrualsGatedByStabilityThreshold",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Among firms that clear an absolute standard of earnings stability, peer-relative accrual restraint is the cleanest available marker of cash-backed profit; firms failing the stability standard carry no accrual information at all.",
+      "expected_sign": "positive",
+      "reasoning": "The absolute stability gate is the only device so far that improved both metrics simultaneously (t-alpha 5.41, FMB 3.62), and industry demeaning is the only device that reliably pushes FMB above 4.2, so crossing them targets the archive's unmet objective of strong cross-sectional and portfolio evidence together. Neither modification touches the other's economic content \u2014 one selects the sample, the other normalizes the ranking variable.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.8376206265954425,
+      "ls_alpha": 0.04051016041736098,
+      "ls_talpha": 4.50276049235739,
+      "ls_sharpe": 0.45360635983446773,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "ChronicAccrualsGatedByStabilityThreshold",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Sustained accrual restraint, evaluated only within the population of genuinely stable-earnings firms, is the purest empirical statement of the theme's economic story.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the largest alpha in the archive (6.2%) and the absolute stability gate produced the highest t-alpha per unit of alpha, and both operate on different objects (the accrual time series versus sample selection), so their effects should be close to additive. This is the most direct attempt to push alpha above 6% while keeping the FMB slope above 3.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.7823834656890853,
+      "ls_alpha": 0.05061115486744177,
+      "ls_talpha": 5.006994965250082,
+      "ls_sharpe": 0.2871148664837619,
+      "coverage": 0.12404069745845189,
+      "error": null
+    },
+    {
+      "name": "StabilityGatedAccrualsWeightedByEarningsFloor",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(TS_MIN(RATIO(ni, at), 5))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Durability has a dispersion requirement and a level requirement: a firm must not swing (absolute volatility gate) and must remain profitable at its worst (continuous floor weight), and only then does low accrual content identify genuinely cash-backed performance.",
+      "expected_sign": "positive",
+      "reasoning": "The two quality channels enter in the functional forms each performed best in \u2014 volatility as a hard economic threshold and worst-year ROA as a continuous rank that produced FMB above 4 \u2014 rather than being averaged into a single index, which is what diluted alpha in the gen 4 and gen 6 composite weights. It tests whether a hybrid hard/soft conditioning structure dominates either pure form.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.2458477785045594,
+      "ls_alpha": 0.04784369067438092,
+      "ls_talpha": 5.434211929893999,
+      "ls_sharpe": 0.35831195477429595,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "ChronicCashBackedLongSideOnly",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)), 0))",
+      "hypothesis": "The premium accrues to firms whose operating cash flow has persistently exceeded reported earnings; grading only that population and treating all others as neutral should give the sharpest portfolio spread.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 6 long-side restriction and three-year smoothing each independently improved the portfolio evidence (t-alpha 5.22 and 5.26), and both derive from the same finding that the alpha is generated by chronically cash-backed firms rather than by shorting accrual inflators. Combining them tests whether persistence of cash backing, measured only where it exists, is the sharpest version of the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.6887872669979476,
+      "ls_alpha": 0.04943161692513494,
+      "ls_talpha": 4.362362287923296,
+      "ls_sharpe": 0.24150222914050717,
+      "coverage": 0.12404069745845189,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesGrossProfitStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "Stability should be measured on the least manipulable line of the income statement: a firm with a steady gross profit stream has genuinely durable economics, whereas steady net income can itself be the product of the accrual smoothing this signal is trying to detect.",
+      "expected_sign": "positive",
+      "reasoning": "Conditioning on net-income stability is partly circular \u2014 accruals are the tool used to make net income look stable \u2014 so replacing it with gross-profit stability removes a mechanical link between the two legs and should produce a cleaner interaction if the story is economic rather than mechanical. Gross profit is available for the full sample, so coverage should match the leaders.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.486152629254481,
+      "ls_alpha": 0.048859185961943746,
+      "ls_talpha": 4.968703378760239,
+      "ls_sharpe": 0.3366352230067005,
+      "coverage": 0.12361459873355968,
+      "error": null
+    },
+    {
+      "name": "StabilityGatedAndStabilityWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Stability performs two separate jobs: it decides whether accrual information is meaningful at all (a threshold question) and it grades how much confidence to place in it (an intensity question); imposing both should give the cleanest cash-backed-earnings signal.",
+      "expected_sign": "positive",
+      "reasoning": "The gate alone gave the best t-alpha-to-alpha ratio (5.41 on 5.0%) and the continuous stability weight alone gave the largest reliable alpha (5.9%, t = 5.76), and they are not substitutes \u2014 one removes uninformative firms while the other allocates weight within the informative set. This is the highest-value untested combination in the archive's leading family.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.246489152222764,
+      "ls_alpha": 0.050089038508633846,
+      "ls_talpha": 5.66099404621688,
+      "ls_sharpe": 0.3629968747555254,
+      "coverage": 0.1236337909754364,
+      "error": null
+    },
+    {
+      "name": "IndustryStabilityGatedAndWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Peer-relative accrual restraint, graded and gated by earnings stability, should deliver both the strongest cross-sectional slope and a materially larger alpha than the un-weighted industry-gated version.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-gated signal reached FMB 4.84 but shed alpha because the un-weighted signed z-score gives equal voice to firms whose stability barely clears the threshold; restoring the continuous weight should recover alpha magnitude while retaining the peer-relative slope. Paired with Signal 1 it isolates the industry-demeaning decision under the new triple structure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.579229419604435,
+      "ls_alpha": 0.0351566818991279,
+      "ls_talpha": 4.2192392922725945,
+      "ls_sharpe": 0.404376451096688,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "RevenueScaledAccrualsGatedByStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), sale), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), sale))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Accrual distortion is generated by revenue-recognition and inventory decisions, so scaling the accrual wedge by sales rather than by net operating assets measures discretion per dollar of business activity and avoids conflating discretion with capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the generation 7 proposal that failed validation on unbalanced parentheses, and it remains the one untested measurement dimension in the leading family since every evaluated accrual leg uses an asset denominator. Holding the proven stability gate fixed identifies the scaling decision cleanly.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.6771840815082508,
+      "ls_alpha": 0.04330516355699328,
+      "ls_talpha": 4.674459693138306,
+      "ls_sharpe": 0.19551270709701804,
+      "coverage": 0.12197278498828241,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesRevenueStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(GROWTH(sale, 1), 5))))",
+      "hypothesis": "Durability originates in demand, not in the income statement: a firm with steady revenue growth has a genuinely stable business, and low accruals at such a firm cannot be an artifact of the accounting used to smooth earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Conditioning on net-income stability is partly mechanical because accruals are the instrument that smooths net income, and the gross-profit-stability test (\u03b1 4.9%, t 4.97) showed the interaction survives when the conditioning variable is moved upstream. Revenue growth volatility is the furthest upstream, least manipulable durability measure available, so it is the strongest test that the mechanism is economic rather than definitional.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.203729989864046,
+      "ls_alpha": 0.05034988780958158,
+      "ls_talpha": 5.130479776349017,
+      "ls_sharpe": 0.32323312976441193,
+      "coverage": 0.11206535763194976,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesRetainedProfitCoverage",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), RATIO(re, lt))))",
+      "hypothesis": "A firm whose accumulated retained profit is large relative to its obligations has already converted decades of reported earnings into real, creditor-surviving value, and low accruals at such a firm confirm that current profit is of the same durable kind.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings scaled by assets amplified the accrual signal strongly on alpha (6.0\u20136.1%) but weakly on FMB, while the deleveraging trend worked on both; scaling retained profit by *liabilities* combines both ideas into a single solvency-quality measure that is high only when accumulated profit exceeds obligations. It provides a balance-sheet conditioning channel that is not a second reading of ROA volatility.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.264521798725472,
+      "ls_alpha": 0.052387232710209446,
+      "ls_talpha": 4.862997801489208,
+      "ls_sharpe": 0.3389132872331181,
+      "coverage": 0.12218297099206143,
+      "error": null
+    },
+    {
+      "name": "IndustryAccrualsGatedByStrictStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.03))",
+      "hypothesis": "If earnings stability is a genuine economic threshold rather than a statistical convenience, tightening it to a three-percentage-point ROA volatility ceiling should concentrate the interaction further among firms whose reported profit is truly durable.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has established that a hard absolute gate beats a relative rank weight but has tested only one threshold, so the strictness of the economic standard is an unmeasured design parameter that directly bears on interpretation. A monotone improvement would confirm the threshold reading; a deterioration would show the gate mainly works by removing the most erratic firms rather than by isolating an elite stable set, which is important guidance for the final generation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.490012072877282,
+      "ls_alpha": 0.034397089123930254,
+      "ls_talpha": 4.389374496646009,
+      "ls_sharpe": 0.43549477704447037,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "ChronicAccrualsTimesEarningsAndRevenueStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), NEG(VOL(GROWTH(sale, 1), 5)))))",
+      "hypothesis": "Genuinely durable cash earnings require stability in both the demand stream and the reported bottom line; sustained accrual restraint at a firm with steady revenue growth and steady ROA is the strongest available evidence that reported profit is cash.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year accrual smoothing produced the archive's largest alpha (6.2%) and revenue-growth stability was the best new conditioning channel of gen 8 (t-alpha 5.13, FMB 3.20) precisely because revenue cannot be smoothed by accruals, so the two legs of the weight are economically complementary rather than duplicative. This is the most promising untested combination of the alpha-side accrual construction with a two-channel upstream durability weight.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.134995633119978,
+      "ls_alpha": 0.057442351577782956,
+      "ls_talpha": 5.155351490761279,
+      "ls_sharpe": 0.3195709504181638,
+      "coverage": 0.11243186754133762,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesConjunctiveStabilityProduct",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), MUL(RANK(NEG(VOL(RATIO(ni, at), 5))), RANK(NEG(VOL(GROWTH(sale, 1), 5)))))",
+      "hypothesis": "The two stability requirements are conjunctive, not compensatory: a firm needs both steady demand and steady earnings for its accrual reading to be meaningful, so the weight should be a product that collapses toward zero if either condition fails.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK averages the two channels and lets a very stable revenue stream excuse volatile earnings, whereas the product enforces the joint condition, and the archive has repeatedly shown that harder conditioning (the absolute gate) improves reliability rather than merely shrinking the sample. Run against Signal 1 it isolates the weighting algebra while holding the economic content of both channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.4682364828266197,
+      "ls_alpha": 0.04844782990630908,
+      "ls_talpha": 5.084196519077557,
+      "ls_sharpe": 0.3475563919681836,
+      "coverage": 0.11206350031821975,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesIndustryRelativeStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(IND_ADJ(NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Stability is an industry attribute, so the amplifier should identify firms that are unusually steady *for their sector*, while the accrual ranking itself is best left on a raw cross-sectional basis where its full dispersion is preserved.",
+      "expected_sign": "positive",
+      "reasoning": "Every industry-adjusted signal so far has demeaned the accrual leg, which is exactly the leg whose dispersion generates the alpha, so demeaning only the conditioning leg is the one untried way to seek the FMB gain (consistently +1 to +1.5 points) without the accompanying alpha loss. It cleanly attributes the industry-adjustment trade-off to whichever leg is demeaned.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.1637111241678206,
+      "ls_alpha": 0.04963278516424565,
+      "ls_talpha": 4.656101133808261,
+      "ls_sharpe": 0.3217839282604887,
+      "coverage": 0.1236310050048414,
+      "error": null
+    },
+    {
+      "name": "ChronicAccrualsTimesStabilityAndSolvencyCoverage",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), RATIO(re, lt))))",
+      "hypothesis": "Accumulated retained profit large relative to obligations proves that past reported earnings were real and survived creditors' claims, so combining it with steady ROA and persistent accrual restraint should identify the most credibly cash-backed firms.",
+      "expected_sign": "positive",
+      "reasoning": "Retained-profit coverage of liabilities was the strongest new weight of gen 8 on alpha (5.2%) with a solid FMB (3.27), and it draws on the balance sheet rather than on a second reading of the income statement, so it should add information rather than dilute as the earlier profitability composites did. Pairing it with the smoothed accrual leg targets both the 6%+ alpha region and an FMB above 3.5.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.692217146374752,
+      "ls_alpha": 0.06249011655216986,
+      "ls_talpha": 5.264984663742508,
+      "ls_sharpe": 0.37523512339741827,
+      "coverage": 0.12252404602175782,
+      "error": null
+    },
+    {
+      "name": "ChronicStabilityGatedAndWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "The cleanest statement of the theme is persistent accrual restraint, graded by earnings stability, evaluated only among firms that clear an absolute stability standard.",
+      "expected_sign": "positive",
+      "reasoning": "The gate-plus-weight structure delivered the best reliability in gen 8 (t-alpha 5.66 on 5.0% alpha) using the one-year accrual leg, and smoothing that leg independently added a percentage point of alpha elsewhere, so this is the natural final assembly of the three devices that each improved the portfolio evidence. It also tests whether smoothing and gating are additive or whether both are proxies for the same noise reduction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.5995736557787152,
+      "ls_alpha": 0.04526369619207923,
+      "ls_talpha": 4.534889246741024,
+      "ls_sharpe": 0.2967186328272564,
+      "coverage": 0.12404069745845189,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesAssetTurnoverStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(sale, at), 5))))",
+      "hypothesis": "A firm whose asset turnover barely moves runs a stable operating model with a predictable working-capital cycle, and in such a firm low accruals cannot be explained by shifting business mix \u2014 they must reflect genuine cash conversion.",
+      "expected_sign": "positive",
+      "reasoning": "Every conditioning variable tested has been a profitability or solvency measure, leaving the operating-efficiency dimension unexplored even though turnover stability is the quality attribute most directly tied to the working-capital process that generates accruals. It is entirely free of net-income inputs, so it provides the sharpest remaining test that the interaction is economic rather than a mechanical consequence of accruals smoothing earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.1480198554286445,
+      "ls_alpha": 0.04799224686906017,
+      "ls_talpha": 4.75281363605695,
+      "ls_sharpe": 0.28981963349885637,
+      "coverage": 0.12363688649831975,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "CashBackedDurableEarnings",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), SUMRANK(MA(RATIO(oancf, at), 5), NEG(VOL(RATIO(ib, at), 5))))",
+      "hypothesis": "Firms whose reported profits carry low accrual content AND whose cash earnings are high and stable over five years have genuinely cash-backed, repeatable performance that the market under-prices relative to firms with equally high headline earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Low accruals alone can reflect transitory cash timing, while stable high cash earnings alone can be capitalized already; the joint rank requires the cash-flow level to be durable and the earnings-to-cash gap to be small. Combining three ranked channels (accrual content, cash-earnings level, earnings instability) isolates the \"durable cash earnings\" state rather than either theme in isolation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualSignalGatedByNoLossHistory",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), at), 1))), INDICATOR(TS_MIN(RATIO(ib, at), 5), 0))",
+      "hypothesis": "The accrual anomaly is concentrated in firms with persistently profitable (never-loss) earnings histories, because for chronically unprofitable or erratic firms the accrual measure is dominated by write-offs and noise rather than by earnings-quality information.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator turns the accrual z-score on only when minimum five-year ROA is positive, setting all low-persistence firms to a neutral zero so they neither lengthen nor short the spread. This is a genuine conditional interaction: the quality state determines whether accruals carry information, not merely an additive tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashEarningsPerUnitAccountingNoise",
+      "expression": "WINSOR(RATIO(MA(RATIO(oancf, at), 5), ADD(ABS(RATIO(SUB(ib, oancf), at)), VOL(RATIO(ib, at), 5))), 1)",
+      "hypothesis": "A signal-to-noise ratio of profitability \u2014 average operating cash return divided by combined accrual magnitude and earnings volatility \u2014 identifies firms whose profits are economically real, and such firms earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is the durable cash component of profitability while the denominator aggregates the two sources of accounting noise (large accrual wedges and unstable earnings), so the ratio is high only when a solid cash return is delivered with minimal accrual distortion. This scaled form makes the interaction multiplicative rather than additive, penalizing high cash return that arrives with heavy accrual or volatility baggage.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualNoiseDominatesCashFlow",
+      "expression": "WINSOR(RATIO(VOL(RATIO(SUB(ib, oancf), at), 5), ADD(VOL(RATIO(oancf, at), 5), MA(ABS(RATIO(oancf, at)), 5))), 1)",
+      "hypothesis": "When the volatility of the accrual wedge is large relative to the volatility and scale of operating cash flows, reported earnings are driven by accounting discretion (smoothing or aggressive recognition) rather than economics, forecasting poor subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "The construct compares second moments across the two themes: accrual variability (accruals theme) benchmarked against cash-flow variability and cash-flow scale (quality theme), which is exactly the smoothing/manipulation diagnostic that a single-theme accrual level cannot capture. High values flag firms whose earnings series is manufactured by accruals, and these should underperform genuinely cash-driven peers.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ImprovingAccrualsRisingCashTrend",
+      "expression": "SUMRANK(NEG(DELTA(RATIO(SUB(ib, oancf), at), 1)), SUMRANK(TREND(RATIO(oancf, at), 5), NEG(VOL(RATIO(oancf, at), 5))))",
+      "hypothesis": "A contraction in the accrual wedge that coincides with a rising and steady operating cash-flow trend signals a real, cash-validated improvement in fundamentals, whereas a falling accrual wedge alone can simply reflect reversal of prior overstatement.",
+      "expected_sign": "positive",
+      "reasoning": "This is a change-based interaction: the accrual channel is a first difference and the quality channel is a five-year trend plus stability of cash returns, so only firms where cash flow is genuinely catching up to (or exceeding) earnings score high. It separates cash-confirmed fundamental improvement from mechanical accrual mean reversion.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalAccrualsVsRetainedProfitability",
+      "expression": "SUMRANK(NEG(IND_RANK(RATIO(SUB(DELTA(wcap, 1), dp), at))), IND_RANK(SUMRANK(RATIO(re, at), RATIO(SUB(revt, cogs), at))))",
+      "hypothesis": "Low balance-sheet (working-capital minus depreciation) accruals combined with a long record of accumulated profitability and high gross margins identify firms whose conservative accounting rests on a durable earnings franchise, and these firms outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings over assets is a cumulative measure of realized, non-manipulable past profit, so pairing it with low current working-capital accruals distinguishes structurally profitable conservative accounters from marginal firms that happen to report small accruals. Industry-relative ranking on both legs removes sector differences in working-capital intensity and margin norms, keeping the interaction rather than an industry bet.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "OperatingAssetAccrualsAndEarningsStability",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che))), NEG(VOL(RATIO(ni, at), 5)))",
+      "hypothesis": "Reported profit that is not backed by operating cash flow is least reliable, and the penalty is compounded when the firm's earnings series is itself unstable; cash-backed plus stable earnings should predict higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling the earnings-minus-cash-flow wedge by assets net of cash (`at` minus `che`) measures accruals against the operating base that actually generates them, avoiding the distortion from large cash balances that plagues plain accrual/assets. Pairing it with five-year earnings volatility makes the signal a joint statement about accrual content and earnings durability rather than either alone, and both legs use widely reported items so coverage should be far above the 0.11 of the prior winner.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsGatedByNoLossMarginHistory",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), SUB(at, che)), 1))), INDICATOR(TS_MIN(RATIO(ni, sale), 5), 0))",
+      "hypothesis": "The accrual effect is informative only where earnings are persistent: for firms with an unbroken five-year record of positive net margins, low accruals signal genuine cash-backed profit, whereas for loss-prone firms accruals mostly reflect write-offs and restructuring noise.",
+      "expected_sign": "positive",
+      "reasoning": "The hard gate sets non-persistent firms to exactly zero so they sit in the middle of the sort, leaving the long and short legs populated only by persistent-earnings firms with extreme accrual signs \u2014 a true conditional interaction, not a rank blend. If this beats Signal 1 it tells us the accrual anomaly is state-dependent on earnings persistence rather than additively combinable with it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitPerUnitAccountingNoise",
+      "expression": "WINSOR(RATIO(MA(RATIO(SUB(revt, cogs), at), 3), ADD(ABS(RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), at)), VOL(RATIO(ni, at), 5))), 1)",
+      "hypothesis": "A signal-to-noise ratio of profitability \u2014 smoothed gross profitability divided by the sum of accrual magnitude and earnings volatility \u2014 identifies firms whose reported performance is economically real, and these firms earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "The numerator is the most cash-proximate profitability line (revenue less cost of goods, unaffected by discretionary accruals), while the denominator aggregates the two channels of accounting noise, so the construct is multiplicative rather than additive and punishes high margins delivered with heavy accrual distortion. Building the accrual leg from working-capital components (`act`, `lct`, `che`, `dlc`, `dp`) instead of `wcap` should also lift coverage relative to the prior winner.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualVolatilityRelativeToEarningsVolatility",
+      "expression": "WINSOR(RATIO(VOL(RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), at), 5), VOL(RATIO(ni, at), 5)), 1)",
+      "hypothesis": "When accruals swing much more than reported earnings do, the accrual account is being used to absorb shocks and smooth the earnings series; such manufactured stability is low-quality and should be followed by weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "This is a second-moment interaction that no single-theme signal can express: the accruals theme supplies the variability of the accrual wedge, the quality theme supplies the variability of the earnings outcome, and only their ratio distinguishes genuinely smooth cash earnings (low numerator) from smoothed accounting earnings (low denominator, high numerator). It directly tests the \"durable cash earnings versus accounting noise\" story from the smoothing side rather than the level side.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWeightedByLeveragePressure",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(RATIO(SUB(ib, oancf), SUB(at, che)), 1))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Accrual information is strongest where managers face the greatest incentive and pressure to flatter reported earnings; among highly levered firms, a large earnings-minus-cash-flow wedge is a much more damaging signal than among debt-free firms.",
+      "expected_sign": "positive",
+      "reasoning": "The continuous leverage rank acts as an amplifier from zero to one on the signed accrual z-score, so low-leverage firms contribute little to either leg and the spread is formed among financially constrained firms where covenant and refinancing incentives bite. This tests a balance-sheet-risk conditioning channel that is economically distinct from the earnings-persistence conditioning in Signal 2.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicCashBackingTimesRetainedProfit",
+      "expression": "MUL(NEG(ZSCORE(WINSOR(MA(RATIO(SUB(ib, oancf), SUB(at, che)), 3), 1))), RANK(RATIO(re, at)))",
+      "hypothesis": "Persistently low accruals matter most for firms with a long record of accumulated profit: chronic cash backing on top of a durable earnings franchise identifies real performance, whereas the same accrual reading at a firm with no retained profit is uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "This keeps the retained-earnings quality channel that produced the strong Fama-MacBeth slope in generation 0 but replaces the additive double rank with a multiplicative weight and replaces sparse `wcap` accruals with a three-year average of cash-flow-based accruals, targeting the weak FF5 alpha by concentrating the spread in high-quality firms instead of tilting the whole portfolio toward profitable value stocks. Comparing it against generation 0 isolates whether the alpha shortfall came from the accrual measurement or from the additive combination structure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedAccrualsTimesRetainedProfit",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(RATIO(SUB(ib, oancf), SUB(at, che)), 3)))), RANK(RATIO(re, at)))",
+      "hypothesis": "Persistently low accruals identify genuinely cash-backed profit, but only for firms with an accumulated stock of retained profit; the same accrual reading at a firm with no earnings franchise is uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "This holds the exact economic mechanism of the archive's best alpha (gen 1, 6.0%/yr, t = 4.22) but replaces the winsorized level z-score of accruals with a rank-then-standardize transform, so the cross-sectional distribution is bounded and symmetric. If the FMB t-stat rises from -0.21 toward the alpha's strength, we learn the cross-sectional failure was a functional-form/outlier problem, not an absence of a linear premium.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedAccrualsTimesEarningsStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "The stated economic story in its sharpest form: the accrual signal is most credible where earnings are stable, because stable earnings plus low accruals means cash-backed durable performance rather than a lucky accrual reversal.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 1 showed that low accruals plus low earnings volatility works additively (SUMRANK: FMB 1.91, alpha 3.5%, t = 2.78); this puts the same two ingredients into the multiplicative structure that generated the archive's largest alphas. It is the direct test of whether earnings stability is the amplifier the theme story claims, rather than retained earnings or leverage.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedAccrualsTimesEarningsInstability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(VOL(RATIO(ni, at), 5)))",
+      "hypothesis": "Mispricing of accruals is largest where the accounting is hardest to read: among firms with volatile earnings, investors cannot separate cash-backed from accrual-driven profit, so the accrual signal carries more unpriced information there.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate mirror image of Signal 2 and is included as an identifying contrast, not a variant: only one of \"stability amplifies\" and \"instability amplifies\" can dominate, and the answer tells us whether the archive's multiplicative alphas came from a quality-tilt or from an information-uncertainty channel. Both cannot be rationalized simultaneously, so the pair is maximally informative about the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBuildValidatedEarnings",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che))), SUMRANK(RATIO(DELTA(che, 1), SUB(at, che)), MA(RATIO(ni, at), 5)))",
+      "hypothesis": "Genuinely cash-backed profitability should show up on the balance sheet as an actual accumulation of cash; firms with low accruals, rising cash balances, and a solid multi-year earnings level have earnings that are validated twice over.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal validated earnings against the cash-flow statement; this adds an independent balance-sheet validation channel (change in the cash stock) that cannot be produced by accrual discretion. It tests whether the \"cash-backed\" idea is better measured by where the cash ended up than by the earnings-minus-cash-flow wedge alone.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalReleaseWithStableMargins",
+      "expression": "MUL(ZSCORE(RANK(RATIO(ADD(recch, invch), SUB(at, che)))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), revt), 5))))",
+      "hypothesis": "Receivable and inventory build-ups are the specific accrual components most vulnerable to premature recognition and obsolescence; when a firm instead releases working capital while maintaining a stable gross margin, the reported profitability is real.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the aggregate earnings-minus-cash-flow wedge with the two cash-flow-statement components that carry the economics (as reported, cash-increasing working-capital changes are positive), and pairs them with gross-margin stability, a quality metric that is far harder to manipulate than net income. It tests whether disaggregating accruals to the receivable/inventory channel sharpens the interaction relative to the aggregate wedge.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralCashMarginTrendAndAccruals",
+      "expression": "SUMRANK(NEG(IND_RANK(RATIO(SUB(ib, oancf), SUB(at, che)))), IND_RANK(SUMRANK(TREND(RATIO(oancf, revt), 5), NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Durable cash earnings are revealed by a rising and steady cash margin on sales; combined with low accruals within the same industry, this distinguishes improving cash economics from accrual-driven reported growth.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 0 signal with the strongest FMB slope was industry-ranked and additive, so this keeps that cross-sectionally well-behaved structure but swaps the sparse `wcap` accrual leg for the higher-coverage cash-flow wedge and swaps the static profitability leg for a five-year cash-margin trend plus stability. It targets the one metric pair the archive has not yet delivered jointly \u2014 a strong FMB slope with a meaningful alpha \u2014 by using a temporal quality state instead of a level.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(IND_RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), IND_RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accrual intensity and earnings stability are both strongly industry-determined, so the cash-backed-earnings interaction should be measured against industry peers: within an industry, the low-accrual firm with the steadiest earnings is the one whose reported profit is genuinely cash-supported.",
+      "expected_sign": "positive",
+      "reasoning": "The best FMB slope in the archive came from industry-ranked legs while the best alphas came from the multiplicative structure; this fuses the two so the spread is not partly an industry bet on capital intensity or working-capital cycles. If both metrics improve simultaneously it establishes industry-relative measurement as the right normalization for this interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesDurableCashQualityWeight",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(SUB(ib, oancf), SUB(at, che))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), SUMRANK(TREND(RATIO(oancf, revt), 5), RATIO(re, at)))))",
+      "hypothesis": "Durability of earnings has three observable faces \u2014 low volatility, a rising cash margin on sales, and an accumulated stock of retained profit \u2014 and the accrual signal should be amplified only where all three point the same way.",
+      "expected_sign": "positive",
+      "reasoning": "Each of the three quality channels individually amplified the accrual signal in earlier generations (stability t-alpha 4.11, retained earnings 3.91, cash-margin trend FMB 3.10), so aggregating them into a single well-behaved rank weight should reduce noise in the conditioning variable rather than merely stack correlated tilts. This tests whether the amplifier is best measured as a broad durability index instead of any one proxy.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "The cash-flow-statement accrual wedge and the balance-sheet working-capital accrual are two measurements of the same economic quantity, so using the balance-sheet construction where the cash-flow statement is unavailable should preserve the economics while roughly doubling the usable sample.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage has been stuck at 0.07\u20130.09 because `oancf` only exists after the cash-flow-statement mandate, which mechanically shortens the return series and inflates the standard errors on alpha; the COALESCE fallback is economically justified rather than a blanket patch because the two accrual definitions target the identical construct. If alpha holds while coverage and ls_talpha rise, the interaction is confirmed out of the post-1988 window rather than being a sample artifact.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FirmRelativeAccrualPositionTimesStability",
+      "expression": "MUL(NEG(ZSCORE(TS_RANK(RATIO(SUB(ib, oancf), SUB(at, che)), 5))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "What matters is whether a firm's accruals are unusually high *for that firm*, since a stable-earnings firm running its own historical accrual maximum is stretching recognition, whereas a structurally high-accrual business at its own low is tightening it.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior accrual leg was cross-sectional, which confounds business-model differences in working-capital intensity with genuine accrual discretion; the time-series rank within the firm's own five-year history strips out the firm's structural level. Comparing it directly against Signal 1's cross-sectional/industry version tells us whether the mispricing comes from firm-level accrual deviation or from cross-firm accrual level.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ReceivableInventoryBuildupTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(ADD(recch, invch), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Receivables and inventory are the accrual components most exposed to premature revenue recognition and obsolescence; a firm whose stable earnings are accompanied by restrained receivable and inventory accrual has the most credibly cash-backed profit.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 2 version of this component channel produced a statistically meaningful alpha with the *opposite* sign (-2.2%, t = -1.60), which is strong evidence that the reported sign convention of `recch`/`invch` is the reverse of what I assumed, so this repairs the orientation and simultaneously swaps the weaker gross-margin-volatility weight for the earnings-stability weight that has proven strongest. It tests whether disaggregated working-capital accruals carry incremental information over the aggregate earnings-minus-cash-flow wedge.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctiveCashBackedQuality",
+      "expression": "MIN(RANK(NEG(RATIO(SUB(ib, oancf), SUB(at, che)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), MA(RATIO(oancf, at), 5))))",
+      "hypothesis": "Genuinely cash-backed performance requires *both* conditions to hold, so a firm should be rewarded only for its weaker credential: the long leg must be simultaneously low-accrual and durably cash-profitable, while any single failing puts a firm in the accounting-noise bucket.",
+      "expected_sign": "positive",
+      "reasoning": "Sum-of-ranks lets a very strong quality score offset bad accruals (and vice versa), and the multiplicative form lets a near-zero weight neutralize a strong accrual signal; the MIN operator encodes strict conjunction, which is the literal reading of the economic story. Because it changes the interaction's logical form rather than its inputs, it isolates whether the payoff comes from a joint requirement or from a tradeable continuum.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LongSampleAccrualsTimesDurabilityIndex",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), SUMRANK(RATIO(re, at), TREND(RATIO(ni, sale), 5)))))",
+      "hypothesis": "Cash-backed reported performance is best identified by combining low accruals with a broad durability index \u2014 stable earnings, accumulated retained profit, and an improving net margin \u2014 all measured over the longest available sample.",
+      "expected_sign": "positive",
+      "reasoning": "The three-channel durability weight raised FMB to 2.75 with a 5.5% alpha in gen 3, and the COALESCE accrual leg independently raised ls_talpha to 5.76; this joins them while deliberately building the quality weight only from long-history items (`ni`, `sale`, `re`, `at`) so the coverage gain is not surrendered by an `oancf`-dependent trend term. It tests whether the amplifier is better proxied by a durability index than by earnings stability alone once the sample is extended.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicLongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Chronic, multi-year accrual restraint rather than a single year's reading is what identifies a genuinely cash-generating business, and this chronic state matters most where earnings are stable.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing of the accrual leg produced the archive's largest alphas (6.0\u20136.1%) in gens 1\u20132 but on the short post-1988 sample, so combining smoothing with the long-sample accrual definition isolates whether persistence of low accruals adds to the one-year level once statistical power is adequate. It is a single, targeted design change relative to the current leader.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAdjustedLongSampleAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Working-capital intensity is a structural industry attribute, so accrual discretion is measured more cleanly as a deviation from the industry mean; within-industry low accruals plus stable earnings should be the sharper signal.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-neutral additive composite gave the archive's best FMB (3.10) and Sharpe (0.48), but my gen 3 attempt to industry-neutralize the multiplicative form failed mechanically with zero coverage from nesting ZSCORE around IND_RANK; this repairs that by demeaning within industry first (IND_ADJ) and then ranking cross-sectionally. It cleanly answers whether industry normalization adds to the leader or merely reshuffles it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalAccrualsExDepreciationTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(RATIO(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Only the working-capital component of accruals reflects managerial recognition discretion; depreciation is a mechanical, pre-committed charge, so removing it should sharpen the interaction with earnings stability.",
+      "expected_sign": "positive",
+      "reasoning": "Every accrual leg so far nets out depreciation, which means capital-intensive firms score as low-accrual for reasons unrelated to earnings quality \u2014 a plausible source of the residual FF5 loading and of alpha dilution. Because working-capital items are available for the full Compustat history, this also delivers high coverage while testing a genuinely different accrual construct.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistenceOfAccrualConservatismTimesStability",
+      "expression": "MUL(NEG(MA(SIGN(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))), 5)), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "A firm that reports cash flow in excess of earnings in most of the last five years is running a conservative recognition policy as a matter of habit; that habitual conservatism, paired with stable earnings, is the cleanest marker of durable cash earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Averaging the *sign* of accruals over five years discards magnitude entirely and measures only how often the firm has been cash-backed, making it immune to scaling artifacts and outliers that plague level-based accrual measures. If it matches the leader's alpha, the mispriced attribute is a policy state rather than a magnitude, which would be a substantively new characterization of the mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualDeteriorationTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(DELTA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 1)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "A widening gap between earnings and cash flow relative to last year is a fresh deterioration in earnings quality, and among otherwise stable-earnings firms such deterioration is precisely the case where investors are slowest to mark down expectations.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals use accrual *levels*, so the change dimension is untested inside the winning multiplicative structure, yet the economic story of \"accounting noise contaminating an otherwise durable earnings stream\" is fundamentally about a new distortion appearing. Contrasting it against Signal 2's smoothed level cleanly separates a stock interpretation from a flow interpretation of accrual quality.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAdjustedChronicAccrualsTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3))))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Sustained accrual restraint relative to industry peers is the cleanest evidence of cash-backed earnings, because it removes both the transitory year-to-year noise in accruals and the structural working-capital intensity of the business model.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the archive's best alpha (6.2%, t = 5.26) and industry demeaning produced its best FMB (4.31) and Sharpe, and the two corrections address orthogonal contaminants \u2014 temporal noise and cross-industry heterogeneity \u2014 so combining them should improve both forms of evidence rather than trade one for the other. This is the single most informative consolidation available given the gen 4 results.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "BothLegsIndustryRelativeCashBackedQuality",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(IND_ADJ(NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Earnings stability, like accrual intensity, is largely an industry attribute (utilities are stable, biotech is not), so the amplifier should also be measured relative to peers; a firm that is unusually steady *for its industry* is the one with genuine earnings durability.",
+      "expected_sign": "positive",
+      "reasoning": "So far only the accrual leg has been industry-neutralized, which means the quality weight still loads heavily on defensive sectors and may be what drags the FF5 alpha down when industry adjustment is applied. Demeaning both legs isolates the pure within-industry interaction and tells us whether the alpha loss from industry adjustment came from the accrual leg or the conditioning leg.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "HighAccrualStableEarningsShortSide",
+      "expression": "NEG(MUL(MUL(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 0)))",
+      "hypothesis": "The mispricing is asymmetric: investors are most misled by firms reporting stable earnings that are *not* backed by cash, so the tradeable information is concentrated among positive-accrual firms rather than spread symmetrically across the accrual distribution.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator confines the signed signal to firms whose earnings exceed operating cash flow, setting all genuinely cash-backed firms to a neutral zero, so the spread is formed purely by grading the severity of unbacked stable earnings. If this retains most of the leader's alpha it establishes that the strategy is essentially a short-side accounting-noise screen, which matters for interpretation and for implementation risk.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesDeleveragingCapacity",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(TREND(RATIO(lt, at), 5))))",
+      "hypothesis": "Cash earnings are validated by what the cash was used for: a firm with low accruals that has been steadily reducing its liability ratio has demonstrably converted reported profit into debt repayment, whereas low accruals alongside rising liabilities may reflect financing rather than operations.",
+      "expected_sign": "positive",
+      "reasoning": "A static leverage *level* weight produced a 5.5% alpha in gen 1, but level and trend say opposite things economically \u2014 level captures distress pressure while trend captures realized cash deployment \u2014 and the trend version is the one aligned with the cash-backing story. It introduces a liability-side quality channel that no archive signal has used and that is unlikely to be spanned by the RMW/CMA loadings that dilute profitability-based weights.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearAccrualBurdenTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(TS_SUM(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 5)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accruals that are never reversed accumulate into a stock of unrealized earnings; the five-year cumulative accrual burden, conditioned on stable earnings, measures how much of a firm's reported profit history remains uncollected in cash.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing over three years improved alpha over the one-year level, which suggests the mispriced attribute is a slow-moving stock rather than an annual flow, and the cumulative sum is the natural extension of that logic to a genuine balance-of-unreversed-accruals interpretation. Comparing it directly against Signal 1's three-year average identifies the horizon over which accrual quality is priced.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesWorstYearProfitability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(TS_MIN(RATIO(ni, at), 5)))",
+      "hypothesis": "Durability is best measured by the downside: a firm whose worst return on assets over five years is still healthy has genuinely resilient earnings, and low accruals at such a firm indicate real cash economics rather than a favorable point in an accounting cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Symmetric volatility penalizes upside surprises as much as downside collapses, whereas the five-year minimum ROA targets the economically relevant notion of earnings that never break \u2014 and the earlier hard no-loss gate hinted at this channel but destroyed the cross-sectional slope by being binary. Using the continuous worst-year level as the amplifier tests the downside-durability channel without the information loss of an indicator.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesStabilityAndWorstYearFloor",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), TS_MIN(RATIO(ni, at), 5))))",
+      "hypothesis": "Durable earnings have two distinct signatures \u2014 low dispersion and a high floor \u2014 and low accruals are most informative when both hold, because a stable series with a healthy worst year cannot be the product of a favorable accrual cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Volatility-based stability delivered the archive's most precise alpha (5.9%, t = 5.76) while worst-year ROA delivered its second-best FMB (4.04) with the widest coverage, and the two are conceptually complementary rather than redundant (dispersion versus downside level). Combining them in the rank weight while leaving the accrual leg un-demeaned preserves the alpha magnitude that industry adjustment erodes.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAccrualsTimesStabilityAndWorstYearFloor",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), TS_MIN(RATIO(ni, at), 5))))",
+      "hypothesis": "Within-industry accrual deviation combined with the two-channel durability weight should give the strongest cross-sectional slope, because peer-relative accruals isolate discretion while the durability weight isolates firms whose earnings can be trusted.",
+      "expected_sign": "positive",
+      "reasoning": "Industry demeaning has raised FMB to 4.2\u20134.3 in every test but consistently costs about 1.4 percentage points of alpha; pairing it with the strongest available weight tests whether a better conditioning variable can recover that alpha while retaining the slope. Run alongside Signal 1 it isolates the industry-adjustment decision cleanly, holding the weight fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedStableEarningsLongSide",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))), 0))",
+      "hypothesis": "The premium is earned by identifying firms whose operating cash flow actually exceeds reported earnings; grading only these genuinely cash-backed firms \u2014 and treating everyone else as uniformly uninformative \u2014 should concentrate the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 5 mirror experiment restricted attention to positive-accrual firms and the alpha fell from 5.9% to 1.2% while the FMB slope survived, which is direct evidence that the portfolio payoff lives among negative-accrual firms. This proposal is the economically implied complement and tests whether discarding the uninformative half improves the spread rather than merely relabeling it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsGatedByMeasuredEarningsStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Earnings-quality information in accruals is switched on by an absolute standard of stability \u2014 a five-year ROA volatility below five percentage points \u2014 rather than by a firm's relative position in the volatility distribution.",
+      "expected_sign": "positive",
+      "reasoning": "Every successful archive signal uses a relative [0,1] rank weight, so it remains untested whether the amplifier is a relative ordering or an absolute economic threshold; the one earlier hard gate used the flawed non-rank accrual leg and a loss-history criterion, confounding two changes at once. An absolute stability cut is also more stable through time than a rank weight, which matters for portfolio composition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalIntensityDriftTimesStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(DELTA(RATIO(SUB(SUB(act, che), SUB(lct, dlc)), sale), 1)))), RANK(NEG(VOL(RATIO(ni, at), 5))))",
+      "hypothesis": "Accrual quality is fundamentally about whether working capital is growing faster than the business: a rising working-capital-to-sales ratio means each dollar of revenue is being financed by uncollected receivables and unsold inventory, and among stable-earnings firms this drift is a warning that reported profit is not cash.",
+      "expected_sign": "positive",
+      "reasoning": "All accrual legs so far scale the accrual flow by an asset base, which mixes accrual discretion with balance-sheet size effects; scaling the working-capital *stock* by sales and taking its change measures operating efficiency deterioration directly and is invariant to asset composition. It uses only long-history items, so coverage should match the leaders while testing an economically different accrual construct.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesEarningsAndBalanceSheetDurability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), NEG(TREND(RATIO(lt, at), 5)))))",
+      "hypothesis": "Genuine cash earnings show up in two places at once \u2014 a steady income statement and a shrinking liability ratio \u2014 so conditioning low accruals on both income-statement stability and realized deleveraging should identify the most credibly cash-generative firms.",
+      "expected_sign": "positive",
+      "reasoning": "The deleveraging-trend weight independently produced a 4.7% alpha with t = 4.65 and a 2.92 FMB slope, and it is drawn from the liability side of the balance sheet, so its information should be largely orthogonal to ROA volatility rather than a second reading of profitability. This tests whether the amplifier is best broadened across financial-statement dimensions instead of stacking two earnings-based measures as in Signal 1.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAccrualsGatedByStabilityThreshold",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Among firms that clear an absolute standard of earnings stability, peer-relative accrual restraint is the cleanest available marker of cash-backed profit; firms failing the stability standard carry no accrual information at all.",
+      "expected_sign": "positive",
+      "reasoning": "The absolute stability gate is the only device so far that improved both metrics simultaneously (t-alpha 5.41, FMB 3.62), and industry demeaning is the only device that reliably pushes FMB above 4.2, so crossing them targets the archive's unmet objective of strong cross-sectional and portfolio evidence together. Neither modification touches the other's economic content \u2014 one selects the sample, the other normalizes the ranking variable.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicAccrualsGatedByStabilityThreshold",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Sustained accrual restraint, evaluated only within the population of genuinely stable-earnings firms, is the purest empirical statement of the theme's economic story.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing produced the largest alpha in the archive (6.2%) and the absolute stability gate produced the highest t-alpha per unit of alpha, and both operate on different objects (the accrual time series versus sample selection), so their effects should be close to additive. This is the most direct attempt to push alpha above 6% while keeping the FMB slope above 3.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "StabilityGatedAccrualsWeightedByEarningsFloor",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(TS_MIN(RATIO(ni, at), 5))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Durability has a dispersion requirement and a level requirement: a firm must not swing (absolute volatility gate) and must remain profitable at its worst (continuous floor weight), and only then does low accrual content identify genuinely cash-backed performance.",
+      "expected_sign": "positive",
+      "reasoning": "The two quality channels enter in the functional forms each performed best in \u2014 volatility as a hard economic threshold and worst-year ROA as a continuous rank that produced FMB above 4 \u2014 rather than being averaged into a single index, which is what diluted alpha in the gen 4 and gen 6 composite weights. It tests whether a hybrid hard/soft conditioning structure dominates either pure form.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicCashBackedLongSideOnly",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)), 0))",
+      "hypothesis": "The premium accrues to firms whose operating cash flow has persistently exceeded reported earnings; grading only that population and treating all others as neutral should give the sharpest portfolio spread.",
+      "expected_sign": "positive",
+      "reasoning": "The gen 6 long-side restriction and three-year smoothing each independently improved the portfolio evidence (t-alpha 5.22 and 5.26), and both derive from the same finding that the alpha is generated by chronically cash-backed firms rather than by shorting accrual inflators. Combining them tests whether persistence of cash backing, measured only where it exists, is the sharpest version of the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesScaledAccrualsGatedByStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), sale), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), sale)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Accrual distortion is best measured per dollar of revenue, since revenue is the base against which receivables and inventory recognition decisions are actually made, and asset-scaled accruals conflate discretion with capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Every accrual leg in the archive is scaled by net operating assets, so the scaling choice has never been tested against a revenue base even though the earlier working-capital-to-sales experiment showed the sales denominator carries independent information (FMB 2.54). Pairing it with the proven stability gate holds the conditioning structure fixed so the scaling decision is cleanly identified.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesGrossProfitStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "Stability should be measured on the least manipulable line of the income statement: a firm with a steady gross profit stream has genuinely durable economics, whereas steady net income can itself be the product of the accrual smoothing this signal is trying to detect.",
+      "expected_sign": "positive",
+      "reasoning": "Conditioning on net-income stability is partly circular \u2014 accruals are the tool used to make net income look stable \u2014 so replacing it with gross-profit stability removes a mechanical link between the two legs and should produce a cleaner interaction if the story is economic rather than mechanical. Gross profit is available for the full sample, so coverage should match the leaders.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "StabilityGatedAndStabilityWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Stability performs two separate jobs: it decides whether accrual information is meaningful at all (a threshold question) and it grades how much confidence to place in it (an intensity question); imposing both should give the cleanest cash-backed-earnings signal.",
+      "expected_sign": "positive",
+      "reasoning": "The gate alone gave the best t-alpha-to-alpha ratio (5.41 on 5.0%) and the continuous stability weight alone gave the largest reliable alpha (5.9%, t = 5.76), and they are not substitutes \u2014 one removes uninformative firms while the other allocates weight within the informative set. This is the highest-value untested combination in the archive's leading family.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryStabilityGatedAndWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Peer-relative accrual restraint, graded and gated by earnings stability, should deliver both the strongest cross-sectional slope and a materially larger alpha than the un-weighted industry-gated version.",
+      "expected_sign": "positive",
+      "reasoning": "The industry-gated signal reached FMB 4.84 but shed alpha because the un-weighted signed z-score gives equal voice to firms whose stability barely clears the threshold; restoring the continuous weight should recover alpha magnitude while retaining the peer-relative slope. Paired with Signal 1 it isolates the industry-demeaning decision under the new triple structure.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RevenueScaledAccrualsGatedByStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), sale), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), sale))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "Accrual distortion is generated by revenue-recognition and inventory decisions, so scaling the accrual wedge by sales rather than by net operating assets measures discretion per dollar of business activity and avoids conflating discretion with capital intensity.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the generation 7 proposal that failed validation on unbalanced parentheses, and it remains the one untested measurement dimension in the leading family since every evaluated accrual leg uses an asset denominator. Holding the proven stability gate fixed identifies the scaling decision cleanly.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesRevenueStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(GROWTH(sale, 1), 5))))",
+      "hypothesis": "Durability originates in demand, not in the income statement: a firm with steady revenue growth has a genuinely stable business, and low accruals at such a firm cannot be an artifact of the accounting used to smooth earnings.",
+      "expected_sign": "positive",
+      "reasoning": "Conditioning on net-income stability is partly mechanical because accruals are the instrument that smooths net income, and the gross-profit-stability test (\u03b1 4.9%, t 4.97) showed the interaction survives when the conditioning variable is moved upstream. Revenue growth volatility is the furthest upstream, least manipulable durability measure available, so it is the strongest test that the mechanism is economic rather than definitional.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesRetainedProfitCoverage",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), RATIO(re, lt))))",
+      "hypothesis": "A firm whose accumulated retained profit is large relative to its obligations has already converted decades of reported earnings into real, creditor-surviving value, and low accruals at such a firm confirm that current profit is of the same durable kind.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings scaled by assets amplified the accrual signal strongly on alpha (6.0\u20136.1%) but weakly on FMB, while the deleveraging trend worked on both; scaling retained profit by *liabilities* combines both ideas into a single solvency-quality measure that is high only when accumulated profit exceeds obligations. It provides a balance-sheet conditioning channel that is not a second reading of ROA volatility.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryAccrualsGatedByStrictStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(IND_ADJ(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))))))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.03))",
+      "hypothesis": "If earnings stability is a genuine economic threshold rather than a statistical convenience, tightening it to a three-percentage-point ROA volatility ceiling should concentrate the interaction further among firms whose reported profit is truly durable.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has established that a hard absolute gate beats a relative rank weight but has tested only one threshold, so the strictness of the economic standard is an unmeasured design parameter that directly bears on interpretation. A monotone improvement would confirm the threshold reading; a deterioration would show the gate mainly works by removing the most erratic firms rather than by isolating an elite stable set, which is important guidance for the final generation.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicAccrualsTimesEarningsAndRevenueStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), NEG(VOL(GROWTH(sale, 1), 5)))))",
+      "hypothesis": "Genuinely durable cash earnings require stability in both the demand stream and the reported bottom line; sustained accrual restraint at a firm with steady revenue growth and steady ROA is the strongest available evidence that reported profit is cash.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year accrual smoothing produced the archive's largest alpha (6.2%) and revenue-growth stability was the best new conditioning channel of gen 8 (t-alpha 5.13, FMB 3.20) precisely because revenue cannot be smoothed by accruals, so the two legs of the weight are economically complementary rather than duplicative. This is the most promising untested combination of the alpha-side accrual construction with a two-channel upstream durability weight.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesConjunctiveStabilityProduct",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), MUL(RANK(NEG(VOL(RATIO(ni, at), 5))), RANK(NEG(VOL(GROWTH(sale, 1), 5)))))",
+      "hypothesis": "The two stability requirements are conjunctive, not compensatory: a firm needs both steady demand and steady earnings for its accrual reading to be meaningful, so the weight should be a product that collapses toward zero if either condition fails.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK averages the two channels and lets a very stable revenue stream excuse volatile earnings, whereas the product enforces the joint condition, and the archive has repeatedly shown that harder conditioning (the absolute gate) improves reliability rather than merely shrinking the sample. Run against Signal 1 it isolates the weighting algebra while holding the economic content of both channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesIndustryRelativeStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(IND_ADJ(NEG(VOL(RATIO(ni, at), 5)))))",
+      "hypothesis": "Stability is an industry attribute, so the amplifier should identify firms that are unusually steady *for their sector*, while the accrual ranking itself is best left on a raw cross-sectional basis where its full dispersion is preserved.",
+      "expected_sign": "positive",
+      "reasoning": "Every industry-adjusted signal so far has demeaned the accrual leg, which is exactly the leg whose dispersion generates the alpha, so demeaning only the conditioning leg is the one untried way to seek the FMB gain (consistently +1 to +1.5 points) without the accompanying alpha loss. It cleanly attributes the industry-adjustment trade-off to whichever leg is demeaned.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicAccrualsTimesStabilityAndSolvencyCoverage",
+      "expression": "MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(SUMRANK(NEG(VOL(RATIO(ni, at), 5)), RATIO(re, lt))))",
+      "hypothesis": "Accumulated retained profit large relative to obligations proves that past reported earnings were real and survived creditors' claims, so combining it with steady ROA and persistent accrual restraint should identify the most credibly cash-backed firms.",
+      "expected_sign": "positive",
+      "reasoning": "Retained-profit coverage of liabilities was the strongest new weight of gen 8 on alpha (5.2%) with a solid FMB (3.27), and it draws on the balance sheet rather than on a second reading of the income statement, so it should add information rather than dilute as the earlier profitability composites did. Pairing it with the smoothed accrual leg targets both the 6%+ alpha region and an FMB above 3.5.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicStabilityGatedAndWeightedAccruals",
+      "expression": "MUL(MUL(NEG(ZSCORE(RANK(MA(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che))), 3)))), RANK(NEG(VOL(RATIO(ni, at), 5)))), INDICATOR(NEG(VOL(RATIO(ni, at), 5)), -0.05))",
+      "hypothesis": "The cleanest statement of the theme is persistent accrual restraint, graded by earnings stability, evaluated only among firms that clear an absolute stability standard.",
+      "expected_sign": "positive",
+      "reasoning": "The gate-plus-weight structure delivered the best reliability in gen 8 (t-alpha 5.66 on 5.0% alpha) using the one-year accrual leg, and smoothing that leg independently added a percentage point of alpha elsewhere, so this is the natural final assembly of the three devices that each improved the portfolio evidence. It also tests whether smoothing and gating are additive or whether both are proxies for the same noise reduction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesAssetTurnoverStability",
+      "expression": "MUL(NEG(ZSCORE(RANK(COALESCE(RATIO(SUB(ib, oancf), SUB(at, che)), RATIO(SUB(DELTA(SUB(SUB(act, che), SUB(lct, dlc)), 1), dp), SUB(at, che)))))), RANK(NEG(VOL(RATIO(sale, at), 5))))",
+      "hypothesis": "A firm whose asset turnover barely moves runs a stable operating model with a predictable working-capital cycle, and in such a firm low accruals cannot be explained by shifting business mix \u2014 they must reflect genuine cash conversion.",
+      "expected_sign": "positive",
+      "reasoning": "Every conditioning variable tested has been a profitability or solvency measure, leaving the operating-efficiency dimension unexplored even though turnover stability is the quality attribute most directly tied to the working-capital process that generates accruals. It is entirely free of net-income inputs, so it provides the sharpest remaining test that the interaction is economic rather than a mechanical consequence of accruals smoothing earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashBackedDurableEarnings",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(ib,oancf),at)),sumrank(ma(ratio(oancf,at),5),neg(vol(ratio(ib,at),5))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualSignalGatedByNoLossHistory",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(winsor(ratio(sub(ib,oancf),at),1))),indicator(ts_min(ratio(ib,at),5),0))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashEarningsPerUnitAccountingNoise",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(ratio(oancf,at),5),add(abs(ratio(sub(ib,oancf),at)),vol(ratio(ib,at),5))),1)",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualNoiseDominatesCashFlow",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(vol(ratio(sub(ib,oancf),at),5),add(vol(ratio(oancf,at),5),ma(abs(ratio(oancf,at)),5))),1)",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "ImprovingAccrualsRisingCashTrend",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(delta(ratio(sub(ib,oancf),at),1)),sumrank(trend(ratio(oancf,at),5),neg(vol(ratio(oancf,at),5))))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalAccrualsVsRetainedProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ind_rank(ratio(sub(delta(wcap,1),dp),at))),ind_rank(sumrank(ratio(re,at),ratio(sub(revt,cogs),at))))",
+        "variables": [
+          "at",
+          "cogs",
+          "dp",
+          "re",
+          "revt",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OperatingAssetAccrualsAndEarningsStability",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(ib,oancf),sub(at,che))),neg(vol(ratio(ni,at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsGatedByNoLossMarginHistory",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(winsor(ratio(sub(ib,oancf),sub(at,che)),1))),indicator(ts_min(ratio(ni,sale),5),0))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitPerUnitAccountingNoise",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(ratio(sub(revt,cogs),at),3),add(abs(ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),at)),vol(ratio(ni,at),5))),1)",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "lct",
+          "ni",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualVolatilityRelativeToEarningsVolatility",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(vol(ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),at),5),vol(ratio(ni,at),5)),1)",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWeightedByLeveragePressure",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(winsor(ratio(sub(ib,oancf),sub(at,che)),1))),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicCashBackingTimesRetainedProfit",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(winsor(ma(ratio(sub(ib,oancf),sub(at,che)),3),1))),rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedAccrualsTimesRetainedProfit",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ma(ratio(sub(ib,oancf),sub(at,che)),3)))),rank(ratio(re,at)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedAccrualsTimesEarningsStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ratio(sub(ib,oancf),sub(at,che))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedAccrualsTimesEarningsInstability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ratio(sub(ib,oancf),sub(at,che))))),rank(vol(ratio(ni,at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBuildValidatedEarnings",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(ib,oancf),sub(at,che))),sumrank(ratio(delta(che,1),sub(at,che)),ma(ratio(ni,at),5)))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalReleaseWithStableMargins",
+      "metadata": {
+        "normalized_expression": "mul(zscore(rank(ratio(add(recch,invch),sub(at,che)))),rank(neg(vol(ratio(sub(revt,cogs),revt),5))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "invch",
+          "recch",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralCashMarginTrendAndAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ind_rank(ratio(sub(ib,oancf),sub(at,che)))),ind_rank(sumrank(trend(ratio(oancf,revt),5),neg(vol(ratio(ni,at),5)))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralAccrualsTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(ind_rank(ratio(sub(ib,oancf),sub(at,che))))),ind_rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesDurableCashQualityWeight",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ratio(sub(ib,oancf),sub(at,che))))),rank(sumrank(neg(vol(ratio(ni,at),5)),sumrank(trend(ratio(oancf,revt),5),ratio(re,at)))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf",
+          "re",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongSampleAccrualsTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FirmRelativeAccrualPositionTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(ts_rank(ratio(sub(ib,oancf),sub(at,che)),5))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ReceivableInventoryBuildupTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ratio(add(recch,invch),sub(at,che))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "invch",
+          "ni",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctiveCashBackedQuality",
+      "metadata": {
+        "normalized_expression": "min(rank(neg(ratio(sub(ib,oancf),sub(at,che)))),rank(sumrank(neg(vol(ratio(ni,at),5)),ma(ratio(oancf,at),5))))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongSampleAccrualsTimesDurabilityIndex",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(sumrank(neg(vol(ratio(ni,at),5)),sumrank(ratio(re,at),trend(ratio(ni,sale),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf",
+          "re",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicLongSampleAccrualsTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAdjustedLongSampleAccrualsTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalAccrualsExDepreciationTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ratio(delta(sub(sub(act,che),sub(lct,dlc)),1),sub(at,che))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistenceOfAccrualConservatismTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(ma(sign(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))),5)),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualDeteriorationTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(delta(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),1)))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAdjustedChronicAccrualsTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3))))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BothLegsIndustryRelativeCashBackedQuality",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),rank(ind_adj(neg(vol(ratio(ni,at),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HighAccrualStableEarningsShortSide",
+      "metadata": {
+        "normalized_expression": "neg(mul(mul(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))),rank(neg(vol(ratio(ni,at),5)))),indicator(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),0)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesDeleveragingCapacity",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(trend(ratio(lt,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearAccrualBurdenTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ts_sum(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),5)))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesWorstYearProfitability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),rank(ts_min(ratio(ni,at),5)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesStabilityAndWorstYearFloor",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(sumrank(neg(vol(ratio(ni,at),5)),ts_min(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAccrualsTimesStabilityAndWorstYearFloor",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),rank(sumrank(neg(vol(ratio(ni,at),5)),ts_min(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedStableEarningsLongSide",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(ratio(ni,at),5)))),indicator(neg(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsGatedByMeasuredEarningsStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalIntensityDriftTimesStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(delta(ratio(sub(sub(act,che),sub(lct,dlc)),sale),1)))),rank(neg(vol(ratio(ni,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "ni",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesEarningsAndBalanceSheetDurability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(sumrank(neg(vol(ratio(ni,at),5)),neg(trend(ratio(lt,at),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAccrualsGatedByStabilityThreshold",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicAccrualsGatedByStabilityThreshold",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StabilityGatedAccrualsWeightedByEarningsFloor",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(ts_min(ratio(ni,at),5))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicCashBackedLongSideOnly",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),rank(neg(vol(ratio(ni,at),5)))),indicator(neg(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "invalid_expression",
+      "message": "unbalanced parentheses",
+      "proposal_name": "SalesScaledAccrualsGatedByStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sale),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sale)))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": []
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesGrossProfitStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(ratio(sub(revt,cogs),at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "cogs",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StabilityGatedAndStabilityWeightedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(ratio(ni,at),5)))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryStabilityGatedAndWeightedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),rank(neg(vol(ratio(ni,at),5)))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RevenueScaledAccrualsGatedByStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sale),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sale))))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesRevenueStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(growth(sale,1),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesRetainedProfitCoverage",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(sumrank(neg(vol(ratio(ni,at),5)),ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "ni",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryAccrualsGatedByStrictStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ind_adj(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))))))),indicator(neg(vol(ratio(ni,at),5)),-0.03))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicAccrualsTimesEarningsAndRevenueStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),rank(sumrank(neg(vol(ratio(ni,at),5)),neg(vol(growth(sale,1),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesConjunctiveStabilityProduct",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),mul(rank(neg(vol(ratio(ni,at),5))),rank(neg(vol(growth(sale,1),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesIndustryRelativeStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(ind_adj(neg(vol(ratio(ni,at),5)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicAccrualsTimesStabilityAndSolvencyCoverage",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),rank(sumrank(neg(vol(ratio(ni,at),5)),ratio(re,lt))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "ni",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicStabilityGatedAndWeightedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(mul(neg(zscore(rank(ma(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che))),3)))),rank(neg(vol(ratio(ni,at),5)))),indicator(neg(vol(ratio(ni,at),5)),-0.05))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "ni",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesAssetTurnoverStability",
+      "metadata": {
+        "normalized_expression": "mul(neg(zscore(rank(coalesce(ratio(sub(ib,oancf),sub(at,che)),ratio(sub(delta(sub(sub(act,che),sub(lct,dlc)),1),dp),sub(at,che)))))),rank(neg(vol(ratio(sale,at),5))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "ib",
+          "lct",
+          "oancf",
+          "sale"
+        ]
+      }
+    }
+  ]
+}

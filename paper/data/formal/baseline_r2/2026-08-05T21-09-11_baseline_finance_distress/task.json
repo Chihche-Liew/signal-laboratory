@@ -1,0 +1,85 @@
+{
+  "task_id": "cross_theme:finance_distress",
+  "task_type": "cross_theme",
+  "objective": {
+    "title": "Financing x Distress signal discovery",
+    "description": "Discover symbolic equity-return signals that use both themes (financing and distress) for Financing x Distress. The signal should capture an interaction beyond an isolated single-theme effect. Economic story: Financing behavior has different meaning for distressed firms. Debt issuance, repayment, payouts, and equity issuance may reveal liquidity pressure, market timing, or recovery prospects."
+  },
+  "constraints": [
+    {
+      "kind": "must_use_theme",
+      "value": "financing"
+    },
+    {
+      "kind": "must_use_theme",
+      "value": "distress"
+    },
+    {
+      "kind": "exclude_financials",
+      "value": "true"
+    },
+    {
+      "kind": "exclude_microcap",
+      "value": "true"
+    }
+  ],
+  "output_schema": {
+    "required_fields": [
+      "name",
+      "expression",
+      "hypothesis",
+      "expected_sign",
+      "reasoning",
+      "interaction_type"
+    ],
+    "allowed_expected_signs": [
+      "positive",
+      "negative"
+    ],
+    "allowed_interaction_types": [
+      "composite",
+      "conditional",
+      "ratio",
+      "novel"
+    ]
+  },
+  "evaluation_protocol": {
+    "evaluator_type": "signal_agent",
+    "primary_metric": "fmb_tstat",
+    "success_threshold": 1.96,
+    "require_expected_sign_match": true,
+    "alpha_factor_model": 5
+  },
+  "success_criteria": {
+    "min_abs_tstat": 1.96,
+    "require_expected_sign_match": true,
+    "min_coverage": 0.0
+  },
+  "novelty_policy": {
+    "reject_exact_expression_duplicates": true,
+    "reject_normalized_expression_duplicates": true
+  },
+  "metadata": {
+    "pair_name": "finance_distress",
+    "theme_a": "financing",
+    "theme_b": "distress",
+    "reference_library": "canonical_single_theme_reference",
+    "interaction_label": "Financing x Distress",
+    "economic_story": "Financing behavior has different meaning for distressed firms. Debt issuance, repayment, payouts, and equity issuance may reveal liquidity pressure, market timing, or recovery prospects.",
+    "example_interactions": [
+      "Distressed issuer penalty",
+      "Debt repayment under distress",
+      "Payout resilience under leverage",
+      "Equity issuance with weak solvency"
+    ],
+    "exclude_financials": true,
+    "exclude_microcap": true,
+    "sample_filters": [
+      "exclude_financials",
+      "exclude_microcap"
+    ],
+    "mode": "default",
+    "seed_prompt": null,
+    "guidance_scope": "none"
+  }
+}

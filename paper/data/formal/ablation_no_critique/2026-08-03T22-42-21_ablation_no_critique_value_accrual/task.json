@@ -1,0 +1,85 @@
+{
+  "task_id": "cross_theme:value_accrual",
+  "task_type": "cross_theme",
+  "objective": {
+    "title": "Valuation x Accruals signal discovery",
+    "description": "Discover symbolic equity-return signals that use both themes (valuation and accruals) for Valuation x Accruals. The signal should capture an interaction beyond an isolated single-theme effect. Economic story: Cheap firms can be value traps when reported earnings rely on accruals rather than cash. The task is to identify value signals whose cheapness is supported by high-quality accounting."
+  },
+  "constraints": [
+    {
+      "kind": "must_use_theme",
+      "value": "valuation"
+    },
+    {
+      "kind": "must_use_theme",
+      "value": "accruals"
+    },
+    {
+      "kind": "exclude_financials",
+      "value": "true"
+    },
+    {
+      "kind": "exclude_microcap",
+      "value": "true"
+    }
+  ],
+  "output_schema": {
+    "required_fields": [
+      "name",
+      "expression",
+      "hypothesis",
+      "expected_sign",
+      "reasoning",
+      "interaction_type"
+    ],
+    "allowed_expected_signs": [
+      "positive",
+      "negative"
+    ],
+    "allowed_interaction_types": [
+      "composite",
+      "conditional",
+      "ratio",
+      "novel"
+    ]
+  },
+  "evaluation_protocol": {
+    "evaluator_type": "signal_agent",
+    "primary_metric": "fmb_tstat",
+    "success_threshold": 1.96,
+    "require_expected_sign_match": true,
+    "alpha_factor_model": 5
+  },
+  "success_criteria": {
+    "min_abs_tstat": 1.96,
+    "require_expected_sign_match": true,
+    "min_coverage": 0.0
+  },
+  "novelty_policy": {
+    "reject_exact_expression_duplicates": true,
+    "reject_normalized_expression_duplicates": true
+  },
+  "metadata": {
+    "pair_name": "value_accrual",
+    "theme_a": "valuation",
+    "theme_b": "accruals",
+    "reference_library": "canonical_single_theme_reference",
+    "interaction_label": "Valuation x Accruals",
+    "economic_story": "Cheap firms can be value traps when reported earnings rely on accruals rather than cash. The task is to identify value signals whose cheapness is supported by high-quality accounting.",
+    "example_interactions": [
+      "Cash-backed value",
+      "Accrual-adjusted earnings yield",
+      "Book-to-market net of accrual pressure",
+      "Value trap filter"
+    ],
+    "exclude_financials": true,
+    "exclude_microcap": true,
+    "sample_filters": [
+      "exclude_financials",
+      "exclude_microcap"
+    ],
+    "mode": "default",
+    "seed_prompt": null,
+    "guidance_scope": "none"
+  }
+}

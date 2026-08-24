@@ -1,0 +1,85 @@
+{
+  "task_id": "cross_theme:quality_distress",
+  "task_type": "cross_theme",
+  "objective": {
+    "title": "Quality x Distress signal discovery",
+    "description": "Discover symbolic equity-return signals that use both themes (quality and distress) for Quality x Distress. The signal should capture an interaction beyond an isolated single-theme effect. Economic story: Quality and distress are opposing but not identical dimensions. The task is to find signals where stability, cash generation, and balance-sheet strength sharpen distress-related return predictions."
+  },
+  "constraints": [
+    {
+      "kind": "must_use_theme",
+      "value": "quality"
+    },
+    {
+      "kind": "must_use_theme",
+      "value": "distress"
+    },
+    {
+      "kind": "exclude_financials",
+      "value": "true"
+    },
+    {
+      "kind": "exclude_microcap",
+      "value": "true"
+    }
+  ],
+  "output_schema": {
+    "required_fields": [
+      "name",
+      "expression",
+      "hypothesis",
+      "expected_sign",
+      "reasoning",
+      "interaction_type"
+    ],
+    "allowed_expected_signs": [
+      "positive",
+      "negative"
+    ],
+    "allowed_interaction_types": [
+      "composite",
+      "conditional",
+      "ratio",
+      "novel"
+    ]
+  },
+  "evaluation_protocol": {
+    "evaluator_type": "signal_agent",
+    "primary_metric": "fmb_tstat",
+    "success_threshold": 1.96,
+    "require_expected_sign_match": true,
+    "alpha_factor_model": 5
+  },
+  "success_criteria": {
+    "min_abs_tstat": 1.96,
+    "require_expected_sign_match": true,
+    "min_coverage": 0.0
+  },
+  "novelty_policy": {
+    "reject_exact_expression_duplicates": true,
+    "reject_normalized_expression_duplicates": true
+  },
+  "metadata": {
+    "pair_name": "quality_distress",
+    "theme_a": "quality",
+    "theme_b": "distress",
+    "reference_library": "canonical_single_theme_reference",
+    "interaction_label": "Quality x Distress",
+    "economic_story": "Quality and distress are opposing but not identical dimensions. The task is to find signals where stability, cash generation, and balance-sheet strength sharpen distress-related return predictions.",
+    "example_interactions": [
+      "High-quality low-distress composite",
+      "Stable earnings under leverage",
+      "Cash-flow solvency quality",
+      "Low-volatility distress filter"
+    ],
+    "exclude_financials": true,
+    "exclude_microcap": true,
+    "sample_filters": [
+      "exclude_financials",
+      "exclude_microcap"
+    ],
+    "mode": "default",
+    "seed_prompt": null,
+    "guidance_scope": "none"
+  }
+}

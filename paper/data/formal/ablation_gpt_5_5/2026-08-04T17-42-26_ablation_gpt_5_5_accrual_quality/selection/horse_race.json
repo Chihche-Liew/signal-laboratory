@@ -1,0 +1,177 @@
+{
+  "schema_version": "3",
+  "semantics": "2026-07-monthly-universe-v2",
+  "created_at": "2026-08-05T05:28:19.261598+00:00",
+  "selection": "horse_race",
+  "input_population": "first_pass_discoveries",
+  "threshold": 1.96,
+  "experiment_dir": "data/experiments/formal/ablation_gpt_5_5/2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+  "n_input": 4,
+  "n_survivors": 2,
+  "input_signals": [
+    {
+      "name": "WorkingCapital Clean DebtCoverage",
+      "expression": "MUL(RANK(NEG(WINSOR(RATIO(DELTA(wcap, 1), at), 1))), RANK(TREND(WINSOR(RATIO(oancf, lt), 1), 5)))",
+      "hypothesis": "Firms with low working-capital accrual build and improving operating cash-flow coverage of liabilities should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the canonical Sloan balance-sheet accrual formula and replaces the rejected demand-stability conditioner with a financial-quality test: whether cash generation is increasingly sufficient relative to obligations. Low working-capital accruals are more credible when operating cash flow is improving versus liabilities, because the firm is less likely to be using accrual accounting to mask pressure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.0795223695621385,
+      "ls_alpha": -0.013030527828373356,
+      "ls_talpha": -0.8925484031358615,
+      "ls_sharpe": -0.036763956539012314,
+      "coverage": 0.06284690493112668,
+      "error": null,
+      "source_experiment": "2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_5/2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "normalized_expression": "mul( rank( neg( winsor( ratio( delta( wcap, 1 ), at ), 1 ) ) ), rank( trend( winsor( ratio( oancf, lt ), 1 ), 5 ) ) )",
+      "signal_id": "a63f9a416293",
+      "pair_name": "accrual_quality",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "WorkingCapital UnproductiveDemand Build",
+      "expression": "MUL(RANK(WINSOR(RATIO(DELTA(wcap, 1), at), 1)), RANK(NEG(TREND(WINSOR(RATIO(revt, at), 1), 5))))",
+      "hypothesis": "Firms with rising working-capital accruals while revenue productivity is deteriorating should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the short-debt funding-pressure legs and tests a different mechanism: working capital is being tied up without evidence of productive demand growth. A working-capital build is most suspicious when sales generated per asset are weakening, because the accrual investment is less likely to convert into durable cash earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.5183748895624007,
+      "ls_alpha": 0.0009068134680064207,
+      "ls_talpha": 0.08779601054142176,
+      "ls_sharpe": -0.23124924532959107,
+      "coverage": 0.10404042092507432,
+      "error": null,
+      "source_experiment": "2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_5/2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "normalized_expression": "mul( rank( winsor( ratio( delta( wcap, 1 ), at ), 1 ) ), rank( neg( trend( winsor( ratio( revt, at ), 1 ), 5 ) ) ) )",
+      "signal_id": "95bdf675a730",
+      "pair_name": "accrual_quality",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "NonCashCurrentAsset MarginReversal",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale), 1)), RANK(NEG(ACCEL(WINSOR(RATIO(SUB(revt, cogs), revt), 1)))))",
+      "hypothesis": "Firms with rising noncash current assets while gross-margin momentum is reversing should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids pairing DELTA(wcap) with a mechanically complementary cash-flow strip-out and instead isolates noncash current-asset absorption. The accrual build is most concerning when unit economics are inflecting downward, because receivables, inventory, or other current assets may be accumulating before earnings fully reflect weaker cash-backed performance.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.0563871514212018,
+      "ls_alpha": -0.001075028693440492,
+      "ls_talpha": -0.12530123913075875,
+      "ls_sharpe": -0.2751600623457726,
+      "coverage": 0.10082262488783889,
+      "error": null,
+      "source_experiment": "2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_5/2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "normalized_expression": "mul( rank( winsor( ratio( sub( delta( act, 1 ), delta( che, 1 ) ), sale ), 1 ) ), rank( neg( accel( winsor( ratio( sub( revt, cogs ), revt ), 1 ) ) ) ) )",
+      "signal_id": "954beeb51c96",
+      "pair_name": "accrual_quality",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "NonCashCurrentAsset MarginTrough",
+      "expression": "MUL(RANK(TS_RANK(WINSOR(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale), 1), 5)), RANK(NEG(TS_RANK(WINSOR(RATIO(SUB(revt, cogs), revt), 1), 5))))",
+      "hypothesis": "Firms with unusually high noncash current-asset absorption while gross margins are near their own historical lows should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Noncash current-asset growth ties up cash in receivables, inventory, or other operating assets. It is most concerning when margins are already weak relative to the firm\u2019s own history, suggesting accrual build is not supporting durable cash earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.950193031836382,
+      "ls_alpha": -0.024359290094349798,
+      "ls_talpha": -2.4475989530747664,
+      "ls_sharpe": -0.34054150135913,
+      "coverage": 0.10158623879111164,
+      "error": null,
+      "source_experiment": "2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_5/2026-08-04T17-42-26_ablation_gpt_5_5_accrual_quality",
+      "normalized_expression": "mul( rank( ts_rank( winsor( ratio( sub( delta( act, 1 ), delta( che, 1 ) ), sale ), 1 ), 5 ) ), rank( neg( ts_rank( winsor( ratio( sub( revt, cogs ), revt ), 1 ), 5 ) ) ) )",
+      "signal_id": "c07e272c38b5",
+      "pair_name": "accrual_quality",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    }
+  ],
+  "stepwise_survivors": [
+    "95bdf675a730",
+    "c07e272c38b5"
+  ],
+  "stepwise_t": {
+    "95bdf675a730": -2.379301110891904,
+    "c07e272c38b5": -4.908699212404099
+  },
+  "fmb_conditional_t": {
+    "a63f9a416293": 0.8548045586294635,
+    "95bdf675a730": -0.9713681079920512,
+    "954beeb51c96": 0.014671174642279418,
+    "c07e272c38b5": -2.766165646096824
+  },
+  "fmb_survivors": [
+    "c07e272c38b5"
+  ],
+  "absolute_fmb_survivors": [
+    "c07e272c38b5"
+  ],
+  "corr_matrix": {
+    "a63f9a416293": {
+      "a63f9a416293": 1.0,
+      "95bdf675a730": -0.41287287083541296,
+      "954beeb51c96": -0.0830392029965558,
+      "c07e272c38b5": -0.13919692938378694
+    },
+    "95bdf675a730": {
+      "a63f9a416293": -0.41287287083541296,
+      "95bdf675a730": 1.0,
+      "954beeb51c96": 0.12065316803774803,
+      "c07e272c38b5": -0.0013813735687361486
+    },
+    "954beeb51c96": {
+      "a63f9a416293": -0.0830392029965558,
+      "95bdf675a730": 0.12065316803774803,
+      "954beeb51c96": 1.0,
+      "c07e272c38b5": 0.3516729351068988
+    },
+    "c07e272c38b5": {
+      "a63f9a416293": -0.13919692938378694,
+      "95bdf675a730": -0.0013813735687361486,
+      "954beeb51c96": 0.3516729351068988,
+      "c07e272c38b5": 1.0
+    }
+  },
+  "dropped": [
+    {
+      "signal_id": "a63f9a416293",
+      "name": "WorkingCapital Clean DebtCoverage",
+      "expression": "MUL(RANK(NEG(WINSOR(RATIO(DELTA(wcap, 1), at), 1))), RANK(TREND(WINSOR(RATIO(oancf, lt), 1), 5)))",
+      "reason": "conditional_t_below_threshold",
+      "fmb_conditional_t": 0.8548045586294635
+    },
+    {
+      "signal_id": "954beeb51c96",
+      "name": "NonCashCurrentAsset MarginReversal",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(DELTA(act, 1), DELTA(che, 1)), sale), 1)), RANK(NEG(ACCEL(WINSOR(RATIO(SUB(revt, cogs), revt), 1)))))",
+      "reason": "conditional_sign_mismatch",
+      "fmb_conditional_t": 0.014671174642279418
+    }
+  ],
+  "status": "ok",
+  "reason": null
+}

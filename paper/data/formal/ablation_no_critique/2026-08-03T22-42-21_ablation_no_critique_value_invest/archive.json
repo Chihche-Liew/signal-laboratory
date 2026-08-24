@@ -1,0 +1,2854 @@
+{
+  "pair": "value_invest",
+  "evaluated": [
+    {
+      "name": "Cash yield per unit of reinvestment",
+      "expression": "WINSOR(RATIO(RATIO(oancf, MUL(prcc_f, csho)), MA(RATIO(capx, ppent), 3)), 1)",
+      "hypothesis": "What matters is how much cash flow yield an investor buys per unit of ongoing reinvestment burden: high operating cash-flow yield sustained with a low steady capex-to-installed-capital rate signals cheap self-funding discipline, while low yield combined with heavy reinvestment signals a priced-for-growth cash sink.",
+      "expected_sign": "positive",
+      "reasoning": "Dividing the valuation yield by a three-year-smoothed reinvestment rate creates a genuine ratio interaction that cannot be replicated by either leg alone, since the same yield means very different things for an asset-light versus a capex-hungry firm. Smoothing the denominator avoids one-off capex spikes driving the scaling, and winsorization controls the small-denominator tail.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.2730739036494911,
+      "ls_alpha": -0.04590263308034714,
+      "ls_talpha": -2.619252256682995,
+      "ls_sharpe": -0.08521861130035177,
+      "coverage": 0.08856074282643527,
+      "error": null
+    },
+    {
+      "name": "Value conditioned on capex deceleration",
+      "expression": "MUL(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), SIGN(SUB(MA(RATIO(capx, at), 3), RATIO(capx, at))))",
+      "hypothesis": "Cheapness only pays when management is turning off the spending tap; the same value score should be a long signal for firms whose current investment rate has fallen below its own three-year norm and a short signal for cheap firms still accelerating capex (value traps burning capital).",
+      "expected_sign": "positive",
+      "reasoning": "The SIGN term flips the value exposure on investment-cycle state, so the payoff is explicitly conditional rather than additive, and it separates \"cheap and retrenching\" from \"cheap and still empire-building.\" This directly tests whether the value premium is contingent on investment discipline instead of merely correlated with it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.1945658039505158,
+      "ls_alpha": -0.012937144768586305,
+      "ls_talpha": -1.4729900835479808,
+      "ls_sharpe": -0.0785695295659298,
+      "coverage": 0.1318972893125215,
+      "error": null
+    },
+    {
+      "name": "Expensive empire builder short",
+      "expression": "NEG(MUL(RANK(RATIO(MUL(prcc_f, csho), ceq)), RANK(GROWTH(ppegt, 1))))",
+      "hypothesis": "The most reliably overpriced firms are those that are richly valued on market-to-book and are simultaneously expanding gross property, plant and equipment aggressively; multiplying the two ranks isolates this corner of the joint distribution where market optimism funds real overexpansion.",
+      "expected_sign": "positive",
+      "reasoning": "A multiplicative rank interaction is convex, so the score is extreme only when both expensive pricing and aggressive physical capacity growth are present, targeting the specific overvaluation-plus-overinvestment mechanism rather than either factor's average effect. The NEG wrapper makes high signal values correspond to cheap and/or restrained firms so the expected slope is positive.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.3503204948617262,
+      "ls_alpha": -0.021208887850797595,
+      "ls_talpha": -2.214792850530283,
+      "ls_sharpe": 0.15798316195766324,
+      "coverage": 0.11576125717851757,
+      "error": null
+    },
+    {
+      "name": "EV yield versus externally financed expansion",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(aqc, sstk), at)))",
+      "hypothesis": "Cheap on an enterprise-value basis while refusing to fund expansion with acquisitions or new equity identifies disciplined allocators; expensive firms that buy growth with acquisitions and issue stock to pay for it are the classic overvalued-equity empire builders.",
+      "expected_sign": "positive",
+      "reasoning": "Using EV/EBITDA rather than equity multiples makes the valuation leg leverage- and cash-neutral, which matches an investment leg defined by external financing (aqc plus sstk) rather than organic capex. The interaction is economically distinct from asset growth because it targets the market-timing channel where overpriced equity is the currency for expansion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.7625382003835557,
+      "ls_alpha": -0.012632432817047082,
+      "ls_talpha": -1.2785694405212513,
+      "ls_sharpe": 0.2719124988427068,
+      "coverage": 0.11775049177540206,
+      "error": null
+    },
+    {
+      "name": "Earnings yield at investment-rate trough",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(TS_RANK(RATIO(capx, at), 5)))",
+      "hypothesis": "A high earnings yield relative to industry peers, occurring when the firm's own investment rate sits at the bottom of its five-year history, marks harvest-phase discipline that the market extrapolates too pessimistically; low industry-relative earnings yield with capex at a five-year peak marks the top of an overpriced spending cycle.",
+      "expected_sign": "positive",
+      "reasoning": "TS_RANK measures investment discipline against the firm's own history rather than the cross-section, so it identifies genuine internal capital-cycle turning points and avoids penalizing structurally capital-intensive industries. Pairing it with an industry-demeaned earnings yield makes both legs relative measures, which should sharpen the cross-sectional slope and stabilize portfolio composition.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.8934171152059447,
+      "ls_alpha": 0.03096706101501317,
+      "ls_talpha": 2.9689107869332507,
+      "ls_sharpe": 0.45688697549990426,
+      "coverage": 0.12127268089616626,
+      "error": null
+    },
+    {
+      "name": "Conjunctive cheap and capex-trough",
+      "expression": "MIN(IND_RANK(RATIO(ib, MUL(prcc_f, csho))), IND_RANK(NEG(TS_RANK(RATIO(capx, at), 5))))",
+      "hypothesis": "The mispricing lives in the intersection, not the average: a firm earns the premium only if it is cheap on earnings yield AND its investment rate is near a five-year low, so the score should be the weaker of the two peer-relative ranks rather than their sum.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the gen-0 winner \u2014 conjunction (MIN of ranks) versus addition (SUMRANK) \u2014 while keeping the same two economic legs, so a stronger alpha would prove the effect is truly interactive rather than two additive premia. MIN over bounded industry ranks repairs the instability of the failed MUL and SIGN constructions, which blew up on fat-tailed z-scores and sign flips near zero.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.6739220585764607,
+      "ls_alpha": 0.018810854341551688,
+      "ls_talpha": 1.7505312231280028,
+      "ls_sharpe": 0.22345438195804418,
+      "coverage": 0.12137880573901688,
+      "error": null
+    },
+    {
+      "name": "Industry free cash flow yield",
+      "expression": "IND_ZSCORE(RATIO(SUB(oancf, capx), MUL(prcc_f, csho)))",
+      "hypothesis": "Price expectations and investment discipline can be fused inside a single quantity: cash generated after capital spending, per dollar of market value, is high exactly for cheap firms that are not plowing cash back into the asset base, and low for expensive firms whose capex consumes operating cash.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 ratio construction failed because it divided one fragile ratio by another (market-cap yield over capex-to-ppent), producing a 0.089-coverage, tail-driven portfolio; here the interaction is additive in the numerator and divided by a single robust denominator, which should preserve the economics with far more stable extreme deciles. Industry demeaning removes mechanical capital-intensity differences so the sort ranks discipline within peer groups.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.502700918502426,
+      "ls_alpha": 0.01665299869486396,
+      "ls_talpha": 1.1624016925328242,
+      "ls_sharpe": 0.29665473796470343,
+      "coverage": 0.09013430029213482,
+      "error": null
+    },
+    {
+      "name": "Cheap with dual capital restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(NEG(TS_RANK(RATIO(capx, at), 5)), NEG(GROWTH(ppegt, 1))))",
+      "hypothesis": "Discipline is credible when it shows up both cyclically (current investment rate at the low end of the firm's own history) and structurally (gross productive capacity not being expanded); pairing both with a peer-relative earnings yield should sharpen the cheap-disciplined long leg and the expensive-expander short leg.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the gen-0 winner by adding the one investment measure that already showed strong cross-sectional information (gross PPE growth, FMB 3.35) but whose multiplicative packaging destroyed its alpha. Nesting SUMRANK keeps every channel on a bounded rank scale, so the extra leg adds signal without reintroducing tail sensitivity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.9056754783594507,
+      "ls_alpha": 0.009859780981113713,
+      "ls_talpha": 0.9714016405601033,
+      "ls_sharpe": 0.3331554925605203,
+      "coverage": 0.11390595553838573,
+      "error": null
+    },
+    {
+      "name": "Cheap sales with headcount restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(sale, MUL(prcc_f, csho))), NEG(GROWTH(emp, 1)))",
+      "hypothesis": "Labor is the least reversible form of expansion, so a firm trading at a low price-to-sales while holding headcount flat is a disciplined operator whose margins the market underrates, whereas a richly priced firm hiring aggressively is capitalizing an expansion story into fixed cost.",
+      "expected_sign": "positive",
+      "reasoning": "All prior proposals measured investment as physical or financial capital; employment growth is an economically distinct discipline channel that is known to be slow-moving and hard for the market to extrapolate correctly. Pairing it with sales-to-price rather than earnings yield also avoids loading the valuation leg on the same accounting-profit axis that the hiring decision mechanically affects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.665815354473147,
+      "ls_alpha": -0.02421355310497269,
+      "ls_talpha": -1.9858864500452305,
+      "ls_sharpe": 0.1748392609346569,
+      "coverage": 0.12306823894464958,
+      "error": null
+    },
+    {
+      "name": "Cheap without inventory overbuild",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(GROWTH(invt, 1), GROWTH(sale, 1))))",
+      "hypothesis": "Inventory growing faster than sales is undisciplined working-capital investment on a demand forecast that has not materialized; cheap firms whose inventory grows no faster than revenue are disciplined, while expensive firms overbuilding stock are the overvalued growth story about to disappoint.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts the investment leg from long-lived capital to working capital and, crucially, benchmarks it against realized demand rather than against the asset base, so the discipline measure is a forecast-error proxy rather than a size-scaled rate. It tests whether the valuation interaction operates through short-cycle operating decisions, a mechanism no prior archive signal touched.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.682540430636587,
+      "ls_alpha": 0.02854448604882263,
+      "ls_talpha": 2.5652235713524987,
+      "ls_sharpe": 0.4262330504818458,
+      "coverage": 0.10324435562357451,
+      "error": null
+    },
+    {
+      "name": "EV cheap with sustained external-finance abstention",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), NEG(RATIO(TS_SUM(ADD(aqc, sstk), 3), at)))",
+      "hypothesis": "One quiet year of no acquisitions or share issuance is noise; three cumulative years of refusing to buy growth or sell stock, combined with a low enterprise-value multiple, identifies management that will not exploit or require market optimism, while persistent acquirer-issuers are systematically overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 external-finance signal had a solid FMB slope (2.76) and the best Sharpe among failures but a weak, imprecise alpha, consistent with a one-year aqc+sstk flow being lumpy and reshuffling the portfolio each month. Cumulating three years of external-finance intensity and industry-demeaning the EV yield should stabilize portfolio composition and convert that cross-sectional tilt into a reliable FF5 alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.375406977883352,
+      "ls_alpha": -0.01601321083861457,
+      "ls_talpha": -1.6169675804586996,
+      "ls_sharpe": 0.17808501231684312,
+      "coverage": 0.12229502892043846,
+      "error": null
+    },
+    {
+      "name": "Cheap with capacity not outrunning demand",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(GROWTH(ppent, 1), GROWTH(sale, 1))))",
+      "hypothesis": "Fixed capacity growing faster than revenue is capital committed to demand that has not appeared; cheap firms whose net plant grows no faster than sales are disciplined, while expensive firms building capacity ahead of demand are the overvalued growth story.",
+      "expected_sign": "positive",
+      "reasoning": "This transplants the mechanism that produced the strongest FMB slope in the archive (inventory growth net of sales growth) from working capital to long-lived capital, where the commitment is larger and less reversible. Because the investment leg is demand-differenced rather than a raw growth rate, it should stay orthogonal to CMA and avoid the alpha absorption that killed the ppegt-growth and emp-growth legs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.651318730102818,
+      "ls_alpha": 0.01047757117874604,
+      "ls_talpha": 1.0870242037400293,
+      "ls_sharpe": 0.2046204376378215,
+      "coverage": 0.1268345100447654,
+      "error": null
+    },
+    {
+      "name": "Cheap with self-funded capital budget",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(capx, ebitda), at))))",
+      "hypothesis": "Discipline is best measured against internal cash generation: a firm whose capital budget sits well below its operating cash earnings can fund itself and is not hostage to market sentiment, while a firm spending far beyond EBITDA is an expansion story whose continuation depends on a high valuation being sustained.",
+      "expected_sign": "positive",
+      "reasoning": "This benchmarks investment against the firm's own cash-generating capacity rather than against its asset base, which is a different economic constraint (financing dependence) than the timing concept captured by the capex percentile. Industry z-scoring both legs keeps capital-intensive sectors from dominating the sort, and the differenced numerator is not a growth rate, so it should not be spanned by CMA.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.410295789413884,
+      "ls_alpha": 0.018928138596044204,
+      "ls_talpha": 1.8391675488444654,
+      "ls_sharpe": 0.335126440548366,
+      "coverage": 0.1321188255668728,
+      "error": null
+    },
+    {
+      "name": "Payout yield with capex restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(dvc, MUL(prcc_f, csho))), NEG(TS_RANK(RATIO(capx, at), 5)))",
+      "hypothesis": "Cash actually returned to shareholders is the cleanest revealed preference for discipline; a high dividend yield combined with an investment rate near its own five-year low identifies management that has chosen harvesting over empire building, and the market underprices this deliberate shrinkage.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal used an accounting-profit or sales multiple for the valuation leg; payout yield is a distinct valuation channel that is less mechanically related to accruals and less collinear with HML. Pairing it with the proven own-history capex percentile isolates the valuation-leg design choice while holding the winning investment leg fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.0943332450295027,
+      "ls_alpha": -0.008793114529967862,
+      "ls_talpha": -0.8516317317191734,
+      "ls_sharpe": 0.04333551152847713,
+      "coverage": 0.12097968965525781,
+      "error": null
+    },
+    {
+      "name": "Value gated on disciplined investment state",
+      "expression": "MUL(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), INDICATOR(NEG(TS_RANK(RATIO(capx, at), 5)), -0.5))",
+      "hypothesis": "The value premium is not uniform across investment states: it should be earned only among firms whose current investment rate sits in the lower half of their own five-year range, so gating the valuation score on that state and neutralizing everyone else should produce a cleaner long-short spread than adding the two signals.",
+      "expected_sign": "positive",
+      "reasoning": "MIN-conjunction underperformed additive aggregation, but that test blended two ranks symmetrically rather than truly conditioning one theme on the other; this gate keeps full valuation dispersion inside the disciplined subsample and assigns zero elsewhere, so the extremes are cheap-disciplined versus expensive-disciplined. If the alpha survives, the interaction is genuinely conditional; if it collapses, the archive's additive structure is the right functional form and we can stop testing conditioning.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.9167880606727663,
+      "ls_alpha": 0.01709727009091665,
+      "ls_talpha": 1.1595109726352795,
+      "ls_sharpe": -0.02933136165790754,
+      "coverage": 0.12127268089616626,
+      "error": null
+    },
+    {
+      "name": "Cheap with capex below own norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "What matters is the magnitude, not merely the ordinal position, of the deviation of current capital spending from the firm's own long-run norm: a cheap firm spending materially below its five-year average rate on installed gross capacity is retrenching in a way the market extrapolates too pessimistically.",
+      "expected_sign": "positive",
+      "reasoning": "The winning investment leg used TS_RANK, which discards how far spending has fallen; a cardinal deviation from a five-year moving average should carry more information for firms making large capital-cycle turns while remaining self-benchmarked and thus orthogonal to CMA. Scaling capex by gross rather than net plant avoids the depreciation-driven denominator drift that makes capx/ppent unstable for old asset bases.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.7108685813428774,
+      "ls_alpha": 0.0460099474109069,
+      "ls_talpha": 4.085232450362515,
+      "ls_sharpe": 0.5276649982772491,
+      "coverage": 0.12493726406956424,
+      "error": null
+    },
+    {
+      "name": "Cheap with dual benchmark-relative discipline",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(NEG(TS_RANK(RATIO(capx, at), 5)), NEG(SUB(GROWTH(invt, 1), GROWTH(sale, 1)))))",
+      "hypothesis": "The two discipline channels that have worked are economically distinct \u2014 capital-cycle timing versus working-capital forecasting error \u2014 so a firm that is cheap and restrained on both should be the most underappreciated disciplined allocator, and an expensive firm failing both the most overvalued.",
+      "expected_sign": "positive",
+      "reasoning": "A prior three-leg composite diluted the alpha, but its added leg was raw gross-PPE growth, precisely the factor-spanned type of measure that failed elsewhere; here both discipline legs are benchmark-relative and each independently produced a positive, significant alpha. This directly tests whether the two channels carry independent information or are substitutes, which determines whether later generations should consolidate into one leg or stack them.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.1946814640671155,
+      "ls_alpha": 0.023406408364865752,
+      "ls_talpha": 1.9574789565811819,
+      "ls_sharpe": 0.3268547274042593,
+      "coverage": 0.09716805057176371,
+      "error": null
+    },
+    {
+      "name": "Cheap with standardized capex surprise",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(RATIO(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), VOL(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "A given percentage-point departure from the firm's normal spending rate is far more informative for a firm with a historically steady capital budget than for one whose capex is naturally lumpy, so the discipline signal should be the deviation expressed in units of the firm's own spending volatility.",
+      "expected_sign": "positive",
+      "reasoning": "The leading archive signal uses an unnormalized deviation, which mechanically loads on high-variance capital programs where large swings are uninformative noise; standardizing converts it into a genuine surprise measure. If this raises both the FMB slope and the alpha, the mechanism is expectation error about investment plans rather than the raw level of retrenchment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.953616944039433,
+      "ls_alpha": 0.042124075629445715,
+      "ls_talpha": 4.125181052621785,
+      "ls_sharpe": 0.5501843603011148,
+      "coverage": 0.11392654076555996,
+      "error": null
+    },
+    {
+      "name": "Cheap with firm-specific capex retrenchment",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(IND_ZSCORE(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)))))",
+      "hypothesis": "Capital cycles are largely industry-wide, so cutting spending when all peers are cutting reflects the cycle, not managerial discipline; only the peer-demeaned component of a firm's departure from its own norm identifies deliberate allocation choices that the market misreads.",
+      "expected_sign": "positive",
+      "reasoning": "This double-demeaning \u2014 first against the firm's own history, then against contemporaneous industry peers \u2014 separates idiosyncratic discipline from common capital-cycle timing while holding the winning valuation leg fixed. It is the single most informative design test available: if peer-demeaning helps, the effect is managerial; if it hurts, the leading signal is partly a capital-cycle timing bet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.7252368939253495,
+      "ls_alpha": 0.04263875680875514,
+      "ls_talpha": 3.759701829939939,
+      "ls_sharpe": 0.49670951936548347,
+      "coverage": 0.12491466675251583,
+      "error": null
+    },
+    {
+      "name": "Cheap with total investment below norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(ADD(capx, aqc), ppegt), MA(RATIO(ADD(capx, aqc), ppegt), 5))))",
+      "hypothesis": "Discipline requires abstaining from both organic and inorganic expansion; a firm that cuts capex while buying companies is not disciplined, so the deviation should be computed on total capital deployed, capex plus acquisitions, relative to installed capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Acquisition flows alone produced positive FMB slopes but no alpha in earlier tests, plausibly because raw aqc is lumpy and unbenchmarked; embedding it inside the same own-norm deviation that works for capex tests whether inorganic spending carries discipline information once it is properly benchmarked. This distinguishes \"capital deployment discipline\" from the narrower \"physical capex timing\" story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.798907656583551,
+      "ls_alpha": 0.03591055847849774,
+      "ls_talpha": 3.01678096312561,
+      "ls_sharpe": 0.514761929728143,
+      "coverage": 0.11222482865248999,
+      "error": null
+    },
+    {
+      "name": "Capacity cheapness with spending restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Buying installed productive capacity cheaply is a distinct form of value from buying earnings cheaply, and it interacts most sharply with restraint: paying little per dollar of existing plant while management adds no new plant is the purest disciplined-allocator profile, whereas paying a premium over installed capacity while expanding it is the empire-building story.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals used a profit-based valuation leg, leaving the replacement-cost channel untested; because capacity-to-price is a q-type measure rather than an accrual-based multiple, it should be less collinear with HML and could deliver alpha the FF5 cannot span. Pairing it with the proven capex-deviation leg cleanly isolates the valuation-leg change.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.332434764763328,
+      "ls_alpha": 0.04012791362220999,
+      "ls_talpha": 3.4980327522275236,
+      "ls_sharpe": 0.36685026517851166,
+      "coverage": 0.12493633541269923,
+      "error": null
+    },
+    {
+      "name": "Cheap with stable capital budget",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(VOL(RATIO(capx, ppegt), 5)))",
+      "hypothesis": "Discipline is a second-moment property as much as a level: erratic, stop-start capital spending reveals weak planning and opportunistic chasing of demand, so cheap firms with smooth capital budgets should outperform expensive firms whose spending lurches.",
+      "expected_sign": "positive",
+      "reasoning": "Every discipline measure tested so far has been a level, deviation, or growth rate; spending instability is a genuinely different economic concept that cannot be replicated by CMA or by any first-moment investment leg. It also provides the diagnostic complement to Signal 1: if instability is priced on its own, then normalizing the surprise by volatility may be mixing two separate effects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.2765062615235667,
+      "ls_alpha": -0.013837515877003385,
+      "ls_talpha": -1.1589941693732384,
+      "ls_sharpe": 0.053950427581668216,
+      "coverage": 0.11517228235791344,
+      "error": null
+    },
+    {
+      "name": "Cheap with sustained spending restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), TS_SUM(INDICATOR(SUB(MA(RATIO(capx, ppegt), 5), RATIO(capx, ppegt)), 0), 3))",
+      "hypothesis": "One year of below-norm spending can be a deferral, but three consecutive years of spending below the firm's own long-run rate is a committed strategy of harvesting; counting the years of restraint should identify credible discipline that the market only slowly recognizes.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates persistence from magnitude within the exact mechanism that currently works best, telling us whether the leading signal profits from the size of a single retrenchment or from a durable regime of restraint. The count is bounded and slow-moving, which should also stabilize portfolio composition and turnover relative to the raw deviation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.9732072343411793,
+      "ls_alpha": 0.030025164752629323,
+      "ls_talpha": 3.224173191486522,
+      "ls_sharpe": 0.4381769516710329,
+      "coverage": 0.12591978303273743,
+      "error": null
+    },
+    {
+      "name": "Cheap with capex above strictly past norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "The benchmark for normal capital spending should be built only from prior years; including the current year in the moving average pulls the norm toward the observation being judged and understates genuine departures from established policy.",
+      "expected_sign": "positive",
+      "reasoning": "This is a pure measurement repair of the current leader, isolating the single design choice of benchmark contamination while leaving the economics identical. If the surprise interpretation is correct, a lagged four-year norm should produce a larger, cleaner deviation and strengthen both the FMB slope and the FF5 alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.392429078776848,
+      "ls_alpha": 0.048622251854747965,
+      "ls_talpha": 4.341499678167557,
+      "ls_sharpe": 0.5215141451770607,
+      "coverage": 0.11415468080206236,
+      "error": null
+    },
+    {
+      "name": "Cheap versus overspenders only",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(MUL(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), INDICATOR(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 0))))",
+      "hypothesis": "The economic story is asymmetric: overvaluation of empire builders should be stronger and slower to correct than underappreciation of quiet retrenchers, so the discipline leg should only penalize spending above the firm's own norm and treat all below-norm spending as equally disciplined.",
+      "expected_sign": "positive",
+      "reasoning": "Half the current signal's dispersion comes from ranking degrees of underspending, which may be economically meaningless (a firm cutting 5% below norm is not twice as disciplined as one cutting 2.5%) and could be diluting the sort. Truncating at zero tests directly whether the alpha lives on the overinvestment short side, which would tell later generations where to concentrate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.889839199789312,
+      "ls_alpha": 0.03751680699705532,
+      "ls_talpha": 3.29373273313508,
+      "ls_sharpe": 0.49124830791111773,
+      "coverage": 0.12493726406956424,
+      "error": null
+    },
+    {
+      "name": "Smoothed earnings yield with capex surprise",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(MA(ib, 3), MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Single-year earnings yield misclassifies cyclically depressed or temporarily inflated firms as cheap or expensive; a three-year average of income per dollar of market value measures durable price expectations, which is the right counterpart to a multi-year investment norm.",
+      "expected_sign": "positive",
+      "reasoning": "Every gain so far came from refining the investment leg while the valuation leg stayed a noisy one-year ratio, so the symmetric fix is to give both legs the same multi-year horizon. Smoothing should reduce the number of transient value traps entering the long leg and lower portfolio turnover without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 6.1527493108469535,
+      "ls_alpha": 0.043133713754325176,
+      "ls_talpha": 3.907701545003009,
+      "ls_sharpe": 0.48314411480571856,
+      "coverage": 0.12493850227871758,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with capex restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Earnings-based cheapness and replacement-cost cheapness are distinct price-expectation errors \u2014 one about profit persistence, one about asset value \u2014 and a firm cheap on both while spending below its own norm is the strongest disciplined-allocator candidate.",
+      "expected_sign": "positive",
+      "reasoning": "Both valuation legs independently generated roughly 4% alpha when paired with the same capex deviation, and unlike the two discipline legs (which diluted each other) they measure different objects, so their combination has a real chance of adding rather than substituting. This also keeps the valuation and investment halves equally weighted, so any improvement is attributable to the richer cheapness measure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 6.850132175144145,
+      "ls_alpha": 0.044711014760138584,
+      "ls_talpha": 4.516286580616161,
+      "ls_sharpe": 0.5450203497103864,
+      "coverage": 0.1249350972035459,
+      "error": null
+    },
+    {
+      "name": "Cheap with inventory intensity at own norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(invt, sale), MA(RATIO(invt, sale), 5))))",
+      "hypothesis": "Working-capital investment should be judged the same way as fixed investment: inventory held per dollar of sales rising above the firm's own established norm signals stock building on optimistic demand expectations, while a cheap firm operating at or below its normal inventory intensity is running a disciplined operation.",
+      "expected_sign": "positive",
+      "reasoning": "The genuine discovery in this archive is the own-norm deviation form, and the strongest earlier working-capital signal used a cruder growth-difference version of the same idea (alpha 2.9%); recasting it as an intensity deviation should sharpen it. It also tests whether the functional form is a general property of investment discipline rather than specific to physical capex.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.065936811126558,
+      "ls_alpha": 0.027934049624106887,
+      "ls_talpha": 2.7019929664583517,
+      "ls_sharpe": 0.38694071035025646,
+      "coverage": 0.13645400218089906,
+      "error": null
+    },
+    {
+      "name": "Cheap without intangible asset buildup",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(intan, at), MA(RATIO(intan, at), 5))))",
+      "hypothesis": "Intangible assets on the balance sheet grow mainly through acquisitions and capitalized purchases, so an intangible share rising above the firm's own norm marks a firm buying growth and often overpaying, whereas cheap firms with stable intangible intensity are expanding, if at all, organically and within their means.",
+      "expected_sign": "positive",
+      "reasoning": "Raw acquisition flows failed twice (no alpha), but when acquisitions were folded into a capex own-norm deviation the signal worked (alpha 3.6%), suggesting the inorganic channel needs stock-based, self-benchmarked measurement rather than lumpy flow measurement. This is the cleanest untested version of that idea and is economically distinct from physical capacity spending.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.080316878921662,
+      "ls_alpha": 0.010280551234495103,
+      "ls_talpha": 1.0620721459311653,
+      "ls_sharpe": 0.20388720962934706,
+      "coverage": 0.1280644644704138,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with past-norm capex surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "Firms cheap on both earnings and installed capacity that are simultaneously spending below the capital-spending policy established in prior years are the most underappreciated disciplined allocators, and combining the two independently verified improvements should dominate either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The dual-cheapness valuation leg and the strictly-past capex norm each raised alpha and t-statistics relative to the same baseline, and they operate on opposite sides of the interaction, so their gains should be close to additive rather than redundant. This is the natural consolidation candidate and establishes the benchmark that later generations must beat.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.288667021684434,
+      "ls_alpha": 0.045392999987560044,
+      "ls_talpha": 4.39708960062385,
+      "ls_sharpe": 0.5077094350926714,
+      "coverage": 0.11415313304062069,
+      "error": null
+    },
+    {
+      "name": "Cyclically adjusted dual cheapness with past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(MA(ib, 3), MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "Both halves of the interaction should be measured over comparable multi-year horizons: durable earning power per dollar of price, capacity per dollar of price, and spending relative to established policy together describe a firm whose long-run cash generation is cheap and whose capital budget is restrained.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year average income raised the cross-sectional slope to the archive maximum when paired with the simple deviation, so stacking it onto the dual-cheapness and past-norm improvements tests whether all three refinements are jointly additive. If the alpha does not improve over Signal 1, the smoothing gain was a cross-sectional-slope effect that does not survive portfolio formation, which is itself a useful verdict.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.153910798656759,
+      "ls_alpha": 0.04157245678742952,
+      "ls_talpha": 4.074591836131998,
+      "ls_sharpe": 0.43249104262847726,
+      "coverage": 0.11415437124977403,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with standardized past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(RATIO(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4)), VOL(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Expressing the departure from prior capital policy in units of the firm's own spending volatility converts it into a true surprise, so that a modest cut by a steady spender counts as much as a large cut by a lumpy one; scaled this way it should pair best with a broad cheapness measure.",
+      "expected_sign": "positive",
+      "reasoning": "Volatility standardization delivered the highest Sharpe ratio in the archive (0.55) and the strongest alpha t-statistic among single-cheapness variants, while spending instability on its own carried no alpha, confirming that VOL belongs in the denominator as a scaling device rather than as a signal. Combining it with the past-only norm and dual cheapness tests whether the risk-adjusted efficiency gain survives consolidation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.87640354331932,
+      "ls_alpha": 0.0353519168568741,
+      "ls_talpha": 3.5568160150936636,
+      "ls_sharpe": 0.4632503546512794,
+      "coverage": 0.11387871493701231,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with demand-scaled capex norm",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, sale), MA(RATIO(capx, sale), 5))))",
+      "hypothesis": "Discipline is ultimately about spending relative to the business the firm actually has, so capital expenditure per dollar of revenue, judged against its own five-year norm, may capture overinvestment better than spending per dollar of installed capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal scaled capex by gross plant, which conflates asset age and depreciation policy across firms, whereas revenue scaling anchors the capital budget to realized demand \u2014 the quantity managers are supposedly responding to. This isolates the denominator choice while holding the valuation composite and the deviation form fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 7.012251588794168,
+      "ls_alpha": 0.036192300306129,
+      "ls_talpha": 3.7654404466922955,
+      "ls_sharpe": 0.4340658324909045,
+      "coverage": 0.12978861912438802,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with abnormal capacity growth",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(GROWTH(ppegt, 1), MA(GROWTH(ppegt, 1), 5))))",
+      "hypothesis": "Gross capacity growth is economically the right measure of empire building, but it only identifies mispricing once it is judged against the firm's own habitual expansion rate; a firm growing capacity faster than it usually does is making a new bet, whereas a chronically fast grower is already priced as such.",
+      "expected_sign": "positive",
+      "reasoning": "Raw gross-PPE growth produced solid cross-sectional slopes but zero or negative FF5 alpha in two separate tests, exactly the pattern expected when a leg is spanned by CMA; demeaning it against the firm's own five-year growth history removes the level component the factor captures and keeps only the abnormal expansion. This is a direct repair of the archive's most persistent failure mode and tells us whether own-norm demeaning is the general fix.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.320669216827008,
+      "ls_alpha": 0.02408671619846697,
+      "ls_talpha": 2.448261959833707,
+      "ls_sharpe": 0.3533801705822924,
+      "coverage": 0.11658621402692858,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with persistent capex deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "A single year's departure from normal spending can be a timing artifact of project lumpiness, while a deviation sustained over two consecutive years reveals a changed capital-allocation stance that the market prices only gradually.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded persistence count worked (alpha 3.0%, t 3.22) but discarded magnitude, whereas averaging the signed deviation over two years keeps magnitude while requiring durability, and should materially reduce month-to-month portfolio churn. If it matches or beats Signal 1 with a higher Sharpe, the final signal should favor the smoothed form for implementability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.086865291117627,
+      "ls_alpha": 0.046426942197977175,
+      "ls_talpha": 4.82341557828546,
+      "ls_sharpe": 0.5437001572725397,
+      "coverage": 0.12554161332048897,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness persistent past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4)), 2)))",
+      "hypothesis": "The strongest disciplined-allocator profile combines cheapness on both earnings and installed capacity with a spending stance that has been below the firm's previously established capital policy for two consecutive years, so an uncontaminated benchmark and a durable deviation should reinforce each other.",
+      "expected_sign": "positive",
+      "reasoning": "The strictly-past four-year norm produced the largest single-cheapness alpha (4.9%) and two-year smoothing produced the most reliable alpha t-statistic (4.82); both act on the deviation and neither has been tested with the other. If the two gains are additive this becomes the archive leader on both magnitude and reliability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.460008707978481,
+      "ls_alpha": 0.04299186279140565,
+      "ls_talpha": 4.277879561320906,
+      "ls_sharpe": 0.4571179793674388,
+      "coverage": 0.1146472816768984,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness three-year stance deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 3)))",
+      "hypothesis": "If mispricing arises from slow market recognition of a changed capital-allocation regime, then averaging the deviation over three years should capture the regime even better than two, up to the point where staleness dominates and the signal decays.",
+      "expected_sign": "positive",
+      "reasoning": "Two-year smoothing improved reliability over the unsmoothed deviation, and this locates the optimum of the persistence horizon rather than assuming it; a decline at three years would show the effect is a medium-horizon expectation error, while a further improvement would push the final signal toward very low turnover. Either outcome directly informs which construction to submit in the final generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.967266308436395,
+      "ls_alpha": 0.0410871350215703,
+      "ls_talpha": 4.142164503034777,
+      "ls_sharpe": 0.4660091774857917,
+      "coverage": 0.12584585162787357,
+      "error": null
+    },
+    {
+      "name": "Triple cheapness persistent capex restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(sale, MUL(prcc_f, csho))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Price expectations are best measured against several fundamental anchors at once \u2014 profit, installed capacity, and revenue scale \u2014 because each is contaminated by different accounting noise, and a firm cheap on all three while restraining spending is the clearest disciplined-allocator case.",
+      "expected_sign": "positive",
+      "reasoning": "Broadening cheapness from one to two channels was the single largest improvement in the archive (t 4.52 from 4.09), so the marginal value of a third, revenue-based anchor is the natural next test while the discipline leg is held at its best-performing smoothed form. The nesting keeps the valuation composite and the discipline leg equally weighted so the comparison is clean.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.921388858680067,
+      "ls_alpha": 0.03491559189742869,
+      "ls_talpha": 3.221331185332772,
+      "ls_sharpe": 0.48799580011395566,
+      "coverage": 0.12553279108027146,
+      "error": null
+    },
+    {
+      "name": "Cheap with capex near maintenance need",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(RATIO(SUB(capx, DELTA(SUB(ppegt, ppent), 1)), ppegt)))",
+      "hypothesis": "Only capital spending in excess of what is needed to replace worn-out capacity represents a discretionary growth bet; measuring capex net of the year's accumulated-depreciation increase separates genuine expansion from unavoidable maintenance, and cheap firms spending near maintenance level are the disciplined allocators.",
+      "expected_sign": "positive",
+      "reasoning": "All discipline measures so far benchmark spending against the firm's own past behavior, which cannot distinguish a firm that habitually overspends from one that simply owns short-lived assets; the gross-minus-net PPE change gives a direct, contemporaneous estimate of required replacement investment. This is an absolute economic benchmark rather than a statistical one, so it could add information orthogonal to the own-norm deviation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.358840012284673,
+      "ls_alpha": -0.0018243703958602878,
+      "ls_talpha": -0.18152077299552113,
+      "ls_sharpe": 0.23213582989879405,
+      "coverage": 0.11446118915956141,
+      "error": null
+    },
+    {
+      "name": "Gross capacity cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppegt, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Cheapness relative to physical capacity should be measured on a gross rather than net basis, because gross plant approximates the replacement cost of the productive base while net plant reflects accumulated depreciation choices that vary with asset age and accounting policy.",
+      "expected_sign": "positive",
+      "reasoning": "The capacity-to-price leg was the key valuation innovation, but its net-PPE construction mechanically favors firms with old, heavily depreciated assets, which may be a value trap rather than a cheapness signal. Swapping to gross plant isolates that one measurement choice while keeping the best discipline leg fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.882094763571078,
+      "ls_alpha": 0.035911977381965804,
+      "ls_talpha": 3.5688197876792973,
+      "ls_sharpe": 0.47874106893847584,
+      "coverage": 0.1253931314061846,
+      "error": null
+    },
+    {
+      "name": "Cheap with total real investment restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(ADD(capx, DELTA(invt, 1)), ppegt), MA(RATIO(ADD(capx, DELTA(invt, 1)), ppegt), 5)), 2)))",
+      "hypothesis": "Real investment is fixed capital plus the change in inventory, and a disciplined firm restrains both; embedding inventory investment inside a single own-norm deviation should capture total resource commitment better than either channel alone.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory discipline independently produced positive alpha (2.7\u20132.9%) but stacking it as a separate rank leg diluted the composite, implying the problem was aggregation, not economics. Summing the two flows before benchmarking them against the firm's own norm keeps a single, well-scaled discipline measure and tests whether working-capital commitment adds information to physical capex.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.848956750601922,
+      "ls_alpha": 0.04047328031204791,
+      "ls_talpha": 3.7990679007285615,
+      "ls_sharpe": 0.4790921576177537,
+      "coverage": 0.1138142764689907,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness blended horizon deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), SUMRANK(NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2))))",
+      "hypothesis": "The current-year deviation carries fresh information about a newly changed capital stance while the two-year average certifies durability; averaging their ranks should retain the responsiveness of the former and the reliability of the latter.",
+      "expected_sign": "positive",
+      "reasoning": "The unsmoothed deviation gave the highest FMB slope (6.85) and the smoothed one the highest alpha t-statistic (4.82), a pattern consistent with the two measuring the same regime at different signal-to-noise trade-offs. Blending them inside the discipline half keeps the valuation-discipline weighting at one half each, so any gain is attributable purely to horizon diversification.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.562330271230287,
+      "ls_alpha": 0.04037702624728276,
+      "ls_talpha": 3.9913923244483405,
+      "ls_sharpe": 0.4813808505579029,
+      "coverage": 0.1249350972035459,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness proportional capex deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "Discipline should be judged in proportional terms: a firm cutting its spending rate by a third is making the same allocation decision whether its normal rate is 6% or 20% of gross plant, but an absolute deviation mechanically assigns larger scores to capital-intensive firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every version of the winning leg used an absolute difference, so the cross-section of the discipline score is partly a cross-section of capital intensity, which is exactly the dimension FF5's investment factor already prices. A log ratio of current rate to own norm removes that scale dependence while preserving the own-benchmark economics, and should sharpen the peer comparison inside the sort.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.9749002397380035,
+      "ls_alpha": 0.040599786458123344,
+      "ls_talpha": 4.286290026099891,
+      "ls_sharpe": 0.5638580922133077,
+      "coverage": 0.12486895619793846,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with peer-purged persistent deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(IND_ZSCORE(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2))))",
+      "hypothesis": "Sustained retrenchment is only evidence of managerial discipline if peers are not retrenching simultaneously; demeaning the two-year deviation within industry isolates the firm-specific allocation choice from the common capital cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Industry demeaning of the unsmoothed deviation held its own (alpha 4.3%), but it has never been combined with the persistence smoothing that produced the archive's most reliable alpha, and the two corrections address orthogonal contaminations \u2014 cross-sectional cycle versus single-year lumpiness. If both are needed, this becomes the cleanest statement of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.450003706067614,
+      "ls_alpha": 0.034229385138164384,
+      "ls_talpha": 3.385419833654034,
+      "ls_sharpe": 0.4039349327258009,
+      "coverage": 0.1255202542125939,
+      "error": null
+    },
+    {
+      "name": "Book and earnings cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "If the second cheapness channel helps because it anchors price to a balance-sheet stock rather than to a flow, then book equity per dollar of price should work at least as well as physical capacity per dollar of price, since it covers asset-light firms too.",
+      "expected_sign": "positive",
+      "reasoning": "This is the decisive diagnostic on why dual cheapness improved the signal: capacity-to-price is both a stock anchor and a physical-asset anchor, and only substituting book equity separates the two explanations. A weaker result would confirm the physical-capacity interpretation and justify keeping ppent in the final signal despite its narrower economic reach; a stronger one would raise coverage and generality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.293057954144183,
+      "ls_alpha": 0.026363552663553405,
+      "ls_talpha": 2.8399169541101985,
+      "ls_sharpe": 0.3171699688250405,
+      "coverage": 0.1245673490850047,
+      "error": null
+    },
+    {
+      "name": "Cash-adjusted cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Firms that stop investing accumulate cash, which inflates market capitalization without adding operating earnings and therefore makes disciplined allocators look artificially expensive; netting cash out of the price denominator removes this mechanical bias precisely where the interaction is supposed to bite.",
+      "expected_sign": "positive",
+      "reasoning": "This is an economically motivated correction to a specific interaction-induced measurement error rather than a generic multiple swap, and it should matter most in the long leg where cash-rich retrenchers concentrate. It also revisits the enterprise-value idea that failed in early generations, but now attached to the discipline leg that actually works.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.805584521206227,
+      "ls_alpha": 0.053357581229160005,
+      "ls_talpha": 3.7032451436400415,
+      "ls_sharpe": 0.5212248207889112,
+      "coverage": 0.12552861212437894,
+      "error": null
+    },
+    {
+      "name": "Operating cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Capital-allocation discipline is a whole-firm decision funded by debt as well as equity, so cheapness should be measured on enterprise value; a levered firm with a high EBITDA yield that is also spending below its own norm is deleveraging rather than empire building.",
+      "expected_sign": "positive",
+      "reasoning": "The EBITDA-to-enterprise-value leg produced respectable cross-sectional slopes in generations 0 and 1 but was always paired with a raw external-finance or acquisition leg that carried no alpha, so its portfolio value has never been fairly assessed. Pairing it with the proven persistent-deviation leg tests whether leverage-aware cheapness adds to, or merely duplicates, equity-based earnings yield.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.465465125346702,
+      "ls_alpha": 0.051872053790230827,
+      "ls_talpha": 3.795052723090609,
+      "ls_sharpe": 0.5428460292070416,
+      "coverage": 0.12431093660616777,
+      "error": null
+    },
+    {
+      "name": "Whole firm cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "If cheapness is to be measured on a whole-firm basis, then both anchors should be scaled consistently by enterprise value: paying little per dollar of operating cash flow and per dollar of installed plant, on a debt-and-cash-inclusive basis, while spending below the firm's own norm.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value cash-flow yield raised alpha to 5.2% while the capacity leg was still scaled by equity value, creating an internal inconsistency in which leverage enters one leg but not the other. Making both legs enterprise-scaled tests whether the gain came from leverage-aware valuation as a concept or only from the EBITDA channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.344909004447798,
+      "ls_alpha": 0.0402622922841748,
+      "ls_talpha": 3.261566596313454,
+      "ls_sharpe": 0.4653662358196845,
+      "coverage": 0.12431243277556138,
+      "error": null
+    },
+    {
+      "name": "Cash-adjusted cheapness proportional restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "The two independent gains of the last round should compose: netting the cash pile out of price corrects the mechanical cheapness penalty that disciplined non-investors suffer, while a proportional deviation measures restraint scale-free, so together they should deliver high alpha with high efficiency.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-netting produced the archive's largest alpha (5.3%) and the log deviation its best Sharpe (0.564), and they act on opposite halves of the composite, so the combination is the most likely to be simultaneously large and reliable. If the alpha t-statistic recovers toward the baseline's 4.8 while alpha stays above 5%, this becomes the final candidate.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.6778471097199885,
+      "ls_alpha": 0.03429640198608909,
+      "ls_talpha": 2.6811541269787167,
+      "ls_sharpe": 0.45082020585912824,
+      "coverage": 0.12485595500182842,
+      "error": null
+    },
+    {
+      "name": "Operating cheapness proportional restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "Enterprise-value cheapness identifies firms whose whole capital structure is priced pessimistically, and pairing it with a scale-free measure of spending restraint should retain its higher alpha while removing the capital-intensity bias that inflates the absolute deviation for heavy-asset firms.",
+      "expected_sign": "positive",
+      "reasoning": "This is the complementary composition to Signal 2, isolating whether the extra alpha is better sourced from leverage-aware pricing or from cash-netted equity pricing when the discipline leg is held at its most efficient form. Running both lets the final generation choose the valuation channel on evidence rather than assumption.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.312043332676637,
+      "ls_alpha": 0.030346395712587397,
+      "ls_talpha": 2.6980228653346683,
+      "ls_sharpe": 0.4322708677972604,
+      "coverage": 0.12369477277623828,
+      "error": null
+    },
+    {
+      "name": "Cash and leverage aware dual cheapness",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Both alpha-improving valuation channels correct the same underlying distortion \u2014 that disciplined allocators accumulate cash and repay debt, which makes conventional equity multiples understate their cheapness \u2014 so combining them should give the strongest possible cheapness leg for this specific interaction.",
+      "expected_sign": "positive",
+      "reasoning": "The two gen-7 leaders differ in whether debt is added and in whether the numerator is net income or EBITDA, so their combination diversifies accounting noise while reinforcing the shared balance-sheet correction. The risk is redundancy, and a flat result would tell us the two were measuring one effect, which is itself decisive for the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.8132033414361945,
+      "ls_alpha": 0.04529871560314015,
+      "ls_talpha": 3.6784694524203525,
+      "ls_sharpe": 0.5366895014956943,
+      "coverage": 0.12434323322825065,
+      "error": null
+    },
+    {
+      "name": "Floored enterprise cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, MAX(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), MUL(prcc_f, csho)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Enterprise-value yields become unstable for net-cash firms whose enterprise value collapses toward zero, manufacturing extreme cheapness scores that are accounting artifacts rather than pessimistic pricing; flooring the denominator at equity market value removes those artifacts while preserving the debt-inclusive economics for levered firms.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value variant gained a full point of alpha but lost a full point of t-statistic relative to the baseline, exactly the pattern expected when a handful of small-denominator observations dominate an extreme decile. This repair keeps the economic content and tests whether the reliability loss was purely a measurement pathology, which matters because reliability, not raw magnitude, is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.563393886170735,
+      "ls_alpha": 0.03765274516388016,
+      "ls_talpha": 3.4097782875792553,
+      "ls_sharpe": 0.42221869682608854,
+      "coverage": 0.12431093660616777,
+      "error": null
+    },
+    {
+      "name": "Cheap with reinvestment rate below norm",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ebitda), MA(RATIO(capx, ebitda), 5)), 2)))",
+      "hypothesis": "The economically meaningful discipline decision is what fraction of operating cash flow management chooses to plow back; a firm reinvesting a smaller share of its EBITDA than it habitually does is deliberately shifting from expansion to harvesting, regardless of how large its asset base is.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong discipline leg so far normalizes spending by the installed asset base, which measures intensity but not choice, whereas the reinvestment rate out of cash flow is the allocation decision itself; an early unbenchmarked version of this idea produced positive but weak alpha (1.9%), suggesting the own-norm and smoothing treatment is what it lacked. This is the last substantively different discipline object available and could add an independent channel for the final generation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.304746507690515,
+      "ls_alpha": 0.022795411112056775,
+      "ls_talpha": 2.1996515189020323,
+      "ls_sharpe": 0.3134989832676514,
+      "coverage": 0.132104225017273,
+      "error": null
+    },
+    {
+      "name": "Triple anchor cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Enterprise-value cheapness adds real information about mispriced disciplined allocators but is too volatile to carry a full half of the valuation weight; entering it as a minority anchor alongside earnings yield and capacity-to-price should capture its alpha contribution without importing its leverage-driven instability.",
+      "expected_sign": "positive",
+      "reasoning": "Substituting the enterprise-value yield for the earnings yield raised alpha from 4.6% to 5.2% but cut the alpha t-statistic from 4.82 to 3.80, the classic signature of a leg that adds return and noise in similar proportion. Down-weighting it via nesting is the natural way to keep the magnitude gain while preserving the reliability of the proven core.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.113621437561967,
+      "ls_alpha": 0.04454814004594943,
+      "ls_talpha": 3.980585596573322,
+      "ls_sharpe": 0.5243354133603161,
+      "coverage": 0.12431093660616777,
+      "error": null
+    },
+    {
+      "name": "Partially cash netted cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Disciplined non-investors accumulate cash, which inflates their market capitalization and understates their cheapness, but fully netting cash overweights cash-heavy firms; averaging the raw and cash-netted earnings yields corrects the bias partially and should raise alpha without destabilizing the long leg.",
+      "expected_sign": "positive",
+      "reasoning": "The fully cash-netted yield produced the archive's largest alpha (5.3%) with a weaker t-statistic (3.70), and it collapsed when paired with any other refinement, indicating the correction is right in direction but too aggressive in magnitude. Blending both denominators is the direct test of that diagnosis and is the second-best candidate for a final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.509232260325506,
+      "ls_alpha": 0.0532433158310148,
+      "ls_talpha": 4.583831891213922,
+      "ls_sharpe": 0.6128070697039427,
+      "coverage": 0.12552861212437894,
+      "error": null
+    },
+    {
+      "name": "Rank robust enterprise cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_RANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_RANK(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "The reliability loss in enterprise-value cheapness comes from within-industry standardization being dominated by a few extreme multiples; replacing z-scores with industry ranks bounds each firm's influence and should retain the 5% alpha with a materially higher t-statistic.",
+      "expected_sign": "positive",
+      "reasoning": "Flooring the enterprise-value denominator did not help, so the instability lives in the standardization of the valuation legs rather than in the ratio itself, and industry ranks are the natural bounded alternative to industry z-scores. This isolates the estimator choice, holding the economics and the discipline leg exactly fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.4543104805272415,
+      "ls_alpha": 0.02928266420598078,
+      "ls_talpha": 2.753975216335054,
+      "ls_sharpe": 0.44725528524546615,
+      "coverage": 0.12443934921377846,
+      "error": null
+    },
+    {
+      "name": "Discipline weighted dual horizon restraint",
+      "expression": "SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)), SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 3)), SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))))))",
+      "hypothesis": "Since the investment-discipline half has been the source of nearly every improvement, tilting the composite toward it \u2014 using two persistence horizons of the same own-norm deviation \u2014 should improve the signal relative to the equal-weight valuation-discipline split.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has never varied the relative weight of the two themes, yet the discipline leg drove the jump from roughly 3% to 4.6% alpha while valuation refinements moved it by tenths of a point, suggesting the equal split may under-weight the more informative half. Using two-year and three-year averages rather than duplicating one measure diversifies the estimation noise while raising the discipline weight to three-quarters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.499768548398336,
+      "ls_alpha": 0.05337109847557146,
+      "ls_talpha": 4.412233421271196,
+      "ls_sharpe": 0.559785935560504,
+      "coverage": 0.12554161332048897,
+      "error": null
+    },
+    {
+      "name": "Dual cheapness with asset scaled restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, at), MA(RATIO(capx, at), 5)), 2)))",
+      "hypothesis": "If the mechanism is a departure from the firm's own established spending policy, the deflator should not matter much, and scaling capital expenditure by total assets rather than gross plant extends the signal to asset-light firms whose gross plant is small or erratically reported.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-plant scaling was adopted early and never revisited against total assets in the smoothed-deviation form, and the asset deflator is available for more firms, so a comparable result would deliver the same economics with broader coverage and less dependence on capital-intensive industries. A materially worse result would confirm that the productive-capacity base is the economically correct benchmark and should be documented as such.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.76802587632542,
+      "ls_alpha": 0.01847158466601745,
+      "ls_talpha": 1.8349296428833834,
+      "ls_sharpe": 0.29371202616289055,
+      "coverage": 0.13248115652036813,
+      "error": null
+    },
+    {
+      "name": "Cheap with restraint and no debt funded expansion",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)), NEG(RATIO(DELTA(ADD(dltt, dlc), 1), at))))",
+      "hypothesis": "True capital discipline means restraining spending and not levering up to fund it; a cheap firm that is both spending below its own norm and reducing borrowings is deleveraging into value, while an expensive firm expanding on new debt is the most vulnerable empire builder.",
+      "expected_sign": "positive",
+      "reasoning": "Equity issuance and acquisition flows both failed as discipline legs, but debt-financed expansion has never been tested and is the funding channel most tightly linked to fixed capital spending, so it is the one remaining chance to add an independent financing dimension. Because prior leg-stacking diluted composites, this is framed as a diagnostic: only if alpha and its t-statistic both exceed the 4.6% and 4.82 benchmark should the financing channel enter the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.478736151702449,
+      "ls_alpha": 0.02661491227626068,
+      "ls_talpha": 2.573158737889763,
+      "ls_sharpe": 0.3996050717974006,
+      "coverage": 0.11424476051796766,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "BM discipline rank composite",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(GROWTH(at, 1)))",
+      "hypothesis": "Firms that are cheap on book-to-market AND simultaneously shrinking or holding flat their asset base are underappreciated disciplined allocators, whereas expensive firms that are ballooning the balance sheet are overvalued growth stories; the joint rank captures the compounded mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market proxies for depressed price expectations while negative asset growth proxies for capital discipline, and the two mispricing channels (extrapolated pessimism vs. overinvestment) reinforce each other rather than substitute. Rank-summing keeps both legs on a comparable scale and makes the long leg cheap-and-disciplined, the short leg expensive-and-expansionary.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash yield per unit of reinvestment",
+      "expression": "WINSOR(RATIO(RATIO(oancf, MUL(prcc_f, csho)), MA(RATIO(capx, ppent), 3)), 1)",
+      "hypothesis": "What matters is how much cash flow yield an investor buys per unit of ongoing reinvestment burden: high operating cash-flow yield sustained with a low steady capex-to-installed-capital rate signals cheap self-funding discipline, while low yield combined with heavy reinvestment signals a priced-for-growth cash sink.",
+      "expected_sign": "positive",
+      "reasoning": "Dividing the valuation yield by a three-year-smoothed reinvestment rate creates a genuine ratio interaction that cannot be replicated by either leg alone, since the same yield means very different things for an asset-light versus a capex-hungry firm. Smoothing the denominator avoids one-off capex spikes driving the scaling, and winsorization controls the small-denominator tail.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Value conditioned on capex deceleration",
+      "expression": "MUL(ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), SIGN(SUB(MA(RATIO(capx, at), 3), RATIO(capx, at))))",
+      "hypothesis": "Cheapness only pays when management is turning off the spending tap; the same value score should be a long signal for firms whose current investment rate has fallen below its own three-year norm and a short signal for cheap firms still accelerating capex (value traps burning capital).",
+      "expected_sign": "positive",
+      "reasoning": "The SIGN term flips the value exposure on investment-cycle state, so the payoff is explicitly conditional rather than additive, and it separates \"cheap and retrenching\" from \"cheap and still empire-building.\" This directly tests whether the value premium is contingent on investment discipline instead of merely correlated with it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensive empire builder short",
+      "expression": "NEG(MUL(RANK(RATIO(MUL(prcc_f, csho), ceq)), RANK(GROWTH(ppegt, 1))))",
+      "hypothesis": "The most reliably overpriced firms are those that are richly valued on market-to-book and are simultaneously expanding gross property, plant and equipment aggressively; multiplying the two ranks isolates this corner of the joint distribution where market optimism funds real overexpansion.",
+      "expected_sign": "positive",
+      "reasoning": "A multiplicative rank interaction is convex, so the score is extreme only when both expensive pricing and aggressive physical capacity growth are present, targeting the specific overvaluation-plus-overinvestment mechanism rather than either factor's average effect. The NEG wrapper makes high signal values correspond to cheap and/or restrained firms so the expected slope is positive.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "EV yield versus externally financed expansion",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(aqc, sstk), at)))",
+      "hypothesis": "Cheap on an enterprise-value basis while refusing to fund expansion with acquisitions or new equity identifies disciplined allocators; expensive firms that buy growth with acquisitions and issue stock to pay for it are the classic overvalued-equity empire builders.",
+      "expected_sign": "positive",
+      "reasoning": "Using EV/EBITDA rather than equity multiples makes the valuation leg leverage- and cash-neutral, which matches an investment leg defined by external financing (aqc plus sstk) rather than organic capex. The interaction is economically distinct from asset growth because it targets the market-timing channel where overpriced equity is the currency for expansion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings yield at investment-rate trough",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(TS_RANK(RATIO(capx, at), 5)))",
+      "hypothesis": "A high earnings yield relative to industry peers, occurring when the firm's own investment rate sits at the bottom of its five-year history, marks harvest-phase discipline that the market extrapolates too pessimistically; low industry-relative earnings yield with capex at a five-year peak marks the top of an overpriced spending cycle.",
+      "expected_sign": "positive",
+      "reasoning": "TS_RANK measures investment discipline against the firm's own history rather than the cross-section, so it identifies genuine internal capital-cycle turning points and avoids penalizing structurally capital-intensive industries. Pairing it with an industry-demeaned earnings yield makes both legs relative measures, which should sharpen the cross-sectional slope and stabilize portfolio composition.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive cheap and capex-trough",
+      "expression": "MIN(IND_RANK(RATIO(ib, MUL(prcc_f, csho))), IND_RANK(NEG(TS_RANK(RATIO(capx, at), 5))))",
+      "hypothesis": "The mispricing lives in the intersection, not the average: a firm earns the premium only if it is cheap on earnings yield AND its investment rate is near a five-year low, so the score should be the weaker of the two peer-relative ranks rather than their sum.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice against the gen-0 winner \u2014 conjunction (MIN of ranks) versus addition (SUMRANK) \u2014 while keeping the same two economic legs, so a stronger alpha would prove the effect is truly interactive rather than two additive premia. MIN over bounded industry ranks repairs the instability of the failed MUL and SIGN constructions, which blew up on fat-tailed z-scores and sign flips near zero.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry free cash flow yield",
+      "expression": "IND_ZSCORE(RATIO(SUB(oancf, capx), MUL(prcc_f, csho)))",
+      "hypothesis": "Price expectations and investment discipline can be fused inside a single quantity: cash generated after capital spending, per dollar of market value, is high exactly for cheap firms that are not plowing cash back into the asset base, and low for expensive firms whose capex consumes operating cash.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 ratio construction failed because it divided one fragile ratio by another (market-cap yield over capex-to-ppent), producing a 0.089-coverage, tail-driven portfolio; here the interaction is additive in the numerator and divided by a single robust denominator, which should preserve the economics with far more stable extreme deciles. Industry demeaning removes mechanical capital-intensity differences so the sort ranks discipline within peer groups.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with dual capital restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(NEG(TS_RANK(RATIO(capx, at), 5)), NEG(GROWTH(ppegt, 1))))",
+      "hypothesis": "Discipline is credible when it shows up both cyclically (current investment rate at the low end of the firm's own history) and structurally (gross productive capacity not being expanded); pairing both with a peer-relative earnings yield should sharpen the cheap-disciplined long leg and the expensive-expander short leg.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the gen-0 winner by adding the one investment measure that already showed strong cross-sectional information (gross PPE growth, FMB 3.35) but whose multiplicative packaging destroyed its alpha. Nesting SUMRANK keeps every channel on a bounded rank scale, so the extra leg adds signal without reintroducing tail sensitivity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap sales with headcount restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(sale, MUL(prcc_f, csho))), NEG(GROWTH(emp, 1)))",
+      "hypothesis": "Labor is the least reversible form of expansion, so a firm trading at a low price-to-sales while holding headcount flat is a disciplined operator whose margins the market underrates, whereas a richly priced firm hiring aggressively is capitalizing an expansion story into fixed cost.",
+      "expected_sign": "positive",
+      "reasoning": "All prior proposals measured investment as physical or financial capital; employment growth is an economically distinct discipline channel that is known to be slow-moving and hard for the market to extrapolate correctly. Pairing it with sales-to-price rather than earnings yield also avoids loading the valuation leg on the same accounting-profit axis that the hiring decision mechanically affects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap without inventory overbuild",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(GROWTH(invt, 1), GROWTH(sale, 1))))",
+      "hypothesis": "Inventory growing faster than sales is undisciplined working-capital investment on a demand forecast that has not materialized; cheap firms whose inventory grows no faster than revenue are disciplined, while expensive firms overbuilding stock are the overvalued growth story about to disappoint.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts the investment leg from long-lived capital to working capital and, crucially, benchmarks it against realized demand rather than against the asset base, so the discipline measure is a forecast-error proxy rather than a size-scaled rate. It tests whether the valuation interaction operates through short-cycle operating decisions, a mechanism no prior archive signal touched.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "EV cheap with sustained external-finance abstention",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), NEG(RATIO(TS_SUM(ADD(aqc, sstk), 3), at)))",
+      "hypothesis": "One quiet year of no acquisitions or share issuance is noise; three cumulative years of refusing to buy growth or sell stock, combined with a low enterprise-value multiple, identifies management that will not exploit or require market optimism, while persistent acquirer-issuers are systematically overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 external-finance signal had a solid FMB slope (2.76) and the best Sharpe among failures but a weak, imprecise alpha, consistent with a one-year aqc+sstk flow being lumpy and reshuffling the portfolio each month. Cumulating three years of external-finance intensity and industry-demeaning the EV yield should stabilize portfolio composition and convert that cross-sectional tilt into a reliable FF5 alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with capacity not outrunning demand",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(GROWTH(ppent, 1), GROWTH(sale, 1))))",
+      "hypothesis": "Fixed capacity growing faster than revenue is capital committed to demand that has not appeared; cheap firms whose net plant grows no faster than sales are disciplined, while expensive firms building capacity ahead of demand are the overvalued growth story.",
+      "expected_sign": "positive",
+      "reasoning": "This transplants the mechanism that produced the strongest FMB slope in the archive (inventory growth net of sales growth) from working capital to long-lived capital, where the commitment is larger and less reversible. Because the investment leg is demand-differenced rather than a raw growth rate, it should stay orthogonal to CMA and avoid the alpha absorption that killed the ppegt-growth and emp-growth legs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with self-funded capital budget",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(IND_ZSCORE(RATIO(SUB(capx, ebitda), at))))",
+      "hypothesis": "Discipline is best measured against internal cash generation: a firm whose capital budget sits well below its operating cash earnings can fund itself and is not hostage to market sentiment, while a firm spending far beyond EBITDA is an expansion story whose continuation depends on a high valuation being sustained.",
+      "expected_sign": "positive",
+      "reasoning": "This benchmarks investment against the firm's own cash-generating capacity rather than against its asset base, which is a different economic constraint (financing dependence) than the timing concept captured by the capex percentile. Industry z-scoring both legs keeps capital-intensive sectors from dominating the sort, and the differenced numerator is not a growth rate, so it should not be spanned by CMA.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout yield with capex restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(dvc, MUL(prcc_f, csho))), NEG(TS_RANK(RATIO(capx, at), 5)))",
+      "hypothesis": "Cash actually returned to shareholders is the cleanest revealed preference for discipline; a high dividend yield combined with an investment rate near its own five-year low identifies management that has chosen harvesting over empire building, and the market underprices this deliberate shrinkage.",
+      "expected_sign": "positive",
+      "reasoning": "Every archive signal used an accounting-profit or sales multiple for the valuation leg; payout yield is a distinct valuation channel that is less mechanically related to accruals and less collinear with HML. Pairing it with the proven own-history capex percentile isolates the valuation-leg design choice while holding the winning investment leg fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Value gated on disciplined investment state",
+      "expression": "MUL(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), INDICATOR(NEG(TS_RANK(RATIO(capx, at), 5)), -0.5))",
+      "hypothesis": "The value premium is not uniform across investment states: it should be earned only among firms whose current investment rate sits in the lower half of their own five-year range, so gating the valuation score on that state and neutralizing everyone else should produce a cleaner long-short spread than adding the two signals.",
+      "expected_sign": "positive",
+      "reasoning": "MIN-conjunction underperformed additive aggregation, but that test blended two ranks symmetrically rather than truly conditioning one theme on the other; this gate keeps full valuation dispersion inside the disciplined subsample and assigns zero elsewhere, so the extremes are cheap-disciplined versus expensive-disciplined. If the alpha survives, the interaction is genuinely conditional; if it collapses, the archive's additive structure is the right functional form and we can stop testing conditioning.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with capex below own norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "What matters is the magnitude, not merely the ordinal position, of the deviation of current capital spending from the firm's own long-run norm: a cheap firm spending materially below its five-year average rate on installed gross capacity is retrenching in a way the market extrapolates too pessimistically.",
+      "expected_sign": "positive",
+      "reasoning": "The winning investment leg used TS_RANK, which discards how far spending has fallen; a cardinal deviation from a five-year moving average should carry more information for firms making large capital-cycle turns while remaining self-benchmarked and thus orthogonal to CMA. Scaling capex by gross rather than net plant avoids the depreciation-driven denominator drift that makes capx/ppent unstable for old asset bases.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with dual benchmark-relative discipline",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(NEG(TS_RANK(RATIO(capx, at), 5)), NEG(SUB(GROWTH(invt, 1), GROWTH(sale, 1)))))",
+      "hypothesis": "The two discipline channels that have worked are economically distinct \u2014 capital-cycle timing versus working-capital forecasting error \u2014 so a firm that is cheap and restrained on both should be the most underappreciated disciplined allocator, and an expensive firm failing both the most overvalued.",
+      "expected_sign": "positive",
+      "reasoning": "A prior three-leg composite diluted the alpha, but its added leg was raw gross-PPE growth, precisely the factor-spanned type of measure that failed elsewhere; here both discipline legs are benchmark-relative and each independently produced a positive, significant alpha. This directly tests whether the two channels carry independent information or are substitutes, which determines whether later generations should consolidate into one leg or stack them.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with standardized capex surprise",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(RATIO(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), VOL(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "A given percentage-point departure from the firm's normal spending rate is far more informative for a firm with a historically steady capital budget than for one whose capex is naturally lumpy, so the discipline signal should be the deviation expressed in units of the firm's own spending volatility.",
+      "expected_sign": "positive",
+      "reasoning": "The leading archive signal uses an unnormalized deviation, which mechanically loads on high-variance capital programs where large swings are uninformative noise; standardizing converts it into a genuine surprise measure. If this raises both the FMB slope and the alpha, the mechanism is expectation error about investment plans rather than the raw level of retrenchment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with firm-specific capex retrenchment",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(IND_ZSCORE(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)))))",
+      "hypothesis": "Capital cycles are largely industry-wide, so cutting spending when all peers are cutting reflects the cycle, not managerial discipline; only the peer-demeaned component of a firm's departure from its own norm identifies deliberate allocation choices that the market misreads.",
+      "expected_sign": "positive",
+      "reasoning": "This double-demeaning \u2014 first against the firm's own history, then against contemporaneous industry peers \u2014 separates idiosyncratic discipline from common capital-cycle timing while holding the winning valuation leg fixed. It is the single most informative design test available: if peer-demeaning helps, the effect is managerial; if it hurts, the leading signal is partly a capital-cycle timing bet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with total investment below norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(ADD(capx, aqc), ppegt), MA(RATIO(ADD(capx, aqc), ppegt), 5))))",
+      "hypothesis": "Discipline requires abstaining from both organic and inorganic expansion; a firm that cuts capex while buying companies is not disciplined, so the deviation should be computed on total capital deployed, capex plus acquisitions, relative to installed capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Acquisition flows alone produced positive FMB slopes but no alpha in earlier tests, plausibly because raw aqc is lumpy and unbenchmarked; embedding it inside the same own-norm deviation that works for capex tests whether inorganic spending carries discipline information once it is properly benchmarked. This distinguishes \"capital deployment discipline\" from the narrower \"physical capex timing\" story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Capacity cheapness with spending restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Buying installed productive capacity cheaply is a distinct form of value from buying earnings cheaply, and it interacts most sharply with restraint: paying little per dollar of existing plant while management adds no new plant is the purest disciplined-allocator profile, whereas paying a premium over installed capacity while expanding it is the empire-building story.",
+      "expected_sign": "positive",
+      "reasoning": "All strong archive signals used a profit-based valuation leg, leaving the replacement-cost channel untested; because capacity-to-price is a q-type measure rather than an accrual-based multiple, it should be less collinear with HML and could deliver alpha the FF5 cannot span. Pairing it with the proven capex-deviation leg cleanly isolates the valuation-leg change.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with stable capital budget",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(VOL(RATIO(capx, ppegt), 5)))",
+      "hypothesis": "Discipline is a second-moment property as much as a level: erratic, stop-start capital spending reveals weak planning and opportunistic chasing of demand, so cheap firms with smooth capital budgets should outperform expensive firms whose spending lurches.",
+      "expected_sign": "positive",
+      "reasoning": "Every discipline measure tested so far has been a level, deviation, or growth rate; spending instability is a genuinely different economic concept that cannot be replicated by CMA or by any first-moment investment leg. It also provides the diagnostic complement to Signal 1: if instability is priced on its own, then normalizing the surprise by volatility may be mixing two separate effects.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with sustained spending restraint",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), TS_SUM(INDICATOR(SUB(MA(RATIO(capx, ppegt), 5), RATIO(capx, ppegt)), 0), 3))",
+      "hypothesis": "One year of below-norm spending can be a deferral, but three consecutive years of spending below the firm's own long-run rate is a committed strategy of harvesting; counting the years of restraint should identify credible discipline that the market only slowly recognizes.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates persistence from magnitude within the exact mechanism that currently works best, telling us whether the leading signal profits from the size of a single retrenchment or from a durable regime of restraint. The count is bounded and slow-moving, which should also stabilize portfolio composition and turnover relative to the raw deviation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with capex above strictly past norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "The benchmark for normal capital spending should be built only from prior years; including the current year in the moving average pulls the norm toward the observation being judged and understates genuine departures from established policy.",
+      "expected_sign": "positive",
+      "reasoning": "This is a pure measurement repair of the current leader, isolating the single design choice of benchmark contamination while leaving the economics identical. If the surprise interpretation is correct, a lagged four-year norm should produce a larger, cleaner deviation and strengthen both the FMB slope and the FF5 alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap versus overspenders only",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(MUL(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), INDICATOR(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 0))))",
+      "hypothesis": "The economic story is asymmetric: overvaluation of empire builders should be stronger and slower to correct than underappreciation of quiet retrenchers, so the discipline leg should only penalize spending above the firm's own norm and treat all below-norm spending as equally disciplined.",
+      "expected_sign": "positive",
+      "reasoning": "Half the current signal's dispersion comes from ranking degrees of underspending, which may be economically meaningless (a firm cutting 5% below norm is not twice as disciplined as one cutting 2.5%) and could be diluting the sort. Truncating at zero tests directly whether the alpha lives on the overinvestment short side, which would tell later generations where to concentrate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed earnings yield with capex surprise",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(MA(ib, 3), MUL(prcc_f, csho))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Single-year earnings yield misclassifies cyclically depressed or temporarily inflated firms as cheap or expensive; a three-year average of income per dollar of market value measures durable price expectations, which is the right counterpart to a multi-year investment norm.",
+      "expected_sign": "positive",
+      "reasoning": "Every gain so far came from refining the investment leg while the valuation leg stayed a noisy one-year ratio, so the symmetric fix is to give both legs the same multi-year horizon. Smoothing should reduce the number of transient value traps entering the long leg and lower portfolio turnover without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with capex restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Earnings-based cheapness and replacement-cost cheapness are distinct price-expectation errors \u2014 one about profit persistence, one about asset value \u2014 and a firm cheap on both while spending below its own norm is the strongest disciplined-allocator candidate.",
+      "expected_sign": "positive",
+      "reasoning": "Both valuation legs independently generated roughly 4% alpha when paired with the same capex deviation, and unlike the two discipline legs (which diluted each other) they measure different objects, so their combination has a real chance of adding rather than substituting. This also keeps the valuation and investment halves equally weighted, so any improvement is attributable to the richer cheapness measure.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with inventory intensity at own norm",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(invt, sale), MA(RATIO(invt, sale), 5))))",
+      "hypothesis": "Working-capital investment should be judged the same way as fixed investment: inventory held per dollar of sales rising above the firm's own established norm signals stock building on optimistic demand expectations, while a cheap firm operating at or below its normal inventory intensity is running a disciplined operation.",
+      "expected_sign": "positive",
+      "reasoning": "The genuine discovery in this archive is the own-norm deviation form, and the strongest earlier working-capital signal used a cruder growth-difference version of the same idea (alpha 2.9%); recasting it as an intensity deviation should sharpen it. It also tests whether the functional form is a general property of investment discipline rather than specific to physical capex.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap without intangible asset buildup",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), NEG(SUB(RATIO(intan, at), MA(RATIO(intan, at), 5))))",
+      "hypothesis": "Intangible assets on the balance sheet grow mainly through acquisitions and capitalized purchases, so an intangible share rising above the firm's own norm marks a firm buying growth and often overpaying, whereas cheap firms with stable intangible intensity are expanding, if at all, organically and within their means.",
+      "expected_sign": "positive",
+      "reasoning": "Raw acquisition flows failed twice (no alpha), but when acquisitions were folded into a capex own-norm deviation the signal worked (alpha 3.6%), suggesting the inorganic channel needs stock-based, self-benchmarked measurement rather than lumpy flow measurement. This is the cleanest untested version of that idea and is economically distinct from physical capacity spending.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with past-norm capex surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "Firms cheap on both earnings and installed capacity that are simultaneously spending below the capital-spending policy established in prior years are the most underappreciated disciplined allocators, and combining the two independently verified improvements should dominate either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The dual-cheapness valuation leg and the strictly-past capex norm each raised alpha and t-statistics relative to the same baseline, and they operate on opposite sides of the interaction, so their gains should be close to additive rather than redundant. This is the natural consolidation candidate and establishes the benchmark that later generations must beat.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cyclically adjusted dual cheapness with past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(MA(ib, 3), MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4))))",
+      "hypothesis": "Both halves of the interaction should be measured over comparable multi-year horizons: durable earning power per dollar of price, capacity per dollar of price, and spending relative to established policy together describe a firm whose long-run cash generation is cheap and whose capital budget is restrained.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year average income raised the cross-sectional slope to the archive maximum when paired with the simple deviation, so stacking it onto the dual-cheapness and past-norm improvements tests whether all three refinements are jointly additive. If the alpha does not improve over Signal 1, the smoothing gain was a cross-sectional-slope effect that does not survive portfolio formation, which is itself a useful verdict.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with standardized past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(RATIO(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4)), VOL(RATIO(capx, ppegt), 5))))",
+      "hypothesis": "Expressing the departure from prior capital policy in units of the firm's own spending volatility converts it into a true surprise, so that a modest cut by a steady spender counts as much as a large cut by a lumpy one; scaled this way it should pair best with a broad cheapness measure.",
+      "expected_sign": "positive",
+      "reasoning": "Volatility standardization delivered the highest Sharpe ratio in the archive (0.55) and the strongest alpha t-statistic among single-cheapness variants, while spending instability on its own carried no alpha, confirming that VOL belongs in the denominator as a scaling device rather than as a signal. Combining it with the past-only norm and dual cheapness tests whether the risk-adjusted efficiency gain survives consolidation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with demand-scaled capex norm",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(RATIO(capx, sale), MA(RATIO(capx, sale), 5))))",
+      "hypothesis": "Discipline is ultimately about spending relative to the business the firm actually has, so capital expenditure per dollar of revenue, judged against its own five-year norm, may capture overinvestment better than spending per dollar of installed capacity.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal scaled capex by gross plant, which conflates asset age and depreciation policy across firms, whereas revenue scaling anchors the capital budget to realized demand \u2014 the quantity managers are supposedly responding to. This isolates the denominator choice while holding the valuation composite and the deviation form fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with abnormal capacity growth",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(SUB(GROWTH(ppegt, 1), MA(GROWTH(ppegt, 1), 5))))",
+      "hypothesis": "Gross capacity growth is economically the right measure of empire building, but it only identifies mispricing once it is judged against the firm's own habitual expansion rate; a firm growing capacity faster than it usually does is making a new bet, whereas a chronically fast grower is already priced as such.",
+      "expected_sign": "positive",
+      "reasoning": "Raw gross-PPE growth produced solid cross-sectional slopes but zero or negative FF5 alpha in two separate tests, exactly the pattern expected when a leg is spanned by CMA; demeaning it against the firm's own five-year growth history removes the level component the factor captures and keeps only the abnormal expansion. This is a direct repair of the archive's most persistent failure mode and tells us whether own-norm demeaning is the general fix.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with persistent capex deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "A single year's departure from normal spending can be a timing artifact of project lumpiness, while a deviation sustained over two consecutive years reveals a changed capital-allocation stance that the market prices only gradually.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded persistence count worked (alpha 3.0%, t 3.22) but discarded magnitude, whereas averaging the signed deviation over two years keeps magnitude while requiring durability, and should materially reduce month-to-month portfolio churn. If it matches or beats Signal 1 with a higher Sharpe, the final signal should favor the smoothed form for implementability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness persistent past-norm surprise",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(LAG(RATIO(capx, ppegt), 1), 4)), 2)))",
+      "hypothesis": "The strongest disciplined-allocator profile combines cheapness on both earnings and installed capacity with a spending stance that has been below the firm's previously established capital policy for two consecutive years, so an uncontaminated benchmark and a durable deviation should reinforce each other.",
+      "expected_sign": "positive",
+      "reasoning": "The strictly-past four-year norm produced the largest single-cheapness alpha (4.9%) and two-year smoothing produced the most reliable alpha t-statistic (4.82); both act on the deviation and neither has been tested with the other. If the two gains are additive this becomes the archive leader on both magnitude and reliability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness three-year stance deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 3)))",
+      "hypothesis": "If mispricing arises from slow market recognition of a changed capital-allocation regime, then averaging the deviation over three years should capture the regime even better than two, up to the point where staleness dominates and the signal decays.",
+      "expected_sign": "positive",
+      "reasoning": "Two-year smoothing improved reliability over the unsmoothed deviation, and this locates the optimum of the persistence horizon rather than assuming it; a decline at three years would show the effect is a medium-horizon expectation error, while a further improvement would push the final signal toward very low turnover. Either outcome directly informs which construction to submit in the final generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Triple cheapness persistent capex restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(sale, MUL(prcc_f, csho))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Price expectations are best measured against several fundamental anchors at once \u2014 profit, installed capacity, and revenue scale \u2014 because each is contaminated by different accounting noise, and a firm cheap on all three while restraining spending is the clearest disciplined-allocator case.",
+      "expected_sign": "positive",
+      "reasoning": "Broadening cheapness from one to two channels was the single largest improvement in the archive (t 4.52 from 4.09), so the marginal value of a third, revenue-based anchor is the natural next test while the discipline leg is held at its best-performing smoothed form. The nesting keeps the valuation composite and the discipline leg equally weighted so the comparison is clean.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with capex near maintenance need",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(RATIO(SUB(capx, DELTA(SUB(ppegt, ppent), 1)), ppegt)))",
+      "hypothesis": "Only capital spending in excess of what is needed to replace worn-out capacity represents a discretionary growth bet; measuring capex net of the year's accumulated-depreciation increase separates genuine expansion from unavoidable maintenance, and cheap firms spending near maintenance level are the disciplined allocators.",
+      "expected_sign": "positive",
+      "reasoning": "All discipline measures so far benchmark spending against the firm's own past behavior, which cannot distinguish a firm that habitually overspends from one that simply owns short-lived assets; the gross-minus-net PPE change gives a direct, contemporaneous estimate of required replacement investment. This is an absolute economic benchmark rather than a statistical one, so it could add information orthogonal to the own-norm deviation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross capacity cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppegt, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Cheapness relative to physical capacity should be measured on a gross rather than net basis, because gross plant approximates the replacement cost of the productive base while net plant reflects accumulated depreciation choices that vary with asset age and accounting policy.",
+      "expected_sign": "positive",
+      "reasoning": "The capacity-to-price leg was the key valuation innovation, but its net-PPE construction mechanically favors firms with old, heavily depreciated assets, which may be a value trap rather than a cheapness signal. Swapping to gross plant isolates that one measurement choice while keeping the best discipline leg fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with total real investment restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(ADD(capx, DELTA(invt, 1)), ppegt), MA(RATIO(ADD(capx, DELTA(invt, 1)), ppegt), 5)), 2)))",
+      "hypothesis": "Real investment is fixed capital plus the change in inventory, and a disciplined firm restrains both; embedding inventory investment inside a single own-norm deviation should capture total resource commitment better than either channel alone.",
+      "expected_sign": "positive",
+      "reasoning": "Inventory discipline independently produced positive alpha (2.7\u20132.9%) but stacking it as a separate rank leg diluted the composite, implying the problem was aggregation, not economics. Summing the two flows before benchmarking them against the firm's own norm keeps a single, well-scaled discipline measure and tests whether working-capital commitment adds information to physical capex.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness blended horizon deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), SUMRANK(NEG(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2))))",
+      "hypothesis": "The current-year deviation carries fresh information about a newly changed capital stance while the two-year average certifies durability; averaging their ranks should retain the responsiveness of the former and the reliability of the latter.",
+      "expected_sign": "positive",
+      "reasoning": "The unsmoothed deviation gave the highest FMB slope (6.85) and the smoothed one the highest alpha t-statistic (4.82), a pattern consistent with the two measuring the same regime at different signal-to-noise trade-offs. Blending them inside the discipline half keeps the valuation-discipline weighting at one half each, so any gain is attributable purely to horizon diversification.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness proportional capex deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "Discipline should be judged in proportional terms: a firm cutting its spending rate by a third is making the same allocation decision whether its normal rate is 6% or 20% of gross plant, but an absolute deviation mechanically assigns larger scores to capital-intensive firms.",
+      "expected_sign": "positive",
+      "reasoning": "Every version of the winning leg used an absolute difference, so the cross-section of the discipline score is partly a cross-section of capital intensity, which is exactly the dimension FF5's investment factor already prices. A log ratio of current rate to own norm removes that scale dependence while preserving the own-benchmark economics, and should sharpen the peer comparison inside the sort.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with peer-purged persistent deviation",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(IND_ZSCORE(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2))))",
+      "hypothesis": "Sustained retrenchment is only evidence of managerial discipline if peers are not retrenching simultaneously; demeaning the two-year deviation within industry isolates the firm-specific allocation choice from the common capital cycle.",
+      "expected_sign": "positive",
+      "reasoning": "Industry demeaning of the unsmoothed deviation held its own (alpha 4.3%), but it has never been combined with the persistence smoothing that produced the archive's most reliable alpha, and the two corrections address orthogonal contaminations \u2014 cross-sectional cycle versus single-year lumpiness. If both are needed, this becomes the cleanest statement of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Book and earnings cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "If the second cheapness channel helps because it anchors price to a balance-sheet stock rather than to a flow, then book equity per dollar of price should work at least as well as physical capacity per dollar of price, since it covers asset-light firms too.",
+      "expected_sign": "positive",
+      "reasoning": "This is the decisive diagnostic on why dual cheapness improved the signal: capacity-to-price is both a stock anchor and a physical-asset anchor, and only substituting book equity separates the two explanations. A weaker result would confirm the physical-capacity interpretation and justify keeping ppent in the final signal despite its narrower economic reach; a stronger one would raise coverage and generality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-adjusted cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Firms that stop investing accumulate cash, which inflates market capitalization without adding operating earnings and therefore makes disciplined allocators look artificially expensive; netting cash out of the price denominator removes this mechanical bias precisely where the interaction is supposed to bite.",
+      "expected_sign": "positive",
+      "reasoning": "This is an economically motivated correction to a specific interaction-induced measurement error rather than a generic multiple swap, and it should matter most in the long leg where cash-rich retrenchers concentrate. It also revisits the enterprise-value idea that failed in early generations, but now attached to the discipline leg that actually works.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Capital-allocation discipline is a whole-firm decision funded by debt as well as equity, so cheapness should be measured on enterprise value; a levered firm with a high EBITDA yield that is also spending below its own norm is deleveraging rather than empire building.",
+      "expected_sign": "positive",
+      "reasoning": "The EBITDA-to-enterprise-value leg produced respectable cross-sectional slopes in generations 0 and 1 but was always paired with a raw external-finance or acquisition leg that carried no alpha, so its portfolio value has never been fairly assessed. Pairing it with the proven persistent-deviation leg tests whether leverage-aware cheapness adds to, or merely duplicates, equity-based earnings yield.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Whole firm cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "If cheapness is to be measured on a whole-firm basis, then both anchors should be scaled consistently by enterprise value: paying little per dollar of operating cash flow and per dollar of installed plant, on a debt-and-cash-inclusive basis, while spending below the firm's own norm.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value cash-flow yield raised alpha to 5.2% while the capacity leg was still scaled by equity value, creating an internal inconsistency in which leverage enters one leg but not the other. Making both legs enterprise-scaled tests whether the gain came from leverage-aware valuation as a concept or only from the EBITDA channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-adjusted cheapness proportional restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "The two independent gains of the last round should compose: netting the cash pile out of price corrects the mechanical cheapness penalty that disciplined non-investors suffer, while a proportional deviation measures restraint scale-free, so together they should deliver high alpha with high efficiency.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-netting produced the archive's largest alpha (5.3%) and the log deviation its best Sharpe (0.564), and they act on opposite halves of the composite, so the combination is the most likely to be simultaneously large and reliable. If the alpha t-statistic recovers toward the baseline's 4.8 while alpha stays above 5%, this becomes the final candidate.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating cheapness proportional restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(LOG(RATIO(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5))), 2)))",
+      "hypothesis": "Enterprise-value cheapness identifies firms whose whole capital structure is priced pessimistically, and pairing it with a scale-free measure of spending restraint should retain its higher alpha while removing the capital-intensity bias that inflates the absolute deviation for heavy-asset firms.",
+      "expected_sign": "positive",
+      "reasoning": "This is the complementary composition to Signal 2, isolating whether the extra alpha is better sourced from leverage-aware pricing or from cash-netted equity pricing when the discipline leg is held at its most efficient form. Running both lets the final generation choose the valuation channel on evidence rather than assumption.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash and leverage aware dual cheapness",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Both alpha-improving valuation channels correct the same underlying distortion \u2014 that disciplined allocators accumulate cash and repay debt, which makes conventional equity multiples understate their cheapness \u2014 so combining them should give the strongest possible cheapness leg for this specific interaction.",
+      "expected_sign": "positive",
+      "reasoning": "The two gen-7 leaders differ in whether debt is added and in whether the numerator is net income or EBITDA, so their combination diversifies accounting noise while reinforcing the shared balance-sheet correction. The risk is redundancy, and a flat result would tell us the two were measuring one effect, which is itself decisive for the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Floored enterprise cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ebitda, MAX(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), MUL(prcc_f, csho)))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Enterprise-value yields become unstable for net-cash firms whose enterprise value collapses toward zero, manufacturing extreme cheapness scores that are accounting artifacts rather than pessimistic pricing; flooring the denominator at equity market value removes those artifacts while preserving the debt-inclusive economics for levered firms.",
+      "expected_sign": "positive",
+      "reasoning": "The enterprise-value variant gained a full point of alpha but lost a full point of t-statistic relative to the baseline, exactly the pattern expected when a handful of small-denominator observations dominate an extreme decile. This repair keeps the economic content and tests whether the reliability loss was purely a measurement pathology, which matters because reliability, not raw magnitude, is the binding constraint.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with reinvestment rate below norm",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ebitda), MA(RATIO(capx, ebitda), 5)), 2)))",
+      "hypothesis": "The economically meaningful discipline decision is what fraction of operating cash flow management chooses to plow back; a firm reinvesting a smaller share of its EBITDA than it habitually does is deliberately shifting from expansion to harvesting, regardless of how large its asset base is.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong discipline leg so far normalizes spending by the installed asset base, which measures intensity but not choice, whereas the reinvestment rate out of cash flow is the allocation decision itself; an early unbenchmarked version of this idea produced positive but weak alpha (1.9%), suggesting the own-norm and smoothing treatment is what it lacked. This is the last substantively different discipline object available and could add an independent channel for the final generation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Triple anchor cheapness with persistent restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Enterprise-value cheapness adds real information about mispriced disciplined allocators but is too volatile to carry a full half of the valuation weight; entering it as a minority anchor alongside earnings yield and capacity-to-price should capture its alpha contribution without importing its leverage-driven instability.",
+      "expected_sign": "positive",
+      "reasoning": "Substituting the enterprise-value yield for the earnings yield raised alpha from 4.6% to 5.2% but cut the alpha t-statistic from 4.82 to 3.80, the classic signature of a leg that adds return and noise in similar proportion. Down-weighting it via nesting is the natural way to keep the magnitude gain while preserving the reliability of the proven core.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Partially cash netted cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), SUMRANK(IND_ZSCORE(RATIO(ib, SUB(MUL(prcc_f, csho), che))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "Disciplined non-investors accumulate cash, which inflates their market capitalization and understates their cheapness, but fully netting cash overweights cash-heavy firms; averaging the raw and cash-netted earnings yields corrects the bias partially and should raise alpha without destabilizing the long leg.",
+      "expected_sign": "positive",
+      "reasoning": "The fully cash-netted yield produced the archive's largest alpha (5.3%) with a weaker t-statistic (3.70), and it collapsed when paired with any other refinement, indicating the correction is right in direction but too aggressive in magnitude. Blending both denominators is the direct test of that diagnosis and is the second-best candidate for a final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Rank robust enterprise cheapness with restraint",
+      "expression": "SUMRANK(SUMRANK(IND_RANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), IND_RANK(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)))",
+      "hypothesis": "The reliability loss in enterprise-value cheapness comes from within-industry standardization being dominated by a few extreme multiples; replacing z-scores with industry ranks bounds each firm's influence and should retain the 5% alpha with a materially higher t-statistic.",
+      "expected_sign": "positive",
+      "reasoning": "Flooring the enterprise-value denominator did not help, so the instability lives in the standardization of the valuation legs rather than in the ratio itself, and industry ranks are the natural bounded alternative to industry z-scores. This isolates the estimator choice, holding the economics and the discipline leg exactly fixed.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Discipline weighted dual horizon restraint",
+      "expression": "SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)), SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 3)), SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho))))))",
+      "hypothesis": "Since the investment-discipline half has been the source of nearly every improvement, tilting the composite toward it \u2014 using two persistence horizons of the same own-norm deviation \u2014 should improve the signal relative to the equal-weight valuation-discipline split.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has never varied the relative weight of the two themes, yet the discipline leg drove the jump from roughly 3% to 4.6% alpha while valuation refinements moved it by tenths of a point, suggesting the equal split may under-weight the more informative half. Using two-year and three-year averages rather than duplicating one measure diversifies the estimation noise while raising the discipline weight to three-quarters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual cheapness with asset scaled restraint",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), NEG(MA(SUB(RATIO(capx, at), MA(RATIO(capx, at), 5)), 2)))",
+      "hypothesis": "If the mechanism is a departure from the firm's own established spending policy, the deflator should not matter much, and scaling capital expenditure by total assets rather than gross plant extends the signal to asset-light firms whose gross plant is small or erratically reported.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-plant scaling was adopted early and never revisited against total assets in the smoothed-deviation form, and the asset deflator is available for more firms, so a comparable result would deliver the same economics with broader coverage and less dependence on capital-intensive industries. A materially worse result would confirm that the productive-capacity base is the economically correct benchmark and should be documented as such.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap with restraint and no debt funded expansion",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(ib, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(ppent, MUL(prcc_f, csho)))), SUMRANK(NEG(MA(SUB(RATIO(capx, ppegt), MA(RATIO(capx, ppegt), 5)), 2)), NEG(RATIO(DELTA(ADD(dltt, dlc), 1), at))))",
+      "hypothesis": "True capital discipline means restraining spending and not levering up to fund it; a cheap firm that is both spending below its own norm and reducing borrowings is deleveraging into value, while an expensive firm expanding on new debt is the most vulnerable empire builder.",
+      "expected_sign": "positive",
+      "reasoning": "Equity issuance and acquisition flows both failed as discipline legs, but debt-financed expansion has never been tested and is the funding channel most tightly linked to fixed capital spending, so it is the one remaining chance to add an independent financing dimension. Because prior leg-stacking diluted composites, this is framed as a diagnostic: only if alpha and its t-statistic both exceed the 4.6% and 4.82 benchmark should the financing channel enter the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "investment",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_invest"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "BM discipline rank composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(growth(at,1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash yield per unit of reinvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ratio(oancf,mul(prcc_f,csho)),ma(ratio(capx,ppent),3)),1)",
+        "variables": [
+          "capx",
+          "csho",
+          "oancf",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value conditioned on capex deceleration",
+      "metadata": {
+        "normalized_expression": "mul(zscore(ratio(ceq,mul(prcc_f,csho))),sign(sub(ma(ratio(capx,at),3),ratio(capx,at))))",
+        "variables": [
+          "at",
+          "capx",
+          "ceq",
+          "csho",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensive empire builder short",
+      "metadata": {
+        "normalized_expression": "neg(mul(rank(ratio(mul(prcc_f,csho),ceq)),rank(growth(ppegt,1))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EV yield versus externally financed expansion",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(add(aqc,sstk),at)))",
+        "variables": [
+          "aqc",
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings yield at investment-rate trough",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(ts_rank(ratio(capx,at),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive cheap and capex-trough",
+      "metadata": {
+        "normalized_expression": "min(ind_rank(ratio(ib,mul(prcc_f,csho))),ind_rank(neg(ts_rank(ratio(capx,at),5))))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry free cash flow yield",
+      "metadata": {
+        "normalized_expression": "ind_zscore(ratio(sub(oancf,capx),mul(prcc_f,csho)))",
+        "variables": [
+          "capx",
+          "csho",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with dual capital restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),sumrank(neg(ts_rank(ratio(capx,at),5)),neg(growth(ppegt,1))))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap sales with headcount restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sale,mul(prcc_f,csho))),neg(growth(emp,1)))",
+        "variables": [
+          "csho",
+          "emp",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap without inventory overbuild",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(growth(invt,1),growth(sale,1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "invt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EV cheap with sustained external-finance abstention",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),neg(ratio(ts_sum(add(aqc,sstk),3),at)))",
+        "variables": [
+          "aqc",
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with capacity not outrunning demand",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(growth(ppent,1),growth(sale,1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "ppent",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with self-funded capital budget",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(ind_zscore(ratio(sub(capx,ebitda),at))))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ebitda",
+          "ib",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout yield with capex restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(dvc,mul(prcc_f,csho))),neg(ts_rank(ratio(capx,at),5)))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "dvc",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Value gated on disciplined investment state",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(ib,mul(prcc_f,csho))),indicator(neg(ts_rank(ratio(capx,at),5)),-0.5))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with capex below own norm",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with dual benchmark-relative discipline",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),sumrank(neg(ts_rank(ratio(capx,at),5)),neg(sub(growth(invt,1),growth(sale,1)))))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "invt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with standardized capex surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(ratio(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),vol(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with firm-specific capex retrenchment",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(ind_zscore(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with total investment below norm",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(ratio(add(capx,aqc),ppegt),ma(ratio(add(capx,aqc),ppegt),5))))",
+        "variables": [
+          "aqc",
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capacity cheapness with spending restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ppent,mul(prcc_f,csho))),neg(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with stable capital budget",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(vol(ratio(capx,ppegt),5)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with sustained spending restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ts_sum(indicator(sub(ma(ratio(capx,ppegt),5),ratio(capx,ppegt)),0),3))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with capex above strictly past norm",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(ratio(capx,ppegt),ma(lag(ratio(capx,ppegt),1),4))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap versus overspenders only",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(mul(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),indicator(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),0))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed earnings yield with capex surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ma(ib,3),mul(prcc_f,csho))),neg(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with capex restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with inventory intensity at own norm",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(ratio(invt,sale),ma(ratio(invt,sale),5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "invt",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap without intangible asset buildup",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),neg(sub(ratio(intan,at),ma(ratio(intan,at),5))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "intan",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with past-norm capex surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(sub(ratio(capx,ppegt),ma(lag(ratio(capx,ppegt),1),4))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cyclically adjusted dual cheapness with past-norm surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ma(ib,3),mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(sub(ratio(capx,ppegt),ma(lag(ratio(capx,ppegt),1),4))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with standardized past-norm surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ratio(sub(ratio(capx,ppegt),ma(lag(ratio(capx,ppegt),1),4)),vol(ratio(capx,ppegt),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with demand-scaled capex norm",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(sub(ratio(capx,sale),ma(ratio(capx,sale),5))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppent",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with abnormal capacity growth",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(sub(growth(ppegt,1),ma(growth(ppegt,1),5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with persistent capex deviation",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness persistent past-norm surprise",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(lag(ratio(capx,ppegt),1),4)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness three-year stance deviation",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),3)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Triple cheapness persistent capex restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),sumrank(ind_zscore(ratio(ppent,mul(prcc_f,csho))),ind_zscore(ratio(sale,mul(prcc_f,csho))))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with capex near maintenance need",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ratio(sub(capx,delta(sub(ppegt,ppent),1)),ppegt)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross capacity cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppegt,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with total real investment restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(add(capx,delta(invt,1)),ppegt),ma(ratio(add(capx,delta(invt,1)),ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "invt",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness blended horizon deviation",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),sumrank(neg(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness proportional capex deviation",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(log(ratio(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with peer-purged persistent deviation",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ind_zscore(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Book and earnings cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ceq,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "ceq",
+          "csho",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-adjusted cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,sub(mul(prcc_f,csho),che))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Whole firm cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),ind_zscore(ratio(ppent,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-adjusted cheapness proportional restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,sub(mul(prcc_f,csho),che))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(log(ratio(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating cheapness proportional restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(log(ratio(ratio(capx,ppegt),ma(ratio(capx,ppegt),5))),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash and leverage aware dual cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,sub(mul(prcc_f,csho),che))),ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ib",
+          "ppegt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Floored enterprise cheapness with restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ebitda,max(add(mul(prcc_f,csho),sub(add(dltt,dlc),che)),mul(prcc_f,csho)))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with reinvestment rate below norm",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ebitda),ma(ratio(capx,ebitda),5)),2)))",
+        "variables": [
+          "capx",
+          "csho",
+          "ebitda",
+          "ib",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Triple anchor cheapness with persistent restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),sumrank(ind_zscore(ratio(ppent,mul(prcc_f,csho))),ind_zscore(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Partially cash netted cheapness with restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),sumrank(ind_zscore(ratio(ib,sub(mul(prcc_f,csho),che))),ind_zscore(ratio(ppent,mul(prcc_f,csho))))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rank robust enterprise cheapness with restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_rank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),ind_rank(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)))",
+        "variables": [
+          "capx",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discipline weighted dual horizon restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)),sumrank(neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),3)),sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho))))))",
+        "variables": [
+          "capx",
+          "csho",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual cheapness with asset scaled restraint",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),neg(ma(sub(ratio(capx,at),ma(ratio(capx,at),5)),2)))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "ib",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap with restraint and no debt funded expansion",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(ib,mul(prcc_f,csho))),ind_zscore(ratio(ppent,mul(prcc_f,csho)))),sumrank(neg(ma(sub(ratio(capx,ppegt),ma(ratio(capx,ppegt),5)),2)),neg(ratio(delta(add(dltt,dlc),1),at))))",
+        "variables": [
+          "at",
+          "capx",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "ppegt",
+          "ppent",
+          "prcc_f"
+        ]
+      }
+    }
+  ]
+}

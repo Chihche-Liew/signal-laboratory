@@ -1,0 +1,3370 @@
+{
+  "pair": "value_finance",
+  "evaluated": [
+    {
+      "name": "Rich Sales Multiple Issuance",
+      "expression": "MUL(RANK(RATIO(MUL(prcc_f,csho),sale)),RANK(RATIO(sstk,at)))",
+      "hypothesis": "Equity issuance is especially bearish when the firm already trades at a high price-to-sales multiple.",
+      "expected_sign": "negative",
+      "reasoning": "A high sales multiple indicates optimistic market pricing relative to the firm\u2019s revenue base. When management issues stock under that condition, the financing action may reveal that insiders view the valuation as favorable to sellers rather than buyers.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.4078180906046525,
+      "ls_alpha": 0.02195579118474196,
+      "ls_talpha": 1.864437372242517,
+      "ls_sharpe": -0.30658202420697883,
+      "coverage": 0.12299585530122739,
+      "error": null
+    },
+    {
+      "name": "DeRated Buyback Conviction",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(MUL(prcc_f,csho),ceq),1))),RANK(RATIO(prstkc,MUL(prcc_f,csho))))",
+      "hypothesis": "Repurchases following a decline in market-to-book are more informative than repurchases made after valuation expansion.",
+      "expected_sign": "positive",
+      "reasoning": "A falling valuation multiple can indicate that the market has marked down the firm, potentially creating undervaluation. If management responds by buying back shares, the repurchase is more likely to be a valuation-sensitive signal rather than routine capital return.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3494693982189636,
+      "ls_alpha": -0.009562778486642092,
+      "ls_talpha": -0.7457489863639358,
+      "ls_sharpe": 0.06072790040664862,
+      "coverage": 0.11082183449766267,
+      "error": null
+    },
+    {
+      "name": "Thresholded Equity Timing Confirmation",
+      "expression": "WINSOR(SUB(MUL(RATIO(prstkc,MUL(prcc_f,csho)),INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1)),MUL(RATIO(sstk,MUL(prcc_f,csho)),INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2))),1)",
+      "hypothesis": "Repurchases are most bullish when the firm trades below book value, while equity issuance is most bearish when the firm trades at a rich price-to-book multiple.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior mechanical inverse-rank spread by activating financing flows only in valuation regions where managerial timing is economically informative. Below-book buybacks suggest management is retiring underpriced equity, while issuance above two times book suggests opportunistic sale of overvalued shares.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.838563607204903,
+      "ls_alpha": -0.010384618225316864,
+      "ls_talpha": -0.9778723004498995,
+      "ls_sharpe": 0.17758987402278056,
+      "coverage": 0.1185684321052775,
+      "error": null
+    },
+    {
+      "name": "Cashflow-Cheap Buyback Step-Up",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(oancf,MUL(prcc_f,csho)),0.1),DELTA(RATIO(prstkc,at),1)),1)",
+      "hypothesis": "An increase in repurchase intensity is especially bullish when the firm already has a high operating-cash-flow yield.",
+      "expected_sign": "positive",
+      "reasoning": "The signal is not a static cash-flow-to-price times net-issuance product; it asks whether management is increasing repurchases after the market prices operating cash flows cheaply. The change in buyback activity helps distinguish fresh undervaluation confirmation from routine capital return.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.8411612896452856,
+      "ls_alpha": 0.012805815628143131,
+      "ls_talpha": 0.8747013464790275,
+      "ls_sharpe": -0.11517680567687881,
+      "coverage": 0.07585934810764496,
+      "error": null
+    },
+    {
+      "name": "Self-Funded Value Repurchase",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),0.8),MUL(RATIO(prstkc,at),NEG(DELTA(RATIO(ADD(dltt,dlc),at),1)))),1)",
+      "hypothesis": "Cheap firms that repurchase shares while reducing, rather than expanding, debt should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This revision aligns with the external-financing anomaly by rewarding buybacks accompanied by deleveraging and penalizing cheap-firm repurchases funded through higher leverage. It uses changes in total debt from broad balance-sheet items instead of sparse dltis/dltr flow fields.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.8167876717533268,
+      "ls_alpha": -0.018108039109134194,
+      "ls_talpha": -0.9215168403169188,
+      "ls_sharpe": -0.2550837061222419,
+      "coverage": 0.11071560647071595,
+      "error": null
+    },
+    {
+      "name": "Valuation-Peak Issuance Acceleration",
+      "expression": "WINSOR(MUL(INDICATOR(TS_RANK(NEG(RATIO(ebitda,MUL(prcc_f,csho))),5),0.8),DELTA(RATIO(sstk,at),1)),1)",
+      "hypothesis": "Rising equity issuance is most bearish when EBITDA yield is near the firm\u2019s own historical low.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids smoothed share-count growth and instead focuses on actual equity sale proceeds accelerating at a firm-specific valuation extreme. The mechanism is opportunistic financing at a temporarily rich valuation, distinct from a generic value-times-net-issuance construction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.016569576890014454,
+      "ls_alpha": -0.007918131302965632,
+      "ls_talpha": -0.7629482946424296,
+      "ls_sharpe": -0.012180203346609424,
+      "coverage": 0.11137603627787725,
+      "error": null
+    },
+    {
+      "name": "Effective Discount Retirement",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(prstkc,at),NEG(GROWTH(csho,1)))),1)",
+      "hypothesis": "Cheap firms that spend on repurchases and actually reduce shares outstanding should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Reported repurchases can be offset by option issuance or stock-based compensation, so the financing signal is stronger when buyback spending leads to a falling share count. Conditioning this effective retirement on below-book valuation targets the cases where shrinking the equity base most plausibly transfers value to remaining shareholders.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.42549484564897017,
+      "ls_alpha": -0.015137439850655847,
+      "ls_talpha": -0.8195388010433582,
+      "ls_sharpe": -0.23656702077578706,
+      "coverage": 0.11126366879721189,
+      "error": null
+    },
+    {
+      "name": "Distressed Value Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(sstk,at),INDICATOR(NEG(RATIO(oancf,at)),0))),1)",
+      "hypothesis": "Cheap firms issuing equity while operating cash flow is negative should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Equity issuance by a below-book firm is unlikely to be favorable market timing; it more likely reflects financing pressure or distress. The interaction distinguishes cheap firms with managerial confirmation from cheap firms forced to dilute shareholders at depressed valuations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.7344082243622833,
+      "ls_alpha": 0.08548463675243945,
+      "ls_talpha": 2.3462028837113222,
+      "ls_sharpe": -1.4349307359641663,
+      "coverage": 0.08916942580939669,
+      "error": null
+    },
+    {
+      "name": "Earnings-Yield Payout Switch",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ib,MUL(prcc_f,csho)),0.06),RATIO(SUB(prstkc,dvc),at)),1)",
+      "hypothesis": "Repurchases are more bullish when profitable cheap firms choose buybacks over ordinary dividends.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the failed operating-cash-flow-yield gate and tests whether discretionary payout form matters when shares look cheap on earnings. A high earnings-yield firm that shifts payout toward repurchases rather than dividends is more likely making a valuation-sensitive capital-allocation decision.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.09841502210193677,
+      "ls_alpha": 0.01826088474678901,
+      "ls_talpha": 1.1946444442244561,
+      "ls_sharpe": 0.0769196582804021,
+      "coverage": 0.12075402603706208,
+      "error": null
+    },
+    {
+      "name": "Book-Accretive Repurchase Yield",
+      "expression": "WINSOR(MUL(RATIO(prstkc,at),RATIO(SUB(RATIO(ceq,csho),prcc_f),prcc_f)),1)",
+      "hypothesis": "Repurchases should be most bullish when the stock price is below book value per share, making the buyback book-accretive for remaining shareholders.",
+      "expected_sign": "positive",
+      "reasoning": "This is not another own-history de-rating signal; it directly measures whether repurchase dollars are deployed at a price below accounting book value per share. The financing action and valuation gap interact mechanically in the shareholder-accretion channel, so larger positive values represent more repurchase intensity at deeper discounts.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.43717995080780586,
+      "ls_alpha": 0.004230514106259017,
+      "ls_talpha": 0.44548349571891505,
+      "ls_sharpe": -0.13065781202042587,
+      "coverage": 0.12084317709610237,
+      "error": null
+    },
+    {
+      "name": "Cash-Rich Rich Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),sale),2),MUL(RATIO(sstk,at),LAG(RATIO(che,at),1))),1)",
+      "hypothesis": "Expensive firms issuing equity despite already high cash balances should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the mechanical leverage-denominator problem by using lagged cash holdings rather than contemporaneous debt-to-assets changes. If a richly valued firm sells equity even though it entered the period cash-rich, the issuance is more plausibly opportunistic market timing than necessary financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.0154138294728092,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.11320745079975929,
+      "error": null
+    },
+    {
+      "name": "Rich Issuer Margin Fade",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),sale),2),MUL(RATIO(sstk,at),NEG(DELTA(RATIO(ebitda,sale),1)))),1)",
+      "hypothesis": "Expensive firms issuing equity while EBITDA margins deteriorate should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This retains the useful idea that high price-to-sales issuers are most suspect when fundamentals are weakening, but removes the asset-denominator mechanical link to issuance. EBITDA margin deterioration is a more independent operating signal, making the interaction closer to overvaluation plus opportunistic dilution rather than disguised issuance intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.3157841970947053,
+      "ls_alpha": -0.008692416573040335,
+      "ls_talpha": -0.9177948948757907,
+      "ls_sharpe": 0.1787081397082649,
+      "coverage": 0.1119571691071769,
+      "error": null
+    },
+    {
+      "name": "Rich Net Issuance Switch",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2),DELTA(RATIO(SUB(sstk,prstkc),MUL(prcc_f,csho)),1)),1)",
+      "hypothesis": "A shift toward net equity issuance is especially bearish when the firm trades at a high market-to-book ratio.",
+      "expected_sign": "negative",
+      "reasoning": "This focuses on a change in financing stance rather than the static net-issuance anomaly. If management moves from repurchasing or neutral issuance toward selling equity while valuation is rich, the action is consistent with opportunistic market timing and future overvaluation correction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.6563262571483561,
+      "ls_alpha": 0.00866537927464304,
+      "ls_talpha": 1.0999394540398182,
+      "ls_sharpe": 0.15254006145739615,
+      "coverage": 0.1040145733089984,
+      "error": null
+    },
+    {
+      "name": "Expensive Buyback Dilution Camouflage",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2),MUL(RATIO(prstkc,MUL(prcc_f,csho)),GROWTH(csho,1))),1)",
+      "hypothesis": "Buybacks are bearish when expensive firms repurchase shares but the share count still rises.",
+      "expected_sign": "negative",
+      "reasoning": "Repurchases at rich valuations are unlikely to signal undervaluation, especially when they fail to reduce dilution. The interaction identifies firms using buybacks to offset stock issuance or compensation dilution rather than to retire undervalued equity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.0138162393117245,
+      "ls_alpha": 0.02286706751478299,
+      "ls_talpha": 2.317437793264752,
+      "ls_sharpe": -0.045493216536050624,
+      "coverage": 0.11126537133479772,
+      "error": null
+    },
+    {
+      "name": "Prior Multiple Runup Issuer",
+      "expression": "WINSOR(MUL(RATIO(sstk,LAG(at,1)),DELTA(LAG(RATIO(MUL(prcc_f,csho),sale),1),1)),1)",
+      "hypothesis": "Equity issuance is most bearish when it follows a prior expansion in the firm\u2019s valuation multiple.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cash-rich issuer recombination with a timing mechanism: management sells equity after the market has already bid up price-to-sales. Using the lagged valuation change and lagged asset scaler reduces mechanical contamination from the current-period issuance itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.571643025023146,
+      "ls_alpha": -0.009014667442123994,
+      "ls_talpha": -0.7153500318939001,
+      "ls_sharpe": -0.14976634871624628,
+      "coverage": 0.10302116842368546,
+      "error": null
+    },
+    {
+      "name": "Sales-Supported DeRating Buyback",
+      "expression": "WINSOR(MUL(RATIO(prstkc,LAG(at,1)),MUL(NEG(DELTA(LAG(RATIO(MUL(prcc_f,csho),sale),1),1)),INDICATOR(GROWTH(sale,1),0))),1)",
+      "hypothesis": "Buybacks should be most bullish when they follow a valuation de-rating that is not accompanied by sales contraction.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another static cheapness gate and asks whether managers repurchase after the market multiple has fallen while the operating scale is still growing. The positive-sales condition helps distinguish undervaluation from a deserved multiple decline due to business deterioration.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.6541732923205303,
+      "ls_alpha": -0.000645982862813704,
+      "ls_talpha": -0.06347298008441223,
+      "ls_sharpe": 0.032675859441651106,
+      "coverage": 0.100048692574955,
+      "error": null
+    },
+    {
+      "name": "Discounted NonDilutive Deleveraging",
+      "expression": "WINSOR(MUL(INDICATOR(LAG(RATIO(ceq,MUL(prcc_f,csho)),1),1),SUB(RATIO(NEG(DELTA(ADD(dltt,dlc),1)),LAG(at,1)),RATIO(sstk,LAG(at,1)))),1)",
+      "hypothesis": "Below-book firms that reduce interest-bearing debt without relying on equity issuance should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior total-liability shrinkage contamination by focusing on debt-bearing capital rather than payables and accruals. Subtracting equity issuance distinguishes genuine internal balance-sheet repair from dilutive recapitalization, making the cheapness signal more credible.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.1962935242346345,
+      "ls_alpha": -0.02418531984659025,
+      "ls_talpha": -1.9869545124980268,
+      "ls_sharpe": -0.11702415958203442,
+      "coverage": 0.1140886945725991,
+      "error": null
+    },
+    {
+      "name": "Rich Issuer Growth Deceleration",
+      "expression": "WINSOR(MUL(INDICATOR(LAG(RATIO(MUL(prcc_f,csho),sale),1),2),MUL(RATIO(sstk,LAG(at,1)),NEG(DELTA(GROWTH(sale,1),1)))),1)",
+      "hypothesis": "Expensive firms issuing equity while sales growth decelerates should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sparse dividend-cut channel with a broader operating-growth diagnostic that is not mechanically driven by the asset denominator. High price-to-sales issuance is less defensible when revenue growth is slowing, so the financing action is more likely to reflect opportunistic dilution at an overvalued price.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.114617798425012,
+      "ls_alpha": 0.004946643570571693,
+      "ls_talpha": 0.39405565179880087,
+      "ls_sharpe": 0.04473321238359812,
+      "coverage": 0.10340475530097976,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Equity Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(sstk,LAG(at,1))),1)",
+      "hypothesis": "Equity issuance should be most bearish when the firm is expensive relative to industry peers on price-to-sales.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the rich-issuer mechanism by removing broad industry valuation effects that can contaminate simple price-to-sales sorts. Scaling issuance by lagged assets avoids contemporaneous asset-denominator effects, while the industry-relative valuation term focuses on firm-specific overvaluation within comparable business models.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -1.9184920400786676,
+      "ls_alpha": -0.03168232089685197,
+      "ls_talpha": -3.2716305506573913,
+      "ls_sharpe": -0.13350190175988325,
+      "coverage": 0.1132165310002171,
+      "error": null
+    },
+    {
+      "name": "Continuous Distress Dilution Value",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(sstk,LAG(at,1)),NEG(RATIO(oancf,sale)))),1)",
+      "hypothesis": "Below-book firms issuing equity while operating cash flow is weak relative to sales should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the sparse triple-gate distress-issuer design by using a continuous cash-flow-margin severity term rather than a zero-one cash-burn flag. Equity issuance by cheap firms is most concerning when fundamentals suggest financing pressure rather than opportunistic market timing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.367345655153816,
+      "ls_alpha": -0.019485082650251055,
+      "ls_talpha": -1.472297229944761,
+      "ls_sharpe": -0.09303970633499158,
+      "coverage": 0.08070858788849844,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed Net Retirement",
+      "expression": "WINSOR(MUL(LAG(RATIO(che,MUL(prcc_f,csho)),1),RATIO(SUB(prstkc,sstk),LAG(at,1))),1)",
+      "hypothesis": "Net equity retirement should be most bullish when the firm entered the period with high cash relative to market value.",
+      "expected_sign": "positive",
+      "reasoning": "High cash-to-market value indicates a balance-sheet-backed form of cheapness, where repurchases may be funded from liquid resources rather than external financing. Using net repurchases penalizes firms that report buybacks while simultaneously issuing equity, focusing on genuine shareholder accretion.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.9792075831919322,
+      "ls_alpha": 0.007625533330913946,
+      "ls_talpha": 0.8020231892670976,
+      "ls_sharpe": 0.31044476793928594,
+      "coverage": 0.1086868007729727,
+      "error": null
+    },
+    {
+      "name": "Discounted Repurchase Payout Tilt",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),DELTA(RATIO(SUB(prstkc,dvc),LAG(at,1)),1)),1)",
+      "hypothesis": "High book-to-market firms should outperform when management shifts payout policy toward repurchases rather than cash dividends.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the hard below-book gate and avoids the change-in-net-issuance construct by focusing on payout form rather than dilution reversal. For cheap firms, an incremental tilt from dividends toward repurchases is more plausibly valuation-sensitive because managers choose the flexible payout channel when they believe shares are underpriced.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.195046624695577,
+      "ls_alpha": 0.011378089724529512,
+      "ls_talpha": 1.2960531471946402,
+      "ls_sharpe": 0.21319343049914366,
+      "coverage": 0.09877261485834475,
+      "error": null
+    },
+    {
+      "name": "Rich Uncovered Buyback",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RANK(SUB(RATIO(prstkc,LAG(at,1)),RATIO(oancf,LAG(at,1))))),1)",
+      "hypothesis": "Repurchases by expensive firms should be bearish when buyback spending is large relative to internally generated operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the debt-issuance leg with a cash-coverage mechanism, avoiding the documented debt-financing anomaly and the sparsity of a triple hard-gated product. A rich firm that repurchases more than its operating cash flow can support is less likely retiring undervalued shares and more likely engaging in value-destructive payout or EPS management.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.7209328655015688,
+      "ls_alpha": 0.039344597208623815,
+      "ls_talpha": 2.6487840432107492,
+      "ls_sharpe": 0.13019086572995783,
+      "coverage": 0.07709668019616535,
+      "error": null
+    },
+    {
+      "name": "Rich Issuer Accrual Gap",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RATIO(SUB(ib,oancf),sale))),1)",
+      "hypothesis": "Equity issuance by expensive firms should be most bearish when reported earnings exceed operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the mechanical cash-increase channel by using an operating accrual gap that is not directly created by the issuance proceeds. When a peer-rich firm sells equity while earnings quality is weak, issuance is more consistent with exploiting optimistic valuation before fundamentals are recognized by the market.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.6472086575317735,
+      "ls_alpha": 0.02111417843284271,
+      "ls_talpha": 1.6140350867820987,
+      "ls_sharpe": 0.05422635327713425,
+      "coverage": 0.08067180275823471,
+      "error": null
+    },
+    {
+      "name": "Net-Cash Retirement Conviction",
+      "expression": "WINSOR(MUL(RANK(LAG(RATIO(SUB(che,ADD(dltt,dlc)),MUL(prcc_f,csho)),1)),RATIO(SUB(prstkc,sstk),LAG(at,1))),1)",
+      "hypothesis": "Net equity retirement should be more bullish when the firm entered the period with a high net-cash position relative to market value.",
+      "expected_sign": "positive",
+      "reasoning": "This refines the cash-backed retirement idea by distinguishing liquid balance-sheet support from cash that is offset by debt. Ranking the lagged net-cash-to-market measure avoids sign-pathology from levered firms while preserving the idea that buybacks funded from excess liquidity are more credible undervaluation signals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.1998113271134487,
+      "ls_alpha": 0.00814169960972525,
+      "ls_talpha": 0.8355946500005674,
+      "ls_sharpe": 0.3663856790962698,
+      "coverage": 0.10829779673063256,
+      "error": null
+    },
+    {
+      "name": "Profitless Peer-Rich Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),0),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(RATIO(ebitda,sale))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when operating margins are weak.",
+      "expected_sign": "negative",
+      "reasoning": "High price-to-sales can be justified for firms with strong scalable margins, so conditioning on weak EBITDA margin targets overvaluation that is less fundamentally supported. The margin term is independent of the issuance proceeds and avoids the prior asset-denominator mechanical problem.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -5.207032342718516,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.11266717887251976,
+      "error": null
+    },
+    {
+      "name": "Persistent Sales-Yield Retirement",
+      "expression": "WINSOR(MUL(RATIO(sale,MUL(prcc_f,csho)),RATIO(TS_SUM(SUB(prstkc,sstk),3),LAG(at,1))),1)",
+      "hypothesis": "Sustained net equity retirement should be most bullish for firms that are cheap relative to their sales base.",
+      "expected_sign": "positive",
+      "reasoning": "A multi-year net retirement measure filters out one-off buybacks and focuses on persistent reductions in the equity base. Interacting it with sales yield captures management repeatedly retiring shares when the market price is low relative to operating scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.0700936317382235,
+      "ls_alpha": 0.006993624419465841,
+      "ls_talpha": 0.6911515763636635,
+      "ls_sharpe": 0.36856885101388037,
+      "coverage": 0.11348197208746379,
+      "error": null
+    },
+    {
+      "name": "Peer-Weighted Gross Timing Spread",
+      "expression": "WINSOR(SUB(MUL(RATIO(prstkc,LAG(at,1)),RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))))),MUL(RATIO(sstk,LAG(at,1)),RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))))),1)",
+      "hypothesis": "Firms should outperform when gross repurchases occur at peer-cheap valuations and underperform when gross issuance occurs at peer-rich valuations.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the algebraic collapse by using gross repurchase and gross issuance legs rather than signed net equity flow in both branches. Continuous industry-relative valuation weights avoid an all-zero hard gate while still giving the long side to cheap repurchasers and the short side to rich issuers.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.294441293130944,
+      "ls_alpha": -0.007719883616341858,
+      "ls_talpha": -0.7952769832427748,
+      "ls_sharpe": 0.26912583858771355,
+      "coverage": 0.10756333233451128,
+      "error": null
+    },
+    {
+      "name": "Cashflow-Surplus Peer-Rich Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(LAG(RATIO(oancf,sale),1)))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be especially bearish when the firm already had strong operating cash flow relative to sales.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces noisy issuance acceleration with a financing-need diagnostic: firms with strong prior cash-flow margins have less fundamental need to sell equity. If such firms issue while trading rich relative to peers, the action is more likely opportunistic market timing than necessary financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.2897500827197956,
+      "ls_alpha": -0.02585657629071321,
+      "ls_talpha": -2.338615842110597,
+      "ls_sharpe": -0.13784172094273248,
+      "coverage": 0.07737563840000264,
+      "error": null
+    },
+    {
+      "name": "Book-Discount Equity Sale Dilution",
+      "expression": "WINSOR(MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(LAG(RATIO(ceq,csho),1),prcc_f))),1)",
+      "hypothesis": "Equity issuance should be most bearish when shares are sold at a low price relative to lagged book value per share.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the prior cheapness \u00d7 issuance \u00d7 weak-profitability distress template and focuses on the accounting dilution channel. Selling equity when the market price is low relative to book value per share suggests forced financing at unfavorable terms rather than value-enhancing capital raising.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.6618963021565591,
+      "ls_alpha": 0.05201082180974728,
+      "ls_talpha": 2.774221567947566,
+      "ls_sharpe": 0.07378239123631078,
+      "coverage": 0.11495440913897412,
+      "error": null
+    },
+    {
+      "name": "Lagged Peer-EV Rich Issuer",
+      "expression": "WINSOR(MUL(LAG(IND_ZSCORE(RATIO(SUB(ADD(MUL(prcc_f,csho),ADD(dltt,dlc)),che),sale)),1),RATIO(sstk,LAG(at,1))),1)",
+      "hypothesis": "Equity issuance should be especially bearish when the firm had a high enterprise-value-to-sales multiple relative to peers.",
+      "expected_sign": "negative",
+      "reasoning": "Enterprise-value-to-sales focuses on operating-asset valuation rather than equity value alone, so it can distinguish expensive operating businesses from firms that only look rich because of cash balances or leverage structure. If management issues equity after the whole enterprise trades rich relative to peers, the action is more consistent with opportunistic financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.6178230738326043,
+      "ls_alpha": -0.024636809453450488,
+      "ls_talpha": -2.280551938087892,
+      "ls_sharpe": -0.1397421313367557,
+      "coverage": 0.11204116096141162,
+      "error": null
+    },
+    {
+      "name": "Smoothed Value Repurchase Tilt",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),MA(RATIO(SUB(prstkc,dvc),LAG(at,1)),3)),1)",
+      "hypothesis": "High book-to-market firms should outperform when they persistently tilt payout toward repurchases rather than dividends.",
+      "expected_sign": "positive",
+      "reasoning": "The prior payout-tilt evidence was directionally useful but may have been noisy because annual changes in repurchases are lumpy. Smoothing the repurchase-minus-dividend tilt tests whether sustained discretionary repurchase preference among value firms is a more reliable signal of management-confirmed cheapness.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.17365800448326352,
+      "ls_alpha": 0.025159898094345556,
+      "ls_talpha": 1.7821746838285204,
+      "ls_sharpe": 0.10476079497336403,
+      "coverage": 0.11444096507672356,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Equity Debt Takeout",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MIN(RATIO(sstk,LAG(at,1)),RATIO(dltr,LAG(at,1)))),1)",
+      "hypothesis": "Equity issuance should be bearish when peer-expensive firms use equity capital to retire debt.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cosmetic lagged-valuation variant with a distinct use-of-proceeds mechanism. Using the actual debt-retirement flow avoids the mechanical leverage-ratio problem, while the MIN term requires both equity issuance and debt takeout rather than merely rewarding a generic issuance level.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.4555354652851658,
+      "ls_alpha": 0.011357014850358869,
+      "ls_talpha": 1.2762665662478718,
+      "ls_sharpe": 0.04269637018369844,
+      "coverage": 0.11049618549033495,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Roundtrip Equity Flow",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Peer-expensive firms that both issue and repurchase equity should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the incoherent MIN-of-ranks dilution construction by using gross equity flows directly: the signal is high only when issuance and repurchases coexist. At rich valuations, simultaneous issuance and buybacks can indicate dilution camouflage, option-compensation recycling, or EPS management rather than genuine undervaluation-driven repurchases.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -5.632134441892258,
+      "ls_alpha": -0.024703032321382153,
+      "ls_talpha": -3.0396320209953185,
+      "ls_sharpe": -0.370479986687838,
+      "coverage": 0.10756333233451128,
+      "error": null
+    },
+    {
+      "name": "Peer-Cheap Sales-Per-Share Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),GROWTH(RATIO(sale,csho),1))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms also generate rising sales per share.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from a pure share-shrinkage anomaly by requiring evidence that repurchases are associated with operating-scale accretion per share. A cheap firm buying back stock while sales per share rises is more likely creating value for remaining shareholders than simply shrinking because the business is contracting.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.9651093558630537,
+      "ls_alpha": 0.014716949601859087,
+      "ls_talpha": 1.2424220313165883,
+      "ls_sharpe": 0.20591182085319384,
+      "coverage": 0.10912053512097716,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Issuance Book Leakage",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),SUB(RATIO(sstk,LAG(at,1)),RATIO(DELTA(ceq,1),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms is most bearish when the proceeds do not translate into higher book equity.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the weak positive-side net-cash retirement stack and focuses on a portfolio-stronger rich-issuer mechanism with an independent use-of-proceeds diagnostic. If issuance exceeds the contemporaneous increase in common equity, losses, payouts, or other drains are absorbing capital, making the equity sale look more like opportunistic dilution than productive financing.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.7645148584921301,
+      "ls_alpha": 0.025609817731539638,
+      "ls_talpha": 2.6642640639142856,
+      "ls_sharpe": 0.13482537781426526,
+      "coverage": 0.11320327184386678,
+      "error": null
+    },
+    {
+      "name": "Runup Roundtrip Equity Churn",
+      "expression": "WINSOR(MUL(DELTA(LAG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),1),1),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Firms that both issue and repurchase equity after a prior peer-relative valuation runup should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests a timing version of the roundtrip mechanism: gross equity churn is most suspect after the market has recently repriced the firm upward relative to peers. Using the lagged change in industry-relative valuation reduces simultaneity with the financing flows.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.7779747381472537,
+      "ls_alpha": -0.009142981112869063,
+      "ls_talpha": -0.9763053934413661,
+      "ls_sharpe": -0.1091339986024667,
+      "coverage": 0.09788316794986408,
+      "error": null
+    },
+    {
+      "name": "Peer-EV External Finance Overload",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(SUB(ADD(MUL(prcc_f,csho),ADD(dltt,dlc)),che),sale)),SUMRANK(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1)))),1)",
+      "hypothesis": "Broad external financing should be most bearish when the firm is already expensive on an enterprise-value basis relative to peers.",
+      "expected_sign": "negative",
+      "reasoning": "Expensive firms raising both equity-like and debt capital may be exploiting favorable capital-market conditions or funding low-return expansion. SUMRANK provides a continuous external-financing intensity measure without requiring a sparse triple interaction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.3940085567229008,
+      "ls_alpha": -0.012970089230619706,
+      "ls_talpha": -1.3766336001640853,
+      "ls_sharpe": -0.032219040304296245,
+      "coverage": 0.10946723368391162,
+      "error": null
+    },
+    {
+      "name": "Peer-Cheap Covered Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),RATIO(MIN(prstkc,LAG(oancf,1)),LAG(at,1))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms can cover the buyback with internally generated cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes value-confirming buybacks from repurchases funded by balance-sheet strain or external financing. The MIN term rewards repurchases only to the extent they are supported by prior operating cash flow, while negative cash flow naturally weakens or reverses the signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.668780944863353,
+      "ls_alpha": 0.02687291745346232,
+      "ls_talpha": 1.598362158498827,
+      "ls_sharpe": 0.21044928473052035,
+      "coverage": 0.07428517153736874,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Net-Dilutive Roundtrip",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(RATIO(SUB(sstk,prstkc),LAG(at,1))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms are also net issuers.",
+      "expected_sign": "negative",
+      "reasoning": "This is not an EV/S denominator swap; it refines the strong roundtrip result by distinguishing neutral churn from roundtrip activity that still leaves shareholders diluted. At rich peer-relative valuations, simultaneous issuance and repurchases are especially suspect when issuance dominates repurchase, consistent with dilution camouflage or opportunistic equity sale.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -5.482003625112432,
+      "ls_alpha": -0.017987644611249225,
+      "ls_talpha": -2.3656101123701236,
+      "ls_sharpe": -0.3166288275768981,
+      "coverage": 0.10756333233451128,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Equity-Funded Payout",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,ADD(prstkc,dvc)),LAG(at,1))),1)",
+      "hypothesis": "Expensive firms issuing equity while simultaneously distributing cash to shareholders should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cash-flow-surplus scaling variant with a use-of-proceeds mechanism: the firm raises equity while still paying out through repurchases or dividends. For peer-rich firms, that combination suggests management may be exploiting overvaluation to fund shareholder distributions rather than financing productive investment.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -4.364541372819234,
+      "ls_alpha": -0.01569967851137489,
+      "ls_talpha": -1.8901187457174655,
+      "ls_sharpe": -0.2227492702473999,
+      "coverage": 0.1074895557057916,
+      "error": null
+    },
+    {
+      "name": "Peer-Cheap EBITDA-Per-Share Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),RATIO(DELTA(RATIO(ebitda,csho),1),prcc_f))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms also show improving operating earnings per share.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the failed smoothed payout-tilt template and asks whether buybacks are accompanied by operating per-share accretion. A cheap firm repurchasing shares while EBITDA per share rises is more likely confirming undervaluation than merely reallocating payout form.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.0049494972900517,
+      "ls_alpha": 0.011986071384935664,
+      "ls_talpha": 1.254207288360512,
+      "ls_sharpe": 0.2415931998660982,
+      "coverage": 0.10888935115363947,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Roundtrip Sales Fade",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(NEG(GROWTH(sale,1))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms also show weak or declining sales growth.",
+      "expected_sign": "negative",
+      "reasoning": "High price-to-sales can be defensible for firms with strong revenue growth, which may dilute the signal from valuation alone. When a peer-rich firm is churning equity while sales growth fades, the financing behavior is less likely to support genuine expansion and more likely to reflect opportunistic dilution or earnings-management optics.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -5.654181342741265,
+      "ls_alpha": -0.020286338626461186,
+      "ls_talpha": -2.5330356030455925,
+      "ls_sharpe": -0.30911018915377214,
+      "coverage": 0.10699293065120721,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Cash-Deficit External Finance",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(SUMRANK(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1))),RANK(NEG(LAG(RATIO(oancf,at),1))))),1)",
+      "hypothesis": "Broad external financing should be most bearish for peer-expensive firms with weak internal cash generation.",
+      "expected_sign": "negative",
+      "reasoning": "External financing by rich firms can reflect market timing, but it is particularly concerning when prior operating cash flow is weak and the firm must rely on capital markets. Combining equity and debt issuance captures a broader financing-pressure channel while the valuation leg identifies firms where outside capital may be raised at overly favorable prices.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.4145720235248844,
+      "ls_alpha": 0.0006993825243838707,
+      "ls_talpha": 0.06478337819758331,
+      "ls_sharpe": 0.06082744326171103,
+      "coverage": 0.07530664249682399,
+      "error": null
+    },
+    {
+      "name": "Peer-Cheap Cashflow-Backed Net Retirement",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(SUB(prstkc,sstk),LAG(at,1)),RANK(LAG(RATIO(oancf,at),1)))),1)",
+      "hypothesis": "Net equity retirement should be most bullish when peer-cheap firms have strong operating cash flow to fund it.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes buybacks funded by internal operating strength from repurchases that may be financed by leverage or offset by equity issuance. Cheap firms retiring net equity while entering with high cash-flow generation provide a more credible management-confirmed undervaluation signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.4157981765203043,
+      "ls_alpha": -0.005022149133754299,
+      "ls_talpha": -0.4183479488379797,
+      "ls_sharpe": 0.15473048982847568,
+      "coverage": 0.07280298358877588,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Wash Churn",
+      "expression": "WINSOR(MUL(RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(NEG(ABS(GROWTH(csho,1)))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms churn equity without materially changing the share count.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces cosmetic smoothing with a different roundtrip mechanism: high gross issuance and repurchases that leave shares roughly unchanged. At rich peer-relative valuations, this looks less like capital allocation and more like compensation recycling, dilution camouflage, or EPS-management optics.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.5014035596669313,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.107545481485884,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Dividend-Coverage Issuer",
+      "expression": "WINSOR(MUL(RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))),MUL(RATIO(sstk,LAG(at,1)),MUL(RANK(RATIO(dvc,LAG(at,1))),RANK(SUB(RATIO(dvc,LAG(at,1)),RATIO(LAG(oancf,1),LAG(at,1))))))),1)",
+      "hypothesis": "Expensive firms issuing equity while paying large dividends that are poorly covered by prior operating cash flow should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the prior MIN(sstk,dvc) collapse by separately requiring equity issuance, material dividends, and weak dividend coverage. The mechanism is not merely \u201cissuer that pays dividends,\u201d but a peer-rich firm raising equity while shareholder distributions appear strained relative to internal cash generation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.8486016129792612,
+      "ls_alpha": 0.012544703096800329,
+      "ls_talpha": 0.7614691747849377,
+      "ls_sharpe": -0.16034788835356012,
+      "coverage": 0.07777300035412782,
+      "error": null
+    },
+    {
+      "name": "Peer-Cheap Buyback Accretion Gap",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),RANK(SUB(GROWTH(RATIO(sale,csho),1),GROWTH(sale,1))))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms improve sales per share beyond what is explained by total sales growth.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the sign inconsistency by using gross repurchase intensity and a ranked accretion gap rather than multiplying two potentially negative terms. The signal targets cheap firms where buybacks plausibly enhance per-share operating scale, not net issuers with deteriorating fundamentals.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.951034575331905,
+      "ls_alpha": -0.011791492437028504,
+      "ls_talpha": -0.4256842930357333,
+      "ls_sharpe": 0.12522245878153634,
+      "coverage": 0.10912053512097716,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Underlevered Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(LAG(RATIO(ADD(dltt,dlc),at),1))))),1)",
+      "hypothesis": "Equity issuance should be especially bearish when peer-expensive firms had low prior debt usage.",
+      "expected_sign": "negative",
+      "reasoning": "An underlevered firm has apparent balance-sheet capacity, so choosing to sell equity at a rich valuation is more suggestive of market timing than financing necessity. This tests whether expensive equity issuance is most informative when the firm was not obviously constrained by leverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.9044615967452252,
+      "ls_alpha": -0.0343213700140808,
+      "ls_talpha": -3.854349574623751,
+      "ls_sharpe": -0.1455905764326178,
+      "coverage": 0.11280714809889494,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Equity Debt Co-Issue",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,dltis),LAG(at,1))),1)",
+      "hypothesis": "Firms that are expensive relative to peers and simultaneously raise both equity and long-term debt should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces another roundtrip-equity variant with a distinct capital-market-window mechanism. The MIN term is high only when both equity and debt issuance are present, identifying peer-rich firms broadly tapping external capital rather than merely appearing in a standard equity-issuance sort.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.0281001471208016,
+      "ls_alpha": 0.004104006165732457,
+      "ls_talpha": 0.39636226508924394,
+      "ls_sharpe": 0.018392961437522035,
+      "coverage": 0.10985603135805955,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Noncash Dilution",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RANK(SUB(GROWTH(csho,1),RATIO(sstk,MUL(prcc_f,csho))))),1)",
+      "hypothesis": "Share-count dilution should be especially bearish for peer-expensive firms when it is not explained by cash equity issuance proceeds.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the saturated roundtrip family and focuses on noncash or low-cash dilution, such as stock compensation, acquisition shares, or option-related issuance. At rich peer-relative valuations, dilution that expands shares without comparable cash proceeds is more consistent with overvalued equity being used as currency than with productive financing.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.0486131181143263,
+      "ls_alpha": 0.014477356536581325,
+      "ls_talpha": 1.0262869925277691,
+      "ls_sharpe": -0.06236574941462536,
+      "coverage": 0.11323242135101826,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Short-Debt Pressure Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(DELTA(dlc,1),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when short-term debt is also increasing.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the ambiguous asset-growth residual and instead tests a financing-pressure channel. If a richly valued firm sells equity while short-term debt rises, the firm may be relying heavily on external capital despite favorable market pricing, raising overinvestment or liquidity-stress concerns.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.0038353565943807,
+      "ls_alpha": -0.031613625718616034,
+      "ls_talpha": -3.346133563445717,
+      "ls_sharpe": -0.12799809709088608,
+      "coverage": 0.1129938597208086,
+      "error": null
+    },
+    {
+      "name": "High-Yield Equity Financing Trap",
+      "expression": "WINSOR(MUL(RANK(RATIO(dvc,MUL(prcc_f,csho))),MUL(RATIO(sstk,LAG(at,1)),RANK(SUB(RATIO(dvc,LAG(at,1)),RATIO(LAG(oancf,1),LAG(at,1)))))),1)",
+      "hypothesis": "High dividend-yield firms issuing equity while dividends exceed prior operating cash flow should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This is a valuation-financing yield-trap mechanism rather than another clean-repurchase or net-retirement variant. A high dividend yield can look cheap, but if the firm is selling equity while payouts are poorly covered by internal cash generation, the apparent cheapness may reflect an unsustainable distribution policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.0677889382521992,
+      "ls_alpha": 0.023240800950147245,
+      "ls_talpha": 1.3850958845018762,
+      "ls_sharpe": -0.0769298286286132,
+      "coverage": 0.07933819990804233,
+      "error": null
+    },
+    {
+      "name": "Discounted Short-Debt Takeout Issuer",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(NEG(DELTA(dlc,1)),LAG(at,1))))),1)",
+      "hypothesis": "High book-to-market firms issuing equity while reducing short-term debt should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This shifts away from the repeatedly weak peer-cheap buyback-improvement family and tests forced recapitalization. When an apparently cheap firm sells equity to relieve short-term debt pressure, the issuance is less a timing signal and more likely distress-driven dilution at unfavorable prices.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.501165318034344,
+      "ls_alpha": 0.05856322981938457,
+      "ls_talpha": 3.0608128027312627,
+      "ls_sharpe": 0.10600884465641638,
+      "coverage": 0.11473751616894787,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Buyback Reversal Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(LAG(prstkc,1),LAG(at,1))))),1)",
+      "hypothesis": "Expensive firms that issue equity after recently repurchasing shares should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests a financing-policy reversal rather than simultaneous roundtripping. A firm that was buying back shares but then sells equity when peer valuation is rich may be revealing that the prior repurchase was not true undervaluation conviction, or that management is now timing an overvalued equity market.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.2560244875462474,
+      "ls_alpha": -0.03075237894451852,
+      "ls_talpha": -3.3731353632144514,
+      "ls_sharpe": -0.19156669231118462,
+      "coverage": 0.10593348794438295,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Cash-Drain Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(NEG(DELTA(che,1)),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when cash balances still decline.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike prior cash-parking ideas, this avoids the mechanical tendency of issuance to raise cash by looking for the opposite case: cash falls despite equity proceeds. For a richly valued issuer, that pattern suggests rapid cash consumption, hidden financing need, or low-return use of proceeds rather than value-creating investment.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.172522251847596,
+      "ls_alpha": -0.01795318094501413,
+      "ls_talpha": -1.9269129803602156,
+      "ls_sharpe": -0.06470605070206696,
+      "coverage": 0.11311381123253815,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Equity-Dominant Financing",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),SUB(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1)))),1)",
+      "hypothesis": "Firms that are expensive relative to peers and choose equity-dominant financing over debt financing should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids a generic external-financing sum by focusing on the financing mix: equity issuance is penalized only to the extent it dominates debt issuance. For peer-rich firms, choosing equity over debt is more consistent with opportunistic valuation timing than with a broad capital-raising need.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.18976791196627407,
+      "ls_alpha": -0.030898850203275544,
+      "ls_talpha": -2.6789315188152676,
+      "ls_sharpe": -0.023897484476009156,
+      "coverage": 0.10985603135805955,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Short-Maturity Mix Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(SUB(LAG(RATIO(dlc,at),1),LAG(RATIO(dltt,at),1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when prior debt structure is tilted toward short-term debt rather than long-term debt.",
+      "expected_sign": "negative",
+      "reasoning": "This reconciles the leverage contradiction by testing maturity composition, not high total leverage. A peer-rich firm issuing equity after relying more on short-term than long-term debt may be using overvalued stock to manage rollover risk, which is distinct from simply having high debt or low debt capacity.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.801146839239483,
+      "ls_alpha": -0.03193503038453485,
+      "ls_talpha": -3.744073127697946,
+      "ls_sharpe": -0.1577905780514097,
+      "coverage": 0.11280714809889494,
+      "error": null
+    },
+    {
+      "name": "Peer-Rich Per-Share Sales Decay Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(LAG(GROWTH(RATIO(sale,csho),1),1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be especially bearish when sales per share had already been deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-ROA quality overlap with a prior per-share operating-scale diagnostic. Lagging the sales-per-share deterioration reduces mechanical contamination from the current issuance, while the interaction targets firms selling rich equity despite weakening per-share fundamentals.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.083367618977402,
+      "ls_alpha": -0.02582283249857826,
+      "ls_talpha": -2.6337919765622573,
+      "ls_sharpe": -0.06820529982675458,
+      "coverage": 0.10342080042792508,
+      "error": null
+    },
+    {
+      "name": "Discounted Equity Churn Trap",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Cheap firms that both issue and repurchase equity should underperform because the repurchase signal is not genuine net retirement.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from another balance-sheet-capacity filter on cheap buybacks and instead diagnoses why cheap-firm repurchase signals may fail in portfolios. When high book-to-market firms show gross equity churn, buybacks may be optical or compensation-related rather than management-confirmed undervaluation.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.750303196156496,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.10907848760181174,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Rich Sales Multiple Issuance",
+      "expression": "MUL(RANK(RATIO(MUL(prcc_f,csho),sale)),RANK(RATIO(sstk,at)))",
+      "hypothesis": "Equity issuance is especially bearish when the firm already trades at a high price-to-sales multiple.",
+      "expected_sign": "negative",
+      "reasoning": "A high sales multiple indicates optimistic market pricing relative to the firm\u2019s revenue base. When management issues stock under that condition, the financing action may reveal that insiders view the valuation as favorable to sellers rather than buyers.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DeRated Buyback Conviction",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(MUL(prcc_f,csho),ceq),1))),RANK(RATIO(prstkc,MUL(prcc_f,csho))))",
+      "hypothesis": "Repurchases following a decline in market-to-book are more informative than repurchases made after valuation expansion.",
+      "expected_sign": "positive",
+      "reasoning": "A falling valuation multiple can indicate that the market has marked down the firm, potentially creating undervaluation. If management responds by buying back shares, the repurchase is more likely to be a valuation-sensitive signal rather than routine capital return.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Thresholded Equity Timing Confirmation",
+      "expression": "WINSOR(SUB(MUL(RATIO(prstkc,MUL(prcc_f,csho)),INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1)),MUL(RATIO(sstk,MUL(prcc_f,csho)),INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2))),1)",
+      "hypothesis": "Repurchases are most bullish when the firm trades below book value, while equity issuance is most bearish when the firm trades at a rich price-to-book multiple.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior mechanical inverse-rank spread by activating financing flows only in valuation regions where managerial timing is economically informative. Below-book buybacks suggest management is retiring underpriced equity, while issuance above two times book suggests opportunistic sale of overvalued shares.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cashflow-Cheap Buyback Step-Up",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(oancf,MUL(prcc_f,csho)),0.1),DELTA(RATIO(prstkc,at),1)),1)",
+      "hypothesis": "An increase in repurchase intensity is especially bullish when the firm already has a high operating-cash-flow yield.",
+      "expected_sign": "positive",
+      "reasoning": "The signal is not a static cash-flow-to-price times net-issuance product; it asks whether management is increasing repurchases after the market prices operating cash flows cheaply. The change in buyback activity helps distinguish fresh undervaluation confirmation from routine capital return.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded Value Repurchase",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),0.8),MUL(RATIO(prstkc,at),NEG(DELTA(RATIO(ADD(dltt,dlc),at),1)))),1)",
+      "hypothesis": "Cheap firms that repurchase shares while reducing, rather than expanding, debt should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This revision aligns with the external-financing anomaly by rewarding buybacks accompanied by deleveraging and penalizing cheap-firm repurchases funded through higher leverage. It uses changes in total debt from broad balance-sheet items instead of sparse dltis/dltr flow fields.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Valuation-Peak Issuance Acceleration",
+      "expression": "WINSOR(MUL(INDICATOR(TS_RANK(NEG(RATIO(ebitda,MUL(prcc_f,csho))),5),0.8),DELTA(RATIO(sstk,at),1)),1)",
+      "hypothesis": "Rising equity issuance is most bearish when EBITDA yield is near the firm\u2019s own historical low.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids smoothed share-count growth and instead focuses on actual equity sale proceeds accelerating at a firm-specific valuation extreme. The mechanism is opportunistic financing at a temporarily rich valuation, distinct from a generic value-times-net-issuance construction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Effective Discount Retirement",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(prstkc,at),NEG(GROWTH(csho,1)))),1)",
+      "hypothesis": "Cheap firms that spend on repurchases and actually reduce shares outstanding should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Reported repurchases can be offset by option issuance or stock-based compensation, so the financing signal is stronger when buyback spending leads to a falling share count. Conditioning this effective retirement on below-book valuation targets the cases where shrinking the equity base most plausibly transfers value to remaining shareholders.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Distressed Value Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(sstk,at),INDICATOR(NEG(RATIO(oancf,at)),0))),1)",
+      "hypothesis": "Cheap firms issuing equity while operating cash flow is negative should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Equity issuance by a below-book firm is unlikely to be favorable market timing; it more likely reflects financing pressure or distress. The interaction distinguishes cheap firms with managerial confirmation from cheap firms forced to dilute shareholders at depressed valuations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings-Yield Payout Switch",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ib,MUL(prcc_f,csho)),0.06),RATIO(SUB(prstkc,dvc),at)),1)",
+      "hypothesis": "Repurchases are more bullish when profitable cheap firms choose buybacks over ordinary dividends.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the failed operating-cash-flow-yield gate and tests whether discretionary payout form matters when shares look cheap on earnings. A high earnings-yield firm that shifts payout toward repurchases rather than dividends is more likely making a valuation-sensitive capital-allocation decision.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Book-Accretive Repurchase Yield",
+      "expression": "WINSOR(MUL(RATIO(prstkc,at),RATIO(SUB(RATIO(ceq,csho),prcc_f),prcc_f)),1)",
+      "hypothesis": "Repurchases should be most bullish when the stock price is below book value per share, making the buyback book-accretive for remaining shareholders.",
+      "expected_sign": "positive",
+      "reasoning": "This is not another own-history de-rating signal; it directly measures whether repurchase dollars are deployed at a price below accounting book value per share. The financing action and valuation gap interact mechanically in the shareholder-accretion channel, so larger positive values represent more repurchase intensity at deeper discounts.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Rich Rich Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),sale),2),MUL(RATIO(sstk,at),LAG(RATIO(che,at),1))),1)",
+      "hypothesis": "Expensive firms issuing equity despite already high cash balances should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the mechanical leverage-denominator problem by using lagged cash holdings rather than contemporaneous debt-to-assets changes. If a richly valued firm sells equity even though it entered the period cash-rich, the issuance is more plausibly opportunistic market timing than necessary financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rich Issuer Margin Fade",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),sale),2),MUL(RATIO(sstk,at),NEG(DELTA(RATIO(ebitda,sale),1)))),1)",
+      "hypothesis": "Expensive firms issuing equity while EBITDA margins deteriorate should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This retains the useful idea that high price-to-sales issuers are most suspect when fundamentals are weakening, but removes the asset-denominator mechanical link to issuance. EBITDA margin deterioration is a more independent operating signal, making the interaction closer to overvaluation plus opportunistic dilution rather than disguised issuance intensity.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rich Net Issuance Switch",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2),DELTA(RATIO(SUB(sstk,prstkc),MUL(prcc_f,csho)),1)),1)",
+      "hypothesis": "A shift toward net equity issuance is especially bearish when the firm trades at a high market-to-book ratio.",
+      "expected_sign": "negative",
+      "reasoning": "This focuses on a change in financing stance rather than the static net-issuance anomaly. If management moves from repurchasing or neutral issuance toward selling equity while valuation is rich, the action is consistent with opportunistic market timing and future overvaluation correction.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensive Buyback Dilution Camouflage",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(MUL(prcc_f,csho),ceq),2),MUL(RATIO(prstkc,MUL(prcc_f,csho)),GROWTH(csho,1))),1)",
+      "hypothesis": "Buybacks are bearish when expensive firms repurchase shares but the share count still rises.",
+      "expected_sign": "negative",
+      "reasoning": "Repurchases at rich valuations are unlikely to signal undervaluation, especially when they fail to reduce dilution. The interaction identifies firms using buybacks to offset stock issuance or compensation dilution rather than to retire undervalued equity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Prior Multiple Runup Issuer",
+      "expression": "WINSOR(MUL(RATIO(sstk,LAG(at,1)),DELTA(LAG(RATIO(MUL(prcc_f,csho),sale),1),1)),1)",
+      "hypothesis": "Equity issuance is most bearish when it follows a prior expansion in the firm\u2019s valuation multiple.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cash-rich issuer recombination with a timing mechanism: management sells equity after the market has already bid up price-to-sales. Using the lagged valuation change and lagged asset scaler reduces mechanical contamination from the current-period issuance itself.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Sales-Supported DeRating Buyback",
+      "expression": "WINSOR(MUL(RATIO(prstkc,LAG(at,1)),MUL(NEG(DELTA(LAG(RATIO(MUL(prcc_f,csho),sale),1),1)),INDICATOR(GROWTH(sale,1),0))),1)",
+      "hypothesis": "Buybacks should be most bullish when they follow a valuation de-rating that is not accompanied by sales contraction.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from another static cheapness gate and asks whether managers repurchase after the market multiple has fallen while the operating scale is still growing. The positive-sales condition helps distinguish undervaluation from a deserved multiple decline due to business deterioration.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Discounted NonDilutive Deleveraging",
+      "expression": "WINSOR(MUL(INDICATOR(LAG(RATIO(ceq,MUL(prcc_f,csho)),1),1),SUB(RATIO(NEG(DELTA(ADD(dltt,dlc),1)),LAG(at,1)),RATIO(sstk,LAG(at,1)))),1)",
+      "hypothesis": "Below-book firms that reduce interest-bearing debt without relying on equity issuance should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior total-liability shrinkage contamination by focusing on debt-bearing capital rather than payables and accruals. Subtracting equity issuance distinguishes genuine internal balance-sheet repair from dilutive recapitalization, making the cheapness signal more credible.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rich Issuer Growth Deceleration",
+      "expression": "WINSOR(MUL(INDICATOR(LAG(RATIO(MUL(prcc_f,csho),sale),1),2),MUL(RATIO(sstk,LAG(at,1)),NEG(DELTA(GROWTH(sale,1),1)))),1)",
+      "hypothesis": "Expensive firms issuing equity while sales growth decelerates should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the sparse dividend-cut channel with a broader operating-growth diagnostic that is not mechanically driven by the asset denominator. High price-to-sales issuance is less defensible when revenue growth is slowing, so the financing action is more likely to reflect opportunistic dilution at an overvalued price.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Equity Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(sstk,LAG(at,1))),1)",
+      "hypothesis": "Equity issuance should be most bearish when the firm is expensive relative to industry peers on price-to-sales.",
+      "expected_sign": "negative",
+      "reasoning": "This refines the rich-issuer mechanism by removing broad industry valuation effects that can contaminate simple price-to-sales sorts. Scaling issuance by lagged assets avoids contemporaneous asset-denominator effects, while the industry-relative valuation term focuses on firm-specific overvaluation within comparable business models.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Continuous Distress Dilution Value",
+      "expression": "WINSOR(MUL(INDICATOR(RATIO(ceq,MUL(prcc_f,csho)),1),MUL(RATIO(sstk,LAG(at,1)),NEG(RATIO(oancf,sale)))),1)",
+      "hypothesis": "Below-book firms issuing equity while operating cash flow is weak relative to sales should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This repairs the sparse triple-gate distress-issuer design by using a continuous cash-flow-margin severity term rather than a zero-one cash-burn flag. Equity issuance by cheap firms is most concerning when fundamentals suggest financing pressure rather than opportunistic market timing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed Net Retirement",
+      "expression": "WINSOR(MUL(LAG(RATIO(che,MUL(prcc_f,csho)),1),RATIO(SUB(prstkc,sstk),LAG(at,1))),1)",
+      "hypothesis": "Net equity retirement should be most bullish when the firm entered the period with high cash relative to market value.",
+      "expected_sign": "positive",
+      "reasoning": "High cash-to-market value indicates a balance-sheet-backed form of cheapness, where repurchases may be funded from liquid resources rather than external financing. Using net repurchases penalizes firms that report buybacks while simultaneously issuing equity, focusing on genuine shareholder accretion.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Discounted Repurchase Payout Tilt",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),DELTA(RATIO(SUB(prstkc,dvc),LAG(at,1)),1)),1)",
+      "hypothesis": "High book-to-market firms should outperform when management shifts payout policy toward repurchases rather than cash dividends.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the hard below-book gate and avoids the change-in-net-issuance construct by focusing on payout form rather than dilution reversal. For cheap firms, an incremental tilt from dividends toward repurchases is more plausibly valuation-sensitive because managers choose the flexible payout channel when they believe shares are underpriced.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rich Uncovered Buyback",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RANK(SUB(RATIO(prstkc,LAG(at,1)),RATIO(oancf,LAG(at,1))))),1)",
+      "hypothesis": "Repurchases by expensive firms should be bearish when buyback spending is large relative to internally generated operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the debt-issuance leg with a cash-coverage mechanism, avoiding the documented debt-financing anomaly and the sparsity of a triple hard-gated product. A rich firm that repurchases more than its operating cash flow can support is less likely retiring undervalued shares and more likely engaging in value-destructive payout or EPS management.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rich Issuer Accrual Gap",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RATIO(SUB(ib,oancf),sale))),1)",
+      "hypothesis": "Equity issuance by expensive firms should be most bearish when reported earnings exceed operating cash flow.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the mechanical cash-increase channel by using an operating accrual gap that is not directly created by the issuance proceeds. When a peer-rich firm sells equity while earnings quality is weak, issuance is more consistent with exploiting optimistic valuation before fundamentals are recognized by the market.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Net-Cash Retirement Conviction",
+      "expression": "WINSOR(MUL(RANK(LAG(RATIO(SUB(che,ADD(dltt,dlc)),MUL(prcc_f,csho)),1)),RATIO(SUB(prstkc,sstk),LAG(at,1))),1)",
+      "hypothesis": "Net equity retirement should be more bullish when the firm entered the period with a high net-cash position relative to market value.",
+      "expected_sign": "positive",
+      "reasoning": "This refines the cash-backed retirement idea by distinguishing liquid balance-sheet support from cash that is offset by debt. Ranking the lagged net-cash-to-market measure avoids sign-pathology from levered firms while preserving the idea that buybacks funded from excess liquidity are more credible undervaluation signals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitless Peer-Rich Issuer",
+      "expression": "WINSOR(MUL(INDICATOR(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),0),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(RATIO(ebitda,sale))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when operating margins are weak.",
+      "expected_sign": "negative",
+      "reasoning": "High price-to-sales can be justified for firms with strong scalable margins, so conditioning on weak EBITDA margin targets overvaluation that is less fundamentally supported. The margin term is independent of the issuance proceeds and avoids the prior asset-denominator mechanical problem.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Sales-Yield Retirement",
+      "expression": "WINSOR(MUL(RATIO(sale,MUL(prcc_f,csho)),RATIO(TS_SUM(SUB(prstkc,sstk),3),LAG(at,1))),1)",
+      "hypothesis": "Sustained net equity retirement should be most bullish for firms that are cheap relative to their sales base.",
+      "expected_sign": "positive",
+      "reasoning": "A multi-year net retirement measure filters out one-off buybacks and focuses on persistent reductions in the equity base. Interacting it with sales yield captures management repeatedly retiring shares when the market price is low relative to operating scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Weighted Gross Timing Spread",
+      "expression": "WINSOR(SUB(MUL(RATIO(prstkc,LAG(at,1)),RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))))),MUL(RATIO(sstk,LAG(at,1)),RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))))),1)",
+      "hypothesis": "Firms should outperform when gross repurchases occur at peer-cheap valuations and underperform when gross issuance occurs at peer-rich valuations.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the algebraic collapse by using gross repurchase and gross issuance legs rather than signed net equity flow in both branches. Continuous industry-relative valuation weights avoid an all-zero hard gate while still giving the long side to cheap repurchasers and the short side to rich issuers.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cashflow-Surplus Peer-Rich Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(LAG(RATIO(oancf,sale),1)))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be especially bearish when the firm already had strong operating cash flow relative to sales.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces noisy issuance acceleration with a financing-need diagnostic: firms with strong prior cash-flow margins have less fundamental need to sell equity. If such firms issue while trading rich relative to peers, the action is more likely opportunistic market timing than necessary financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Book-Discount Equity Sale Dilution",
+      "expression": "WINSOR(MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(LAG(RATIO(ceq,csho),1),prcc_f))),1)",
+      "hypothesis": "Equity issuance should be most bearish when shares are sold at a low price relative to lagged book value per share.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the prior cheapness \u00d7 issuance \u00d7 weak-profitability distress template and focuses on the accounting dilution channel. Selling equity when the market price is low relative to book value per share suggests forced financing at unfavorable terms rather than value-enhancing capital raising.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Lagged Peer-EV Rich Issuer",
+      "expression": "WINSOR(MUL(LAG(IND_ZSCORE(RATIO(SUB(ADD(MUL(prcc_f,csho),ADD(dltt,dlc)),che),sale)),1),RATIO(sstk,LAG(at,1))),1)",
+      "hypothesis": "Equity issuance should be especially bearish when the firm had a high enterprise-value-to-sales multiple relative to peers.",
+      "expected_sign": "negative",
+      "reasoning": "Enterprise-value-to-sales focuses on operating-asset valuation rather than equity value alone, so it can distinguish expensive operating businesses from firms that only look rich because of cash balances or leverage structure. If management issues equity after the whole enterprise trades rich relative to peers, the action is more consistent with opportunistic financing.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Value Repurchase Tilt",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),MA(RATIO(SUB(prstkc,dvc),LAG(at,1)),3)),1)",
+      "hypothesis": "High book-to-market firms should outperform when they persistently tilt payout toward repurchases rather than dividends.",
+      "expected_sign": "positive",
+      "reasoning": "The prior payout-tilt evidence was directionally useful but may have been noisy because annual changes in repurchases are lumpy. Smoothing the repurchase-minus-dividend tilt tests whether sustained discretionary repurchase preference among value firms is a more reliable signal of management-confirmed cheapness.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Equity Debt Takeout",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MIN(RATIO(sstk,LAG(at,1)),RATIO(dltr,LAG(at,1)))),1)",
+      "hypothesis": "Equity issuance should be bearish when peer-expensive firms use equity capital to retire debt.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cosmetic lagged-valuation variant with a distinct use-of-proceeds mechanism. Using the actual debt-retirement flow avoids the mechanical leverage-ratio problem, while the MIN term requires both equity issuance and debt takeout rather than merely rewarding a generic issuance level.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Roundtrip Equity Flow",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Peer-expensive firms that both issue and repurchase equity should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the incoherent MIN-of-ranks dilution construction by using gross equity flows directly: the signal is high only when issuance and repurchases coexist. At rich valuations, simultaneous issuance and buybacks can indicate dilution camouflage, option-compensation recycling, or EPS management rather than genuine undervaluation-driven repurchases.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Cheap Sales-Per-Share Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),GROWTH(RATIO(sale,csho),1))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms also generate rising sales per share.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from a pure share-shrinkage anomaly by requiring evidence that repurchases are associated with operating-scale accretion per share. A cheap firm buying back stock while sales per share rises is more likely creating value for remaining shareholders than simply shrinking because the business is contracting.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Issuance Book Leakage",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),SUB(RATIO(sstk,LAG(at,1)),RATIO(DELTA(ceq,1),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms is most bearish when the proceeds do not translate into higher book equity.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the weak positive-side net-cash retirement stack and focuses on a portfolio-stronger rich-issuer mechanism with an independent use-of-proceeds diagnostic. If issuance exceeds the contemporaneous increase in common equity, losses, payouts, or other drains are absorbing capital, making the equity sale look more like opportunistic dilution than productive financing.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Runup Roundtrip Equity Churn",
+      "expression": "WINSOR(MUL(DELTA(LAG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),1),1),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Firms that both issue and repurchase equity after a prior peer-relative valuation runup should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests a timing version of the roundtrip mechanism: gross equity churn is most suspect after the market has recently repriced the firm upward relative to peers. Using the lagged change in industry-relative valuation reduces simultaneity with the financing flows.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-EV External Finance Overload",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(SUB(ADD(MUL(prcc_f,csho),ADD(dltt,dlc)),che),sale)),SUMRANK(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1)))),1)",
+      "hypothesis": "Broad external financing should be most bearish when the firm is already expensive on an enterprise-value basis relative to peers.",
+      "expected_sign": "negative",
+      "reasoning": "Expensive firms raising both equity-like and debt capital may be exploiting favorable capital-market conditions or funding low-return expansion. SUMRANK provides a continuous external-financing intensity measure without requiring a sparse triple interaction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Cheap Covered Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),RATIO(MIN(prstkc,LAG(oancf,1)),LAG(at,1))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms can cover the buyback with internally generated cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes value-confirming buybacks from repurchases funded by balance-sheet strain or external financing. The MIN term rewards repurchases only to the extent they are supported by prior operating cash flow, while negative cash flow naturally weakens or reverses the signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Net-Dilutive Roundtrip",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(RATIO(SUB(sstk,prstkc),LAG(at,1))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms are also net issuers.",
+      "expected_sign": "negative",
+      "reasoning": "This is not an EV/S denominator swap; it refines the strong roundtrip result by distinguishing neutral churn from roundtrip activity that still leaves shareholders diluted. At rich peer-relative valuations, simultaneous issuance and repurchases are especially suspect when issuance dominates repurchase, consistent with dilution camouflage or opportunistic equity sale.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Equity-Funded Payout",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,ADD(prstkc,dvc)),LAG(at,1))),1)",
+      "hypothesis": "Expensive firms issuing equity while simultaneously distributing cash to shareholders should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the cash-flow-surplus scaling variant with a use-of-proceeds mechanism: the firm raises equity while still paying out through repurchases or dividends. For peer-rich firms, that combination suggests management may be exploiting overvaluation to fund shareholder distributions rather than financing productive investment.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Cheap EBITDA-Per-Share Buyback",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),RATIO(DELTA(RATIO(ebitda,csho),1),prcc_f))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms also show improving operating earnings per share.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the failed smoothed payout-tilt template and asks whether buybacks are accompanied by operating per-share accretion. A cheap firm repurchasing shares while EBITDA per share rises is more likely confirming undervaluation than merely reallocating payout form.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Roundtrip Sales Fade",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(NEG(GROWTH(sale,1))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms also show weak or declining sales growth.",
+      "expected_sign": "negative",
+      "reasoning": "High price-to-sales can be defensible for firms with strong revenue growth, which may dilute the signal from valuation alone. When a peer-rich firm is churning equity while sales growth fades, the financing behavior is less likely to support genuine expansion and more likely to reflect opportunistic dilution or earnings-management optics.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Cash-Deficit External Finance",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(SUMRANK(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1))),RANK(NEG(LAG(RATIO(oancf,at),1))))),1)",
+      "hypothesis": "Broad external financing should be most bearish for peer-expensive firms with weak internal cash generation.",
+      "expected_sign": "negative",
+      "reasoning": "External financing by rich firms can reflect market timing, but it is particularly concerning when prior operating cash flow is weak and the firm must rely on capital markets. Combining equity and debt issuance captures a broader financing-pressure channel while the valuation leg identifies firms where outside capital may be raised at overly favorable prices.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Cheap Cashflow-Backed Net Retirement",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(SUB(prstkc,sstk),LAG(at,1)),RANK(LAG(RATIO(oancf,at),1)))),1)",
+      "hypothesis": "Net equity retirement should be most bullish when peer-cheap firms have strong operating cash flow to fund it.",
+      "expected_sign": "positive",
+      "reasoning": "This distinguishes buybacks funded by internal operating strength from repurchases that may be financed by leverage or offset by equity issuance. Cheap firms retiring net equity while entering with high cash-flow generation provide a more credible management-confirmed undervaluation signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Wash Churn",
+      "expression": "WINSOR(MUL(RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))),MUL(RATIO(MIN(sstk,prstkc),LAG(at,1)),RANK(NEG(ABS(GROWTH(csho,1)))))),1)",
+      "hypothesis": "Gross equity roundtripping should be most bearish when peer-expensive firms churn equity without materially changing the share count.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces cosmetic smoothing with a different roundtrip mechanism: high gross issuance and repurchases that leave shares roughly unchanged. At rich peer-relative valuations, this looks less like capital allocation and more like compensation recycling, dilution camouflage, or EPS-management optics.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Dividend-Coverage Issuer",
+      "expression": "WINSOR(MUL(RANK(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale))),MUL(RATIO(sstk,LAG(at,1)),MUL(RANK(RATIO(dvc,LAG(at,1))),RANK(SUB(RATIO(dvc,LAG(at,1)),RATIO(LAG(oancf,1),LAG(at,1))))))),1)",
+      "hypothesis": "Expensive firms issuing equity while paying large dividends that are poorly covered by prior operating cash flow should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the prior MIN(sstk,dvc) collapse by separately requiring equity issuance, material dividends, and weak dividend coverage. The mechanism is not merely \u201cissuer that pays dividends,\u201d but a peer-rich firm raising equity while shareholder distributions appear strained relative to internal cash generation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Cheap Buyback Accretion Gap",
+      "expression": "WINSOR(MUL(RANK(NEG(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)))),MUL(RATIO(prstkc,LAG(at,1)),RANK(SUB(GROWTH(RATIO(sale,csho),1),GROWTH(sale,1))))),1)",
+      "hypothesis": "Repurchases should be most bullish when peer-cheap firms improve sales per share beyond what is explained by total sales growth.",
+      "expected_sign": "positive",
+      "reasoning": "This fixes the sign inconsistency by using gross repurchase intensity and a ranked accretion gap rather than multiplying two potentially negative terms. The signal targets cheap firms where buybacks plausibly enhance per-share operating scale, not net issuers with deteriorating fundamentals.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Underlevered Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(LAG(RATIO(ADD(dltt,dlc),at),1))))),1)",
+      "hypothesis": "Equity issuance should be especially bearish when peer-expensive firms had low prior debt usage.",
+      "expected_sign": "negative",
+      "reasoning": "An underlevered firm has apparent balance-sheet capacity, so choosing to sell equity at a rich valuation is more suggestive of market timing than financing necessity. This tests whether expensive equity issuance is most informative when the firm was not obviously constrained by leverage.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Equity Debt Co-Issue",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RATIO(MIN(sstk,dltis),LAG(at,1))),1)",
+      "hypothesis": "Firms that are expensive relative to peers and simultaneously raise both equity and long-term debt should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces another roundtrip-equity variant with a distinct capital-market-window mechanism. The MIN term is high only when both equity and debt issuance are present, identifying peer-rich firms broadly tapping external capital rather than merely appearing in a standard equity-issuance sort.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Noncash Dilution",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),RANK(SUB(GROWTH(csho,1),RATIO(sstk,MUL(prcc_f,csho))))),1)",
+      "hypothesis": "Share-count dilution should be especially bearish for peer-expensive firms when it is not explained by cash equity issuance proceeds.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from the saturated roundtrip family and focuses on noncash or low-cash dilution, such as stock compensation, acquisition shares, or option-related issuance. At rich peer-relative valuations, dilution that expands shares without comparable cash proceeds is more consistent with overvalued equity being used as currency than with productive financing.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Short-Debt Pressure Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(DELTA(dlc,1),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when short-term debt is also increasing.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids the ambiguous asset-growth residual and instead tests a financing-pressure channel. If a richly valued firm sells equity while short-term debt rises, the firm may be relying heavily on external capital despite favorable market pricing, raising overinvestment or liquidity-stress concerns.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "High-Yield Equity Financing Trap",
+      "expression": "WINSOR(MUL(RANK(RATIO(dvc,MUL(prcc_f,csho))),MUL(RATIO(sstk,LAG(at,1)),RANK(SUB(RATIO(dvc,LAG(at,1)),RATIO(LAG(oancf,1),LAG(at,1)))))),1)",
+      "hypothesis": "High dividend-yield firms issuing equity while dividends exceed prior operating cash flow should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This is a valuation-financing yield-trap mechanism rather than another clean-repurchase or net-retirement variant. A high dividend yield can look cheap, but if the firm is selling equity while payouts are poorly covered by internal cash generation, the apparent cheapness may reflect an unsustainable distribution policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Discounted Short-Debt Takeout Issuer",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(NEG(DELTA(dlc,1)),LAG(at,1))))),1)",
+      "hypothesis": "High book-to-market firms issuing equity while reducing short-term debt should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This shifts away from the repeatedly weak peer-cheap buyback-improvement family and tests forced recapitalization. When an apparently cheap firm sells equity to relieve short-term debt pressure, the issuance is less a timing signal and more likely distress-driven dilution at unfavorable prices.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Buyback Reversal Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(LAG(prstkc,1),LAG(at,1))))),1)",
+      "hypothesis": "Expensive firms that issue equity after recently repurchasing shares should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests a financing-policy reversal rather than simultaneous roundtripping. A firm that was buying back shares but then sells equity when peer valuation is rich may be revealing that the prior repurchase was not true undervaluation conviction, or that management is now timing an overvalued equity market.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Cash-Drain Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(RATIO(NEG(DELTA(che,1)),LAG(at,1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when cash balances still decline.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike prior cash-parking ideas, this avoids the mechanical tendency of issuance to raise cash by looking for the opposite case: cash falls despite equity proceeds. For a richly valued issuer, that pattern suggests rapid cash consumption, hidden financing need, or low-return use of proceeds rather than value-creating investment.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Equity-Dominant Financing",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),SUB(RATIO(sstk,LAG(at,1)),RATIO(dltis,LAG(at,1)))),1)",
+      "hypothesis": "Firms that are expensive relative to peers and choose equity-dominant financing over debt financing should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This avoids a generic external-financing sum by focusing on the financing mix: equity issuance is penalized only to the extent it dominates debt issuance. For peer-rich firms, choosing equity over debt is more consistent with opportunistic valuation timing than with a broad capital-raising need.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Short-Maturity Mix Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(SUB(LAG(RATIO(dlc,at),1),LAG(RATIO(dltt,at),1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be most bearish when prior debt structure is tilted toward short-term debt rather than long-term debt.",
+      "expected_sign": "negative",
+      "reasoning": "This reconciles the leverage contradiction by testing maturity composition, not high total leverage. A peer-rich firm issuing equity after relying more on short-term than long-term debt may be using overvalued stock to manage rollover risk, which is distinct from simply having high debt or low debt capacity.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Peer-Rich Per-Share Sales Decay Issuer",
+      "expression": "WINSOR(MUL(IND_ZSCORE(RATIO(MUL(prcc_f,csho),sale)),MUL(RATIO(sstk,LAG(at,1)),RANK(NEG(LAG(GROWTH(RATIO(sale,csho),1),1))))),1)",
+      "hypothesis": "Equity issuance by peer-expensive firms should be especially bearish when sales per share had already been deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the low-ROA quality overlap with a prior per-share operating-scale diagnostic. Lagging the sales-per-share deterioration reduces mechanical contamination from the current issuance, while the interaction targets firms selling rich equity despite weakening per-share fundamentals.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Discounted Equity Churn Trap",
+      "expression": "WINSOR(MUL(RANK(RATIO(ceq,MUL(prcc_f,csho))),RATIO(MIN(sstk,prstkc),LAG(at,1))),1)",
+      "hypothesis": "Cheap firms that both issue and repurchase equity should underperform because the repurchase signal is not genuine net retirement.",
+      "expected_sign": "negative",
+      "reasoning": "This moves away from another balance-sheet-capacity filter on cheap buybacks and instead diagnoses why cheap-firm repurchase signals may fail in portfolios. When high book-to-market firms show gross equity churn, buybacks may be optical or compensation-related rather than management-confirmed undervaluation.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Net Equity Confirmation Spread",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "RANK(ceq/mktcap) and RANK(mktcap/ceq) are near-monotone inverses of each other, so the \"spread\" collapses to a mechanical book-to-market-weighted net-issuance score \u2014 i.e., a repackaging of two canonical anomalies (value and net share issuance) with redundant algebra rather than a genuine cross-theme mechanism."
+    },
+    {
+      "generation": 0,
+      "target_name": "Rich Sales Multiple Issuance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression cleanly matches the stated hypothesis and the negative sign is internally consistent, though the \"issuers are worst when expensive\" mechanism is close to documented equity market-timing evidence and the signal is only a two-way product of two well-known legs."
+    },
+    {
+      "generation": 0,
+      "target_name": "DeRated Buyback Conviction",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "This is the most genuinely conditional proposal in the batch \u2014 it conditions the repurchase signal on the *direction of change* in valuation rather than its level, which is not a standard published sort \u2014 but the DELTA of a market-to-book ratio is highly unstable for small or negative ceq and largely proxies for lagged returns, so the test should control for that."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cashflow Yield Net Repurchaser",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a direct product of two textbook anomalies \u2014 cash-flow-to-price value and net share issuance (Pontiff\u2013Woodgate) \u2014 with no conditioning logic beyond multiplication, so a positive result would be uninformative about any new mechanism."
+    },
+    {
+      "generation": 0,
+      "target_name": "Levered Value Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expected sign contradicts the well-documented external-financing/debt-issuance anomaly (net debt issuers underperform), so the third leg pushes against the hypothesized direction, and the triple rank product plus limited dltis/dltr coverage will produce a sparse, noisy long leg."
+    },
+    {
+      "generation": 0,
+      "target_name": "Dilution On Low EBITDA Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Smoothed share-count growth *is* the Pontiff\u2013Woodgate net-issuance anomaly, and interacting it with an inverted EBITDA yield replicates the same value-times-issuance construction already proposed in \"Rich Sales Multiple Issuance,\" making this a near-duplicate rediscovery rather than an independent test."
+    },
+    {
+      "generation": 1,
+      "target_name": "Cash-Yield Repurchase Conviction",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archive's \"Cashflow-Cheap Buyback Step-Up\" (same OCF-yield indicator gate, threshold moved 0.10\u21920.08, level of prstkc/at instead of its change), so it re-tests an already-failed mechanism rather than diagnosing why it failed."
+    },
+    {
+      "generation": 1,
+      "target_name": "Own-History Discount Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The economic content \u2014 buybacks are informative when the firm's own valuation has de-rated \u2014 is essentially the archive's \"DeRated Buyback Conviction\" with a 5-year TS_RANK substituted for the one-year DELTA, an operator swap rather than a substantively different hypothesis."
+    },
+    {
+      "generation": 1,
+      "target_name": "Effective Discount Retirement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Requiring buyback spending to translate into an actual fall in share count is a genuine refinement (and partly distinct from the well-known net-share-issuance anomaly because of the value gate and spending interaction), but it reuses the archive's \"Self-Funded Value Repurchase\" template with csho growth swapped for leverage change and the triple product will be exactly zero for most firms, risking the same degenerate sorts and weak ls_talpha seen previously."
+    },
+    {
+      "generation": 1,
+      "target_name": "Rich Equity Debt Swap",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The interaction is largely mechanical \u2014 equity issuance inflates total assets and therefore automatically lowers debt/at, so NEG(DELTA(leverage)) is near-tautologically positive for issuers, making the signal close to a monotone re-scaling of issuance itself \u2014 and economically the two legs conflict, since debt reduction is normally a bullish external-financing signal."
+    },
+    {
+      "generation": 1,
+      "target_name": "Distressed Value Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Inverting the archive's timing logic (issuance by cheap, cash-burning firms as distress-driven dilution rather than overvaluation timing) is a coherent and genuinely different conditioning story, though the triple gate will leave very few nonzero observations and the signal overlaps materially with known distress and net-equity-issuance effects."
+    },
+    {
+      "generation": 1,
+      "target_name": "Rich Issuer Cashflow Fade",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The diagnostic motivation (P/S is high for legitimately growing firms, so require deteriorating fundamentals) is thoughtful and directly builds on the archive's mixed \"Rich Sales Multiple Issuance\" result, but the deterioration leg is mechanically induced by the issuance itself \u2014 sstk raises the at denominator and thus lowers OCF/at \u2014 so the interaction partly reduces to squared issuance intensity rather than an independent fundamentals signal."
+    },
+    {
+      "generation": 2,
+      "target_name": "Smooth Cash-Rich Rich Issuer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic rank-smoothed recombination of two archived signals (Cash-Rich Rich Issuer and Rich Sales Multiple Issuance) rather than a new mechanism, and because sstk is zero for most firms the RANK of the issuance\u00d7cash product remains heavily tied, so the \"degenerate sort\" problem is mitigated only superficially."
+    },
+    {
+      "generation": 2,
+      "target_name": "CashAdjusted EBITDA Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the fourth denominator variant of the archived \"cheap-firm gate \u00d7 buyback intensity\" template (ceq/mve, ib/mve, oancf/mve all produced |t|<1), and the EV denominator introduces a sign pathology when net cash exceeds market value plus debt, so the indicator can misclassify the very cash-rich firms it is meant to identify."
+    },
+    {
+      "generation": 2,
+      "target_name": "Rich Net Issuance Switch",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning a *change* in net financing stance on rich valuation is a coherent and reasonably distinct construct relative to the archived gross-issuance acceleration test, though the market-cap denominator means price appreciation mechanically lowers the ratio, so the delta is partly a reverse-momentum proxy that should be diagnosed if the signal works."
+    },
+    {
+      "generation": 2,
+      "target_name": "BelowBook Liability Shrink Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-duplicate of the archived \"Self-Funded Value Repurchase\" (same below-book gate \u00d7 buyback intensity \u00d7 falling-debt term) with only threshold, scaler, and lt-vs-dltt+dlc substitutions, and using total liabilities makes the third term contaminated by shrinking payables/accruals, which typically signals contracting business rather than financial strength."
+    },
+    {
+      "generation": 2,
+      "target_name": "Rich Issuer Payout Cut",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Most equity issuers pay no dividends, so DELTA(dvc/sale) is identically zero for the bulk of the gated sample, leaving a very thin set of nonzero observations to drive a triple interaction whose bearish content is likely just the well-known dividend-cut announcement effect."
+    },
+    {
+      "generation": 2,
+      "target_name": "Expensive Buyback Dilution Camouflage",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression is internally consistent with the stated negative sign and the \"camouflage buyback\" story is economically sensible, but GROWTH(csho) is the net share issuance anomaly itself, so the test must show incremental power beyond that known effect and beyond the archived cheap-firm mirror image of this construction."
+    },
+    {
+      "generation": 3,
+      "target_name": "Peer-Rich Equity Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The industry z-score substantively changes the archived rank-based \"Rich Sales Multiple Issuance\" design (it neutralizes industry valuation levels and allows a signed cheap/expensive tilt rather than an all-positive rank), and the expression matches the stated hypothesis and sign, though it remains an incremental step on an already-tested rich-issuer axis and is exposed to price-to-sales outliers inside industry z-scoring."
+    },
+    {
+      "generation": 3,
+      "target_name": "Discount Net-Issuance Reversal",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the mirror-image sample of the archived \"Rich Net Issuance Switch\" (same DELTA net-issuance construct, opposite valuation gate) and reduces to a change-in-net-share-issuance signal \u2014 a close cousin of the well-documented net share issuance anomaly \u2014 while retaining the hard indicator gate that has repeatedly produced weak, mostly-zero spreads in this archive."
+    },
+    {
+      "generation": 3,
+      "target_name": "Continuous Distress Dilution Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The proposal correctly diagnoses the archived \"Distressed Value Issuer\" failure (sparse triple gate, binary burn flag) and replaces it with a continuous severity term whose sign logic is internally consistent, but oancf/sale is unstable for low- or negative-sales firms and the below-book indicator still discards most of the cross-section."
+    },
+    {
+      "generation": 3,
+      "target_name": "Rich Debt-Funded Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Debt-financed repurchases at high market-to-book is the sign-flipped mirror of the archived \"Self-Funded Value Repurchase\" axis, and the debt-change component largely re-expresses the known debt-issuance/leverage-growth anomaly, so the triple product mainly adds gate-induced sparsity rather than a new mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "Rich Issuer Cash Parking",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because equity issuance mechanically increases cash, MUL(sstk/at, \u0394che/at) is close to an accounting identity squaring of the issuance term, so the signal largely rediscovers the net share issuance anomaly conditioned on high price-to-sales \u2014 i.e., the archived \"Cash-Rich Rich Issuer\" with a noisier, partly mechanical second leg."
+    },
+    {
+      "generation": 3,
+      "target_name": "Cash-Backed Net Retirement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A continuous, ungated interaction of cash-to-market with net payout that should have far better coverage and stability than the archived gated designs, and it is internally consistent \u2014 though it is close to a simple product of two well-known predictors (cash-to-price value and net payout yield) and mixes market-cap and asset scalings across the two legs."
+    },
+    {
+      "generation": 4,
+      "target_name": "Peer Valuation Timing Spread",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "The two indicator branches partition the sample and both contribute +\uff08prstkc\u2212sstk)/lag(at), so the expression algebraically collapses to plain net equity retirement scaled by lagged assets \u2014 the peer-valuation conditioning does literally nothing, making this an internally inconsistent restatement of the well-known net-stock-issues anomaly."
+    },
+    {
+      "generation": 4,
+      "target_name": "Peer-Rich Issuance Acceleration",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical crossbreed of two archive signals (peer-rich gate from \"Peer-Rich Equity Issuer\" plus the delta-issuance construct from \"Rich Net Issuance Switch,\" which already failed on alpha sign), and differencing a lumpy issuance flow mostly injects noise relative to the level version that already worked."
+    },
+    {
+      "generation": 4,
+      "target_name": "Net-Cash Retirement Conviction",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing gross cash with net cash is a substantive, economically motivated refinement of the cash-backed retirement result (which had strong FMB but negligible alpha), though the RANK weight is non-negative and never flips sign, so the signal remains a modulated version of the known net-issuance effect and the incremental content is modest."
+    },
+    {
+      "generation": 4,
+      "target_name": "Value-Trap Loss Dilution",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archive's \"Continuous Distress Dilution Value\" \u2014 same cheapness \u00d7 issuance \u00d7 weak-profitability triple product with ib/at swapped for oancf/sale and RANK swapped for INDICATOR \u2014 and its content largely reduces to the already-published issuance, profitability, and distress-risk effects."
+    },
+    {
+      "generation": 4,
+      "target_name": "Profitless Peer-Rich Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The margin-adjustment logic (a high price-to-sales multiple is only truly rich when margins are weak) is economically coherent and the expression's direction matches the negative expected sign, but it sits close to the existing peer-rich issuer signal and its margin analogue, so the marginal novelty is limited."
+    },
+    {
+      "generation": 4,
+      "target_name": "Persistent Sales-Yield Retirement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The three-year net-retirement accumulation is a genuine and previously untested design change rather than a cosmetic tweak, though using a raw unbounded sales-yield multiplier (rather than RANK/z-score) risks the portfolio being dominated by a handful of low-multiple, high-turnover microcaps."
+    },
+    {
+      "generation": 5,
+      "target_name": "Lagged Peer-Rich Equity Issuer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a one-line cosmetic variant of the archived \"Peer-Rich Equity Issuer\" (only a LAG on the industry z-score), and since price-to-sales is highly persistent year-over-year the lag will barely change the cross-section, so it neither tests a new mechanism nor plausibly resolves the fmb/alpha tension."
+    },
+    {
+      "generation": 5,
+      "target_name": "Lagged Peer-EV Rich Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Swapping equity value for enterprise value in the peer-relative multiple is a genuine economic refinement (it separates operationally expensive firms from cash-rich or levered ones, which matters precisely for issuers), though it is still a close descendant of the archived peer-rich issuer signal and bundles two changes (EV and lag) at once."
+    },
+    {
+      "generation": 5,
+      "target_name": "Peer-Rich Dilution Bottleneck",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The core driver is the well-documented net share issuance anomaly, and the MIN construction is internally awkward \u2014 a low signal value can arise from either peer-cheapness *or* share shrinkage, so the long leg is an incoherent mixture that undermines the stated \"both conditions\" logic."
+    },
+    {
+      "generation": 5,
+      "target_name": "Peer-Cheap Shrinkage Bottleneck",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the near-mirror twin of the preceding proposal (MIN of negated ranks is a MAX, so the extreme long leg still requires both conditions but the short leg is a muddle of expensive-or-diluting firms), and it again largely re-expresses the known share-issuance/buyback-value combination rather than a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Persistent Net-Cash Retirement",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical mashup of two archived signals (\"Net-Cash Retirement Conviction\" and \"Persistent Sales-Yield Retirement\") that both already produced strong FMB slopes with economically trivial and insignificant alphas (~0.8% with t<1); stacking them addresses none of the diagnosed portfolio-side weakness."
+    },
+    {
+      "generation": 5,
+      "target_name": "Smoothed Value Repurchase Tilt",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Replacing the annual DELTA with a three-year level average is a substantive change of construct (persistent payout composition rather than a lumpy one-year shift) with a matching hypothesis and consistent sign, though it remains close to the classic net-payout-yield-meets-value combination and to the archived \"Discounted Repurchase Payout Tilt.\""
+    },
+    {
+      "generation": 6,
+      "target_name": "Peer-EV Roundtrip Equity Flow",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic denominator swap on the archive's best signal (Peer-Rich Roundtrip Equity Flow), substituting an EV/sales peer z-score for the P/sales peer z-score even though the archive already showed EV/S conditioning to be weaker than P/S conditioning (Lagged Peer-EV Rich Issuer, fmb -1.62 vs -1.92), so it is unlikely to produce genuinely new information."
+    },
+    {
+      "generation": 6,
+      "target_name": "Runup Roundtrip Equity Churn",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning gross equity roundtripping on the *change* in peer-relative valuation rather than its level is a substantively different (timing vs. level) mechanism not yet tested, though the unbounded, two-year-stale DELTA term is noisy and the interaction implicitly predicts outperformance for de-rated churners, which the hypothesis never argues."
+    },
+    {
+      "generation": 6,
+      "target_name": "Cashflow-Surplus EV Issuer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archive's Cashflow-Surplus Peer-Rich Issuer with two incidental substitutions (EV/S for P/S, oancf/at for oancf/sale), both of which were already tested separately in the archive, so it is a scaling variant rather than a new economic hypothesis."
+    },
+    {
+      "generation": 6,
+      "target_name": "Peer-EV External Finance Overload",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding the debt-issuance channel via SUMRANK introduces a genuinely new financing dimension (dltis) to the peer-valuation interaction, though it flirts with rediscovering the published composite external-financing anomaly and SUMRANK discards magnitude information that made the raw issuance-to-assets terms informative."
+    },
+    {
+      "generation": 6,
+      "target_name": "Peer-Cheap Covered Buyback",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The MIN(prstkc, lagged oancf) clipping is a legitimately distinct construction of \"internally funded\" repurchases, but for the majority of firms buybacks fall below operating cash flow so the signal largely degenerates into the already-tested peer-cheap \u00d7 repurchase-yield interaction, with the negative-cash-flow tail injecting a plain profitability tilt, and the expected positive sign sits uneasily with the archive's Rich Uncovered Buyback result (uncovered buybacks earned *positive* alpha)."
+    },
+    {
+      "generation": 6,
+      "target_name": "Peer-Cheap Smoothed Payout Tilt",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "This is a direct rediscovery of the archive's Smoothed Value Repurchase Tilt with one cheapness rank swapped for an economically near-identical industry-relative cheapness rank, and that signal already showed an essentially zero Fama-MacBeth slope (fmb 0.17)."
+    },
+    {
+      "generation": 7,
+      "target_name": "Persistent Peer-Rich Roundtrip",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic smoothing variant of the archive's already-strong \"Peer-Rich Roundtrip Equity Flow\" (fmb -5.6, ls_talpha -3.0) with no new economic content, and the archive already shows that simple MA re-runs (e.g., \"Smoothed Value Repurchase Tilt\") degrade the cross-sectional slope rather than diagnose anything."
+    },
+    {
+      "generation": 7,
+      "target_name": "Peer-Rich Roundtrip Sales Fade",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A legitimate conditional extension of the roundtrip family with a genuinely new leg, but the sales-growth condition is mechanically entangled with the price-to-sales valuation leg (falling sales inflate the multiple), so a positive result will be hard to attribute to the stated growth-vs-financing mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Peer-Rich Equity-Funded Dividend",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because dividends paid typically exceed equity issuance for dividend payers, MIN(sstk,dvc) collapses to sstk in most observations, making this largely a rediscovery of the archive's \"Peer-Rich Equity Issuer\" restricted to dividend payers rather than a distinct use-of-proceeds channel."
+    },
+    {
+      "generation": 7,
+      "target_name": "Peer-Rich Cash-Deficit External Finance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A coherent and internally consistent revision of the weak \"Peer-EV External Finance Overload\" that swaps the valuation metric and adds an economically motivated internal-cash-shortfall leg, though it edges toward the well-known net-external-financing anomaly and the triple product may dilute rather than sharpen the interaction."
+    },
+    {
+      "generation": 7,
+      "target_name": "Peer-Cheap Cashflow-Backed Net Retirement",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Signs and scaling are internally consistent (negative net retirement stays negative under the two bounded positive weights), but it is essentially a recombination of three already-tested legs whose prior versions delivered strong Fama-MacBeth slopes with negligible FF5 alpha, and the proposal does nothing to diagnose that persistent gap."
+    },
+    {
+      "generation": 7,
+      "target_name": "Peer-Cheap Accretive Persistent Retirement",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The sales-per-share growth multiplier can be negative while net retirement is also negative, so net issuers with deteriorating sales per share receive large positive scores and land in the long leg \u2014 a sign inconsistency with the stated hypothesis, and the construction is otherwise a direct mashup of two archive signals."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Rich Dilutive Roundtrip",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic third-factor variant of the already-saturated Peer-Rich Roundtrip family and directly contradicts two archived tests \u2014 \"Peer-Rich Wash Churn\" hypothesized bearishness when share count does *not* move, while \"Expensive Buyback Dilution Camouflage\" (buyback \u00d7 rising csho at rich valuation) already returned the opposite sign \u2014 so the mechanism is being fitted, not tested."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Rich Marginless Roundtrip",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Both ingredients are already in the archive (\"Peer-Rich Roundtrip Equity Flow\" as the base, and weak margins as a conditioner in \"Profitless Peer-Rich Issuer\" / \"Peer-Rich Roundtrip Sales Fade\"), and the bare roundtrip base already achieves fmb -5.6 with talpha -3.0, so this recombination is unlikely to constitute a substantive improvement rather than a redundant rotation of the third factor."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Rich Underlevered Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning peer-rich issuance on *prior leverage capacity* is a genuinely new and economically coherent discriminator (timing versus financing necessity) that the archive has not tested, and the expression's direction matches the stated negative sign, though the mechanism partly overlaps the low-leverage return tilt and the base issuance signal already delivers most of the alpha."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Rich Shrinking Asset Issuer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expected sign fights the well-documented asset-growth anomaly (high asset growth predicts *low* returns) and is mechanically confounded, since issuance proceeds themselves inflate assets, so low asset growth conditional on large sstk is a rare, noisy residual whose predicted direction is ambiguous."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Cheap Clean Repurchase",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Multiplying gross repurchases by the rank of low issuance is a monotone re-expression of net equity retirement interacted with peer cheapness, which the archive has already tested repeatedly (\"Peer-Weighted Gross Timing Spread\", \"Persistent Sales-Yield Retirement\", \"Peer-Cheap Cashflow-Backed Net Retirement\"), making this a rediscovery rather than a new mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Peer-Cheap Margin Recovery Buyback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Economically sensible (value-trap avoidance) but it is the fourth sibling in the \"peer-cheap buyback \u00d7 improving fundamental\" family already covered by Sales-Per-Share, EBITDA-Per-Share and Accretion-Gap variants, all of which produced fmb ~3 with economically negligible and statistically weak FF5 alphas \u2014 a cosmetic swap of the improvement proxy, not a diagnosis of why the portfolio evidence fails."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Rich Raw External Finance",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-specification of the archived \"Peer-EV External Finance Overload\" (P/S instead of EV/S, raw sum instead of SUMRANK), and the underlying composite sstk+dltis external-financing construct is itself a direct rediscovery of the published net-external-financing anomaly."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Rich Maturity-Wall Issuer",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "It is only a level-vs-change permutation of the already-tested \"Peer-Rich Short-Debt Pressure Issuer,\" and its premise (high prior debt makes issuance more bearish) sits in direct tension with the archive's strongest leverage result, \"Peer-Rich Underlevered Issuer,\" which found low prior leverage most bearish \u2014 so the proposal should first reconcile that contradiction rather than add another conditioning tweak."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Rich Buyback Reversal Issuer",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The intertemporal repurchase-then-issue reversal is a genuinely different construct from the contemporaneous MIN(sstk,prstkc) roundtrip signals and the expression matches the stated bearish direction, though it remains within the same peer-rich-issuance family and may end up capturing much of the same firm population."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Rich Cash-Drain Issuer",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The conditioning variable (cash falls despite equity proceeds) is economically distinct from prior cash-level ideas, explicitly addresses the mechanical issuance-raises-cash confound, and the sign convention (NEG(DELTA(che)) ranked high when cash drains, multiplied by a positive issuance term against a positive peer-rich z-score) correctly implies the stated negative slope."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Rich Low-ROA Issuer",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Swapping lagged ROA for EBITDA margin makes this a near-duplicate of the archived \"Profitless Peer-Rich Issuer,\" and the issuance-times-low-profitability interaction is essentially the well-documented external-financing/quality overlap rather than a new cross-theme mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Peer-Cheap Low-Maturity-Risk Buyback",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is an incremental filter on the already-tested peer-cheap buyback family (covered buyback, cashflow-backed retirement) that substitutes low short-term debt for cash-flow coverage as the same \"balance-sheet capacity\" proxy, and the triple rank-times-rank-times-level product further dilutes the payout signal without addressing why those earlier variants produced imprecise alphas."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Sales Multiple Issuance",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(mul(prcc_f,csho),sale)),rank(ratio(sstk,at)))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DeRated Buyback Conviction",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(delta(ratio(mul(prcc_f,csho),ceq),1))),rank(ratio(prstkc,mul(prcc_f,csho))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Thresholded Equity Timing Confirmation",
+      "metadata": {
+        "normalized_expression": "winsor(sub(mul(ratio(prstkc,mul(prcc_f,csho)),indicator(ratio(ceq,mul(prcc_f,csho)),1)),mul(ratio(sstk,mul(prcc_f,csho)),indicator(ratio(mul(prcc_f,csho),ceq),2))),1)",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cashflow-Cheap Buyback Step-Up",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(oancf,mul(prcc_f,csho)),0.1),delta(ratio(prstkc,at),1)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded Value Repurchase",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(ceq,mul(prcc_f,csho)),0.8),mul(ratio(prstkc,at),neg(delta(ratio(add(dltt,dlc),at),1)))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Valuation-Peak Issuance Acceleration",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ts_rank(neg(ratio(ebitda,mul(prcc_f,csho))),5),0.8),delta(ratio(sstk,at),1)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Effective Discount Retirement",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(ceq,mul(prcc_f,csho)),1),mul(ratio(prstkc,at),neg(growth(csho,1)))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Distressed Value Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(ceq,mul(prcc_f,csho)),1),mul(ratio(sstk,at),indicator(neg(ratio(oancf,at)),0))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings-Yield Payout Switch",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(ib,mul(prcc_f,csho)),0.06),ratio(sub(prstkc,dvc),at)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Book-Accretive Repurchase Yield",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(prstkc,at),ratio(sub(ratio(ceq,csho),prcc_f),prcc_f)),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Rich Rich Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(mul(prcc_f,csho),sale),2),mul(ratio(sstk,at),lag(ratio(che,at),1))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Issuer Margin Fade",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(mul(prcc_f,csho),sale),2),mul(ratio(sstk,at),neg(delta(ratio(ebitda,sale),1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Net Issuance Switch",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(mul(prcc_f,csho),ceq),2),delta(ratio(sub(sstk,prstkc),mul(prcc_f,csho)),1)),1)",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensive Buyback Dilution Camouflage",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(mul(prcc_f,csho),ceq),2),mul(ratio(prstkc,mul(prcc_f,csho)),growth(csho,1))),1)",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Prior Multiple Runup Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(sstk,lag(at,1)),delta(lag(ratio(mul(prcc_f,csho),sale),1),1)),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sales-Supported DeRating Buyback",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(prstkc,lag(at,1)),mul(neg(delta(lag(ratio(mul(prcc_f,csho),sale),1),1)),indicator(growth(sale,1),0))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discounted NonDilutive Deleveraging",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(lag(ratio(ceq,mul(prcc_f,csho)),1),1),sub(ratio(neg(delta(add(dltt,dlc),1)),lag(at,1)),ratio(sstk,lag(at,1)))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Issuer Growth Deceleration",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(lag(ratio(mul(prcc_f,csho),sale),1),2),mul(ratio(sstk,lag(at,1)),neg(delta(growth(sale,1),1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Equity Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),ratio(sstk,lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Continuous Distress Dilution Value",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ratio(ceq,mul(prcc_f,csho)),1),mul(ratio(sstk,lag(at,1)),neg(ratio(oancf,sale)))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed Net Retirement",
+      "metadata": {
+        "normalized_expression": "winsor(mul(lag(ratio(che,mul(prcc_f,csho)),1),ratio(sub(prstkc,sstk),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discounted Repurchase Payout Tilt",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ratio(ceq,mul(prcc_f,csho))),delta(ratio(sub(prstkc,dvc),lag(at,1)),1)),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dvc",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Uncovered Buyback",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),rank(sub(ratio(prstkc,lag(at,1)),ratio(oancf,lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rich Issuer Accrual Gap",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),ratio(sub(ib,oancf),sale))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net-Cash Retirement Conviction",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(lag(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),1)),ratio(sub(prstkc,sstk),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitless Peer-Rich Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(indicator(ind_zscore(ratio(mul(prcc_f,csho),sale)),0),mul(ratio(sstk,lag(at,1)),rank(neg(ratio(ebitda,sale))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Sales-Yield Retirement",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(sale,mul(prcc_f,csho)),ratio(ts_sum(sub(prstkc,sstk),3),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Weighted Gross Timing Spread",
+      "metadata": {
+        "normalized_expression": "winsor(sub(mul(ratio(prstkc,lag(at,1)),rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale))))),mul(ratio(sstk,lag(at,1)),rank(ind_zscore(ratio(mul(prcc_f,csho),sale))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cashflow-Surplus Peer-Rich Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(lag(ratio(oancf,sale),1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Book-Discount Equity Sale Dilution",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(sstk,lag(at,1)),rank(ratio(lag(ratio(ceq,csho),1),prcc_f))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Lagged Peer-EV Rich Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(lag(ind_zscore(ratio(sub(add(mul(prcc_f,csho),add(dltt,dlc)),che),sale)),1),ratio(sstk,lag(at,1))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Value Repurchase Tilt",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ratio(ceq,mul(prcc_f,csho))),ma(ratio(sub(prstkc,dvc),lag(at,1)),3)),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dvc",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Equity Debt Takeout",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),min(ratio(sstk,lag(at,1)),ratio(dltr,lag(at,1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dltr",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Roundtrip Equity Flow",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),ratio(min(sstk,prstkc),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Cheap Sales-Per-Share Buyback",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale)))),mul(ratio(prstkc,lag(at,1)),growth(ratio(sale,csho),1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Issuance Book Leakage",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),sub(ratio(sstk,lag(at,1)),ratio(delta(ceq,1),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Runup Roundtrip Equity Churn",
+      "metadata": {
+        "normalized_expression": "winsor(mul(delta(lag(ind_zscore(ratio(mul(prcc_f,csho),sale)),1),1),ratio(min(sstk,prstkc),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-EV External Finance Overload",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(sub(add(mul(prcc_f,csho),add(dltt,dlc)),che),sale)),sumrank(ratio(sstk,lag(at,1)),ratio(dltis,lag(at,1)))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltis",
+          "dltt",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Cheap Covered Buyback",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale)))),ratio(min(prstkc,lag(oancf,1)),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Net-Dilutive Roundtrip",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(min(sstk,prstkc),lag(at,1)),rank(ratio(sub(sstk,prstkc),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Equity-Funded Payout",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),ratio(min(sstk,add(prstkc,dvc)),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Cheap EBITDA-Per-Share Buyback",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale)))),mul(ratio(prstkc,lag(at,1)),ratio(delta(ratio(ebitda,csho),1),prcc_f))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Roundtrip Sales Fade",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(min(sstk,prstkc),lag(at,1)),rank(neg(growth(sale,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Cash-Deficit External Finance",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(sumrank(ratio(sstk,lag(at,1)),ratio(dltis,lag(at,1))),rank(neg(lag(ratio(oancf,at),1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dltis",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Cheap Cashflow-Backed Net Retirement",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale)))),mul(ratio(sub(prstkc,sstk),lag(at,1)),rank(lag(ratio(oancf,at),1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Wash Churn",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ind_zscore(ratio(mul(prcc_f,csho),sale))),mul(ratio(min(sstk,prstkc),lag(at,1)),rank(neg(abs(growth(csho,1)))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Dividend-Coverage Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ind_zscore(ratio(mul(prcc_f,csho),sale))),mul(ratio(sstk,lag(at,1)),mul(rank(ratio(dvc,lag(at,1))),rank(sub(ratio(dvc,lag(at,1)),ratio(lag(oancf,1),lag(at,1))))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Cheap Buyback Accretion Gap",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(neg(ind_zscore(ratio(mul(prcc_f,csho),sale)))),mul(ratio(prstkc,lag(at,1)),rank(sub(growth(ratio(sale,csho),1),growth(sale,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Underlevered Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(neg(lag(ratio(add(dltt,dlc),at),1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Equity Debt Co-Issue",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),ratio(min(sstk,dltis),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dltis",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Noncash Dilution",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),rank(sub(growth(csho,1),ratio(sstk,mul(prcc_f,csho))))),1)",
+        "variables": [
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Short-Debt Pressure Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(ratio(delta(dlc,1),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "High-Yield Equity Financing Trap",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ratio(dvc,mul(prcc_f,csho))),mul(ratio(sstk,lag(at,1)),rank(sub(ratio(dvc,lag(at,1)),ratio(lag(oancf,1),lag(at,1)))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "oancf",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discounted Short-Debt Takeout Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ratio(ceq,mul(prcc_f,csho))),mul(ratio(sstk,lag(at,1)),rank(ratio(neg(delta(dlc,1)),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dlc",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Buyback Reversal Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(ratio(lag(prstkc,1),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Cash-Drain Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(ratio(neg(delta(che,1)),lag(at,1))))),1)",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Equity-Dominant Financing",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),sub(ratio(sstk,lag(at,1)),ratio(dltis,lag(at,1)))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dltis",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Short-Maturity Mix Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(sub(lag(ratio(dlc,at),1),lag(ratio(dltt,at),1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Peer-Rich Per-Share Sales Decay Issuer",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ind_zscore(ratio(mul(prcc_f,csho),sale)),mul(ratio(sstk,lag(at,1)),rank(neg(lag(growth(ratio(sale,csho),1),1))))),1)",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Discounted Equity Churn Trap",
+      "metadata": {
+        "normalized_expression": "winsor(mul(rank(ratio(ceq,mul(prcc_f,csho))),ratio(min(sstk,prstkc),lag(at,1))),1)",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    }
+  ]
+}

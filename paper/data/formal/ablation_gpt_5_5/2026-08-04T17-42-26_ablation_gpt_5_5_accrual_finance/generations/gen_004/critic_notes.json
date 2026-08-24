@@ -1,0 +1,44 @@
+[
+  {
+    "generation": 4,
+    "target_name": "CurrentAccrual FundingBeyondEarnings",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "This is a mechanical splice of two archive signals \u2014 the accrual leg is verbatim from \"DebtAdjusted CurrentAccrual Issuer\" and the financing leg is the \"DebtIssue EarningsShortfall\" construction generalized to total external financing \u2014 so it is a near-duplicate recombination rather than a new mechanism, and subtracting `ib` from financing partially double-counts the earnings information already in the accrual leg."
+  },
+  {
+    "generation": 4,
+    "target_name": "EquityIssue BeyondEarnings AccrualStress",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "The stated rationale is internally inconsistent \u2014 the second MIN leg, (sstk\u2212prstkc\u2212ib)/at, is *increasing* in losses, so the conjunction amplifies rather than \"avoids cases where losses alone drive the signal,\" and the two MIN legs are near-collinear so the construction adds little beyond the archive's existing accrual\u00d7net-equity-issuance interactions."
+  },
+  {
+    "generation": 4,
+    "target_name": "DebtRollover Accrual Fragility",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "This is the failed \"EquityChurn Accrual Mask\" design (MIN of gross issuance and gross retirement ranks) transplanted from equity to debt, and gross dltis/dltr levels are dominated by leverage and revolver accounting rather than any refinancing-fragility mechanism."
+  },
+  {
+    "generation": 4,
+    "target_name": "ReceivableTradeCredit FundingGap",
+    "verdict": "accept",
+    "score": 3,
+    "rationale": "The receivables-build-net-of-payables funding gap is a genuinely new accrual leg (not a recch+invch or apalch+txach repeat), signs are internally coherent given the cash-flow-statement conventions, though apalch-based coverage in this archive was the sparsest (~0.04) so any result must be checked against coverage-driven instability."
+  },
+  {
+    "generation": 4,
+    "target_name": "Dilution WithoutEquityBuild AccrualStress",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "It is a cosmetic variant of the archive's \"Dilution EquityErosion Accrual Stress\" (same accrual leg, same MIN with csho growth, only sstk added to the \u0394ceq leg), and the stated motivation of \"repairing the prior unit-mismatch problem\" is false since both prior legs were already rank-transformed and both new terms are scaled by `at`."
+  },
+  {
+    "generation": 4,
+    "target_name": "CashQuality OrganicEquity Growth",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "\u0394ceq \u2212 sstk is approximately retained earnings net of payout, so the financing leg is largely a profitability/ROE proxy and the product collapses toward cash-based operating profitability (Ball et al. 2016) crossed with reversed Sloan accruals, while also closely duplicating the archive's already-tested \"Clean Accrual Net Capital Return.\""
+  }
+]

@@ -1,0 +1,2792 @@
+{
+  "pair": "finance_distress",
+  "evaluated": [
+    {
+      "name": "Dilutive issuance into accumulated deficit",
+      "expression": "MUL(WINSOR(RATIO(sstk, at), 1), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Equity issuance is far worse news when retained earnings are deeply negative, because the proceeds fund past losses rather than new projects; investors underreact to the dilution-plus-deficit combination.",
+      "expected_sign": "negative",
+      "reasoning": "Retained earnings scaled by assets is a classic accumulated-distress state variable (Z-score component), and issuance by such firms is closer to a survival financing event than to opportunistic growth capital. Weighting the issuance intensity by the cross-sectional rank of accumulated deficit lets the same dollar of issuance carry a stronger negative loading for distressed issuers while remaining continuous and fully covered.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.1348743645375174,
+      "ls_alpha": 0.04223456009523384,
+      "ls_talpha": 2.4072320068218733,
+      "ls_sharpe": 0.030168405055615664,
+      "coverage": 0.12689337657159697,
+      "error": null
+    },
+    {
+      "name": "Distressed deleveraging recovery",
+      "expression": "MUL(WINSOR(RATIO(SUB(dltr, dltis), at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "Net long-term debt retirement by highly levered, low-profit firms signals successful balance-sheet repair and falling default probability, and the resolution of distress risk is rewarded with high subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "For healthy firms debt repayment is a mundane capital-structure choice, but for distressed firms it is a credible, cash-verified reduction in bankruptcy likelihood that equity holders capture with high leverage. The SUMRANK distress score combines solvency (lt/at) and profitability (ib/at) so the financing flow is amplified only where default risk is genuinely priced.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.704072901765987,
+      "ls_alpha": -0.0006107415752844006,
+      "ls_talpha": -0.07114187240011954,
+      "ls_sharpe": 0.16649799241998245,
+      "coverage": 0.12285583448280417,
+      "error": null
+    },
+    {
+      "name": "Payout credibility under liquidity strain",
+      "expression": "MUL(WINSOR(RATIO(ADD(dvt, prstkc), at), 1), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Distributing cash to shareholders while carrying heavy long-term debt and thin cash relative to current liabilities is a costly, credible signal of hidden cash-flow strength; such firms are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Payouts by unconstrained cash-rich firms convey little information, whereas payouts sustained under debt burden and low liquidity buffers reveal that management privately expects cash generation to cover both creditors and shareholders. The distress rank therefore converts a weak stand-alone payout signal into a screened commitment signal.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.2101734084124462,
+      "ls_alpha": -0.012016537257446905,
+      "ls_talpha": -1.0699407133717498,
+      "ls_sharpe": 0.06655103014130814,
+      "coverage": 0.1102120680816921,
+      "error": null
+    },
+    {
+      "name": "Chronic external funding of cash burn",
+      "expression": "MUL(TS_SUM(RATIO(ADD(sstk, dltis), at), 3), RANK(NEG(MA(RATIO(oancf, lct), 3))))",
+      "hypothesis": "Firms that repeatedly tap both equity and debt markets over several years while operating cash flow persistently fails to cover current liabilities are structurally dependent on external capital, and this persistence predicts negative abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "A single year of issuance can be growth financing, but a three-year cumulative inflow paired with a three-year average cash-flow coverage shortfall identifies a treadmill of dilution and refinancing. The temporal construction is required because the mechanism is persistence of the funding gap, not its level in any one year.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -1.8928415379721848,
+      "ls_alpha": -0.0015957599014063198,
+      "ls_talpha": -0.14811776443858396,
+      "ls_sharpe": -0.13505664525763528,
+      "coverage": 0.07864640213566315,
+      "error": null
+    },
+    {
+      "name": "Equity-over-debt financing tilt in distress",
+      "expression": "MUL(SUB(RANK(RATIO(sstk, at)), RANK(RATIO(dltis, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(pi, at)))))",
+      "hypothesis": "Among distressed firms, raising capital through equity rather than debt reveals that creditors have withdrawn and that management is timing an overvalued stock, so the equity-tilted financing mix predicts low returns; among sound firms the mix is uninformative.",
+      "expected_sign": "negative",
+      "reasoning": "The financing-mix spread (equity issuance rank minus debt issuance rank) is a security-choice signal about who is still willing to fund the firm, and pecking-order logic says only credit-constrained, high-default-risk firms are pushed to equity. Scaling the mix by a leverage-plus-pretax-loss distress rank makes the interaction, rather than either issuance channel, the source of predictability.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.9990583814120023,
+      "ls_alpha": 0.04494460975704284,
+      "ls_talpha": 3.653264911644987,
+      "ls_sharpe": -0.009358744818695731,
+      "coverage": 0.12322925772663149,
+      "error": null
+    },
+    {
+      "name": "Share dilution into accumulated deficit",
+      "expression": "MUL(WINSOR(GROWTH(csho, 1), 1), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Dilution measured by shares outstanding, rather than by reported issuance proceeds, is the economically complete measure of claim transfer, and it is most damaging for firms whose retained earnings are deeply negative because equity is being sold to fund accumulated losses.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 dilution-into-deficit signal delivered both a negative slope and a reliable FF5 alpha but covered only 13% of firm-months because sstk is sparsely reported; csho growth captures the same economic dilution with near-universal balance-sheet coverage. Comparing the two isolates whether the earlier result was a measurement artifact of issuance reporting or a genuine dilution-under-distress effect.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -3.768795896623852,
+      "ls_alpha": 0.00662021671312743,
+      "ls_talpha": 0.7824207913568813,
+      "ls_sharpe": -0.27198153850522294,
+      "coverage": 0.13146984919437985,
+      "error": null
+    },
+    {
+      "name": "Rank-scaled distressed deleveraging",
+      "expression": "MUL(RANK(RATIO(SUB(dltr, dltis), at)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "Net long-term debt retirement by levered, low-profit firms reduces default risk and earns high subsequent returns, but the effect is monotone in the ordinal position of repayment intensity rather than in its dollar magnitude.",
+      "expected_sign": "positive",
+      "reasoning": "The winsorized-level version produced a strong Fama-MacBeth slope (t=3.7) yet essentially zero FF5 alpha, the classic signature of extreme portfolios populated by scale outliers instead of by the economic state. Rank-transforming the financing leg keeps the same mechanism while making decile membership reflect relative deleveraging, which should convert the cross-sectional slope into a tradable spread.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.8177972313438355,
+      "ls_alpha": -0.022049140905715133,
+      "ls_talpha": -1.8343350939950742,
+      "ls_sharpe": 0.09418005183537453,
+      "coverage": 0.12285583448280417,
+      "error": null
+    },
+    {
+      "name": "Net equity financing under solvency strain",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(SUB(COALESCE(sstk, 0), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))), at), 1)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, at)))))",
+      "hypothesis": "What matters for distressed firms is the net direction of the equity channel: firms that are net absorbers of shareholder capital while leverage is high and operating cash flow weak are funding survival, whereas net returners of capital under the same conditions have genuine slack.",
+      "expected_sign": "negative",
+      "reasoning": "Gen-0 tested gross issuance and gross payout separately, splitting the same economic axis into two low-coverage halves; netting them and treating unreported issuance, repurchase, and dividend lines as zero is the standard accounting convention and should roughly double coverage. The distress leg pairs a stock measure (lt/at) with a flow measure (oancf/at) so the conditioning captures both solvency and cash-generation strain.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.3550291182137344,
+      "ls_alpha": 0.0393858479480341,
+      "ls_talpha": 2.8110078573473314,
+      "ls_sharpe": 0.11525116663886154,
+      "coverage": 0.09092556753316543,
+      "error": null
+    },
+    {
+      "name": "Debt issuance leg under distress",
+      "expression": "MUL(WINSOR(RATIO(dltis, at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "If distressed deleveraging predicts high returns, then new long-term borrowing by the same distressed firms should predict low returns because it levers up an already fragile capital structure; the competing \"lender certification\" story predicts the opposite.",
+      "expected_sign": "negative",
+      "reasoning": "This holds the distress score fixed at the gen-0 specification and replaces net repayment with the gross issuance leg only, so the result directly attributes the earlier deleveraging effect to either the repayment side or the issuance side. It is a deliberate decomposition test rather than a variant, and either outcome sharpens which financing action carries information in distress.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.7782698560393337,
+      "ls_alpha": -0.06991010954463625,
+      "ls_talpha": -2.4369666065753353,
+      "ls_sharpe": -0.068644140918411,
+      "coverage": 0.12551148356442443,
+      "error": null
+    },
+    {
+      "name": "Buybacks against a liquidity constraint",
+      "expression": "MUL(WINSOR(RATIO(prstkc, at), 1), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(wcap, at)))))",
+      "hypothesis": "Repurchasing stock while carrying heavy long-term debt and negative working capital is the most expensive possible undervaluation signal, because it consumes the very liquidity buffer that protects the firm from default, so only managers with strong private information do it.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 pooled repurchases with dividends and found nothing, but the two payouts differ sharply in signaling content: dividends are sticky and habitual while buybacks are discretionary and timing-driven. Isolating prstkc and conditioning on a debt-plus-working-capital constraint tests a signaling channel that the pooled payout measure could not detect.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.5593258606899965,
+      "ls_alpha": 0.009332853677424691,
+      "ls_talpha": 0.3036206153271949,
+      "ls_sharpe": 0.40959969236524457,
+      "coverage": 0.10923599812452586,
+      "error": null
+    },
+    {
+      "name": "Erratic external financing with weak earnings",
+      "expression": "MUL(VOL(RATIO(SUB(ADD(dltis, sstk), ADD(dltr, prstkc)), at), 3), RANK(NEG(MA(RATIO(ib, at), 3))))",
+      "hypothesis": "Instability of external financing, not its level, marks firms whose access to capital markets is opportunistic and unreliable; combined with persistently weak profitability this indicates fragile funding and predicts low returns.",
+      "expected_sign": "negative",
+      "reasoning": "All gen-0 designs used the level or one-year flow of financing, so the second-moment channel is untested, yet funding volatility is precisely what makes distress costly for equity holders. Smoothing profitability over three years ensures the conditioning variable describes a persistent weak state rather than a single bad year, matching the three-year financing volatility window.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.5088167741415182,
+      "ls_alpha": -0.006132748861789092,
+      "ls_talpha": -0.5345207344130397,
+      "ls_sharpe": 0.027714694673378018,
+      "coverage": 0.10498104714522626,
+      "error": null
+    },
+    {
+      "name": "Debt drawdown under weak coverage",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "New long-term borrowing by firms whose operating cash flow poorly covers total debt is liquidity-driven rather than investment-driven, and equity holders in such firms earn low abnormal returns as the added fixed claims raise default risk.",
+      "expected_sign": "negative",
+      "reasoning": "The winsorized-level version of this channel gave the archive's only large negative FF5 alpha (\u22120.070, t \u22122.44) but a weak slope (t \u22120.78), the reverse of the deleveraging case, indicating the effect lives in the ordinal extremes while dollar magnitudes add noise to the average slope. Rank-transforming the borrowing leg and replacing profitability (ib/at) with cash-flow coverage of debt (oancf/lt), the more default-relevant distress metric, should lift the slope while preserving the alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.9286901127059802,
+      "ls_alpha": -0.05176912903225848,
+      "ls_talpha": -3.3811949538021913,
+      "ls_sharpe": -0.3190215704156649,
+      "coverage": 0.08797166482173503,
+      "error": null
+    },
+    {
+      "name": "Debt churn under distress",
+      "expression": "MUL(WINSOR(RATIO(ADD(dltis, dltr), at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "For distressed firms it is the gross turnover of long-term debt, not its net direction, that reveals dependence on continual refinancing; heavy simultaneous issuance and repayment signals short, renegotiated funding and predicts low abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "The archive shows negative FF5 alphas for both the issuance leg (\u22120.070) and the repayment-heavy leg (\u22120.022), which cannot be reconciled by any net-leverage story but is exactly what a refinancing-churn mechanism implies. Summing the two gross flows tests that reconciliation directly, and if it holds it identifies a state variable \u2014 rollover intensity \u2014 that no single-theme financing signal captures.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.23530066534771132,
+      "ls_alpha": -0.04453376285198922,
+      "ls_talpha": -3.0079528738008685,
+      "ls_sharpe": -0.21332261663807492,
+      "coverage": 0.08617930548023117,
+      "error": null
+    },
+    {
+      "name": "Debt versus internal funding tilt",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "What matters is the source mix of funds: levered firms covering their needs with new debt rather than with internally generated cash are the ones whose equity is most exposed to future credit tightening, and they underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The tilt construction (difference of two ranks scaled by a distress rank) produced the cleanest, most statistically reliable portfolio spread in the archive, but it was applied to the equity-versus-debt margin, which turned out to be factor-explained. Applying the same well-behaved structure to the economically distinct debt-versus-internal-funds margin keeps the portfolio properties while switching to the channel where genuine FF5 alpha appeared.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.836966278767274,
+      "ls_alpha": -0.032938975724841835,
+      "ls_talpha": -2.961501420864255,
+      "ls_sharpe": -0.34549681731535664,
+      "coverage": 0.08797383168775337,
+      "error": null
+    },
+    {
+      "name": "Payout retrenchment under distress",
+      "expression": "MUL(NEG(DELTA(RATIO(dvt, at), 1)), RANK(SUMRANK(NEG(RATIO(ib, at)), NEG(RATIO(wcap, at)))))",
+      "hypothesis": "A cut in dividends by a firm that is already unprofitable and short of working capital is management's own confirmation that the cash shortfall is persistent, and the market underreacts to this insider admission.",
+      "expected_sign": "negative",
+      "reasoning": "Every payout test so far used the payout *level*, which is sticky and largely uninformative, and all three level-based payout signals failed on alpha; the informative event is the change, because dividends are cut only when internal funds are genuinely exhausted. Conditioning the cut on contemporaneous loss and working-capital deficiency separates forced retrenchment from routine payout policy changes at healthy firms.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.3738729624488362,
+      "ls_alpha": 0.0023389328337473213,
+      "ls_talpha": 0.2669907247419961,
+      "ls_sharpe": 0.003215694670892231,
+      "coverage": 0.1136132738497656,
+      "error": null
+    },
+    {
+      "name": "Buyback over borrowing under leverage",
+      "expression": "MUL(SUB(RANK(RATIO(prstkc, at)), RANK(RATIO(dltis, at))), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "Among levered firms with thin cash-flow coverage, those returning cash to shareholders instead of drawing new debt reveal genuine financial slack and private optimism, and they outperform their borrowing counterparts.",
+      "expected_sign": "positive",
+      "reasoning": "Buybacks under a liquidity constraint gave a correct-signed slope (t 2.56) and the archive's best Sharpe (0.41) but a negligible alpha, suggesting the buyback leg alone is too weak to populate an extreme portfolio. Differencing it against the borrowing rank \u2014 the one leg with proven negative alpha \u2014 should widen the spread symmetrically and let the long and short sides both carry information.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.8441809089791215,
+      "ls_alpha": 0.016793247685823676,
+      "ls_talpha": 1.4679139989916887,
+      "ls_sharpe": 0.2730885452608166,
+      "coverage": 0.08194210216546272,
+      "error": null
+    },
+    {
+      "name": "Net borrowing into deteriorating earnings",
+      "expression": "MUL(WINSOR(RATIO(SUB(dltis, dltr), at), 1), RANK(NEG(DELTA(RATIO(ib, at), 1))))",
+      "hypothesis": "Levering up while profitability is actively deteriorating is a pro-cyclical financing mistake: the new debt is contracted against earnings that are already falling, so equity value is subsequently written down.",
+      "expected_sign": "negative",
+      "reasoning": "All prior conditioning used the *level* of distress, which is highly persistent and largely priced; the change in profitability identifies firms transitioning into distress, where financing decisions are least likely to be already reflected in prices. This isolates the conditioning dimension \u2014 state versus transition \u2014 while holding the net-borrowing financing measure fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.3360001477759895,
+      "ls_alpha": -0.004692983522912316,
+      "ls_talpha": -0.5126569595729408,
+      "ls_sharpe": -0.24264582093861176,
+      "coverage": 0.1125020327266934,
+      "error": null
+    },
+    {
+      "name": "Unfunded borrowing with accumulated deficit",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "Borrowing that exceeds a firm's own cash generation is most damaging when the balance sheet already carries high liabilities and a history of accumulated losses, because the new debt services the past rather than funding the future.",
+      "expected_sign": "negative",
+      "reasoning": "The debt-versus-internal-funding tilt scaled by a single leverage rank is the archive's only design with a significant slope and a significant negative alpha, so the productive refinement is to strengthen the conditioning variable rather than the financing leg. Adding accumulated deficit to leverage builds a two-component distress state (stock solvency plus loss history) that avoids reusing oancf, which already appears in the financing tilt.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.3766867373017835,
+      "ls_alpha": -0.03430787776282168,
+      "ls_talpha": -3.054092446640183,
+      "ls_sharpe": -0.37588433592474846,
+      "coverage": 0.0878245243006801,
+      "error": null
+    },
+    {
+      "name": "Borrowing beyond earnings capacity",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(ib, at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Earnings, not cash flow, is the benchmark lenders and equity holders capitalize; levered firms whose new borrowing ranks far above their profitability rank are contracting fixed claims their income cannot support and underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing oancf with ib holds the tilt structure and distress leg fixed while isolating two design choices at once: the measurement of internal funds, and coverage, since cash-flow-statement items cut usable observations from 0.126 to 0.088. If the slope and alpha survive with materially higher coverage, the mechanism is about income capacity rather than about the cash-flow reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.144662566101201,
+      "ls_alpha": -0.02055798216949334,
+      "ls_talpha": -1.971625555085199,
+      "ls_sharpe": -0.12961241469807896,
+      "coverage": 0.12551148356442443,
+      "error": null
+    },
+    {
+      "name": "Borrowing with no liquidity buffer",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "New debt taken on by firms whose cash and current assets barely cover current liabilities is drawn to plug an imminent funding hole, whereas the same borrowing by liquid firms is precautionary or investment-related and carries no penalty.",
+      "expected_sign": "negative",
+      "reasoning": "All the reliable-alpha debt signals conditioned on solvency or cash-flow coverage, never on the near-term liquidity buffer, yet liquidity is what determines whether borrowing is voluntary; this switches the distress dimension while keeping the proven rank-interaction form. It also tests whether the strong tail alpha of the borrowing channel comes from illiquid firms specifically, which would sharpen the economic interpretation for later refinement.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.22565120143150658,
+      "ls_alpha": -0.05608171140270705,
+      "ls_talpha": -4.07854269009869,
+      "ls_sharpe": -0.1517628904082343,
+      "coverage": 0.11289439025215717,
+      "error": null
+    },
+    {
+      "name": "Borrowing against shrinking revenue",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(GROWTH(sale, 1))))",
+      "hypothesis": "Debt raised while the revenue base is contracting cannot be serviced by growth and signals that management is financing a deteriorating business, so returns are subsequently low.",
+      "expected_sign": "negative",
+      "reasoning": "Conditioning on the change in earnings produced the archive's strongest slope (t \u22123.34) but no alpha, plausibly because earnings changes are noisy and transitory; sales contraction is a more persistent and more visible deterioration signal, so it should populate the extreme portfolios with genuinely declining firms. This tests whether the transition-conditioning idea can be made portfolio-relevant by using a smoother deterioration measure.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.8093318786592383,
+      "ls_alpha": -0.043989106042874565,
+      "ls_talpha": -3.3371635726025164,
+      "ls_sharpe": -0.02374542902949824,
+      "coverage": 0.11314502442161187,
+      "error": null
+    },
+    {
+      "name": "Borrowing without tax-shield capacity",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(SUMRANK(RATIO(txt, at), RATIO(pi, at)))))",
+      "hypothesis": "Firms with no pretax income and no tax payments obtain no tax-shield benefit from debt, so their borrowing must be need-driven rather than optimizing, and that necessity is the component of debt issuance the market misprices.",
+      "expected_sign": "negative",
+      "reasoning": "This reframes the conditioning variable from \"how distressed\" to \"why would this firm rationally borrow\", using the tax variables that no prior proposal touched; a zero-tax, zero-pretax-income borrower is almost definitionally financing a shortfall. If it outperforms the leverage-based conditioning, it identifies the motive rather than the state as the source of the alpha.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.005807102927313,
+      "ls_alpha": -0.0060292035606705095,
+      "ls_talpha": -0.507885985458272,
+      "ls_sharpe": 0.05510639692752867,
+      "coverage": 0.12567657811820274,
+      "error": null
+    },
+    {
+      "name": "Distribution versus net borrowing spread",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dvt, prstkc), at)), RANK(RATIO(SUB(dltis, dltr), at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "Under leverage and weak cash-flow coverage, firms distributing cash rather than absorbing net new debt are revealing genuine slack, and the full distribution-minus-borrowing spread should price both tails of financial flexibility.",
+      "expected_sign": "positive",
+      "reasoning": "The buyback-over-borrowing spread was the best-performing long-side design (alpha +0.017, t 1.47, Sharpe 0.27) but used only repurchases, which are lumpy and small; adding dividends broadens the distribution leg and netting repayments into the borrowing leg makes the spread a complete measure of the direction of external finance. This is the one proposal in the batch aimed at making the long side, rather than the short side, informative.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.7578906914832342,
+      "ls_alpha": 0.011717473393117628,
+      "ls_talpha": 1.0863692425358555,
+      "ls_sharpe": 0.21441994531810385,
+      "coverage": 0.08030281643054019,
+      "error": null
+    },
+    {
+      "name": "Funding gap with no liquidity buffer",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Borrowing in excess of internally generated cash is most informative when the firm has no near-term liquidity cushion, because only then is the debt draw unambiguously a response to an imminent funding shortfall rather than a financing choice.",
+      "expected_sign": "negative",
+      "reasoning": "The liquidity-buffer conditioning produced the strongest and most reliable alpha in the archive (\u22120.056, t \u22124.08) but a flat slope because its financing leg counted all borrowing as bad; the funding-gap tilt fixes precisely that by subtracting the benign, cash-generating borrower. Crossing the best-performing conditioning variable with the best-performing financing leg is the highest-value consolidation available.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.9863495923102503,
+      "ls_alpha": -0.038301726368263025,
+      "ls_talpha": -3.185003646524976,
+      "ls_sharpe": -0.42747918214107605,
+      "coverage": 0.07674683451829949,
+      "error": null
+    },
+    {
+      "name": "Funding gap against a three-part distress score",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), SUMRANK(NEG(RATIO(re, at)), NEG(RATIO(che, lct))))))",
+      "hypothesis": "Solvency, loss history, and liquidity are distinct components of financial fragility, and an unfunded debt draw is worst for firms scoring badly on all three simultaneously.",
+      "expected_sign": "negative",
+      "reasoning": "The two-component score (leverage plus accumulated deficit) gave the best joint result so far, and the single-component liquidity score gave the best alpha, suggesting the components carry complementary information rather than overlapping information. Aggregating three ranked channels should place the short leg on firms that are unambiguously fragile, which is where a funding gap should be most severely penalized.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.097694847951214,
+      "ls_alpha": -0.021899648738523222,
+      "ls_talpha": -2.055628963782274,
+      "ls_sharpe": -0.2624304060026363,
+      "coverage": 0.07682169458002834,
+      "error": null
+    },
+    {
+      "name": "Borrowing beyond total internal resources",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(ADD(oancf, che), at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "The correct benchmark for new debt is the firm's entire internal resource base \u2014 cash flow plus the existing cash stock \u2014 since a firm holding ample cash never needs to borrow for liquidity reasons.",
+      "expected_sign": "negative",
+      "reasoning": "Every version of the funding gap so far benchmarked borrowing only against a flow (oancf or ib), which misclassifies cash-rich firms that borrow opportunistically as distressed borrowers. Adding the cash stock to the benchmark is a substantive measurement improvement to the winning design and tests whether stock liquidity or flow liquidity defines \"unfunded\".",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.8958268254683764,
+      "ls_alpha": -0.05442438404872758,
+      "ls_talpha": -3.9155174175991725,
+      "ls_sharpe": -0.4194233180113113,
+      "coverage": 0.08781781733443286,
+      "error": null
+    },
+    {
+      "name": "Coverage-repaired unfunded borrowing",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "The unfunded-borrowing mechanism is about internal funds generally, so firms without a reported cash-flow statement can be measured with earnings, extending the same economic signal to a much larger sample.",
+      "expected_sign": "negative",
+      "reasoning": "The best signal in the archive is confined to 8.8% of firm-months because oancf is sparsely populated, while the earnings-benchmarked variant reached 12.6% coverage but with roughly half the alpha; using cash flow where available and earnings only as a fallback should preserve the stronger measure while restoring coverage. This isolates whether the alpha differential between the two variants was a measurement effect or a sample-composition effect.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.6831014361666092,
+      "ls_alpha": -0.0200720823098878,
+      "ls_talpha": -1.9276638966949218,
+      "ls_sharpe": -0.2289419784412841,
+      "coverage": 0.12535583035544032,
+      "error": null
+    },
+    {
+      "name": "Repayment funded by asset shrinkage",
+      "expression": "MUL(RANK(RATIO(dltr, at)), RANK(NEG(SUMRANK(GROWTH(at, 1), RATIO(oancf, lt)))))",
+      "hypothesis": "Debt repayment is a recovery signal only when it is funded by operations; when it coincides with a shrinking asset base and weak cash flow it is creditor-forced liquidation, and the equity continues to underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The archive contains an unexplained puzzle \u2014 both the issuance leg and the repayment leg of debt activity earned negative alpha under distress \u2014 and forced deleveraging is the one mechanism that resolves it by splitting repayments into voluntary and coerced. This is a distinct economic channel, not a variant of the funding-gap family, and it also predicts where the earlier \"debt churn\" result came from.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.29030141918607916,
+      "ls_alpha": -0.03580775739488247,
+      "ls_talpha": -2.54480327825181,
+      "ls_sharpe": -0.1284536846506141,
+      "coverage": 0.08214315637673586,
+      "error": null
+    },
+    {
+      "name": "Industry-neutral funding gap in distress",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "Normal reliance on external debt differs enormously across industries, so a funding gap is only evidence of distress-driven borrowing when it is large relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Capital-intensive and regulated industries borrow continuously against stable cash flows, so an unadjusted funding-gap rank loads mechanically on industry membership, diluting the distress interpretation and adding sector risk to the long-short spread. Industry-demeaning the financing leg should raise the slope and improve the Sharpe by removing a sector bet while keeping the same economic mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.0604810241023213,
+      "ls_alpha": -0.0338474702095226,
+      "ls_talpha": -3.2592100528802237,
+      "ls_sharpe": -0.34094523021591233,
+      "coverage": 0.0877739640935855,
+      "error": null
+    },
+    {
+      "name": "Net debt intake beyond internal funds",
+      "expression": "MUL(SUB(RANK(RATIO(SUB(dltis, dltr), at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "What burdens an illiquid firm is the net increase in debt claims beyond what operations can fund; gross issuance overstates the burden for firms that are simultaneously retiring maturing debt.",
+      "expected_sign": "negative",
+      "reasoning": "Every funding-gap winner used gross issuance, so the net-versus-gross choice has never been tested with the liquidity conditioning that produces the best alpha and Sharpe. If the net measure improves both statistics, the mechanism is genuine leverage escalation; if it degrades them, the mechanism is rollover activity, which sharpens interpretation for the final generations.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.8145021729178485,
+      "ls_alpha": -0.013873077077248056,
+      "ls_talpha": -1.4676172393806233,
+      "ls_sharpe": -0.34852034722054626,
+      "coverage": 0.07543551943286719,
+      "error": null
+    },
+    {
+      "name": "Debt-burden-scaled funding gap",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, lt)), RANK(RATIO(oancf, lt))), RANK(NEG(RATIO(che, lct))))",
+      "hypothesis": "Refinancing pressure is determined by new borrowing and cash generation measured against the existing liability stack, not against total assets, because it is liabilities that impose the fixed claims.",
+      "expected_sign": "negative",
+      "reasoning": "All prior gap constructions scaled both legs by assets, which mixes asset-heavy low-leverage firms into the extreme buckets; deflating by total liabilities makes the gap a coverage-shortfall measure directly comparable across capital structures. This isolates the scaling choice while holding the mechanism and the liquidity conditioning fixed.",
+      "interaction_type": "ratio",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.8931265012667975,
+      "ls_alpha": -0.025801294286557676,
+      "ls_talpha": -2.3180191210600802,
+      "ls_sharpe": -0.19906601415298092,
+      "coverage": 0.07695681415388629,
+      "error": null
+    },
+    {
+      "name": "Funding gap versus persistent cash generation",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(MA(RATIO(oancf, at), 3))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "The right benchmark for new borrowing is the firm's sustainable cash-generating capacity rather than a single year's cash flow, which can be temporarily depressed by working-capital swings.",
+      "expected_sign": "negative",
+      "reasoning": "Single-year oancf noise is the most likely reason the gap's slope and alpha have never peaked in the same specification: transitory cash-flow dips misclassify healthy borrowers as distressed ones. A three-year average defines the internal-funds state more reliably, which should raise the cross-sectional slope without sacrificing the tail alpha the liquidity conditioning delivers.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.976716277309259,
+      "ls_alpha": -0.0353960314578528,
+      "ls_talpha": -2.846806515774914,
+      "ls_sharpe": -0.37726154626622876,
+      "coverage": 0.07674683451829949,
+      "error": null
+    },
+    {
+      "name": "Borrowing into the cash account amid burn",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(SUMRANK(DELTA(RATIO(che, at), 1), NEG(RATIO(oancf, at)))))",
+      "hypothesis": "When a cash-burning firm borrows and the proceeds land in the cash account rather than in operations or investment, the draw is precautionary or lender-mandated liquidity insurance, which reveals that management fears losing access to funding.",
+      "expected_sign": "negative",
+      "reasoning": "Every prior design asked whether borrowing was justified; none asked where the money went, yet the use of proceeds is what distinguishes investment borrowing from defensive hoarding. Pairing a rise in cash with negative operating cash flow identifies drawn revolvers and precautionary raises, a distinct and previously untested economic channel.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.4120251282538265,
+      "ls_alpha": -0.03403644762319359,
+      "ls_talpha": -2.270047562545222,
+      "ls_sharpe": -0.30256960563347607,
+      "coverage": 0.08137474441299393,
+      "error": null
+    },
+    {
+      "name": "Distributions financed externally under strain",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dvt, prstkc), at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Paying dividends and buying back stock in excess of internally generated cash, while leverage is high and cash thin, transfers value from creditors to shareholders in a way that is unsustainable and is followed by low equity returns.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier payout tests treated distributions as an unconditional strength signal and failed, but the funding-gap logic implies that distributions matter only relative to the cash available to fund them. This applies the archive's proven gap-versus-internal-funds structure to the payout channel, reversing the sign expectation and testing whether the earlier payout failures came from ignoring how the payout was financed.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.4466307047103055,
+      "ls_alpha": -0.02577160789663723,
+      "ls_talpha": -1.4720348732507986,
+      "ls_sharpe": -0.23790478763499193,
+      "coverage": 0.0732899093383258,
+      "error": null
+    },
+    {
+      "name": "Industry-neutral gap with liquidity conditioning",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Distress-driven borrowing is identified by a funding gap that is abnormal relative to the firm's industry, combined with the absence of a liquidity cushion.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-demeaning the gap preserved slope and alpha while removing a sector bet (gen-4 S6), and liquidity conditioning independently produced the best alpha and Sharpe (gen-4 S1); the two refinements address different sources of noise and have not been combined. If both effects are additive this should dominate the current frontier on slope, alpha reliability, and Sharpe simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.8158442135523605,
+      "ls_alpha": -0.03608349394855044,
+      "ls_talpha": -3.214717209694108,
+      "ls_sharpe": -0.3622753365676978,
+      "coverage": 0.07669544883843599,
+      "error": null
+    },
+    {
+      "name": "Gap against blended internal resources",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(oancf, at), RATIO(che, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "A firm's capacity to avoid distress borrowing depends on both its cash generation and its cash reserves, and the two should enter with equal weight rather than being summed in levels where the persistent stock dominates.",
+      "expected_sign": "negative",
+      "reasoning": "Adding cash to the internal-funds benchmark in levels produced the archive's largest alpha (\u22120.054) but collapsed the slope to \u22120.90, the signature of one high-dispersion persistent variable dominating the financing leg. Combining cash flow and cash as equally weighted ranks preserves the economic content that generated the alpha while restoring cross-sectional balance, which is the precise fix the diagnostic implies.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.2976330077212095,
+      "ls_alpha": -0.04714987230632831,
+      "ls_talpha": -3.6895290857279988,
+      "ls_sharpe": -0.4570785510002289,
+      "coverage": 0.08781781733443286,
+      "error": null
+    },
+    {
+      "name": "Funding gap against a maturity wall",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(dlc, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Unfunded borrowing is most dangerous for firms with a large stock of debt maturing within the year and no cash to meet it, because refusal by a single lender then forces default.",
+      "expected_sign": "negative",
+      "reasoning": "All prior conditioning used solvency, profitability, or liquidity levels; none used the near-term maturity structure, yet the timing of claims is what converts illiquidity into default. Pairing short-term debt intensity with cash scarcity targets exactly the population for which new borrowing is a rollover necessity rather than a choice.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.9446237438300127,
+      "ls_alpha": -0.021480240252332423,
+      "ls_talpha": -1.9665938188936123,
+      "ls_sharpe": -0.26363100939919865,
+      "coverage": 0.07711282850720678,
+      "error": null
+    },
+    {
+      "name": "Funding gap inside the illiquid subsample",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), INDICATOR(RATIO(lct, act), 1))",
+      "hypothesis": "The funding-gap effect exists only among firms whose current liabilities exceed current assets; within that group the gap should separate rescue borrowers from self-funding firms, while outside it financing choices are uninformative.",
+      "expected_sign": "negative",
+      "reasoning": "Continuous rank weighting still lets healthy firms populate the extreme portfolios and dilutes both legs, whereas the hard indicator forces the long and short baskets to be drawn from the same distressed population, isolating the interaction rather than mixing it with a distress main effect. This is the cleanest available test of whether the mechanism is truly conditional and it should improve the alpha per unit of turnover if it is.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.0476712157006935,
+      "ls_alpha": 0.013556727491814156,
+      "ls_talpha": 1.3822992218531063,
+      "ls_sharpe": 0.0348254633716224,
+      "coverage": 0.07675199372310507,
+      "error": null
+    },
+    {
+      "name": "Gap scaled by worst fragility dimension",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(MIN(RATIO(ib, lt), RATIO(che, lct)))))",
+      "hypothesis": "Financial fragility is determined by a firm's weakest dimension, not by an average of dimensions: a firm fails if either its earnings cannot service debt or its cash cannot meet current obligations.",
+      "expected_sign": "negative",
+      "reasoning": "Every multi-component distress score so far used SUMRANK, which averages and therefore lets strength on one dimension offset fatal weakness on another \u2014 plausibly why the three-part score underperformed the single liquidity measure on alpha. Using MIN implements the economically correct weakest-link logic with a distinct operator, and it separates earnings-based and liquidity-based fragility rather than blending them.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.1494126338163664,
+      "ls_alpha": -0.025415757240348464,
+      "ls_talpha": -2.356150382362777,
+      "ls_sharpe": -0.31246677812733115,
+      "coverage": 0.07695186131727294,
+      "error": null
+    },
+    {
+      "name": "Borrowing as working capital erodes",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "It is the deterioration of liquidity, not its level, that makes an unfunded debt draw informative: firms whose working capital is shrinking while they borrow are financing a live, worsening shortfall.",
+      "expected_sign": "negative",
+      "reasoning": "Level-based liquidity conditioning delivers reliable alpha but is highly persistent and largely known to the market, whereas the change in working capital is new information arriving with the same filing as the borrowing. This tests the state-versus-transition conditioning choice within the best-performing financing leg, an axis where earlier transition tests used earnings and sales rather than liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.9405697337497716,
+      "ls_alpha": -0.05305442514534871,
+      "ls_talpha": -3.490011210770243,
+      "ls_sharpe": -0.5529372182081311,
+      "coverage": 0.070574516665057,
+      "error": null
+    },
+    {
+      "name": "Cumulative external dependence under illiquidity",
+      "expression": "MUL(RANK(TS_SUM(RATIO(SUB(dltis, oancf), at), 3)), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Firms that have run a borrowing-minus-cash-flow deficit for several consecutive years are structurally dependent on credit markets, and when they also lack a liquidity buffer their equity is systematically overvalued.",
+      "expected_sign": "negative",
+      "reasoning": "The one earlier multi-year test used gross external financing with no gap construction and failed, but the gap is the component that carries the signal, so cumulating it over three years should measure chronic dependence rather than a single year's decision. If the alpha and slope both strengthen relative to the one-year gap, the mechanism is a persistent funding state, which would justify concentrating the final generations on a multi-year formulation.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.7281330023433271,
+      "ls_alpha": -0.04510037657568932,
+      "ls_talpha": -3.061848247329681,
+      "ls_sharpe": -0.29362307120616404,
+      "coverage": 0.07861549849887776,
+      "error": null
+    },
+    {
+      "name": "Gap with current-ratio erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(SUB(act, lct), at), 1))))",
+      "hypothesis": "The mechanism is deterioration in the net current position while the firm draws new debt; measuring that position directly from current assets and current liabilities captures the same economics as reported working capital for a wider set of firms.",
+      "expected_sign": "negative",
+      "reasoning": "The best signal in the archive is limited to 7.1% of firm-months, partly because wcap is a less consistently populated field than its two components. Reconstructing the change in net current assets from act and lct is an exact economic substitute and tests whether the effect survives, or strengthens, on a broader sample \u2014 the single most useful robustness check available for the new leader.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.9405697337497716,
+      "ls_alpha": -0.05305442514534871,
+      "ls_talpha": -3.490011210770243,
+      "ls_sharpe": -0.5529372182081311,
+      "coverage": 0.070574516665057,
+      "error": null
+    },
+    {
+      "name": "Gap with eroding and thin liquidity",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, at), 1), RATIO(che, lct)))))",
+      "hypothesis": "An unfunded debt draw is most alarming for a firm whose liquidity is both low in level and falling, since neither the buffer nor the trend can absorb the next shortfall.",
+      "expected_sign": "negative",
+      "reasoning": "Liquidity level conditioning and liquidity change conditioning each independently produced alphas near \u22120.04 to \u22120.05 with correct-signed slopes, and they describe logically distinct states, so their combination may identify a strictly more fragile population than either alone. This directly tests whether the two liquidity dimensions are complements or substitutes, which determines the final specification.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.9195550766253837,
+      "ls_alpha": -0.04876446420536015,
+      "ls_talpha": -3.6740448966383883,
+      "ls_sharpe": -0.5444544813862368,
+      "coverage": 0.07056615875327196,
+      "error": null
+    },
+    {
+      "name": "Gap with twin deterioration",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, at), 1), DELTA(RATIO(ib, at), 1)))))",
+      "hypothesis": "Borrowing is most damaging when both the liquidity position and profitability are deteriorating in the same year, because the firm is losing the two resources \u2014 cushion and earnings \u2014 that service the new claims.",
+      "expected_sign": "negative",
+      "reasoning": "The two transition variables tested separately gave the archive's strongest slope (earnings change, t \u22123.34) and its strongest portfolio evidence (working-capital change, alpha \u22120.053), suggesting each captures a different facet of an ongoing deterioration. Building a purely transition-based distress score should retain the slope from earnings and the portfolio power from liquidity, addressing the persistent slope-versus-alpha trade-off with economics rather than with rescaling.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.7969720501815796,
+      "ls_alpha": -0.05184957142856363,
+      "ls_talpha": -3.3378145401088144,
+      "ls_sharpe": -0.49823074315822385,
+      "coverage": 0.0704771108783278,
+      "error": null
+    },
+    {
+      "name": "Industry-neutral gap with erosion",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "A funding gap is evidence of distress-driven borrowing only relative to industry financing norms, and combining that adjustment with liquidity erosion should isolate firm-specific funding stress.",
+      "expected_sign": "negative",
+      "reasoning": "Industry demeaning of the financing leg previously preserved alpha while improving the slope and removing a sector bet, and it has never been paired with the erosion conditioning that now defines the frontier. If the Sharpe rises above \u22120.553 the improvement is attributable to sector-risk removal rather than to a different economic population.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.6998527396551983,
+      "ls_alpha": -0.04143942849628816,
+      "ls_talpha": -3.545461513682968,
+      "ls_sharpe": -0.43386139766975934,
+      "coverage": 0.07052854815023935,
+      "error": null
+    },
+    {
+      "name": "Gap with cash drawdown",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(che, at), 1))))",
+      "hypothesis": "If liquidity erosion is what matters, then a falling cash balance despite new borrowing is the most severe case, because the firm is losing cash faster than the credit market is supplying it.",
+      "expected_sign": "negative",
+      "reasoning": "An earlier test found that borrowing *into* a rising cash balance amid operating losses also predicted low returns (alpha \u22120.034), which is the opposite balance-sheet movement, so the two designs together determine whether the signal is about hoarding or about depletion. Resolving that ambiguity is essential before committing the final generations to a use-of-proceeds interpretation of the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.8646484528541345,
+      "ls_alpha": -0.04549838033082762,
+      "ls_talpha": -3.623649662554924,
+      "ls_sharpe": -0.48054068595727645,
+      "coverage": 0.08137474441299393,
+      "error": null
+    },
+    {
+      "name": "Blended-resource gap with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(oancf, at), RATIO(che, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Borrowing should be judged against both cash flow and cash reserves, and when a firm with weak internal resources on both counts borrows while its working capital erodes, its equity is most overvalued.",
+      "expected_sign": "negative",
+      "reasoning": "The blended rank benchmark delivered the second-largest alpha and Sharpe in the archive (\u22120.047, \u22120.457) but a weak slope under static solvency conditioning; pairing it with the erosion conditioner, which supplies a strong slope on its own, tests whether the slope weakness was inherent to the benchmark or an artifact of the static conditioning variable. This is the one proposal in the batch that could deliver a materially larger alpha than the current leader.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.447998533434809,
+      "ls_alpha": -0.058507542126979825,
+      "ls_talpha": -3.4449179337907494,
+      "ls_sharpe": -0.5008030967131722,
+      "coverage": 0.07057018293302031,
+      "error": null
+    },
+    {
+      "name": "Coverage-repaired gap with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "The mechanism is borrowing in excess of internal funds while liquidity erodes, and internal funds can be proxied by earnings where a cash-flow statement is unavailable, extending the same signal to a substantially larger sample.",
+      "expected_sign": "negative",
+      "reasoning": "The leader covers only 7.1% of firm-months, and when this same fallback was applied under static solvency conditioning the alpha halved, but that test cannot distinguish a measurement effect from the weakness of the static conditioner. Rerunning it against the erosion conditioner is the decisive coverage test: if alpha and slope both hold near the leader's level, the final signal can be specified on nearly twice the sample.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.112168182270819,
+      "ls_alpha": -0.03186119386433492,
+      "ls_talpha": -2.459657528390784,
+      "ls_sharpe": -0.23834761353069642,
+      "coverage": 0.10310309659599794,
+      "error": null
+    },
+    {
+      "name": "Total debt intake with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dltis, DELTA(dlc, 1)), at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Liquidity-stressed firms fund shortfalls through revolvers and other short-term facilities as much as through term debt, so the complete measure of new borrowing is long-term issuance plus the increase in debt in current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Every version of the financing leg so far counted only dltis, which mechanically omits precisely the borrowing channel most used under working-capital stress \u2014 exactly the population the erosion conditioner selects. Adding the change in current debt should strengthen both the slope and the alpha if the mechanism is genuine funding pressure rather than a term-debt-market phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.889590703749669,
+      "ls_alpha": -0.04771047658007735,
+      "ls_talpha": -3.3193607841551636,
+      "ls_sharpe": -0.529304368569015,
+      "coverage": 0.07057023452506837,
+      "error": null
+    },
+    {
+      "name": "Erosion and scarcity double conditioning",
+      "expression": "MUL(MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1)))), RANK(NEG(RATIO(che, lct))))",
+      "hypothesis": "Unfunded borrowing is most severely mispriced for firms that are simultaneously low on cash and losing working capital, since only they face an unavoidable near-term funding decision.",
+      "expected_sign": "negative",
+      "reasoning": "Averaging the level and change of liquidity through SUMRANK gave a slightly weaker alpha than the change alone (\u22120.049 versus \u22120.053), which suggests averaging dilutes rather than that the level is uninformative; a multiplicative stack instead requires both conditions to hold and so concentrates the short leg. This isolates the aggregation operator \u2014 averaged versus multiplicative conditioning \u2014 as the design choice under test.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.8072002039899564,
+      "ls_alpha": -0.03927829117203317,
+      "ls_talpha": -2.9517379290664545,
+      "ls_sharpe": -0.40889803927062457,
+      "coverage": 0.07056615875327196,
+      "error": null
+    },
+    {
+      "name": "Firm-relative borrowing surge with erosion",
+      "expression": "MUL(SUB(TS_RANK(RATIO(dltis, at), 5), TS_RANK(RATIO(oancf, at), 5)), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "What signals distress is borrowing that is unusual for the firm itself relative to its own cash-generation history, not borrowing that is high relative to other firms with different business models.",
+      "expected_sign": "negative",
+      "reasoning": "Cross-sectional ranking of the financing legs mixes permanent business-model differences into the signal, whereas within-firm time-series ranking removes all firm fixed effects and isolates the event of an abnormal draw. This is a genuinely different identification strategy for the same economic mechanism, and it also serves as a robustness check that the alpha is not driven by stable firm characteristics.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.9395539910754093,
+      "ls_alpha": -0.010402322629071833,
+      "ls_talpha": -0.7123833963757245,
+      "ls_sharpe": -0.20861776316503697,
+      "coverage": 0.06809144298418311,
+      "error": null
+    },
+    {
+      "name": "Unfunded equity issuance with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(sstk, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Equity raised beyond internal funds while working capital erodes is rescue equity, and unlike the unconditional dilution signal it should carry negative abnormal returns rather than a factor-explained positive alpha.",
+      "expected_sign": "negative",
+      "reasoning": "The equity channel repeatedly produced correct-signed slopes but positive FF5 alphas because distressed issuers load negatively on RMW and CMA, so the benchmark already expects terrible returns; conditioning on contemporaneous liquidity erosion may select the subset whose deterioration is not yet captured by those loadings. If it succeeds, the erosion conditioner generalizes across financing instruments, which materially broadens the interpretation of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.432320812771853,
+      "ls_alpha": -0.008812967660471106,
+      "ls_talpha": -0.782576718454821,
+      "ls_sharpe": -0.2996518879060431,
+      "coverage": 0.07128406210196735,
+      "error": null
+    },
+    {
+      "name": "Gap with obligation-scaled erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "The economically relevant deterioration is in working capital measured against near-term obligations, because a given dollar decline matters far more for a firm with large current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the erosion by total assets treats a dollar of lost working capital identically for firms with very different current-liability loads, blurring the severity dimension that should determine the size of the mispricing. Deflating by lct makes the conditioner a change in current-ratio-like coverage, a small but economically motivated sharpening of the archive's strongest conditioning variable.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.8989717351141104,
+      "ls_alpha": -0.05059518119924198,
+      "ls_talpha": -3.770887814992459,
+      "ls_sharpe": -0.5185519186088225,
+      "coverage": 0.07056951223639558,
+      "error": null
+    },
+    {
+      "name": "Total intake with obligation-scaled erosion",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dltis, DELTA(dlc, 1)), at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "Complete new borrowing \u2014 term issuance plus the increase in current debt \u2014 measured against internal cash generation, is most informative when net current assets are shrinking relative to the near-term obligations they must cover.",
+      "expected_sign": "negative",
+      "reasoning": "These are the two individually best-performing components of the mechanism: obligation-scaled erosion gave the archive's most reliable alpha (t \u22123.77) and total debt intake gave the best Sharpe among financing-leg variants (\u22120.529), and they modify different parts of the expression so their effects should compound. This is the leading candidate for the final specification.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.7823495614584575,
+      "ls_alpha": -0.04171481053047576,
+      "ls_talpha": -3.0206710491945166,
+      "ls_sharpe": -0.4686414545320295,
+      "coverage": 0.07056523009640696,
+      "error": null
+    },
+    {
+      "name": "Gap with dual liquidity erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, lct), 1), DELTA(RATIO(che, at), 1)))))",
+      "hypothesis": "Liquidity erosion is better identified by two independent balance-sheet channels \u2014 the net current position relative to obligations and the cash balance \u2014 because each contains reporting noise the other does not.",
+      "expected_sign": "negative",
+      "reasoning": "The working-capital and cash-drawdown conditioners performed almost identically on their own (alpha \u22120.051 and \u22120.045, t \u22123.77 and \u22123.62) yet are measured from different accounts, so averaging their ranks should cancel idiosyncratic accrual noise while reinforcing the common deterioration signal. Cash also has better data availability, which should lift coverage above 0.071.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.924364344837877,
+      "ls_alpha": -0.049227918977666374,
+      "ls_talpha": -3.6714796561101495,
+      "ls_sharpe": -0.52658111170476,
+      "coverage": 0.07056146387689889,
+      "error": null
+    },
+    {
+      "name": "Gap against scarcest internal resource",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(MIN(RATIO(oancf, at), RATIO(che, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "A firm can avoid distress borrowing only if it has both cash flow and cash reserves, so its internal funding capacity is set by whichever of the two is scarcer.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the cash stock to the benchmark produced the largest alpha in the entire archive (\u22120.059) but a slope of only \u22121.45, because the persistent, widely dispersed cash rank overwhelmed the flow in the rank blend; taking the minimum of the two levels keeps the binding-constraint economics while letting cash matter only when it is genuinely the scarcer resource. This is the last untried fix for the archive's one remaining slope-versus-alpha trade-off.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.6258810255369855,
+      "ls_alpha": -0.058375883759662225,
+      "ls_talpha": -3.8000740473047205,
+      "ls_sharpe": -0.5597068826254662,
+      "coverage": 0.07057018293302031,
+      "error": null
+    },
+    {
+      "name": "Severity-weighted erosion gap",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), NEG(WINSOR(DELTA(RATIO(wcap, lct), 1), 1)))",
+      "hypothesis": "The magnitude of liquidity deterioration, not merely its ordinal position, determines how much the market underreacts, so a severe collapse in coverage should weight the funding gap more heavily than a marginal decline.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditioner so far was rank-transformed, which compresses the difference between a catastrophic and a mild deterioration; winsorized raw magnitudes retain that economic severity while controlling outliers. If the alpha improves, the mechanism is intensity-driven and the final signal should keep magnitudes; if it degrades, the rank form is confirmed as optimal.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.04609773901504796,
+      "ls_alpha": -0.02605663453779554,
+      "ls_talpha": -1.9539713235256229,
+      "ls_sharpe": -0.21740940526535865,
+      "coverage": 0.07056951223639558,
+      "error": null
+    },
+    {
+      "name": "Broad-sample gap with obligation erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "The unfunded-borrowing-under-erosion effect should exist wherever internal funds can be measured, with earnings serving as the benchmark when no cash-flow statement is reported.",
+      "expected_sign": "negative",
+      "reasoning": "The earnings fallback lifted coverage from 0.071 to 0.103 and produced the strongest slope among erosion designs (\u22123.11) but a diluted alpha (\u22120.032) when paired with asset-scaled erosion; pairing it instead with the more reliable obligation-scaled conditioner tests whether a materially broader, more investable version of the signal can retain economically meaningful abnormal returns. A usable compromise between coverage and alpha is worth documenting in the final round.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.0960676553039543,
+      "ls_alpha": -0.029070759535188225,
+      "ls_talpha": -2.4439403330195435,
+      "ls_sharpe": -0.22248235748354875,
+      "coverage": 0.10309319092277125,
+      "error": null
+    },
+    {
+      "name": "Sector-neutral erosion gap",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "Distress-driven borrowing is defined relative to industry financing norms, and removing the industry component of the funding gap should leave a cleaner, less sector-exposed spread.",
+      "expected_sign": "negative",
+      "reasoning": "Industry demeaning previously preserved alpha reliability (t \u22123.55) while removing a sector bet, and it has not been paired with the obligation-scaled erosion conditioner that now carries the strongest portfolio evidence. As the final robustness check, it establishes whether the mechanism is a firm-level funding phenomenon rather than a disguised industry tilt.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.689761008903045,
+      "ls_alpha": -0.04438193527044364,
+      "ls_talpha": -3.7214269888614053,
+      "ls_sharpe": -0.465754551292773,
+      "coverage": 0.07052354372157794,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Dilutive issuance into accumulated deficit",
+      "expression": "MUL(WINSOR(RATIO(sstk, at), 1), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Equity issuance is far worse news when retained earnings are deeply negative, because the proceeds fund past losses rather than new projects; investors underreact to the dilution-plus-deficit combination.",
+      "expected_sign": "negative",
+      "reasoning": "Retained earnings scaled by assets is a classic accumulated-distress state variable (Z-score component), and issuance by such firms is closer to a survival financing event than to opportunistic growth capital. Weighting the issuance intensity by the cross-sectional rank of accumulated deficit lets the same dollar of issuance carry a stronger negative loading for distressed issuers while remaining continuous and fully covered.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Distressed deleveraging recovery",
+      "expression": "MUL(WINSOR(RATIO(SUB(dltr, dltis), at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "Net long-term debt retirement by highly levered, low-profit firms signals successful balance-sheet repair and falling default probability, and the resolution of distress risk is rewarded with high subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "For healthy firms debt repayment is a mundane capital-structure choice, but for distressed firms it is a credible, cash-verified reduction in bankruptcy likelihood that equity holders capture with high leverage. The SUMRANK distress score combines solvency (lt/at) and profitability (ib/at) so the financing flow is amplified only where default risk is genuinely priced.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout credibility under liquidity strain",
+      "expression": "MUL(WINSOR(RATIO(ADD(dvt, prstkc), at), 1), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Distributing cash to shareholders while carrying heavy long-term debt and thin cash relative to current liabilities is a costly, credible signal of hidden cash-flow strength; such firms are systematically underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Payouts by unconstrained cash-rich firms convey little information, whereas payouts sustained under debt burden and low liquidity buffers reveal that management privately expects cash generation to cover both creditors and shareholders. The distress rank therefore converts a weak stand-alone payout signal into a screened commitment signal.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Maturity shortening with working-capital deficit",
+      "expression": "MUL(DELTA(RATIO(dlc, ADD(dlc, dltt)), 1), RANK(NEG(RATIO(SUB(act, lct), at))))",
+      "hypothesis": "A shift of the debt mix toward short-term borrowing is benign for liquid firms but signals rollover pressure and credit rationing for firms with negative working capital, predicting low returns as refinancing risk materializes.",
+      "expected_sign": "negative",
+      "reasoning": "The change in the short-term share of total debt is a financing-side measure of lost access to long-term credit markets, and its danger depends entirely on the firm's liquidity cushion (act minus lct). Interacting the maturity shift with the working-capital deficit rank isolates rollover risk that neither variable identifies alone.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Chronic external funding of cash burn",
+      "expression": "MUL(TS_SUM(RATIO(ADD(sstk, dltis), at), 3), RANK(NEG(MA(RATIO(oancf, lct), 3))))",
+      "hypothesis": "Firms that repeatedly tap both equity and debt markets over several years while operating cash flow persistently fails to cover current liabilities are structurally dependent on external capital, and this persistence predicts negative abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "A single year of issuance can be growth financing, but a three-year cumulative inflow paired with a three-year average cash-flow coverage shortfall identifies a treadmill of dilution and refinancing. The temporal construction is required because the mechanism is persistence of the funding gap, not its level in any one year.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Equity-over-debt financing tilt in distress",
+      "expression": "MUL(SUB(RANK(RATIO(sstk, at)), RANK(RATIO(dltis, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(pi, at)))))",
+      "hypothesis": "Among distressed firms, raising capital through equity rather than debt reveals that creditors have withdrawn and that management is timing an overvalued stock, so the equity-tilted financing mix predicts low returns; among sound firms the mix is uninformative.",
+      "expected_sign": "negative",
+      "reasoning": "The financing-mix spread (equity issuance rank minus debt issuance rank) is a security-choice signal about who is still willing to fund the firm, and pecking-order logic says only credit-constrained, high-default-risk firms are pushed to equity. Scaling the mix by a leverage-plus-pretax-loss distress rank makes the interaction, rather than either issuance channel, the source of predictability.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Share dilution into accumulated deficit",
+      "expression": "MUL(WINSOR(GROWTH(csho, 1), 1), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Dilution measured by shares outstanding, rather than by reported issuance proceeds, is the economically complete measure of claim transfer, and it is most damaging for firms whose retained earnings are deeply negative because equity is being sold to fund accumulated losses.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 dilution-into-deficit signal delivered both a negative slope and a reliable FF5 alpha but covered only 13% of firm-months because sstk is sparsely reported; csho growth captures the same economic dilution with near-universal balance-sheet coverage. Comparing the two isolates whether the earlier result was a measurement artifact of issuance reporting or a genuine dilution-under-distress effect.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Rank-scaled distressed deleveraging",
+      "expression": "MUL(RANK(RATIO(SUB(dltr, dltis), at)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "Net long-term debt retirement by levered, low-profit firms reduces default risk and earns high subsequent returns, but the effect is monotone in the ordinal position of repayment intensity rather than in its dollar magnitude.",
+      "expected_sign": "positive",
+      "reasoning": "The winsorized-level version produced a strong Fama-MacBeth slope (t=3.7) yet essentially zero FF5 alpha, the classic signature of extreme portfolios populated by scale outliers instead of by the economic state. Rank-transforming the financing leg keeps the same mechanism while making decile membership reflect relative deleveraging, which should convert the cross-sectional slope into a tradable spread.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Net equity financing under solvency strain",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(SUB(COALESCE(sstk, 0), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))), at), 1)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, at)))))",
+      "hypothesis": "What matters for distressed firms is the net direction of the equity channel: firms that are net absorbers of shareholder capital while leverage is high and operating cash flow weak are funding survival, whereas net returners of capital under the same conditions have genuine slack.",
+      "expected_sign": "negative",
+      "reasoning": "Gen-0 tested gross issuance and gross payout separately, splitting the same economic axis into two low-coverage halves; netting them and treating unreported issuance, repurchase, and dividend lines as zero is the standard accounting convention and should roughly double coverage. The distress leg pairs a stock measure (lt/at) with a flow measure (oancf/at) so the conditioning captures both solvency and cash-generation strain.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt issuance leg under distress",
+      "expression": "MUL(WINSOR(RATIO(dltis, at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(ib, at)))))",
+      "hypothesis": "If distressed deleveraging predicts high returns, then new long-term borrowing by the same distressed firms should predict low returns because it levers up an already fragile capital structure; the competing \"lender certification\" story predicts the opposite.",
+      "expected_sign": "negative",
+      "reasoning": "This holds the distress score fixed at the gen-0 specification and replaces net repayment with the gross issuance leg only, so the result directly attributes the earlier deleveraging effect to either the repayment side or the issuance side. It is a deliberate decomposition test rather than a variant, and either outcome sharpens which financing action carries information in distress.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Buybacks against a liquidity constraint",
+      "expression": "MUL(WINSOR(RATIO(prstkc, at), 1), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(wcap, at)))))",
+      "hypothesis": "Repurchasing stock while carrying heavy long-term debt and negative working capital is the most expensive possible undervaluation signal, because it consumes the very liquidity buffer that protects the firm from default, so only managers with strong private information do it.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0 pooled repurchases with dividends and found nothing, but the two payouts differ sharply in signaling content: dividends are sticky and habitual while buybacks are discretionary and timing-driven. Isolating prstkc and conditioning on a debt-plus-working-capital constraint tests a signaling channel that the pooled payout measure could not detect.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Erratic external financing with weak earnings",
+      "expression": "MUL(VOL(RATIO(SUB(ADD(dltis, sstk), ADD(dltr, prstkc)), at), 3), RANK(NEG(MA(RATIO(ib, at), 3))))",
+      "hypothesis": "Instability of external financing, not its level, marks firms whose access to capital markets is opportunistic and unreliable; combined with persistently weak profitability this indicates fragile funding and predicts low returns.",
+      "expected_sign": "negative",
+      "reasoning": "All gen-0 designs used the level or one-year flow of financing, so the second-moment channel is untested, yet funding volatility is precisely what makes distress costly for equity holders. Smoothing profitability over three years ensures the conditioning variable describes a persistent weak state rather than a single bad year, matching the three-year financing volatility window.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt drawdown under weak coverage",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "New long-term borrowing by firms whose operating cash flow poorly covers total debt is liquidity-driven rather than investment-driven, and equity holders in such firms earn low abnormal returns as the added fixed claims raise default risk.",
+      "expected_sign": "negative",
+      "reasoning": "The winsorized-level version of this channel gave the archive's only large negative FF5 alpha (\u22120.070, t \u22122.44) but a weak slope (t \u22120.78), the reverse of the deleveraging case, indicating the effect lives in the ordinal extremes while dollar magnitudes add noise to the average slope. Rank-transforming the borrowing leg and replacing profitability (ib/at) with cash-flow coverage of debt (oancf/lt), the more default-relevant distress metric, should lift the slope while preserving the alpha.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt churn under distress",
+      "expression": "MUL(WINSOR(RATIO(ADD(dltis, dltr), at), 1), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "For distressed firms it is the gross turnover of long-term debt, not its net direction, that reveals dependence on continual refinancing; heavy simultaneous issuance and repayment signals short, renegotiated funding and predicts low abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "The archive shows negative FF5 alphas for both the issuance leg (\u22120.070) and the repayment-heavy leg (\u22120.022), which cannot be reconciled by any net-leverage story but is exactly what a refinancing-churn mechanism implies. Summing the two gross flows tests that reconciliation directly, and if it holds it identifies a state variable \u2014 rollover intensity \u2014 that no single-theme financing signal captures.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt versus internal funding tilt",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "What matters is the source mix of funds: levered firms covering their needs with new debt rather than with internally generated cash are the ones whose equity is most exposed to future credit tightening, and they underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The tilt construction (difference of two ranks scaled by a distress rank) produced the cleanest, most statistically reliable portfolio spread in the archive, but it was applied to the equity-versus-debt margin, which turned out to be factor-explained. Applying the same well-behaved structure to the economically distinct debt-versus-internal-funds margin keeps the portfolio properties while switching to the channel where genuine FF5 alpha appeared.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout retrenchment under distress",
+      "expression": "MUL(NEG(DELTA(RATIO(dvt, at), 1)), RANK(SUMRANK(NEG(RATIO(ib, at)), NEG(RATIO(wcap, at)))))",
+      "hypothesis": "A cut in dividends by a firm that is already unprofitable and short of working capital is management's own confirmation that the cash shortfall is persistent, and the market underreacts to this insider admission.",
+      "expected_sign": "negative",
+      "reasoning": "Every payout test so far used the payout *level*, which is sticky and largely uninformative, and all three level-based payout signals failed on alpha; the informative event is the change, because dividends are cut only when internal funds are genuinely exhausted. Conditioning the cut on contemporaneous loss and working-capital deficiency separates forced retrenchment from routine payout policy changes at healthy firms.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Buyback over borrowing under leverage",
+      "expression": "MUL(SUB(RANK(RATIO(prstkc, at)), RANK(RATIO(dltis, at))), RANK(SUMRANK(RATIO(dltt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "Among levered firms with thin cash-flow coverage, those returning cash to shareholders instead of drawing new debt reveal genuine financial slack and private optimism, and they outperform their borrowing counterparts.",
+      "expected_sign": "positive",
+      "reasoning": "Buybacks under a liquidity constraint gave a correct-signed slope (t 2.56) and the archive's best Sharpe (0.41) but a negligible alpha, suggesting the buyback leg alone is too weak to populate an extreme portfolio. Differencing it against the borrowing rank \u2014 the one leg with proven negative alpha \u2014 should widen the spread symmetrically and let the long and short sides both carry information.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Net borrowing into deteriorating earnings",
+      "expression": "MUL(WINSOR(RATIO(SUB(dltis, dltr), at), 1), RANK(NEG(DELTA(RATIO(ib, at), 1))))",
+      "hypothesis": "Levering up while profitability is actively deteriorating is a pro-cyclical financing mistake: the new debt is contracted against earnings that are already falling, so equity value is subsequently written down.",
+      "expected_sign": "negative",
+      "reasoning": "All prior conditioning used the *level* of distress, which is highly persistent and largely priced; the change in profitability identifies firms transitioning into distress, where financing decisions are least likely to be already reflected in prices. This isolates the conditioning dimension \u2014 state versus transition \u2014 while holding the net-borrowing financing measure fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Unfunded borrowing with accumulated deficit",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "Borrowing that exceeds a firm's own cash generation is most damaging when the balance sheet already carries high liabilities and a history of accumulated losses, because the new debt services the past rather than funding the future.",
+      "expected_sign": "negative",
+      "reasoning": "The debt-versus-internal-funding tilt scaled by a single leverage rank is the archive's only design with a significant slope and a significant negative alpha, so the productive refinement is to strengthen the conditioning variable rather than the financing leg. Adding accumulated deficit to leverage builds a two-component distress state (stock solvency plus loss history) that avoids reusing oancf, which already appears in the financing tilt.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing beyond earnings capacity",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(ib, at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Earnings, not cash flow, is the benchmark lenders and equity holders capitalize; levered firms whose new borrowing ranks far above their profitability rank are contracting fixed claims their income cannot support and underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing oancf with ib holds the tilt structure and distress leg fixed while isolating two design choices at once: the measurement of internal funds, and coverage, since cash-flow-statement items cut usable observations from 0.126 to 0.088. If the slope and alpha survive with materially higher coverage, the mechanism is about income capacity rather than about the cash-flow reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing with no liquidity buffer",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "New debt taken on by firms whose cash and current assets barely cover current liabilities is drawn to plug an imminent funding hole, whereas the same borrowing by liquid firms is precautionary or investment-related and carries no penalty.",
+      "expected_sign": "negative",
+      "reasoning": "All the reliable-alpha debt signals conditioned on solvency or cash-flow coverage, never on the near-term liquidity buffer, yet liquidity is what determines whether borrowing is voluntary; this switches the distress dimension while keeping the proven rank-interaction form. It also tests whether the strong tail alpha of the borrowing channel comes from illiquid firms specifically, which would sharpen the economic interpretation for later refinement.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing against shrinking revenue",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(GROWTH(sale, 1))))",
+      "hypothesis": "Debt raised while the revenue base is contracting cannot be serviced by growth and signals that management is financing a deteriorating business, so returns are subsequently low.",
+      "expected_sign": "negative",
+      "reasoning": "Conditioning on the change in earnings produced the archive's strongest slope (t \u22123.34) but no alpha, plausibly because earnings changes are noisy and transitory; sales contraction is a more persistent and more visible deterioration signal, so it should populate the extreme portfolios with genuinely declining firms. This tests whether the transition-conditioning idea can be made portfolio-relevant by using a smoother deterioration measure.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing without tax-shield capacity",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(NEG(SUMRANK(RATIO(txt, at), RATIO(pi, at)))))",
+      "hypothesis": "Firms with no pretax income and no tax payments obtain no tax-shield benefit from debt, so their borrowing must be need-driven rather than optimizing, and that necessity is the component of debt issuance the market misprices.",
+      "expected_sign": "negative",
+      "reasoning": "This reframes the conditioning variable from \"how distressed\" to \"why would this firm rationally borrow\", using the tax variables that no prior proposal touched; a zero-tax, zero-pretax-income borrower is almost definitionally financing a shortfall. If it outperforms the leverage-based conditioning, it identifies the motive rather than the state as the source of the alpha.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Distribution versus net borrowing spread",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dvt, prstkc), at)), RANK(RATIO(SUB(dltis, dltr), at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(oancf, lt)))))",
+      "hypothesis": "Under leverage and weak cash-flow coverage, firms distributing cash rather than absorbing net new debt are revealing genuine slack, and the full distribution-minus-borrowing spread should price both tails of financial flexibility.",
+      "expected_sign": "positive",
+      "reasoning": "The buyback-over-borrowing spread was the best-performing long-side design (alpha +0.017, t 1.47, Sharpe 0.27) but used only repurchases, which are lumpy and small; adding dividends broadens the distribution leg and netting repayments into the borrowing leg makes the spread a complete measure of the direction of external finance. This is the one proposal in the batch aimed at making the long side, rather than the short side, informative.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding gap with no liquidity buffer",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Borrowing in excess of internally generated cash is most informative when the firm has no near-term liquidity cushion, because only then is the debt draw unambiguously a response to an imminent funding shortfall rather than a financing choice.",
+      "expected_sign": "negative",
+      "reasoning": "The liquidity-buffer conditioning produced the strongest and most reliable alpha in the archive (\u22120.056, t \u22124.08) but a flat slope because its financing leg counted all borrowing as bad; the funding-gap tilt fixes precisely that by subtracting the benign, cash-generating borrower. Crossing the best-performing conditioning variable with the best-performing financing leg is the highest-value consolidation available.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding gap against a three-part distress score",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), SUMRANK(NEG(RATIO(re, at)), NEG(RATIO(che, lct))))))",
+      "hypothesis": "Solvency, loss history, and liquidity are distinct components of financial fragility, and an unfunded debt draw is worst for firms scoring badly on all three simultaneously.",
+      "expected_sign": "negative",
+      "reasoning": "The two-component score (leverage plus accumulated deficit) gave the best joint result so far, and the single-component liquidity score gave the best alpha, suggesting the components carry complementary information rather than overlapping information. Aggregating three ranked channels should place the short leg on firms that are unambiguously fragile, which is where a funding gap should be most severely penalized.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing beyond total internal resources",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(ADD(oancf, che), at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "The correct benchmark for new debt is the firm's entire internal resource base \u2014 cash flow plus the existing cash stock \u2014 since a firm holding ample cash never needs to borrow for liquidity reasons.",
+      "expected_sign": "negative",
+      "reasoning": "Every version of the funding gap so far benchmarked borrowing only against a flow (oancf or ib), which misclassifies cash-rich firms that borrow opportunistically as distressed borrowers. Adding the cash stock to the benchmark is a substantive measurement improvement to the winning design and tests whether stock liquidity or flow liquidity defines \"unfunded\".",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage-repaired unfunded borrowing",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "The unfunded-borrowing mechanism is about internal funds generally, so firms without a reported cash-flow statement can be measured with earnings, extending the same economic signal to a much larger sample.",
+      "expected_sign": "negative",
+      "reasoning": "The best signal in the archive is confined to 8.8% of firm-months because oancf is sparsely populated, while the earnings-benchmarked variant reached 12.6% coverage but with roughly half the alpha; using cash flow where available and earnings only as a fallback should preserve the stronger measure while restoring coverage. This isolates whether the alpha differential between the two variants was a measurement effect or a sample-composition effect.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Repayment funded by asset shrinkage",
+      "expression": "MUL(RANK(RATIO(dltr, at)), RANK(NEG(SUMRANK(GROWTH(at, 1), RATIO(oancf, lt)))))",
+      "hypothesis": "Debt repayment is a recovery signal only when it is funded by operations; when it coincides with a shrinking asset base and weak cash flow it is creditor-forced liquidation, and the equity continues to underperform.",
+      "expected_sign": "negative",
+      "reasoning": "The archive contains an unexplained puzzle \u2014 both the issuance leg and the repayment leg of debt activity earned negative alpha under distress \u2014 and forced deleveraging is the one mechanism that resolves it by splitting repayments into voluntary and coerced. This is a distinct economic channel, not a variant of the funding-gap family, and it also predicts where the earlier \"debt churn\" result came from.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-neutral funding gap in distress",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "Normal reliance on external debt differs enormously across industries, so a funding gap is only evidence of distress-driven borrowing when it is large relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Capital-intensive and regulated industries borrow continuously against stable cash flows, so an unadjusted funding-gap rank loads mechanically on industry membership, diluting the distress interpretation and adding sector risk to the long-short spread. Industry-demeaning the financing leg should raise the slope and improve the Sharpe by removing a sector bet while keeping the same economic mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Net debt intake beyond internal funds",
+      "expression": "MUL(SUB(RANK(RATIO(SUB(dltis, dltr), at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "What burdens an illiquid firm is the net increase in debt claims beyond what operations can fund; gross issuance overstates the burden for firms that are simultaneously retiring maturing debt.",
+      "expected_sign": "negative",
+      "reasoning": "Every funding-gap winner used gross issuance, so the net-versus-gross choice has never been tested with the liquidity conditioning that produces the best alpha and Sharpe. If the net measure improves both statistics, the mechanism is genuine leverage escalation; if it degrades them, the mechanism is rollover activity, which sharpens interpretation for the final generations.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-burden-scaled funding gap",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, lt)), RANK(RATIO(oancf, lt))), RANK(NEG(RATIO(che, lct))))",
+      "hypothesis": "Refinancing pressure is determined by new borrowing and cash generation measured against the existing liability stack, not against total assets, because it is liabilities that impose the fixed claims.",
+      "expected_sign": "negative",
+      "reasoning": "All prior gap constructions scaled both legs by assets, which mixes asset-heavy low-leverage firms into the extreme buckets; deflating by total liabilities makes the gap a coverage-shortfall measure directly comparable across capital structures. This isolates the scaling choice while holding the mechanism and the liquidity conditioning fixed.",
+      "interaction_type": "ratio",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding gap versus persistent cash generation",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(MA(RATIO(oancf, at), 3))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "The right benchmark for new borrowing is the firm's sustainable cash-generating capacity rather than a single year's cash flow, which can be temporarily depressed by working-capital swings.",
+      "expected_sign": "negative",
+      "reasoning": "Single-year oancf noise is the most likely reason the gap's slope and alpha have never peaked in the same specification: transitory cash-flow dips misclassify healthy borrowers as distressed ones. A three-year average defines the internal-funds state more reliably, which should raise the cross-sectional slope without sacrificing the tail alpha the liquidity conditioning delivers.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing into the cash account amid burn",
+      "expression": "MUL(RANK(RATIO(dltis, at)), RANK(SUMRANK(DELTA(RATIO(che, at), 1), NEG(RATIO(oancf, at)))))",
+      "hypothesis": "When a cash-burning firm borrows and the proceeds land in the cash account rather than in operations or investment, the draw is precautionary or lender-mandated liquidity insurance, which reveals that management fears losing access to funding.",
+      "expected_sign": "negative",
+      "reasoning": "Every prior design asked whether borrowing was justified; none asked where the money went, yet the use of proceeds is what distinguishes investment borrowing from defensive hoarding. Pairing a rise in cash with negative operating cash flow identifies drawn revolvers and precautionary raises, a distinct and previously untested economic channel.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Distributions financed externally under strain",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dvt, prstkc), at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Paying dividends and buying back stock in excess of internally generated cash, while leverage is high and cash thin, transfers value from creditors to shareholders in a way that is unsustainable and is followed by low equity returns.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier payout tests treated distributions as an unconditional strength signal and failed, but the funding-gap logic implies that distributions matter only relative to the cash available to fund them. This applies the archive's proven gap-versus-internal-funds structure to the payout channel, reversing the sign expectation and testing whether the earlier payout failures came from ignoring how the payout was financed.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-neutral gap with liquidity conditioning",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Distress-driven borrowing is identified by a funding gap that is abnormal relative to the firm's industry, combined with the absence of a liquidity cushion.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-demeaning the gap preserved slope and alpha while removing a sector bet (gen-4 S6), and liquidity conditioning independently produced the best alpha and Sharpe (gen-4 S1); the two refinements address different sources of noise and have not been combined. If both effects are additive this should dominate the current frontier on slope, alpha reliability, and Sharpe simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap against blended internal resources",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(oancf, at), RATIO(che, at)))), RANK(SUMRANK(RATIO(lt, at), NEG(RATIO(re, at)))))",
+      "hypothesis": "A firm's capacity to avoid distress borrowing depends on both its cash generation and its cash reserves, and the two should enter with equal weight rather than being summed in levels where the persistent stock dominates.",
+      "expected_sign": "negative",
+      "reasoning": "Adding cash to the internal-funds benchmark in levels produced the archive's largest alpha (\u22120.054) but collapsed the slope to \u22120.90, the signature of one high-dispersion persistent variable dominating the financing leg. Combining cash flow and cash as equally weighted ranks preserves the economic content that generated the alpha while restoring cross-sectional balance, which is the precise fix the diagnostic implies.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding gap against a maturity wall",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(SUMRANK(RATIO(dlc, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Unfunded borrowing is most dangerous for firms with a large stock of debt maturing within the year and no cash to meet it, because refusal by a single lender then forces default.",
+      "expected_sign": "negative",
+      "reasoning": "All prior conditioning used solvency, profitability, or liquidity levels; none used the near-term maturity structure, yet the timing of claims is what converts illiquidity into default. Pairing short-term debt intensity with cash scarcity targets exactly the population for which new borrowing is a rollover necessity rather than a choice.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Funding gap inside the illiquid subsample",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), INDICATOR(RATIO(lct, act), 1))",
+      "hypothesis": "The funding-gap effect exists only among firms whose current liabilities exceed current assets; within that group the gap should separate rescue borrowers from self-funding firms, while outside it financing choices are uninformative.",
+      "expected_sign": "negative",
+      "reasoning": "Continuous rank weighting still lets healthy firms populate the extreme portfolios and dilutes both legs, whereas the hard indicator forces the long and short baskets to be drawn from the same distressed population, isolating the interaction rather than mixing it with a distress main effect. This is the cleanest available test of whether the mechanism is truly conditional and it should improve the alpha per unit of turnover if it is.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap scaled by worst fragility dimension",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(MIN(RATIO(ib, lt), RATIO(che, lct)))))",
+      "hypothesis": "Financial fragility is determined by a firm's weakest dimension, not by an average of dimensions: a firm fails if either its earnings cannot service debt or its cash cannot meet current obligations.",
+      "expected_sign": "negative",
+      "reasoning": "Every multi-component distress score so far used SUMRANK, which averages and therefore lets strength on one dimension offset fatal weakness on another \u2014 plausibly why the three-part score underperformed the single liquidity measure on alpha. Using MIN implements the economically correct weakest-link logic with a distinct operator, and it separates earnings-based and liquidity-based fragility rather than blending them.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Borrowing as working capital erodes",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "It is the deterioration of liquidity, not its level, that makes an unfunded debt draw informative: firms whose working capital is shrinking while they borrow are financing a live, worsening shortfall.",
+      "expected_sign": "negative",
+      "reasoning": "Level-based liquidity conditioning delivers reliable alpha but is highly persistent and largely known to the market, whereas the change in working capital is new information arriving with the same filing as the borrowing. This tests the state-versus-transition conditioning choice within the best-performing financing leg, an axis where earlier transition tests used earnings and sales rather than liquidity.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Cumulative external dependence under illiquidity",
+      "expression": "MUL(RANK(TS_SUM(RATIO(SUB(dltis, oancf), at), 3)), RANK(NEG(SUMRANK(RATIO(che, lct), RATIO(act, lct)))))",
+      "hypothesis": "Firms that have run a borrowing-minus-cash-flow deficit for several consecutive years are structurally dependent on credit markets, and when they also lack a liquidity buffer their equity is systematically overvalued.",
+      "expected_sign": "negative",
+      "reasoning": "The one earlier multi-year test used gross external financing with no gap construction and failed, but the gap is the component that carries the signal, so cumulating it over three years should measure chronic dependence rather than a single year's decision. If the alpha and slope both strengthen relative to the one-year gap, the mechanism is a persistent funding state, which would justify concentrating the final generations on a multi-year formulation.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with current-ratio erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(SUB(act, lct), at), 1))))",
+      "hypothesis": "The mechanism is deterioration in the net current position while the firm draws new debt; measuring that position directly from current assets and current liabilities captures the same economics as reported working capital for a wider set of firms.",
+      "expected_sign": "negative",
+      "reasoning": "The best signal in the archive is limited to 7.1% of firm-months, partly because wcap is a less consistently populated field than its two components. Reconstructing the change in net current assets from act and lct is an exact economic substitute and tests whether the effect survives, or strengthens, on a broader sample \u2014 the single most useful robustness check available for the new leader.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with eroding and thin liquidity",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, at), 1), RATIO(che, lct)))))",
+      "hypothesis": "An unfunded debt draw is most alarming for a firm whose liquidity is both low in level and falling, since neither the buffer nor the trend can absorb the next shortfall.",
+      "expected_sign": "negative",
+      "reasoning": "Liquidity level conditioning and liquidity change conditioning each independently produced alphas near \u22120.04 to \u22120.05 with correct-signed slopes, and they describe logically distinct states, so their combination may identify a strictly more fragile population than either alone. This directly tests whether the two liquidity dimensions are complements or substitutes, which determines the final specification.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with twin deterioration",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, at), 1), DELTA(RATIO(ib, at), 1)))))",
+      "hypothesis": "Borrowing is most damaging when both the liquidity position and profitability are deteriorating in the same year, because the firm is losing the two resources \u2014 cushion and earnings \u2014 that service the new claims.",
+      "expected_sign": "negative",
+      "reasoning": "The two transition variables tested separately gave the archive's strongest slope (earnings change, t \u22123.34) and its strongest portfolio evidence (working-capital change, alpha \u22120.053), suggesting each captures a different facet of an ongoing deterioration. Building a purely transition-based distress score should retain the slope from earnings and the portfolio power from liquidity, addressing the persistent slope-versus-alpha trade-off with economics rather than with rescaling.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry-neutral gap with erosion",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "A funding gap is evidence of distress-driven borrowing only relative to industry financing norms, and combining that adjustment with liquidity erosion should isolate firm-specific funding stress.",
+      "expected_sign": "negative",
+      "reasoning": "Industry demeaning of the financing leg previously preserved alpha while improving the slope and removing a sector bet, and it has never been paired with the erosion conditioning that now defines the frontier. If the Sharpe rises above \u22120.553 the improvement is attributable to sector-risk removal rather than to a different economic population.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with cash drawdown",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(che, at), 1))))",
+      "hypothesis": "If liquidity erosion is what matters, then a falling cash balance despite new borrowing is the most severe case, because the firm is losing cash faster than the credit market is supplying it.",
+      "expected_sign": "negative",
+      "reasoning": "An earlier test found that borrowing *into* a rising cash balance amid operating losses also predicted low returns (alpha \u22120.034), which is the opposite balance-sheet movement, so the two designs together determine whether the signal is about hoarding or about depletion. Resolving that ambiguity is essential before committing the final generations to a use-of-proceeds interpretation of the mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Blended-resource gap with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(SUMRANK(RATIO(oancf, at), RATIO(che, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Borrowing should be judged against both cash flow and cash reserves, and when a firm with weak internal resources on both counts borrows while its working capital erodes, its equity is most overvalued.",
+      "expected_sign": "negative",
+      "reasoning": "The blended rank benchmark delivered the second-largest alpha and Sharpe in the archive (\u22120.047, \u22120.457) but a weak slope under static solvency conditioning; pairing it with the erosion conditioner, which supplies a strong slope on its own, tests whether the slope weakness was inherent to the benchmark or an artifact of the static conditioning variable. This is the one proposal in the batch that could deliver a materially larger alpha than the current leader.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Coverage-repaired gap with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "The mechanism is borrowing in excess of internal funds while liquidity erodes, and internal funds can be proxied by earnings where a cash-flow statement is unavailable, extending the same signal to a substantially larger sample.",
+      "expected_sign": "negative",
+      "reasoning": "The leader covers only 7.1% of firm-months, and when this same fallback was applied under static solvency conditioning the alpha halved, but that test cannot distinguish a measurement effect from the weakness of the static conditioner. Rerunning it against the erosion conditioner is the decisive coverage test: if alpha and slope both hold near the leader's level, the final signal can be specified on nearly twice the sample.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Total debt intake with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dltis, DELTA(dlc, 1)), at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Liquidity-stressed firms fund shortfalls through revolvers and other short-term facilities as much as through term debt, so the complete measure of new borrowing is long-term issuance plus the increase in debt in current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Every version of the financing leg so far counted only dltis, which mechanically omits precisely the borrowing channel most used under working-capital stress \u2014 exactly the population the erosion conditioner selects. Adding the change in current debt should strengthen both the slope and the alpha if the mechanism is genuine funding pressure rather than a term-debt-market phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Erosion and scarcity double conditioning",
+      "expression": "MUL(MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1)))), RANK(NEG(RATIO(che, lct))))",
+      "hypothesis": "Unfunded borrowing is most severely mispriced for firms that are simultaneously low on cash and losing working capital, since only they face an unavoidable near-term funding decision.",
+      "expected_sign": "negative",
+      "reasoning": "Averaging the level and change of liquidity through SUMRANK gave a slightly weaker alpha than the change alone (\u22120.049 versus \u22120.053), which suggests averaging dilutes rather than that the level is uninformative; a multiplicative stack instead requires both conditions to hold and so concentrates the short leg. This isolates the aggregation operator \u2014 averaged versus multiplicative conditioning \u2014 as the design choice under test.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Firm-relative borrowing surge with erosion",
+      "expression": "MUL(SUB(TS_RANK(RATIO(dltis, at), 5), TS_RANK(RATIO(oancf, at), 5)), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "What signals distress is borrowing that is unusual for the firm itself relative to its own cash-generation history, not borrowing that is high relative to other firms with different business models.",
+      "expected_sign": "negative",
+      "reasoning": "Cross-sectional ranking of the financing legs mixes permanent business-model differences into the signal, whereas within-firm time-series ranking removes all firm fixed effects and isolates the event of an abnormal draw. This is a genuinely different identification strategy for the same economic mechanism, and it also serves as a robustness check that the alpha is not driven by stable firm characteristics.",
+      "interaction_type": "novel",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Unfunded equity issuance with erosion",
+      "expression": "MUL(SUB(RANK(RATIO(sstk, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "Equity raised beyond internal funds while working capital erodes is rescue equity, and unlike the unconditional dilution signal it should carry negative abnormal returns rather than a factor-explained positive alpha.",
+      "expected_sign": "negative",
+      "reasoning": "The equity channel repeatedly produced correct-signed slopes but positive FF5 alphas because distressed issuers load negatively on RMW and CMA, so the benchmark already expects terrible returns; conditioning on contemporaneous liquidity erosion may select the subset whose deterioration is not yet captured by those loadings. If it succeeds, the erosion conditioner generalizes across financing instruments, which materially broadens the interpretation of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with obligation-scaled erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "The economically relevant deterioration is in working capital measured against near-term obligations, because a given dollar decline matters far more for a firm with large current liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the erosion by total assets treats a dollar of lost working capital identically for firms with very different current-liability loads, blurring the severity dimension that should determine the size of the mispricing. Deflating by lct makes the conditioner a change in current-ratio-like coverage, a small but economically motivated sharpening of the archive's strongest conditioning variable.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Total intake with obligation-scaled erosion",
+      "expression": "MUL(SUB(RANK(RATIO(ADD(dltis, DELTA(dlc, 1)), at)), RANK(RATIO(oancf, at))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "Complete new borrowing \u2014 term issuance plus the increase in current debt \u2014 measured against internal cash generation, is most informative when net current assets are shrinking relative to the near-term obligations they must cover.",
+      "expected_sign": "negative",
+      "reasoning": "These are the two individually best-performing components of the mechanism: obligation-scaled erosion gave the archive's most reliable alpha (t \u22123.77) and total debt intake gave the best Sharpe among financing-leg variants (\u22120.529), and they modify different parts of the expression so their effects should compound. This is the leading candidate for the final specification.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap with dual liquidity erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), RANK(NEG(SUMRANK(DELTA(RATIO(wcap, lct), 1), DELTA(RATIO(che, at), 1)))))",
+      "hypothesis": "Liquidity erosion is better identified by two independent balance-sheet channels \u2014 the net current position relative to obligations and the cash balance \u2014 because each contains reporting noise the other does not.",
+      "expected_sign": "negative",
+      "reasoning": "The working-capital and cash-drawdown conditioners performed almost identically on their own (alpha \u22120.051 and \u22120.045, t \u22123.77 and \u22123.62) yet are measured from different accounts, so averaging their ranks should cancel idiosyncratic accrual noise while reinforcing the common deterioration signal. Cash also has better data availability, which should lift coverage above 0.071.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Gap against scarcest internal resource",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(MIN(RATIO(oancf, at), RATIO(che, at)))), RANK(NEG(DELTA(RATIO(wcap, at), 1))))",
+      "hypothesis": "A firm can avoid distress borrowing only if it has both cash flow and cash reserves, so its internal funding capacity is set by whichever of the two is scarcer.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the cash stock to the benchmark produced the largest alpha in the entire archive (\u22120.059) but a slope of only \u22121.45, because the persistent, widely dispersed cash rank overwhelmed the flow in the rank blend; taking the minimum of the two levels keeps the binding-constraint economics while letting cash matter only when it is genuinely the scarcer resource. This is the last untried fix for the archive's one remaining slope-versus-alpha trade-off.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Severity-weighted erosion gap",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at))), NEG(WINSOR(DELTA(RATIO(wcap, lct), 1), 1)))",
+      "hypothesis": "The magnitude of liquidity deterioration, not merely its ordinal position, determines how much the market underreacts, so a severe collapse in coverage should weight the funding gap more heavily than a marginal decline.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditioner so far was rank-transformed, which compresses the difference between a catastrophic and a mild deterioration; winsorized raw magnitudes retain that economic severity while controlling outliers. If the alpha improves, the mechanism is intensity-driven and the final signal should keep magnitudes; if it degrades, the rank form is confirmed as optimal.",
+      "interaction_type": "conditional",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Broad-sample gap with obligation erosion",
+      "expression": "MUL(SUB(RANK(RATIO(dltis, at)), RANK(COALESCE(RATIO(oancf, at), RATIO(ib, at)))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "The unfunded-borrowing-under-erosion effect should exist wherever internal funds can be measured, with earnings serving as the benchmark when no cash-flow statement is reported.",
+      "expected_sign": "negative",
+      "reasoning": "The earnings fallback lifted coverage from 0.071 to 0.103 and produced the strongest slope among erosion designs (\u22123.11) but a diluted alpha (\u22120.032) when paired with asset-scaled erosion; pairing it instead with the more reliable obligation-scaled conditioner tests whether a materially broader, more investable version of the signal can retain economically meaningful abnormal returns. A usable compromise between coverage and alpha is worth documenting in the final round.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "Sector-neutral erosion gap",
+      "expression": "MUL(IND_ZSCORE(SUB(RANK(RATIO(dltis, at)), RANK(RATIO(oancf, at)))), RANK(NEG(DELTA(RATIO(wcap, lct), 1))))",
+      "hypothesis": "Distress-driven borrowing is defined relative to industry financing norms, and removing the industry component of the funding gap should leave a cleaner, less sector-exposed spread.",
+      "expected_sign": "negative",
+      "reasoning": "Industry demeaning previously preserved alpha reliability (t \u22123.55) while removing a sector bet, and it has not been paired with the obligation-scaled erosion conditioner that now carries the strongest portfolio evidence. As the final robustness check, it establishes whether the mechanism is a firm-level funding phenomenon rather than a disguised industry tilt.",
+      "interaction_type": "composite",
+      "theme_a": "financing",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:finance_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dilutive issuance into accumulated deficit",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sstk,at),1),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "re",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Distressed deleveraging recovery",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(dltr,dltis),at),1),rank(sumrank(ratio(lt,at),neg(ratio(ib,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout credibility under liquidity strain",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(add(dvt,prstkc),at),1),rank(sumrank(ratio(dltt,at),neg(ratio(che,lct)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltt",
+          "dvt",
+          "lct",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: financing (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Maturity shortening with working-capital deficit",
+      "metadata": {
+        "normalized_expression": "mul(delta(ratio(dlc,add(dlc,dltt)),1),rank(neg(ratio(sub(act,lct),at))))",
+        "variables": [
+          "act",
+          "at",
+          "dlc",
+          "dltt",
+          "lct"
+        ],
+        "missing_theme": "financing"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Chronic external funding of cash burn",
+      "metadata": {
+        "normalized_expression": "mul(ts_sum(ratio(add(sstk,dltis),at),3),rank(neg(ma(ratio(oancf,lct),3))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lct",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Equity-over-debt financing tilt in distress",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(sstk,at)),rank(ratio(dltis,at))),rank(sumrank(ratio(lt,at),neg(ratio(pi,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lt",
+          "pi",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Share dilution into accumulated deficit",
+      "metadata": {
+        "normalized_expression": "mul(winsor(growth(csho,1),1),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "csho",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rank-scaled distressed deleveraging",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(dltr,dltis),at)),rank(sumrank(ratio(lt,at),neg(ratio(ib,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net equity financing under solvency strain",
+      "metadata": {
+        "normalized_expression": "mul(zscore(winsor(ratio(sub(coalesce(sstk,0),add(coalesce(prstkc,0),coalesce(dvt,0))),at),1)),rank(sumrank(ratio(lt,at),neg(ratio(oancf,at)))))",
+        "variables": [
+          "at",
+          "dvt",
+          "lt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt issuance leg under distress",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(dltis,at),1),rank(sumrank(ratio(lt,at),neg(ratio(ib,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Buybacks against a liquidity constraint",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(prstkc,at),1),rank(sumrank(ratio(dltt,at),neg(ratio(wcap,at)))))",
+        "variables": [
+          "at",
+          "dltt",
+          "prstkc",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Erratic external financing with weak earnings",
+      "metadata": {
+        "normalized_expression": "mul(vol(ratio(sub(add(dltis,sstk),add(dltr,prstkc)),at),3),rank(neg(ma(ratio(ib,at),3))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt drawdown under weak coverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltis,at)),rank(sumrank(ratio(lt,at),neg(ratio(oancf,lt)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt churn under distress",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(add(dltis,dltr),at),1),rank(sumrank(ratio(lt,at),neg(ratio(oancf,lt)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt versus internal funding tilt",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout retrenchment under distress",
+      "metadata": {
+        "normalized_expression": "mul(neg(delta(ratio(dvt,at),1)),rank(sumrank(neg(ratio(ib,at)),neg(ratio(wcap,at)))))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Buyback over borrowing under leverage",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(prstkc,at)),rank(ratio(dltis,at))),rank(sumrank(ratio(dltt,at),neg(ratio(oancf,lt)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltt",
+          "lt",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net borrowing into deteriorating earnings",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(dltis,dltr),at),1),rank(neg(delta(ratio(ib,at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Unfunded borrowing with accumulated deficit",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(sumrank(ratio(lt,at),neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing beyond earnings capacity",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(ib,at))),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing with no liquidity buffer",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltis,at)),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing against shrinking revenue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltis,at)),rank(neg(growth(sale,1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing without tax-shield capacity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltis,at)),rank(neg(sumrank(ratio(txt,at),ratio(pi,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "pi",
+          "txt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Distribution versus net borrowing spread",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(add(dvt,prstkc),at)),rank(ratio(sub(dltis,dltr),at))),rank(sumrank(ratio(lt,at),neg(ratio(oancf,lt)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "lt",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding gap with no liquidity buffer",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding gap against a three-part distress score",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(sumrank(ratio(lt,at),sumrank(neg(ratio(re,at)),neg(ratio(che,lct))))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing beyond total internal resources",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(add(oancf,che),at))),rank(sumrank(ratio(lt,at),neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage-repaired unfunded borrowing",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(coalesce(ratio(oancf,at),ratio(ib,at)))),rank(sumrank(ratio(lt,at),neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Repayment funded by asset shrinkage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltr,at)),rank(neg(sumrank(growth(at,1),ratio(oancf,lt)))))",
+        "variables": [
+          "at",
+          "dltr",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-neutral funding gap in distress",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at)))),rank(sumrank(ratio(lt,at),neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net debt intake beyond internal funds",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(sub(dltis,dltr),at)),rank(ratio(oancf,at))),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "dltr",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-burden-scaled funding gap",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,lt)),rank(ratio(oancf,lt))),rank(neg(ratio(che,lct))))",
+        "variables": [
+          "che",
+          "dltis",
+          "lct",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding gap versus persistent cash generation",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ma(ratio(oancf,at),3))),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing into the cash account amid burn",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(dltis,at)),rank(sumrank(delta(ratio(che,at),1),neg(ratio(oancf,at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Distributions financed externally under strain",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(add(dvt,prstkc),at)),rank(ratio(oancf,at))),rank(sumrank(ratio(lt,at),neg(ratio(che,lct)))))",
+        "variables": [
+          "at",
+          "che",
+          "dvt",
+          "lct",
+          "lt",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-neutral gap with liquidity conditioning",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at)))),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap against blended internal resources",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(sumrank(ratio(oancf,at),ratio(che,at)))),rank(sumrank(ratio(lt,at),neg(ratio(re,at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lt",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding gap against a maturity wall",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(sumrank(ratio(dlc,at),neg(ratio(che,lct)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Funding gap inside the illiquid subsample",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),indicator(ratio(lct,act),1))",
+        "variables": [
+          "act",
+          "at",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap scaled by worst fragility dimension",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(min(ratio(ib,lt),ratio(che,lct)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "ib",
+          "lct",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Borrowing as working capital erodes",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cumulative external dependence under illiquidity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_sum(ratio(sub(dltis,oancf),at),3)),rank(neg(sumrank(ratio(che,lct),ratio(act,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with current-ratio erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(sub(act,lct),at),1))))",
+        "variables": [
+          "act",
+          "at",
+          "dltis",
+          "lct",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with eroding and thin liquidity",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(sumrank(delta(ratio(wcap,at),1),ratio(che,lct)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with twin deterioration",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(sumrank(delta(ratio(wcap,at),1),delta(ratio(ib,at),1)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry-neutral gap with erosion",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at)))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with cash drawdown",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(che,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Blended-resource gap with erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(sumrank(ratio(oancf,at),ratio(che,at)))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Coverage-repaired gap with erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(coalesce(ratio(oancf,at),ratio(ib,at)))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Total debt intake with erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(add(dltis,delta(dlc,1)),at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Erosion and scarcity double conditioning",
+      "metadata": {
+        "normalized_expression": "mul(mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,at),1)))),rank(neg(ratio(che,lct))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Firm-relative borrowing surge with erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(ts_rank(ratio(dltis,at),5),ts_rank(ratio(oancf,at),5)),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Unfunded equity issuance with erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(sstk,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "oancf",
+          "sstk",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with obligation-scaled erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,lct),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Total intake with obligation-scaled erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(add(dltis,delta(dlc,1)),at)),rank(ratio(oancf,at))),rank(neg(delta(ratio(wcap,lct),1))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap with dual liquidity erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),rank(neg(sumrank(delta(ratio(wcap,lct),1),delta(ratio(che,at),1)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gap against scarcest internal resource",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(min(ratio(oancf,at),ratio(che,at)))),rank(neg(delta(ratio(wcap,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "dltis",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Severity-weighted erosion gap",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at))),neg(winsor(delta(ratio(wcap,lct),1),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Broad-sample gap with obligation erosion",
+      "metadata": {
+        "normalized_expression": "mul(sub(rank(ratio(dltis,at)),rank(coalesce(ratio(oancf,at),ratio(ib,at)))),rank(neg(delta(ratio(wcap,lct),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sector-neutral erosion gap",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(sub(rank(ratio(dltis,at)),rank(ratio(oancf,at)))),rank(neg(delta(ratio(wcap,lct),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "lct",
+          "oancf",
+          "wcap"
+        ]
+      }
+    }
+  ]
+}

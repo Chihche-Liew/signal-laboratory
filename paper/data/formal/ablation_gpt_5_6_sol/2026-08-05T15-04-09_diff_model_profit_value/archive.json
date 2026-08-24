@@ -1,0 +1,3368 @@
+{
+  "pair": "profit_value",
+  "evaluated": [
+    {
+      "name": "R&D-Restored Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),at),1)))",
+      "hypothesis": "Cash-flow-cheap firms earn higher returns when they remain highly profitable after reversing the immediate expensing of R&D.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to operating income mitigates the accounting penalty imposed on firms investing in intangible assets; unreported R&D is economically treated as zero. The interaction favors cheap cash generators with genuine innovation-adjusted operating productivity rather than cash-flow yield alone.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.4103270379206325,
+      "ls_alpha": 0.03208276326385059,
+      "ls_talpha": 2.7438734798179594,
+      "ls_sharpe": 0.3617684678630703,
+      "coverage": 0.09090245429563647,
+      "error": null
+    },
+    {
+      "name": "Expensive Fragile-Margin Penalty",
+      "expression": "MAX(RANK(WINSOR(RATIO(MUL(prcc_f,csho),sale),1)),RANK(NEG(WINSOR(SUB(MA(RATIO(SUB(revt,cogs),revt),3),VOL(RATIO(SUB(revt,cogs),revt),5)),1))))",
+      "hypothesis": "Firms with high sales multiples or weak, unstable gross margins underperform firms that are jointly cheap and durably profitable.",
+      "expected_sign": "negative",
+      "reasoning": "The maximum operator assigns a low signal only when both valuation expensiveness and profitability fragility are low. Thus the attractive low-signal portfolio requires cheapness to be confirmed by persistent gross-margin strength, while high values identify valuation or fundamental vulnerability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.1314417972212008,
+      "ls_alpha": 0.015824440831780518,
+      "ls_talpha": 1.6458906822230526,
+      "ls_sharpe": -0.3222425440733269,
+      "coverage": 0.12855907743512404,
+      "error": null
+    },
+    {
+      "name": "Earnings-Margin Repricing Concordance",
+      "expression": "MUL(SIGN(ADD(SIGN(IND_ZSCORE(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1))),SIGN(IND_ZSCORE(WINSOR(TREND(RATIO(oiadp,sale),3),1))))),MIN(ABS(IND_ZSCORE(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1))),ABS(IND_ZSCORE(WINSOR(TREND(RATIO(oiadp,sale),3),1)))))",
+      "hypothesis": "Firms with high earnings yield and improving operating margins outperform expensive firms whose margins are deteriorating.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the binary trend gate and static profitability cross with a symmetric interaction between valuation and margin trajectory. Cheap deteriorators and expensive improvers remain neutral, while the graded positive and negative tails isolate the economically coherent cheap-improving and expensive-deteriorating corners.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.4891809285452555,
+      "ls_alpha": 0.022645768348055755,
+      "ls_talpha": 1.446596595801869,
+      "ls_sharpe": 0.07555888392362066,
+      "coverage": 0.11689127780708206,
+      "error": null
+    },
+    {
+      "name": "Depreciation-Protected Enterprise Yield",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ebitda,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(RATIO(SUB(ebitda,dp),at),1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms outperform when they retain strong asset profitability after depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA yield can make capital-intensive firms appear cheap by ignoring the economic consumption of fixed assets. Post-depreciation profitability acts as a continuous quality confirmation, favoring cheap enterprises whose apparent cash earnings are not primarily compensation for asset wear.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.481392940383519,
+      "ls_alpha": 0.003346561975369212,
+      "ls_talpha": 0.38078614355499407,
+      "ls_sharpe": 0.17979096053319502,
+      "coverage": 0.13660253568725148,
+      "error": null
+    },
+    {
+      "name": "Debt-Service-Safe Book Discount",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(SUB(oibdp,xint),at),3),1)))",
+      "hypothesis": "High book-to-market firms outperform when operating profitability has remained sufficient after interest expense, even during their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "The three-year minimum of after-interest operating profitability identifies a debt-service floor that helps separate solvent value from leverage-driven distress. Its interaction with book-to-market requires cheapness to be supported by recurring debt-bearing capacity rather than a single strong reporting period.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.278383175313515,
+      "ls_alpha": -0.012501646553170327,
+      "ls_talpha": -1.1814641450448267,
+      "ls_sharpe": 0.07127097909386564,
+      "coverage": 0.12457096052836861,
+      "error": null
+    },
+    {
+      "name": "Overhead-Compression Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(NEG(TREND(RATIO(xsga,sale),3)),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when their SG&A burden is declining.",
+      "expected_sign": "positive",
+      "reasoning": "A falling SG&A-to-sales trend indicates improving overhead efficiency and a potential expansion in future operating profitability. This prospective cost-discipline channel strengthens cash-flow cheapness without algebraically collapsing the interaction into another current profit yield.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.497261576220687,
+      "ls_alpha": 0.0038291277003693765,
+      "ls_talpha": 0.31989903064748404,
+      "ls_sharpe": -0.018891696145442154,
+      "coverage": 0.06257599508678607,
+      "error": null
+    },
+    {
+      "name": "Accrual-Reconciled Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(oiadp,at),ABS(RATIO(SUB(oancf,ADD(ib,dp)),at))),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating profitability is strong and cash flow closely reconciles to earnings after adding back depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing operating cash flow with earnings plus depreciation better isolates working-capital and other noncash accrual differences without mechanically treating depreciation as poor quality. Subtracting that reconciliation gap from operating ROA favors cheap firms with both productive operations and credible earnings conversion.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.5907899598340898,
+      "ls_alpha": -0.003986416283752585,
+      "ls_talpha": -0.3133371362580779,
+      "ls_sharpe": -0.000352696090928538,
+      "coverage": 0.08979394755111121,
+      "error": null
+    },
+    {
+      "name": "Profitability-Drawdown Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(oiadp,at),ABS(SUB(TS_MAX(RATIO(oiadp,at),3),RATIO(oiadp,at)))),1)))",
+      "hypothesis": "High net-income-yield firms outperform when operating profitability is high and has not fallen materially from its recent peak.",
+      "expected_sign": "positive",
+      "reasoning": "Current operating ROA is penalized by its drawdown from the three-year maximum, distinguishing sustained profitability from cyclically depressed or deteriorating operations. This tests a profitability-retention mechanism rather than reusing sales multiples and gross-margin stability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.0053217614972394,
+      "ls_alpha": 0.02147650769185986,
+      "ls_talpha": 2.1161590734699134,
+      "ls_sharpe": 0.2631148972842296,
+      "coverage": 0.14246741652612993,
+      "error": null
+    },
+    {
+      "name": "Operating-Recovery Standardized Book Gap",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(RATIO(ceq,MUL(prcc_f,csho)),MA(RATIO(ceq,MUL(prcc_f,csho)),5)),VOL(RATIO(ceq,MUL(prcc_f,csho)),5)),1)),IND_RANK(WINSOR(TREND(RATIO(oiadp,at),3),1)))",
+      "hypothesis": "Firms trading unusually cheaply relative to their own valuation history outperform when operating return on assets is improving.",
+      "expected_sign": "positive",
+      "reasoning": "The value leg measures the continuous, volatility-normalized deviation of book-to-market from its five-period trailing mean, preserving the magnitude of firm-specific valuation dislocations. It avoids the coarse three-state historical rank while pairing unusually low expectations with a continuous profitability-recovery signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2722230508822021,
+      "ls_alpha": 0.007144626553035275,
+      "ls_talpha": 0.49697031958214116,
+      "ls_sharpe": 0.15017587356954498,
+      "coverage": 0.11725685905960491,
+      "error": null
+    },
+    {
+      "name": "Margin-Recovery Enterprise Bargain",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(ADD(RATIO(oiadp,sale),SUB(RATIO(oiadp,sale),TS_MIN(RATIO(oiadp,sale),3))),1)))",
+      "hypothesis": "Firms with high sales-to-enterprise-value outperform when operating margins are both healthy and recovering from a recent trough.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability channel combines the current margin with its improvement from the three-year minimum, rewarding genuine operating recovery without allowing a still-depressed margin to dominate. Enterprise-value cheapness should be more likely to reverse when low expectations coincide with improving unit economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.97016206838736,
+      "ls_alpha": -0.02035124706729931,
+      "ls_talpha": -1.8331697482385743,
+      "ls_sharpe": 0.021791225486849683,
+      "coverage": 0.13834908129008186,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed Profit Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(SUB(oibdp,dp),at),3),1)))",
+      "hypothesis": "Firms with substantial cash backing relative to market value outperform when post-depreciation operating profitability remains robust through their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-to-market captures balance-sheet valuation support that is not a conventional earnings or book-value factor. The operating-profit floor excludes cash-rich but persistently unproductive firms, making financial slack valuable only when paired with a durable operating franchise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 6.882546779718755,
+      "ls_alpha": 0.04193307348379744,
+      "ls_talpha": 4.177306837817413,
+      "ls_sharpe": 0.543363752006818,
+      "coverage": 0.13797787650432095,
+      "error": null
+    },
+    {
+      "name": "Enterprise Cash Conversion Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(MA(RATIO(oiadp,SUB(revt,cogs)),3),1)))",
+      "hypothesis": "Firms with high pre-interest operating cash flow relative to enterprise value outperform when they consistently convert gross profit into operating income.",
+      "expected_sign": "positive",
+      "reasoning": "Adding interest expense back to operating cash flow better aligns the cash numerator with enterprise value. The separate gross-to-operating-profit conversion ratio measures persistent cost-structure efficiency, replacing the prior documented intangible-capitalization construction with an operating-conversion mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.168114651698283,
+      "ls_alpha": 0.028413848443664694,
+      "ls_talpha": 1.9362188658291688,
+      "ls_sharpe": 0.3690320793765878,
+      "coverage": 0.07834025492250049,
+      "error": null
+    },
+    {
+      "name": "Self-Financed Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(SUB(oancf,dvc),at),1))))",
+      "hypothesis": "High earnings-yield firms outperform when they combine strong operating profitability with substantial internally retained cash after distributions.",
+      "expected_sign": "positive",
+      "reasoning": "The weaker of operating ROA and retained-cash ROA determines the quality confirmation, preventing high earnings yield from qualifying on either reported profitability or cash retention alone. This self-financing mechanism is distinct from reusing cash-flow yield with a previously tested profitability-drawdown score.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.9449907720935562,
+      "ls_alpha": 0.014709866309453427,
+      "ls_talpha": 1.1728794621240788,
+      "ls_sharpe": 0.13056371083192164,
+      "coverage": 0.09080458418047477,
+      "error": null
+    },
+    {
+      "name": "Profitable Deleveraging Book Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,MUL(prcc_f,csho)),1)),MUL(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(NEG(RATIO(DELTA(ADD(dltt,dlc),1),LAG(at,1))),1))))",
+      "hypothesis": "Cheap, profitable firms that are actively reducing debt earn higher subsequent equity returns.",
+      "expected_sign": "positive",
+      "reasoning": "Debt reduction is measured directly as the change in total debt scaled by lagged assets, avoiding contamination from contemporaneous asset growth or changes in market interest rates. The three-way interaction targets value firms where operating strength is being used to transfer enterprise value from creditors to shareholders.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.67023029650675,
+      "ls_alpha": 0.0007436860767231889,
+      "ls_talpha": 0.07418277779403759,
+      "ls_sharpe": 0.20062807795667706,
+      "coverage": 0.1285278642460503,
+      "error": null
+    },
+    {
+      "name": "Capital-Light Enterprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ebitda,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(ADD(RATIO(oiadp,at),SUB(GROWTH(revt,1),GROWTH(at,1))),1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms outperform when they are profitable and revenue growth is outpacing growth in the asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Operating ROA establishes current profitability, while revenue growth minus asset growth identifies firms scaling without proportionate capital expansion. This replaces normalized earnings and a repeated profitability floor with a capital-light scalability mechanism that may retain information beyond static FF5 value and profitability exposures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.33655518571207,
+      "ls_alpha": 0.010521991580074143,
+      "ls_talpha": 0.9959011942572111,
+      "ls_sharpe": 0.3477873918414086,
+      "coverage": 0.1260621770853712,
+      "error": null
+    },
+    {
+      "name": "Net-Cash Profit Reliability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,ADD(dltt,dlc)),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(SUB(oibdp,dp),at),3),VOL(RATIO(SUB(oibdp,dp),at),3)),1)))",
+      "hypothesis": "Firms with high net cash relative to market value outperform when post-depreciation operating profitability is consistently strong.",
+      "expected_sign": "positive",
+      "reasoning": "Netting debt from cash avoids treating highly leveraged cash balances as equivalent to unencumbered equity valuation support. The matched mean-minus-volatility profitability measure provides a smooth reliability adjustment, testing whether the strong cash-backing result survives beyond a single worst-year floor construction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.3813917654136763,
+      "ls_alpha": 0.023142689970726063,
+      "ls_talpha": 2.24752209578101,
+      "ls_sharpe": 0.0023340357943860504,
+      "coverage": 0.12512010628787373,
+      "error": null
+    },
+    {
+      "name": "Cumulative-Cash Margin Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(TS_SUM(oancf,3),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(oiadp,sale),3),1)))",
+      "hypothesis": "Firms priced cheaply relative to cumulative operating cash generation outperform when operating margins remain strong even in their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year cumulative cash flow reduces sensitivity to a temporarily elevated current cash-flow yield and represents sustained internally generated value. The operating-margin floor separately requires durable pricing and cost economics, so the construction does not collapse into a single current profit-to-price ratio.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.38548474538091,
+      "ls_alpha": 0.016637546854769314,
+      "ls_talpha": 1.3675774924289168,
+      "ls_sharpe": 0.20491080964293645,
+      "coverage": 0.08928401174812844,
+      "error": null
+    },
+    {
+      "name": "Fixed-Charge-Covered Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oibdp,ADD(xint,dp)),3),VOL(RATIO(oibdp,ADD(xint,dp)),3)),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating cash earnings reliably cover both interest expense and depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Operating profit before depreciation relative to interest plus depreciation measures coverage of financing costs and recurring asset consumption. Its mean-minus-volatility form favors consistently covered firms, providing a fixed-charge resilience mechanism rather than another asset-scaled profitability floor.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.821763024850134,
+      "ls_alpha": 0.015476859234999807,
+      "ls_talpha": 1.3230930719337417,
+      "ls_sharpe": 0.19082762908465567,
+      "coverage": 0.11211694968000548,
+      "error": null
+    },
+    {
+      "name": "Ex-Cash Operating Franchise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(ceq,che),SUB(MUL(prcc_f,csho),che)),1)),IND_RANK(WINSOR(RATIO(oiadp,SUB(at,che)),1)))",
+      "hypothesis": "Firms whose operating businesses are cheap after stripping out cash outperform when their noncash operating assets generate strong profits.",
+      "expected_sign": "positive",
+      "reasoning": "Removing cash from book equity, market value, and total assets isolates the valuation and profitability of the operating franchise rather than rewarding cash holdings themselves. The matched construction requires the ex-cash business to be both inexpensive and productive, replacing the archived enterprise-cash conversion mechanism.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.4051272009108753,
+      "ls_alpha": -0.0031243222662243548,
+      "ls_talpha": -0.3063037847729764,
+      "ls_sharpe": 0.14515431297562778,
+      "coverage": 0.14058317174703883,
+      "error": null
+    },
+    {
+      "name": "Rank-Balanced Profit Acceleration Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(ACCEL(RATIO(oiadp,at)),1))))",
+      "hypothesis": "High net-income-yield firms outperform when operating return on assets is both high and accelerating.",
+      "expected_sign": "positive",
+      "reasoning": "Profitability level and acceleration are ranked separately before taking their minimum, giving acceleration equal cross-sectional influence instead of allowing its smaller numerical scale to disappear. The quality score can be high only when both the level and change-of-change dimensions are strong, making this a genuine acceleration-conditioned value signal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.806375227484332,
+      "ls_alpha": 0.011970721542561194,
+      "ls_talpha": 1.1562713957911102,
+      "ls_sharpe": 0.154176868584154,
+      "coverage": 0.11899643973594777,
+      "error": null
+    },
+    {
+      "name": "Liquidity-Backed Intangible Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,dlc),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(DELTA(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1),1))))",
+      "hypothesis": "Firms with substantial liquidity net of short-term debt outperform when returns on tangible plus recent R&D capital are both high and improving.",
+      "expected_sign": "positive",
+      "reasoning": "Cash net of current debt measures near-term funding capacity rather than reusing the low-alpha EBITDA-to-enterprise-value leg. Separately ranking the level and change in intangible-inclusive profitability makes improvement a binding condition, while the three-year R&D stock links that condition to the productivity of funded intangible investment.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.092589749057438,
+      "ls_alpha": 0.02343194201087334,
+      "ls_talpha": 2.5411251787901867,
+      "ls_sharpe": 0.3066915757839121,
+      "coverage": 0.12877333921069944,
+      "error": null
+    },
+    {
+      "name": "Cash-Burn-Protected Balance Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Cash-rich firms outperform when they are profitable on both reported operating and operating-cash-flow bases.",
+      "expected_sign": "positive",
+      "reasoning": "The weaker of post-depreciation operating ROA and cash ROA determines whether balance-sheet cash is supported by a self-sustaining business. This directly filters cash-rich firms that are consuming liquidity, using current dual-channel profitability rather than another temporal floor.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.7794406393271025,
+      "ls_alpha": 0.041395906686886946,
+      "ls_talpha": 2.792745639342143,
+      "ls_sharpe": 0.47140050259682337,
+      "coverage": 0.08978713740076785,
+      "error": null
+    },
+    {
+      "name": "Cash-Value Intangible Return Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when returns on tangible plus recently accumulated R&D capital remain strong through their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability denominator includes a recent R&D-capital stock while the numerator reverses current R&D expensing, producing a return on total productive capital. Requiring a high three-year floor distinguishes persistently productive intangible franchises from firms receiving a temporary R&D-adjusted profit boost.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.296222599777369,
+      "ls_alpha": 0.03175841132563309,
+      "ls_talpha": 2.539811038388217,
+      "ls_sharpe": 0.33626175236041483,
+      "coverage": 0.09090926444597983,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Covered Dividend Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(dvc,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oancf,ADD(dvc,dp)),3),VOL(RATIO(oancf,ADD(dvc,dp)),3)),1)))",
+      "hypothesis": "High dividend-yield firms outperform when operating cash flow reliably covers both shareholder distributions and recurring asset consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Cash flow relative to dividends plus depreciation measures whether a payout can coexist with maintenance of the productive asset base. Its mean-minus-volatility form distinguishes sustainable dividend value from high yields funded by underinvestment or unstable cash generation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.153581881314232,
+      "ls_alpha": -0.003076271724701842,
+      "ls_talpha": -0.2517287865768016,
+      "ls_sharpe": 0.04715730403376017,
+      "coverage": 0.07975470251199618,
+      "error": null
+    },
+    {
+      "name": "Overhead-Productive Enterprise Sales Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oiadp,xsga),3),VOL(RATIO(oiadp,xsga),3)),1)))",
+      "hypothesis": "Firms with high sales-to-enterprise-value outperform when they consistently generate substantial operating income per dollar of SG&A.",
+      "expected_sign": "positive",
+      "reasoning": "Operating income relative to SG&A measures the productivity of overhead and organizational spending rather than merely tracking a declining expense ratio. Requiring reliable overhead productivity may avoid the fragile turnaround firms that weakened prior sales-to-enterprise-value recovery portfolios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.506285193290213,
+      "ls_alpha": -0.025206502309457996,
+      "ls_talpha": -2.128320124195924,
+      "ls_sharpe": 0.02226312438140431,
+      "coverage": 0.11016522250205749,
+      "error": null
+    },
+    {
+      "name": "Profit-Funded Debt Retirement Yield",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(DELTA(ADD(dltt,dlc),1),MUL(prcc_f,csho))),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms retiring substantial debt relative to their equity value outperform when the repayment is supported by both operating and cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Debt reduction scaled by market capitalization measures the potential transfer of enterprise value from creditors to shareholders rather than another level of balance-sheet cash. Requiring both operating ROA and cash ROA to be strong helps distinguish internally funded deleveraging from debt reductions caused by asset sales, refinancing, or financial distress.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.1389219349644777,
+      "ls_alpha": 0.016814106278861724,
+      "ls_talpha": 1.3946633612557588,
+      "ls_sharpe": 0.08872234562127104,
+      "coverage": 0.08347608853030351,
+      "error": null
+    },
+    {
+      "name": "Improving Fixed-Charge Surplus Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,ADD(xint,dp)),at),1)),IND_RANK(WINSOR(DELTA(RATIO(SUB(oibdp,ADD(xint,dp)),at),1),1))))",
+      "hypothesis": "High net-income-yield firms outperform when profitability after interest and depreciation is both strong and improving.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling the fixed-charge surplus by assets avoids the explosive denominator of an operating-profit-to-fixed-charge coverage ratio. Ranking the surplus level and its change separately makes improvement a binding condition rather than subtracting an incomparable drawdown from an unbounded level.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.8640621604252803,
+      "ls_alpha": 0.01180277294619008,
+      "ls_talpha": 1.1319471317556087,
+      "ls_sharpe": 0.17224139023145785,
+      "coverage": 0.11035389462179727,
+      "error": null
+    },
+    {
+      "name": "Range-Confirmed Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),RANK(WINSOR(RATIO(SUB(RATIO(oiadp,at),TS_MIN(RATIO(oiadp,at),5)),SUB(TS_MAX(RATIO(oiadp,at),5),TS_MIN(RATIO(oiadp,at),5))),1))))",
+      "hypothesis": "High net-income-yield firms outperform when operating profitability is strong cross-sectionally and near the top of its own recent range.",
+      "expected_sign": "positive",
+      "reasoning": "The own-history component scales the firm's distance from its profitability trough by its full five-year range, making the state comparable across stable and cyclical firms. Requiring both a high current level and a high range position prevents rebound from a deeply unprofitable base from masquerading as quality.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8774041033693147,
+      "ls_alpha": 0.0082754705052696,
+      "ls_talpha": 0.7655827941528226,
+      "ls_sharpe": 0.1835467985067159,
+      "coverage": 0.13056750427388525,
+      "error": null
+    },
+    {
+      "name": "R&D-Budgeted Liquidity Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3)),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms retain a valuation advantage when cash exceeds a recent multi-year R&D budget and the resulting tangible-plus-intangible capital remains productive.",
+      "expected_sign": "positive",
+      "reasoning": "Cash less three years of R&D is a conservative liquidity stress test that asks whether the firm could repeat its recent innovation commitment without external financing. Requiring a high R&D-adjusted return on total productive capital prevents surplus liquidity alone from defining the signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.8572572427207024,
+      "ls_alpha": 0.024119008990218644,
+      "ls_talpha": 2.5474782732008405,
+      "ls_sharpe": 0.21955800197993208,
+      "coverage": 0.14175518830272069,
+      "error": null
+    },
+    {
+      "name": "Pretax-Conversion Enterprise Book Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(MA(SUB(RATIO(pi,at),ABS(RATIO(SUB(oibdp,pi),at))),3),1)))",
+      "hypothesis": "Firms with high book equity relative to enterprise value outperform when operating profits consistently survive depreciation, financing, and other pre-tax conversion costs.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability score starts with pretax ROA and penalizes the asset-scaled gap between operating cash earnings and pretax income, avoiding an explosive coverage denominator. Pairing this conversion quality with book equity relative to total enterprise price tests a capital-claim valuation mechanism rather than another cash-balance or earnings-yield splice.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.556212420891595,
+      "ls_alpha": -0.002845807682164847,
+      "ls_talpha": -0.27570915238276184,
+      "ls_sharpe": 0.049176847145740034,
+      "coverage": 0.1396360965208799,
+      "error": null
+    },
+    {
+      "name": "Self-Funded Reinvestment Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),at),1)),IND_RANK(WINSOR(RATIO(oancf,ADD(dp,COALESCE(xrd,SUB(revt,revt)))),1))))",
+      "hypothesis": "High earnings-yield firms outperform when they are productive after reversing R&D expensing and generate enough operating cash to fund physical and intangible reinvestment.",
+      "expected_sign": "positive",
+      "reasoning": "Cash flow relative to depreciation plus R&D approximates the capacity to replenish consumed physical capital and maintain intangible investment without external finance. The weaker of reinvestment coverage and adjusted operating profitability is binding, distinguishing self-funded cheap franchises from firms merely cutting investment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.0076271928682856,
+      "ls_alpha": 0.005066401651669621,
+      "ls_talpha": 0.4213404930428634,
+      "ls_sharpe": 0.05437137335435734,
+      "coverage": 0.08929598110327737,
+      "error": null
+    },
+    {
+      "name": "SG&A-Payoff Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(DELTA(oiadp,1),LAG(xsga,1)),1))))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when current profitability is strong and prior SG&A spending is producing incremental operating income.",
+      "expected_sign": "positive",
+      "reasoning": "Incremental operating income scaled by lagged SG&A measures realized payoff from organizational spending rather than rewarding indiscriminate expense cuts. Requiring high operating ROA alongside that marginal payoff prevents recovery from a deeply unprofitable base from qualifying as productive investment.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.6108322273645457,
+      "ls_alpha": 0.022371206482561055,
+      "ls_talpha": 1.7725800577425643,
+      "ls_sharpe": 0.15697047676384993,
+      "coverage": 0.0702996342330161,
+      "error": null
+    },
+    {
+      "name": "Physical-Capital Payoff Balance Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(oibdp,1),LAG(dp,1)),1))))",
+      "hypothesis": "Cash-backed firms outperform when post-depreciation profitability is strong and the existing depreciable asset base is generating incremental operating profit.",
+      "expected_sign": "positive",
+      "reasoning": "Operating-profit improvement relative to lagged depreciation approximates the payoff from the installed physical-capital base rather than another persistence or volatility screen. The current post-depreciation return remains binding, so unusually high incremental payoff from a weak base cannot dominate the interaction.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 7.208656700525417,
+      "ls_alpha": 0.043747493732626895,
+      "ls_talpha": 4.375783007877511,
+      "ls_sharpe": 0.46812122981243165,
+      "coverage": 0.12464432442070385,
+      "error": null
+    },
+    {
+      "name": "Enterprise-Cash Post-Depreciation Payoff",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),1),LAG(dp,1)),1))))",
+      "hypothesis": "High pre-interest cash-flow-to-enterprise-value firms outperform when post-depreciation profitability is strong and improving relative to the depreciable asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Using the change in profit after depreciation aligns the incremental-payoff measure with the current post-depreciation return rather than mixing pre- and post-depreciation accounting concepts. The construction tests whether productive physical capital validates enterprise cash cheapness rather than balance-sheet cash backing alone.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.530529881206287,
+      "ls_alpha": 0.03509075896520898,
+      "ls_talpha": 2.7065821426193404,
+      "ls_sharpe": 0.3661445648099592,
+      "coverage": 0.07225770723287495,
+      "error": null
+    },
+    {
+      "name": "Gross-to-Pretax Funnel Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(TS_SUM(oancf,3),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(pi,SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms priced cheaply relative to cumulative cash generation outperform when they produce substantial gross profit and retain a large portion of it through the pretax-income line.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures the size of the operating profit pool, while pretax income to gross profit measures leakage from overhead, depreciation, financing, and other items. Making the weaker channel binding creates a profit-funnel mechanism rather than another incremental-profit scaling variant of the physical-capital winner.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.6517001245733045,
+      "ls_alpha": 0.02086695083977245,
+      "ls_talpha": 1.7353775889252525,
+      "ls_sharpe": 0.22584505947532996,
+      "coverage": 0.08906490032003579,
+      "error": null
+    },
+    {
+      "name": "Organizational Profit Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(oiadp,1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(oiadp,xsga),1)))",
+      "hypothesis": "Firms priced cheaply relative to newly created operating income outperform when their existing organizational spending base is productive.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg measures incremental operating profit relative to market value rather than reusing cash holdings. Operating income per dollar of SG&A separately requires the new profit to arise within an efficient organizational cost structure, distinguishing scalable improvement from growth purchased through excessive overhead.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.8564615895662362,
+      "ls_alpha": 0.009388247549601056,
+      "ls_talpha": 1.064039799877425,
+      "ls_sharpe": 0.009663990839832557,
+      "coverage": 0.11084174902821219,
+      "error": null
+    },
+    {
+      "name": "Innovation Profit Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms priced cheaply relative to growth in R&D-adjusted operating profit outperform when their tangible-plus-intangible capital is currently productive.",
+      "expected_sign": "positive",
+      "reasoning": "The value leg prices the year-over-year increase in operating profit after reversing R&D expensing, eliminating the prior liquidity-budget construction. The separate total-capital return requires that incremental adjusted profit be supported by a productive franchise rather than a rebound from a low base.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.0176820083625198,
+      "ls_alpha": 0.033726134711556346,
+      "ls_talpha": 3.8411030309997227,
+      "ls_sharpe": 0.27811811979894496,
+      "coverage": 0.1301789645599776,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Adjusted Cash Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(oancf,dp),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)))",
+      "hypothesis": "Firms with high cash yield after an allowance for asset consumption outperform when post-depreciation operating profitability is strong.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting depreciation from operating cash flow creates a conservative maintenance-adjusted valuation flow without dividing by a potentially tiny depreciation amount. Post-depreciation ROA independently confirms that the inexpensive residual cash flow comes from productive operations rather than deferred asset replacement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.0805255665367004,
+      "ls_alpha": 0.02686606025043726,
+      "ls_talpha": 2.0626616087036505,
+      "ls_sharpe": 0.2827590610768516,
+      "coverage": 0.08979332844653454,
+      "error": null
+    },
+    {
+      "name": "EBIT-to-Pretax Integrity Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(pi,at),ABS(RATIO(SUB(SUB(oibdp,dp),pi),at))),1)))",
+      "hypothesis": "High net-income-yield firms outperform when pretax profitability is strong and closely supported by operating income after depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing pretax income with post-depreciation operating profit removes the mechanical depreciation mismatch in the prior conversion measure. The absolute gap penalty caps the benefit of non-operating gains and penalizes financing or non-operating leakage, while negative pretax profitability naturally receives a low score.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.7175157388831006,
+      "ls_alpha": 0.014910503600873641,
+      "ls_talpha": 1.4598491865438674,
+      "ls_sharpe": 0.14742197471457136,
+      "coverage": 0.13828933769843332,
+      "error": null
+    },
+    {
+      "name": "Multi-Year Physical Payoff Balance",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),3),TS_SUM(dp,3)),1))))",
+      "hypothesis": "Cash-backed firms outperform when they are currently profitable after depreciation and generate sustained profit improvement relative to multi-year asset consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year post-depreciation profit improvement divided by cumulative depreciation measures physical-capital payoff over a full operating horizon rather than one noisy annual change. The current profitability hurdle prevents a long-horizon rebound from a weak level from qualifying as a productive franchise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 7.490915772240325,
+      "ls_alpha": 0.04582599697969812,
+      "ls_talpha": 4.921751450177713,
+      "ls_sharpe": 0.4758466066201448,
+      "coverage": 0.10483375184802717,
+      "error": null
+    },
+    {
+      "name": "Cash-Realized Innovation Surprise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms priced cheaply relative to growth in R&D-adjusted operating profit outperform when intangible-inclusive returns are high and accompanied by strong operating cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-profitability hurdle tests whether the innovation profit surprise is being realized in operating cash rather than arising solely from accounting adjustment. Requiring both productive intangible capital and current cash ROA may improve long-short reliability while keeping the valuation leg focused on newly created adjusted profit.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.475471243813953,
+      "ls_alpha": 0.03254637087020515,
+      "ls_talpha": 2.733667281375018,
+      "ls_sharpe": 0.3063368681587075,
+      "coverage": 0.0838614295372317,
+      "error": null
+    },
+    {
+      "name": "Gross-to-Cash Funnel Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "High net-income-yield firms outperform when they generate a large gross-profit pool and convert that pool efficiently into operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures franchise-level productive capacity, while operating cash flow to gross profit measures downstream cash conversion. Making the weaker stage binding distinguishes cheap firms with a healthy profit funnel from a standard earnings-change or physical-capital payoff signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.2665460993569333,
+      "ls_alpha": 0.036925688020448606,
+      "ls_talpha": 2.987846747939864,
+      "ls_sharpe": 0.3366013835685091,
+      "coverage": 0.08901521717775814,
+      "error": null
+    },
+    {
+      "name": "Profit-Funded Cash Accumulation Yield",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(che,1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms accumulating substantial cash relative to market value outperform when the accumulation is supported by both operating and cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg measures newly accumulated liquidity rather than a persistent level of cash holdings. Requiring strong operating ROA and cash ROA helps distinguish internally generated cash accumulation from financing proceeds, asset sales, or temporary balance-sheet movements.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 1.965444182698597,
+      "ls_alpha": 0.00943676155452659,
+      "ls_talpha": 0.8267863254208607,
+      "ls_sharpe": 0.07569176446948779,
+      "coverage": 0.08396389134467037,
+      "error": null
+    },
+    {
+      "name": "Pricing-Power Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),revt),1)),IND_RANK(WINSOR(DELTA(RATIO(SUB(revt,cogs),revt),1),1))))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when gross margins are both high and expanding.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-margin level captures established pricing power, while its change captures strengthening unit economics before overhead and financing effects. Ranking the two dimensions separately makes margin expansion economically binding without reducing the signal to another operating-income-change-to-price anomaly.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.246516445194028,
+      "ls_alpha": 0.008094918079683171,
+      "ls_talpha": 0.7962555452006648,
+      "ls_sharpe": 0.024131620408979836,
+      "coverage": 0.08182390478336705,
+      "error": null
+    },
+    {
+      "name": "Enterprise-Cash Intangible Profit Funnel",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms with high pre-interest cash flow relative to enterprise value outperform when total productive capital generates strong gross profit and gross profit converts efficiently into R&D-adjusted operating income.",
+      "expected_sign": "positive",
+      "reasoning": "The first quality stage measures gross return on tangible plus recently accumulated R&D capital; the second measures how much gross profit survives operating costs after reversing current R&D expensing. This decomposes intangible productivity into production and conversion channels rather than smoothing or reusing an adjusted-profit surprise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.0527946789688367,
+      "ls_alpha": 0.0255724010974102,
+      "ls_talpha": 2.2665208574227,
+      "ls_sharpe": 0.28816931624985337,
+      "coverage": 0.07803689367993284,
+      "error": null
+    },
+    {
+      "name": "Total-Capital Payoff Balance",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),3),ADD(TS_SUM(dp,3),TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Cash-backed firms outperform when returns on total productive capital are high and multi-year adjusted-profit creation is large relative to both physical and intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The payoff denominator combines cumulative depreciation with cumulative R&D, extending the capital-payback mechanism beyond the depreciable asset base. Requiring a high current return on tangible plus R&D capital prevents firms with large investment budgets but weak realized productivity from qualifying.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 7.419177284342997,
+      "ls_alpha": 0.046463663570295244,
+      "ls_talpha": 4.820837266765003,
+      "ls_sharpe": 0.4587736034065345,
+      "coverage": 0.10575719791617655,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed Gross-to-Cash Funnel",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "Cash-backed firms outperform when they generate substantial gross profit and convert that profit efficiently into operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures franchise production, while operating cash flow to gross profit measures downstream realization of that production. This mechanism filters cash-rich firms through the full gross-to-cash funnel rather than another profitability floor, drawdown, or incremental-capital-payoff condition.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.485809433603558,
+      "ls_alpha": 0.05961510598649305,
+      "ls_talpha": 3.9372618541154405,
+      "ls_sharpe": 0.5846839697842356,
+      "coverage": 0.08900851021151089,
+      "error": null
+    },
+    {
+      "name": "Innovation Surprise Total-Capital Payback",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),3),ADD(TS_SUM(dp,3),TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Firms priced cheaply relative to innovation-adjusted profit growth outperform when current total-capital returns are high and multi-year profit creation covers physical and intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg retains the empirically strong one-year innovation-profit surprise, while the quality condition adds a distinct multi-year payback test against depreciation plus R&D. Making current return and cumulative payback jointly binding seeks to preserve alpha while excluding short-lived adjusted-profit shocks.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.5866671809025825,
+      "ls_alpha": 0.028721124950758774,
+      "ls_talpha": 3.3722330328534795,
+      "ls_sharpe": 0.15732562201518768,
+      "coverage": 0.1059902907892923,
+      "error": null
+    },
+    {
+      "name": "Balanced Intangible DuPont Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),revt),1)),IND_RANK(WINSOR(RATIO(revt,ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Cash-backed firms outperform when R&D-adjusted operating margins and revenue productivity of total tangible-plus-intangible capital are both strong.",
+      "expected_sign": "positive",
+      "reasoning": "The two quality channels form an intangible-adjusted DuPont decomposition: profit per dollar of revenue and revenue per dollar of productive capital. Making the weaker component binding excludes high-margin firms with idle capital and high-turnover firms with poor economics, creating a balanced profitability mechanism rather than another payoff-horizon variant.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 7.708845432050433,
+      "ls_alpha": 0.01892663277697319,
+      "ls_talpha": 2.238486388014826,
+      "ls_sharpe": 0.4372175600397883,
+      "coverage": 0.13947022808638077,
+      "error": null
+    },
+    {
+      "name": "Productive Depreciation Asset Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(dp,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),3),TS_SUM(dp,3)),1))))",
+      "hypothesis": "Firms priced cheaply relative to the accounting consumption of their installed asset base outperform when those assets generate strong current and multi-year post-depreciation profits.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation-to-market-value measures how much depreciable productive capacity the market price supports, a different valuation channel from cash holdings or enterprise value. The two profitability hurdles ensure that a high depreciation yield represents productive installed capital rather than an uneconomic maintenance burden.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.049388809728006,
+      "ls_alpha": -0.019507611403397324,
+      "ls_talpha": -2.0086762240910008,
+      "ls_sharpe": 0.06511137380013265,
+      "coverage": 0.10539904591857371,
+      "error": null
+    },
+    {
+      "name": "Innovation-Funding Residual Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(ADD(oancf,COALESCE(xrd,SUB(revt,revt))),dp),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms with high pre-R&D cash generation after an allowance for physical asset consumption outperform when their tangible-plus-intangible capital is productive.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to operating cash flow measures cash capacity before discretionary innovation spending, while subtracting depreciation provides a physical-maintenance allowance. Intangible-inclusive return separately requires that deploying this funding into R&D has produced a strong operating franchise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.455813624947652,
+      "ls_alpha": 0.038027060060599395,
+      "ls_talpha": 2.8950383502440085,
+      "ls_sharpe": 0.3667913157423348,
+      "coverage": 0.08979518576026455,
+      "error": null
+    },
+    {
+      "name": "R&D-Budgeted Gross-to-Cash Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3)),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms whose liquidity exceeds a recent R&D budget outperform when total productive capital generates strong gross profit and gross profit converts efficiently into cash.",
+      "expected_sign": "positive",
+      "reasoning": "Budgeted liquidity measures financial runway after allowing for continued innovation spending. The two-stage profitability funnel requires the tangible-plus-intangible capital base to produce gross profit and for that profit to survive downstream costs as operating cash.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.014381835081528,
+      "ls_alpha": 0.04697126702355757,
+      "ls_talpha": 3.65885474257326,
+      "ls_sharpe": 0.4450332455388858,
+      "coverage": 0.08900912931608755,
+      "error": null
+    },
+    {
+      "name": "Cash-Backed Gross-Profit Scalability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(revt,cogs),1),LAG(revt,1)),1))))",
+      "hypothesis": "Cash-backed firms outperform when gross-profit productivity is high and incremental gross profit is large relative to the prior sales base.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures the existing franchise profit pool, while gross-profit change scaled by lagged revenue measures incremental pricing and production economics. This replaces the stacked DuPont and cash-conversion hurdles with a distinct gross-profit scalability mechanism requiring both level and incremental strength.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 8.125231249622102,
+      "ls_alpha": 0.05504903573164843,
+      "ls_talpha": 5.023373340457649,
+      "ls_sharpe": 0.41019714771596427,
+      "coverage": 0.127622991315201,
+      "error": null
+    },
+    {
+      "name": "Reliable Innovation Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3),VOL(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3)),1)))",
+      "hypothesis": "Firms priced cheaply relative to R&D-adjusted profit growth outperform when returns on tangible plus intangible capital are persistently high and stable.",
+      "expected_sign": "positive",
+      "reasoning": "Mean adjusted return less its volatility measures the reliability of intangible-capital productivity rather than algebraically decomposing the same return into margin and turnover. This tests whether innovation surprise is most valuable when it emerges from a stable productive franchise instead of a transient adjusted-profit spike.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.1126988486862355,
+      "ls_alpha": 0.03220608713316487,
+      "ls_talpha": 3.8381651964829353,
+      "ls_sharpe": 0.24983323982009556,
+      "coverage": 0.13017865500768927,
+      "error": null
+    },
+    {
+      "name": "Reliable Residual-Margin Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(SUB(oibdp,ADD(dp,xint)),revt),3),VOL(RATIO(SUB(oibdp,ADD(dp,xint)),revt),3)),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating margins remaining after depreciation and interest are consistently strong.",
+      "expected_sign": "positive",
+      "reasoning": "Profit after depreciation and interest scaled by revenue measures the recurring operating margin available after physical and financing burdens. Its matched mean-minus-volatility form targets residual-margin reliability without adding another binding leg to an archived capital-payoff signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.521146072144585,
+      "ls_alpha": 0.016930834048486183,
+      "ls_talpha": 1.7037699717367727,
+      "ls_sharpe": 0.19103342138467044,
+      "coverage": 0.11076157498553359,
+      "error": null
+    },
+    {
+      "name": "Capital-Charge Productivity Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(dp,COALESCE(xrd,SUB(revt,revt)))),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when R&D-adjusted operating profit is large relative to current physical and intangible capital charges.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation plus R&D represents the current accounting burden from physical asset consumption and intangible investment, while adding R&D back to operating income corrects the corresponding expensing distortion. The ratio therefore tests current profit earned per dollar of combined capital charge rather than reusing a level-and-change total-capital construct.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.3600685037384057,
+      "ls_alpha": 0.007428712538571934,
+      "ls_talpha": 0.5910241435915079,
+      "ls_sharpe": 0.1363348665753053,
+      "coverage": 0.08929783841700738,
+      "error": null
+    },
+    {
+      "name": "Maintenance-Adjusted Overhead Scalability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(oancf,dp),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(SUB(RATIO(DELTA(oiadp,1),LAG(revt,1)),RATIO(DELTA(xsga,1),LAG(revt,1))),1))))",
+      "hypothesis": "Firms with high maintenance-adjusted cash yield outperform when current operating profitability is strong and incremental operating income exceeds incremental overhead burden.",
+      "expected_sign": "positive",
+      "reasoning": "Operating-income growth less SG&A growth, scaled by lagged revenue, measures whether additional overhead is translating into scalable profit rather than simply being cut. The current operating-return hurdle prevents temporary cost contraction or recovery from a loss base from driving the interaction.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.7215058224112205,
+      "ls_alpha": 0.004904395762983316,
+      "ls_talpha": 0.44155548893048896,
+      "ls_sharpe": 0.12072552831611988,
+      "coverage": 0.06779349890666132,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Durable-Cash Dividend Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(dvc,MUL(prcc_f,csho)),1)),RANK(WINSOR(SUB(MA(RATIO(oancf,at),5),VOL(RATIO(oancf,at),5)),1)))",
+      "hypothesis": "High dividend-yield firms outperform when their distributions are supported by persistent, low-volatility cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Average cash return on assets less its volatility measures a conservative profitability floor rather than one unusually strong year. Multiplying its rank by dividend yield distinguishes sustainable payout value from distress-driven yield.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Restored Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),at),1)))",
+      "hypothesis": "Cash-flow-cheap firms earn higher returns when they remain highly profitable after reversing the immediate expensing of R&D.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to operating income mitigates the accounting penalty imposed on firms investing in intangible assets; unreported R&D is economically treated as zero. The interaction favors cheap cash generators with genuine innovation-adjusted operating productivity rather than cash-flow yield alone.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Expensive Fragile-Margin Penalty",
+      "expression": "MAX(RANK(WINSOR(RATIO(MUL(prcc_f,csho),sale),1)),RANK(NEG(WINSOR(SUB(MA(RATIO(SUB(revt,cogs),revt),3),VOL(RATIO(SUB(revt,cogs),revt),5)),1))))",
+      "hypothesis": "Firms with high sales multiples or weak, unstable gross margins underperform firms that are jointly cheap and durably profitable.",
+      "expected_sign": "negative",
+      "reasoning": "The maximum operator assigns a low signal only when both valuation expensiveness and profitability fragility are low. Thus the attractive low-signal portfolio requires cheapness to be confirmed by persistent gross-margin strength, while high values identify valuation or fundamental vulnerability.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Floor Historical Book Dislocation",
+      "expression": "MUL(RANK(TS_RANK(WINSOR(RATIO(ceq,MUL(prcc_f,csho)),1),5)),IND_RANK(WINSOR(TS_MIN(RATIO(oancf,at),3),1)))",
+      "hypothesis": "Firms trading near the cheapest book valuation in their own history outperform when even their weakest recent cash profitability remains strong relative to industry peers.",
+      "expected_sign": "positive",
+      "reasoning": "Own-history book-to-market rank captures a firm-specific valuation dislocation rather than reproducing a conventional cross-sectional value sort, while minimum three-year cash ROA measures a profitability floor rather than a peak. Their continuous rank product emphasizes firms satisfying both conditions without a binary gate or a cosmetic MIN combination of standard anomalies.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Value Concordance Spread",
+      "expression": "MUL(SIGN(ADD(SIGN(IND_ZSCORE(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1))),SIGN(IND_ZSCORE(WINSOR(RATIO(oancf,at),1))))),MIN(ABS(IND_ZSCORE(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1))),ABS(IND_ZSCORE(WINSOR(RATIO(oancf,at),1)))))",
+      "hypothesis": "Cheap enterprise valuations supported by strong cash profitability outperform expensive firms with weak cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The signal is positive only for jointly above-industry sales yield and cash ROA, negative for jointly below-industry observations, and neutral for economically discordant combinations. Thus the short tail contains expensive, cash-unprofitable firms rather than a tied mass of all below-average-profitability firms, while tail magnitude is governed by the weaker standardized dimension.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings-Margin Repricing Concordance",
+      "expression": "MUL(SIGN(ADD(SIGN(IND_ZSCORE(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1))),SIGN(IND_ZSCORE(WINSOR(TREND(RATIO(oiadp,sale),3),1))))),MIN(ABS(IND_ZSCORE(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1))),ABS(IND_ZSCORE(WINSOR(TREND(RATIO(oiadp,sale),3),1)))))",
+      "hypothesis": "Firms with high earnings yield and improving operating margins outperform expensive firms whose margins are deteriorating.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the binary trend gate and static profitability cross with a symmetric interaction between valuation and margin trajectory. Cheap deteriorators and expensive improvers remain neutral, while the graded positive and negative tails isolate the economically coherent cheap-improving and expensive-deteriorating corners.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Depreciation-Protected Enterprise Yield",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ebitda,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(RATIO(SUB(ebitda,dp),at),1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms outperform when they retain strong asset profitability after depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA yield can make capital-intensive firms appear cheap by ignoring the economic consumption of fixed assets. Post-depreciation profitability acts as a continuous quality confirmation, favoring cheap enterprises whose apparent cash earnings are not primarily compensation for asset wear.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Debt-Service-Safe Book Discount",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(SUB(oibdp,xint),at),3),1)))",
+      "hypothesis": "High book-to-market firms outperform when operating profitability has remained sufficient after interest expense, even during their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "The three-year minimum of after-interest operating profitability identifies a debt-service floor that helps separate solvent value from leverage-driven distress. Its interaction with book-to-market requires cheapness to be supported by recurring debt-bearing capacity rather than a single strong reporting period.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Overhead-Compression Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(NEG(TREND(RATIO(xsga,sale),3)),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when their SG&A burden is declining.",
+      "expected_sign": "positive",
+      "reasoning": "A falling SG&A-to-sales trend indicates improving overhead efficiency and a potential expansion in future operating profitability. This prospective cost-discipline channel strengthens cash-flow cheapness without algebraically collapsing the interaction into another current profit yield.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Accrual-Reconciled Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(oiadp,at),ABS(RATIO(SUB(oancf,ADD(ib,dp)),at))),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating profitability is strong and cash flow closely reconciles to earnings after adding back depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing operating cash flow with earnings plus depreciation better isolates working-capital and other noncash accrual differences without mechanically treating depreciation as poor quality. Subtracting that reconciliation gap from operating ROA favors cheap firms with both productive operations and credible earnings conversion.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitability-Drawdown Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(oiadp,at),ABS(SUB(TS_MAX(RATIO(oiadp,at),3),RATIO(oiadp,at)))),1)))",
+      "hypothesis": "High net-income-yield firms outperform when operating profitability is high and has not fallen materially from its recent peak.",
+      "expected_sign": "positive",
+      "reasoning": "Current operating ROA is penalized by its drawdown from the three-year maximum, distinguishing sustained profitability from cyclically depressed or deteriorating operations. This tests a profitability-retention mechanism rather than reusing sales multiples and gross-margin stability.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Operating-Recovery Standardized Book Gap",
+      "expression": "MUL(RANK(WINSOR(RATIO(SUB(RATIO(ceq,MUL(prcc_f,csho)),MA(RATIO(ceq,MUL(prcc_f,csho)),5)),VOL(RATIO(ceq,MUL(prcc_f,csho)),5)),1)),IND_RANK(WINSOR(TREND(RATIO(oiadp,at),3),1)))",
+      "hypothesis": "Firms trading unusually cheaply relative to their own valuation history outperform when operating return on assets is improving.",
+      "expected_sign": "positive",
+      "reasoning": "The value leg measures the continuous, volatility-normalized deviation of book-to-market from its five-period trailing mean, preserving the magnitude of firm-specific valuation dislocations. It avoids the coarse three-state historical rank while pairing unusually low expectations with a continuous profitability-recovery signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Margin-Recovery Enterprise Bargain",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(ADD(RATIO(oiadp,sale),SUB(RATIO(oiadp,sale),TS_MIN(RATIO(oiadp,sale),3))),1)))",
+      "hypothesis": "Firms with high sales-to-enterprise-value outperform when operating margins are both healthy and recovering from a recent trough.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability channel combines the current margin with its improvement from the three-year minimum, rewarding genuine operating recovery without allowing a still-depressed margin to dominate. Enterprise-value cheapness should be more likely to reverse when low expectations coincide with improving unit economics.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed Profit Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(SUB(oibdp,dp),at),3),1)))",
+      "hypothesis": "Firms with substantial cash backing relative to market value outperform when post-depreciation operating profitability remains robust through their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-to-market captures balance-sheet valuation support that is not a conventional earnings or book-value factor. The operating-profit floor excludes cash-rich but persistently unproductive firms, making financial slack valuable only when paired with a durable operating franchise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Enterprise Cash Conversion Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(MA(RATIO(oiadp,SUB(revt,cogs)),3),1)))",
+      "hypothesis": "Firms with high pre-interest operating cash flow relative to enterprise value outperform when they consistently convert gross profit into operating income.",
+      "expected_sign": "positive",
+      "reasoning": "Adding interest expense back to operating cash flow better aligns the cash numerator with enterprise value. The separate gross-to-operating-profit conversion ratio measures persistent cost-structure efficiency, replacing the prior documented intangible-capitalization construction with an operating-conversion mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Financed Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(SUB(oancf,dvc),at),1))))",
+      "hypothesis": "High earnings-yield firms outperform when they combine strong operating profitability with substantial internally retained cash after distributions.",
+      "expected_sign": "positive",
+      "reasoning": "The weaker of operating ROA and retained-cash ROA determines the quality confirmation, preventing high earnings yield from qualifying on either reported profitability or cash retention alone. This self-financing mechanism is distinct from reusing cash-flow yield with a previously tested profitability-drawdown score.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profitable Deleveraging Book Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,MUL(prcc_f,csho)),1)),MUL(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(NEG(RATIO(DELTA(ADD(dltt,dlc),1),LAG(at,1))),1))))",
+      "hypothesis": "Cheap, profitable firms that are actively reducing debt earn higher subsequent equity returns.",
+      "expected_sign": "positive",
+      "reasoning": "Debt reduction is measured directly as the change in total debt scaled by lagged assets, avoiding contamination from contemporaneous asset growth or changes in market interest rates. The three-way interaction targets value firms where operating strength is being used to transfer enterprise value from creditors to shareholders.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Capital-Light Enterprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ebitda,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(ADD(RATIO(oiadp,at),SUB(GROWTH(revt,1),GROWTH(at,1))),1)))",
+      "hypothesis": "High EBITDA-to-enterprise-value firms outperform when they are profitable and revenue growth is outpacing growth in the asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Operating ROA establishes current profitability, while revenue growth minus asset growth identifies firms scaling without proportionate capital expansion. This replaces normalized earnings and a repeated profitability floor with a capital-light scalability mechanism that may retain information beyond static FF5 value and profitability exposures.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Net-Cash Profit Reliability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,ADD(dltt,dlc)),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(SUB(oibdp,dp),at),3),VOL(RATIO(SUB(oibdp,dp),at),3)),1)))",
+      "hypothesis": "Firms with high net cash relative to market value outperform when post-depreciation operating profitability is consistently strong.",
+      "expected_sign": "positive",
+      "reasoning": "Netting debt from cash avoids treating highly leveraged cash balances as equivalent to unencumbered equity valuation support. The matched mean-minus-volatility profitability measure provides a smooth reliability adjustment, testing whether the strong cash-backing result survives beyond a single worst-year floor construction.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cumulative-Cash Margin Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(TS_SUM(oancf,3),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(oiadp,sale),3),1)))",
+      "hypothesis": "Firms priced cheaply relative to cumulative operating cash generation outperform when operating margins remain strong even in their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year cumulative cash flow reduces sensitivity to a temporarily elevated current cash-flow yield and represents sustained internally generated value. The operating-margin floor separately requires durable pricing and cost economics, so the construction does not collapse into a single current profit-to-price ratio.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Fixed-Charge-Covered Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oibdp,ADD(xint,dp)),3),VOL(RATIO(oibdp,ADD(xint,dp)),3)),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating cash earnings reliably cover both interest expense and depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Operating profit before depreciation relative to interest plus depreciation measures coverage of financing costs and recurring asset consumption. Its mean-minus-volatility form favors consistently covered firms, providing a fixed-charge resilience mechanism rather than another asset-scaled profitability floor.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Ex-Cash Operating Franchise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(ceq,che),SUB(MUL(prcc_f,csho),che)),1)),IND_RANK(WINSOR(RATIO(oiadp,SUB(at,che)),1)))",
+      "hypothesis": "Firms whose operating businesses are cheap after stripping out cash outperform when their noncash operating assets generate strong profits.",
+      "expected_sign": "positive",
+      "reasoning": "Removing cash from book equity, market value, and total assets isolates the valuation and profitability of the operating franchise rather than rewarding cash holdings themselves. The matched construction requires the ex-cash business to be both inexpensive and productive, replacing the archived enterprise-cash conversion mechanism.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Rank-Balanced Profit Acceleration Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(ACCEL(RATIO(oiadp,at)),1))))",
+      "hypothesis": "High net-income-yield firms outperform when operating return on assets is both high and accelerating.",
+      "expected_sign": "positive",
+      "reasoning": "Profitability level and acceleration are ranked separately before taking their minimum, giving acceleration equal cross-sectional influence instead of allowing its smaller numerical scale to disappear. The quality score can be high only when both the level and change-of-change dimensions are strong, making this a genuine acceleration-conditioned value signal.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity-Backed Intangible Productivity",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,dlc),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(DELTA(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1),1))))",
+      "hypothesis": "Firms with substantial liquidity net of short-term debt outperform when returns on tangible plus recent R&D capital are both high and improving.",
+      "expected_sign": "positive",
+      "reasoning": "Cash net of current debt measures near-term funding capacity rather than reusing the low-alpha EBITDA-to-enterprise-value leg. Separately ranking the level and change in intangible-inclusive profitability makes improvement a binding condition, while the three-year R&D stock links that condition to the productivity of funded intangible investment.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Burn-Protected Balance Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Cash-rich firms outperform when they are profitable on both reported operating and operating-cash-flow bases.",
+      "expected_sign": "positive",
+      "reasoning": "The weaker of post-depreciation operating ROA and cash ROA determines whether balance-sheet cash is supported by a self-sustaining business. This directly filters cash-rich firms that are consuming liquidity, using current dual-channel profitability rather than another temporal floor.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Value Intangible Return Floor",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(TS_MIN(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when returns on tangible plus recently accumulated R&D capital remain strong through their weakest recent year.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability denominator includes a recent R&D-capital stock while the numerator reverses current R&D expensing, producing a return on total productive capital. Requiring a high three-year floor distinguishes persistently productive intangible franchises from firms receiving a temporary R&D-adjusted profit boost.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Covered Dividend Value",
+      "expression": "MUL(RANK(WINSOR(RATIO(dvc,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oancf,ADD(dvc,dp)),3),VOL(RATIO(oancf,ADD(dvc,dp)),3)),1)))",
+      "hypothesis": "High dividend-yield firms outperform when operating cash flow reliably covers both shareholder distributions and recurring asset consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Cash flow relative to dividends plus depreciation measures whether a payout can coexist with maintenance of the productive asset base. Its mean-minus-volatility form distinguishes sustainable dividend value from high yields funded by underinvestment or unstable cash generation.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Overhead-Productive Enterprise Sales Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(sale,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(SUB(MA(RATIO(oiadp,xsga),3),VOL(RATIO(oiadp,xsga),3)),1)))",
+      "hypothesis": "Firms with high sales-to-enterprise-value outperform when they consistently generate substantial operating income per dollar of SG&A.",
+      "expected_sign": "positive",
+      "reasoning": "Operating income relative to SG&A measures the productivity of overhead and organizational spending rather than merely tracking a declining expense ratio. Requiring reliable overhead productivity may avoid the fragile turnaround firms that weakened prior sales-to-enterprise-value recovery portfolios.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit-Funded Debt Retirement Yield",
+      "expression": "MUL(IND_RANK(WINSOR(NEG(RATIO(DELTA(ADD(dltt,dlc),1),MUL(prcc_f,csho))),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms retiring substantial debt relative to their equity value outperform when the repayment is supported by both operating and cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Debt reduction scaled by market capitalization measures the potential transfer of enterprise value from creditors to shareholders rather than another level of balance-sheet cash. Requiring both operating ROA and cash ROA to be strong helps distinguish internally funded deleveraging from debt reductions caused by asset sales, refinancing, or financial distress.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Improving Fixed-Charge Surplus Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,ADD(xint,dp)),at),1)),IND_RANK(WINSOR(DELTA(RATIO(SUB(oibdp,ADD(xint,dp)),at),1),1))))",
+      "hypothesis": "High net-income-yield firms outperform when profitability after interest and depreciation is both strong and improving.",
+      "expected_sign": "positive",
+      "reasoning": "Scaling the fixed-charge surplus by assets avoids the explosive denominator of an operating-profit-to-fixed-charge coverage ratio. Ranking the surplus level and its change separately makes improvement a binding condition rather than subtracting an incomparable drawdown from an unbounded level.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Range-Confirmed Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),RANK(WINSOR(RATIO(SUB(RATIO(oiadp,at),TS_MIN(RATIO(oiadp,at),5)),SUB(TS_MAX(RATIO(oiadp,at),5),TS_MIN(RATIO(oiadp,at),5))),1))))",
+      "hypothesis": "High net-income-yield firms outperform when operating profitability is strong cross-sectionally and near the top of its own recent range.",
+      "expected_sign": "positive",
+      "reasoning": "The own-history component scales the firm's distance from its profitability trough by its full five-year range, making the state comparable across stable and cyclical firms. Requiring both a high current level and a high range position prevents rebound from a deeply unprofitable base from masquerading as quality.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Budgeted Liquidity Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3)),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms retain a valuation advantage when cash exceeds a recent multi-year R&D budget and the resulting tangible-plus-intangible capital remains productive.",
+      "expected_sign": "positive",
+      "reasoning": "Cash less three years of R&D is a conservative liquidity stress test that asks whether the firm could repeat its recent innovation commitment without external financing. Requiring a high R&D-adjusted return on total productive capital prevents surplus liquidity alone from defining the signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Pretax-Conversion Enterprise Book Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ceq,ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),IND_RANK(WINSOR(MA(SUB(RATIO(pi,at),ABS(RATIO(SUB(oibdp,pi),at))),3),1)))",
+      "hypothesis": "Firms with high book equity relative to enterprise value outperform when operating profits consistently survive depreciation, financing, and other pre-tax conversion costs.",
+      "expected_sign": "positive",
+      "reasoning": "The profitability score starts with pretax ROA and penalizes the asset-scaled gap between operating cash earnings and pretax income, avoiding an explosive coverage denominator. Pairing this conversion quality with book equity relative to total enterprise price tests a capital-claim valuation mechanism rather than another cash-balance or earnings-yield splice.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Self-Funded Reinvestment Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),at),1)),IND_RANK(WINSOR(RATIO(oancf,ADD(dp,COALESCE(xrd,SUB(revt,revt)))),1))))",
+      "hypothesis": "High earnings-yield firms outperform when they are productive after reversing R&D expensing and generate enough operating cash to fund physical and intangible reinvestment.",
+      "expected_sign": "positive",
+      "reasoning": "Cash flow relative to depreciation plus R&D approximates the capacity to replenish consumed physical capital and maintain intangible investment without external finance. The weaker of reinvestment coverage and adjusted operating profitability is binding, distinguishing self-funded cheap franchises from firms merely cutting investment.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "SG&A-Payoff Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(DELTA(oiadp,1),LAG(xsga,1)),1))))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when current profitability is strong and prior SG&A spending is producing incremental operating income.",
+      "expected_sign": "positive",
+      "reasoning": "Incremental operating income scaled by lagged SG&A measures realized payoff from organizational spending rather than rewarding indiscriminate expense cuts. Requiring high operating ROA alongside that marginal payoff prevents recovery from a deeply unprofitable base from qualifying as productive investment.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Physical-Capital Payoff Balance Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(oibdp,1),LAG(dp,1)),1))))",
+      "hypothesis": "Cash-backed firms outperform when post-depreciation profitability is strong and the existing depreciable asset base is generating incremental operating profit.",
+      "expected_sign": "positive",
+      "reasoning": "Operating-profit improvement relative to lagged depreciation approximates the payoff from the installed physical-capital base rather than another persistence or volatility screen. The current post-depreciation return remains binding, so unusually high incremental payoff from a weak base cannot dominate the interaction.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Enterprise-Cash Post-Depreciation Payoff",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),1),LAG(dp,1)),1))))",
+      "hypothesis": "High pre-interest cash-flow-to-enterprise-value firms outperform when post-depreciation profitability is strong and improving relative to the depreciable asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Using the change in profit after depreciation aligns the incremental-payoff measure with the current post-depreciation return rather than mixing pre- and post-depreciation accounting concepts. The construction tests whether productive physical capital validates enterprise cash cheapness rather than balance-sheet cash backing alone.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-to-Pretax Funnel Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(TS_SUM(oancf,3),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(pi,SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms priced cheaply relative to cumulative cash generation outperform when they produce substantial gross profit and retain a large portion of it through the pretax-income line.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures the size of the operating profit pool, while pretax income to gross profit measures leakage from overhead, depreciation, financing, and other items. Making the weaker channel binding creates a profit-funnel mechanism rather than another incremental-profit scaling variant of the physical-capital winner.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Organizational Profit Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(oiadp,1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(oiadp,xsga),1)))",
+      "hypothesis": "Firms priced cheaply relative to newly created operating income outperform when their existing organizational spending base is productive.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg measures incremental operating profit relative to market value rather than reusing cash holdings. Operating income per dollar of SG&A separately requires the new profit to arise within an efficient organizational cost structure, distinguishing scalable improvement from growth purchased through excessive overhead.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Profit Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms priced cheaply relative to growth in R&D-adjusted operating profit outperform when their tangible-plus-intangible capital is currently productive.",
+      "expected_sign": "positive",
+      "reasoning": "The value leg prices the year-over-year increase in operating profit after reversing R&D expensing, eliminating the prior liquidity-budget construction. The separate total-capital return requires that incremental adjusted profit be supported by a productive franchise rather than a rebound from a low base.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Adjusted Cash Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(oancf,dp),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)))",
+      "hypothesis": "Firms with high cash yield after an allowance for asset consumption outperform when post-depreciation operating profitability is strong.",
+      "expected_sign": "positive",
+      "reasoning": "Subtracting depreciation from operating cash flow creates a conservative maintenance-adjusted valuation flow without dividing by a potentially tiny depreciation amount. Post-depreciation ROA independently confirms that the inexpensive residual cash flow comes from productive operations rather than deferred asset replacement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "EBIT-to-Pretax Integrity Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(RATIO(pi,at),ABS(RATIO(SUB(SUB(oibdp,dp),pi),at))),1)))",
+      "hypothesis": "High net-income-yield firms outperform when pretax profitability is strong and closely supported by operating income after depreciation.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing pretax income with post-depreciation operating profit removes the mechanical depreciation mismatch in the prior conversion measure. The absolute gap penalty caps the benefit of non-operating gains and penalizes financing or non-operating leakage, while negative pretax profitability naturally receives a low score.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Multi-Year Physical Payoff Balance",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),3),TS_SUM(dp,3)),1))))",
+      "hypothesis": "Cash-backed firms outperform when they are currently profitable after depreciation and generate sustained profit improvement relative to multi-year asset consumption.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year post-depreciation profit improvement divided by cumulative depreciation measures physical-capital payoff over a full operating horizon rather than one noisy annual change. The current profitability hurdle prevents a long-horizon rebound from a weak level from qualifying as a productive franchise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Realized Innovation Surprise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms priced cheaply relative to growth in R&D-adjusted operating profit outperform when intangible-inclusive returns are high and accompanied by strong operating cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-profitability hurdle tests whether the innovation profit surprise is being realized in operating cash rather than arising solely from accounting adjustment. Requiring both productive intangible capital and current cash ROA may improve long-short reliability while keeping the valuation leg focused on newly created adjusted profit.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Gross-to-Cash Funnel Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ni,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "High net-income-yield firms outperform when they generate a large gross-profit pool and convert that pool efficiently into operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures franchise-level productive capacity, while operating cash flow to gross profit measures downstream cash conversion. Making the weaker stage binding distinguishes cheap firms with a healthy profit funnel from a standard earnings-change or physical-capital payoff signal.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Profit-Funded Cash Accumulation Yield",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(che,1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(RATIO(oancf,at),1))))",
+      "hypothesis": "Firms accumulating substantial cash relative to market value outperform when the accumulation is supported by both operating and cash profitability.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg measures newly accumulated liquidity rather than a persistent level of cash holdings. Requiring strong operating ROA and cash ROA helps distinguish internally generated cash accumulation from financing proceeds, asset sales, or temporary balance-sheet movements.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Pricing-Power Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),revt),1)),IND_RANK(WINSOR(DELTA(RATIO(SUB(revt,cogs),revt),1),1))))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when gross margins are both high and expanding.",
+      "expected_sign": "positive",
+      "reasoning": "Gross-margin level captures established pricing power, while its change captures strengthening unit economics before overhead and financing effects. Ranking the two dimensions separately makes margin expansion economically binding without reducing the signal to another operating-income-change-to-price anomaly.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Enterprise-Cash Intangible Profit Funnel",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ADD(oancf,xint),ADD(MUL(prcc_f,csho),SUB(ADD(dltt,dlc),che))),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms with high pre-interest cash flow relative to enterprise value outperform when total productive capital generates strong gross profit and gross profit converts efficiently into R&D-adjusted operating income.",
+      "expected_sign": "positive",
+      "reasoning": "The first quality stage measures gross return on tangible plus recently accumulated R&D capital; the second measures how much gross profit survives operating costs after reversing current R&D expensing. This decomposes intangible productivity into production and conversion channels rather than smoothing or reusing an adjusted-profit surprise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Total-Capital Payoff Balance",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),3),ADD(TS_SUM(dp,3),TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Cash-backed firms outperform when returns on total productive capital are high and multi-year adjusted-profit creation is large relative to both physical and intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The payoff denominator combines cumulative depreciation with cumulative R&D, extending the capital-payback mechanism beyond the depreciable asset base. Requiring a high current return on tangible plus R&D capital prevents firms with large investment budgets but weak realized productivity from qualifying.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed Gross-to-Cash Funnel",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "Cash-backed firms outperform when they generate substantial gross profit and convert that profit efficiently into operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures franchise production, while operating cash flow to gross profit measures downstream realization of that production. This mechanism filters cash-rich firms through the full gross-to-cash funnel rather than another profitability floor, drawdown, or incremental-capital-payoff condition.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation Surprise Total-Capital Payback",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),3),ADD(TS_SUM(dp,3),TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Firms priced cheaply relative to innovation-adjusted profit growth outperform when current total-capital returns are high and multi-year profit creation covers physical and intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg retains the empirically strong one-year innovation-profit surprise, while the quality condition adds a distinct multi-year payback test against depreciation plus R&D. Making current return and cumulative payback jointly binding seeks to preserve alpha while excluding short-lived adjusted-profit shocks.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Balanced Intangible DuPont Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),revt),1)),IND_RANK(WINSOR(RATIO(revt,ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1))))",
+      "hypothesis": "Cash-backed firms outperform when R&D-adjusted operating margins and revenue productivity of total tangible-plus-intangible capital are both strong.",
+      "expected_sign": "positive",
+      "reasoning": "The two quality channels form an intangible-adjusted DuPont decomposition: profit per dollar of revenue and revenue per dollar of productive capital. Making the weaker component binding excludes high-margin firms with idle capital and high-turnover firms with poor economics, creating a balanced profitability mechanism rather than another payoff-horizon variant.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Productive Depreciation Asset Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(dp,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(oibdp,dp),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(oibdp,dp),3),TS_SUM(dp,3)),1))))",
+      "hypothesis": "Firms priced cheaply relative to the accounting consumption of their installed asset base outperform when those assets generate strong current and multi-year post-depreciation profits.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation-to-market-value measures how much depreciable productive capacity the market price supports, a different valuation channel from cash holdings or enterprise value. The two profitability hurdles ensure that a high depreciation yield represents productive installed capital rather than an uneconomic maintenance burden.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Innovation-Funding Residual Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(ADD(oancf,COALESCE(xrd,SUB(revt,revt))),dp),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)))",
+      "hypothesis": "Firms with high pre-R&D cash generation after an allowance for physical asset consumption outperform when their tangible-plus-intangible capital is productive.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to operating cash flow measures cash capacity before discretionary innovation spending, while subtracting depreciation provides a physical-maintenance allowance. Intangible-inclusive return separately requires that deploying this funding into R&D has produced a strong operating franchise.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "R&D-Budgeted Gross-to-Cash Franchise",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(che,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3)),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),1)),IND_RANK(WINSOR(RATIO(oancf,SUB(revt,cogs)),1))))",
+      "hypothesis": "Firms whose liquidity exceeds a recent R&D budget outperform when total productive capital generates strong gross profit and gross profit converts efficiently into cash.",
+      "expected_sign": "positive",
+      "reasoning": "Budgeted liquidity measures financial runway after allowing for continued innovation spending. The two-stage profitability funnel requires the tangible-plus-intangible capital base to produce gross profit and for that profit to survive downstream costs as operating cash.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash-Backed Gross-Profit Scalability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(che,MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(SUB(revt,cogs),at),1)),IND_RANK(WINSOR(RATIO(DELTA(SUB(revt,cogs),1),LAG(revt,1)),1))))",
+      "hypothesis": "Cash-backed firms outperform when gross-profit productivity is high and incremental gross profit is large relative to the prior sales base.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit to assets measures the existing franchise profit pool, while gross-profit change scaled by lagged revenue measures incremental pricing and production economics. This replaces the stacked DuPont and cash-conversion hurdles with a distinct gross-profit scalability mechanism requiring both level and incremental strength.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Reliable Innovation Surprise Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(DELTA(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),1),MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3),VOL(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(at,TS_SUM(COALESCE(xrd,SUB(revt,revt)),3))),3)),1)))",
+      "hypothesis": "Firms priced cheaply relative to R&D-adjusted profit growth outperform when returns on tangible plus intangible capital are persistently high and stable.",
+      "expected_sign": "positive",
+      "reasoning": "Mean adjusted return less its volatility measures the reliability of intangible-capital productivity rather than algebraically decomposing the same return into margin and turnover. This tests whether innovation surprise is most valuable when it emerges from a stable productive franchise instead of a transient adjusted-profit spike.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Reliable Residual-Margin Earnings Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(ib,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(SUB(MA(RATIO(SUB(oibdp,ADD(dp,xint)),revt),3),VOL(RATIO(SUB(oibdp,ADD(dp,xint)),revt),3)),1)))",
+      "hypothesis": "High earnings-yield firms outperform when operating margins remaining after depreciation and interest are consistently strong.",
+      "expected_sign": "positive",
+      "reasoning": "Profit after depreciation and interest scaled by revenue measures the recurring operating margin available after physical and financing burdens. Its matched mean-minus-volatility form targets residual-margin reliability without adding another binding leg to an archived capital-payoff signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Capital-Charge Productivity Cash Value",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(oancf,MUL(prcc_f,csho)),1)),IND_RANK(WINSOR(RATIO(ADD(oiadp,COALESCE(xrd,SUB(revt,revt))),ADD(dp,COALESCE(xrd,SUB(revt,revt)))),1)))",
+      "hypothesis": "High operating-cash-flow-yield firms outperform when R&D-adjusted operating profit is large relative to current physical and intangible capital charges.",
+      "expected_sign": "positive",
+      "reasoning": "Depreciation plus R&D represents the current accounting burden from physical asset consumption and intangible investment, while adding R&D back to operating income corrects the corresponding expensing distortion. The ratio therefore tests current profit earned per dollar of combined capital charge rather than reusing a level-and-change total-capital construct.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    },
+    {
+      "name": "Maintenance-Adjusted Overhead Scalability",
+      "expression": "MUL(IND_RANK(WINSOR(RATIO(SUB(oancf,dp),MUL(prcc_f,csho)),1)),MIN(IND_RANK(WINSOR(RATIO(oiadp,at),1)),IND_RANK(WINSOR(SUB(RATIO(DELTA(oiadp,1),LAG(revt,1)),RATIO(DELTA(xsga,1),LAG(revt,1))),1))))",
+      "hypothesis": "Firms with high maintenance-adjusted cash yield outperform when current operating profitability is strong and incremental operating income exceeds incremental overhead burden.",
+      "expected_sign": "positive",
+      "reasoning": "Operating-income growth less SG&A growth, scaled by lagged revenue, measures whether additional overhead is translating into scalable profit rather than simply being cut. The current operating-return hurdle prevents temporary cost contraction or recovery from a loss base from driving the interaction.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "valuation",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "Gross Franchise Book Bottleneck",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is effectively Novy-Marx gross-profits-to-assets crossed with book-to-market \u2014 the two most heavily documented value/quality anomalies \u2014 and the MIN operator is too thin a wrapper to make the combination novel or informative beyond a standard \"profitable value\" double sort."
+    },
+    {
+      "generation": 0,
+      "target_name": "Cash-Gated Enterprise Sales Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The binary INDICATOR collapses every below-industry-average cash-return firm to exactly zero, so the short leg is a mass of tied firms defined purely by profitability rather than by sales-to-EV, meaning the realized spread will mostly measure the gate itself and not the stated \"value conditional on cash quality\" mechanism."
+    },
+    {
+      "generation": 0,
+      "target_name": "Margin-Inflecting Earnings Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Same zeroing pathology as the previous proposal \u2014 the trend indicator sends all margin-deteriorating firms to a tied zero floor, so the short leg becomes a margin-momentum sort rather than \"expensive/low-margin\" firms, which contradicts the stated hypothesis; the surviving long leg is also just standard E/P \u00d7 profitability."
+    },
+    {
+      "generation": 0,
+      "target_name": "Durable-Cash Dividend Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The mean-minus-volatility cash-profitability \"floor\" is a defensible and reasonably fresh sustainability proxy interacted with dividend yield, though the large mass of zero-dividend firms will create heavy ties at the bottom and the short leg will largely be non-payers, so the test should be interpreted as within-payer evidence."
+    },
+    {
+      "generation": 0,
+      "target_name": "R&D-Restored Cash Value",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Internally consistent, correctly handles missing R&D via a zero fill, and the intangible-adjusted-profitability \u00d7 cash-flow-yield interaction is an economically motivated cross-theme construct that goes beyond a plain quality-value double sort, with the caveat that it partially overlaps the intangible-capitalization literature and industry ranking may absorb much of the R&D adjustment."
+    },
+    {
+      "generation": 0,
+      "target_name": "Expensive Fragile-Margin Penalty",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The MAX construction is logically consistent with the stated negative sign and the \"fragility\" term adds a genuine second dimension, but it is close to a sign-flipped mirror of the first proposal in this same batch and mixes 3-year mean with 5-year volatility windows without justification, so its incremental information over a simple price-to-sales sort is uncertain."
+    },
+    {
+      "generation": 1,
+      "target_name": "Depreciation-Protected Enterprise Yield",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and economically coherent (EBITDA/EV cheapness gated by EBIT/assets), but it is essentially the well-trodden value\u00d7operating-profitability composite and shares the archive's already-tested cheapness\u00d7profitability architecture, so novelty is limited even if the depreciation-adjustment framing is defensible."
+    },
+    {
+      "generation": 1,
+      "target_name": "Debt-Service-Safe Book Discount",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Book-to-market conditioned on the three-year *worst-case* after-interest operating profitability is a genuinely distinct construction (a solvency floor rather than an average quality level), the expression matches the hypothesis, and it plausibly separates solvent value from distressed value without merely re-scoring an F-score."
+    },
+    {
+      "generation": 1,
+      "target_name": "Cash-Verified Earnings Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The penalty term |oancf \u2212 oiadp|/at is not an accrual-quality or \"corroboration\" measure as claimed \u2014 because oiadp is post-depreciation, the gap is dominated by depreciation and taxes, so the signal mechanically penalizes capital-intensive and high-tax-rate firms, making the stated mechanism inconsistent with what the expression computes."
+    },
+    {
+      "generation": 1,
+      "target_name": "Durable-Margin Sales Bargain",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a near-rediscovery of the archived \"Expensive Fragile-Margin Penalty\" \u2014 identical sales-multiple and MA(gross margin)\u2212VOL(gross margin) ingredients with only the aggregator flipped from MAX to MUL and the volatility window shortened, which is precisely the cosmetic-variant path the objective warns against."
+    },
+    {
+      "generation": 1,
+      "target_name": "Overhead-Compression Cash Value",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Pairing cash-flow yield with a declining SG&A-to-sales trend introduces a genuinely forward-looking cost-discipline channel that does not algebraically collapse into another current profit yield, though the tester should be alert that falling SG&A/sales can reflect either efficiency gains or cuts to intangible investment (which literature associates with *lower* future returns), which could blunt the expected positive sign."
+    },
+    {
+      "generation": 1,
+      "target_name": "Operating-Recovery Historical Discount",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The within-firm valuation-dislocation idea is legitimately novel relative to the archive, but TS_RANK over a 3-period annual window admits only three distinct values, so the value leg degenerates into a coarse, lumpy tercile indicator that will destabilize portfolio composition and waste most of the cross-sectional information \u2014 extend the window or use a normalized deviation from the firm's own trailing mean instead."
+    },
+    {
+      "generation": 2,
+      "target_name": "Intangible-Capitalized Book Franchise",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The valuation leg is an R&D-capitalized book-to-market ratio, i.e. the well-documented intangible-adjusted value anomaly (Eisfeldt\u2013Papanikolaou, Peters\u2013Taylor, Park), and the profitability leg is copied verbatim from the archived R&D-Restored Cash Value, so the only genuine increment is swapping cash-flow yield for adjusted B/M."
+    },
+    {
+      "generation": 2,
+      "target_name": "Cash-Yield Profit Retention",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic recombination of two already-tested archive components \u2014 the drawdown-penalized profitability leg of Profitability-Drawdown Earnings Value (with oiadp\u2192oibdp) attached to the oancf/market-cap leg already used in two prior signals \u2014 with no new economic mechanism."
+    },
+    {
+      "generation": 2,
+      "target_name": "Margin-Recovery Enterprise Bargain",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Sales-to-enterprise-value has not been paired with a level-plus-trough-recovery margin construct in the archive, the sign logic is internally consistent (cheaper and recovering both push the score up), and the ADD form sensibly avoids letting a still-depressed margin masquerade as quality, though reviewers should note it effectively double-weights the current margin."
+    },
+    {
+      "generation": 2,
+      "target_name": "Cash-Backed Profit Floor",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Cash-to-market is a genuinely untested valuation channel here (albeit adjacent to the published cash-holdings return premium), but the TS_MIN operating-profit floor is close kin to the archived Debt-Service-Safe leg that delivered a negative FF5 alpha, so the profitability side is a weak bet and cash-to-market will tilt hard toward small/distressed and R&D-heavy names."
+    },
+    {
+      "generation": 2,
+      "target_name": "Deleveraging Book Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "NEG(TREND(xint/at)) is mechanically confounded \u2014 a falling ratio can come from asset growth in the denominator (which predicts *lower* returns via the investment/asset-growth anomaly) or from the aggregate rate cycle rather than firm deleveraging \u2014 so the stated sign is not the expression's reliable natural direction, and structurally it repeats the declining-burden-trend design that already failed in Overhead-Compression Cash Value."
+    },
+    {
+      "generation": 2,
+      "target_name": "Normalized-Earnings Pretax Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Both legs are near-duplicates of previously tested components \u2014 a 3-year-smoothed E/P (an incremental variant of the archived ib/ni yield legs and itself a long-published normalized earnings-yield anomaly) times a TS_MIN pretax-ROA floor essentially identical to the Debt-Service-Safe Book Discount leg that produced a negative alpha."
+    },
+    {
+      "generation": 3,
+      "target_name": "Net-Cash Profit Reliability",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Netting debt from the cash-backing leg and replacing the worst-year floor with a mean-minus-volatility reliability measure are both economically substantive changes to the archive's best performer rather than pure cosmetics, though the signal remains within the same cash-value \u00d7 profitability-durability family and its incremental content over \"Cash-Backed Profit Floor\" may be small."
+    },
+    {
+      "generation": 3,
+      "target_name": "Enterprise Cash Conversion Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a one-operator swap (MA\u2192TS_MIN on the identical conversion ratio) on an identical valuation leg from the archived \"Enterprise Cash Conversion Value,\" i.e., a cosmetic variant rather than a new mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "Accelerating-Profit Earnings Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The stated \"high and accelerating\" hypothesis is not what the expression computes, since a second-difference ACCEL term is an order of magnitude smaller than the ROA level it is added to, so the quality leg collapses to plain ROA and the signal degenerates into a near-duplicate of the archived earnings-yield \u00d7 profitability constructions."
+    },
+    {
+      "generation": 3,
+      "target_name": "Cumulative-Cash Margin Floor",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Three-year cumulative operating cash flow scaled by price is a defensible smoothing of the classic cash-flow-to-price anomaly and the margin floor is a distinct conditioning variable, but the value \u00d7 quality-floor template is already heavily sampled in the archive so expected incremental information is modest."
+    },
+    {
+      "generation": 3,
+      "target_name": "Intangible-Productivity Enterprise Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It reuses an EBITDA/EV leg that already produced negligible FF5 alpha in two archived variants, and the \"high and improving\" claim is undercut by adding a small DELTA term to a much larger level term, so the conditioning leg is effectively just an intangible-adjusted return level at considerable expression complexity."
+    },
+    {
+      "generation": 3,
+      "target_name": "Fixed-Charge-Covered Earnings Value",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Fixed-charge coverage (oibdp over interest plus depreciation) is a genuinely different conditioning dimension from the asset-scaled profitability floors already tested, the mean-minus-volatility form matches the stated \"reliably cover\" hypothesis, and the expected positive sign follows naturally from the construction."
+    },
+    {
+      "generation": 4,
+      "target_name": "Short-Liquidity Profit Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a one-term cosmetic variant of the archive's best signal (Cash-Backed Profit Floor), swapping `che` for `che-dlc` \u2014 a numerator already used in Liquidity-Backed Intangible Productivity \u2014 so it tests no new mechanism and risks appearing to \"improve\" on noise."
+    },
+    {
+      "generation": 4,
+      "target_name": "Cash-Burn-Protected Balance Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The valuation leg is identical to the archive's strongest signal, but replacing the temporal profitability floor with a cross-sectional MIN over accrual and cash ROA is a substantively different gating mechanism (does cash-richness need persistence or dual-channel confirmation?) that is worth one test."
+    },
+    {
+      "generation": 4,
+      "target_name": "Cash-Value Intangible Return Floor",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Coherent and internally consistent combination of R&D-capitalized ROIC with a three-year floor and cash-flow yield, though it sits close to two archive signals and inherits their ~9% coverage from `oancf`, so the incremental information is modest."
+    },
+    {
+      "generation": 4,
+      "target_name": "Fixed-Charge Drawdown Earnings Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical splice of two existing archive signals (the ni-yield \u00d7 drawdown-penalized-profitability structure and the fixed-charge coverage ratio) with the added flaw that a drawdown penalty on an unbounded, explosive coverage ratio (xint+dp \u2192 0) is not on a comparable scale to the level term it is subtracted from."
+    },
+    {
+      "generation": 4,
+      "target_name": "Maintenance-Covered Dividend Value",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Genuinely new theme for this archive with a clean economic story (payout sustainability net of asset maintenance) and consistent expected sign, though dividend yield itself is a long-published anomaly and the mass of zero-dividend firms plus a possibly near-zero `dvc+dp` denominator will need diagnostic attention."
+    },
+    {
+      "generation": 4,
+      "target_name": "Overhead-Productive Enterprise Sales Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The oiadp/xsga overhead-productivity leg is a genuinely different quality construct from the archive's SG&A-trend and margin-recovery variants and is motivated by a specific diagnosis of the prior sales-to-EV alpha reversal, but the ratio is unstable for low-SG&A and loss-making firms and reliability of the mean-minus-vol transform on such a ratio is questionable."
+    },
+    {
+      "generation": 5,
+      "target_name": "Cash-Backed Dual-Horizon Profitability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical splice of two already-archived signals \u2014 \"Cash-Backed Profit Floor\" (che-yield \u00d7 TS_MIN post-depreciation ROA) and \"Cash-Burn-Protected Balance Value\" (che-yield \u00d7 MIN of level ROA and cash ROA) \u2014 differing only by substituting the TS_MIN for the level inside the MIN, which is a cosmetic variant rather than a new mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "Liquid Fixed-Charge Reliability",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It reassembles the net-liquidity leg of \"Liquidity-Backed Intangible Productivity\" with the mean-minus-volatility profitability construction of \"Net-Cash Profit Reliability\" (which already delivered a weak fmb_tstat of 1.38), the only genuine change being the addition of xint to the numerator \u2014 too small a modification to constitute a distinct test."
+    },
+    {
+      "generation": 5,
+      "target_name": "Range-Confirmed Earnings Value",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The range-normalized profitability position is a genuinely new state variable (not just the peak-drawdown gap used in \"Profitability-Drawdown Earnings Value\") and the double-hurdle MIN is internally consistent with the stated hypothesis, though the (TS_MAX \u2212 TS_MIN) denominator can be near-zero for stable firms and the mixed RANK/IND_RANK scaling is sloppy."
+    },
+    {
+      "generation": 5,
+      "target_name": "Cash-Flow Fixed-Charge Floor",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The architecture (oancf-yield \u00d7 IND_RANK of a three-year TS_MIN profitability floor) is exactly that of the archived \"Cash-Value Intangible Return Floor,\" with the only change being swapping the intangible-adjusted return for a fixed-charge surplus already used in \"Improving Fixed-Charge Surplus Value\" \u2014 a two-ingredient permutation within a saturated design space."
+    },
+    {
+      "generation": 5,
+      "target_name": "Enterprise-Cash Intangible Momentum",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The profitability leg is copied verbatim from \"Liquidity-Backed Intangible Productivity\" and the valuation leg verbatim from \"Enterprise Cash Conversion Value,\" so despite a defensible ablation motive (isolating whether cash holdings or cheapness drives the prior result) this remains a leg swap between two archived signals rather than a substantively new construction."
+    },
+    {
+      "generation": 5,
+      "target_name": "Durable-Profit Debt Retirement Yield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The debt-change-to-market-cap leg is both a close proxy for the well-documented net-debt-issuance/external-financing anomaly and already tested in \"Profit-Funded Debt Retirement Yield\" (weak: fmb 2.14, ls_talpha 1.40), and the only change here is replacing the dual level-profitability screen with an archived TS_MIN floor."
+    },
+    {
+      "generation": 6,
+      "target_name": "Asset-Scaled Profit Payoff Balance Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a single-denominator swap (lag dp \u2192 lag at) on the archive's best performer, Physical-Capital Payoff Balance Value, and the resulting \u0394oibdp/lag(at) leg is little more than the well-known profitability-change signal, so it is a cosmetic robustness variant rather than a new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "Organizational-Payoff Balance Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The expression simply grafts the valuation leg of the archived Cash-Backed/Physical-Capital family (che/mktcap) onto the quality leg of the archived SG&A-Payoff Cash Value, a pure recombination of two already-evaluated signals whose incremental information over che/mktcap \u00d7 ROA is likely minimal."
+    },
+    {
+      "generation": 6,
+      "target_name": "R&D-Budgeted Incremental Franchise",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "It takes the valuation leg of the archived R&D-Budgeted Liquidity Franchise and the MIN(level, DELTA) intangible-ROA quality leg of the archived Liquidity-Backed Intangible Productivity, producing a highly parameterized hybrid of two already-tested signals with no genuinely new economic channel."
+    },
+    {
+      "generation": 6,
+      "target_name": "Enterprise-Cash Post-Depreciation Payoff",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The internal-consistency fix (differencing post-depreciation rather than pre-depreciation profit) is a real accounting alignment improvement, and pairing it with the enterprise-level cash yield rather than balance-sheet cash tests whether the payoff mechanism survives a genuinely different valuation channel, though it remains a close relative of the archived winner."
+    },
+    {
+      "generation": 6,
+      "target_name": "Maintenance-Capacity Balance Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This differs from the archived Cash-Burn-Protected Balance Value only by rescaling the cash-flow leg from at to dp, a mechanical denominator change that also reintroduces the low-depreciation distortion the proposal's own reasoning claims to guard against."
+    },
+    {
+      "generation": 6,
+      "target_name": "Pretax-Conversion Balance Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The conversion ratio pi/(|pi|+|oibdp|) is internally inconsistent with the stated hypothesis \u2014 it rewards pretax income being large relative to operating earnings, which flags non-operating gains and low depreciation/interest intensity as \"efficient conversion\" \u2014 and the ABS construction makes the measure non-monotone for loss firms while being largely collinear with the pi/at level leg."
+    },
+    {
+      "generation": 7,
+      "target_name": "Accounting-Aligned Physical Payoff Balance",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Since OIADP \u2261 OIBDP \u2212 DP by construction, the only change from the archived \"Physical-Capital Payoff Balance Value\" is subtracting \u0394DP from the numerator of the incremental-payoff leg \u2014 a cosmetic tweak to the strongest archived signal (and a leg already used verbatim in \"Enterprise-Cash Post-Depreciation Payoff\"), so it is effectively a rediscovery rather than a new mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Multi-Year Physical Payoff Balance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Still the same three-leg architecture as the archived cash/physical-payoff winner, but moving the payoff term to a three-year profit change over cumulative depreciation is a genuine horizon change that tests whether the result reflects durable capital productivity rather than one-year noise, and it is a defensible (if incremental) refinement."
+    },
+    {
+      "generation": 7,
+      "target_name": "Persistent-Liquidity Physical Payoff",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "TS_MIN(che,3) is very highly correlated with current cash for most firms, so this is a low-information perturbation of the archived best signal stacked on top of the already-cosmetic post-depreciation relabeling, and any performance change will be hard to attribute to the stated \"durable liquidity\" mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "Post-Depreciation Profit Surprise Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because SUB(oibdp,dp) is identically oiadp, this reduces to \u0394(operating income)/market cap \u00d7 ROA \u2014 i.e., the archived \"Organizational Profit Surprise Value\" (fmb 0.86) with the second leg's denominator changed from xsga to at, and both legs are direct restatements of the well-known earnings-change/price and profitability anomalies."
+    },
+    {
+      "generation": 7,
+      "target_name": "Smoothed Innovation Profit Trend Value",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Replacing DELTA(\u00b7,1) with TREND(\u00b7,3) in the archived \"Innovation Profit Surprise Value\" is a textbook smoothing variant with no new economic content; the turnover argument is plausible but turnover is not among the evaluation metrics, so this is a cosmetic re-run of an already-successful signal."
+    },
+    {
+      "generation": 7,
+      "target_name": "Cash-Realized Innovation Surprise",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding an operating-cash-ROA hurdle to the archived innovation-surprise signal is an economically motivated test of whether the R&D-adjusted profit growth is cash-realized rather than an artifact of the capitalization adjustment, though it is a recombination of archived components and risks trimming coverage without changing the driving leg."
+    },
+    {
+      "generation": 8,
+      "target_name": "Smooth Multi-Year Physical Payoff Balance",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived \"Multi-Year Physical Payoff Balance\" with MIN replaced by MUL \u2014 a purely cosmetic aggregation-operator tweak to an already-tested top performer, not a substantively different mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "Total-Capital Payoff Balance",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Extending the payback denominator from cumulative depreciation to depreciation plus cumulative R&D is an economically motivated broadening of the capital-payoff mechanism rather than a parameter tweak, though it remains a recombination of two archived legs and the small-denominator risk for low-dp/no-R&D firms deserves monitoring."
+    },
+    {
+      "generation": 8,
+      "target_name": "Multi-Year Enterprise-Cash Physical Payoff",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the archived gen-6 \"Enterprise-Cash Post-Depreciation Payoff\" with the payoff DELTA horizon changed from 1 to 3 years \u2014 a single-parameter variant, and the enterprise-value denominator can go negative for net-cash firms, silently inverting the valuation rank."
+    },
+    {
+      "generation": 8,
+      "target_name": "Maintenance-Adjusted Enterprise Cash Franchise",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Essentially the archived \"Maintenance-Adjusted Cash Franchise\" with the deflator swapped from market cap to enterprise value and interest added back \u2014 a scaling variant of a known leg, and the archive already shows enterprise-cash valuation legs repeatedly deliver weaker or negative FF5 alphas."
+    },
+    {
+      "generation": 8,
+      "target_name": "Cash-Backed Gross-to-Cash Funnel",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A defensible hybrid pairing the archive's strongest valuation channel (cash-to-price) with a distinct gross-profit-production-and-realization filter rather than another profitability floor, though it is a straightforward leg swap on \"Gross-to-Cash Funnel Earnings Value\" and both underlying legs are well-known anomalies (cash holdings, gross profitability)."
+    },
+    {
+      "generation": 8,
+      "target_name": "Innovation Surprise Total-Capital Payback",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Internally consistent and mechanistically coherent \u2014 it replaces the archived cash-flow confirmation with a genuinely new multi-year payback-versus-total-investment test on top of a proven innovation-surprise valuation leg \u2014 but the expression is highly compound and the shared numerator across legs risks mechanical correlation that could inflate the FMB slope."
+    },
+    {
+      "generation": 9,
+      "target_name": "Intangible DuPont Cash-Realization Value",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the mechanical union of two archive entries (\"Balanced Intangible DuPont Value\" and the oancf/gross-profit leg of \"Cash-Backed Gross-to-Cash Funnel\") bolted onto the same che/market-cap value leg, and stacking a third MIN rank mostly narrows the binding constraint and coverage rather than testing a new economic mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "Innovation Surprise DuPont Confirmation",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Adjusted margin times total-capital turnover is algebraically the same return-on-total-capital already used as the quality leg of the archived \"Innovation Profit Surprise Value\" (ls_talpha 3.84), so replacing the product with a MIN of its two components is a cosmetic reparameterization of an already-evaluated signal."
+    },
+    {
+      "generation": 9,
+      "target_name": "Physical Payoff Cash-Conversion Balance",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The added gross-profit-to-cash hurdle is economically distinct from the accrual-based payoff legs, but the construction is still \"best archive signal (Multi-Year Physical Payoff Balance, ls_talpha 4.92) plus one more MIN leg,\" which risks coverage loss and unstable portfolio composition without a diagnosed reason why the existing signal fails."
+    },
+    {
+      "generation": 9,
+      "target_name": "Innovation-Funding Residual Payback",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The valuation leg is copied verbatim from \"Innovation-Funding Residual Cash Value\" and the two quality legs verbatim from \"Total-Capital Payoff Balance,\" making this a recombination of already-evaluated components rather than a new mechanism, and the two intangible-capital quality terms are near-duplicates (level and 3-year change of the same adjusted-profit-to-capital construct)."
+    },
+    {
+      "generation": 9,
+      "target_name": "R&D-Budgeted Gross-to-Cash Franchise",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The pairing is new \u2014 budgeted-liquidity value with a gross-profit-on-total-capital plus gross-to-cash two-stage funnel, and GP/(at + R&D stock) is a quality term not yet tested \u2014 though the archive already suggests subtracting the R&D budget weakens the cash-yield leg (ls_alpha 0.024 vs 0.060), so it may well come in below the existing plain-cash funnel."
+    },
+    {
+      "generation": 9,
+      "target_name": "Maintenance-Adjusted Operating Funnel",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "GP/at times (oibdp\u2212dp)/GP is an exact identity for post-depreciation ROA, which is precisely the quality leg of the archived \"Maintenance-Adjusted Cash Franchise,\" so this is a DuPont re-slicing of the same quantity paired with an identical value leg rather than a substantively different hypothesis."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 3 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_value"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Durable-Cash Dividend Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(dvc,mul(prcc_f,csho)),1)),rank(winsor(sub(ma(ratio(oancf,at),5),vol(ratio(oancf,at),5)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Restored Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Expensive Fragile-Margin Penalty",
+      "metadata": {
+        "normalized_expression": "max(rank(winsor(ratio(mul(prcc_f,csho),sale),1)),rank(neg(winsor(sub(ma(ratio(sub(revt,cogs),revt),3),vol(ratio(sub(revt,cogs),revt),5)),1))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Floor Historical Book Dislocation",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_rank(winsor(ratio(ceq,mul(prcc_f,csho)),1),5)),ind_rank(winsor(ts_min(ratio(oancf,at),3),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: profitability (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Cash-Value Concordance Spread",
+      "metadata": {
+        "normalized_expression": "mul(sign(add(sign(ind_zscore(winsor(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1))),sign(ind_zscore(winsor(ratio(oancf,at),1))))),min(abs(ind_zscore(winsor(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1))),abs(ind_zscore(winsor(ratio(oancf,at),1)))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "oancf",
+          "prcc_f",
+          "sale"
+        ],
+        "missing_theme": "profitability"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings-Margin Repricing Concordance",
+      "metadata": {
+        "normalized_expression": "mul(sign(add(sign(ind_zscore(winsor(ratio(ib,mul(prcc_f,csho)),1))),sign(ind_zscore(winsor(trend(ratio(oiadp,sale),3),1))))),min(abs(ind_zscore(winsor(ratio(ib,mul(prcc_f,csho)),1))),abs(ind_zscore(winsor(trend(ratio(oiadp,sale),3),1)))))",
+        "variables": [
+          "csho",
+          "ib",
+          "oiadp",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Depreciation-Protected Enterprise Yield",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(ratio(sub(ebitda,dp),at),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ebitda",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Debt-Service-Safe Book Discount",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ceq,mul(prcc_f,csho)),1)),ind_rank(winsor(ts_min(ratio(sub(oibdp,xint),at),3),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oibdp",
+          "prcc_f",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Overhead-Compression Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_rank(winsor(neg(trend(ratio(xsga,sale),3)),1)))",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Accrual-Reconciled Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ratio(oiadp,at),abs(ratio(sub(oancf,add(ib,dp)),at))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "oancf",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitability-Drawdown Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ratio(oiadp,at),abs(sub(ts_max(ratio(oiadp,at),3),ratio(oiadp,at)))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ni",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Operating-Recovery Standardized Book Gap",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(sub(ratio(ceq,mul(prcc_f,csho)),ma(ratio(ceq,mul(prcc_f,csho)),5)),vol(ratio(ceq,mul(prcc_f,csho)),5)),1)),ind_rank(winsor(trend(ratio(oiadp,at),3),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Margin-Recovery Enterprise Bargain",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(add(ratio(oiadp,sale),sub(ratio(oiadp,sale),ts_min(ratio(oiadp,sale),3))),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "oiadp",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed Profit Floor",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),ind_rank(winsor(ts_min(ratio(sub(oibdp,dp),at),3),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Enterprise Cash Conversion Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(add(oancf,xint),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(ma(ratio(oiadp,sub(revt,cogs)),3),1)))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Financed Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(ratio(sub(oancf,dvc),at),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dvc",
+          "ib",
+          "oancf",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profitable Deleveraging Book Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ceq,mul(prcc_f,csho)),1)),mul(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(neg(ratio(delta(add(dltt,dlc),1),lag(at,1))),1))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dlc",
+          "dltt",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capital-Light Enterprise Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(add(ratio(oiadp,at),sub(growth(revt,1),growth(at,1))),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "oiadp",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Net-Cash Profit Reliability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(che,add(dltt,dlc)),mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ma(ratio(sub(oibdp,dp),at),3),vol(ratio(sub(oibdp,dp),at),3)),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cumulative-Cash Margin Floor",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ts_sum(oancf,3),mul(prcc_f,csho)),1)),ind_rank(winsor(ts_min(ratio(oiadp,sale),3),1)))",
+        "variables": [
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Fixed-Charge-Covered Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ma(ratio(oibdp,add(xint,dp)),3),vol(ratio(oibdp,add(xint,dp)),3)),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "oibdp",
+          "prcc_f",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Ex-Cash Operating Franchise Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(ceq,che),sub(mul(prcc_f,csho),che)),1)),ind_rank(winsor(ratio(oiadp,sub(at,che)),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rank-Balanced Profit Acceleration Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(accel(ratio(oiadp,at)),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "ni",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity-Backed Intangible Productivity",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(che,dlc),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(delta(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Burn-Protected Balance Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(oibdp,dp),at),1)),ind_rank(winsor(ratio(oancf,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "oancf",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Value Intangible Return Floor",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_rank(winsor(ts_min(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),3),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Covered Dividend Value",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(dvc,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ma(ratio(oancf,add(dvc,dp)),3),vol(ratio(oancf,add(dvc,dp)),3)),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "dvc",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Overhead-Productive Enterprise Sales Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sale,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(sub(ma(ratio(oiadp,xsga),3),vol(ratio(oiadp,xsga),3)),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "oiadp",
+          "prcc_f",
+          "sale",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit-Funded Debt Retirement Yield",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(neg(ratio(delta(add(dltt,dlc),1),mul(prcc_f,csho))),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(ratio(oancf,at),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "oancf",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Improving Fixed-Charge Surplus Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(oibdp,add(xint,dp)),at),1)),ind_rank(winsor(delta(ratio(sub(oibdp,add(xint,dp)),at),1),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "ni",
+          "oibdp",
+          "prcc_f",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Range-Confirmed Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),rank(winsor(ratio(sub(ratio(oiadp,at),ts_min(ratio(oiadp,at),5)),sub(ts_max(ratio(oiadp,at),5),ts_min(ratio(oiadp,at),5))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "ni",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Budgeted Liquidity Franchise",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(che,ts_sum(coalesce(xrd,sub(revt,revt)),3)),mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pretax-Conversion Enterprise Book Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ceq,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),ind_rank(winsor(ma(sub(ratio(pi,at),abs(ratio(sub(oibdp,pi),at))),3),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "oibdp",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Self-Funded Reinvestment Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),at),1)),ind_rank(winsor(ratio(oancf,add(dp,coalesce(xrd,sub(revt,revt)))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "ni",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SG&A-Payoff Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(ratio(delta(oiadp,1),lag(xsga,1)),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Physical-Capital Payoff Balance Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(oibdp,dp),at),1)),ind_rank(winsor(ratio(delta(oibdp,1),lag(dp,1)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Enterprise-Cash Post-Depreciation Payoff",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(add(oancf,xint),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),min(ind_rank(winsor(ratio(sub(oibdp,dp),at),1)),ind_rank(winsor(ratio(delta(sub(oibdp,dp),1),lag(dp,1)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "oancf",
+          "oibdp",
+          "prcc_f",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-to-Pretax Funnel Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ts_sum(oancf,3),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),at),1)),ind_rank(winsor(ratio(pi,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "oancf",
+          "pi",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Organizational Profit Surprise Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(oiadp,1),mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(oiadp,xsga),1)))",
+        "variables": [
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "xsga"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Profit Surprise Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),1),mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Adjusted Cash Franchise",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(oancf,dp),mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(sub(oibdp,dp),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "oancf",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EBIT-to-Pretax Integrity Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ratio(pi,at),abs(ratio(sub(sub(oibdp,dp),pi),at))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "ni",
+          "oibdp",
+          "pi",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Multi-Year Physical Payoff Balance",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(oibdp,dp),at),1)),ind_rank(winsor(ratio(delta(sub(oibdp,dp),3),ts_sum(dp,3)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Realized Innovation Surprise",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),1),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(ratio(oancf,at),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Gross-to-Cash Funnel Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ni,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),at),1)),ind_rank(winsor(ratio(oancf,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ni",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Profit-Funded Cash Accumulation Yield",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(che,1),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(ratio(oancf,at),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "oancf",
+          "oiadp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Pricing-Power Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),revt),1)),ind_rank(winsor(delta(ratio(sub(revt,cogs),revt),1),1))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Enterprise-Cash Intangible Profit Funnel",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(add(oancf,xint),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xint",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Total-Capital Payoff Balance",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),3),add(ts_sum(dp,3),ts_sum(coalesce(xrd,sub(revt,revt)),3))),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed Gross-to-Cash Funnel",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),at),1)),ind_rank(winsor(ratio(oancf,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation Surprise Total-Capital Payback",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),1),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),3),add(ts_sum(dp,3),ts_sum(coalesce(xrd,sub(revt,revt)),3))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Balanced Intangible DuPont Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),revt),1)),ind_rank(winsor(ratio(revt,add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Productive Depreciation Asset Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(dp,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(oibdp,dp),at),1)),ind_rank(winsor(ratio(delta(sub(oibdp,dp),3),ts_sum(dp,3)),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "oibdp",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Innovation-Funding Residual Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(add(oancf,coalesce(xrd,sub(revt,revt))),dp),mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "R&D-Budgeted Gross-to-Cash Franchise",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(che,ts_sum(coalesce(xrd,sub(revt,revt)),3)),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),1)),ind_rank(winsor(ratio(oancf,sub(revt,cogs)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash-Backed Gross-Profit Scalability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(che,mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(sub(revt,cogs),at),1)),ind_rank(winsor(ratio(delta(sub(revt,cogs),1),lag(revt,1)),1))))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Reliable Innovation Surprise Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(delta(add(oiadp,coalesce(xrd,sub(revt,revt))),1),mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ma(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),3),vol(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(at,ts_sum(coalesce(xrd,sub(revt,revt)),3))),3)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Reliable Residual-Margin Earnings Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),ind_rank(winsor(sub(ma(ratio(sub(oibdp,add(dp,xint)),revt),3),vol(ratio(sub(oibdp,add(dp,xint)),revt),3)),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "oibdp",
+          "prcc_f",
+          "revt",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Capital-Charge Productivity Cash Value",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),ind_rank(winsor(ratio(add(oiadp,coalesce(xrd,sub(revt,revt))),add(dp,coalesce(xrd,sub(revt,revt)))),1)))",
+        "variables": [
+          "csho",
+          "dp",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Maintenance-Adjusted Overhead Scalability",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(winsor(ratio(sub(oancf,dp),mul(prcc_f,csho)),1)),min(ind_rank(winsor(ratio(oiadp,at),1)),ind_rank(winsor(sub(ratio(delta(oiadp,1),lag(revt,1)),ratio(delta(xsga,1),lag(revt,1))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "oancf",
+          "oiadp",
+          "prcc_f",
+          "revt",
+          "xsga"
+        ]
+      }
+    }
+  ]
+}

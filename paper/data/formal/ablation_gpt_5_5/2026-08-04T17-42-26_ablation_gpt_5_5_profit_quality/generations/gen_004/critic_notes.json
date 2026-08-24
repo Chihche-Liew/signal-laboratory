@@ -1,0 +1,44 @@
+[
+  {
+    "generation": 4,
+    "target_name": "Claim-Stress Profit Floor",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "This is a one-leg swap on the archive's \"Liquid Profitability Floor\" (same TS_MIN(oibdp/at) leg) where the replacement conditioner is the lct/sale intensity leg that already produced essentially zero alpha in \"Current-Claim Clean Margin,\" so it reads as a cosmetic recombination unlikely to add information."
+  },
+  {
+    "generation": 4,
+    "target_name": "Debt-Buffered EBITDA Floor",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "The x/(|x|+debt) construction is internally inconsistent because for loss-making firms (negative TS_MIN) higher debt makes the score *less* negative, reversing the intended penalty, and this exact denominator form already failed in \"Operating Profit Reliability Ratio\" while the simpler MUL version (\"Debt-Light EBITDA Strength\") already worked."
+  },
+  {
+    "generation": 4,
+    "target_name": "Fixed-Claim Coverage Floor",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "It stacks two constructions that already failed in the archive (fixed-charge coverage of current liabilities, and the signed x/(|x|+vol) normalizer with its sign-flip pathology for negative numerators) and additionally mismatches scaling by dividing an lct-scaled numerator against an at-scaled volatility term."
+  },
+  {
+    "generation": 4,
+    "target_name": "Liquid Sustained RND Profit",
+    "verdict": "accept",
+    "score": 3,
+    "rationale": "The intangible-adjusted profitability leg conditioned jointly on R&D commitment and liquidity is a defensible extension of the archive's promising fmb-but-weak-alpha R&D signal, though COALESCE(xrd,0) creates a large tied mass of non-R&D firms in the TREND leg and a rising R&D/sales trend arguably points the other way (investment/asset-growth anomaly), so the conditioning sign is not clearly justified."
+  },
+  {
+    "generation": 4,
+    "target_name": "Consistent Profit Stable Claims",
+    "verdict": "flag",
+    "score": 2,
+    "rationale": "TS_SUM(INDICATOR(oiadp/at,0),5) is nearly saturated and highly redundant with the MA profitability level, so the MIN gate collapses for most firms into NEG(VOL(lct/at)) \u2014 a leg already tested via \"Stable Capital Structure Profit\" and \"Maintenance-Stable EBITDA Quality\" with ~zero alpha."
+  },
+  {
+    "generation": 4,
+    "target_name": "Current-Claim Disciplined Margin Trend",
+    "verdict": "flag",
+    "score": 3,
+    "rationale": "It is a single-variable substitution (act\u2192lct) on the archive's \"Working-Capital Efficient Margin Expansion\" rather than a substantive re-diagnosis of why that signal's alpha was insignificant, and the new leg's direction (falling current liabilities per sale) mechanically implies *higher* working-capital accruals, which conflicts with the well-known accrual anomaly's negative return prediction."
+  }
+]

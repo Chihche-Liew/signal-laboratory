@@ -1,0 +1,2836 @@
+{
+  "pair": "profit_finance",
+  "evaluated": [
+    {
+      "name": "PayoutBackedOperatingProfit",
+      "expression": "SUMRANK(IND_ADJ(MA(RATIO(oiadp, at), 3)), RATIO(SUB(ADD(prstkc, dvt), sstk), at))",
+      "hypothesis": "Firms with persistently high industry-adjusted operating profitability that simultaneously return net capital to shareholders (repurchases plus dividends net of equity issuance) are generating cash the market underweights, and earn higher subsequent returns than equally profitable firms that are absorbing outside capital.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothed operating profit over assets measures durable operating strength, while net payout over assets measures management's revealed confidence that internal cash exceeds investment needs. Ranking both channels and summing rewards the joint state (strong operations plus capital return) rather than either theme alone, and industry adjustment prevents the profitability leg from proxying for sector composition.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.16145216101621,
+      "ls_alpha": -0.00826715544872941,
+      "ls_talpha": -0.6916113575827006,
+      "ls_sharpe": 0.060003769588601576,
+      "coverage": 0.12025492456417101,
+      "error": null
+    },
+    {
+      "name": "ProfitableIssuerOvervaluation",
+      "expression": "MUL(INDICATOR(MA(RATIO(oiadp, at), 3), 0), WINSOR(RATIO(ADD(sstk, dltis), at), 1))",
+      "hypothesis": "Among firms that are already operationally profitable, heavy gross external capital raising (equity sales plus long-term debt issuance) signals managerial market-timing of rich valuations or hidden funding needs, and predicts lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator restricts the signal to firms with positive smoothed operating profitability, so the issuance leg is not contaminated by loss-making firms that raise capital out of necessity, which is a separate distress mechanism. Within the profitable group, external issuance is discretionary and therefore informative about overvaluation, giving a clean conditional interaction rather than an isolated issuance effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.6983621131536458,
+      "ls_alpha": -0.00930583087441258,
+      "ls_talpha": -0.8454552027791343,
+      "ls_sharpe": 0.0661468396486551,
+      "coverage": 0.12339899556473481,
+      "error": null
+    },
+    {
+      "name": "CashProfitSignedByFinancingDirection",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(oancf, at), 3)), SIGN(SUB(ADD(prstkc, dvt), ADD(sstk, dltis))))",
+      "hypothesis": "Operating cash profitability is priced correctly only in the direction consistent with financing behavior: strong cash generators that are net distributors of capital are underpriced, whereas strong cash generators that are net absorbers of capital are overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The SIGN of net distributions minus gross external raising flips the sign of the standardized cash-profitability score, so identical profitability maps to opposite return forecasts depending on the financing regime, which is the pure interaction the economic story requires. Using oancf rather than accrual earnings ensures the profitability leg reflects realized cash that could actually fund the distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.1948819647873625,
+      "ls_alpha": -0.005408677642783452,
+      "ls_talpha": -0.5148915432570269,
+      "ls_sharpe": 0.05187113410686806,
+      "coverage": 0.08051305402636726,
+      "error": null
+    },
+    {
+      "name": "SelfFundedMarginImprovement",
+      "expression": "SUMRANK(TREND(RATIO(oiadp, sale), 5), NEG(DELTA(RATIO(ADD(dltt, dlc), at), 1)))",
+      "hypothesis": "Firms whose operating margins are on a multi-year improving trend while they simultaneously shrink their debt burden are financing operational improvement internally, and this quiet combination of rising profitability and deleveraging is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "A five-year margin trend isolates genuine operating improvement from one-off earnings jumps, while the negative change in total debt over assets identifies improvement that does not depend on new creditor capital. Margin trends alone are widely tracked, so the incremental information comes from the interaction with contemporaneous deleveraging, which distinguishes durable improvement from leverage-fueled improvement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.4334665002019567,
+      "ls_alpha": 0.0028923792854702746,
+      "ls_talpha": 0.27766929222012166,
+      "ls_sharpe": -0.07405844735824364,
+      "coverage": 0.11863596609618243,
+      "error": null
+    },
+    {
+      "name": "FiveYearInternalVersusExternalFundingMix",
+      "expression": "SUB(RANK(TS_SUM(RATIO(oancf, at), 5)), RANK(TS_SUM(RATIO(ADD(sstk, dltis), at), 5)))",
+      "hypothesis": "Over a full capital cycle, firms that cumulatively fund themselves from operations rather than from repeated equity and debt issuance are systematically underpriced relative to firms with the same current profitability that have relied on external markets.",
+      "expected_sign": "positive",
+      "reasoning": "Cumulating five years of operating cash flow and five years of gross external raising captures the firm's financing regime as a persistent state rather than a noisy annual flow, which reduces the influence of single-year lumpy issuances. The rank difference makes the signal an explicit contest between internal cash generation and external capital dependence, so it cannot be reproduced by either theme in isolation.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.8988856161532945,
+      "ls_alpha": 0.005999695535990543,
+      "ls_talpha": 0.47346728438140884,
+      "ls_sharpe": 0.1326878555679154,
+      "coverage": 0.09035635246696665,
+      "error": null
+    },
+    {
+      "name": "DebtFundedDistributionWarning",
+      "expression": "MUL(INDICATOR(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 0), RATIO(SUB(dltis, dltr), at))",
+      "hypothesis": "Distributions that exceed internally generated operating cash flow and are financed by net new borrowing are a low-quality payout signal, and such firms earn lower subsequent returns than firms whose payouts are covered by operations.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator flags firms whose dividends plus repurchases exceed operating cash flow, and the multiplied net long-term debt issuance measures how much of that gap is plugged by creditors, so the signal is nonzero only in the economically specific state where payout policy and financing policy conflict. This is the mirror image of the underpriced self-funded payer and helps ensure the long-short spread is driven by a genuine interaction rather than a generic payout-yield tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 0.5219404266912303,
+      "ls_alpha": 0.026406934856378413,
+      "ls_talpha": 1.9398333495639983,
+      "ls_sharpe": 0.0858256439464148,
+      "coverage": 0.08043360227236143,
+      "error": null
+    },
+    {
+      "name": "ProfitLessNetExternalFinanceRank",
+      "expression": "SUB(IND_RANK(MA(RATIO(ib, at), 3)), IND_RANK(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at)))",
+      "hypothesis": "Firms whose profitability is high relative to how much net external capital (new debt plus clean-surplus net equity issuance) they absorb are underpriced, because their earnings are self-financed rather than purchased with outside capital.",
+      "expected_sign": "positive",
+      "reasoning": "The clean-surplus construction \u0394CEQ \u2212 (ib \u2212 dvt) infers net equity issuance from balance-sheet items and \u0394Debt captures net borrowing, so the whole financing leg is available for nearly all firm-years, repairing the 0.08\u20130.12 coverage problem of generation 0. Differencing two industry ranks makes the signal an explicit contest between operating strength and external capital dependence rather than a profitability tilt with a small financing overlay.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.322003629909119,
+      "ls_alpha": 0.009494224367621002,
+      "ls_talpha": 1.0210176359534135,
+      "ls_sharpe": 0.15126315998661144,
+      "coverage": 0.12966227019869955,
+      "error": null
+    },
+    {
+      "name": "WithinProfitableFinancingTilt",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(NEG(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at))))",
+      "hypothesis": "Conditional on being an above-median profitability firm, those that shrink rather than expand their external capital base are underpriced; the financing signal carries information only when there is genuine operating cash to distribute.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator restricts all non-zero signal values to profitable firms, so both the long and short extremes are drawn from the same profitability half and the RMW loading that destroyed generation 0's FF5 alpha largely cancels. Paired with Signal 1, this isolates a single design choice \u2014 gating versus rank differencing \u2014 on an identical, high-coverage financing measure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.4223005567938407,
+      "ls_alpha": 0.003751163181040823,
+      "ls_talpha": 0.43164601417776993,
+      "ls_sharpe": 0.21527685486286197,
+      "coverage": 0.12951017684103128,
+      "error": null
+    },
+    {
+      "name": "NewIssuanceByProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.6), DELTA(RATIO(ADD(sstk, dltis), at), 1))",
+      "hypothesis": "A firm with strong, already-established operating cash generation that suddenly steps up its external capital raising is either timing a rich valuation or revealing a funding need not visible in reported cash flow, and subsequently underperforms.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 0's profitable-issuer test failed (fmb 0.70) because it gated on the trivial condition of positive profits and used the issuance *level*, which is largely a stable firm characteristic; using the top-40% cash-profitability rank plus the year-over-year *change* in issuance intensity converts it into a news variable. Change-based financing signals should be closer to an information shock and less collinear with the CMA and size factors than issuance levels.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.6654004065848005,
+      "ls_alpha": -0.02146121809991354,
+      "ls_talpha": -2.1183946443743644,
+      "ls_sharpe": -0.36260888430182964,
+      "coverage": 0.07696408863266214,
+      "error": null
+    },
+    {
+      "name": "CashBackedEarningsVersusShareIssuance",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), NEG(GROWTH(csho, 1)))",
+      "hypothesis": "Firms whose reported earnings are backed by cash rather than accruals and that are simultaneously shrinking their share count are the highest-quality combination of operating strength and financing behavior, while accrual-heavy earnings accompanied by share issuance signal earnings management ahead of capital raising.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the profitability channel from level to *quality* (the accrual wedge ib \u2212 oancf) and the financing channel to share-count change, so the signal is not a restatement of the profitability-level family that FF5's RMW absorbs. Its economic content is that accruals must eventually be financed, making the accrual-issuance pairing informative beyond either component.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.067498119920553,
+      "ls_alpha": 0.0162303272395061,
+      "ls_talpha": 1.460707962333657,
+      "ls_sharpe": 0.3181964693833914,
+      "coverage": 0.08413961386034817,
+      "error": null
+    },
+    {
+      "name": "StableProfitPersistentDistributor",
+      "expression": "SUMRANK(NEG(VOL(RATIO(ib, at), 5)), MA(RATIO(SUB(ADD(dvt, prstkc), sstk), at), 3))",
+      "hypothesis": "The credibility of a capital-return policy depends on the stability of the earnings stream behind it; firms with low profitability volatility that have sustained multi-year net distributions are safe cash generators whose reliability the market underprices.",
+      "expected_sign": "positive",
+      "reasoning": "This mechanism uses a second-moment profitability concept rather than a level, so the long leg is not a high-RMW basket but a low-earnings-volatility basket, and the three-year averaged net payout screens out one-off buybacks that make single-year payout signals noisy. It tests whether the payout premium is concentrated in firms whose operating cash flow is genuinely repeatable.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.6872801292086617,
+      "ls_alpha": -0.01110048587985394,
+      "ls_talpha": -0.8899664137482426,
+      "ls_sharpe": 0.059830323009196884,
+      "coverage": 0.1152341928155803,
+      "error": null
+    },
+    {
+      "name": "LeveredRecapByProfitableFirm",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oibdp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(RATIO(prstkc, at), RATIO(SUB(dltis, dltr), at))))",
+      "hypothesis": "Profitable firms that deliberately swap equity for debt \u2014 repurchasing shares while raising net borrowing \u2014 are signalling confidence in the durability of operating cash flow and are underpriced, in contrast to the presumption that debt-financed distributions are low quality.",
+      "expected_sign": "positive",
+      "reasoning": "Generation 0's `DebtFundedDistributionWarning` produced a +2.6% FF5 alpha with t=1.94 in the direction *opposite* to the hypothesis, which suggests net borrowing by distributing firms is a confidence rather than a distress signal; this proposal tests that reading head-on by requiring high operating profitability and rewarding the joint repurchase-plus-borrowing state. Because both spread legs are profitable firms, the alpha cannot be attributed to RMW, and a positive result would meaningfully redirect the search toward capital-structure substitution rather than payout level.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.8534344671032367,
+      "ls_alpha": 0.016671736182034748,
+      "ls_talpha": 1.7576255390676125,
+      "ls_sharpe": 0.31619578342618504,
+      "coverage": 0.11621593789803265,
+      "error": null
+    },
+    {
+      "name": "FinancingAccelerationAmongProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at), 1), 1))",
+      "hypothesis": "Among established profitable firms, an acceleration in the rate at which they absorb net external capital signals either valuation timing or an emerging funding need, and predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This converts the high-coverage clean-surplus financing measure \u2014 which produced strong FMB slopes but no FF5 alpha as a level \u2014 into a year-over-year change, directly testing the diagnosis that the abnormal return lives in financing *news* rather than the financing state. If it works it also repairs the 0.077 coverage of the gen-1 alpha winner, since it needs no cash-flow-statement items.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.6839692396541941,
+      "ls_alpha": -0.003483311711692284,
+      "ls_talpha": -0.4464606226771504,
+      "ls_sharpe": -0.05318846125235309,
+      "coverage": 0.11757110622431231,
+      "error": null
+    },
+    {
+      "name": "NetFinancingNewsAmongProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms, what matters is the change in *net* reliance on outside capital \u2014 issuance less repurchases, dividends and debt retirement \u2014 because gross issuance is often mere refinancing that carries no valuation information.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 1's best FF5 alpha used the change in *gross* issuance, so this isolates one specific measurement choice: netting the financing flow against simultaneous distributions and repayments. A stronger result would show the effect is about a genuine swing from distributing to absorbing capital; a weaker result would tell us gross issuance events, not net flows, are what the market misprices.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.278145876653895,
+      "ls_alpha": -0.03797833801511251,
+      "ls_talpha": -3.0695809224331065,
+      "ls_sharpe": -0.6395763430609599,
+      "coverage": 0.06836673815260845,
+      "error": null
+    },
+    {
+      "name": "SustainedEquityForDebtSubstitution",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oibdp, at), 3)), 0.5), IND_ZSCORE(MA(RATIO(SUB(SUB(prstkc, sstk), SUB(dltr, dltis)), at), 3)))",
+      "hypothesis": "Profitable firms running a multi-year program of retiring equity while adding debt are credibly signalling durable operating cash flow and are underpriced, whereas profitable firms doing the reverse swap are de-risking because managers doubt future cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the gen-1 levered-recap result (alpha 1.7%, t 1.76, Sharpe 0.32) by replacing single-year flows with a three-year average, so the long leg captures deliberate capital-structure policy rather than a one-off transaction, which should raise the alpha t-stat and Sharpe through more stable portfolio composition. The explicit equity-minus-debt netting also states the substitution mechanism directly instead of rank-summing two separate flows.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.6677885111342248,
+      "ls_alpha": 0.009118123408805568,
+      "ls_talpha": 0.8863753050536946,
+      "ls_sharpe": 0.03385618195788407,
+      "coverage": 0.12181088914148355,
+      "error": null
+    },
+    {
+      "name": "AccrualHeavyEquityIssuers",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(SUB(ib, oancf), at)), 0.7), WINSOR(GROWTH(csho, 1), 1))",
+      "hypothesis": "Firms whose reported earnings are least cash-backed and that simultaneously expand their share count are managing earnings ahead of raising equity, and are the most overvalued corner of the profitability-financing space.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-1 composite of low accruals plus share shrinkage was strong (fmb 3.07, Sharpe 0.32) but symmetric, leaving open whether the information is in the good corner or the bad corner; gating on the top accrual tercile isolates the short leg where the economic story is sharpest. Because the gate uses earnings quality rather than earnings level, the resulting spread should be close to RMW-neutral.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.9432239546956933,
+      "ls_alpha": 0.0032099189334081485,
+      "ls_talpha": 0.23028346478078388,
+      "ls_sharpe": -0.20249844719737337,
+      "coverage": 0.08413961386034817,
+      "error": null
+    },
+    {
+      "name": "ProfitGrowthVersusDebtGrowth",
+      "expression": "SUB(IND_RANK(GROWTH(oiadp, 1)), IND_RANK(GROWTH(ADD(dltt, dlc), 1)))",
+      "hypothesis": "Firms whose operating profit is growing faster than their debt stock are expanding on internally generated funds and are underpriced, while firms whose borrowing outruns their profit growth are financing an unproven business with creditor capital.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the economic channel from levels or payout policy to a *growth-rate mismatch* between the operating engine and the balance sheet, which no archive signal tests, and it uses only high-coverage items so it should reach the top of the achievable coverage range. Because both legs are growth rates rather than levels, the spread should be less collinear with RMW and CMA than the gen-1 level-based composites that lost their alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.357683216457061,
+      "ls_alpha": 0.0008924989433697402,
+      "ls_talpha": 0.10180680690178961,
+      "ls_sharpe": 0.05629357668209871,
+      "coverage": 0.11650057122715607,
+      "error": null
+    },
+    {
+      "name": "DividendStretchWithoutEarningsSupport",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(dvt, at), 1)), IND_RANK(DELTA(RATIO(ib, at), 1)))",
+      "hypothesis": "A rising dividend commitment is only credible when earnings power is rising with it; firms that raise payout intensity while profitability deteriorates are stretching to defend a payout signal and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests payout policy purely *relative to* contemporaneous earnings capability, so it cannot be a disguised dividend-yield or profitability tilt \u2014 the same dividend increase maps to opposite forecasts depending on the earnings change. It is the sustainability counterpart to the archive's payout signals and probes whether the mispricing sits in the mismatch between financing commitments and operating support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.14704926846180308,
+      "ls_alpha": -0.011167215030244194,
+      "ls_talpha": -1.35050014819648,
+      "ls_sharpe": -0.13144491777926207,
+      "coverage": 0.13258346355166262,
+      "error": null
+    },
+    {
+      "name": "EquityChannelFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(sstk, ADD(prstkc, dvt)), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms the informative financing margin is the equity channel: a swing from returning cash to shareholders toward selling them new shares reveals that managers judge the stock rich, and predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates the equity half of the gen-2 winner by dropping debt issuance and repayment from the netting, testing whether the \u22123.8% alpha comes from shareholder-directed flows rather than creditor flows. If the alpha is preserved or improved, the mechanism is equity-market timing rather than general capital absorption.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.262818779288404,
+      "ls_alpha": -0.0019399372502008029,
+      "ls_talpha": -0.23046350933471385,
+      "ls_sharpe": -0.1835506464592037,
+      "coverage": 0.0739435805871918,
+      "error": null
+    },
+    {
+      "name": "DebtChannelFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms, stepping up net borrowing is a confidence signal about the durability of operating cash flow \u2014 creditors impose discipline and interest is contractual \u2014 so the debt channel predicts higher returns, opposite in sign to the equity channel.",
+      "expected_sign": "positive",
+      "reasoning": "Two archive signals implied net borrowing by profitable or distributing firms earns positive FF5 alpha, which contradicts pooling debt with equity inside a single external-financing measure. Evaluating this as the exact debt-side complement of Signal 1 with an identical gate and identical operator structure gives a clean read on channel asymmetry, and a positive result would justify a future signed combination that subtracts the debt channel instead of adding it.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.02079394964594451,
+      "ls_alpha": -0.031872119739672536,
+      "ls_talpha": -2.8074948445913193,
+      "ls_sharpe": -0.45946047256348665,
+      "coverage": 0.07703961939101572,
+      "error": null
+    },
+    {
+      "name": "ShareCountAccelerationAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(GROWTH(csho, 1), 1), 1))",
+      "hypothesis": "Profitable firms whose rate of share-count expansion accelerates are diluting existing owners despite having internal funds available, and this dilution news is underweighted by the market.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-2 winner reaches only 0.068 coverage because it needs four cash-flow-statement items plus oancf; measuring the equity channel from share count and gating on operating profitability uses only widely reported fields and should roughly double usable observations. If the alpha survives at higher coverage, the effect is not an artifact of the post-1988 cash-flow-statement sample.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.9833656613916053,
+      "ls_alpha": -0.0004021834081529255,
+      "ls_talpha": -0.050510718844549274,
+      "ls_sharpe": -0.0547712314957209,
+      "coverage": 0.12169774778009736,
+      "error": null
+    },
+    {
+      "name": "ExternalFundingPerDollarOfEarnings",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1))",
+      "hypothesis": "The economically relevant quantity is external capital raised per dollar of operating earnings: a firm that must raise a year's worth of EBITDA from outside investors is far more dependent than one raising the same dollars against a much larger earnings base, and such dependence predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal scales financing by assets and treats profitability as a separate ranked leg, so the interaction is additive or gated; here profitability enters as the *deflator*, making the signal a true ratio interaction that cannot be decomposed into two main effects. The indicator on positive smoothed EBITDA keeps the denominator sign well defined, which is why earlier ratio ideas were avoided.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.976582394329454,
+      "ls_alpha": -0.008988309322739595,
+      "ls_talpha": -0.9376694491588541,
+      "ls_sharpe": -0.22727823975727054,
+      "coverage": 0.11417567876562104,
+      "error": null
+    },
+    {
+      "name": "TwoYearFinancingSwingAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 2), 1))",
+      "hypothesis": "The swing from distributing to absorbing capital is a regime change in financial policy rather than a one-year event, so measuring it over two years should capture the same mispricing with less transitory noise.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates a single design choice \u2014 measurement horizon \u2014 on the strongest archive signal, which matters because a two-year change implies lower portfolio turnover and more stable membership if the Sharpe and alpha t-stat hold up. A deterioration would instead tell us the effect is genuinely a fresh-news effect that decays within a year, which would push future refinements toward timeliness rather than smoothing.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.8229253803875567,
+      "ls_alpha": -0.017826924931543836,
+      "ls_talpha": -1.7140116797585616,
+      "ls_sharpe": -0.22371910775300127,
+      "coverage": 0.06181232959146527,
+      "error": null
+    },
+    {
+      "name": "EquityIssuanceByCashRichFirms",
+      "expression": "MUL(INDICATOR(RATIO(SUB(oancf, dvt), at), 0), WINSOR(RATIO(sstk, at), 1))",
+      "hypothesis": "Selling equity while generating operating cash flow in excess of dividends is issuance a firm does not need, so it is the purest observable case of managers exploiting a high stock price, and it should be followed by weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 0's profitable-issuer test failed because its gate (positive operating profit) admitted firms with genuine funding needs and its financing leg pooled debt refinancing with equity sales; conditioning on free cash flow after dividends and using equity issuance alone sharpens the no-need-for-capital interpretation. This tests whether the overvaluation reading works as a *level* when the conditioning event is economically extreme, complementing the change-based signals above.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.3635963848569412,
+      "ls_alpha": 0.017132556805235274,
+      "ls_talpha": 0.9812764493705305,
+      "ls_sharpe": 0.06383883505675107,
+      "coverage": 0.08926966915876895,
+      "error": null
+    },
+    {
+      "name": "TwoChannelRankBalancedFinancingNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(DELTA(RATIO(SUB(dltis, dltr), at), 1), DELTA(RATIO(SUB(sstk, ADD(prstkc, dvt)), at), 1))))",
+      "hypothesis": "For cash-profitable firms, a simultaneous swing toward creditor capital and toward shareholder capital is the strongest evidence of deteriorating self-funding, and the two channels should be weighted by cross-sectional rank rather than by raw dollars.",
+      "expected_sign": "negative",
+      "reasoning": "The decomposition showed the debt channel carries the FF5 alpha while the equity channel carries the Fama-MacBeth slope, so dollar-netting them inside one ratio lets whichever channel has larger dollar variance dominate; rank-balancing gives each channel equal influence and should lift both statistics at once. This directly targets the multi-metric objective rather than optimizing one statistic.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.113308055589347,
+      "ls_alpha": -0.029942557578333626,
+      "ls_talpha": -2.600406749079664,
+      "ls_sharpe": -0.49926752959068355,
+      "coverage": 0.06832180147875191,
+      "error": null
+    },
+    {
+      "name": "EarningsDeflatedNetBorrowingNews",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(DELTA(RATIO(SUB(dltis, dltr), MA(oibdp, 3)), 1), 1))",
+      "hypothesis": "New net borrowing matters in proportion to the earnings stream that must service it, so incremental debt per dollar of smoothed EBITDA is the economically correct intensity measure and predicts lower returns for profitable firms.",
+      "expected_sign": "negative",
+      "reasoning": "This grafts the archive's best scaling choice (earnings deflation, fmb \u22123.98) onto the archive's best-identified alpha channel (net borrowing news, alpha t \u22122.81), a combination not yet tested. Dropping oancf from the construction also raises expected coverage from roughly 0.077 toward 0.11, addressing the concern that the strongest results so far rest on the narrow post-1988 cash-flow-statement sample.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.5673203870984582,
+      "ls_alpha": -0.02263613005461631,
+      "ls_talpha": -1.8408036060488684,
+      "ls_sharpe": -0.31307856795042915,
+      "coverage": 0.10791874995356715,
+      "error": null
+    },
+    {
+      "name": "BorrowingDespiteCoveredPayout",
+      "expression": "MUL(INDICATOR(RATIO(SUB(oancf, ADD(dvt, prstkc)), at), 0), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "Firms whose operating cash flow already covers their entire distribution program have no funding need, so an increase in net borrowing by such firms reflects managerial empire-building or an unannounced deterioration, and predicts weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the profitability-rank gate with an explicit no-funding-need event, sharpening the agency interpretation of why profitable-firm borrowing is bad news rather than assuming it. Comparing its alpha with Signal 2's separates an agency reading (conditioning on free cash flow should strengthen the effect) from a pure debt-service-capacity reading (it should not).",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.1869090130439224,
+      "ls_alpha": -0.028776878734522355,
+      "ls_talpha": -2.3922527678495364,
+      "ls_sharpe": -0.43640045579632464,
+      "coverage": 0.07205422819534318,
+      "error": null
+    },
+    {
+      "name": "FinancingNewsWhenProfitabilityDeteriorates",
+      "expression": "MUL(INDICATOR(NEG(DELTA(MA(RATIO(oancf, at), 3), 1)), 0), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "External capital raised while the firm's own cash profitability is falling is the clearest sign that financing substitutes for failing internal cash generation, and this combination of adverse operating news and adverse financing news predicts the weakest returns.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditional in the archive gates on the profitability *level*; gating on a decline in smoothed cash profitability tests a different economic state \u2014 substitution of outside capital for a shrinking internal source \u2014 and can apply to firms that are still profitable in levels. If this outperforms the level gate, future refinements should condition on operating deterioration rather than operating strength.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.0679468192866042,
+      "ls_alpha": -0.010975749175033387,
+      "ls_talpha": -0.9748992369427352,
+      "ls_sharpe": -0.1925661460534296,
+      "coverage": 0.0664170746565827,
+      "error": null
+    },
+    {
+      "name": "NewBorrowingUnderHeavyInterestBurden",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(xint, oibdp)), 0.7), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "The cost of additional leverage depends on how much of operating profit is already pledged to lenders; firms in the top tercile of interest-to-EBITDA that borrow more are consuming their last financial flexibility and should underperform sharply.",
+      "expected_sign": "negative",
+      "reasoning": "This tests the financial-flexibility reading of the debt-news result by conditioning on debt-service burden \u2014 a profitability-relative quantity \u2014 instead of profitability level, and it predicts the effect concentrates where the earnings stream is least able to absorb new obligations. It is the mechanism-identifying counterpart to Signal 3's agency reading, so the pair discriminates between the two explanations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.918881842408722,
+      "ls_alpha": -2.5000335610245172e-06,
+      "ls_talpha": -0.00024725324543458705,
+      "ls_sharpe": -0.19616544266557884,
+      "coverage": 0.09862010876429203,
+      "error": null
+    },
+    {
+      "name": "FinancingDeviationFromOwnNorm",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(SUB(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), MA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 3)), 1))",
+      "hypothesis": "What is mispriced is a profitable firm's departure from its own habitual financing policy, not the level of that policy nor a single-year difference, because habitual issuers and habitual repurchasers are already understood by the market.",
+      "expected_sign": "negative",
+      "reasoning": "A one-year DELTA worked and a two-year DELTA did not, which suggests the informative object is a deviation from the firm's recent norm rather than a longer-horizon drift; benchmarking against the trailing three-year average keeps the timeliness of the one-year signal while filtering the transitory noise that a single difference inherits from the base year. This is a within-firm normalization, orthogonal to the cross-sectional normalizations tested so far.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.0277381372418435,
+      "ls_alpha": -0.030845307234605976,
+      "ls_talpha": -2.4163720136465128,
+      "ls_sharpe": -0.45231714438002146,
+      "coverage": 0.07896384800735001,
+      "error": null
+    },
+    {
+      "name": "FinancingIntensityAndNewsComposite",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), IND_ZSCORE(SUMRANK(WINSOR(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))))",
+      "hypothesis": "A profitable firm's dependence on outside capital has a persistent component, best measured as external funding per dollar of operating earnings, and a news component, best measured as the one-year change in financing intensity; both are mispriced and they carry complementary information.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's strongest Fama-MacBeth slope came from the earnings-deflated level (\u22123.98) and its strongest FF5 alpha from the asset-deflated one-year change (\u22123.07), and no signal has yet combined them, which is exactly what the multi-metric objective requires. Ranking the two legs before summing prevents the very wide-tailed earnings-deflated ratio from swamping the news leg in the extreme deciles.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.621733339362217,
+      "ls_alpha": -0.002133298382558541,
+      "ls_talpha": -0.25209051538240657,
+      "ls_sharpe": -0.13892691375855395,
+      "coverage": 0.09798599090163915,
+      "error": null
+    },
+    {
+      "name": "FinancingNewsWithAccrualEarningsGate",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The mispriced state is a firm with demonstrated operating strength that swings toward outside capital; operating income measures that strength as well as operating cash flow does, so the effect should not depend on cash-flow-statement profitability.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice \u2014 the gate variable \u2014 on the best archive signal, and it matters practically because dropping oancf from the gate should raise coverage from 0.068 to roughly 0.11 and extend the sample back before the modern cash-flow statement. If the alpha holds, the strongest result in the archive is not an artifact of a narrow sample; if it collapses, cash profitability specifically, not accounting profitability, is the necessary conditioning variable.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.663580466627863,
+      "ls_alpha": -0.02821338493748367,
+      "ls_talpha": -2.936870120483805,
+      "ls_sharpe": -0.47677738315535706,
+      "coverage": 0.09840883932750384,
+      "error": null
+    },
+    {
+      "name": "EarningsDeflatedFinancingNews",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1), 1))",
+      "hypothesis": "The swing toward external capital should be measured against the earnings stream that would otherwise fund the firm, so a change in external funding per dollar of EBITDA is a sharper statement of lost self-sufficiency than a change per dollar of assets.",
+      "expected_sign": "negative",
+      "reasoning": "Earnings deflation applied to the debt channel alone reached alpha \u22122.3% at 0.108 coverage, better coverage but weaker alpha than the asset-deflated full flow, leaving unresolved whether the loss came from the deflator or from restricting to debt; this tests the deflator with the full flow. Profitability entering as the denominator makes the interaction irreducible to two additive main effects.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.2023374516170002,
+      "ls_alpha": -0.02262811834109669,
+      "ls_talpha": -2.076688811463066,
+      "ls_sharpe": -0.26802872993125854,
+      "coverage": 0.09801395379168534,
+      "error": null
+    },
+    {
+      "name": "FinancingShockPerOwnVolatility",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))",
+      "hypothesis": "A given change in financing policy is surprising only relative to how variable that firm's financing has been; firms with habitually lumpy issuance generate large changes that convey little news, while a modest swing at a policy-stable profitable firm is highly informative.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal compares financing changes across firms in raw scaled units, so firms with volatile capital-market activity mechanically populate the extreme deciles and add noise to the spread; standardizing each firm's shock by its own five-year financing volatility converts the signal into a surprise measure. The cost is coverage from the five-year window, so this is an exploratory test of whether cleaner surprise identification is worth a narrower sample.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.204175184842388,
+      "ls_alpha": -0.035803783501472314,
+      "ls_talpha": -3.1740757817457013,
+      "ls_sharpe": -0.5994654748222557,
+      "coverage": 0.06823326952428829,
+      "error": null
+    },
+    {
+      "name": "BorrowingByDividendCommittedFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(dvt, MA(oibdp, 3))), 0.6), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "A high dividend commitment relative to operating earnings is a rigid claim on cash; firms carrying such a commitment that step up net borrowing are financing an inflexible payout with creditor money and should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the interest-burden gate that produced zero alpha, this conditions on a *self-imposed* commitment measured against profitability rather than on leverage, so it should not simply select highly levered firms whose spread FF5 already spans. It tests a payout-rigidity mechanism for the debt-news effect that is distinct from both the agency and debt-capacity readings already examined.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -1.16498122049681,
+      "ls_alpha": -0.005837250068279628,
+      "ls_talpha": -0.6940720302466125,
+      "ls_sharpe": -0.12703468270181092,
+      "coverage": 0.1079295326916108,
+      "error": null
+    },
+    {
+      "name": "FinancingNewsWhenEarningsAreLowQuality",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(SUB(ib, oancf), at)), 0.6), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "When reported earnings are poorly backed by cash, a simultaneous swing toward external financing confirms that the accounting profit is not fundable, making the combination a stronger sell signal than either accrual quality or financing news alone.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual gate produced the archive's second-strongest slope when paired with share-count growth (fmb \u22122.94) but no alpha, which I attribute to share count being a weak financing measure rather than to the gate; pairing that gate with the cash-flow-statement financing news that does generate alpha separates the two explanations. It also flips the conditioning logic from operating strength to earnings-quality weakness, a state the winning family has not yet exploited.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.08111092268079012,
+      "ls_alpha": 0.002091334258166046,
+      "ls_talpha": 0.2201173721345511,
+      "ls_sharpe": -0.18645184376397156,
+      "coverage": 0.06836549994345512,
+      "error": null
+    },
+    {
+      "name": "VolStandardizedShockWideSample",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))",
+      "hypothesis": "A profitable firm's departure from its own habitual financing policy, measured in units of that firm's own financing volatility, is the mispriced quantity, and it should be detectable on the broader sample defined by operating-income profitability rather than cash-flow profitability.",
+      "expected_sign": "negative",
+      "reasoning": "This joins the archive's two independent successes of generation 5 \u2014 volatility standardization for the shock leg (best alpha t = \u22123.17) and the operating-income gate for coverage (0.098 versus 0.068) \u2014 a combination not yet tested. If both effects are additive, this should be the strongest signal in the archive on alpha t-stat and Sharpe simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.85192666758119,
+      "ls_alpha": -0.03124575281622077,
+      "ls_talpha": -3.6219738968197603,
+      "ls_sharpe": -0.5436962955288883,
+      "coverage": 0.09816367391514305,
+      "error": null
+    },
+    {
+      "name": "ProfitabilityWeightedFinancingNews",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, at), 3)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The informativeness of a financing swing rises smoothly with the firm's cash profitability rather than switching on at the median, because the higher a firm's internal cash generation the less excusable is its turn to outside capital.",
+      "expected_sign": "negative",
+      "reasoning": "The hard indicator sets half the cross-section to exactly zero, which is the most likely reason the news family's Fama-MacBeth slopes sit near \u22122 despite strong alphas; replacing the gate with a continuous profitability-rank weight keeps the identical interaction economics while producing a signal defined and varying across the full sample. This tests whether the slope weakness is an estimation artifact of the mass point rather than an economic limitation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.2552998270308273,
+      "ls_alpha": -0.03251971518103361,
+      "ls_talpha": -2.4647844903735203,
+      "ls_sharpe": -0.4664089647308334,
+      "coverage": 0.06836642860032012,
+      "error": null
+    },
+    {
+      "name": "IndustryRelativeFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1)))",
+      "hypothesis": "Industry-wide financing waves \u2014 utilities and capital-intensive sectors levering up together, tech sectors issuing equity in hot markets \u2014 are common shocks that carry no firm-specific information, so the financing surprise should be measured relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Every signal in the winning family industry-adjusts the profitability gate but leaves the financing leg raw, so cross-industry differences in normal financing behavior enter the extreme deciles as noise and may also be what FF5's investment factor partially prices. Industry standardization of the news leg should sharpen both the slope and the alpha if the mispricing is firm-specific rather than sectoral.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.25589624541797173,
+      "ls_alpha": -0.01805738758004308,
+      "ls_talpha": -1.69928986368197,
+      "ls_sharpe": -0.27687148713333376,
+      "coverage": 0.06832180147875191,
+      "error": null
+    },
+    {
+      "name": "FinancingNewsExcludingStickyDividends",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), 1))",
+      "hypothesis": "Dividends are deliberately smoothed and almost never change abruptly, so including them in the netted financing flow injects a slow-moving, already-anticipated component; the true news is in issuance, repurchase and debt repayment decisions.",
+      "expected_sign": "negative",
+      "reasoning": "This is a targeted measurement test on the winning construction: if removing the sticky dividend term raises the alpha t-stat, the effect is driven by discretionary capital-market transactions and future work should exclude dividends; if it weakens, the dividend commitment is genuinely part of the self-funding story. Coverage and structure are otherwise held fixed, so the comparison is clean.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.2675794292643228,
+      "ls_alpha": -0.035287798340649795,
+      "ls_talpha": -2.729855668262312,
+      "ls_sharpe": -0.5886423650551541,
+      "coverage": 0.06845769493333069,
+      "error": null
+    },
+    {
+      "name": "FinancingAtFiveYearHighAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), TS_RANK(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5))",
+      "hypothesis": "A profitable firm whose current external funding intensity stands at the top of its own five-year distribution has reached a self-funding breakdown, and this within-firm state is mispriced even though the cross-sectional level is not.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-5 prohibition applies to *cross-sectional* levels, which FF5 spans; a firm's position within its own history is a different object, bounded in zero to one, that cannot be a disguised persistent characteristic because it is mechanically demeaned within firm. The bounded support should also give more stable decile membership than the winsorized changes, which should help the Sharpe ratio.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.4550772904436844,
+      "ls_alpha": 0.05697845021475905,
+      "ls_talpha": 1.8562616924129225,
+      "ls_sharpe": 0.25630886072910536,
+      "coverage": 0.07148083417325188,
+      "error": null
+    },
+    {
+      "name": "OnlyUpwardFinancingSwingsCount",
+      "expression": "MUL(INDICATOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 0), MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1)))",
+      "hypothesis": "The interaction is asymmetric: a profitable firm turning toward outside capital is genuine bad news, whereas a profitable firm turning further toward distribution merely confirms what the market already believes, so only upward financing swings should carry return predictability.",
+      "expected_sign": "negative",
+      "reasoning": "Every prior signal in this family treats increases and decreases symmetrically, yet the economic story is intrinsically one-sided (overvaluation and funding need appear on the issuance side), and the archive's payout-side signals have consistently failed to generate alpha. Truncating at zero tests whether the entire \u22123.6% alpha comes from the short leg, which would tell the final generations to invest all remaining effort in refining issuance-side conditioning rather than payout measurement.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 1.4954352191277427,
+      "ls_alpha": 0.038894722220623804,
+      "ls_talpha": 1.3622451669872375,
+      "ls_sharpe": -1.110089950243529,
+      "coverage": 0.06836673815260845,
+      "error": null
+    },
+    {
+      "name": "VolStandardizedShockNoDividends",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1))",
+      "hypothesis": "The mispriced event is a profitable firm's surprising turn toward discretionary outside capital, best measured as the change in issuance net of repurchases and debt repayment, expressed in units of the firm's own financing volatility and excluding smoothed dividends.",
+      "expected_sign": "negative",
+      "reasoning": "This unites the three independently validated improvements of the winning family \u2014 own-volatility standardization (alpha t \u22123.62), removal of the sticky dividend term (Sharpe \u22120.59), and the wide-coverage operating-income gate (0.098) \u2014 none of which have been combined. Because each change strengthened the alpha in isolation and none altered the economic mechanism, this is the natural consolidation candidate for the strongest joint evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.7007759708996522,
+      "ls_alpha": -0.022171971247825384,
+      "ls_talpha": -2.52992499532277,
+      "ls_sharpe": -0.4101160994538092,
+      "coverage": 0.09772400648161218,
+      "error": null
+    },
+    {
+      "name": "ThreeYearVolStandardizedFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 3)), 1))",
+      "hypothesis": "Three years of financing history is sufficient to characterize a firm's habitual capital-market variability, so a shorter standardization window should preserve the surprise interpretation while admitting younger firms whose financing behavior is most likely to be misjudged.",
+      "expected_sign": "negative",
+      "reasoning": "The five-year volatility window is the binding coverage constraint in the best construction, and younger firms excluded by it are precisely those where issuance surprises should be largest. This isolates the standardization-window choice, telling the final generations whether robustness is better served by a longer estimate of habitual behavior or by a wider sample.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.743988015217367,
+      "ls_alpha": -0.024715809512349023,
+      "ls_talpha": -2.8960167192638613,
+      "ls_sharpe": -0.43881875256760927,
+      "coverage": 0.0979482771145104,
+      "error": null
+    },
+    {
+      "name": "RescaledFinancingShockWithinProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), ZSCORE(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1)))",
+      "hypothesis": "The Fama-MacBeth slope of the winning family is held down by the extreme kurtosis of the standardized shock, not by its economic content, so a pooled cross-sectional rescaling that leaves the sign structure and the central position of the gated-out zeros intact should sharpen the slope without harming the portfolio sort.",
+      "expected_sign": "negative",
+      "reasoning": "Industry standardization failed because it removed genuine cross-industry financing variation, whereas a plain cross-sectional z-score only rescales, keeping zeros near the middle of the sort and avoiding the one-sided-support failure seen with TS_RANK. This is the last untried route to raising fmb_tstat toward the \u22123 range while retaining the alpha near t \u22123.6.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.4303253642186182,
+      "ls_alpha": -0.024331488553866052,
+      "ls_talpha": -2.828750814458356,
+      "ls_sharpe": -0.426832097764147,
+      "coverage": 0.09772400648161218,
+      "error": null
+    },
+    {
+      "name": "TopTercileProfitFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.7), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1))",
+      "hypothesis": "The more clearly a firm can fund itself internally, the more informative its turn to outside capital, so restricting the interaction to the most profitable third of firms should increase the abnormal-return magnitude.",
+      "expected_sign": "negative",
+      "reasoning": "Gate thresholds of 0.5 and 0.6 have both been used but never compared with the current best financing construction, and this directly tests the intensity of the interaction that the economic story predicts. The risk is a thinner and less stable short leg, which coverage and Sharpe will reveal, so the comparison is informative either way.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.9510529632325269,
+      "ls_alpha": -0.02086009322735545,
+      "ls_talpha": -2.247633908393674,
+      "ls_sharpe": -0.3745916621700653,
+      "coverage": 0.09772400648161218,
+      "error": null
+    },
+    {
+      "name": "FinancingShockWhenEarningsArePredictable",
+      "expression": "MUL(MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), INDICATOR(NEG(IND_RANK(VOL(RATIO(oiadp, at), 5))), -0.5)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), 1))",
+      "hypothesis": "A financing surprise is only interpretable against a predictable earnings stream; when a profitable firm with stable, forecastable operating income suddenly reaches for outside capital, the market has no benign explanation and the negative information content is largest.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditional so far gates on the level of profitability alone, whereas this adds a second-moment condition, testing whether earnings predictability is the missing ingredient that makes financing news informative rather than merely noisy. Low-volatility profitability was previously tested only as an additive rank leg in a payout composite, never as a conditioning state on financing news.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.9822872032552326,
+      "ls_alpha": -0.016451736753789168,
+      "ls_talpha": -1.799677244516654,
+      "ls_sharpe": -0.36204409305899526,
+      "coverage": 0.09850433620845499,
+      "error": null
+    },
+    {
+      "name": "CashFlowNewsVersusFinancingNews",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1)))",
+      "hypothesis": "What the market misprices is the direction of the wedge between two contemporaneous pieces of news: internal cash generation improving while external funding recedes is the underpriced state, and the reverse is the overpriced state.",
+      "expected_sign": "positive",
+      "reasoning": "All earlier rank-difference signals paired a profitability *level* against a financing measure and produced good slopes with no alpha, which the archive attributes to the level leg being factor-spanned; pairing two *news* variables removes that spanned component while keeping symmetric support that avoids the degenerate-decile problem. It also provides an ungated, high-coverage alternative to the conditional family, useful for judging whether the profitability gate or the profitability news is the essential ingredient.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 0.9649027257250323,
+      "ls_alpha": 0.032060806615408624,
+      "ls_talpha": 2.1422170893958503,
+      "ls_sharpe": 0.5201893690911277,
+      "coverage": 0.0665077218850166,
+      "error": null
+    },
+    {
+      "name": "TwoNewsWedgeWithStandardizedFinancing",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1)))",
+      "hypothesis": "The mispriced quantity is the wedge between improving internal cash generation and a receding need for outside capital, and expressing the financing side as a surprise relative to the firm's own habit should sharpen that wedge.",
+      "expected_sign": "positive",
+      "reasoning": "The ungated two-news rank difference already delivered +3.2% alpha with Sharpe 0.52, and its financing leg was the raw change, which the archive has repeatedly shown is dominated by the volatility-standardized surprise. This tests the upgrade on the ungated construction, which is valuable because it needs no indicator gate and therefore has no zero mass to distort the decile sort.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.1231639554876907,
+      "ls_alpha": 0.02494391025119649,
+      "ls_talpha": 1.6804653815001347,
+      "ls_sharpe": 0.4093312538994129,
+      "coverage": 0.06629155120366312,
+      "error": null
+    },
+    {
+      "name": "DualRepresentationFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))))",
+      "hypothesis": "The economic magnitude of a financing swing (dollars per unit of assets) and its statistical surprise (dollars per unit of the firm's own financing volatility) are two noisy readings of the same underlying decision, so averaging their ranks should measure it more precisely than either alone.",
+      "expected_sign": "negative",
+      "reasoning": "These two representations generated the archive's two best alphas \u2014 \u22123.8% at t \u22123.07 for the magnitude version and \u22123.1% at t \u22123.62 for the surprise version \u2014 but they select partly different firms, since large swings at habitually active firms score high on one and low on the other. Combining them is a measurement-error argument rather than a new mechanism, and it should lift the alpha t-stat if the disagreement between the two is noise rather than signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.5250941105527605,
+      "ls_alpha": -0.025284409741227316,
+      "ls_talpha": -2.9791645397202497,
+      "ls_sharpe": -0.4161325070652676,
+      "coverage": 0.09806121210770438,
+      "error": null
+    },
+    {
+      "name": "FinancingNewsPerDollarOfInternalCash",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1))",
+      "hypothesis": "The correct yardstick for a financing swing is the internal cash the firm normally generates, because that is precisely the resource being substituted for; a swing worth a full year of operating cash flow is a far graver signal than the same dollars against a large asset base.",
+      "expected_sign": "negative",
+      "reasoning": "Deflating by assets and by EBITDA have both been tested, but smoothed operating cash flow \u2014 the actual alternative funding source in the economic story \u2014 has not, and it is the deflator that makes the interaction most explicitly a self-funding-gap measure. The three-year average in the denominator prevents a single weak cash-flow year from dominating, which is why earlier ratio attempts used smoothed profitability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.6910851587087175,
+      "ls_alpha": -0.037446382039624096,
+      "ls_talpha": -2.821738594381077,
+      "ls_sharpe": -0.5835514087746531,
+      "coverage": 0.06641114157105628,
+      "error": null
+    },
+    {
+      "name": "FlipFromSelfFundingToExternalFunding",
+      "expression": "MUL(MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), INDICATOR(NEG(LAG(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1)), 0)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The information is concentrated in a regime flip: a profitable firm that was returning capital to investors last year and now absorbs it has revealed something new, whereas a firm that was already a net absorber is simply continuing a known policy.",
+      "expected_sign": "negative",
+      "reasoning": "This conditions on the prior-year financing *state* being distribution while measuring the current-year *change*, so it uses the level information that FF5 spans only as a conditioning event rather than as signal magnitude \u2014 the one way the archive has not yet exploited financing levels. Because the retained shock remains signed, the gated-out firms sit at zero in the middle of the sort, avoiding the degenerate-decile failure that ruined the one-sided constructions in generation 6.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.6170183448836785,
+      "ls_alpha": -0.015431597351597742,
+      "ls_talpha": -1.6848055499305992,
+      "ls_sharpe": -0.3220322066032604,
+      "coverage": 0.09840883932750384,
+      "error": null
+    },
+    {
+      "name": "StandardizedBorrowingShockAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(dltis, dltr), at), 1), VOL(RATIO(SUB(dltis, dltr), at), 5)), 1))",
+      "hypothesis": "Net borrowing is the channel that originally carried the abnormal return for profitable firms, so an unusual borrowing decision relative to that firm's own borrowing history should be the single sharpest expression of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "The debt channel alone produced \u22123.2% alpha (t \u22122.81) with the raw change, and volatility standardization improved the full flow from t \u22123.07 to \u22123.62; applying the better standardization to the stronger channel is the one crossing of these two findings that remains untested. If it beats the full-flow version, the final generation should treat the effect as a debt-policy surprise rather than a general external-capital surprise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.5047669673234821,
+      "ls_alpha": -0.020375034863802176,
+      "ls_talpha": -2.516514829016687,
+      "ls_sharpe": -0.3572840585535482,
+      "coverage": 0.09816475734815222,
+      "error": null
+    },
+    {
+      "name": "RepairedShockAgainstCashFlowNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1), NEG(DELTA(RATIO(oancf, at), 1)))))",
+      "hypothesis": "Among cash-profitable firms the worst state joins two contemporaneous pieces of news \u2014 an unusual turn toward outside capital, measured against the firm's own financing habit, and a decline in internally generated cash \u2014 because together they identify a real breakdown of self-funding rather than a routine capital-markets transaction.",
+      "expected_sign": "negative",
+      "reasoning": "This is the repaired version of the generation-8 proposal lost to a syntax error, and it is the only combination of the archive's short-side alpha engine with its long-side alpha engine; both legs are news variables, so it avoids the generation-5 failure where a persistent level leg annihilated the alpha. Because the cash-flow-news leg already requires oancf, gating on cash profitability costs no coverage and uses the gate that historically produced the largest alphas.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.6378829314744956,
+      "ls_alpha": -0.02714407873394687,
+      "ls_talpha": -2.1064656866460196,
+      "ls_sharpe": -0.4311748234319658,
+      "coverage": 0.06624197124548156,
+      "error": null
+    },
+    {
+      "name": "RawShockAgainstCashFlowNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), NEG(DELTA(RATIO(oancf, at), 1)))))",
+      "hypothesis": "The same two-news interaction should work with the financing swing expressed in economic magnitude, dollars per unit of assets, which is the representation that has delivered both the largest alpha and the strongest Fama-MacBeth slope in this family.",
+      "expected_sign": "negative",
+      "reasoning": "The asset-scaled change carries the archive's best joint record (alpha \u22123.8% at t \u22123.07 with fmb \u22122.28) while the volatility-standardized version trades slope for alpha reliability, so pairing each with the cash-flow-news leg isolates which representation benefits more from the operating-news dimension. Run alongside Signal 1, this pair identifies the best final configuration rather than assuming one.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.727327289571752,
+      "ls_alpha": -0.031595460391809174,
+      "ls_talpha": -2.269854967710402,
+      "ls_sharpe": -0.5121371132370265,
+      "coverage": 0.06636718514611281,
+      "error": null
+    },
+    {
+      "name": "ThreeLegSelfFundingBreakdown",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), SUMRANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1), NEG(DELTA(RATIO(oancf, at), 1))))))",
+      "hypothesis": "A profitable firm's loss of self-funding is best measured by three complementary readings: the dollar size of its financing swing, how surprising that swing is relative to its own history, and whether internal cash generation is simultaneously deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "The two financing representations disagree about which firms are extreme \u2014 large swings at habitually active firms rank high on magnitude and low on surprise \u2014 and adding the operating-news leg supplies information from a different accounting statement altogether, so the three-way rank average should have the lowest measurement error of any archive construction. The risk, visible in generation 8's two-representation test, is dilution, which is why this is proposed alongside the cleaner two-leg versions rather than instead of them.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.574687674047205,
+      "ls_alpha": -0.03837715800902332,
+      "ls_talpha": -2.9894758799253376,
+      "ls_sharpe": -0.6102092920060184,
+      "coverage": 0.06624197124548156,
+      "error": null
+    },
+    {
+      "name": "DualDeflatorFinancingNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1))))",
+      "hypothesis": "A financing swing is economically large either when it is big relative to the asset base being financed or when it is big relative to the internal cash flow it replaces, and firms extreme on both dimensions are the clearest cases of external-capital dependence among profitable firms.",
+      "expected_sign": "negative",
+      "reasoning": "The asset deflator and the internal-cash deflator produced nearly identical alphas (\u22123.8% and \u22123.7%) through different scalings, so their intersection should concentrate genuine dependence while their disagreement \u2014 small firms with tiny cash flow, or large firms with lumpy assets \u2014 is exactly the noise to be averaged away. Unlike Signal 3 this keeps both legs on the same news concept, testing whether the gain comes from deflator diversification rather than from adding the operating-news dimension.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.9739400362057046,
+      "ls_alpha": -0.027453101531201247,
+      "ls_talpha": -2.3225097316834593,
+      "ls_sharpe": -0.44981492385625005,
+      "coverage": 0.06635495783072361,
+      "error": null
+    },
+    {
+      "name": "UngatedWedgeWithInternalCashDeflator",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1)))",
+      "hypothesis": "Improving internal cash generation combined with a receding need for outside capital, where that need is scaled by the firm's own normal cash flow, identifies underpriced self-funding strength without requiring any profitability gate.",
+      "expected_sign": "positive",
+      "reasoning": "The ungated two-news wedge is the archive's only dependable long-side result (alpha +3.2%, Sharpe 0.52) and has no zero mass to distort deciles, while the internal-cash deflator is the strongest-magnitude financing scaling found; combining them tests the positive side of the mechanism at its best specification. Keeping one clean positive-signed candidate matters because the entire short-side family relies on the same gated architecture, and a sign-symmetric confirmation strengthens the economic interpretation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.1763388318214047,
+      "ls_alpha": 0.023047297192703712,
+      "ls_talpha": 1.5836745866765294,
+      "ls_sharpe": 0.3347211033848777,
+      "coverage": 0.06640453778890515,
+      "error": null
+    },
+    {
+      "name": "OutlierTrimmedFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 5))",
+      "hypothesis": "The cross-sectional slope of the winning signal is held down by a handful of merger- and recapitalization-driven financing swings; trimming at the fifth percentile should leave the portfolio sort essentially intact while making the pooled regression coefficient representative of typical firms.",
+      "expected_sign": "negative",
+      "reasoning": "Every attempt to raise fmb_tstat by re-weighting the gate or standardizing the shock has failed, leaving tail treatment as the one untested lever, and heavier winsorization is exactly the intervention that separates decile membership (unaffected by monotone trimming) from slope magnitude (highly sensitive to tails). If the alpha holds near \u22123% while the slope moves toward \u22123, this becomes the best-balanced signal in the archive on both forms of evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.2809788550963326,
+      "ls_alpha": -0.03797833801511251,
+      "ls_talpha": -3.0695809224331065,
+      "ls_sharpe": -0.6395763430609599,
+      "coverage": 0.06836673815260845,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "PayoutBackedOperatingProfit",
+      "expression": "SUMRANK(IND_ADJ(MA(RATIO(oiadp, at), 3)), RATIO(SUB(ADD(prstkc, dvt), sstk), at))",
+      "hypothesis": "Firms with persistently high industry-adjusted operating profitability that simultaneously return net capital to shareholders (repurchases plus dividends net of equity issuance) are generating cash the market underweights, and earn higher subsequent returns than equally profitable firms that are absorbing outside capital.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothed operating profit over assets measures durable operating strength, while net payout over assets measures management's revealed confidence that internal cash exceeds investment needs. Ranking both channels and summing rewards the joint state (strong operations plus capital return) rather than either theme alone, and industry adjustment prevents the profitability leg from proxying for sector composition.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitableIssuerOvervaluation",
+      "expression": "MUL(INDICATOR(MA(RATIO(oiadp, at), 3), 0), WINSOR(RATIO(ADD(sstk, dltis), at), 1))",
+      "hypothesis": "Among firms that are already operationally profitable, heavy gross external capital raising (equity sales plus long-term debt issuance) signals managerial market-timing of rich valuations or hidden funding needs, and predicts lower future returns.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator restricts the signal to firms with positive smoothed operating profitability, so the issuance leg is not contaminated by loss-making firms that raise capital out of necessity, which is a separate distress mechanism. Within the profitable group, external issuance is discretionary and therefore informative about overvaluation, giving a clean conditional interaction rather than an isolated issuance effect.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "CashProfitSignedByFinancingDirection",
+      "expression": "MUL(IND_ZSCORE(MA(RATIO(oancf, at), 3)), SIGN(SUB(ADD(prstkc, dvt), ADD(sstk, dltis))))",
+      "hypothesis": "Operating cash profitability is priced correctly only in the direction consistent with financing behavior: strong cash generators that are net distributors of capital are underpriced, whereas strong cash generators that are net absorbers of capital are overpriced.",
+      "expected_sign": "positive",
+      "reasoning": "The SIGN of net distributions minus gross external raising flips the sign of the standardized cash-profitability score, so identical profitability maps to opposite return forecasts depending on the financing regime, which is the pure interaction the economic story requires. Using oancf rather than accrual earnings ensures the profitability leg reflects realized cash that could actually fund the distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "SelfFundedMarginImprovement",
+      "expression": "SUMRANK(TREND(RATIO(oiadp, sale), 5), NEG(DELTA(RATIO(ADD(dltt, dlc), at), 1)))",
+      "hypothesis": "Firms whose operating margins are on a multi-year improving trend while they simultaneously shrink their debt burden are financing operational improvement internally, and this quiet combination of rising profitability and deleveraging is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "A five-year margin trend isolates genuine operating improvement from one-off earnings jumps, while the negative change in total debt over assets identifies improvement that does not depend on new creditor capital. Margin trends alone are widely tracked, so the incremental information comes from the interaction with contemporaneous deleveraging, which distinguishes durable improvement from leverage-fueled improvement.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearInternalVersusExternalFundingMix",
+      "expression": "SUB(RANK(TS_SUM(RATIO(oancf, at), 5)), RANK(TS_SUM(RATIO(ADD(sstk, dltis), at), 5)))",
+      "hypothesis": "Over a full capital cycle, firms that cumulatively fund themselves from operations rather than from repeated equity and debt issuance are systematically underpriced relative to firms with the same current profitability that have relied on external markets.",
+      "expected_sign": "positive",
+      "reasoning": "Cumulating five years of operating cash flow and five years of gross external raising captures the firm's financing regime as a persistent state rather than a noisy annual flow, which reduces the influence of single-year lumpy issuances. The rank difference makes the signal an explicit contest between internal cash generation and external capital dependence, so it cannot be reproduced by either theme in isolation.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtFundedDistributionWarning",
+      "expression": "MUL(INDICATOR(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 0), RATIO(SUB(dltis, dltr), at))",
+      "hypothesis": "Distributions that exceed internally generated operating cash flow and are financed by net new borrowing are a low-quality payout signal, and such firms earn lower subsequent returns than firms whose payouts are covered by operations.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator flags firms whose dividends plus repurchases exceed operating cash flow, and the multiplied net long-term debt issuance measures how much of that gap is plugged by creditors, so the signal is nonzero only in the economically specific state where payout policy and financing policy conflict. This is the mirror image of the underpriced self-funded payer and helps ensure the long-short spread is driven by a genuine interaction rather than a generic payout-yield tilt.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitLessNetExternalFinanceRank",
+      "expression": "SUB(IND_RANK(MA(RATIO(ib, at), 3)), IND_RANK(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at)))",
+      "hypothesis": "Firms whose profitability is high relative to how much net external capital (new debt plus clean-surplus net equity issuance) they absorb are underpriced, because their earnings are self-financed rather than purchased with outside capital.",
+      "expected_sign": "positive",
+      "reasoning": "The clean-surplus construction \u0394CEQ \u2212 (ib \u2212 dvt) infers net equity issuance from balance-sheet items and \u0394Debt captures net borrowing, so the whole financing leg is available for nearly all firm-years, repairing the 0.08\u20130.12 coverage problem of generation 0. Differencing two industry ranks makes the signal an explicit contest between operating strength and external capital dependence rather than a profitability tilt with a small financing overlay.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "WithinProfitableFinancingTilt",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(NEG(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at))))",
+      "hypothesis": "Conditional on being an above-median profitability firm, those that shrink rather than expand their external capital base are underpriced; the financing signal carries information only when there is genuine operating cash to distribute.",
+      "expected_sign": "positive",
+      "reasoning": "The indicator restricts all non-zero signal values to profitable firms, so both the long and short extremes are drawn from the same profitability half and the RMW loading that destroyed generation 0's FF5 alpha largely cancels. Paired with Signal 1, this isolates a single design choice \u2014 gating versus rank differencing \u2014 on an identical, high-coverage financing measure.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "NewIssuanceByProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.6), DELTA(RATIO(ADD(sstk, dltis), at), 1))",
+      "hypothesis": "A firm with strong, already-established operating cash generation that suddenly steps up its external capital raising is either timing a rich valuation or revealing a funding need not visible in reported cash flow, and subsequently underperforms.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 0's profitable-issuer test failed (fmb 0.70) because it gated on the trivial condition of positive profits and used the issuance *level*, which is largely a stable firm characteristic; using the top-40% cash-profitability rank plus the year-over-year *change* in issuance intensity converts it into a news variable. Change-based financing signals should be closer to an information shock and less collinear with the CMA and size factors than issuance levels.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedEarningsVersusShareIssuance",
+      "expression": "SUMRANK(NEG(RATIO(SUB(ib, oancf), at)), NEG(GROWTH(csho, 1)))",
+      "hypothesis": "Firms whose reported earnings are backed by cash rather than accruals and that are simultaneously shrinking their share count are the highest-quality combination of operating strength and financing behavior, while accrual-heavy earnings accompanied by share issuance signal earnings management ahead of capital raising.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the profitability channel from level to *quality* (the accrual wedge ib \u2212 oancf) and the financing channel to share-count change, so the signal is not a restatement of the profitability-level family that FF5's RMW absorbs. Its economic content is that accruals must eventually be financed, making the accrual-issuance pairing informative beyond either component.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "StableProfitPersistentDistributor",
+      "expression": "SUMRANK(NEG(VOL(RATIO(ib, at), 5)), MA(RATIO(SUB(ADD(dvt, prstkc), sstk), at), 3))",
+      "hypothesis": "The credibility of a capital-return policy depends on the stability of the earnings stream behind it; firms with low profitability volatility that have sustained multi-year net distributions are safe cash generators whose reliability the market underprices.",
+      "expected_sign": "positive",
+      "reasoning": "This mechanism uses a second-moment profitability concept rather than a level, so the long leg is not a high-RMW basket but a low-earnings-volatility basket, and the three-year averaged net payout screens out one-off buybacks that make single-year payout signals noisy. It tests whether the payout premium is concentrated in firms whose operating cash flow is genuinely repeatable.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "LeveredRecapByProfitableFirm",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oibdp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(RATIO(prstkc, at), RATIO(SUB(dltis, dltr), at))))",
+      "hypothesis": "Profitable firms that deliberately swap equity for debt \u2014 repurchasing shares while raising net borrowing \u2014 are signalling confidence in the durability of operating cash flow and are underpriced, in contrast to the presumption that debt-financed distributions are low quality.",
+      "expected_sign": "positive",
+      "reasoning": "Generation 0's `DebtFundedDistributionWarning` produced a +2.6% FF5 alpha with t=1.94 in the direction *opposite* to the hypothesis, which suggests net borrowing by distributing firms is a confidence rather than a distress signal; this proposal tests that reading head-on by requiring high operating profitability and rewarding the joint repurchase-plus-borrowing state. Because both spread legs are profitable firms, the alpha cannot be attributed to RMW, and a positive result would meaningfully redirect the search toward capital-structure substitution rather than payout level.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingAccelerationAmongProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(ADD(DELTA(ADD(dltt, dlc), 1), SUB(DELTA(ceq, 1), SUB(ib, dvt))), at), 1), 1))",
+      "hypothesis": "Among established profitable firms, an acceleration in the rate at which they absorb net external capital signals either valuation timing or an emerging funding need, and predicts lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This converts the high-coverage clean-surplus financing measure \u2014 which produced strong FMB slopes but no FF5 alpha as a level \u2014 into a year-over-year change, directly testing the diagnosis that the abnormal return lives in financing *news* rather than the financing state. If it works it also repairs the 0.077 coverage of the gen-1 alpha winner, since it needs no cash-flow-statement items.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "NetFinancingNewsAmongProfitableFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms, what matters is the change in *net* reliance on outside capital \u2014 issuance less repurchases, dividends and debt retirement \u2014 because gross issuance is often mere refinancing that carries no valuation information.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 1's best FF5 alpha used the change in *gross* issuance, so this isolates one specific measurement choice: netting the financing flow against simultaneous distributions and repayments. A stronger result would show the effect is about a genuine swing from distributing to absorbing capital; a weaker result would tell us gross issuance events, not net flows, are what the market misprices.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "SustainedEquityForDebtSubstitution",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oibdp, at), 3)), 0.5), IND_ZSCORE(MA(RATIO(SUB(SUB(prstkc, sstk), SUB(dltr, dltis)), at), 3)))",
+      "hypothesis": "Profitable firms running a multi-year program of retiring equity while adding debt are credibly signalling durable operating cash flow and are underpriced, whereas profitable firms doing the reverse swap are de-risking because managers doubt future cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the gen-1 levered-recap result (alpha 1.7%, t 1.76, Sharpe 0.32) by replacing single-year flows with a three-year average, so the long leg captures deliberate capital-structure policy rather than a one-off transaction, which should raise the alpha t-stat and Sharpe through more stable portfolio composition. The explicit equity-minus-debt netting also states the substitution mechanism directly instead of rank-summing two separate flows.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualHeavyEquityIssuers",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(SUB(ib, oancf), at)), 0.7), WINSOR(GROWTH(csho, 1), 1))",
+      "hypothesis": "Firms whose reported earnings are least cash-backed and that simultaneously expand their share count are managing earnings ahead of raising equity, and are the most overvalued corner of the profitability-financing space.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-1 composite of low accruals plus share shrinkage was strong (fmb 3.07, Sharpe 0.32) but symmetric, leaving open whether the information is in the good corner or the bad corner; gating on the top accrual tercile isolates the short leg where the economic story is sharpest. Because the gate uses earnings quality rather than earnings level, the resulting spread should be close to RMW-neutral.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitGrowthVersusDebtGrowth",
+      "expression": "SUB(IND_RANK(GROWTH(oiadp, 1)), IND_RANK(GROWTH(ADD(dltt, dlc), 1)))",
+      "hypothesis": "Firms whose operating profit is growing faster than their debt stock are expanding on internally generated funds and are underpriced, while firms whose borrowing outruns their profit growth are financing an unproven business with creditor capital.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the economic channel from levels or payout policy to a *growth-rate mismatch* between the operating engine and the balance sheet, which no archive signal tests, and it uses only high-coverage items so it should reach the top of the achievable coverage range. Because both legs are growth rates rather than levels, the spread should be less collinear with RMW and CMA than the gen-1 level-based composites that lost their alpha.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DividendStretchWithoutEarningsSupport",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(dvt, at), 1)), IND_RANK(DELTA(RATIO(ib, at), 1)))",
+      "hypothesis": "A rising dividend commitment is only credible when earnings power is rising with it; firms that raise payout intensity while profitability deteriorates are stretching to defend a payout signal and subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "This tests payout policy purely *relative to* contemporaneous earnings capability, so it cannot be a disguised dividend-yield or profitability tilt \u2014 the same dividend increase maps to opposite forecasts depending on the earnings change. It is the sustainability counterpart to the archive's payout signals and probes whether the mispricing sits in the mismatch between financing commitments and operating support.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "EquityChannelFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(sstk, ADD(prstkc, dvt)), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms the informative financing margin is the equity channel: a swing from returning cash to shareholders toward selling them new shares reveals that managers judge the stock rich, and predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates the equity half of the gen-2 winner by dropping debt issuance and repayment from the netting, testing whether the \u22123.8% alpha comes from shareholder-directed flows rather than creditor flows. If the alpha is preserved or improved, the mechanism is equity-market timing rather than general capital absorption.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtChannelFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "For cash-profitable firms, stepping up net borrowing is a confidence signal about the durability of operating cash flow \u2014 creditors impose discipline and interest is contractual \u2014 so the debt channel predicts higher returns, opposite in sign to the equity channel.",
+      "expected_sign": "positive",
+      "reasoning": "Two archive signals implied net borrowing by profitable or distributing firms earns positive FF5 alpha, which contradicts pooling debt with equity inside a single external-financing measure. Evaluating this as the exact debt-side complement of Signal 1 with an identical gate and identical operator structure gives a clean read on channel asymmetry, and a positive result would justify a future signed combination that subtracts the debt channel instead of adding it.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ShareCountAccelerationAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(GROWTH(csho, 1), 1), 1))",
+      "hypothesis": "Profitable firms whose rate of share-count expansion accelerates are diluting existing owners despite having internal funds available, and this dilution news is underweighted by the market.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-2 winner reaches only 0.068 coverage because it needs four cash-flow-statement items plus oancf; measuring the equity channel from share count and gating on operating profitability uses only widely reported fields and should roughly double usable observations. If the alpha survives at higher coverage, the effect is not an artifact of the post-1988 cash-flow-statement sample.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ExternalFundingPerDollarOfEarnings",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1))",
+      "hypothesis": "The economically relevant quantity is external capital raised per dollar of operating earnings: a firm that must raise a year's worth of EBITDA from outside investors is far more dependent than one raising the same dollars against a much larger earnings base, and such dependence predicts lower returns.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal scales financing by assets and treats profitability as a separate ranked leg, so the interaction is additive or gated; here profitability enters as the *deflator*, making the signal a true ratio interaction that cannot be decomposed into two main effects. The indicator on positive smoothed EBITDA keeps the denominator sign well defined, which is why earlier ratio ideas were avoided.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TwoYearFinancingSwingAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 2), 1))",
+      "hypothesis": "The swing from distributing to absorbing capital is a regime change in financial policy rather than a one-year event, so measuring it over two years should capture the same mispricing with less transitory noise.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates a single design choice \u2014 measurement horizon \u2014 on the strongest archive signal, which matters because a two-year change implies lower portfolio turnover and more stable membership if the Sharpe and alpha t-stat hold up. A deterioration would instead tell us the effect is genuinely a fresh-news effect that decays within a year, which would push future refinements toward timeliness rather than smoothing.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "EquityIssuanceByCashRichFirms",
+      "expression": "MUL(INDICATOR(RATIO(SUB(oancf, dvt), at), 0), WINSOR(RATIO(sstk, at), 1))",
+      "hypothesis": "Selling equity while generating operating cash flow in excess of dividends is issuance a firm does not need, so it is the purest observable case of managers exploiting a high stock price, and it should be followed by weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 0's profitable-issuer test failed because its gate (positive operating profit) admitted firms with genuine funding needs and its financing leg pooled debt refinancing with equity sales; conditioning on free cash flow after dividends and using equity issuance alone sharpens the no-need-for-capital interpretation. This tests whether the overvaluation reading works as a *level* when the conditioning event is economically extreme, complementing the change-based signals above.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TwoChannelRankBalancedFinancingNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(DELTA(RATIO(SUB(dltis, dltr), at), 1), DELTA(RATIO(SUB(sstk, ADD(prstkc, dvt)), at), 1))))",
+      "hypothesis": "For cash-profitable firms, a simultaneous swing toward creditor capital and toward shareholder capital is the strongest evidence of deteriorating self-funding, and the two channels should be weighted by cross-sectional rank rather than by raw dollars.",
+      "expected_sign": "negative",
+      "reasoning": "The decomposition showed the debt channel carries the FF5 alpha while the equity channel carries the Fama-MacBeth slope, so dollar-netting them inside one ratio lets whichever channel has larger dollar variance dominate; rank-balancing gives each channel equal influence and should lift both statistics at once. This directly targets the multi-metric objective rather than optimizing one statistic.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsDeflatedNetBorrowingNews",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(DELTA(RATIO(SUB(dltis, dltr), MA(oibdp, 3)), 1), 1))",
+      "hypothesis": "New net borrowing matters in proportion to the earnings stream that must service it, so incremental debt per dollar of smoothed EBITDA is the economically correct intensity measure and predicts lower returns for profitable firms.",
+      "expected_sign": "negative",
+      "reasoning": "This grafts the archive's best scaling choice (earnings deflation, fmb \u22123.98) onto the archive's best-identified alpha channel (net borrowing news, alpha t \u22122.81), a combination not yet tested. Dropping oancf from the construction also raises expected coverage from roughly 0.077 toward 0.11, addressing the concern that the strongest results so far rest on the narrow post-1988 cash-flow-statement sample.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "BorrowingDespiteCoveredPayout",
+      "expression": "MUL(INDICATOR(RATIO(SUB(oancf, ADD(dvt, prstkc)), at), 0), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "Firms whose operating cash flow already covers their entire distribution program have no funding need, so an increase in net borrowing by such firms reflects managerial empire-building or an unannounced deterioration, and predicts weak returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the profitability-rank gate with an explicit no-funding-need event, sharpening the agency interpretation of why profitable-firm borrowing is bad news rather than assuming it. Comparing its alpha with Signal 2's separates an agency reading (conditioning on free cash flow should strengthen the effect) from a pure debt-service-capacity reading (it should not).",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingNewsWhenProfitabilityDeteriorates",
+      "expression": "MUL(INDICATOR(NEG(DELTA(MA(RATIO(oancf, at), 3), 1)), 0), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "External capital raised while the firm's own cash profitability is falling is the clearest sign that financing substitutes for failing internal cash generation, and this combination of adverse operating news and adverse financing news predicts the weakest returns.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditional in the archive gates on the profitability *level*; gating on a decline in smoothed cash profitability tests a different economic state \u2014 substitution of outside capital for a shrinking internal source \u2014 and can apply to firms that are still profitable in levels. If this outperforms the level gate, future refinements should condition on operating deterioration rather than operating strength.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "NewBorrowingUnderHeavyInterestBurden",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(xint, oibdp)), 0.7), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "The cost of additional leverage depends on how much of operating profit is already pledged to lenders; firms in the top tercile of interest-to-EBITDA that borrow more are consuming their last financial flexibility and should underperform sharply.",
+      "expected_sign": "negative",
+      "reasoning": "This tests the financial-flexibility reading of the debt-news result by conditioning on debt-service burden \u2014 a profitability-relative quantity \u2014 instead of profitability level, and it predicts the effect concentrates where the earnings stream is least able to absorb new obligations. It is the mechanism-identifying counterpart to Signal 3's agency reading, so the pair discriminates between the two explanations.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingDeviationFromOwnNorm",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(SUB(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), MA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 3)), 1))",
+      "hypothesis": "What is mispriced is a profitable firm's departure from its own habitual financing policy, not the level of that policy nor a single-year difference, because habitual issuers and habitual repurchasers are already understood by the market.",
+      "expected_sign": "negative",
+      "reasoning": "A one-year DELTA worked and a two-year DELTA did not, which suggests the informative object is a deviation from the firm's recent norm rather than a longer-horizon drift; benchmarking against the trailing three-year average keeps the timeliness of the one-year signal while filtering the transitory noise that a single difference inherits from the base year. This is a within-firm normalization, orthogonal to the cross-sectional normalizations tested so far.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingIntensityAndNewsComposite",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), IND_ZSCORE(SUMRANK(WINSOR(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))))",
+      "hypothesis": "A profitable firm's dependence on outside capital has a persistent component, best measured as external funding per dollar of operating earnings, and a news component, best measured as the one-year change in financing intensity; both are mispriced and they carry complementary information.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's strongest Fama-MacBeth slope came from the earnings-deflated level (\u22123.98) and its strongest FF5 alpha from the asset-deflated one-year change (\u22123.07), and no signal has yet combined them, which is exactly what the multi-metric objective requires. Ranking the two legs before summing prevents the very wide-tailed earnings-deflated ratio from swamping the news leg in the extreme deciles.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingNewsWithAccrualEarningsGate",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The mispriced state is a firm with demonstrated operating strength that swings toward outside capital; operating income measures that strength as well as operating cash flow does, so the effect should not depend on cash-flow-statement profitability.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice \u2014 the gate variable \u2014 on the best archive signal, and it matters practically because dropping oancf from the gate should raise coverage from 0.068 to roughly 0.11 and extend the sample back before the modern cash-flow statement. If the alpha holds, the strongest result in the archive is not an artifact of a narrow sample; if it collapses, cash profitability specifically, not accounting profitability, is the necessary conditioning variable.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsDeflatedFinancingNews",
+      "expression": "MUL(INDICATOR(MA(RATIO(oibdp, at), 3), 0), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oibdp, 3)), 1), 1))",
+      "hypothesis": "The swing toward external capital should be measured against the earnings stream that would otherwise fund the firm, so a change in external funding per dollar of EBITDA is a sharper statement of lost self-sufficiency than a change per dollar of assets.",
+      "expected_sign": "negative",
+      "reasoning": "Earnings deflation applied to the debt channel alone reached alpha \u22122.3% at 0.108 coverage, better coverage but weaker alpha than the asset-deflated full flow, leaving unresolved whether the loss came from the deflator or from restricting to debt; this tests the deflator with the full flow. Profitability entering as the denominator makes the interaction irreducible to two additive main effects.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingShockPerOwnVolatility",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))",
+      "hypothesis": "A given change in financing policy is surprising only relative to how variable that firm's financing has been; firms with habitually lumpy issuance generate large changes that convey little news, while a modest swing at a policy-stable profitable firm is highly informative.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal compares financing changes across firms in raw scaled units, so firms with volatile capital-market activity mechanically populate the extreme deciles and add noise to the spread; standardizing each firm's shock by its own five-year financing volatility converts the signal into a surprise measure. The cost is coverage from the five-year window, so this is an exploratory test of whether cleaner surprise identification is worth a narrower sample.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "BorrowingByDividendCommittedFirms",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(dvt, MA(oibdp, 3))), 0.6), WINSOR(DELTA(RATIO(SUB(dltis, dltr), at), 1), 1))",
+      "hypothesis": "A high dividend commitment relative to operating earnings is a rigid claim on cash; firms carrying such a commitment that step up net borrowing are financing an inflexible payout with creditor money and should underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the interest-burden gate that produced zero alpha, this conditions on a *self-imposed* commitment measured against profitability rather than on leverage, so it should not simply select highly levered firms whose spread FF5 already spans. It tests a payout-rigidity mechanism for the debt-news effect that is distinct from both the agency and debt-capacity readings already examined.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingNewsWhenEarningsAreLowQuality",
+      "expression": "MUL(INDICATOR(IND_RANK(RATIO(SUB(ib, oancf), at)), 0.6), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "When reported earnings are poorly backed by cash, a simultaneous swing toward external financing confirms that the accounting profit is not fundable, making the combination a stronger sell signal than either accrual quality or financing news alone.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual gate produced the archive's second-strongest slope when paired with share-count growth (fmb \u22122.94) but no alpha, which I attribute to share count being a weak financing measure rather than to the gate; pairing that gate with the cash-flow-statement financing news that does generate alpha separates the two explanations. It also flips the conditioning logic from operating strength to earnings-quality weakness, a state the winning family has not yet exploited.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "VolStandardizedShockWideSample",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))",
+      "hypothesis": "A profitable firm's departure from its own habitual financing policy, measured in units of that firm's own financing volatility, is the mispriced quantity, and it should be detectable on the broader sample defined by operating-income profitability rather than cash-flow profitability.",
+      "expected_sign": "negative",
+      "reasoning": "This joins the archive's two independent successes of generation 5 \u2014 volatility standardization for the shock leg (best alpha t = \u22123.17) and the operating-income gate for coverage (0.098 versus 0.068) \u2014 a combination not yet tested. If both effects are additive, this should be the strongest signal in the archive on alpha t-stat and Sharpe simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitabilityWeightedFinancingNews",
+      "expression": "MUL(IND_RANK(MA(RATIO(oancf, at), 3)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The informativeness of a financing swing rises smoothly with the firm's cash profitability rather than switching on at the median, because the higher a firm's internal cash generation the less excusable is its turn to outside capital.",
+      "expected_sign": "negative",
+      "reasoning": "The hard indicator sets half the cross-section to exactly zero, which is the most likely reason the news family's Fama-MacBeth slopes sit near \u22122 despite strong alphas; replacing the gate with a continuous profitability-rank weight keeps the identical interaction economics while producing a signal defined and varying across the full sample. This tests whether the slope weakness is an estimation artifact of the mass point rather than an economic limitation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryRelativeFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1)))",
+      "hypothesis": "Industry-wide financing waves \u2014 utilities and capital-intensive sectors levering up together, tech sectors issuing equity in hot markets \u2014 are common shocks that carry no firm-specific information, so the financing surprise should be measured relative to industry peers.",
+      "expected_sign": "negative",
+      "reasoning": "Every signal in the winning family industry-adjusts the profitability gate but leaves the financing leg raw, so cross-industry differences in normal financing behavior enter the extreme deciles as noise and may also be what FF5's investment factor partially prices. Industry standardization of the news leg should sharpen both the slope and the alpha if the mispricing is firm-specific rather than sectoral.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingNewsExcludingStickyDividends",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), 1))",
+      "hypothesis": "Dividends are deliberately smoothed and almost never change abruptly, so including them in the netted financing flow injects a slow-moving, already-anticipated component; the true news is in issuance, repurchase and debt repayment decisions.",
+      "expected_sign": "negative",
+      "reasoning": "This is a targeted measurement test on the winning construction: if removing the sticky dividend term raises the alpha t-stat, the effect is driven by discretionary capital-market transactions and future work should exclude dividends; if it weakens, the dividend commitment is genuinely part of the self-funding story. Coverage and structure are otherwise held fixed, so the comparison is clean.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingAtFiveYearHighAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), TS_RANK(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5))",
+      "hypothesis": "A profitable firm whose current external funding intensity stands at the top of its own five-year distribution has reached a self-funding breakdown, and this within-firm state is mispriced even though the cross-sectional level is not.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-5 prohibition applies to *cross-sectional* levels, which FF5 spans; a firm's position within its own history is a different object, bounded in zero to one, that cannot be a disguised persistent characteristic because it is mechanically demeaned within firm. The bounded support should also give more stable decile membership than the winsorized changes, which should help the Sharpe ratio.",
+      "interaction_type": "novel",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "OnlyUpwardFinancingSwingsCount",
+      "expression": "MUL(INDICATOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 0), MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1)))",
+      "hypothesis": "The interaction is asymmetric: a profitable firm turning toward outside capital is genuine bad news, whereas a profitable firm turning further toward distribution merely confirms what the market already believes, so only upward financing swings should carry return predictability.",
+      "expected_sign": "negative",
+      "reasoning": "Every prior signal in this family treats increases and decreases symmetrically, yet the economic story is intrinsically one-sided (overvaluation and funding need appear on the issuance side), and the archive's payout-side signals have consistently failed to generate alpha. Truncating at zero tests whether the entire \u22123.6% alpha comes from the short leg, which would tell the final generations to invest all remaining effort in refining issuance-side conditioning rather than payout measurement.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "VolStandardizedShockNoDividends",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1))",
+      "hypothesis": "The mispriced event is a profitable firm's surprising turn toward discretionary outside capital, best measured as the change in issuance net of repurchases and debt repayment, expressed in units of the firm's own financing volatility and excluding smoothed dividends.",
+      "expected_sign": "negative",
+      "reasoning": "This unites the three independently validated improvements of the winning family \u2014 own-volatility standardization (alpha t \u22123.62), removal of the sticky dividend term (Sharpe \u22120.59), and the wide-coverage operating-income gate (0.098) \u2014 none of which have been combined. Because each change strengthened the alpha in isolation and none altered the economic mechanism, this is the natural consolidation candidate for the strongest joint evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearVolStandardizedFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 3)), 1))",
+      "hypothesis": "Three years of financing history is sufficient to characterize a firm's habitual capital-market variability, so a shorter standardization window should preserve the surprise interpretation while admitting younger firms whose financing behavior is most likely to be misjudged.",
+      "expected_sign": "negative",
+      "reasoning": "The five-year volatility window is the binding coverage constraint in the best construction, and younger firms excluded by it are precisely those where issuance surprises should be largest. This isolates the standardization-window choice, telling the final generations whether robustness is better served by a longer estimate of habitual behavior or by a wider sample.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RescaledFinancingShockWithinProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), ZSCORE(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1)))",
+      "hypothesis": "The Fama-MacBeth slope of the winning family is held down by the extreme kurtosis of the standardized shock, not by its economic content, so a pooled cross-sectional rescaling that leaves the sign structure and the central position of the gated-out zeros intact should sharpen the slope without harming the portfolio sort.",
+      "expected_sign": "negative",
+      "reasoning": "Industry standardization failed because it removed genuine cross-industry financing variation, whereas a plain cross-sectional z-score only rescales, keeping zeros near the middle of the sort and avoiding the one-sided-support failure seen with TS_RANK. This is the last untried route to raising fmb_tstat toward the \u22123 range while retaining the alpha near t \u22123.6.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TopTercileProfitFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.7), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 5)), 1))",
+      "hypothesis": "The more clearly a firm can fund itself internally, the more informative its turn to outside capital, so restricting the interaction to the most profitable third of firms should increase the abnormal-return magnitude.",
+      "expected_sign": "negative",
+      "reasoning": "Gate thresholds of 0.5 and 0.6 have both been used but never compared with the current best financing construction, and this directly tests the intensity of the interaction that the economic story predicts. The risk is a thinner and less stable short leg, which coverage and Sharpe will reveal, so the comparison is informative either way.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingShockWhenEarningsArePredictable",
+      "expression": "MUL(MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), INDICATOR(NEG(IND_RANK(VOL(RATIO(oiadp, at), 5))), -0.5)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1), 1))",
+      "hypothesis": "A financing surprise is only interpretable against a predictable earnings stream; when a profitable firm with stable, forecastable operating income suddenly reaches for outside capital, the market has no benign explanation and the negative information content is largest.",
+      "expected_sign": "negative",
+      "reasoning": "Every conditional so far gates on the level of profitability alone, whereas this adds a second-moment condition, testing whether earnings predictability is the missing ingredient that makes financing news informative rather than merely noisy. Low-volatility profitability was previously tested only as an additive rank leg in a payout composite, never as a conditioning state on financing news.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlowNewsVersusFinancingNews",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(prstkc, dltr)), at), 1)))",
+      "hypothesis": "What the market misprices is the direction of the wedge between two contemporaneous pieces of news: internal cash generation improving while external funding recedes is the underpriced state, and the reverse is the overpriced state.",
+      "expected_sign": "positive",
+      "reasoning": "All earlier rank-difference signals paired a profitability *level* against a financing measure and produced good slopes with no alpha, which the archive attributes to the level leg being factor-spanned; pairing two *news* variables removes that spanned component while keeping symmetric support that avoids the degenerate-decile problem. It also provides an ungated, high-coverage alternative to the conditional family, useful for judging whether the profitability gate or the profitability news is the essential ingredient.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingShockAgainstCashFlowNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1), NEG(DELTA(RATIO(oancf, at), 1))))",
+      "hypothesis": "Among established profitable firms, the worst state combines two contemporaneous pieces of news: an unusual turn toward outside capital and a decline in internally generated cash; each is mispriced and together they identify a genuine breakdown of self-funding.",
+      "expected_sign": "negative",
+      "reasoning": "The financing-shock leg supplies the archive's most reliable negative alpha (t \u22123.62) and the reversed cash-flow-news leg supplies its only reliable positive alpha (t 2.14 in the rank-difference form), and the two have never been combined inside the profitability gate. Both legs are news variables, so this composite avoids the generation-5 failure in which adding a persistent *level* leg destroyed the alpha entirely.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TwoNewsWedgeWithStandardizedFinancing",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1)))",
+      "hypothesis": "The mispriced quantity is the wedge between improving internal cash generation and a receding need for outside capital, and expressing the financing side as a surprise relative to the firm's own habit should sharpen that wedge.",
+      "expected_sign": "positive",
+      "reasoning": "The ungated two-news rank difference already delivered +3.2% alpha with Sharpe 0.52, and its financing leg was the raw change, which the archive has repeatedly shown is dominated by the volatility-standardized surprise. This tests the upgrade on the ungated construction, which is valuable because it needs no indicator gate and therefore has no zero mass to distort the decile sort.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualRepresentationFinancingShock",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1))))",
+      "hypothesis": "The economic magnitude of a financing swing (dollars per unit of assets) and its statistical surprise (dollars per unit of the firm's own financing volatility) are two noisy readings of the same underlying decision, so averaging their ranks should measure it more precisely than either alone.",
+      "expected_sign": "negative",
+      "reasoning": "These two representations generated the archive's two best alphas \u2014 \u22123.8% at t \u22123.07 for the magnitude version and \u22123.1% at t \u22123.62 for the surprise version \u2014 but they select partly different firms, since large swings at habitually active firms score high on one and low on the other. Combining them is a measurement-error argument rather than a new mechanism, and it should lift the alpha t-stat if the disagreement between the two is noise rather than signal.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FinancingNewsPerDollarOfInternalCash",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1))",
+      "hypothesis": "The correct yardstick for a financing swing is the internal cash the firm normally generates, because that is precisely the resource being substituted for; a swing worth a full year of operating cash flow is a far graver signal than the same dollars against a large asset base.",
+      "expected_sign": "negative",
+      "reasoning": "Deflating by assets and by EBITDA have both been tested, but smoothed operating cash flow \u2014 the actual alternative funding source in the economic story \u2014 has not, and it is the deflator that makes the interaction most explicitly a self-funding-gap measure. The three-year average in the denominator prevents a single weak cash-flow year from dominating, which is why earlier ratio attempts used smoothed profitability.",
+      "interaction_type": "ratio",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FlipFromSelfFundingToExternalFunding",
+      "expression": "MUL(MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), INDICATOR(NEG(LAG(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1)), 0)), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1))",
+      "hypothesis": "The information is concentrated in a regime flip: a profitable firm that was returning capital to investors last year and now absorbs it has revealed something new, whereas a firm that was already a net absorber is simply continuing a known policy.",
+      "expected_sign": "negative",
+      "reasoning": "This conditions on the prior-year financing *state* being distribution while measuring the current-year *change*, so it uses the level information that FF5 spans only as a conditioning event rather than as signal magnitude \u2014 the one way the archive has not yet exploited financing levels. Because the retained shock remains signed, the gated-out firms sit at zero in the middle of the sort, avoiding the degenerate-decile failure that ruined the one-sided constructions in generation 6.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "StandardizedBorrowingShockAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), WINSOR(RATIO(DELTA(RATIO(SUB(dltis, dltr), at), 1), VOL(RATIO(SUB(dltis, dltr), at), 5)), 1))",
+      "hypothesis": "Net borrowing is the channel that originally carried the abnormal return for profitable firms, so an unusual borrowing decision relative to that firm's own borrowing history should be the single sharpest expression of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "The debt channel alone produced \u22123.2% alpha (t \u22122.81) with the raw change, and volatility standardization improved the full flow from t \u22123.07 to \u22123.62; applying the better standardization to the stronger channel is the one crossing of these two findings that remains untested. If it beats the full-flow version, the final generation should treat the effect as a debt-policy surprise rather than a general external-capital surprise.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RepairedShockAgainstCashFlowNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1), NEG(DELTA(RATIO(oancf, at), 1)))))",
+      "hypothesis": "Among cash-profitable firms the worst state joins two contemporaneous pieces of news \u2014 an unusual turn toward outside capital, measured against the firm's own financing habit, and a decline in internally generated cash \u2014 because together they identify a real breakdown of self-funding rather than a routine capital-markets transaction.",
+      "expected_sign": "negative",
+      "reasoning": "This is the repaired version of the generation-8 proposal lost to a syntax error, and it is the only combination of the archive's short-side alpha engine with its long-side alpha engine; both legs are news variables, so it avoids the generation-5 failure where a persistent level leg annihilated the alpha. Because the cash-flow-news leg already requires oancf, gating on cash profitability costs no coverage and uses the gate that historically produced the largest alphas.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RawShockAgainstCashFlowNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), NEG(DELTA(RATIO(oancf, at), 1)))))",
+      "hypothesis": "The same two-news interaction should work with the financing swing expressed in economic magnitude, dollars per unit of assets, which is the representation that has delivered both the largest alpha and the strongest Fama-MacBeth slope in this family.",
+      "expected_sign": "negative",
+      "reasoning": "The asset-scaled change carries the archive's best joint record (alpha \u22123.8% at t \u22123.07 with fmb \u22122.28) while the volatility-standardized version trades slope for alpha reliability, so pairing each with the cash-flow-news leg isolates which representation benefits more from the operating-news dimension. Run alongside Signal 1, this pair identifies the best final configuration rather than assuming one.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeLegSelfFundingBreakdown",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), SUMRANK(WINSOR(RATIO(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), VOL(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 5)), 1), NEG(DELTA(RATIO(oancf, at), 1))))))",
+      "hypothesis": "A profitable firm's loss of self-funding is best measured by three complementary readings: the dollar size of its financing swing, how surprising that swing is relative to its own history, and whether internal cash generation is simultaneously deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "The two financing representations disagree about which firms are extreme \u2014 large swings at habitually active firms rank high on magnitude and low on surprise \u2014 and adding the operating-news leg supplies information from a different accounting statement altogether, so the three-way rank average should have the lowest measurement error of any archive construction. The risk, visible in generation 8's two-representation test, is dilution, which is why this is proposed alongside the cleaner two-leg versions rather than instead of them.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualDeflatorFinancingNews",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oiadp, at), 3)), 0.5), IND_ZSCORE(SUMRANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 1), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1))))",
+      "hypothesis": "A financing swing is economically large either when it is big relative to the asset base being financed or when it is big relative to the internal cash flow it replaces, and firms extreme on both dimensions are the clearest cases of external-capital dependence among profitable firms.",
+      "expected_sign": "negative",
+      "reasoning": "The asset deflator and the internal-cash deflator produced nearly identical alphas (\u22123.8% and \u22123.7%) through different scalings, so their intersection should concentrate genuine dependence while their disagreement \u2014 small firms with tiny cash flow, or large firms with lumpy assets \u2014 is exactly the noise to be averaged away. Unlike Signal 3 this keeps both legs on the same news concept, testing whether the gain comes from deflator diversification rather than from adding the operating-news dimension.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "UngatedWedgeWithInternalCashDeflator",
+      "expression": "SUB(IND_RANK(DELTA(RATIO(oancf, at), 1)), IND_RANK(WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), MA(oancf, 3)), 1), 1)))",
+      "hypothesis": "Improving internal cash generation combined with a receding need for outside capital, where that need is scaled by the firm's own normal cash flow, identifies underpriced self-funding strength without requiring any profitability gate.",
+      "expected_sign": "positive",
+      "reasoning": "The ungated two-news wedge is the archive's only dependable long-side result (alpha +3.2%, Sharpe 0.52) and has no zero mass to distort deciles, while the internal-cash deflator is the strongest-magnitude financing scaling found; combining them tests the positive side of the mechanism at its best specification. Keeping one clean positive-signed candidate matters because the entire short-side family relies on the same gated architecture, and a sign-symmetric confirmation strengthens the economic interpretation.",
+      "interaction_type": "composite",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "OutlierTrimmedFinancingNewsAmongProfitable",
+      "expression": "MUL(INDICATOR(IND_RANK(MA(RATIO(oancf, at), 3)), 0.5), WINSOR(DELTA(RATIO(SUB(ADD(sstk, dltis), ADD(ADD(prstkc, dvt), dltr)), at), 1), 5))",
+      "hypothesis": "The cross-sectional slope of the winning signal is held down by a handful of merger- and recapitalization-driven financing swings; trimming at the fifth percentile should leave the portfolio sort essentially intact while making the pooled regression coefficient representative of typical firms.",
+      "expected_sign": "negative",
+      "reasoning": "Every attempt to raise fmb_tstat by re-weighting the gate or standardizing the shock has failed, leaving tail treatment as the one untested lever, and heavier winsorization is exactly the intervention that separates decile membership (unaffected by monotone trimming) from slope magnitude (highly sensitive to tails). If the alpha holds near \u22123% while the slope moves toward \u22123, this becomes the best-balanced signal in the archive on both forms of evidence.",
+      "interaction_type": "conditional",
+      "theme_a": "profitability",
+      "theme_b": "financing",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:profit_finance"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutBackedOperatingProfit",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_adj(ma(ratio(oiadp,at),3)),ratio(sub(add(prstkc,dvt),sstk),at))",
+        "variables": [
+          "at",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitableIssuerOvervaluation",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ma(ratio(oiadp,at),3),0),winsor(ratio(add(sstk,dltis),at),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "oiadp",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashProfitSignedByFinancingDirection",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ma(ratio(oancf,at),3)),sign(sub(add(prstkc,dvt),add(sstk,dltis))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SelfFundedMarginImprovement",
+      "metadata": {
+        "normalized_expression": "sumrank(trend(ratio(oiadp,sale),5),neg(delta(ratio(add(dltt,dlc),at),1)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "oiadp",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearInternalVersusExternalFundingMix",
+      "metadata": {
+        "normalized_expression": "sub(rank(ts_sum(ratio(oancf,at),5)),rank(ts_sum(ratio(add(sstk,dltis),at),5)))",
+        "variables": [
+          "at",
+          "dltis",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtFundedDistributionWarning",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ratio(sub(add(dvt,prstkc),oancf),at),0),ratio(sub(dltis,dltr),at))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitLessNetExternalFinanceRank",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ma(ratio(ib,at),3)),ind_rank(ratio(add(delta(add(dltt,dlc),1),sub(delta(ceq,1),sub(ib,dvt))),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "dlc",
+          "dltt",
+          "dvt",
+          "ib"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WithinProfitableFinancingTilt",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),ind_zscore(neg(ratio(add(delta(add(dltt,dlc),1),sub(delta(ceq,1),sub(ib,dvt))),at))))",
+        "variables": [
+          "at",
+          "ceq",
+          "dlc",
+          "dltt",
+          "dvt",
+          "ib",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NewIssuanceByProfitableFirms",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.6),delta(ratio(add(sstk,dltis),at),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedEarningsVersusShareIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(sub(ib,oancf),at)),neg(growth(csho,1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableProfitPersistentDistributor",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(vol(ratio(ib,at),5)),ma(ratio(sub(add(dvt,prstkc),sstk),at),3))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LeveredRecapByProfitableFirm",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oibdp,at),3)),0.5),ind_zscore(sumrank(ratio(prstkc,at),ratio(sub(dltis,dltr),at))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oibdp",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingAccelerationAmongProfitableFirms",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(delta(ratio(add(delta(add(dltt,dlc),1),sub(delta(ceq,1),sub(ib,dvt))),at),1),1))",
+        "variables": [
+          "at",
+          "ceq",
+          "dlc",
+          "dltt",
+          "dvt",
+          "ib",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetFinancingNewsAmongProfitableFirms",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SustainedEquityForDebtSubstitution",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oibdp,at),3)),0.5),ind_zscore(ma(ratio(sub(sub(prstkc,sstk),sub(dltr,dltis)),at),3)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oibdp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualHeavyEquityIssuers",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ratio(sub(ib,oancf),at)),0.7),winsor(growth(csho,1),1))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitGrowthVersusDebtGrowth",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(growth(oiadp,1)),ind_rank(growth(add(dltt,dlc),1)))",
+        "variables": [
+          "dlc",
+          "dltt",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DividendStretchWithoutEarningsSupport",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(delta(ratio(dvt,at),1)),ind_rank(delta(ratio(ib,at),1)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EquityChannelFinancingNewsAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(sstk,add(prstkc,dvt)),at),1),1))",
+        "variables": [
+          "at",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtChannelFinancingNewsAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(dltis,dltr),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShareCountAccelerationAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(delta(growth(csho,1),1),1))",
+        "variables": [
+          "at",
+          "csho",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ExternalFundingPerDollarOfEarnings",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ma(ratio(oibdp,at),3),0),winsor(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oibdp,3)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oibdp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TwoYearFinancingSwingAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),2),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EquityIssuanceByCashRichFirms",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ratio(sub(oancf,dvt),at),0),winsor(ratio(sstk,at),1))",
+        "variables": [
+          "at",
+          "dvt",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TwoChannelRankBalancedFinancingNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ind_zscore(sumrank(delta(ratio(sub(dltis,dltr),at),1),delta(ratio(sub(sstk,add(prstkc,dvt)),at),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsDeflatedNetBorrowingNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ma(ratio(oibdp,at),3),0),winsor(delta(ratio(sub(dltis,dltr),ma(oibdp,3)),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BorrowingDespiteCoveredPayout",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ratio(sub(oancf,add(dvt,prstkc)),at),0),winsor(delta(ratio(sub(dltis,dltr),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingNewsWhenProfitabilityDeteriorates",
+      "metadata": {
+        "normalized_expression": "mul(indicator(neg(delta(ma(ratio(oancf,at),3),1)),0),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NewBorrowingUnderHeavyInterestBurden",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ratio(xint,oibdp)),0.7),winsor(delta(ratio(sub(dltis,dltr),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oibdp",
+          "xint"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingDeviationFromOwnNorm",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(sub(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),ma(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),3)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingIntensityAndNewsComposite",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ma(ratio(oibdp,at),3),0),ind_zscore(sumrank(winsor(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oibdp,3)),1),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oibdp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingNewsWithAccrualEarningsGate",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsDeflatedFinancingNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ma(ratio(oibdp,at),3),0),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oibdp,3)),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oibdp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingShockPerOwnVolatility",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BorrowingByDividendCommittedFirms",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ratio(dvt,ma(oibdp,3))),0.6),winsor(delta(ratio(sub(dltis,dltr),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oibdp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingNewsWhenEarningsAreLowQuality",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ratio(sub(ib,oancf),at)),0.6),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "VolStandardizedShockWideSample",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitabilityWeightedFinancingNews",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ma(ratio(oancf,at),3)),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryRelativeFinancingNewsAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ind_zscore(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingNewsExcludingStickyDividends",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingAtFiveYearHighAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ts_rank(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OnlyUpwardFinancingSwingsCount",
+      "metadata": {
+        "normalized_expression": "mul(indicator(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),0),mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "VolStandardizedShockNoDividends",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),5)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearVolStandardizedFinancingShock",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),3)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RescaledFinancingShockWithinProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),zscore(winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),5)),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TopTercileProfitFinancingShock",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.7),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),5)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingShockWhenEarningsArePredictable",
+      "metadata": {
+        "normalized_expression": "mul(mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),indicator(neg(ind_rank(vol(ratio(oiadp,at),5))),-0.5)),winsor(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlowNewsVersusFinancingNews",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(delta(ratio(oancf,at),1)),ind_rank(delta(ratio(sub(add(sstk,dltis),add(prstkc,dltr)),at),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "invalid_expression",
+      "message": "unbalanced parentheses",
+      "proposal_name": "FinancingShockAgainstCashFlowNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),ind_zscore(sumrank(winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1),neg(delta(ratio(oancf,at),1))))",
+        "variables": []
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TwoNewsWedgeWithStandardizedFinancing",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(delta(ratio(oancf,at),1)),ind_rank(winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualRepresentationFinancingShock",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),ind_zscore(sumrank(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1),winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FinancingNewsPerDollarOfInternalCash",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oancf,3)),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FlipFromSelfFundingToExternalFunding",
+      "metadata": {
+        "normalized_expression": "mul(mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),indicator(neg(lag(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1)),0)),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StandardizedBorrowingShockAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),winsor(ratio(delta(ratio(sub(dltis,dltr),at),1),vol(ratio(sub(dltis,dltr),at),5)),1))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oiadp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RepairedShockAgainstCashFlowNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ind_zscore(sumrank(winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1),neg(delta(ratio(oancf,at),1)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RawShockAgainstCashFlowNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ind_zscore(sumrank(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1),neg(delta(ratio(oancf,at),1)))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeLegSelfFundingBreakdown",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),ind_zscore(sumrank(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1),sumrank(winsor(ratio(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),vol(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),5)),1),neg(delta(ratio(oancf,at),1))))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualDeflatorFinancingNews",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oiadp,at),3)),0.5),ind_zscore(sumrank(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),1),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oancf,3)),1),1))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "oiadp",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "UngatedWedgeWithInternalCashDeflator",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(delta(ratio(oancf,at),1)),ind_rank(winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),ma(oancf,3)),1),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OutlierTrimmedFinancingNewsAmongProfitable",
+      "metadata": {
+        "normalized_expression": "mul(indicator(ind_rank(ma(ratio(oancf,at),3)),0.5),winsor(delta(ratio(sub(add(sstk,dltis),add(add(prstkc,dvt),dltr)),at),1),5))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    }
+  ]
+}

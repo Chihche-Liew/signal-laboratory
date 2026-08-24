@@ -1,0 +1,179 @@
+{
+  "schema_version": "3",
+  "semantics": "2026-07-monthly-universe-v2",
+  "created_at": "2026-08-06T02:06:35.121350+00:00",
+  "selection": "horse_race",
+  "input_population": "first_pass_discoveries",
+  "threshold": 1.96,
+  "experiment_dir": "data/experiments/formal/ablation_gpt_5_6_sol/2026-08-05T15-04-09_diff_model_accrual_distress",
+  "n_input": 4,
+  "n_survivors": 2,
+  "input_signals": [
+    {
+      "name": "Depreciation Restraint During Capital Erosion",
+      "expression": "MUL(IND_RANK(NEG(RATIO(dp,at))),RANK(NEG(WINSOR(RATIO(DELTA(re,1),LAG(at,1)),1))))",
+      "hypothesis": "Unusually low depreciation predicts lower returns when retained earnings are actively deteriorating.",
+      "expected_sign": "negative",
+      "reasoning": "Falling retained earnings identifies current capital erosion rather than relying on a static leverage level, making the incentive to preserve reported earnings more immediate. The industry-relative depreciation rank controls for asset-mix differences, and the continuous deterioration weight may produce a broader slope than a pure joint-tail portfolio effect.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.5238132934021413,
+      "ls_alpha": 0.0020919504846586582,
+      "ls_talpha": 0.21378497211030076,
+      "ls_sharpe": 0.07972600907952052,
+      "coverage": 0.12641599535093737,
+      "error": null,
+      "source_experiment": "2026-08-05T15-04-09_diff_model_accrual_distress",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_6_sol/2026-08-05T15-04-09_diff_model_accrual_distress",
+      "normalized_expression": "mul( ind_rank( neg( ratio( dp, at ) ) ), rank( neg( winsor( ratio( delta( re, 1 ), lag( at, 1 ) ), 1 ) ) ) )",
+      "signal_id": "95ec26f50b95",
+      "pair_name": "accrual_distress",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "Rollover-Exposed Persistent Opaque Accruals",
+      "expression": "MUL(WINSOR(MA(NEG(RATIO(aoloch,at)),3),1),RANK(RATIO(dlc,lt)))",
+      "hypothesis": "Persistent cash absorption in miscellaneous operating accounts predicts lower returns when current debt is large relative to total liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Persistent opaque accruals have shown consistent evidence under long-term debt, but debt maturity determines how quickly their funding burden must be resolved. Current-debt exposure targets near-term refinancing pressure, under which recurring opaque balances are more likely to force cash raising, reclassification, or write-downs.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.2170856802171954,
+      "ls_alpha": -0.04038243239225379,
+      "ls_talpha": -3.4035885323358075,
+      "ls_sharpe": -0.3831629301677039,
+      "coverage": 0.09085823991045272,
+      "error": null,
+      "source_experiment": "2026-08-05T15-04-09_diff_model_accrual_distress",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_6_sol/2026-08-05T15-04-09_diff_model_accrual_distress",
+      "normalized_expression": "mul( winsor( ma( neg( ratio( aoloch, at ) ), 3 ), 1 ), rank( ratio( dlc, lt ) ) )",
+      "signal_id": "17b394d72979",
+      "pair_name": "accrual_distress",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "Asset-Contraction-Residualized Depreciation Cuts",
+      "expression": "MUL(SUB(RANK(WINSOR(NEG(RATIO(DELTA(dp,1),LAG(at,1))),1)),RANK(WINSOR(NEG(GROWTH(at,1)),1))),RANK(RATIO(lct,lt)))",
+      "hypothesis": "Depreciation reductions that are unusually large relative to asset contraction predict lower returns when near-term obligations are concentrated.",
+      "expected_sign": "negative",
+      "reasoning": "Subtracting the asset-contraction rank removes depreciation declines plausibly caused by disposal or shrinkage of the depreciable asset base, rather than making another minor scaling change. The residual isolates discretionary expense restraint, while current-liability concentration captures the reporting and refinancing pressure that makes such restraint consequential.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.8283856564637224,
+      "ls_alpha": -0.012644944278564565,
+      "ls_talpha": -1.5113324135943371,
+      "ls_sharpe": -0.23517479059997953,
+      "coverage": 0.11390858673283656,
+      "error": null,
+      "source_experiment": "2026-08-05T15-04-09_diff_model_accrual_distress",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_6_sol/2026-08-05T15-04-09_diff_model_accrual_distress",
+      "normalized_expression": "mul( sub( rank( winsor( neg( ratio( delta( dp, 1 ), lag( at, 1 ) ) ), 1 ) ), rank( winsor( neg( growth( at, 1 ) ), 1 ) ) ), rank( ratio( lct, lt ) ) )",
+      "signal_id": "b800cc590fc3",
+      "pair_name": "accrual_distress",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    },
+    {
+      "name": "Retained-Earnings-Boundary Opaque Persistence",
+      "expression": "MUL(WINSOR(MA(NEG(RATIO(aoloch,at)),3),1),RANK(NEG(ABS(RATIO(re,at)))))",
+      "hypothesis": "Persistent cash absorption in opaque operating accounts predicts lower returns when retained earnings are close to zero.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the depreciation-and-demand recombination and instead tests a distinct reporting threshold. Firms near the accumulated-deficit boundary may use recurring miscellaneous accruals to preserve dividend capacity, covenant headroom, or the appearance of accumulated profitability.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.075852267229149,
+      "ls_alpha": -0.02954525279713611,
+      "ls_talpha": -2.1771467345825526,
+      "ls_sharpe": -0.310566945075173,
+      "coverage": 0.09101409948762905,
+      "error": null,
+      "source_experiment": "2026-08-05T15-04-09_diff_model_accrual_distress",
+      "source_experiment_dir": "paper/data/formal/ablation_gpt_5_6_sol/2026-08-05T15-04-09_diff_model_accrual_distress",
+      "normalized_expression": "mul( winsor( ma( neg( ratio( aoloch, at ) ), 3 ), 1 ), rank( neg( abs( ratio( re, at ) ) ) ) )",
+      "signal_id": "69123766872d",
+      "pair_name": "accrual_distress",
+      "exclude_financials": true,
+      "exclude_microcap": true
+    }
+  ],
+  "stepwise_survivors": [
+    "95ec26f50b95",
+    "b800cc590fc3"
+  ],
+  "stepwise_t": {
+    "95ec26f50b95": -2.2153208803059994,
+    "b800cc590fc3": -2.9096201223088642
+  },
+  "fmb_conditional_t": {
+    "95ec26f50b95": -2.514815471903703,
+    "17b394d72979": -0.12210398978915156,
+    "b800cc590fc3": -2.305403251307518,
+    "69123766872d": -0.521635960587937
+  },
+  "fmb_survivors": [
+    "95ec26f50b95",
+    "b800cc590fc3"
+  ],
+  "absolute_fmb_survivors": [
+    "95ec26f50b95",
+    "b800cc590fc3"
+  ],
+  "corr_matrix": {
+    "95ec26f50b95": {
+      "95ec26f50b95": 1.0,
+      "17b394d72979": 0.020047210420425017,
+      "b800cc590fc3": 0.024742894270964853,
+      "69123766872d": 0.021456836350956625
+    },
+    "17b394d72979": {
+      "95ec26f50b95": 0.020047210420425017,
+      "17b394d72979": 1.0,
+      "b800cc590fc3": -0.01127723823168774,
+      "69123766872d": 0.9537967640060021
+    },
+    "b800cc590fc3": {
+      "95ec26f50b95": 0.024742894270964853,
+      "17b394d72979": -0.01127723823168774,
+      "b800cc590fc3": 1.0,
+      "69123766872d": -0.012513594822115342
+    },
+    "69123766872d": {
+      "95ec26f50b95": 0.021456836350956625,
+      "17b394d72979": 0.9537967640060021,
+      "b800cc590fc3": -0.012513594822115342,
+      "69123766872d": 1.0
+    }
+  },
+  "dropped": [
+    {
+      "signal_id": "17b394d72979",
+      "name": "Rollover-Exposed Persistent Opaque Accruals",
+      "expression": "MUL(WINSOR(MA(NEG(RATIO(aoloch,at)),3),1),RANK(RATIO(dlc,lt)))",
+      "reason": "conditional_t_below_threshold",
+      "fmb_conditional_t": -0.12210398978915156
+    },
+    {
+      "signal_id": "69123766872d",
+      "name": "Retained-Earnings-Boundary Opaque Persistence",
+      "expression": "MUL(WINSOR(MA(NEG(RATIO(aoloch,at)),3),1),RANK(NEG(ABS(RATIO(re,at)))))",
+      "reason": "near_duplicate",
+      "fmb_conditional_t": -0.521635960587937
+    }
+  ],
+  "status": "ok",
+  "reason": null
+}

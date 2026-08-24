@@ -1,0 +1,2738 @@
+{
+  "pair": "invest_accrual",
+  "evaluated": [
+    {
+      "name": "AccrualMinusCapexFundedGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(ib, oancf), LAG(at, 1))), RANK(RATIO(capx, LAG(at, 1))))",
+      "hypothesis": "For a given level of balance-sheet expansion, the portion attributable to accounting accruals (earnings not backed by cash) reverses sharply, while the portion attributable to real capital expenditure reflects genuine productive capacity and reverses far less; the wedge between accrual intensity and capex intensity therefore predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "Ranking both channels on the same lagged-asset scale makes them directly comparable and isolates the composition of growth rather than its level. Firms high on accruals but low on capex are growing on paper only, so subsequent earnings disappointment and mispricing correction are concentrated there. The subtraction of ranks removes the common asset-growth component that a single-theme signal would capture.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.5832950570334123,
+      "ls_alpha": -0.027185160774713737,
+      "ls_talpha": -2.146575758374784,
+      "ls_sharpe": -0.17464177839123032,
+      "coverage": 0.0834686592753835,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalVsTangibleExpansion",
+      "expression": "WINSOR(SUB(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), LAG(at, 1)), RATIO(DELTA(ppent, 1), LAG(at, 1))), 1)",
+      "hypothesis": "Growth in non-cash working capital (receivables and inventory net of operating payables) is discretionary, quickly self-reversing accounting growth, whereas growth in net property, plant and equipment is committed real investment; the difference in these two expansion channels, scaled by lagged assets, predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "This decomposes total asset growth into its accrual limb and its physical-capital limb and takes the spread, so it is orthogonal to the level of overall growth by construction. Working-capital build-ups signal demand shortfalls and channel-stuffing that reverse within a year, while PPE build-ups embed multi-year productive commitments. Winsorization controls the fat tails typical of scaled balance-sheet changes.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3103240770141078,
+      "ls_alpha": -0.043950724517421276,
+      "ls_talpha": -4.247775318872878,
+      "ls_sharpe": -0.1569155519087421,
+      "coverage": 0.11224051263509893,
+      "error": null
+    },
+    {
+      "name": "AccrualsUnderDisinvestment",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), INDICATOR(SUB(dp, capx), 0))",
+      "hypothesis": "Accruals are most diagnostic of earnings manipulation when the firm is not investing: when depreciation exceeds capital expenditure the productive asset base is contracting, so any accrual-driven asset or earnings growth is purely accounting in nature and should reverse strongly.",
+      "expected_sign": "negative",
+      "reasoning": "The dp-versus-capx comparison is a clean, scale-free investment-regime switch that separates shrinking real capital from expanding real capital, and it interacts with accruals in the direction the economic story predicts. Firms replacing capital at or above depreciation can legitimately carry higher accruals from growing operations, so their accruals should be less informative. This conditional design tests whether the accrual anomaly is state-dependent on real investment rather than universal.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.376140377562868,
+      "ls_alpha": -0.004691936522098888,
+      "ls_talpha": -0.47719845316323817,
+      "ls_sharpe": -0.15582106359898826,
+      "coverage": 0.08928081304114899,
+      "error": null
+    },
+    {
+      "name": "RankedWCAccrualMinusPPEGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(DELTA(act, 1), DELTA(lct, 1)), LAG(at, 1))), RANK(RATIO(DELTA(ppent, 1), LAG(at, 1))))",
+      "hypothesis": "Balance-sheet expansion arriving through net current-asset (working capital) build is self-reversing accounting growth, while expansion arriving through net property, plant and equipment is committed real investment; the rank wedge between the two channels predicts returns negatively and monotonically.",
+      "expected_sign": "negative",
+      "reasoning": "This is a deliberate isolation of one design choice relative to the gen-0 winner: identical economics, but each limb is rank-transformed before subtraction so that extreme scaled changes cannot invert the Fama-MacBeth slope, which was the sole failure of that signal. Dropping the che/dlc refinements also removes two variables from the availability intersection, which should lift coverage well above 0.112. If both fmb_tstat and ls_talpha turn negative, we learn the gen-0 anomaly was real but outlier-corrupted in level space.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.585405374057523,
+      "ls_alpha": -0.0030356955295362887,
+      "ls_talpha": -0.31549568350649476,
+      "ls_sharpe": 0.0763759165220159,
+      "coverage": 0.1137303877988521,
+      "error": null
+    },
+    {
+      "name": "AccrualsPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(ib, oancf), ADD(capx, dp)), 1)",
+      "hypothesis": "Total accruals normalized by gross real investment (capital expenditure plus depreciation, i.e. the scale of genuine capital activity) measures how much of reported earnings growth is accounting rather than productive; firms with large accruals per dollar of real investment reverse hardest.",
+      "expected_sign": "negative",
+      "reasoning": "This is the continuous repair of AccrualsUnderDisinvestment: the dp-versus-capx conditioning that produced the strong FMB slope is retained, but as a smooth denominator instead of a 0/1 mask, eliminating the degenerate point mass that destroyed the portfolio spread. The denominator is almost always strictly positive, so the ratio is well behaved, and all four inputs are widely reported, protecting coverage. It directly tests whether the earlier FMB/alpha divergence was purely a portfolio-construction artifact.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.163612729996895,
+      "ls_alpha": -0.04263135226760832,
+      "ls_talpha": -2.7293884057056053,
+      "ls_sharpe": -0.2642072017943855,
+      "coverage": 0.08865809702111642,
+      "error": null
+    },
+    {
+      "name": "DepreciationLagBehindCapacity",
+      "expression": "MUL(RANK(GROWTH(ppegt, 1)), RANK(NEG(DELTA(RATIO(dp, ppegt), 1))))",
+      "hypothesis": "Firms that expand gross property, plant and equipment while simultaneously slowing their depreciation rate are capitalizing and under-expensing the new capital, so reported earnings overstate the economics of the investment and returns subsequently disappoint.",
+      "expected_sign": "negative",
+      "reasoning": "This introduces a genuinely new accrual channel \u2014 depreciation policy, the largest non-working-capital accrual \u2014 rather than the receivables/inventory channel already tested, and ties it mechanically to the real investment being made. The multiplicative rank form concentrates the short leg on firms where both conditions hold, so gross-PPE growth alone or depreciation-rate declines alone are not sufficient to enter the extreme portfolios. It tests whether the \"accounting versus productive growth\" story operates through expense timing as well as through working capital.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -3.8382233519868643,
+      "ls_alpha": 0.011880517221264864,
+      "ls_talpha": 1.246220650152008,
+      "ls_sharpe": -0.04578826986142342,
+      "coverage": 0.11794344603513048,
+      "error": null
+    },
+    {
+      "name": "OperatingWCBuildPerRealInvestment",
+      "expression": "WINSOR(RATIO(NEG(ADD(recch, invch)), ADD(capx, dp)), 1)",
+      "hypothesis": "Receivable and inventory accumulation taken straight from the cash flow statement measures discretionary, demand-driven accrual build; expressed per dollar of gross real investment it identifies firms whose growth is unsold product and unpaid invoices rather than productive capacity.",
+      "expected_sign": "negative",
+      "reasoning": "Using recch and invch avoids the balance-sheet contamination (acquisitions, reclassifications, write-offs) that plagues differenced act and lct and likely caused the sign inversion in the gen-0 working capital signal, so it is an independent measurement of the same economic quantity. Pairing it with the gross-investment denominator from signal 2 lets us attribute any performance difference to the accrual measurement rather than the scaling. Cash-flow-statement coverage begins later, so coverage will be checked as a diagnostic rather than assumed.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.44576587678943014,
+      "ls_alpha": 0.02737809719077758,
+      "ls_talpha": 1.943137424235498,
+      "ls_sharpe": 0.0811365824066157,
+      "coverage": 0.07552699213406998,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithExternalFinancing",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), SUMRANK(RATIO(sstk, LAG(at, 1)), GROWTH(dltt, 1)))",
+      "hypothesis": "Accrual-inflated earnings are most damaging when the firm is simultaneously raising outside equity and debt, because managers have both the incentive to inflate reported growth and the ability to fund an expansion that internal cash flow cannot support.",
+      "expected_sign": "negative",
+      "reasoning": "This shifts the economic channel from the composition of assets to the financing of growth, which is the mechanism the anomaly literature associates with the strongest reversals and which none of the archive signals touches. Nested SUMRANK keeps all three legs on a common robust rank scale, avoiding the outlier problems that broke the level-space signals while still giving a fully ordered, densely populated cross-section for portfolio sorting. A weak result here would tell us the interaction is about asset composition, not funding.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.2106805149934408,
+      "ls_alpha": -0.017549712895451482,
+      "ls_talpha": -1.491913570757984,
+      "ls_sharpe": -0.29092023873050515,
+      "coverage": 0.06644973242300196,
+      "error": null
+    },
+    {
+      "name": "AccrualAccelVsCapexDecel",
+      "expression": "SUB(ACCEL(WINSOR(RATIO(SUB(ib, oancf), at), 1)), ACCEL(RATIO(capx, at)))",
+      "hypothesis": "The informative state is not the level of accrual-heavy growth but its dynamics: firms whose accruals are accelerating while real capital spending is decelerating are substituting accounting growth for productive investment, and this divergence precedes the reversal.",
+      "expected_sign": "negative",
+      "reasoning": "Levels-based versions of this interaction have now produced mixed evidence, so it is worth testing whether the mispricing is triggered by the change in the mix rather than the mix itself \u2014 a distinguishable economic claim about when investors are fooled. Second differences are noisy, hence the winsorized accrual input and the asset-scaled capex leg, and the required extra lags make coverage an explicit diagnostic. If this outperforms the static wedge, later generations should build on divergence dynamics rather than static composition.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.4539436808835238,
+      "ls_alpha": -0.003263715692365625,
+      "ls_talpha": -0.27344490759809953,
+      "ls_sharpe": -0.08604194724137892,
+      "coverage": 0.07145792730391513,
+      "error": null
+    },
+    {
+      "name": "NonCashWCAccrualPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), ADD(capx, dp)), 1)",
+      "hypothesis": "The sharpest reversals come from firms whose expansion is almost entirely non-cash working capital build measured against the scale of their genuine capital activity; one dollar of receivable and inventory accrual per dollar of gross real investment is accounting growth with no productive counterpart.",
+      "expected_sign": "negative",
+      "reasoning": "This deliberately merges the two constructions that independently produced reliable FF5 alpha \u2014 the properly cash- and debt-adjusted non-cash working capital numerator (t=\u22124.25) and the gross-investment denominator that delivered the best Sharpe (\u22120.264) \u2014 while keeping the level form that rank transforms destroyed. Scaling by capx+dp rather than lagged assets makes the denominator a direct measure of real investment intensity, so the ratio literally reads as accounting growth per unit of productive growth. If both alpha and slope improve, this becomes the consolidation anchor for later generations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.0542497718843733,
+      "ls_alpha": -0.02762713094663756,
+      "ls_talpha": -2.5724237706015507,
+      "ls_sharpe": -0.20634113410681262,
+      "coverage": 0.11057821684674356,
+      "error": null
+    },
+    {
+      "name": "IndAdjWCvsPPEExpansion",
+      "expression": "IND_ZSCORE(WINSOR(SUB(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), LAG(at, 1)), RATIO(DELTA(ppent, 1), LAG(at, 1))), 5))",
+      "hypothesis": "The gen-0 wedge between working capital expansion and physical capital expansion is genuinely priced, but its Fama-MacBeth slope is corrupted by fat tails and by industry composition \u2014 capital-intensive industries mechanically load on the PPE limb while distribution and retail load on the working capital limb.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the failed rank repair: instead of destroying magnitude information with RANK, it compresses only the extreme 5% tails and removes industry means, which preserves within-industry ordering and spacing. If fmb_tstat turns negative while alpha survives near \u22124%, we learn the FMB/alpha divergence was a measurement artifact rather than a non-monotone economic relation. If alpha again collapses, we learn the effect truly requires cross-industry extremes and later generations should stop industry-adjusting.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.8217664689635796,
+      "ls_alpha": -0.03962842850047579,
+      "ls_talpha": -4.276745384699324,
+      "ls_sharpe": -0.2442560078698028,
+      "coverage": 0.11209878927908987,
+      "error": null
+    },
+    {
+      "name": "SoftAssetAmplifiedAccruals",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "Accruals are only as distortive as the balance sheet is discretionary: the same accrual load is far more likely to reverse in a firm whose assets are mostly soft (neither hard capital nor cash) because that is where managerial estimation latitude and unverifiable asset values reside.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the failed 0/1 disinvestment mask with a continuous, bounded amplifier \u2014 the share of assets that is neither PPE nor cash \u2014 so the cross-section stays fully ordered and no degenerate point mass sits at the decile breakpoints. It tests a distinct economic channel, accounting discretion capacity rather than growth composition, and both inputs are levels, consistent with the finding that magnitude information carries the alpha. The amplifier lies in roughly [0,1], so it modulates rather than dominates the accrual signal.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.1991975339216405,
+      "ls_alpha": -0.030872400819816972,
+      "ls_talpha": -2.088757964510822,
+      "ls_sharpe": -0.27112136323427133,
+      "coverage": 0.09038942296977036,
+      "error": null
+    },
+    {
+      "name": "ExpansionCashFlowDeficit",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, DELTA(invt, 1)), oancf), LAG(at, 1)), 1)",
+      "hypothesis": "What matters is whether the firm's combined real and inventory expansion exceeds the operating cash flow available to fund it; a large expansion cash deficit means the growth is being carried by accruals and outside capital and must be unwound.",
+      "expected_sign": "negative",
+      "reasoning": "This changes the economic channel from asset composition to the funding gap between committed expansion and internally generated cash, which is the mechanism behind both the accrual and investment anomalies but has not yet been measured directly in the archive. It uses only three widely reported items so coverage should exceed the 0.076\u20130.089 range of the cash-flow-component signals, and it keeps the winsorized level form associated with real alpha. Firms whose capex and inventory build are fully cash-covered sit at the long end, which is economically the correct comparison group.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.832461622450208,
+      "ls_alpha": -0.04067096410747893,
+      "ls_talpha": -2.8905243618593426,
+      "ls_sharpe": -0.4608301558173887,
+      "coverage": 0.08210121204166657,
+      "error": null
+    },
+    {
+      "name": "ThreeYearAccrualPerCapexFlow",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 1)",
+      "hypothesis": "A single year of accruals per dollar of real investment is noisy and partly seasonal; firms that sustain accrual-heavy, investment-light growth for three consecutive years are the ones whose accounting growth is systematically overstated and whose reversal is largest.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates the horizon design choice against AccrualsPerGrossInvestment (\u03b1=\u22124.3%, FMB \u22121.16): if the weak FMB slope reflects one-year measurement noise rather than non-monotonicity, cumulating both limbs over three years should raise the slope t-stat while retaining or improving alpha. Cumulative flows also stabilize the denominator across the capex cycle, reducing the mechanical volatility of the ratio. The cost is roughly two extra years of history, so coverage is the diagnostic to watch.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.539800470811799,
+      "ls_alpha": -0.06809105183651029,
+      "ls_talpha": -4.377959886441534,
+      "ls_sharpe": -0.49341436669709005,
+      "coverage": 0.08929071871437569,
+      "error": null
+    },
+    {
+      "name": "AccrualsAgainstLaborCapacity",
+      "expression": "WINSOR(SUB(RATIO(SUB(ib, oancf), at), GROWTH(emp, 1)), 1)",
+      "hypothesis": "Employment growth is the hardest-to-manipulate measure of genuine capacity expansion; firms whose accruals rise while their workforce shrinks are generating reported growth that no real operating expansion supports, and they should underperform firms whose earnings quality is backed by hiring.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal has benchmarked accruals against capital-side investment (capx, ppent, ppegt, dp); labor is an independent and economically distinct real-activity yardstick that is not subject to capitalization or depreciation-policy discretion. Because employment growth is bounded and roughly symmetric while the accrual ratio is fat-tailed, the winsorized difference should sort cleanly and produce a stable portfolio composition. A strong result would open a new refinement axis \u2014 real activity measured by inputs rather than by assets.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.1092423604331731,
+      "ls_alpha": -0.05762435574193717,
+      "ls_talpha": -3.8160458501821166,
+      "ls_sharpe": -0.3240358059937526,
+      "coverage": 0.08215811807067203,
+      "error": null
+    },
+    {
+      "name": "ThreeYearExpansionCashDeficit",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ADD(capx, DELTA(invt, 1)), oancf), 3), LAG(at, 1)), 1)",
+      "hypothesis": "Firms that have run a cumulative three-year deficit between committed expansion (capital expenditure plus inventory build) and operating cash flow have financed growth with accruals and outside capital for long enough that the accounting overstatement is systematic, not transitory, and the reversal is correspondingly large.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the only mechanism with strong dual evidence (the expansion cash deficit, FMB \u22122.83 / \u03b1 \u22124.1%) with the only construction change that clearly lifted alpha (three-year cumulation, which took \u03b1 from \u22124.3% to \u22126.8%). Crucially the denominator stays lagged total assets rather than a cumulative capex flow, so the fragile small-denominator problem that flattened the ThreeYear slope is avoided. This is the leading consolidation candidate for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.3574258323376287,
+      "ls_alpha": -0.038940282829824646,
+      "ls_talpha": -2.6511018208090094,
+      "ls_sharpe": -0.35868939351243323,
+      "coverage": 0.08264132919276193,
+      "error": null
+    },
+    {
+      "name": "CumulativeAccrualLessCapexScaled",
+      "expression": "WINSOR(RATIO(SUB(TS_SUM(SUB(ib, oancf), 3), TS_SUM(capx, 3)), at), 1)",
+      "hypothesis": "Over a three-year window, the excess of cumulative accruals over cumulative real capital spending measures how much of a firm's reported growth was booked rather than built, and this excess predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates exactly one design choice against ThreeYearAccrualPerCapexFlow (\u03b1 \u22126.8%, FMB \u22120.54): the two limbs are differenced and scaled by total assets instead of being divided by each other, so no observation can explode when capex plus depreciation is near zero. If the slope turns strongly negative while alpha stays near \u22125% or better, we will have confirmed that every FMB failure in this archive is a denominator-tail artifact rather than economic non-monotonicity, which would let later generations trust level ratios throughout.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.118966266264992,
+      "ls_alpha": -0.015073811673114161,
+      "ls_talpha": -1.1010067898976932,
+      "ls_sharpe": -0.23801909445054942,
+      "coverage": 0.09076692198539409,
+      "error": null
+    },
+    {
+      "name": "SmoothedAccrualsVsHiring",
+      "expression": "WINSOR(SUB(MA(RATIO(SUB(ib, oancf), at), 3), MA(GROWTH(emp, 1), 3)), 1)",
+      "hypothesis": "Persistent accrual accumulation unaccompanied by sustained workforce expansion identifies reported growth with no real operating counterpart; employment is the one real-activity measure immune to capitalization and depreciation discretion.",
+      "expected_sign": "negative",
+      "reasoning": "The one-year labor version produced a large reliable alpha (\u22125.8%, t=\u22123.82) but a wrong-signed slope, consistent with single-year employment growth being dominated by lumpy hiring, layoffs and merger-related headcount jumps; three-year averaging of both limbs targets exactly that noise. It keeps the labor channel, which is economically independent of every capital-side benchmark in the archive, so a successful repair adds a genuinely diversifying signal rather than another capx-scaled ratio. Smoothing also stabilizes portfolio composition, which should show up in Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.9750000022233142,
+      "ls_alpha": -0.048482950386749116,
+      "ls_talpha": -3.2412796208065395,
+      "ls_sharpe": -0.2284539159720469,
+      "coverage": 0.08307769473521723,
+      "error": null
+    },
+    {
+      "name": "AcquiredGrowthCashDeficit",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1)), 1)",
+      "hypothesis": "Expansion through acquisition is the growth channel most prone to accounting overstatement, since acquired assets enter at negotiated fair values rather than at cost incurred; when total expansion including acquisitions outruns operating cash flow, subsequent returns are lowest.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal has measured real investment as organic capex, inventory or PPE, leaving the acquisition channel untested even though it is where \"accounting growth\" is most literal. Nesting it inside the funding-deficit form that already produced dual evidence lets us attribute any change in performance to the acquisition limb rather than to a new construction. Coverage is the diagnostic here, since aqc is sparsely reported for non-acquirers.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.4287173719486046,
+      "ls_alpha": -0.03884955558254986,
+      "ls_talpha": -2.6972710163591667,
+      "ls_sharpe": -0.4384257279213361,
+      "coverage": 0.08046538297396376,
+      "error": null
+    },
+    {
+      "name": "SoftAssetAmplifiedCashDeficit",
+      "expression": "MUL(WINSOR(RATIO(SUB(ADD(capx, DELTA(invt, 1)), oancf), LAG(at, 1)), 1), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "A cash-financed expansion deficit is most likely to be reversed when the balance sheet absorbing it is soft \u2014 neither hard capital nor cash \u2014 because that is where the deficit can be parked in discretionary, unverifiable asset values.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two mechanisms with the strongest and most similar cross-sectional slopes (expansion deficit, FMB \u22122.83; soft-asset-amplified accruals, FMB \u22123.20, Sharpe \u22120.271), testing whether they are the same effect or two independent conditions whose conjunction sharpens both legs. The amplifier is bounded roughly in [0,1] and continuous, so unlike the failed indicator mask it modulates without creating a point mass at the decile breakpoints. If the interaction beats both parents, discretion capacity becomes a general conditioning variable for later refinements.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.8705547834712246,
+      "ls_alpha": -0.03737611150403615,
+      "ls_talpha": -2.7682139628538587,
+      "ls_sharpe": -0.42296005424657596,
+      "coverage": 0.08153731095641752,
+      "error": null
+    },
+    {
+      "name": "AccountingAssetCreationPerRealInvestment",
+      "expression": "WINSOR(RATIO(ADD(SUB(ib, oancf), DELTA(intan, 1)), ADD(capx, dp)), 1)",
+      "hypothesis": "Total non-cash asset creation has two accounting limbs \u2014 accruals from operations and capitalized intangibles \u2014 and their combined size relative to gross real investment measures how much of the balance sheet grew by recognition rather than by expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Capitalized intangibles are a recognition choice with no cash counterpart in the current period, economically parallel to accruals but entirely absent from the archive, so pooling them tests whether the reversal mechanism is about accruals specifically or about non-cash recognition generally. Using the gross-investment denominator that produced reliable alpha keeps the comparison to AccrualsPerGrossInvestment interpretable: any improvement is attributable to the intangible limb. Intangible reporting is uneven, so coverage will indicate whether this channel can support a stable portfolio.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.407948288361736,
+      "ls_alpha": -0.028491452130405742,
+      "ls_talpha": -2.525476673506442,
+      "ls_sharpe": -0.268547996258008,
+      "coverage": 0.07387295107340351,
+      "error": null
+    },
+    {
+      "name": "HeavyWinsorAccrualPerGrossInvest3Y",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 10)",
+      "hypothesis": "Three-year accruals per dollar of three-year gross real investment is the correct measure of accounting-versus-productive growth, and its cross-sectional slope is masked purely by extreme-observation leverage rather than by any weakness in the underlying economics.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the archive's best portfolio signal (\u03b1=\u22126.8%, t=\u22124.38, FMB \u22120.54): winsorization at 10% instead of 1%. Decile breakpoints and hence portfolio membership are almost unchanged by tail compression, so alpha should survive, while the Fama-MacBeth slope should stop being dominated by a handful of asset-light firm-years. If alpha holds near \u22126% and the slope turns clearly negative, this becomes the consolidation anchor and the winsorization lesson transfers to every other signal in the family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.53327807221186,
+      "ls_alpha": -0.06809105183651029,
+      "ls_talpha": -4.377959886441534,
+      "ls_sharpe": -0.49341436669709005,
+      "coverage": 0.08929071871437569,
+      "error": null
+    },
+    {
+      "name": "HeavyWinsorAccrualsVsHiring",
+      "expression": "WINSOR(SUB(RATIO(SUB(ib, oancf), at), GROWTH(emp, 1)), 10)",
+      "hypothesis": "Accruals accumulating without workforce expansion identify reported growth with no real operating counterpart; the wrong-signed slope of the earlier labor signals comes from merger- and restructuring-driven headcount jumps in the tails, not from a failure of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "Three-year smoothing did not repair the slope (FMB +0.98 with \u03b1 \u22124.8%), which rules out year-to-year noise and points instead to a few enormous employment-growth observations flipping the regression, so tail compression is the right next test on this channel. Labor is the only real-activity yardstick in the archive immune to capitalization and depreciation discretion, and it has produced two large reliable alphas (\u22125.8% and \u22124.8%), so repairing its slope would add a genuinely diversifying signal rather than another capx-scaled ratio.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.055221769371376,
+      "ls_alpha": -0.05762435574193717,
+      "ls_talpha": -3.8160458501821166,
+      "ls_sharpe": -0.3240358059937526,
+      "coverage": 0.08215811807067203,
+      "error": null
+    },
+    {
+      "name": "TotalExpansionDeficitPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, ADD(aqc, DELTA(invt, 1))), oancf), ADD(capx, dp)), 5)",
+      "hypothesis": "The economically complete measure is how far total expansion \u2014 organic capital spending, acquisitions and inventory build \u2014 outruns operating cash flow, expressed per dollar of genuine capital activity rather than per dollar of assets.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two structural features that have separately produced the best evidence: the funding-deficit numerator (FMB \u22122.83 to \u22123.43 across two variants) and the gross-investment denominator that generated the largest alphas, with intermediate 5% winsorization as a compromise between slope stability and tail information. Scaling by capx+dp instead of assets means the signal reads as deficit per unit of real investment, so asset-light accounting growers sort to the short leg for the same economic reason they do in the alpha-king signal. Coverage should sit near 0.080 given the aqc limb, which is acceptable relative to the archive.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.2521864491990393,
+      "ls_alpha": -0.03815255696479326,
+      "ls_talpha": -2.821815837088518,
+      "ls_sharpe": -0.41261429320904663,
+      "coverage": 0.07800789894892553,
+      "error": null
+    },
+    {
+      "name": "AccrualPlusDebtPerRealInvestment",
+      "expression": "WINSOR(RATIO(ADD(SUB(ib, oancf), DELTA(dltt, 1)), ADD(capx, dp)), 5)",
+      "hypothesis": "Accruals and new long-term borrowing are two non-operating sources of reported and financial expansion; when their combined size is large relative to actual capital spending, the firm is growing its balance sheet through accounting recognition and leverage rather than through productive investment.",
+      "expected_sign": "negative",
+      "reasoning": "The financing channel has only been tested in rank-composite form (AccrualsWithExternalFinancing: FMB \u22122.21, Sharpe \u22120.291 but \u03b1 only \u22121.8%), and ranks have repeatedly destroyed alpha in this archive, so a level-form test of the same economics is warranted rather than a restatement. Pooling accruals and debt issuance in the numerator over a real-investment denominator makes the \"sources not matched by real uses\" story explicit and keeps the construction that carries alpha. If it works, it separates whether the deficit signals are about cash shortfall or about how the shortfall is plugged.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.662890523468556,
+      "ls_alpha": -0.028514872453120347,
+      "ls_talpha": -1.8454242042645854,
+      "ls_sharpe": -0.2777879351315522,
+      "coverage": 0.08166520764354765,
+      "error": null
+    },
+    {
+      "name": "SoftAssetAmplified3YAccrualIntensity",
+      "expression": "MUL(WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 5), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "Sustained accrual-heavy, investment-light growth reverses most violently when it is parked in soft assets, because only unverifiable, discretionary carrying values allow the overstatement to persist for three years before correcting.",
+      "expected_sign": "negative",
+      "reasoning": "The discretion amplifier improved both the slope and Sharpe of the one-year accrual signal (FMB \u22123.20, Sharpe \u22120.271) and of the deficit signal (FMB \u22122.87, Sharpe \u22120.423), so applying it to the highest-alpha base signal tests whether the two effects compound rather than substitute. The amplifier is bounded in roughly [0,1] and continuous, so it modulates the intensity ratio without creating point masses at decile breakpoints. A clear improvement over the base would establish discretion capacity as the general conditioning variable for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.0246360848921965,
+      "ls_alpha": -0.04152147621756429,
+      "ls_talpha": -2.68526357315427,
+      "ls_sharpe": -0.27741096659266845,
+      "coverage": 0.08873708444668973,
+      "error": null
+    },
+    {
+      "name": "TaxUnvalidatedAccrualsPerInvestment",
+      "expression": "WINSOR(RATIO(SUB(SUB(ib, oancf), DELTA(txp, 1)), ADD(capx, dp)), 5)",
+      "hypothesis": "Accruals that are not accompanied by a rise in taxes payable are the least likely to reflect real economic income, because the firm is reporting profit to shareholders without recognizing a corresponding obligation to the tax authority; such accruals, relative to real investment, should reverse hardest.",
+      "expected_sign": "negative",
+      "reasoning": "Every accrual measure in the archive treats all accruals as equally suspect, whereas the tax-book gap is a widely accepted discriminator of earnings quality and is untested here, making this the batch's distinct mechanism rather than a rescaling. It reuses the gross-investment denominator so any performance difference is attributable to the tax-validation adjustment in the numerator, not to construction. Taxes payable are unevenly reported, so coverage will indicate whether this refinement can support a stable portfolio.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.2473919697421232,
+      "ls_alpha": -0.04302325008582081,
+      "ls_talpha": -3.025892542076717,
+      "ls_sharpe": -0.34961870063163625,
+      "coverage": 0.07553565959814335,
+      "error": null
+    },
+    {
+      "name": "DeficitPlusAccrualIntensityZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))), ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))))",
+      "hypothesis": "Accounting growth is identified by two economically distinct symptoms \u2014 a current funding gap between total expansion and operating cash flow, and a multi-year record of accruals unmatched by real investment \u2014 and a firm exhibiting both is unambiguously growing on paper.",
+      "expected_sign": "negative",
+      "reasoning": "The two limbs are the archive's slope champion (FMB \u22123.43) and its alpha champion (\u03b1 \u22126.8%, t \u22124.38), and they are conceptually independent: one is a current-year cash state, the other a cumulative composition measure. ZSCORE rather than RANK puts them on a comparable scale while preserving the magnitude information that rank transforms repeatedly destroyed here, so the composite can inherit the deficit limb's monotone middle and the intensity limb's informative extremes. This is the most direct test of whether the two forms of evidence can be obtained in one signal.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.5287631277708584,
+      "ls_alpha": -0.03720317745886391,
+      "ls_talpha": -2.523616443429348,
+      "ls_sharpe": -0.4178598580350124,
+      "coverage": 0.07924414760443675,
+      "error": null
+    },
+    {
+      "name": "ThreeYearAcquiredDeficitPerGrossInvestment",
+      "expression": "RATIO(TS_SUM(SUB(ADD(capx, aqc), oancf), 3), TS_SUM(ADD(capx, dp), 3))",
+      "hypothesis": "A firm that has funded three years of combined organic and acquired expansion out of accruals and outside capital, measured per dollar of genuine capital activity rather than per dollar of assets, is the purest case of accounting growth and should show the largest reversal.",
+      "expected_sign": "negative",
+      "reasoning": "This assembles the three features that have each independently improved results \u2014 the acquisition-inclusive deficit numerator (FMB \u22123.43), the gross-investment denominator that produced every large alpha, and three-year cumulation that lifted alpha from \u22124.3% to \u22126.8% \u2014 into a single parsimonious ratio. Cumulating the deficit failed when scaled by assets (\u03b1 \u22123.9%), so this specifically tests whether cumulation only pays off under investment-intensity scaling, which is a clean and interpretable design question. Both limbs cumulate over the same window, so the ratio is dimensionless and stable across the capex cycle.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.0135525006329305,
+      "ls_alpha": -0.030000569524281043,
+      "ls_talpha": -2.5094106792410535,
+      "ls_sharpe": -0.37335701302176544,
+      "coverage": 0.0878713698803147,
+      "error": null
+    },
+    {
+      "name": "DepreciationAdequacyAmplifiedAccruals",
+      "expression": "MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))",
+      "hypothesis": "Accruals matter most when replacement investment is inadequate: if depreciation exceeds capital expenditure the productive base is shrinking, so any accrual-supported earnings growth has no real counterpart and must reverse.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator version of this exact economic idea produced the archive's second-strongest slope (FMB \u22123.38) with zero alpha, and I now know the alpha failure came from the 0/1 mask piling half the universe at a single value rather than from tail treatment, so the continuous dp/capx amplifier is the correct repair. The amplifier scales the accrual signal smoothly by how far real investment falls short of depreciation, keeping the cross-section fully ordered and the extreme deciles economically homogeneous. If alpha now appears alongside the slope, disinvestment-conditioned accruals become a second consolidation candidate.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.2530037315104057,
+      "ls_alpha": -0.047522635857958566,
+      "ls_talpha": -2.915593043913986,
+      "ls_sharpe": -0.39895324319357034,
+      "coverage": 0.08736210477395666,
+      "error": null
+    },
+    {
+      "name": "AccrualInstabilityPerRealInvestment",
+      "expression": "RATIO(VOL(SUB(ib, oancf), 5), MA(ADD(capx, dp), 5))",
+      "hypothesis": "It is not only the size of accruals but their instability that signals low-quality accounting growth; firms whose accruals swing violently relative to their steady real investment base are managing reported earnings rather than reporting economic income.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal measures accrual level or cumulative level; second-moment earnings-quality has never been tested, and it is economically distinct because a firm can have modest average accruals while repeatedly booking and reversing them. Scaling volatility by average gross investment keeps the familiar real-investment denominator so the interaction is genuine rather than a single-theme volatility measure. The five-year window costs coverage, which will be the diagnostic for whether this channel is usable.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -0.7738792686749243,
+      "ls_alpha": 0.024257197820850486,
+      "ls_talpha": 1.8628115869209385,
+      "ls_sharpe": 0.09988108627584585,
+      "coverage": 0.08022295194014992,
+      "error": null
+    },
+    {
+      "name": "IntangibleParkedDeficit",
+      "expression": "MUL(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1)), RATIO(intan, at))",
+      "hypothesis": "An expansion cash deficit is most likely to be reversed when the resulting assets are intangible, because purchased goodwill and intangibles carry negotiated values with no verifiable productive capacity behind them and are the natural resting place for overstated growth.",
+      "expected_sign": "negative",
+      "reasoning": "The soft-asset amplifier (assets minus PPE minus cash) improved the deficit signal's Sharpe and slope, but soft assets pool receivables, inventory and intangibles together; sharpening the amplifier to intangible intensity tests which component of discretion actually carries the effect. This matters economically because the acquisition limb of the deficit mechanically creates intangibles, so the amplifier and numerator describe the same corporate action from two sides. If intangible intensity outperforms the broad soft-asset version, later refinements should condition on intangible rather than working-capital discretion.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -4.134000625850942,
+      "ls_alpha": -0.0165881605858374,
+      "ls_talpha": -1.2143717796191074,
+      "ls_sharpe": -0.16177237749156867,
+      "coverage": 0.07388409495578355,
+      "error": null
+    },
+    {
+      "name": "AccrualsPlusCapitalWithoutLaborZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ib, oancf), at)), ZSCORE(SUB(GROWTH(ppegt, 1), GROWTH(emp, 1))))",
+      "hypothesis": "Genuine capacity expansion requires both capital and workers; gross plant growing faster than headcount, combined with high accruals, indicates costs being capitalized into fixed assets and earnings recognized ahead of real operating capability.",
+      "expected_sign": "negative",
+      "reasoning": "The labor channel has twice delivered large reliable alphas (\u22125.8%, \u22124.8%) with wrong-signed slopes, and with winsorization ruled out as the cause the remaining explanation is the raw scale mismatch of differencing an asset-scaled accrual level against a growth rate, which standardizing both limbs fixes directly. Replacing employment growth with the capital-minus-labor growth wedge also sharpens the economics: it isolates capital deepening unaccompanied by hiring, which is where capitalization of operating costs shows up. A successful slope here would validate the ZSCORE-composite construction used in signal 1.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.1902480174978534,
+      "ls_alpha": -0.03477060905943179,
+      "ls_talpha": -2.246914466841281,
+      "ls_sharpe": -0.21825754871104103,
+      "coverage": 0.07532351309653822,
+      "error": null
+    },
+    {
+      "name": "ThreeYearDepAdequacyAmplifiedAccruals",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))",
+      "hypothesis": "Three years of accumulated accruals, weighted by how far cumulative capital spending has fallen short of cumulative depreciation, identifies firms whose reported growth has persistently outrun a shrinking productive base.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two most productive levers in the archive: the dense, strictly positive dp/capx amplifier that produced the best balance of slope and alpha (FMB \u22123.25, \u03b1 \u22124.8%), and three-year cumulation, the only construction that has ever pushed alpha past \u22126%. Cumulating both limbs over the same window also stabilizes the amplifier, since single-year capex is lumpy and its inverse is the noisiest part of the gen-5 winner. If alpha lands near \u22126% with a slope near \u22123, this becomes the primary candidate for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.905387914287611,
+      "ls_alpha": -0.03738928572343086,
+      "ls_talpha": -2.580506566549134,
+      "ls_sharpe": -0.43826662238510145,
+      "coverage": 0.08840978449382422,
+      "error": null
+    },
+    {
+      "name": "BalancedTwoChannelZ",
+      "expression": "ADD(ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))), ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))))",
+      "hypothesis": "Disinvestment-weighted current accruals and cumulative accrual intensity are two measurements of the same underlying condition \u2014 earnings recognized without productive investment \u2014 measured at different horizons, and averaging them should retain the cross-sectional slope of the first and the portfolio spread of the second.",
+      "expected_sign": "negative",
+      "reasoning": "This applies the gen-5 composite lesson correctly: both limbs are individually alpha-bearing (\u22124.8% and \u22126.8%), unlike the earlier composite that diluted the alpha king with a merely slope-bearing deficit limb. Standardizing before adding equalizes the very different natural scales of a dp/capx-weighted level and a cumulative flow ratio, and the two limbs' measurement errors are largely independent across horizons, so the average should be more reliable than either. It isolates one design choice against signal 1: additive standardized combination versus a single multiplicative construction.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.5816643633164957,
+      "ls_alpha": -0.05891250378443674,
+      "ls_talpha": -3.879948780799083,
+      "ls_sharpe": -0.4581712481068334,
+      "coverage": 0.08736210477395666,
+      "error": null
+    },
+    {
+      "name": "ThreeChannelAccountingGrowthZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))), ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx)))))",
+      "hypothesis": "Accounting growth leaves three separable traces \u2014 a current cash funding gap on total expansion, a multi-year accrual-to-investment imbalance, and current accruals under inadequate replacement investment \u2014 and a firm displaying all three is the most reliably mispriced.",
+      "expected_sign": "negative",
+      "reasoning": "The deficit limb carries the archive's most consistent slopes (\u22122.8 to \u22123.4) while the other two carry the alpha, so pooling all three tests whether diversification across symptoms raises reliability enough to offset the alpha dilution seen in the two-channel gen-5 composite. Every limb is dense and continuous, so no point mass can destabilize the extreme deciles, and standardization keeps any single limb from dominating. Coverage is the diagnostic: the intersection includes aqc, so anything materially below 0.075 would make this unattractive relative to signals 1 and 2.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.5785603074117485,
+      "ls_alpha": -0.038573720319322345,
+      "ls_talpha": -2.612898641662237,
+      "ls_sharpe": -0.44046523164841933,
+      "coverage": 0.07783893499154303,
+      "error": null
+    },
+    {
+      "name": "FiveYearAccrualIntensity",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 5), TS_SUM(ADD(capx, dp), 5))",
+      "hypothesis": "If the mispricing reflects a slow-building, persistent divergence between booked earnings and real investment, then lengthening the accumulation window beyond three years should continue to sharpen the identification of chronic accounting growers.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulation from one to three years was the single largest alpha improvement in the archive (\u22124.3% to \u22126.8%), and the horizon has never been pushed further, so this is the highest-value one-parameter experiment remaining and it directly informs how the final generations should set windows. A five-year window also mechanically stabilizes the denominator across the capex cycle, which may finally deliver a negative slope alongside the alpha. The cost is roughly two additional years of required history, making coverage the key diagnostic for whether the longer window is usable.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.3492878093912403,
+      "ls_alpha": -0.055709403203754754,
+      "ls_talpha": -3.7137649970423463,
+      "ls_sharpe": -0.432204484338139,
+      "coverage": 0.08952649437399034,
+      "error": null
+    },
+    {
+      "name": "ConjunctionMinDeficitIntensity",
+      "expression": "MIN(ZSCORE(RATIO(SUB(ib, oancf), ADD(capx, dp))), ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))))",
+      "hypothesis": "A firm is only convincingly growing on paper when accruals are large relative to real investment *and* total expansion outruns operating cash flow; requiring both conditions simultaneously should produce a cleaner short leg than averaging the two symptoms.",
+      "expected_sign": "negative",
+      "reasoning": "Additive composites let one strong limb drag a firm into the extreme decile even when the other limb contradicts it, which plausibly explains why the gen-5 two-channel composite had a strong slope but diluted alpha; taking the minimum of the standardized limbs enforces conjunction while keeping the signal continuous and free of point masses, unlike indicators. This is a genuinely different operator structure rather than a rescaling, and it tests whether the mispricing requires joint symptoms or merely an aggregate score. If MIN beats ADD, the final generations should build conjunctions instead of sums.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.416502866308003,
+      "ls_alpha": -0.03860556015577415,
+      "ls_talpha": -2.6570011390915838,
+      "ls_sharpe": -0.43891324169849416,
+      "coverage": 0.07901358274167572,
+      "error": null
+    },
+    {
+      "name": "UnexplainedPPEGrowthWithAccruals",
+      "expression": "ADD(ZSCORE(RATIO(SUB(DELTA(ppegt, 1), capx), LAG(ppegt, 1))), ZSCORE(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Gross property growing faster than capital expenditure means fixed assets arrived through acquisition, revaluation or capitalized operating costs rather than through cash outlay; combined with high accruals this is balance-sheet expansion by recognition rather than by expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Every real-investment benchmark in the archive has treated capex and PPE growth as interchangeable measures of productive investment, whereas their difference is precisely the non-cash component of hard-asset growth \u2014 an untested channel that is conceptually the fixed-asset analogue of accruals. Both limbs are dense and standardized, following the amplifier lesson from IntangibleParkedDeficit, and using ppegt rather than intan avoids the sparsity that destroyed that signal's portfolio spread. A strong result would open capitalization of costs into hard assets as a refinement axis for the endgame.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.458811172487355,
+      "ls_alpha": -0.02676032760758623,
+      "ls_talpha": -1.7506824611438203,
+      "ls_sharpe": -0.21751255600588223,
+      "coverage": 0.07630959191102725,
+      "error": null
+    },
+    {
+      "name": "IndNeutral3YAccrualIntensity",
+      "expression": "IND_ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)))",
+      "hypothesis": "Three-year accruals per dollar of gross real investment is a genuinely monotone predictor *within* an industry, but pooling across industries mixes capital-intensive firms with structurally small ratios and asset-light firms with structurally large ones, flattening the cross-sectional slope while leaving decile sorts intact.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates a single diagnosis of the archive's central puzzle: the denominator capx+dp is an industry-level scale variable, so within-industry standardization should recover a monotone slope without touching the economics or the portfolio construction. Precedent supports it \u2014 IND_ZSCORE preserved the full alpha of the working-capital wedge in gen 2 (\u03b1 \u22124.0%, t \u22124.28) \u2014 so the downside is limited while the upside is a signal with \u03b1 near \u22126% and a real slope. If the slope stays flat after industry neutralization, the non-monotonicity is firm-level and the final generation should stop pursuing the slope for this family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.389247177512442,
+      "ls_alpha": -0.020652683032242308,
+      "ls_talpha": -1.7572036696146676,
+      "ls_sharpe": -0.19269077725367414,
+      "coverage": 0.0892358247752444,
+      "error": null
+    },
+    {
+      "name": "ConjunctionKingAndDepAdequacy",
+      "expression": "MIN(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))))",
+      "hypothesis": "A firm is convincingly an accounting grower only if its three-year accrual intensity is high *and* its current accruals coincide with capital spending below depreciation; requiring both should sharpen the short leg rather than average the two signals.",
+      "expected_sign": "negative",
+      "reasoning": "The MIN conjunction already proved viable in gen 6 (FMB \u22123.42, \u03b1 \u22123.9%, Sharpe \u22120.44) but was applied to two moderate limbs; applying it to the alpha champion and the slope champion is the informative version of that experiment. Because MIN admits a firm to the extreme decile only when both standardized limbs are extreme, it should not interpolate along the frontier the way ADD did \u2014 it either dominates both parents or reveals that the two mechanisms identify largely different firms. Both limbs are dense and continuous, so no point mass can destabilize the deciles.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.9837691907708269,
+      "ls_alpha": -0.07011136547266081,
+      "ls_talpha": -4.413410422272065,
+      "ls_sharpe": -0.5942264561634103,
+      "coverage": 0.08736210477395666,
+      "error": null
+    },
+    {
+      "name": "CapitalStockScaled3YAccruals",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accruals should be measured against the total productive capital the firm actually operates \u2014 installed net plant plus three years of new capital spending \u2014 because that is the real base against which accounting growth must eventually be validated.",
+      "expected_sign": "negative",
+      "reasoning": "This tests the denominator diagnosis in a different and more economic way than industry neutralization: adding the installed capital stock puts a natural floor under the denominator, so asset-light firms no longer generate explosive ratios, while the ordering among genuine accrual-heavy, investment-light firms is preserved. It keeps the three-year numerator that carries all the alpha and remains a pure interaction of accruals against real productive capital. Comparing its slope with signal 1 tells us whether the flat slope was an industry-scale effect or a small-denominator effect.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.899885959128662,
+      "ls_alpha": -0.07350427137827423,
+      "ls_talpha": -4.616178071243313,
+      "ls_sharpe": -0.582418239313971,
+      "coverage": 0.08941226957959497,
+      "error": null
+    },
+    {
+      "name": "ThreeYearIntensityPlusAmplifiedZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))))",
+      "hypothesis": "Holding the accrual measurement horizon fixed at three years, the two ways of expressing investment inadequacy \u2014 dividing by gross investment and weighting by the depreciation-to-capex shortfall \u2014 are complementary descriptions of the same firm-years and should reinforce each other when standardized and summed.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-6 1:1 composite mixed a one-year limb with a three-year limb and landed exactly between its parents (\u03b1 \u22125.9%, FMB \u22121.58), so this version holds the horizon constant to test whether the interpolation was caused by horizon mismatch rather than by an inherent alpha\u2013slope trade-off. Its slope-bearing limb is the archive's strongest (FMB \u22123.91) and its alpha-bearing limb the strongest (\u03b1 \u22126.8%), both computed over identical windows, which maximizes the chance of a genuinely dominating combination. Coverage should be near 0.088, in line with the leaders.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.5653125282370113,
+      "ls_alpha": -0.05195768779017845,
+      "ls_talpha": -3.2541746856543954,
+      "ls_sharpe": -0.43248165928004983,
+      "coverage": 0.08839306867025418,
+      "error": null
+    },
+    {
+      "name": "WithinFirmAccrualVsCapexPosition",
+      "expression": "SUB(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(capx, at), 5))",
+      "hypothesis": "What is priced may be a firm's position relative to its own history rather than its cross-sectional level: a firm at a five-year high in accrual intensity while simultaneously at a five-year low in capital spending has just substituted accounting growth for productive investment.",
+      "expected_sign": "negative",
+      "reasoning": "Every signal in the archive is a cross-sectional level or cumulative level, so within-firm state is the last genuinely distinct mechanism available, and it automatically neutralizes the industry and asset-lightness scale problems that appear to be flattening the slopes. TS_RANK is bounded within firm and dense, so unlike cross-sectional RANK it does not discard economically informative differences between firms with different accrual regimes, and unlike indicators it creates no point mass. A strong result would tell the final generations that timing within the firm's own history, not cross-sectional magnitude, is the operative variable.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.5073291263167342,
+      "ls_alpha": 0.0002695252235967462,
+      "ls_talpha": 0.020405650663201064,
+      "ls_sharpe": -0.04061028201380457,
+      "coverage": 0.08069703126973396,
+      "error": null
+    },
+    {
+      "name": "ThreeYearWCAccrualPerGrossInvestment",
+      "expression": "RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), TS_SUM(ADD(capx, dp), 3))",
+      "hypothesis": "Cumulative non-cash working capital build per dollar of gross real investment is the cleanest statement of the economic story \u2014 three years of receivables and inventory expansion with no productive counterpart \u2014 and should inherit the alpha of the cumulative-intensity form and the slope of the balance-sheet accrual measure.",
+      "expected_sign": "negative",
+      "reasoning": "The archive contains two largely independent alpha sources: the non-cash working capital accrual numerator (t=\u22124.25 in level form, FMB \u22123.05 when scaled by gross investment) and the three-year cumulative intensity construction (\u03b1 \u22126.8%); this signal is the first to combine them, replacing the total-accrual numerator with the working-capital numerator inside the winning ratio. Because working capital accruals reverse mechanically within one to two years, cumulating them over three years measures chronic non-reversal, which is economically stronger than a single-year snapshot. Coverage should be near 0.11, the best in the archive, which also makes it the most robust candidate for final consolidation.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -2.2791685676638327,
+      "ls_alpha": -0.031757831418004916,
+      "ls_talpha": -3.1748173683445686,
+      "ls_sharpe": -0.2237217175310214,
+      "coverage": 0.11184593665156876,
+      "error": null
+    },
+    {
+      "name": "CapStockScaledAccrualsDepAmplified",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))",
+      "hypothesis": "Three years of accruals per dollar of total productive capital, weighted by the extent to which capital spending has fallen short of depreciation, identifies firms whose accounting growth is large relative to the capital they operate and who are simultaneously failing to replace that capital.",
+      "expected_sign": "negative",
+      "reasoning": "Additive Z-composites have consistently interpolated between the alpha limb and the slope limb, so this couples them multiplicatively instead: the base is the archive's best portfolio signal (\u03b1 \u22127.4%, t \u22124.62) and the amplifier is its best slope generator (FMB \u22123.91), both dense and strictly positive, which is the amplifier condition that has separated successes from the intan failure. Multiplication concentrates the short leg on firms extreme in both dimensions without averaging away either signal's information. This is my leading candidate to break the alpha\u2013slope frontier.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.7587277989509584,
+      "ls_alpha": -0.06433197171865533,
+      "ls_talpha": -4.287052170964427,
+      "ls_sharpe": -0.567492039099754,
+      "coverage": 0.08811550345171439,
+      "error": null
+    },
+    {
+      "name": "GrossPPEFlooredAccrualIntensity",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(ADD(capx, dp), 3), ppegt))",
+      "hypothesis": "The right scale for accumulated accruals is the entire stock of capital ever installed plus recent gross investment, because reversal pressure depends on accounting growth relative to the full productive base rather than to the recent investment flow.",
+      "expected_sign": "negative",
+      "reasoning": "Adding net plant to the denominator improved every metric at once, so this isolates one further step along that exact axis \u2014 gross rather than net plant, plus depreciation retained in the flow term \u2014 which puts a materially higher floor under the denominator and should further linearize the cross-sectional relation. If the slope improves again (from \u22120.90 toward \u22122) with alpha near \u22127%, the denominator-scale diagnosis is confirmed and the final round can optimize the floor directly. If alpha instead falls, we learn the floor can be over-applied, which is equally decisive.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.5459860009736621,
+      "ls_alpha": -0.0676577836715741,
+      "ls_talpha": -4.12544696753136,
+      "ls_sharpe": -0.5019545074792668,
+      "coverage": 0.08314213320323882,
+      "error": null
+    },
+    {
+      "name": "WeightedCapStockPlusDepAdequacyZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3))))))",
+      "hypothesis": "Weighting the capital-stock-scaled accrual measure twice as heavily as the depreciation-adequacy measure should retain most of the former's portfolio spread while importing enough of the latter's monotonicity to deliver a credible cross-sectional slope.",
+      "expected_sign": "negative",
+      "reasoning": "Every equal-weight composite has landed almost exactly midway between its parents on both metrics, which suggests the trade-off is close to linear in the weights and therefore controllable; a 2:1 tilt is the natural test and is a genuine design parameter rather than a cosmetic variant. It also serves as the direct control for signal 1, telling us whether multiplicative coupling beats weighted averaging. All limbs are dense, so portfolio composition remains stable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.6527790964401237,
+      "ls_alpha": -0.06884133368357077,
+      "ls_talpha": -4.580033937228372,
+      "ls_sharpe": -0.601998093483446,
+      "coverage": 0.0881130270334077,
+      "error": null
+    },
+    {
+      "name": "CapStockScaled3YWCAccruals",
+      "expression": "RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Cumulative non-cash working capital build measured against total productive capital is the most literal statement of the economic story \u2014 three years of receivables and inventory growth with no productive base to justify it \u2014 and should benefit from the capital-stock floor at least as much as total accruals did.",
+      "expected_sign": "negative",
+      "reasoning": "The working-capital numerator is the archive's second independent alpha source and its cumulative version already carries a respectable slope (FMB \u22122.28, \u03b1 \u22123.2%) with the best coverage in the archive (0.112); replacing the fragile gross-investment denominator with the capital-stock floor that just lifted the total-accrual family by 60 basis points of alpha is the natural test of whether the improvement is numerator-independent. Because working capital accruals reverse mechanically, three-year cumulation measures chronic non-reversal rather than a snapshot. High coverage makes this the most robust option if its metrics land close to the leaders.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.1203750270944446,
+      "ls_alpha": -0.029136527691311018,
+      "ls_talpha": -3.0197627173448023,
+      "ls_sharpe": -0.25268935915983426,
+      "coverage": 0.11178701853268913,
+      "error": null
+    },
+    {
+      "name": "TaxValidatedCapStockAccruals",
+      "expression": "RATIO(TS_SUM(SUB(SUB(ib, oancf), DELTA(txp, 1)), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accruals unaccompanied by any increase in taxes payable are the component least likely to represent real economic income, so purging tax-validated accruals from the numerator should sharpen the identification of accounting growth relative to productive capital.",
+      "expected_sign": "negative",
+      "reasoning": "The tax-validation adjustment produced a strong alpha with a weak slope on the old denominator (\u03b1 \u22124.3%, t \u22123.03, FMB \u22121.25), and it has never been combined with cumulation or with the capital-stock floor, so this tests an earnings-quality refinement of the numerator on the now-established best scaling. Economically it separates managerial recognition choices from accruals that the tax authority has effectively certified, a distinction absent from every other signal in the archive. Coverage near 0.076 is the risk and will determine whether this refinement is usable in the final round.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.8951671344500853,
+      "ls_alpha": -0.06583231290097821,
+      "ls_talpha": -4.549155224178512,
+      "ls_sharpe": -0.5898758309669101,
+      "coverage": 0.07640421172716144,
+      "error": null
+    },
+    {
+      "name": "OneYearCapStockScaledAccruals",
+      "expression": "RATIO(SUB(ib, oancf), ADD(capx, ppent))",
+      "hypothesis": "Current-year accruals measured against total productive capital capture the accounting-versus-real-growth distinction in its simplest form; if the capital-stock floor is what makes the cross-sectional relation monotone, the slope should appear even without multi-year accumulation.",
+      "expected_sign": "negative",
+      "reasoning": "This decomposes the gen-7 breakthrough into its two ingredients \u2014 three-year cumulation and the capital-stock denominator \u2014 by removing the former, which is essential information for committing the final round's parameterization. The one-year form also has the widest available history and the least look-back requirement, so if it retains most of the alpha it is the more robust signal; if alpha collapses, cumulation is doing the work and the last round should push horizon and amplifier design on the cumulative base. It is parsimonious enough to serve as a clean benchmark for the whole family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -0.7941029700850868,
+      "ls_alpha": -0.045696551259719075,
+      "ls_talpha": -2.7376148690789215,
+      "ls_sharpe": -0.2972231008173873,
+      "coverage": 0.08894788955504541,
+      "error": null
+    },
+    {
+      "name": "ReplacementShareAmplifiedCapStockAccruals",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(ADD(capx, dp), 3)))",
+      "hypothesis": "Accruals accumulated against the productive capital base matter most when gross investment is mostly just depreciation, that is when the replacement share of investment approaches one and no new capacity is being created.",
+      "expected_sign": "negative",
+      "reasoning": "The dp/capx amplifier bought the best slope-for-alpha trade in the archive but is unbounded and explosive for near-zero capex, which plausibly caps its slope contribution at \u22121.76; replacing it with dp/(capx+dp) keeps the identical economic content \u2014 the fraction of gross investment that is mere replacement \u2014 while bounding it in [0,1] and keeping it dense. Because the amplifier is now well behaved, the product should be closer to linear in the cross-section, so I expect the slope to strengthen beyond \u22122 with alpha holding near \u22126.5% and Sharpe near \u22120.58. This is my primary candidate for a signal that is strong on both criteria.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.4654359923632996,
+      "ls_alpha": -0.07020074731751486,
+      "ls_talpha": -4.3776798714239895,
+      "ls_sharpe": -0.5752669685503989,
+      "coverage": 0.08859365855309483,
+      "error": null
+    },
+    {
+      "name": "EqualWeightCapStockAndDepAdequacyZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))))",
+      "hypothesis": "Accruals scaled by productive capital and accruals weighted by depreciation-versus-capex shortfall are complementary measurements of accounting growth, and an equal-weight standardized average should sit at the most attractive point of the alpha\u2013slope trade-off.",
+      "expected_sign": "negative",
+      "reasoning": "The 2:1 tilt toward the alpha limb produced \u03b1 \u22126.9% with FMB \u22121.65 and the archive's best Sharpe (\u22120.602), while the pure slope limb reaches FMB \u22123.91 with \u03b1 \u22123.7%, and every composite so far has interpolated nearly linearly in the weights; equal weighting is therefore the natural next point and should land near \u03b1 \u22126% with FMB around \u22122.4. This is the correct experiment to run last because it settles the weighting question with a directly comparable design rather than a new mechanism. Both limbs are dense and share the same three-year horizon, so no coverage or stability cost is incurred.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.8819829580032599,
+      "ls_alpha": -0.055654970666726276,
+      "ls_talpha": -3.768410254794266,
+      "ls_sharpe": -0.5153021887727531,
+      "coverage": 0.0881130270334077,
+      "error": null
+    },
+    {
+      "name": "DoubleBoundedAmplifiedCapStockAccruals",
+      "expression": "MUL(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(ADD(capx, dp), 3))), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "The most reversal-prone firms satisfy three conditions at once: large accruals relative to productive capital, gross investment that is almost entirely replacement, and a balance sheet dominated by soft, discretionary assets in which the overstatement can be parked.",
+      "expected_sign": "negative",
+      "reasoning": "Both amplifiers are bounded in roughly [0,1] and dense across the universe, which is precisely the condition that separated the successful dp/capx and soft-asset amplifiers from the sparse intangible amplifier that destroyed portfolio spread; the soft-asset amplifier previously moved a base signal's slope from \u22120.54 to \u22122.03 at a cost of 2.6 points of alpha. Stacking two mild bounded amplifiers on the strongest base tests whether slope gains accumulate faster than alpha decays, which the single-amplifier evidence suggests. If it overshoots into low alpha, signal 1 remains the preferred version of this idea, so the pair is jointly informative.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.6005595613191197,
+      "ls_alpha": -0.0481156953036488,
+      "ls_talpha": -3.3285784128848332,
+      "ls_sharpe": -0.47718046043840984,
+      "coverage": 0.08858499108902146,
+      "error": null
+    },
+    {
+      "name": "CapStockScaledExpansionDeficit",
+      "expression": "RATIO(TS_SUM(SUB(ADD(capx, aqc), oancf), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Three years of expansion \u2014 organic plus acquired \u2014 funded beyond operating cash flow, measured against the productive capital the firm actually operates, identifies growth that was financed rather than earned and has no capital base to sustain it.",
+      "expected_sign": "negative",
+      "reasoning": "This fills the one untested cell in the archive's two-dimensional design space: the funding-deficit numerator owns the strongest and most consistent Fama-MacBeth slopes (\u22122.8 to \u22123.4 across five variants) while the capital-stock denominator owns the strongest alphas (\u22126.4% to \u22127.4%), and they have never been combined. Because the deficit numerator is monotone through the middle of the cross-section where the accrual-intensity numerator is flat, this is the most plausible route to a signal with both FMB near \u22123 and alpha near \u22126%. Coverage should be near 0.080 given the aqc limb, acceptable relative to the leaders.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.7989948842149546,
+      "ls_alpha": -0.03965241847926439,
+      "ls_talpha": -2.972310432382951,
+      "ls_sharpe": -0.4858333622083765,
+      "coverage": 0.0879807966142409,
+      "error": null
+    },
+    {
+      "name": "NonCashRecognitionPerProductiveCapital",
+      "expression": "RATIO(ADD(TS_SUM(SUB(ib, oancf), 3), SUB(intan, LAG(intan, 3))), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accounting growth encompasses all non-cash recognition, so three years of accruals plus three years of intangible-asset accumulation, measured against productive capital, is a broader and more faithful measure of balance-sheet expansion by recognition rather than expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Pooling intangible accumulation with accruals earned a respectable slope (FMB \u22122.41) on the older gross-investment denominator, and its slope contribution is economically independent of the depreciation-adequacy channel used in signals 1 through 3, so this broadens the mechanism rather than reweighting it. Adding the intangible limb inside the numerator, rather than multiplying by a sparse intangible amplifier, avoids the point-mass failure that destroyed IntangibleParkedDeficit's portfolio spread \u2014 firms without intangibles simply contribute zero to one numerator term instead of collapsing the whole signal. It is the batch's distinct mechanism and directly tests whether recognition generally, not accruals specifically, drives the reversal.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -1.2724548795571105,
+      "ls_alpha": -0.032288214955696976,
+      "ls_talpha": -2.5178513487890437,
+      "ls_sharpe": -0.28649693306182894,
+      "coverage": 0.06235100216521507,
+      "error": null
+    },
+    {
+      "name": "DualAccrualMeasurementCapStockZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), ADD(TS_SUM(capx, 3), ppent))))",
+      "hypothesis": "Cash-flow-statement accruals and balance-sheet non-cash working capital accruals are two independent measurements of the same economic quantity, so averaging them on the winning capital-stock scale should cancel measurement error and strengthen both forms of evidence.",
+      "expected_sign": "negative",
+      "reasoning": "On the identical denominator the total-accrual numerator delivers \u03b1 \u22127.4% with FMB \u22120.90 while the working-capital numerator delivers FMB \u22122.12 with the archive's best coverage (0.112), so their disagreement is a measurement issue rather than an economic one and averaging exploits exactly that. Unlike the amplifier route, this seeks a better slope without deliberately sacrificing alpha, since both limbs are alpha-bearing on this scale. It also provides the most robust fallback for out-of-sample use because it leans on two independent data sources and the widest coverage in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -0.6405257393405305,
+      "ls_alpha": -0.03516611589057972,
+      "ls_talpha": -2.6363782628898917,
+      "ls_sharpe": -0.3226126894282956,
+      "coverage": 0.07266347869083321,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "AccrualMinusCapexFundedGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(ib, oancf), LAG(at, 1))), RANK(RATIO(capx, LAG(at, 1))))",
+      "hypothesis": "For a given level of balance-sheet expansion, the portion attributable to accounting accruals (earnings not backed by cash) reverses sharply, while the portion attributable to real capital expenditure reflects genuine productive capacity and reverses far less; the wedge between accrual intensity and capex intensity therefore predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "Ranking both channels on the same lagged-asset scale makes them directly comparable and isolates the composition of growth rather than its level. Firms high on accruals but low on capex are growing on paper only, so subsequent earnings disappointment and mispricing correction are concentrated there. The subtraction of ranks removes the common asset-growth component that a single-theme signal would capture.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualStateAssetGrowth",
+      "expression": "MUL(GROWTH(at, 1), INDICATOR(SUB(ib, oancf), 0))",
+      "hypothesis": "The asset-growth anomaly is concentrated in firms whose earnings exceed operating cash flow (positive total accruals); asset growth accompanied by negative accruals (cash-backed expansion) should show little or no reversal.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the investment signal on only in the low-accounting-quality state, making the interaction genuinely conditional rather than a rescaling of asset growth. If the mechanism is accrual-driven overstatement of assets, this masked version should deliver a stronger cross-sectional slope and larger FF5 spread per unit of exposure than raw asset growth. Firms with cash-backed growth are pooled at zero and thus neutralized rather than shorted.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "GrowthAccrualDoubleRank",
+      "expression": "SUMRANK(GROWTH(at, 1), RATIO(SUB(ib, oancf), at))",
+      "hypothesis": "Firms that simultaneously expand their asset base and accrue aggressively represent the joint extreme of over-investment and low earnings quality, and should earn the lowest subsequent returns; firms that shrink assets while generating cash-backed earnings earn the highest.",
+      "expected_sign": "negative",
+      "reasoning": "The additive rank composite is robust to outliers in both accrual and growth ratios and produces a well-populated, stable long-short portfolio, which supports precise FF5 alpha estimation. Because the two themes are individually weak-to-moderate but conceptually complementary (quantity of growth versus quality of earnings), their sum should dominate either alone. This is the benchmark composite against which the conditional and ratio forms can be diagnosed.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalVsTangibleExpansion",
+      "expression": "WINSOR(SUB(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), LAG(at, 1)), RATIO(DELTA(ppent, 1), LAG(at, 1))), 1)",
+      "hypothesis": "Growth in non-cash working capital (receivables and inventory net of operating payables) is discretionary, quickly self-reversing accounting growth, whereas growth in net property, plant and equipment is committed real investment; the difference in these two expansion channels, scaled by lagged assets, predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "This decomposes total asset growth into its accrual limb and its physical-capital limb and takes the spread, so it is orthogonal to the level of overall growth by construction. Working-capital build-ups signal demand shortfalls and channel-stuffing that reverse within a year, while PPE build-ups embed multi-year productive commitments. Winsorization controls the fat tails typical of scaled balance-sheet changes.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CashUnbackedExpansion",
+      "expression": "MUL(RANK(GROWTH(at, 1)), RANK(NEG(RATIO(oancf, at))))",
+      "hypothesis": "Asset expansion is only value-destroying when it is not supported by internal operating cash generation; the multiplicative interaction of high asset growth with low cash-flow profitability identifies firms whose growth must be financed and whose reported earnings rest on accruals.",
+      "expected_sign": "negative",
+      "reasoning": "Using ranks bounded in the unit interval makes the product a clean interaction that is near zero unless both conditions hold, so the short leg concentrates on cash-poor growers rather than on all growers. This targets the economic mechanism (financing and accrual dependence of growth) rather than the accounting identity, giving a mechanism distinct from signals 1-4. Cash-rich growers, which the pure investment factor mistakenly shorts, are neutralized.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsUnderDisinvestment",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), INDICATOR(SUB(dp, capx), 0))",
+      "hypothesis": "Accruals are most diagnostic of earnings manipulation when the firm is not investing: when depreciation exceeds capital expenditure the productive asset base is contracting, so any accrual-driven asset or earnings growth is purely accounting in nature and should reverse strongly.",
+      "expected_sign": "negative",
+      "reasoning": "The dp-versus-capx comparison is a clean, scale-free investment-regime switch that separates shrinking real capital from expanding real capital, and it interacts with accruals in the direction the economic story predicts. Firms replacing capital at or above depreciation can legitimately carry higher accruals from growing operations, so their accruals should be less informative. This conditional design tests whether the accrual anomaly is state-dependent on real investment rather than universal.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedWCAccrualMinusPPEGrowth",
+      "expression": "SUB(RANK(RATIO(SUB(DELTA(act, 1), DELTA(lct, 1)), LAG(at, 1))), RANK(RATIO(DELTA(ppent, 1), LAG(at, 1))))",
+      "hypothesis": "Balance-sheet expansion arriving through net current-asset (working capital) build is self-reversing accounting growth, while expansion arriving through net property, plant and equipment is committed real investment; the rank wedge between the two channels predicts returns negatively and monotonically.",
+      "expected_sign": "negative",
+      "reasoning": "This is a deliberate isolation of one design choice relative to the gen-0 winner: identical economics, but each limb is rank-transformed before subtraction so that extreme scaled changes cannot invert the Fama-MacBeth slope, which was the sole failure of that signal. Dropping the che/dlc refinements also removes two variables from the availability intersection, which should lift coverage well above 0.112. If both fmb_tstat and ls_talpha turn negative, we learn the gen-0 anomaly was real but outlier-corrupted in level space.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(ib, oancf), ADD(capx, dp)), 1)",
+      "hypothesis": "Total accruals normalized by gross real investment (capital expenditure plus depreciation, i.e. the scale of genuine capital activity) measures how much of reported earnings growth is accounting rather than productive; firms with large accruals per dollar of real investment reverse hardest.",
+      "expected_sign": "negative",
+      "reasoning": "This is the continuous repair of AccrualsUnderDisinvestment: the dp-versus-capx conditioning that produced the strong FMB slope is retained, but as a smooth denominator instead of a 0/1 mask, eliminating the degenerate point mass that destroyed the portfolio spread. The denominator is almost always strictly positive, so the ratio is well behaved, and all four inputs are widely reported, protecting coverage. It directly tests whether the earlier FMB/alpha divergence was purely a portfolio-construction artifact.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationLagBehindCapacity",
+      "expression": "MUL(RANK(GROWTH(ppegt, 1)), RANK(NEG(DELTA(RATIO(dp, ppegt), 1))))",
+      "hypothesis": "Firms that expand gross property, plant and equipment while simultaneously slowing their depreciation rate are capitalizing and under-expensing the new capital, so reported earnings overstate the economics of the investment and returns subsequently disappoint.",
+      "expected_sign": "negative",
+      "reasoning": "This introduces a genuinely new accrual channel \u2014 depreciation policy, the largest non-working-capital accrual \u2014 rather than the receivables/inventory channel already tested, and ties it mechanically to the real investment being made. The multiplicative rank form concentrates the short leg on firms where both conditions hold, so gross-PPE growth alone or depreciation-rate declines alone are not sufficient to enter the extreme portfolios. It tests whether the \"accounting versus productive growth\" story operates through expense timing as well as through working capital.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "OperatingWCBuildPerRealInvestment",
+      "expression": "WINSOR(RATIO(NEG(ADD(recch, invch)), ADD(capx, dp)), 1)",
+      "hypothesis": "Receivable and inventory accumulation taken straight from the cash flow statement measures discretionary, demand-driven accrual build; expressed per dollar of gross real investment it identifies firms whose growth is unsold product and unpaid invoices rather than productive capacity.",
+      "expected_sign": "negative",
+      "reasoning": "Using recch and invch avoids the balance-sheet contamination (acquisitions, reclassifications, write-offs) that plagues differenced act and lct and likely caused the sign inversion in the gen-0 working capital signal, so it is an independent measurement of the same economic quantity. Pairing it with the gross-investment denominator from signal 2 lets us attribute any performance difference to the accrual measurement rather than the scaling. Cash-flow-statement coverage begins later, so coverage will be checked as a diagnostic rather than assumed.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithExternalFinancing",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), SUMRANK(RATIO(sstk, LAG(at, 1)), GROWTH(dltt, 1)))",
+      "hypothesis": "Accrual-inflated earnings are most damaging when the firm is simultaneously raising outside equity and debt, because managers have both the incentive to inflate reported growth and the ability to fund an expansion that internal cash flow cannot support.",
+      "expected_sign": "negative",
+      "reasoning": "This shifts the economic channel from the composition of assets to the financing of growth, which is the mechanism the anomaly literature associates with the strongest reversals and which none of the archive signals touches. Nested SUMRANK keeps all three legs on a common robust rank scale, avoiding the outlier problems that broke the level-space signals while still giving a fully ordered, densely populated cross-section for portfolio sorting. A weak result here would tell us the interaction is about asset composition, not funding.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualAccelVsCapexDecel",
+      "expression": "SUB(ACCEL(WINSOR(RATIO(SUB(ib, oancf), at), 1)), ACCEL(RATIO(capx, at)))",
+      "hypothesis": "The informative state is not the level of accrual-heavy growth but its dynamics: firms whose accruals are accelerating while real capital spending is decelerating are substituting accounting growth for productive investment, and this divergence precedes the reversal.",
+      "expected_sign": "negative",
+      "reasoning": "Levels-based versions of this interaction have now produced mixed evidence, so it is worth testing whether the mispricing is triggered by the change in the mix rather than the mix itself \u2014 a distinguishable economic claim about when investors are fooled. Second differences are noisy, hence the winsorized accrual input and the asset-scaled capex leg, and the required extra lags make coverage an explicit diagnostic. If this outperforms the static wedge, later generations should build on divergence dynamics rather than static composition.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NonCashWCAccrualPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), ADD(capx, dp)), 1)",
+      "hypothesis": "The sharpest reversals come from firms whose expansion is almost entirely non-cash working capital build measured against the scale of their genuine capital activity; one dollar of receivable and inventory accrual per dollar of gross real investment is accounting growth with no productive counterpart.",
+      "expected_sign": "negative",
+      "reasoning": "This deliberately merges the two constructions that independently produced reliable FF5 alpha \u2014 the properly cash- and debt-adjusted non-cash working capital numerator (t=\u22124.25) and the gross-investment denominator that delivered the best Sharpe (\u22120.264) \u2014 while keeping the level form that rank transforms destroyed. Scaling by capx+dp rather than lagged assets makes the denominator a direct measure of real investment intensity, so the ratio literally reads as accounting growth per unit of productive growth. If both alpha and slope improve, this becomes the consolidation anchor for later generations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "IndAdjWCvsPPEExpansion",
+      "expression": "IND_ZSCORE(WINSOR(SUB(RATIO(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), LAG(at, 1)), RATIO(DELTA(ppent, 1), LAG(at, 1))), 5))",
+      "hypothesis": "The gen-0 wedge between working capital expansion and physical capital expansion is genuinely priced, but its Fama-MacBeth slope is corrupted by fat tails and by industry composition \u2014 capital-intensive industries mechanically load on the PPE limb while distribution and retail load on the working capital limb.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the failed rank repair: instead of destroying magnitude information with RANK, it compresses only the extreme 5% tails and removes industry means, which preserves within-industry ordering and spacing. If fmb_tstat turns negative while alpha survives near \u22124%, we learn the FMB/alpha divergence was a measurement artifact rather than a non-monotone economic relation. If alpha again collapses, we learn the effect truly requires cross-industry extremes and later generations should stop industry-adjusting.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SoftAssetAmplifiedAccruals",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "Accruals are only as distortive as the balance sheet is discretionary: the same accrual load is far more likely to reverse in a firm whose assets are mostly soft (neither hard capital nor cash) because that is where managerial estimation latitude and unverifiable asset values reside.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces the failed 0/1 disinvestment mask with a continuous, bounded amplifier \u2014 the share of assets that is neither PPE nor cash \u2014 so the cross-section stays fully ordered and no degenerate point mass sits at the decile breakpoints. It tests a distinct economic channel, accounting discretion capacity rather than growth composition, and both inputs are levels, consistent with the finding that magnitude information carries the alpha. The amplifier lies in roughly [0,1], so it modulates rather than dominates the accrual signal.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ExpansionCashFlowDeficit",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, DELTA(invt, 1)), oancf), LAG(at, 1)), 1)",
+      "hypothesis": "What matters is whether the firm's combined real and inventory expansion exceeds the operating cash flow available to fund it; a large expansion cash deficit means the growth is being carried by accruals and outside capital and must be unwound.",
+      "expected_sign": "negative",
+      "reasoning": "This changes the economic channel from asset composition to the funding gap between committed expansion and internally generated cash, which is the mechanism behind both the accrual and investment anomalies but has not yet been measured directly in the archive. It uses only three widely reported items so coverage should exceed the 0.076\u20130.089 range of the cash-flow-component signals, and it keeps the winsorized level form associated with real alpha. Firms whose capex and inventory build are fully cash-covered sit at the long end, which is economically the correct comparison group.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearAccrualPerCapexFlow",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 1)",
+      "hypothesis": "A single year of accruals per dollar of real investment is noisy and partly seasonal; firms that sustain accrual-heavy, investment-light growth for three consecutive years are the ones whose accounting growth is systematically overstated and whose reversal is largest.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates the horizon design choice against AccrualsPerGrossInvestment (\u03b1=\u22124.3%, FMB \u22121.16): if the weak FMB slope reflects one-year measurement noise rather than non-monotonicity, cumulating both limbs over three years should raise the slope t-stat while retaining or improving alpha. Cumulative flows also stabilize the denominator across the capex cycle, reducing the mechanical volatility of the ratio. The cost is roughly two extra years of history, so coverage is the diagnostic to watch.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsAgainstLaborCapacity",
+      "expression": "WINSOR(SUB(RATIO(SUB(ib, oancf), at), GROWTH(emp, 1)), 1)",
+      "hypothesis": "Employment growth is the hardest-to-manipulate measure of genuine capacity expansion; firms whose accruals rise while their workforce shrinks are generating reported growth that no real operating expansion supports, and they should underperform firms whose earnings quality is backed by hiring.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal has benchmarked accruals against capital-side investment (capx, ppent, ppegt, dp); labor is an independent and economically distinct real-activity yardstick that is not subject to capitalization or depreciation-policy discretion. Because employment growth is bounded and roughly symmetric while the accrual ratio is fat-tailed, the winsorized difference should sort cleanly and produce a stable portfolio composition. A strong result would open a new refinement axis \u2014 real activity measured by inputs rather than by assets.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearExpansionCashDeficit",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ADD(capx, DELTA(invt, 1)), oancf), 3), LAG(at, 1)), 1)",
+      "hypothesis": "Firms that have run a cumulative three-year deficit between committed expansion (capital expenditure plus inventory build) and operating cash flow have financed growth with accruals and outside capital for long enough that the accounting overstatement is systematic, not transitory, and the reversal is correspondingly large.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the only mechanism with strong dual evidence (the expansion cash deficit, FMB \u22122.83 / \u03b1 \u22124.1%) with the only construction change that clearly lifted alpha (three-year cumulation, which took \u03b1 from \u22124.3% to \u22126.8%). Crucially the denominator stays lagged total assets rather than a cumulative capex flow, so the fragile small-denominator problem that flattened the ThreeYear slope is avoided. This is the leading consolidation candidate for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CumulativeAccrualLessCapexScaled",
+      "expression": "WINSOR(RATIO(SUB(TS_SUM(SUB(ib, oancf), 3), TS_SUM(capx, 3)), at), 1)",
+      "hypothesis": "Over a three-year window, the excess of cumulative accruals over cumulative real capital spending measures how much of a firm's reported growth was booked rather than built, and this excess predicts returns negatively.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates exactly one design choice against ThreeYearAccrualPerCapexFlow (\u03b1 \u22126.8%, FMB \u22120.54): the two limbs are differenced and scaled by total assets instead of being divided by each other, so no observation can explode when capex plus depreciation is near zero. If the slope turns strongly negative while alpha stays near \u22125% or better, we will have confirmed that every FMB failure in this archive is a denominator-tail artifact rather than economic non-monotonicity, which would let later generations trust level ratios throughout.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedAccrualsVsHiring",
+      "expression": "WINSOR(SUB(MA(RATIO(SUB(ib, oancf), at), 3), MA(GROWTH(emp, 1), 3)), 1)",
+      "hypothesis": "Persistent accrual accumulation unaccompanied by sustained workforce expansion identifies reported growth with no real operating counterpart; employment is the one real-activity measure immune to capitalization and depreciation discretion.",
+      "expected_sign": "negative",
+      "reasoning": "The one-year labor version produced a large reliable alpha (\u22125.8%, t=\u22123.82) but a wrong-signed slope, consistent with single-year employment growth being dominated by lumpy hiring, layoffs and merger-related headcount jumps; three-year averaging of both limbs targets exactly that noise. It keeps the labor channel, which is economically independent of every capital-side benchmark in the archive, so a successful repair adds a genuinely diversifying signal rather than another capx-scaled ratio. Smoothing also stabilizes portfolio composition, which should show up in Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquiredGrowthCashDeficit",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1)), 1)",
+      "hypothesis": "Expansion through acquisition is the growth channel most prone to accounting overstatement, since acquired assets enter at negotiated fair values rather than at cost incurred; when total expansion including acquisitions outruns operating cash flow, subsequent returns are lowest.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal has measured real investment as organic capex, inventory or PPE, leaving the acquisition channel untested even though it is where \"accounting growth\" is most literal. Nesting it inside the funding-deficit form that already produced dual evidence lets us attribute any change in performance to the acquisition limb rather than to a new construction. Coverage is the diagnostic here, since aqc is sparsely reported for non-acquirers.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SoftAssetAmplifiedCashDeficit",
+      "expression": "MUL(WINSOR(RATIO(SUB(ADD(capx, DELTA(invt, 1)), oancf), LAG(at, 1)), 1), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "A cash-financed expansion deficit is most likely to be reversed when the balance sheet absorbing it is soft \u2014 neither hard capital nor cash \u2014 because that is where the deficit can be parked in discretionary, unverifiable asset values.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two mechanisms with the strongest and most similar cross-sectional slopes (expansion deficit, FMB \u22122.83; soft-asset-amplified accruals, FMB \u22123.20, Sharpe \u22120.271), testing whether they are the same effect or two independent conditions whose conjunction sharpens both legs. The amplifier is bounded roughly in [0,1] and continuous, so unlike the failed indicator mask it modulates without creating a point mass at the decile breakpoints. If the interaction beats both parents, discretion capacity becomes a general conditioning variable for later refinements.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccountingAssetCreationPerRealInvestment",
+      "expression": "WINSOR(RATIO(ADD(SUB(ib, oancf), DELTA(intan, 1)), ADD(capx, dp)), 1)",
+      "hypothesis": "Total non-cash asset creation has two accounting limbs \u2014 accruals from operations and capitalized intangibles \u2014 and their combined size relative to gross real investment measures how much of the balance sheet grew by recognition rather than by expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Capitalized intangibles are a recognition choice with no cash counterpart in the current period, economically parallel to accruals but entirely absent from the archive, so pooling them tests whether the reversal mechanism is about accruals specifically or about non-cash recognition generally. Using the gross-investment denominator that produced reliable alpha keeps the comparison to AccrualsPerGrossInvestment interpretable: any improvement is attributable to the intangible limb. Intangible reporting is uneven, so coverage will indicate whether this channel can support a stable portfolio.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "HeavyWinsorAccrualPerGrossInvest3Y",
+      "expression": "WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 10)",
+      "hypothesis": "Three-year accruals per dollar of three-year gross real investment is the correct measure of accounting-versus-productive growth, and its cross-sectional slope is masked purely by extreme-observation leverage rather than by any weakness in the underlying economics.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates one design choice against the archive's best portfolio signal (\u03b1=\u22126.8%, t=\u22124.38, FMB \u22120.54): winsorization at 10% instead of 1%. Decile breakpoints and hence portfolio membership are almost unchanged by tail compression, so alpha should survive, while the Fama-MacBeth slope should stop being dominated by a handful of asset-light firm-years. If alpha holds near \u22126% and the slope turns clearly negative, this becomes the consolidation anchor and the winsorization lesson transfers to every other signal in the family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "HeavyWinsorAccrualsVsHiring",
+      "expression": "WINSOR(SUB(RATIO(SUB(ib, oancf), at), GROWTH(emp, 1)), 10)",
+      "hypothesis": "Accruals accumulating without workforce expansion identify reported growth with no real operating counterpart; the wrong-signed slope of the earlier labor signals comes from merger- and restructuring-driven headcount jumps in the tails, not from a failure of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "Three-year smoothing did not repair the slope (FMB +0.98 with \u03b1 \u22124.8%), which rules out year-to-year noise and points instead to a few enormous employment-growth observations flipping the regression, so tail compression is the right next test on this channel. Labor is the only real-activity yardstick in the archive immune to capitalization and depreciation discretion, and it has produced two large reliable alphas (\u22125.8% and \u22124.8%), so repairing its slope would add a genuinely diversifying signal rather than another capx-scaled ratio.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "TotalExpansionDeficitPerGrossInvestment",
+      "expression": "WINSOR(RATIO(SUB(ADD(capx, ADD(aqc, DELTA(invt, 1))), oancf), ADD(capx, dp)), 5)",
+      "hypothesis": "The economically complete measure is how far total expansion \u2014 organic capital spending, acquisitions and inventory build \u2014 outruns operating cash flow, expressed per dollar of genuine capital activity rather than per dollar of assets.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two structural features that have separately produced the best evidence: the funding-deficit numerator (FMB \u22122.83 to \u22123.43 across two variants) and the gross-investment denominator that generated the largest alphas, with intermediate 5% winsorization as a compromise between slope stability and tail information. Scaling by capx+dp instead of assets means the signal reads as deficit per unit of real investment, so asset-light accounting growers sort to the short leg for the same economic reason they do in the alpha-king signal. Coverage should sit near 0.080 given the aqc limb, which is acceptable relative to the archive.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualPlusDebtPerRealInvestment",
+      "expression": "WINSOR(RATIO(ADD(SUB(ib, oancf), DELTA(dltt, 1)), ADD(capx, dp)), 5)",
+      "hypothesis": "Accruals and new long-term borrowing are two non-operating sources of reported and financial expansion; when their combined size is large relative to actual capital spending, the firm is growing its balance sheet through accounting recognition and leverage rather than through productive investment.",
+      "expected_sign": "negative",
+      "reasoning": "The financing channel has only been tested in rank-composite form (AccrualsWithExternalFinancing: FMB \u22122.21, Sharpe \u22120.291 but \u03b1 only \u22121.8%), and ranks have repeatedly destroyed alpha in this archive, so a level-form test of the same economics is warranted rather than a restatement. Pooling accruals and debt issuance in the numerator over a real-investment denominator makes the \"sources not matched by real uses\" story explicit and keeps the construction that carries alpha. If it works, it separates whether the deficit signals are about cash shortfall or about how the shortfall is plugged.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "SoftAssetAmplified3YAccrualIntensity",
+      "expression": "MUL(WINSOR(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)), 5), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "Sustained accrual-heavy, investment-light growth reverses most violently when it is parked in soft assets, because only unverifiable, discretionary carrying values allow the overstatement to persist for three years before correcting.",
+      "expected_sign": "negative",
+      "reasoning": "The discretion amplifier improved both the slope and Sharpe of the one-year accrual signal (FMB \u22123.20, Sharpe \u22120.271) and of the deficit signal (FMB \u22122.87, Sharpe \u22120.423), so applying it to the highest-alpha base signal tests whether the two effects compound rather than substitute. The amplifier is bounded in roughly [0,1] and continuous, so it modulates the intensity ratio without creating point masses at decile breakpoints. A clear improvement over the base would establish discretion capacity as the general conditioning variable for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxUnvalidatedAccrualsPerInvestment",
+      "expression": "WINSOR(RATIO(SUB(SUB(ib, oancf), DELTA(txp, 1)), ADD(capx, dp)), 5)",
+      "hypothesis": "Accruals that are not accompanied by a rise in taxes payable are the least likely to reflect real economic income, because the firm is reporting profit to shareholders without recognizing a corresponding obligation to the tax authority; such accruals, relative to real investment, should reverse hardest.",
+      "expected_sign": "negative",
+      "reasoning": "Every accrual measure in the archive treats all accruals as equally suspect, whereas the tax-book gap is a widely accepted discriminator of earnings quality and is untested here, making this the batch's distinct mechanism rather than a rescaling. It reuses the gross-investment denominator so any performance difference is attributable to the tax-validation adjustment in the numerator, not to construction. Taxes payable are unevenly reported, so coverage will indicate whether this refinement can support a stable portfolio.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DeficitPlusAccrualIntensityZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))), ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))))",
+      "hypothesis": "Accounting growth is identified by two economically distinct symptoms \u2014 a current funding gap between total expansion and operating cash flow, and a multi-year record of accruals unmatched by real investment \u2014 and a firm exhibiting both is unambiguously growing on paper.",
+      "expected_sign": "negative",
+      "reasoning": "The two limbs are the archive's slope champion (FMB \u22123.43) and its alpha champion (\u03b1 \u22126.8%, t \u22124.38), and they are conceptually independent: one is a current-year cash state, the other a cumulative composition measure. ZSCORE rather than RANK puts them on a comparable scale while preserving the magnitude information that rank transforms repeatedly destroyed here, so the composite can inherit the deficit limb's monotone middle and the intensity limb's informative extremes. This is the most direct test of whether the two forms of evidence can be obtained in one signal.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearAcquiredDeficitPerGrossInvestment",
+      "expression": "RATIO(TS_SUM(SUB(ADD(capx, aqc), oancf), 3), TS_SUM(ADD(capx, dp), 3))",
+      "hypothesis": "A firm that has funded three years of combined organic and acquired expansion out of accruals and outside capital, measured per dollar of genuine capital activity rather than per dollar of assets, is the purest case of accounting growth and should show the largest reversal.",
+      "expected_sign": "negative",
+      "reasoning": "This assembles the three features that have each independently improved results \u2014 the acquisition-inclusive deficit numerator (FMB \u22123.43), the gross-investment denominator that produced every large alpha, and three-year cumulation that lifted alpha from \u22124.3% to \u22126.8% \u2014 into a single parsimonious ratio. Cumulating the deficit failed when scaled by assets (\u03b1 \u22123.9%), so this specifically tests whether cumulation only pays off under investment-intensity scaling, which is a clean and interpretable design question. Both limbs cumulate over the same window, so the ratio is dimensionless and stable across the capex cycle.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationAdequacyAmplifiedAccruals",
+      "expression": "MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))",
+      "hypothesis": "Accruals matter most when replacement investment is inadequate: if depreciation exceeds capital expenditure the productive base is shrinking, so any accrual-supported earnings growth has no real counterpart and must reverse.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator version of this exact economic idea produced the archive's second-strongest slope (FMB \u22123.38) with zero alpha, and I now know the alpha failure came from the 0/1 mask piling half the universe at a single value rather than from tail treatment, so the continuous dp/capx amplifier is the correct repair. The amplifier scales the accrual signal smoothly by how far real investment falls short of depreciation, keeping the cross-section fully ordered and the extreme deciles economically homogeneous. If alpha now appears alongside the slope, disinvestment-conditioned accruals become a second consolidation candidate.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualInstabilityPerRealInvestment",
+      "expression": "RATIO(VOL(SUB(ib, oancf), 5), MA(ADD(capx, dp), 5))",
+      "hypothesis": "It is not only the size of accruals but their instability that signals low-quality accounting growth; firms whose accruals swing violently relative to their steady real investment base are managing reported earnings rather than reporting economic income.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal measures accrual level or cumulative level; second-moment earnings-quality has never been tested, and it is economically distinct because a firm can have modest average accruals while repeatedly booking and reversing them. Scaling volatility by average gross investment keeps the familiar real-investment denominator so the interaction is genuine rather than a single-theme volatility measure. The five-year window costs coverage, which will be the diagnostic for whether this channel is usable.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleParkedDeficit",
+      "expression": "MUL(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1)), RATIO(intan, at))",
+      "hypothesis": "An expansion cash deficit is most likely to be reversed when the resulting assets are intangible, because purchased goodwill and intangibles carry negotiated values with no verifiable productive capacity behind them and are the natural resting place for overstated growth.",
+      "expected_sign": "negative",
+      "reasoning": "The soft-asset amplifier (assets minus PPE minus cash) improved the deficit signal's Sharpe and slope, but soft assets pool receivables, inventory and intangibles together; sharpening the amplifier to intangible intensity tests which component of discretion actually carries the effect. This matters economically because the acquisition limb of the deficit mechanically creates intangibles, so the amplifier and numerator describe the same corporate action from two sides. If intangible intensity outperforms the broad soft-asset version, later refinements should condition on intangible rather than working-capital discretion.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsPlusCapitalWithoutLaborZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ib, oancf), at)), ZSCORE(SUB(GROWTH(ppegt, 1), GROWTH(emp, 1))))",
+      "hypothesis": "Genuine capacity expansion requires both capital and workers; gross plant growing faster than headcount, combined with high accruals, indicates costs being capitalized into fixed assets and earnings recognized ahead of real operating capability.",
+      "expected_sign": "negative",
+      "reasoning": "The labor channel has twice delivered large reliable alphas (\u22125.8%, \u22124.8%) with wrong-signed slopes, and with winsorization ruled out as the cause the remaining explanation is the raw scale mismatch of differencing an asset-scaled accrual level against a growth rate, which standardizing both limbs fixes directly. Replacing employment growth with the capital-minus-labor growth wedge also sharpens the economics: it isolates capital deepening unaccompanied by hiring, which is where capitalization of operating costs shows up. A successful slope here would validate the ZSCORE-composite construction used in signal 1.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearDepAdequacyAmplifiedAccruals",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))",
+      "hypothesis": "Three years of accumulated accruals, weighted by how far cumulative capital spending has fallen short of cumulative depreciation, identifies firms whose reported growth has persistently outrun a shrinking productive base.",
+      "expected_sign": "negative",
+      "reasoning": "This crosses the two most productive levers in the archive: the dense, strictly positive dp/capx amplifier that produced the best balance of slope and alpha (FMB \u22123.25, \u03b1 \u22124.8%), and three-year cumulation, the only construction that has ever pushed alpha past \u22126%. Cumulating both limbs over the same window also stabilizes the amplifier, since single-year capex is lumpy and its inverse is the noisiest part of the gen-5 winner. If alpha lands near \u22126% with a slope near \u22123, this becomes the primary candidate for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "BalancedTwoChannelZ",
+      "expression": "ADD(ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))), ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))))",
+      "hypothesis": "Disinvestment-weighted current accruals and cumulative accrual intensity are two measurements of the same underlying condition \u2014 earnings recognized without productive investment \u2014 measured at different horizons, and averaging them should retain the cross-sectional slope of the first and the portfolio spread of the second.",
+      "expected_sign": "negative",
+      "reasoning": "This applies the gen-5 composite lesson correctly: both limbs are individually alpha-bearing (\u22124.8% and \u22126.8%), unlike the earlier composite that diluted the alpha king with a merely slope-bearing deficit limb. Standardizing before adding equalizes the very different natural scales of a dp/capx-weighted level and a cumulative flow ratio, and the two limbs' measurement errors are largely independent across horizons, so the average should be more reliable than either. It isolates one design choice against signal 1: additive standardized combination versus a single multiplicative construction.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeChannelAccountingGrowthZ",
+      "expression": "ADD(ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))), ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx)))))",
+      "hypothesis": "Accounting growth leaves three separable traces \u2014 a current cash funding gap on total expansion, a multi-year accrual-to-investment imbalance, and current accruals under inadequate replacement investment \u2014 and a firm displaying all three is the most reliably mispriced.",
+      "expected_sign": "negative",
+      "reasoning": "The deficit limb carries the archive's most consistent slopes (\u22122.8 to \u22123.4) while the other two carry the alpha, so pooling all three tests whether diversification across symptoms raises reliability enough to offset the alpha dilution seen in the two-channel gen-5 composite. Every limb is dense and continuous, so no point mass can destabilize the extreme deciles, and standardization keeps any single limb from dominating. Coverage is the diagnostic: the intersection includes aqc, so anything materially below 0.075 would make this unattractive relative to signals 1 and 2.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearAccrualIntensity",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 5), TS_SUM(ADD(capx, dp), 5))",
+      "hypothesis": "If the mispricing reflects a slow-building, persistent divergence between booked earnings and real investment, then lengthening the accumulation window beyond three years should continue to sharpen the identification of chronic accounting growers.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulation from one to three years was the single largest alpha improvement in the archive (\u22124.3% to \u22126.8%), and the horizon has never been pushed further, so this is the highest-value one-parameter experiment remaining and it directly informs how the final generations should set windows. A five-year window also mechanically stabilizes the denominator across the capex cycle, which may finally deliver a negative slope alongside the alpha. The cost is roughly two additional years of required history, making coverage the key diagnostic for whether the longer window is usable.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctionMinDeficitIntensity",
+      "expression": "MIN(ZSCORE(RATIO(SUB(ib, oancf), ADD(capx, dp))), ZSCORE(RATIO(SUB(ADD(capx, aqc), oancf), LAG(at, 1))))",
+      "hypothesis": "A firm is only convincingly growing on paper when accruals are large relative to real investment *and* total expansion outruns operating cash flow; requiring both conditions simultaneously should produce a cleaner short leg than averaging the two symptoms.",
+      "expected_sign": "negative",
+      "reasoning": "Additive composites let one strong limb drag a firm into the extreme decile even when the other limb contradicts it, which plausibly explains why the gen-5 two-channel composite had a strong slope but diluted alpha; taking the minimum of the standardized limbs enforces conjunction while keeping the signal continuous and free of point masses, unlike indicators. This is a genuinely different operator structure rather than a rescaling, and it tests whether the mispricing requires joint symptoms or merely an aggregate score. If MIN beats ADD, the final generations should build conjunctions instead of sums.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "UnexplainedPPEGrowthWithAccruals",
+      "expression": "ADD(ZSCORE(RATIO(SUB(DELTA(ppegt, 1), capx), LAG(ppegt, 1))), ZSCORE(RATIO(SUB(ib, oancf), at)))",
+      "hypothesis": "Gross property growing faster than capital expenditure means fixed assets arrived through acquisition, revaluation or capitalized operating costs rather than through cash outlay; combined with high accruals this is balance-sheet expansion by recognition rather than by expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Every real-investment benchmark in the archive has treated capex and PPE growth as interchangeable measures of productive investment, whereas their difference is precisely the non-cash component of hard-asset growth \u2014 an untested channel that is conceptually the fixed-asset analogue of accruals. Both limbs are dense and standardized, following the amplifier lesson from IntangibleParkedDeficit, and using ppegt rather than intan avoids the sparsity that destroyed that signal's portfolio spread. A strong result would open capitalization of costs into hard assets as a refinement axis for the endgame.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutral3YAccrualIntensity",
+      "expression": "IND_ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3)))",
+      "hypothesis": "Three-year accruals per dollar of gross real investment is a genuinely monotone predictor *within* an industry, but pooling across industries mixes capital-intensive firms with structurally small ratios and asset-light firms with structurally large ones, flattening the cross-sectional slope while leaving decile sorts intact.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates a single diagnosis of the archive's central puzzle: the denominator capx+dp is an industry-level scale variable, so within-industry standardization should recover a monotone slope without touching the economics or the portfolio construction. Precedent supports it \u2014 IND_ZSCORE preserved the full alpha of the working-capital wedge in gen 2 (\u03b1 \u22124.0%, t \u22124.28) \u2014 so the downside is limited while the upside is a signal with \u03b1 near \u22126% and a real slope. If the slope stays flat after industry neutralization, the non-monotonicity is firm-level and the final generation should stop pursuing the slope for this family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctionKingAndDepAdequacy",
+      "expression": "MIN(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(SUB(ib, oancf), at), RATIO(dp, capx))))",
+      "hypothesis": "A firm is convincingly an accounting grower only if its three-year accrual intensity is high *and* its current accruals coincide with capital spending below depreciation; requiring both should sharpen the short leg rather than average the two signals.",
+      "expected_sign": "negative",
+      "reasoning": "The MIN conjunction already proved viable in gen 6 (FMB \u22123.42, \u03b1 \u22123.9%, Sharpe \u22120.44) but was applied to two moderate limbs; applying it to the alpha champion and the slope champion is the informative version of that experiment. Because MIN admits a firm to the extreme decile only when both standardized limbs are extreme, it should not interpolate along the frontier the way ADD did \u2014 it either dominates both parents or reveals that the two mechanisms identify largely different firms. Both limbs are dense and continuous, so no point mass can destabilize the deciles.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CapitalStockScaled3YAccruals",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accruals should be measured against the total productive capital the firm actually operates \u2014 installed net plant plus three years of new capital spending \u2014 because that is the real base against which accounting growth must eventually be validated.",
+      "expected_sign": "negative",
+      "reasoning": "This tests the denominator diagnosis in a different and more economic way than industry neutralization: adding the installed capital stock puts a natural floor under the denominator, so asset-light firms no longer generate explosive ratios, while the ordering among genuine accrual-heavy, investment-light firms is preserved. It keeps the three-year numerator that carries all the alpha and remains a pure interaction of accruals against real productive capital. Comparing its slope with signal 1 tells us whether the flat slope was an industry-scale effect or a small-denominator effect.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearIntensityPlusAmplifiedZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), TS_SUM(ADD(capx, dp), 3))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))))",
+      "hypothesis": "Holding the accrual measurement horizon fixed at three years, the two ways of expressing investment inadequacy \u2014 dividing by gross investment and weighting by the depreciation-to-capex shortfall \u2014 are complementary descriptions of the same firm-years and should reinforce each other when standardized and summed.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-6 1:1 composite mixed a one-year limb with a three-year limb and landed exactly between its parents (\u03b1 \u22125.9%, FMB \u22121.58), so this version holds the horizon constant to test whether the interpolation was caused by horizon mismatch rather than by an inherent alpha\u2013slope trade-off. Its slope-bearing limb is the archive's strongest (FMB \u22123.91) and its alpha-bearing limb the strongest (\u03b1 \u22126.8%), both computed over identical windows, which maximizes the chance of a genuinely dominating combination. Coverage should be near 0.088, in line with the leaders.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "WithinFirmAccrualVsCapexPosition",
+      "expression": "SUB(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(capx, at), 5))",
+      "hypothesis": "What is priced may be a firm's position relative to its own history rather than its cross-sectional level: a firm at a five-year high in accrual intensity while simultaneously at a five-year low in capital spending has just substituted accounting growth for productive investment.",
+      "expected_sign": "negative",
+      "reasoning": "Every signal in the archive is a cross-sectional level or cumulative level, so within-firm state is the last genuinely distinct mechanism available, and it automatically neutralizes the industry and asset-lightness scale problems that appear to be flattening the slopes. TS_RANK is bounded within firm and dense, so unlike cross-sectional RANK it does not discard economically informative differences between firms with different accrual regimes, and unlike indicators it creates no point mass. A strong result would tell the final generations that timing within the firm's own history, not cross-sectional magnitude, is the operative variable.",
+      "interaction_type": "novel",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ThreeYearWCAccrualPerGrossInvestment",
+      "expression": "RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), TS_SUM(ADD(capx, dp), 3))",
+      "hypothesis": "Cumulative non-cash working capital build per dollar of gross real investment is the cleanest statement of the economic story \u2014 three years of receivables and inventory expansion with no productive counterpart \u2014 and should inherit the alpha of the cumulative-intensity form and the slope of the balance-sheet accrual measure.",
+      "expected_sign": "negative",
+      "reasoning": "The archive contains two largely independent alpha sources: the non-cash working capital accrual numerator (t=\u22124.25 in level form, FMB \u22123.05 when scaled by gross investment) and the three-year cumulative intensity construction (\u03b1 \u22126.8%); this signal is the first to combine them, replacing the total-accrual numerator with the working-capital numerator inside the winning ratio. Because working capital accruals reverse mechanically within one to two years, cumulating them over three years measures chronic non-reversal, which is economically stronger than a single-year snapshot. Coverage should be near 0.11, the best in the archive, which also makes it the most robust candidate for final consolidation.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CapStockScaledAccrualsDepAmplified",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))",
+      "hypothesis": "Three years of accruals per dollar of total productive capital, weighted by the extent to which capital spending has fallen short of depreciation, identifies firms whose accounting growth is large relative to the capital they operate and who are simultaneously failing to replace that capital.",
+      "expected_sign": "negative",
+      "reasoning": "Additive Z-composites have consistently interpolated between the alpha limb and the slope limb, so this couples them multiplicatively instead: the base is the archive's best portfolio signal (\u03b1 \u22127.4%, t \u22124.62) and the amplifier is its best slope generator (FMB \u22123.91), both dense and strictly positive, which is the amplifier condition that has separated successes from the intan failure. Multiplication concentrates the short leg on firms extreme in both dimensions without averaging away either signal's information. This is my leading candidate to break the alpha\u2013slope frontier.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossPPEFlooredAccrualIntensity",
+      "expression": "RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(ADD(capx, dp), 3), ppegt))",
+      "hypothesis": "The right scale for accumulated accruals is the entire stock of capital ever installed plus recent gross investment, because reversal pressure depends on accounting growth relative to the full productive base rather than to the recent investment flow.",
+      "expected_sign": "negative",
+      "reasoning": "Adding net plant to the denominator improved every metric at once, so this isolates one further step along that exact axis \u2014 gross rather than net plant, plus depreciation retained in the flow term \u2014 which puts a materially higher floor under the denominator and should further linearize the cross-sectional relation. If the slope improves again (from \u22120.90 toward \u22122) with alpha near \u22127%, the denominator-scale diagnosis is confirmed and the final round can optimize the floor directly. If alpha instead falls, we learn the floor can be over-applied, which is equally decisive.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "WeightedCapStockPlusDepAdequacyZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3))))))",
+      "hypothesis": "Weighting the capital-stock-scaled accrual measure twice as heavily as the depreciation-adequacy measure should retain most of the former's portfolio spread while importing enough of the latter's monotonicity to deliver a credible cross-sectional slope.",
+      "expected_sign": "negative",
+      "reasoning": "Every equal-weight composite has landed almost exactly midway between its parents on both metrics, which suggests the trade-off is close to linear in the weights and therefore controllable; a 2:1 tilt is the natural test and is a genuine design parameter rather than a cosmetic variant. It also serves as the direct control for signal 1, telling us whether multiplicative coupling beats weighted averaging. All limbs are dense, so portfolio composition remains stable.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CapStockScaled3YWCAccruals",
+      "expression": "RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Cumulative non-cash working capital build measured against total productive capital is the most literal statement of the economic story \u2014 three years of receivables and inventory growth with no productive base to justify it \u2014 and should benefit from the capital-stock floor at least as much as total accruals did.",
+      "expected_sign": "negative",
+      "reasoning": "The working-capital numerator is the archive's second independent alpha source and its cumulative version already carries a respectable slope (FMB \u22122.28, \u03b1 \u22123.2%) with the best coverage in the archive (0.112); replacing the fragile gross-investment denominator with the capital-stock floor that just lifted the total-accrual family by 60 basis points of alpha is the natural test of whether the improvement is numerator-independent. Because working capital accruals reverse mechanically, three-year cumulation measures chronic non-reversal rather than a snapshot. High coverage makes this the most robust option if its metrics land close to the leaders.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxValidatedCapStockAccruals",
+      "expression": "RATIO(TS_SUM(SUB(SUB(ib, oancf), DELTA(txp, 1)), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accruals unaccompanied by any increase in taxes payable are the component least likely to represent real economic income, so purging tax-validated accruals from the numerator should sharpen the identification of accounting growth relative to productive capital.",
+      "expected_sign": "negative",
+      "reasoning": "The tax-validation adjustment produced a strong alpha with a weak slope on the old denominator (\u03b1 \u22124.3%, t \u22123.03, FMB \u22121.25), and it has never been combined with cumulation or with the capital-stock floor, so this tests an earnings-quality refinement of the numerator on the now-established best scaling. Economically it separates managerial recognition choices from accruals that the tax authority has effectively certified, a distinction absent from every other signal in the archive. Coverage near 0.076 is the risk and will determine whether this refinement is usable in the final round.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "OneYearCapStockScaledAccruals",
+      "expression": "RATIO(SUB(ib, oancf), ADD(capx, ppent))",
+      "hypothesis": "Current-year accruals measured against total productive capital capture the accounting-versus-real-growth distinction in its simplest form; if the capital-stock floor is what makes the cross-sectional relation monotone, the slope should appear even without multi-year accumulation.",
+      "expected_sign": "negative",
+      "reasoning": "This decomposes the gen-7 breakthrough into its two ingredients \u2014 three-year cumulation and the capital-stock denominator \u2014 by removing the former, which is essential information for committing the final round's parameterization. The one-year form also has the widest available history and the least look-back requirement, so if it retains most of the alpha it is the more robust signal; if alpha collapses, cumulation is doing the work and the last round should push horizon and amplifier design on the cumulative base. It is parsimonious enough to serve as a clean benchmark for the whole family.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "ReplacementShareAmplifiedCapStockAccruals",
+      "expression": "MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(ADD(capx, dp), 3)))",
+      "hypothesis": "Accruals accumulated against the productive capital base matter most when gross investment is mostly just depreciation, that is when the replacement share of investment approaches one and no new capacity is being created.",
+      "expected_sign": "negative",
+      "reasoning": "The dp/capx amplifier bought the best slope-for-alpha trade in the archive but is unbounded and explosive for near-zero capex, which plausibly caps its slope contribution at \u22121.76; replacing it with dp/(capx+dp) keeps the identical economic content \u2014 the fraction of gross investment that is mere replacement \u2014 while bounding it in [0,1] and keeping it dense. Because the amplifier is now well behaved, the product should be closer to linear in the cross-section, so I expect the slope to strengthen beyond \u22122 with alpha holding near \u22126.5% and Sharpe near \u22120.58. This is my primary candidate for a signal that is strong on both criteria.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "EqualWeightCapStockAndDepAdequacyZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), at), RATIO(TS_SUM(dp, 3), TS_SUM(capx, 3)))))",
+      "hypothesis": "Accruals scaled by productive capital and accruals weighted by depreciation-versus-capex shortfall are complementary measurements of accounting growth, and an equal-weight standardized average should sit at the most attractive point of the alpha\u2013slope trade-off.",
+      "expected_sign": "negative",
+      "reasoning": "The 2:1 tilt toward the alpha limb produced \u03b1 \u22126.9% with FMB \u22121.65 and the archive's best Sharpe (\u22120.602), while the pure slope limb reaches FMB \u22123.91 with \u03b1 \u22123.7%, and every composite so far has interpolated nearly linearly in the weights; equal weighting is therefore the natural next point and should land near \u03b1 \u22126% with FMB around \u22122.4. This is the correct experiment to run last because it settles the weighting question with a directly comparable design rather than a new mechanism. Both limbs are dense and share the same three-year horizon, so no coverage or stability cost is incurred.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DoubleBoundedAmplifiedCapStockAccruals",
+      "expression": "MUL(MUL(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent)), RATIO(TS_SUM(dp, 3), TS_SUM(ADD(capx, dp), 3))), RATIO(SUB(at, ADD(ppent, che)), at))",
+      "hypothesis": "The most reversal-prone firms satisfy three conditions at once: large accruals relative to productive capital, gross investment that is almost entirely replacement, and a balance sheet dominated by soft, discretionary assets in which the overstatement can be parked.",
+      "expected_sign": "negative",
+      "reasoning": "Both amplifiers are bounded in roughly [0,1] and dense across the universe, which is precisely the condition that separated the successful dp/capx and soft-asset amplifiers from the sparse intangible amplifier that destroyed portfolio spread; the soft-asset amplifier previously moved a base signal's slope from \u22120.54 to \u22122.03 at a cost of 2.6 points of alpha. Stacking two mild bounded amplifiers on the strongest base tests whether slope gains accumulate faster than alpha decays, which the single-amplifier evidence suggests. If it overshoots into low alpha, signal 1 remains the preferred version of this idea, so the pair is jointly informative.",
+      "interaction_type": "conditional",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "CapStockScaledExpansionDeficit",
+      "expression": "RATIO(TS_SUM(SUB(ADD(capx, aqc), oancf), 3), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Three years of expansion \u2014 organic plus acquired \u2014 funded beyond operating cash flow, measured against the productive capital the firm actually operates, identifies growth that was financed rather than earned and has no capital base to sustain it.",
+      "expected_sign": "negative",
+      "reasoning": "This fills the one untested cell in the archive's two-dimensional design space: the funding-deficit numerator owns the strongest and most consistent Fama-MacBeth slopes (\u22122.8 to \u22123.4 across five variants) while the capital-stock denominator owns the strongest alphas (\u22126.4% to \u22127.4%), and they have never been combined. Because the deficit numerator is monotone through the middle of the cross-section where the accrual-intensity numerator is flat, this is the most plausible route to a signal with both FMB near \u22123 and alpha near \u22126%. Coverage should be near 0.080 given the aqc limb, acceptable relative to the leaders.",
+      "interaction_type": "ratio",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "NonCashRecognitionPerProductiveCapital",
+      "expression": "RATIO(ADD(TS_SUM(SUB(ib, oancf), 3), SUB(intan, LAG(intan, 3))), ADD(TS_SUM(capx, 3), ppent))",
+      "hypothesis": "Accounting growth encompasses all non-cash recognition, so three years of accruals plus three years of intangible-asset accumulation, measured against productive capital, is a broader and more faithful measure of balance-sheet expansion by recognition rather than expenditure.",
+      "expected_sign": "negative",
+      "reasoning": "Pooling intangible accumulation with accruals earned a respectable slope (FMB \u22122.41) on the older gross-investment denominator, and its slope contribution is economically independent of the depreciation-adequacy channel used in signals 1 through 3, so this broadens the mechanism rather than reweighting it. Adding the intangible limb inside the numerator, rather than multiplying by a sparse intangible amplifier, avoids the point-mass failure that destroyed IntangibleParkedDeficit's portfolio spread \u2014 firms without intangibles simply contribute zero to one numerator term instead of collapsing the whole signal. It is the batch's distinct mechanism and directly tests whether recognition generally, not accruals specifically, drives the reversal.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    },
+    {
+      "name": "DualAccrualMeasurementCapStockZ",
+      "expression": "ADD(ZSCORE(RATIO(TS_SUM(SUB(ib, oancf), 3), ADD(TS_SUM(capx, 3), ppent))), ZSCORE(RATIO(TS_SUM(SUB(SUB(DELTA(act, 1), DELTA(che, 1)), SUB(DELTA(lct, 1), DELTA(dlc, 1))), 3), ADD(TS_SUM(capx, 3), ppent))))",
+      "hypothesis": "Cash-flow-statement accruals and balance-sheet non-cash working capital accruals are two independent measurements of the same economic quantity, so averaging them on the winning capital-stock scale should cancel measurement error and strengthen both forms of evidence.",
+      "expected_sign": "negative",
+      "reasoning": "On the identical denominator the total-accrual numerator delivers \u03b1 \u22127.4% with FMB \u22120.90 while the working-capital numerator delivers FMB \u22122.12 with the archive's best coverage (0.112), so their disagreement is a measurement issue rather than an economic one and averaging exploits exactly that. Unlike the amplifier route, this seeks a better slope without deliberately sacrificing alpha, since both limbs are alpha-bearing on this scale. It also provides the most robust fallback for out-of-sample use because it leans on two independent data sources and the widest coverage in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "investment",
+      "theme_b": "accruals",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:invest_accrual"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualMinusCapexFundedGrowth",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(sub(ib,oancf),lag(at,1))),rank(ratio(capx,lag(at,1))))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualStateAssetGrowth",
+      "metadata": {
+        "normalized_expression": "mul(growth(at,1),indicator(sub(ib,oancf),0))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "GrowthAccrualDoubleRank",
+      "metadata": {
+        "normalized_expression": "sumrank(growth(at,1),ratio(sub(ib,oancf),at))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalVsTangibleExpansion",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),lag(at,1)),ratio(delta(ppent,1),lag(at,1))),1)",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: investment (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashUnbackedExpansion",
+      "metadata": {
+        "normalized_expression": "mul(rank(growth(at,1)),rank(neg(ratio(oancf,at))))",
+        "variables": [
+          "at",
+          "oancf"
+        ],
+        "missing_theme": "investment"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsUnderDisinvestment",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(ib,oancf),at),1),indicator(sub(dp,capx),0))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedWCAccrualMinusPPEGrowth",
+      "metadata": {
+        "normalized_expression": "sub(rank(ratio(sub(delta(act,1),delta(lct,1)),lag(at,1))),rank(ratio(delta(ppent,1),lag(at,1))))",
+        "variables": [
+          "act",
+          "at",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsPerGrossInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(ib,oancf),add(capx,dp)),1)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationLagBehindCapacity",
+      "metadata": {
+        "normalized_expression": "mul(rank(growth(ppegt,1)),rank(neg(delta(ratio(dp,ppegt),1))))",
+        "variables": [
+          "dp",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OperatingWCBuildPerRealInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(neg(add(recch,invch)),add(capx,dp)),1)",
+        "variables": [
+          "capx",
+          "dp",
+          "invch",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithExternalFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(ib,oancf),at),sumrank(ratio(sstk,lag(at,1)),growth(dltt,1)))",
+        "variables": [
+          "at",
+          "dltt",
+          "ib",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualAccelVsCapexDecel",
+      "metadata": {
+        "normalized_expression": "sub(accel(winsor(ratio(sub(ib,oancf),at),1)),accel(ratio(capx,at)))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NonCashWCAccrualPerGrossInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),add(capx,dp)),1)",
+        "variables": [
+          "act",
+          "capx",
+          "che",
+          "dlc",
+          "dp",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndAdjWCvsPPEExpansion",
+      "metadata": {
+        "normalized_expression": "ind_zscore(winsor(sub(ratio(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),lag(at,1)),ratio(delta(ppent,1),lag(at,1))),5))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SoftAssetAmplifiedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(ib,oancf),at),1),ratio(sub(at,add(ppent,che)),at))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ExpansionCashFlowDeficit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(add(capx,delta(invt,1)),oancf),lag(at,1)),1)",
+        "variables": [
+          "at",
+          "capx",
+          "invt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearAccrualPerCapexFlow",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3)),1)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsAgainstLaborCapacity",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ratio(sub(ib,oancf),at),growth(emp,1)),1)",
+        "variables": [
+          "at",
+          "emp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearExpansionCashDeficit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ts_sum(sub(add(capx,delta(invt,1)),oancf),3),lag(at,1)),1)",
+        "variables": [
+          "at",
+          "capx",
+          "invt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CumulativeAccrualLessCapexScaled",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(ts_sum(sub(ib,oancf),3),ts_sum(capx,3)),at),1)",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedAccrualsVsHiring",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ma(ratio(sub(ib,oancf),at),3),ma(growth(emp,1),3)),1)",
+        "variables": [
+          "at",
+          "emp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquiredGrowthCashDeficit",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(add(capx,aqc),oancf),lag(at,1)),1)",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SoftAssetAmplifiedCashDeficit",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(add(capx,delta(invt,1)),oancf),lag(at,1)),1),ratio(sub(at,add(ppent,che)),at))",
+        "variables": [
+          "at",
+          "capx",
+          "che",
+          "invt",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccountingAssetCreationPerRealInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(ib,oancf),delta(intan,1)),add(capx,dp)),1)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HeavyWinsorAccrualPerGrossInvest3Y",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3)),10)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HeavyWinsorAccrualsVsHiring",
+      "metadata": {
+        "normalized_expression": "winsor(sub(ratio(sub(ib,oancf),at),growth(emp,1)),10)",
+        "variables": [
+          "at",
+          "emp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TotalExpansionDeficitPerGrossInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(add(capx,add(aqc,delta(invt,1))),oancf),add(capx,dp)),5)",
+        "variables": [
+          "aqc",
+          "capx",
+          "dp",
+          "invt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualPlusDebtPerRealInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(sub(ib,oancf),delta(dltt,1)),add(capx,dp)),5)",
+        "variables": [
+          "capx",
+          "dltt",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SoftAssetAmplified3YAccrualIntensity",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3)),5),ratio(sub(at,add(ppent,che)),at))",
+        "variables": [
+          "at",
+          "capx",
+          "che",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxUnvalidatedAccrualsPerInvestment",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(sub(ib,oancf),delta(txp,1)),add(capx,dp)),5)",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DeficitPlusAccrualIntensityZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(sub(add(capx,aqc),oancf),lag(at,1))),zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3))))",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearAcquiredDeficitPerGrossInvestment",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(add(capx,aqc),oancf),3),ts_sum(add(capx,dp),3))",
+        "variables": [
+          "aqc",
+          "capx",
+          "dp",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationAdequacyAmplifiedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(ratio(sub(ib,oancf),at),ratio(dp,capx))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualInstabilityPerRealInvestment",
+      "metadata": {
+        "normalized_expression": "ratio(vol(sub(ib,oancf),5),ma(add(capx,dp),5))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleParkedDeficit",
+      "metadata": {
+        "normalized_expression": "mul(ratio(sub(add(capx,aqc),oancf),lag(at,1)),ratio(intan,at))",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "intan",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsPlusCapitalWithoutLaborZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(sub(ib,oancf),at)),zscore(sub(growth(ppegt,1),growth(emp,1))))",
+        "variables": [
+          "at",
+          "emp",
+          "ib",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearDepAdequacyAmplifiedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(ratio(ts_sum(sub(ib,oancf),3),at),ratio(ts_sum(dp,3),ts_sum(capx,3)))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalancedTwoChannelZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(mul(ratio(sub(ib,oancf),at),ratio(dp,capx))),zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeChannelAccountingGrowthZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(sub(add(capx,aqc),oancf),lag(at,1))),add(zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3))),zscore(mul(ratio(sub(ib,oancf),at),ratio(dp,capx)))))",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearAccrualIntensity",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(ib,oancf),5),ts_sum(add(capx,dp),5))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctionMinDeficitIntensity",
+      "metadata": {
+        "normalized_expression": "min(zscore(ratio(sub(ib,oancf),add(capx,dp))),zscore(ratio(sub(add(capx,aqc),oancf),lag(at,1))))",
+        "variables": [
+          "aqc",
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "UnexplainedPPEGrowthWithAccruals",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(sub(delta(ppegt,1),capx),lag(ppegt,1))),zscore(ratio(sub(ib,oancf),at)))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutral3YAccrualIntensity",
+      "metadata": {
+        "normalized_expression": "ind_zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3)))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctionKingAndDepAdequacy",
+      "metadata": {
+        "normalized_expression": "min(zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3))),zscore(mul(ratio(sub(ib,oancf),at),ratio(dp,capx))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CapitalStockScaled3YAccruals",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent))",
+        "variables": [
+          "capx",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearIntensityPlusAmplifiedZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(ts_sum(sub(ib,oancf),3),ts_sum(add(capx,dp),3))),zscore(mul(ratio(ts_sum(sub(ib,oancf),3),at),ratio(ts_sum(dp,3),ts_sum(capx,3)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WithinFirmAccrualVsCapexPosition",
+      "metadata": {
+        "normalized_expression": "sub(ts_rank(ratio(sub(ib,oancf),at),5),ts_rank(ratio(capx,at),5))",
+        "variables": [
+          "at",
+          "capx",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ThreeYearWCAccrualPerGrossInvestment",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),3),ts_sum(add(capx,dp),3))",
+        "variables": [
+          "act",
+          "capx",
+          "che",
+          "dlc",
+          "dp",
+          "lct"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CapStockScaledAccrualsDepAmplified",
+      "metadata": {
+        "normalized_expression": "mul(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent)),ratio(ts_sum(dp,3),ts_sum(capx,3)))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossPPEFlooredAccrualIntensity",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(add(capx,dp),3),ppegt))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "ppegt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeightedCapStockPlusDepAdequacyZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent))),add(zscore(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent))),zscore(mul(ratio(ts_sum(sub(ib,oancf),3),at),ratio(ts_sum(dp,3),ts_sum(capx,3))))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CapStockScaled3YWCAccruals",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),3),add(ts_sum(capx,3),ppent))",
+        "variables": [
+          "act",
+          "capx",
+          "che",
+          "dlc",
+          "lct",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxValidatedCapStockAccruals",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(sub(ib,oancf),delta(txp,1)),3),add(ts_sum(capx,3),ppent))",
+        "variables": [
+          "capx",
+          "ib",
+          "oancf",
+          "ppent",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OneYearCapStockScaledAccruals",
+      "metadata": {
+        "normalized_expression": "ratio(sub(ib,oancf),add(capx,ppent))",
+        "variables": [
+          "capx",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ReplacementShareAmplifiedCapStockAccruals",
+      "metadata": {
+        "normalized_expression": "mul(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent)),ratio(ts_sum(dp,3),ts_sum(add(capx,dp),3)))",
+        "variables": [
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EqualWeightCapStockAndDepAdequacyZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent))),zscore(mul(ratio(ts_sum(sub(ib,oancf),3),at),ratio(ts_sum(dp,3),ts_sum(capx,3)))))",
+        "variables": [
+          "at",
+          "capx",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DoubleBoundedAmplifiedCapStockAccruals",
+      "metadata": {
+        "normalized_expression": "mul(mul(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent)),ratio(ts_sum(dp,3),ts_sum(add(capx,dp),3))),ratio(sub(at,add(ppent,che)),at))",
+        "variables": [
+          "at",
+          "capx",
+          "che",
+          "dp",
+          "ib",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CapStockScaledExpansionDeficit",
+      "metadata": {
+        "normalized_expression": "ratio(ts_sum(sub(add(capx,aqc),oancf),3),add(ts_sum(capx,3),ppent))",
+        "variables": [
+          "aqc",
+          "capx",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NonCashRecognitionPerProductiveCapital",
+      "metadata": {
+        "normalized_expression": "ratio(add(ts_sum(sub(ib,oancf),3),sub(intan,lag(intan,3))),add(ts_sum(capx,3),ppent))",
+        "variables": [
+          "capx",
+          "ib",
+          "intan",
+          "oancf",
+          "ppent"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualAccrualMeasurementCapStockZ",
+      "metadata": {
+        "normalized_expression": "add(zscore(ratio(ts_sum(sub(ib,oancf),3),add(ts_sum(capx,3),ppent))),zscore(ratio(ts_sum(sub(sub(delta(act,1),delta(che,1)),sub(delta(lct,1),delta(dlc,1))),3),add(ts_sum(capx,3),ppent))))",
+        "variables": [
+          "act",
+          "capx",
+          "che",
+          "dlc",
+          "ib",
+          "lct",
+          "oancf",
+          "ppent"
+        ]
+      }
+    }
+  ]
+}

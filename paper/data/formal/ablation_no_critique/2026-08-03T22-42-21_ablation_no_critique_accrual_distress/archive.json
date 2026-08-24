@@ -1,0 +1,2724 @@
+{
+  "pair": "accrual_distress",
+  "evaluated": [
+    {
+      "name": "CashFlowWCAccrualsTimesLeverage",
+      "expression": "MUL(RANK(NEG(RATIO(ADD(recch, ADD(invch, apalch)), at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Working-capital accruals built directly from the cash-flow statement (receivable, inventory, and payable changes) are most toxic in highly levered firms, where soft revenue recognition and inventory build are used to sustain reported earnings under covenant and refinancing pressure.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow-statement components avoid the merger/divestiture contamination of balance-sheet accrual differences, giving a cleaner earnings-quality measure than ib minus oancf. Ranking both legs to [0,1] makes the product monotone, so only jointly high-accrual and high-liability firms score near one and neither theme alone can generate an extreme score.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.0106951670626427,
+      "ls_alpha": -0.02760459953437893,
+      "ls_talpha": -1.7635249264343555,
+      "ls_sharpe": -0.05840234795156996,
+      "coverage": 0.057520541889853866,
+      "error": null
+    },
+    {
+      "name": "PreDepreciationAccrualsVsEquityDepletion",
+      "expression": "MUL(RANK(RATIO(ADD(SUB(ib, oancf), dp), at)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Stripping depreciation out of total accruals isolates the discretionary, reversible component, and this component is most damaging for firms with depleted or negative retained earnings, which have exhausted their internally generated equity cushion and face the strongest incentive to manage reported earnings.",
+      "expected_sign": "negative",
+      "reasoning": "Depreciation is a mechanical, non-discretionary accrual that dilutes the earnings-management content of total accruals, so adding it back sharpens the accrual leg. Retained-earnings deficit measures chronic cumulative failure rather than a capital-structure choice, so it is a distress channel distinct from leverage.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.1106629309582385,
+      "ls_alpha": -0.02013429657412354,
+      "ls_talpha": -1.6443880630081387,
+      "ls_sharpe": -0.3214435235337396,
+      "coverage": 0.0898285658153566,
+      "error": null
+    },
+    {
+      "name": "ReceivableBuildupPerSaleUnderDebt",
+      "expression": "WINSOR(MUL(RATIO(NEG(recch), sale), RATIO(lt, at)), 1)",
+      "hypothesis": "Revenue that arrives as receivables rather than cash signals aggressive recognition or lax credit terms, and when the firm is simultaneously debt-heavy this uncollected revenue cannot service liabilities, so the market underprices the coming write-off and return realization is low.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the receivable change by sales rather than assets ties the accrual directly to the revenue it purports to represent, which is the exact channel through which channel-stuffing operates. The continuous (unranked) product preserves the sign of the accrual, so cash-collecting levered firms score strongly negative and receivable-inflating levered firms strongly positive, testing whether magnitude information beats rank information.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.8103399358476044,
+      "ls_alpha": 0.0015829158389976013,
+      "ls_talpha": 0.11011486369426086,
+      "ls_sharpe": -0.1462190781733773,
+      "coverage": 0.08107200227500296,
+      "error": null
+    },
+    {
+      "name": "AccrualLeverageDeficitSumRank",
+      "expression": "SUMRANK(NEG(RATIO(ADD(recch, invch), at)), SUMRANK(RATIO(lt, at), NEG(RATIO(re, at))))",
+      "hypothesis": "Fragility is multidimensional: firms combining operating-asset buildup, a heavy liability stock, and a depleted retained-earnings base sit at the intersection of poor earnings quality and cumulative operating failure, and this overlap earns persistently low abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "An additive rank composite is structurally different from the multiplicative signals above and is far more robust when any single accounting item is noisy or extreme, which should stabilize portfolio composition and the FF5 alpha t-stat. Comparing its evidence against Signal 1 tells us whether the interaction is genuinely multiplicative or merely additive in ranks.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.093798974891975,
+      "ls_alpha": -0.000953448704508926,
+      "ls_talpha": -0.05996885603265619,
+      "ls_sharpe": -0.024014684619330397,
+      "coverage": 0.07693762191200955,
+      "error": null
+    },
+    {
+      "name": "AccrualBuildupVsCashDebtCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(ADD(recch, ADD(invch, apalch)), at))), RANK(NEG(RATIO(ADD(ni, dpc), lt))))",
+      "hypothesis": "Distress that matters for accrual reversal is a flow concept, not a stock concept: firms whose cash earnings barely cover their liabilities cannot absorb an accrual reversal, so accrual buildup combined with weak cash debt-coverage predicts the worst returns.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the accrual leg identical to Signal 1 isolates the distress channel, testing coverage-based fragility (cash earnings over total liabilities) against balance-sheet leverage. If coverage dominates, it indicates the mechanism runs through debt-service capacity rather than capital structure, which would guide all later refinements.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.5489232992963506,
+      "ls_alpha": -0.029108931226593304,
+      "ls_talpha": -2.1728223871851813,
+      "ls_sharpe": -0.38574984212401986,
+      "coverage": 0.05693538488080586,
+      "error": null
+    },
+    {
+      "name": "PersistentOperatingAssetBuildVsSolvencyTrend",
+      "expression": "MUL(RANK(TS_SUM(NEG(RATIO(ADD(recch, invch), at)), 3)), RANK(NEG(TREND(RATIO(re, at), 5))))",
+      "hypothesis": "A single year of accrual buildup is noisy, but a multi-year accumulation of receivables and inventory occurring while the solvency base is trending downward reveals a firm systematically borrowing earnings from the future while its equity cushion erodes, and this slow-burn deterioration is underweighted by investors focused on the latest quarter.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulating three years of working-capital accruals captures persistence of the distortion rather than one-off timing, while the five-year trend in retained earnings over assets captures the direction of fragility instead of its level. This is a state-plus-direction mechanism genuinely distinct from the contemporaneous level interactions, at the cost of some coverage from the required history.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.5055004418884401,
+      "ls_alpha": 0.008800784785337658,
+      "ls_talpha": 0.7022644468440132,
+      "ls_sharpe": 0.012709836256477229,
+      "coverage": 0.06788357862256661,
+      "error": null
+    },
+    {
+      "name": "SloanAccrualsWeakCashCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "High balance-sheet accruals are most damaging for firms whose cash earnings barely cover total liabilities, because such firms cannot absorb the reversal and must fund it with external capital raised on punitive terms.",
+      "expected_sign": "negative",
+      "reasoning": "This unites the two channels that carried signal in generation 1 (accruals net of depreciation, and cash-earnings debt coverage) while replacing the coverage-destroying cash-flow-statement items with balance-sheet deltas, which should roughly double or triple usable observations and stabilize the long-short legs. If both the FMB t-stat and the alpha t-stat strengthen relative to AccrualBuildupVsCashDebtCoverage, the earlier weakness was a data-availability artifact rather than a mechanism failure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.011650865952312,
+      "ls_alpha": -0.030735806584180972,
+      "ls_talpha": -2.729973568818482,
+      "ls_sharpe": -0.206886929811872,
+      "coverage": 0.10599591432253037,
+      "error": null
+    },
+    {
+      "name": "SignedSloanAccrualsLeverageWeighted",
+      "expression": "WINSOR(MUL(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at), RANK(RATIO(lt, at))), 1)",
+      "hypothesis": "Leverage amplifies the price impact of accruals symmetrically: for a debt-heavy firm, positive accruals signal an imminent earnings reversal it cannot finance, while negative accruals signal genuine cash generation and deleveraging capacity that the market underappreciates.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the accrual construction identical to Signal 1, this isolates one design choice\u2014preserving the signed magnitude of accruals and using leverage only as a non-negative amplification weight, versus double-ranking both legs. Comparing the two tells us whether the accrual tail magnitude or merely its cross-sectional rank carries the interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.759478978599851,
+      "ls_alpha": -0.012012389902815114,
+      "ls_talpha": -1.170279728559063,
+      "ls_sharpe": -0.1958010573448481,
+      "coverage": 0.10600303402516206,
+      "error": null
+    },
+    {
+      "name": "DepreciationUnderProvisionUnderLeverage",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Firms under debt pressure manage earnings through non-current accruals by stretching asset lives and cutting depreciation rates; a falling depreciation-to-assets ratio in a highly levered firm is a low-quality earnings boost that reverses through later impairments.",
+      "expected_sign": "negative",
+      "reasoning": "This targets a completely different accrual mechanism from working-capital buildup\u2014the long-lived-asset expense policy channel\u2014which is untested in the archive and requires only widely reported items, so coverage should be high. Leverage supplies the incentive: covenant-constrained firms are precisely those who benefit from suppressing a non-cash charge.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.2677318759779632,
+      "ls_alpha": -0.04530276655219164,
+      "ls_talpha": -3.876714657675831,
+      "ls_sharpe": -0.13862045941870016,
+      "coverage": 0.12790716031589192,
+      "error": null
+    },
+    {
+      "name": "AccrualsPerUnitEquityCushion",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), ceq), 1)",
+      "hypothesis": "What matters is the size of the accrual relative to the loss-absorbing equity base, not relative to assets: a given dollar of soft earnings threatens solvency far more when book equity is thin, so accruals per unit of equity cushion is itself an accrual-distress interaction.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the asset denominator with book equity embeds the distress conditioning directly into the scaling rather than through a separate multiplicative leg, which avoids the noise of estimating two ranks and mechanically overweights thinly capitalized firms. Winsorization controls the explosive tail when equity approaches zero.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.4949221996675592,
+      "ls_alpha": -0.016944995414561313,
+      "ls_talpha": -1.7518021892780609,
+      "ls_sharpe": -0.26792762145249166,
+      "coverage": 0.1061877851492496,
+      "error": null
+    },
+    {
+      "name": "TaxDeferralUnderWeakCoverage",
+      "expression": "MUL(RANK(RATIO(DELTA(txp, 1), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A rising stock of unpaid income taxes is a hard-to-disguise sign of cash conservation: firms accruing tax liabilities instead of remitting cash are hoarding liquidity, and when this coincides with weak cash coverage of debt it flags genuine distress rather than ordinary tax timing.",
+      "expected_sign": "negative",
+      "reasoning": "Taxes payable is an involuntary, non-negotiable creditor, so deferring it is a far more informative liquidity-stress accrual than discretionary receivable or inventory buildup, and this channel is entirely absent from the archive. Pairing it with cash-earnings coverage separates real inability to pay from routine fiscal-calendar timing.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.8100087038650481,
+      "ls_alpha": -0.008052184085595986,
+      "ls_talpha": -0.705742945103541,
+      "ls_sharpe": -0.05110510298181605,
+      "coverage": 0.11276014774311617,
+      "error": null
+    },
+    {
+      "name": "AccrualInstabilityUnderLiabilityLoad",
+      "expression": "MUL(RANK(VOL(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)), RANK(RATIO(lt, at)))",
+      "hypothesis": "Accrual quality is a second-moment concept: firms whose accruals swing erratically produce earnings that are an unreliable guide to debt-service capacity, and this information risk is priced only when the firm carries a heavy liability load that makes earnings credibility solvency-relevant.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-1 temporal attempt failed because it cumulated accrual *levels* and extrapolated a solvency *trend*, both of which are directional bets; measuring dispersion instead captures unreliability without taking a directional view. This tests whether the archive's directional accrual result can be complemented by an information-risk channel that is distinct from the level of accruals.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -0.929452942750534,
+      "ls_alpha": -0.009741726282865713,
+      "ls_talpha": -1.0754758388117465,
+      "ls_sharpe": 0.0638025427353793,
+      "coverage": 0.10403562286460513,
+      "error": null
+    },
+    {
+      "name": "SloanAccrualsTwoChannelFragility",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), lt)), NEG(RATIO(re, at)))))",
+      "hypothesis": "Financial fragility has a flow dimension (cash earnings cannot cover liabilities) and a stock dimension (the retained-earnings base is depleted); accrual reversals are most punishing where both hold, because the firm has neither current cash flow nor accumulated equity to absorb them.",
+      "expected_sign": "negative",
+      "reasoning": "The two distress proxies that carried signal separately in generations 1 and 2 \u2014 cash-earnings coverage and retained-earnings deficit \u2014 are combined into one rank-summed fragility score before interacting with the best-performing accrual leg. Averaging two noisy fragility measures should reduce classification error at the distress margin, which is where the long-short portfolio composition was previously unstable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.256759027020735,
+      "ls_alpha": -0.010731584197578995,
+      "ls_talpha": -1.037698055810364,
+      "ls_sharpe": -0.20153084518786268,
+      "coverage": 0.10587188703900441,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralAccrualCoverageInteraction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), IND_RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Both accrual intensity and debt-coverage capacity are strongly industry-determined (utilities and retailers are structurally levered and inventory-heavy), so the economically meaningful interaction is between a firm's accrual aggressiveness and its fragility *relative to industry peers*, not in absolute terms.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates exactly one design choice against the generation-2 flagship \u2014 industry-relative versus pooled ranking \u2014 so the comparison is diagnostic rather than cosmetic. If the alpha and FMB t-stat both improve, a large part of the residual noise in the long-short spread is sector tilt rather than mispricing, which would direct all remaining refinements toward industry-neutral construction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.066226211316143,
+      "ls_alpha": -0.02965124339345898,
+      "ls_talpha": -3.0093382428391378,
+      "ls_sharpe": -0.2279749799284773,
+      "coverage": 0.10599343790422369,
+      "error": null
+    },
+    {
+      "name": "DepreciationSuppressionVsCashCoverage",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Suppressing depreciation is an earnings-management lever pulled hardest by firms whose cash flow cannot service debt, because a non-cash charge can be stretched without any cash consequence while preserving reported coverage ratios for lenders.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the depreciation-policy accrual leg fixed and swapping stock leverage for flow-based coverage tests whether the archive's largest alpha (\u22124.5%, t = \u22123.88) is driven by debt *load* or by debt-service *capacity*, which are economically different mechanisms. Cash coverage was the distress leg that worked best with working-capital accruals, so if it also dominates here the two accrual channels share a single conditioning variable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.9785630893986577,
+      "ls_alpha": -0.041212478426372066,
+      "ls_talpha": -3.461819414137699,
+      "ls_sharpe": -0.25820591655650416,
+      "coverage": 0.12789323046291687,
+      "error": null
+    },
+    {
+      "name": "DepreciationLaggingSalesUnderDebt",
+      "expression": "MUL(RANK(NEG(SUB(GROWTH(dp, 1), GROWTH(sale, 1)))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Genuine understated depreciation shows up as depreciation growing more slowly than the revenue base it supports; a levered firm whose depreciation expense stalls while sales expand is capitalizing costs and stretching asset lives, and the deferred charge reverses later.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-2 depreciation signal used a change in dp scaled by assets, so a falling ratio can arise mechanically from rapid asset growth, meaning the alpha may be an asset-growth effect in disguise. Benchmarking depreciation growth against sales growth purges the asset-base denominator and provides a clean test of whether the depreciation-policy story survives once the investment channel is removed.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.9652637410318775,
+      "ls_alpha": -0.027876451804309588,
+      "ls_talpha": -2.226656026312014,
+      "ls_sharpe": 0.03835828557839031,
+      "coverage": 0.1255788627791852,
+      "error": null
+    },
+    {
+      "name": "AccrualsDuringLeverageDeterioration",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(DELTA(RATIO(lt, at), 1)))",
+      "hypothesis": "What matters is not the static level of indebtedness but the direction of travel: a firm posting high accruals while its liability ratio is actively rising is funding soft earnings with new debt, a combination that precedes covenant trouble and negative revisions.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal conditions on a distress *level*, yet chronically levered stable firms (utilities) are not fragile in the relevant sense, whereas firms mid-deterioration are. Pairing the accrual level with the leverage change tests whether distress dynamics identify the vulnerable subset more sharply than distress levels, which would be a genuinely new conditioning dimension.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.17047219175189068,
+      "ls_alpha": -0.008424999019439175,
+      "ls_talpha": -0.8811856570056591,
+      "ls_sharpe": -0.07176124772594539,
+      "coverage": 0.10592564595307848,
+      "error": null
+    },
+    {
+      "name": "AccrualsGatedByPretaxLoss",
+      "expression": "MUL(WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at), 1), INDICATOR(NEG(pi), 0))",
+      "hypothesis": "Loss-making firms are the canonical fragile group: they face delisting, covenant, and financing thresholds, so their accruals are disproportionately discretionary, while for profitable firms accruals largely reflect ordinary business growth and carry little mispricing.",
+      "expected_sign": "negative",
+      "reasoning": "No archive signal has used a hard state gate, and a pretax-loss flag is a discrete, economically interpretable fragility event rather than a smooth ranking, so it tests whether the interaction is a threshold phenomenon. Keeping the accrual leg signed and winsorized inside the gate preserves the direction of the accrual, so the long leg holds loss firms deleveraging working capital and the short leg holds loss firms inflating it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -0.1417965661250863,
+      "ls_alpha": -0.023323566095322892,
+      "ls_talpha": -1.3462377129759613,
+      "ls_sharpe": -0.1759839188119943,
+      "coverage": 0.10620057997716742,
+      "error": null
+    },
+    {
+      "name": "DualAccrualChannelVsCashCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(DELTA(RATIO(dp, at), 1)), RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Firms manage earnings on two margins simultaneously \u2014 inflating working-capital accruals and suppressing depreciation \u2014 and a firm doing both while unable to cover its liabilities from cash earnings is the purest case of unsustainable reported profit.",
+      "expected_sign": "negative",
+      "reasoning": "The two accrual legs that each worked with cash coverage are economically complementary (current versus non-current accruals) and their errors should be largely independent, so rank-summing them before the distress interaction should raise the signal-to-noise of the accrual dimension. This is a consolidation of the two best archive channels rather than a new mechanism, and it directly tests whether they are additive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.1029795698611413,
+      "ls_alpha": -0.037652682834024,
+      "ls_talpha": -3.083350861078965,
+      "ls_sharpe": -0.2788015110982029,
+      "coverage": 0.10577871180021578,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralDepreciationCoverageInteraction",
+      "expression": "MUL(IND_RANK(NEG(DELTA(RATIO(dp, at), 1))), IND_RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Depreciation rates and debt-coverage capacity are heavily determined by asset intensity and industry norms, so a firm's depreciation suppression and fragility are only informative relative to peers facing the same accounting conventions and capital structure norms.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-relative ranking improved the alpha and Sharpe of the Sloan-accrual interaction in generation 3, and the depreciation channel should benefit even more because depreciation-to-assets is almost mechanically an industry characteristic. This isolates one design choice against the current leader, so the comparison is diagnostic.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.6144449123675764,
+      "ls_alpha": -0.031083533576321404,
+      "ls_talpha": -3.3743564759248246,
+      "ls_sharpe": -0.18485768749010667,
+      "coverage": 0.12788136429186406,
+      "error": null
+    },
+    {
+      "name": "DepreciationBelowOwnNormVsCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A one-year fall in the depreciation rate can be ordinary asset-mix churn, whereas a depreciation rate sitting below the firm's own three-year norm indicates a deliberate, sustained stretching of asset lives that must eventually reverse through impairment.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the first difference with a deviation from the firm's own recent average filters transitory noise while keeping the same economic content, which should improve slope precision without the directional-extrapolation failure that sank the generation-1 trend signal. If both statistics improve over the leader, the mechanism is a persistent policy state rather than a one-year event.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.7286832673015673,
+      "ls_alpha": -0.040324506251594984,
+      "ls_talpha": -3.5333917468547433,
+      "ls_sharpe": -0.40042668863738395,
+      "coverage": 0.1407627636663208,
+      "error": null
+    },
+    {
+      "name": "DepreciationSuppressionVsBalanceSheetSolvency",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(NEG(RATIO(ADD(che, ceq), lt))))",
+      "hypothesis": "If the depreciation-suppression effect is genuinely about financial fragility, it should also appear when distress is measured by the stock of loss-absorbing resources (cash plus book equity) relative to liabilities, with no earnings term in the conditioning variable at all.",
+      "expected_sign": "negative",
+      "reasoning": "The leading distress leg, (ni + dp)/lt, contains net income, so its interaction with an earnings-management proxy could be a profitability interaction rather than a distress interaction \u2014 an identification problem the archive has not addressed. Swapping in a purely balance-sheet solvency ratio while holding the accrual leg fixed cleanly separates the two interpretations and tells us which conditioning family to refine in the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -0.13484715109680281,
+      "ls_alpha": -0.04896832159592193,
+      "ls_talpha": -3.972088235925488,
+      "ls_sharpe": -0.13913262536563545,
+      "coverage": 0.12598241577907707,
+      "error": null
+    },
+    {
+      "name": "AccrualsPerUnitLiabilityBurden",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), lt), 1)",
+      "hypothesis": "The economically relevant scale for an accrual is the claim it must ultimately service: a dollar of soft earnings is trivial for a debt-free firm and threatening for one whose liabilities dwarf its operations, so deflating accruals by total liabilities embeds the distress interaction in the denominator.",
+      "expected_sign": "negative",
+      "reasoning": "The equity-cushion deflator delivered the archive's second-best FMB slope (\u22122.50) but a weak alpha, plausibly because book equity can approach or cross zero and destabilize the sort; total liabilities is strictly positive and far better behaved, so this should retain the slope while producing a tradable portfolio. It also tests the deflator family against the multiplicative-rank family with a single parsimonious expression.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.6935101142953326,
+      "ls_alpha": -0.03113527448771871,
+      "ls_talpha": -2.583037300045451,
+      "ls_sharpe": -0.1860308338060914,
+      "coverage": 0.10600272447287373,
+      "error": null
+    },
+    {
+      "name": "PayableStretchUnderWeakCoverage",
+      "expression": "MUL(RANK(RATIO(DELTA(SUB(lct, ADD(dlc, txp)), 1), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "For a fragile firm, a jump in non-debt current liabilities is not conservative accounting but supplier-financing stress: it is stretching payables and accrued expenses because it cannot pay cash, and that hidden\u501f-from-suppliers funding precedes distress events.",
+      "expected_sign": "negative",
+      "reasoning": "Inside the Sloan accrual this term enters with a negative sign, so standard accrual logic labels payable growth as *good* earnings quality; this signal tests the opposite sign asymmetry for firms with weak debt coverage, where payable growth is a liquidity symptom rather than an accrual virtue. It is a genuinely new economic channel that also serves as a sign-decomposition check on why the aggregate Sloan leg underperforms the depreciation leg.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.4101524655540985,
+      "ls_alpha": 1.0479283249736904e-05,
+      "ls_talpha": 0.0009844462657430588,
+      "ls_sharpe": 0.04788703310433212,
+      "coverage": 0.10694933537060013,
+      "error": null
+    },
+    {
+      "name": "DepreciationShortfallVsBlendedFragility",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), lt)), NEG(RATIO(ADD(che, ceq), lt)))))",
+      "hypothesis": "Fragility that makes depreciation suppression dangerous has a flow component (cash earnings cannot service liabilities) and a stock component (little cash or equity to absorb a write-down), and firms scoring badly on both are the ones whose stretched asset lives will be forcibly corrected.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-4 diagnostic showed the two distress legs carry complementary evidence \u2014 coverage produces the FMB slope, balance-sheet solvency produces the larger and more reliable alpha \u2014 so rank-summing them before the interaction should retain both forms of evidence rather than trading one for the other. This is the most direct consolidation of the archive's strongest result.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.2434833844523294,
+      "ls_alpha": -0.04515615181608351,
+      "ls_talpha": -3.732091883324469,
+      "ls_sharpe": -0.20718819791339738,
+      "coverage": 0.1386057517291591,
+      "error": null
+    },
+    {
+      "name": "DepreciationShortfallLongMemory",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Asset-life stretching is a slow policy drift rather than a one-year event, so measuring the depreciation rate against a five-year norm should capture more of the cumulative deferred expense than a three-year benchmark.",
+      "expected_sign": "negative",
+      "reasoning": "Moving from a one-year difference to a three-year norm raised the FMB t-stat from \u22122.98 to \u22123.73 and the Sharpe from \u22120.26 to \u22120.40, so the horizon of the benchmark is clearly a live design parameter worth one more step. The cost is a longer history requirement, so coverage relative to 0.141 is the key diagnostic for whether the gain is real or a survivorship artifact.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -4.102563213464427,
+      "ls_alpha": -0.04006194946926141,
+      "ls_talpha": -3.7243024850444555,
+      "ls_sharpe": -0.42769199684711046,
+      "coverage": 0.1407627636663208,
+      "error": null
+    },
+    {
+      "name": "PeerRelativeDepreciationShortfallVsCoverage",
+      "expression": "MUL(IND_RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Depreciation policy is governed by industry asset composition, so a firm's shortfall is only evidence of manipulation when it is unusual relative to peers experiencing the same asset-mix shifts; fragility, by contrast, is comparable economy-wide.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-neutralizing both legs previously helped the working-capital interaction's alpha but slightly hurt the depreciation version's FMB slope, suggesting the sector information in the *distress* leg is genuine while that in the accrual leg is noise. Applying IND_RANK asymmetrically tests exactly that asymmetry, which no prior signal has done.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.827537227649312,
+      "ls_alpha": -0.03799054079620713,
+      "ls_talpha": -3.6628786793003267,
+      "ls_sharpe": -0.38955008281957837,
+      "coverage": 0.14074919495768215,
+      "error": null
+    },
+    {
+      "name": "OperatingAssetGrowthOutrunningDepreciation",
+      "expression": "MUL(RANK(SUB(GROWTH(SUB(at, che), 1), GROWTH(dp, 1))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "When a firm's operating asset base grows materially faster than its depreciation charge, capitalized costs are accumulating on the balance sheet without a matching expense, and for a firm that cannot cover its liabilities from cash earnings those capitalized costs are impairment candidates rather than productive assets.",
+      "expected_sign": "negative",
+      "reasoning": "This reframes the depreciation channel as a matching failure between the asset base and its expense rather than as a deviation from the firm's own rate, which is a different economic statement and a different statistic. The generation-3 sales-benchmarked version lost its slope, but sales is a demand variable whereas operating assets are the actual depreciable base, so this is the economically correct benchmark for the same idea.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.0602820681215683,
+      "ls_alpha": -0.03185903519747729,
+      "ls_talpha": -2.9121101205032867,
+      "ls_sharpe": -0.1954108837226886,
+      "coverage": 0.12633257100923126,
+      "error": null
+    },
+    {
+      "name": "DepreciationShortfallVsInterestBearingCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Hard default risk comes from contractual debt with fixed maturities and covenants, not from payables and deferred items, so cash-earnings coverage of interest-bearing debt should identify the firms whose accounting choices are driven by financing constraints more precisely than coverage of total liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Total liabilities mixes trade credit and operating provisions with contractual borrowing, which blurs the incentive story that motivates the whole design; narrowing the denominator to `dltt + dlc` is a single, well-motivated change to the leading signal's distress leg. If the slope and alpha both improve, the mechanism is specifically covenant and refinancing pressure rather than general liability weight.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.9024397974439426,
+      "ls_alpha": -0.040852012762758974,
+      "ls_talpha": -4.060951295938026,
+      "ls_sharpe": -0.44876763019252713,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "StandardizedDepreciationShortfallVsCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)), VOL(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A given drop in the depreciation rate is meaningful evidence of manipulation only for firms whose depreciation rate is normally stable; for firms with naturally volatile asset mixes the same drop is noise, so the shortfall should be measured in units of the firm's own historical volatility.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the shortfall by its firm-specific standard deviation converts a raw deviation into a surprise measure, which should concentrate the short leg on genuine accounting decisions rather than on capital-intensity churn and thereby raise both the slope precision and the Sharpe ratio. This is the natural statistical sharpening of the leading signal and it also tests whether the second-moment information that failed as a standalone accrual-instability signal becomes useful as a normalizer.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.228688208324713,
+      "ls_alpha": -0.034858042767184426,
+      "ls_talpha": -3.2155616106779736,
+      "ls_sharpe": -0.2801384300575575,
+      "coverage": 0.12795333519890179,
+      "error": null
+    },
+    {
+      "name": "LongMemoryDepreciationShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Firms whose depreciation rate has drifted persistently below their own five-year norm while cash earnings barely cover contractual debt are stretching asset lives to preserve covenant headroom, and the deferred expense is later forced out through impairments.",
+      "expected_sign": "negative",
+      "reasoning": "This joins the two independently validated improvements from generation 5 \u2014 the five-year norm (best FMB slope) and the interest-bearing debt denominator (best alpha and Sharpe) \u2014 which were each tested against the same baseline and should be close to orthogonal design choices. If both statistics improve simultaneously it establishes the consolidated specification for the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -4.36260779095743,
+      "ls_alpha": -0.043440143682312825,
+      "ls_talpha": -4.412288993715306,
+      "ls_sharpe": -0.5207954079197407,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "PeerRelativeLongMemoryShortfallVsDebtCoverage",
+      "expression": "MUL(IND_RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Depreciation shortfalls are most diagnostic when they are unusual relative to industry peers experiencing the same asset-mix and technology shifts, while debt-service capacity remains comparable across the whole market.",
+      "expected_sign": "negative",
+      "reasoning": "Asymmetric industry-neutralization of only the accrual leg modestly improved the slope at the three-year horizon, so it is worth one test on top of the consolidated specification to see whether the sector component of a five-year drift is noise or signal. Pairing it with Signal 1 isolates exactly one design choice.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -4.333867095455993,
+      "ls_alpha": -0.033948926952898945,
+      "ls_talpha": -3.796044393768199,
+      "ls_sharpe": -0.40255815270897355,
+      "coverage": 0.12440308000399529,
+      "error": null
+    },
+    {
+      "name": "DepreciationBelowOwnPeakVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), TS_MAX(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "The cumulative amount of deferred depreciation expense is best measured against the highest rate the firm ever charged on a comparable asset base, since that peak reveals the depreciation intensity the assets genuinely require; the gap below the peak is the accumulated unrecognized charge.",
+      "expected_sign": "negative",
+      "reasoning": "A mean benchmark is contaminated by the firm's own recent suppression, mechanically shrinking the measured shortfall for serial manipulators, whereas a five-year maximum anchors on the firm's least-managed year and is monotone in cumulative stretching. This is a genuinely different statistic of the same economic state, not a window tweak, and it should sharpen the short leg.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.771852500873177,
+      "ls_alpha": -0.04083196838447069,
+      "ls_talpha": -4.057418394199418,
+      "ls_sharpe": -0.328180599716269,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "DepreciationShortfallVsDebtFlowAndStock",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Refinancing pressure has a flow dimension (cash earnings relative to debt) and a stock dimension (net interest-bearing debt relative to assets), and combining them within the debt family identifies constrained firms more accurately than either alone.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier blend failed because it mixed in cash-plus-equity solvency, a skewed stock measure that destroyed the linear slope; net debt to assets is smoothly distributed and belongs to the same contractual-obligation channel that just proved dominant. This tests whether blending helps when both components come from the correct economic family.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.8453582320735173,
+      "ls_alpha": -0.05318745167367794,
+      "ls_talpha": -4.740133243489937,
+      "ls_sharpe": -0.36050335492357555,
+      "coverage": 0.12365468575489898,
+      "error": null
+    },
+    {
+      "name": "DepreciationShortfallAtMaturityWall",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(RATIO(dlc, ADD(dltt, dlc))))",
+      "hypothesis": "The incentive to flatter reported earnings peaks when debt must be rolled imminently, so the share of borrowing that is current \u2014 a maturity wall \u2014 identifies the firms for which accounting choices are most consequential, independently of how profitable or levered they are.",
+      "expected_sign": "negative",
+      "reasoning": "Every distress leg tested so far measures the size or serviceability of debt, never its timing, yet refinancing risk is fundamentally a maturity-structure concept and is nearly uncorrelated with coverage ratios. Keeping the leg pure rather than blending it with coverage makes the test diagnostic: if it works, maturity structure is a new conditioning dimension for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.3209925302112624,
+      "ls_alpha": -0.03540966896066955,
+      "ls_talpha": -3.522180939964875,
+      "ls_sharpe": -0.3925630243533433,
+      "coverage": 0.12442361363912147,
+      "error": null
+    },
+    {
+      "name": "LowDepreciationLevelVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(dp, at))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "If the effect is driven by firms that simply charge little depreciation relative to assets \u2014 asset-light or fully depreciated firms with weak debt coverage \u2014 then the level, not the within-firm deviation, should carry the return predictability.",
+      "expected_sign": "negative",
+      "reasoning": "This is the necessary control for the entire depreciation program: the archive has never tested whether the shortfall measures a *change in policy* or merely a cross-sectional characteristic that the deviation construction partly proxies. A weak result here would confirm the mechanism is genuine within-firm earnings management, while a strong result would mean the interaction should be rebuilt around a simpler and much higher-coverage level variable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.5135076481551133,
+      "ls_alpha": -0.019615714147705195,
+      "ls_talpha": -1.9439893380425672,
+      "ls_sharpe": -0.23633198993640278,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "ShortfallVsCoverageAndMaturityWall",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(dlc, ADD(dltt, dlc)))))",
+      "hypothesis": "A firm is truly refinancing-constrained when it both lacks cash earnings to service its debt and must roll a large share of that debt imminently, and it is exactly these firms whose sustained depreciation shortfall represents covenant-motivated earnings management.",
+      "expected_sign": "negative",
+      "reasoning": "Coverage and maturity share are the two distress legs that each worked independently, they measure serviceability versus timing so their errors should be largely uncorrelated, and both are bounded, smoothly distributed ratios \u2014 unlike the net-debt stock blend that sacrificed the FMB slope. This is the most promising consolidation available and should improve both forms of evidence rather than trading them off.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -4.135627801422216,
+      "ls_alpha": -0.03584825218031023,
+      "ls_talpha": -3.556832248181576,
+      "ls_sharpe": -0.4049745019651874,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "SevenYearNormShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 7)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Because depreciation policy drifts over the multi-year life of an asset base, a seven-year norm should capture even more accumulated deferred expense than a five-year norm, provided enough firms have the required history.",
+      "expected_sign": "negative",
+      "reasoning": "Extending the window from one year to three to five monotonically improved the slope (\u22122.98, \u22123.73, \u22124.36) with no coverage loss, so the horizon has not yet been shown to saturate and one more step is the cheapest remaining test of the mechanism's timescale. Coverage relative to 0.124 is the decisive diagnostic: if it falls materially the gain would be a survivorship artifact and the five-year specification should stand.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -4.401550122263126,
+      "ls_alpha": -0.0398130316882447,
+      "ls_talpha": -4.372857249602715,
+      "ls_sharpe": -0.49092583323427536,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "ProportionalDepreciationShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(MA(RATIO(dp, at), 5), RATIO(dp, at)), MA(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "A 0.5 percentage-point drop in the depreciation rate is trivial for a capital-intensive utility charging 10% of assets but represents a quarter of the expense for an asset-light firm charging 2%, so the economically comparable measure of stretching is the *proportional* shortfall relative to the firm's own normal rate.",
+      "expected_sign": "negative",
+      "reasoning": "The absolute deviation mechanically loads the short leg with heavy-asset industries, which is likely why industry-neutralizing the accrual leg was roughly break-even \u2014 the sector tilt is a scaling artifact rather than information. Normalizing by the firm's own norm removes the capital-intensity scale without discarding cross-industry information, and should raise the slope and Sharpe together.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.930490677981791,
+      "ls_alpha": -0.041566640902911914,
+      "ls_talpha": -4.374398367908199,
+      "ls_sharpe": -0.4757315044307133,
+      "coverage": 0.1240439477574794,
+      "error": null
+    },
+    {
+      "name": "OrdinalDepreciationPositionVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(TS_RANK(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "What identifies a manipulator is that its current depreciation rate sits at the bottom of its own recent history, regardless of the size of the gap, since the ordinal position is immune to one-off asset sales, acquisitions, and restatements that distort the magnitude.",
+      "expected_sign": "negative",
+      "reasoning": "The five-year peak benchmark underperformed the mean benchmark on the slope (\u22122.77 versus \u22124.36), suggesting extreme-value anchors are noisy; an ordinal position statistic uses the entire history yet remains robust to those same outliers. Comparing it against the mean-deviation leader tells us whether the signal lives in the magnitude of the shortfall or merely in its ordering.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.190637140626249,
+      "ls_alpha": -0.03532961511882546,
+      "ls_talpha": -3.653890046845638,
+      "ls_sharpe": -0.3428270146196178,
+      "coverage": 0.11415514513049486,
+      "error": null
+    },
+    {
+      "name": "ShortfallUnderCoverageAndRevenueContraction",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), NEG(GROWTH(sale, 1)))))",
+      "hypothesis": "Shrinking revenue is the clearest evidence that an asset base has become economically impaired, so a firm that is simultaneously contracting, weakly covered, and charging less depreciation than its own norm is deferring an impairment that the market has not yet priced.",
+      "expected_sign": "negative",
+      "reasoning": "Every distress leg tested so far is financial; operating contraction is a real-side fragility dimension that is a standard bankruptcy predictor and is only weakly correlated with coverage ratios. It also directly addresses the economic premise of the depreciation channel \u2014 assets should be written down faster, not slower, when the business they serve is shrinking.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -1.4966648650493044,
+      "ls_alpha": -0.04030140016733016,
+      "ls_talpha": -3.9870836975115567,
+      "ls_sharpe": -0.2705902479130601,
+      "coverage": 0.11278811063316238,
+      "error": null
+    },
+    {
+      "name": "TripleProductShortfallCoverageMaturity",
+      "expression": "MUL(MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))))), RANK(RATIO(dlc, ADD(dltt, dlc))))",
+      "hypothesis": "The mispricing is concentrated in the joint tail where all three conditions hold at once \u2014 sustained depreciation suppression, weak debt-service capacity, and an imminent maturity wall \u2014 so a conjunctive score should isolate a smaller but far more extreme short leg.",
+      "expected_sign": "negative",
+      "reasoning": "Signal 1 aggregates the two distress channels additively, which lets a firm score highly on distress through one channel alone, whereas the triple product requires both, so the pair jointly identifies whether the interaction is conjunctive or compensatory. If the triple product delivers a larger alpha with a similar t-stat, the tails are where the economics lives and the final generation should concentrate there.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.9788192101658293,
+      "ls_alpha": -0.04388169218195913,
+      "ls_talpha": -4.356122013859166,
+      "ls_sharpe": -0.3682306779542641,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "ShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Firms whose cash earnings have failed to cover contractual debt for several consecutive years are genuinely constrained, whereas a single weak year is often transitory; chronic weak coverage should therefore identify the accounting-manipulation incentive far more precisely.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual leg is already a multi-year state while the distress leg is a single noisy annual flow, an asymmetry that plausibly caps the interaction's precision; smoothing coverage over three years matches the two legs' information horizons. This is the highest-value untested refinement because it improves the conditioning variable's signal-to-noise without adding a new economic dimension, which generation 7 showed to be counterproductive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.437799050916052,
+      "ls_alpha": -0.04455938089321539,
+      "ls_talpha": -4.4163462976973795,
+      "ls_sharpe": -0.5110449189790929,
+      "coverage": 0.12902851348038305,
+      "error": null
+    },
+    {
+      "name": "ShortfallVsCoverageAndGrossDebtLoad",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Debt-service capacity and the sheer size of the contractual debt burden are distinct constraints, and combining them should identify constrained firms better than either alone, provided the stock measure is not distorted by cash netting.",
+      "expected_sign": "negative",
+      "reasoning": "The net-debt version delivered the archive's largest alpha (\u22125.3%) but collapsed the slope, most likely because subtracting cash creates a heavily skewed, cash-rich-firm-driven tail; gross interest-bearing debt over assets is bounded, smoothly distributed, and captures the same burden concept. This is a targeted repair of a known failure mode rather than a new blend.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.66497246490183,
+      "ls_alpha": -0.04426291618520023,
+      "ls_talpha": -4.360987031023426,
+      "ls_sharpe": -0.43491846539516404,
+      "coverage": 0.12441556527962477,
+      "error": null
+    },
+    {
+      "name": "RevenueDeflatedDepreciationShortfallVsCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, sale), MA(RATIO(dp, sale), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Depreciation should track the intensity with which assets are consumed in generating revenue, so a fall in depreciation per dollar of sales relative to the firm's own norm is a more direct measure of unrecognized asset consumption than a fall relative to the book asset base.",
+      "expected_sign": "negative",
+      "reasoning": "The asset deflator is contaminated by acquisitions, write-ups, and asset growth, all of which move dp/at without any change in depreciation policy; sales is an independent scale variable that moves with actual asset utilization. It is the last untested deflator and directly addresses the measurement-error interpretation of the leading signal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -1.658982649885977,
+      "ls_alpha": -0.023243500451357407,
+      "ls_talpha": -2.1931703189897935,
+      "ls_sharpe": -0.21556754779073636,
+      "coverage": 0.12313169716375812,
+      "error": null
+    },
+    {
+      "name": "DepreciationDowntrendVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(TREND(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Asset-life stretching is a directional policy that shows up as a steadily declining depreciation rate, so the fitted slope of dp/at over five years measures the manipulation more faithfully than the gap between the latest value and a backward-looking average.",
+      "expected_sign": "negative",
+      "reasoning": "A deviation from a moving average is contaminated by the manipulated years inside the benchmark itself, mechanically shrinking the measured shortfall for firms that have been suppressing depreciation for years, whereas a trend coefficient accumulates rather than averages away that behavior. This is a different statistic of the same economic state and the generation-1 trend failure is not informative here because that signal extrapolated a *distress* trend, not an accounting-policy trend.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.5502310757602857,
+      "ls_alpha": -0.04354885814667236,
+      "ls_talpha": -4.5528461361549155,
+      "ls_sharpe": -0.39074575213233054,
+      "coverage": 0.10451687348886891,
+      "error": null
+    },
+    {
+      "name": "CumulativeDeferredDepreciationVsDebtCoverage",
+      "expression": "MUL(RANK(TS_SUM(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), 3)), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "The economically relevant quantity is the accumulated stock of expense that has not yet been recognized, so summing three years of annual shortfalls measures the size of the impending write-down rather than this year's increment.",
+      "expected_sign": "negative",
+      "reasoning": "If the mechanism is deferral of a real charge, the reversal magnitude should scale with the cumulative deferral, which implies a stock construction should dominate a flow construction on portfolio alpha. Coverage is the key diagnostic since the nested windows require roughly seven years of data, and a large drop would indicate the apparent gain is a survivorship artifact.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.9769231598739228,
+      "ls_alpha": -0.033940077537566934,
+      "ls_talpha": -3.59234243113719,
+      "ls_sharpe": -0.3809802893697788,
+      "coverage": 0.12441680348877811,
+      "error": null
+    },
+    {
+      "name": "DualDepreciationEvidenceVsDebtCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), SUB(GROWTH(SUB(at, che), 1), GROWTH(dp, 1)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Two independent symptoms of under-depreciation \u2014 a rate below the firm's own norm and an operating asset base growing faster than the depreciation charge \u2014 should corroborate each other, so firms exhibiting both are the most likely genuine manipulators.",
+      "expected_sign": "negative",
+      "reasoning": "Both accrual legs worked with this distress leg (FMB \u22124.36 and \u22122.06) and they use different information, since one is a within-firm rate comparison and the other a cross-item growth mismatch, so rank-summing should reduce classification error on the accrual dimension where the archive has only ever combined a depreciation leg with a working-capital leg. Unlike generation 7's blends, the added channel here is on the accrual side, which has never been strengthened successfully and is the remaining source of measurement noise.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.0639188226391263,
+      "ls_alpha": -0.03731664842603527,
+      "ls_talpha": -3.6687862462878855,
+      "ls_sharpe": -0.36920124184147557,
+      "coverage": 0.11237650927377382,
+      "error": null
+    },
+    {
+      "name": "LongNormShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 7)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Persistent asset-life stretching measured against a seven-year norm, combined with several consecutive years of inadequate cash coverage of contractual debt, identifies firms whose reported profits depend on deferring a real expense they cannot afford to recognize.",
+      "expected_sign": "negative",
+      "reasoning": "The seven-year norm produced the archive's strongest slope among accrual constructions and chronic coverage produced the strongest overall result on the distress side, and the two changes act on different legs so they should compound rather than conflict. This is the most direct consolidation of the two best independently validated refinements.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.496011864279145,
+      "ls_alpha": -0.03831624217145681,
+      "ls_talpha": -3.9574118743252926,
+      "ls_sharpe": -0.4830507776255582,
+      "coverage": 0.12902851348038305,
+      "error": null
+    },
+    {
+      "name": "DepreciationDowntrendVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(TREND(RATIO(dp, at), 5))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "A steadily declining depreciation rate is the signature of deliberate asset-life extension, and pairing that directional policy measure with chronically weak debt coverage should isolate the firms with both the motive and the demonstrated behaviour.",
+      "expected_sign": "negative",
+      "reasoning": "The trend construction generated the most statistically reliable FF5 alpha in the archive (t = \u22124.55) when paired with single-year coverage, so upgrading its distress leg to the chronic version that improved every other signal is the natural completion of that experiment. Its weaker slope was plausibly caused by noise in the annual coverage ratio rather than by the trend itself, which this specification directly tests.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.372820764718025,
+      "ls_alpha": -0.03984100391649187,
+      "ls_talpha": -4.038802155719456,
+      "ls_sharpe": -0.36006303045746174,
+      "coverage": 0.10911563387641186,
+      "error": null
+    },
+    {
+      "name": "ShortfallVsFiveYearChronicCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 5))))",
+      "hypothesis": "If chronic distress is what matters, extending the coverage-averaging window to five years should match the accrual leg's horizon exactly and capture entrenched rather than merely recent financial weakness.",
+      "expected_sign": "negative",
+      "reasoning": "Moving coverage from one year to a three-year average improved every statistic, so the persistence horizon of the distress leg is an open and unexhausted design parameter, exactly parallel to the norm-window question that produced the largest gains earlier. If five years overshoots, the deterioration will show that chronic distress becomes stale, which is itself the informative boundary of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.581666905679593,
+      "ls_alpha": -0.04515856983302132,
+      "ls_talpha": -3.801132013357613,
+      "ls_sharpe": -0.4759228889211827,
+      "coverage": 0.1311137092866512,
+      "error": null
+    },
+    {
+      "name": "LevelAndTrendDepreciationEvidenceVsChronicCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), NEG(TREND(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "A firm that is both below its own depreciation norm and on a five-year downward path is far more likely to be genuinely stretching asset lives than one displaying only a level gap or only a drift, so combining the two statistics should reduce misclassification on the accrual dimension.",
+      "expected_sign": "negative",
+      "reasoning": "Level deviation carries the strongest slope while the trend carries the strongest alpha t-stat, which implies they contain partly distinct information about the same policy state rather than being redundant transformations. Earlier attempts to strengthen the accrual leg failed because they added an economically different channel (working capital, asset growth); this one stays inside the depreciation mechanism, which is why it has a better chance of helping.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.809772402148875,
+      "ls_alpha": -0.0436379198547824,
+      "ls_talpha": -4.360006193256124,
+      "ls_sharpe": -0.4055839750315152,
+      "coverage": 0.10878286516645246,
+      "error": null
+    },
+    {
+      "name": "ShortfallVsChronicCoverageAndDebtLoad",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3)), RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Chronic inability to service debt and a large contractual debt burden are complementary constraints, and once the flow component is smoothed the stock component should add tail information without the noise that previously destroyed the cross-sectional slope.",
+      "expected_sign": "negative",
+      "reasoning": "Stock-plus-flow blends have twice produced the archive's largest alphas (\u22125.3% and \u22124.4%) while halving the slope, and the most likely culprit is the noisy single-year flow measure being averaged with a persistent stock measure, creating an unstable composite ranking. Replacing the annual flow with the chronic three-year version aligns the persistence of the two components and is the last untested repair of a recurring failure mode.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.7027373823707035,
+      "ls_alpha": -0.046245991214673,
+      "ls_talpha": -4.5467429740200265,
+      "ls_sharpe": -0.44585662985966734,
+      "coverage": 0.1288567119603575,
+      "error": null
+    },
+    {
+      "name": "ProportionalShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(MA(RATIO(dp, at), 5), RATIO(dp, at)), MA(RATIO(dp, at), 5))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Expressing the shortfall as a fraction of the firm's own normal depreciation rate makes the accrual leg comparable across capital intensities, and combining that scale-free measure with chronic distress should give the cleanest specification of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "The proportional shortfall matched the absolute version on alpha and Sharpe but was slightly weaker on the slope under single-year coverage; since the chronic coverage leg reduced noise in every specification it was applied to, this pairing determines whether the proportional scaling was genuinely inferior or merely obscured by a noisy conditioning variable. Together with Signal 1 it closes out the two remaining accrual-leg scaling questions in the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.0118283950913085,
+      "ls_alpha": -0.041851883114456256,
+      "ls_talpha": -4.092628061717978,
+      "ls_sharpe": -0.46372534944357313,
+      "coverage": 0.128636826651544,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "LeverageRankedAccrualBurden",
+      "expression": "MUL(RANK(RATIO(SUB(ib, oancf), at)), RANK(RATIO(lt, at)))",
+      "hypothesis": "The negative accrual anomaly is concentrated in highly levered firms, where managers have both the incentive (covenant/refinancing pressure) and the opportunity (discretionary working-capital and reserve accounts) to inflate earnings, so accrual reversals are larger and more punishing.",
+      "expected_sign": "negative",
+      "reasoning": "Ranking both legs to [0,1] makes the product monotone: only firms that are simultaneously high-accrual and high-leverage score near one, while clean-accrual, unlevered firms score near zero. This isolates the joint tail rather than either main effect, since a high score is impossible from a single theme alone.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "NetDebtGatedAccruals",
+      "expression": "MUL(RATIO(SUB(ib, oancf), at), INDICATOR(RATIO(SUB(lt, che), at), 0.5))",
+      "hypothesis": "Accruals only predict returns among firms whose net debt exceeds half of assets; for cash-rich, low-leverage firms accrual noise is not economically informative because there is no liquidity pressure forcing earnings management or fire-sale reversals.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the accrual signal on exclusively in the financially fragile subsample, giving a sharp conditional test rather than a smooth weighting. Netting cash against total liabilities makes the distress gate reflect true funding fragility rather than mechanical capital-structure choice.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LeverageAmplifiedAccrualIntensity",
+      "expression": "WINSOR(MUL(RATIO(SUB(ib, oancf), at), RATIO(lt, at)), 1)",
+      "hypothesis": "The pricing impact of a given unit of accruals scales continuously with the firm's liability load: aggressive accruals in a levered firm signal impending write-downs, whereas conservative (negative) accruals in a levered firm signal genuine cash generation and deleveraging capacity.",
+      "expected_sign": "negative",
+      "reasoning": "Multiplying signed accrual intensity by the leverage ratio amplifies both tails symmetrically, so the signal is strongly negative for cash-rich levered firms (good news) and strongly positive for accrual-inflated levered firms (bad news). Winsorization controls the fat tails created by multiplying two scaled ratios.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualDistressTripleComposite",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), SUMRANK(RATIO(lt, at), NEG(RATIO(re, at))))",
+      "hypothesis": "Firms combining high accruals, high leverage, and depleted retained earnings represent the intersection of poor earnings quality and cumulative operating failure, and this triple overlap earns persistently low abnormal returns as accruals reverse into an already fragile balance sheet.",
+      "expected_sign": "negative",
+      "reasoning": "Retained-earnings deficit is the Altman component that captures chronic, history-based fragility, which is economically distinct from static leverage and complements it. Rank-summing three channels produces a broad, well-covered composite that is robust to any single accounting item being noisy.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualInstabilityUnderDebtLoad",
+      "expression": "MUL(RANK(VOL(RATIO(SUB(ib, oancf), at), 5)), RANK(RATIO(ADD(dltt, dlc), at)))",
+      "hypothesis": "Accrual quality, measured as the volatility of the accrual-to-assets series, matters most for debt-laden firms: unstable accruals make reported earnings an unreliable guide to debt-service capacity, so investors underprice the compounded information risk and realized returns are low.",
+      "expected_sign": "negative",
+      "reasoning": "This shifts the accrual theme from the level of accruals to their time-series reliability (a Dechow-Dichev style quality notion), which is a genuinely different mechanism from signals 1-4. Interacting quality with the interest-bearing debt load captures information risk that only becomes value-relevant when solvency depends on earnings credibility.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalAccrualsVsRefinancingSqueeze",
+      "expression": "MUL(RANK(RATIO(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, dlc), 1)), at)), RANK(SUMRANK(RATIO(dlc, at), NEG(RATIO(che, lct)))))",
+      "hypothesis": "Firms that build non-cash working capital (receivables and inventory) while facing a near-term refinancing squeeze \u2014 large current debt and thin cash relative to current liabilities \u2014 are financing soft, possibly channel-stuffed sales with scarce liquidity, and this combination precedes negative earnings and return surprises.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual leg is the balance-sheet working-capital accrual (current assets ex-cash minus current liabilities ex-short-term debt), which directly measures the operating cash trapped in the business rather than an aggregate earnings-cash gap. The distress leg is specifically short-horizon liquidity stress, so the interaction targets the exact channel where accrual buildup becomes a solvency problem rather than a mere accounting timing issue.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlowWCAccrualsTimesLeverage",
+      "expression": "MUL(RANK(NEG(RATIO(ADD(recch, ADD(invch, apalch)), at))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Working-capital accruals built directly from the cash-flow statement (receivable, inventory, and payable changes) are most toxic in highly levered firms, where soft revenue recognition and inventory build are used to sustain reported earnings under covenant and refinancing pressure.",
+      "expected_sign": "negative",
+      "reasoning": "Cash-flow-statement components avoid the merger/divestiture contamination of balance-sheet accrual differences, giving a cleaner earnings-quality measure than ib minus oancf. Ranking both legs to [0,1] makes the product monotone, so only jointly high-accrual and high-liability firms score near one and neither theme alone can generate an extreme score.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PreDepreciationAccrualsVsEquityDepletion",
+      "expression": "MUL(RANK(RATIO(ADD(SUB(ib, oancf), dp), at)), RANK(NEG(RATIO(re, at))))",
+      "hypothesis": "Stripping depreciation out of total accruals isolates the discretionary, reversible component, and this component is most damaging for firms with depleted or negative retained earnings, which have exhausted their internally generated equity cushion and face the strongest incentive to manage reported earnings.",
+      "expected_sign": "negative",
+      "reasoning": "Depreciation is a mechanical, non-discretionary accrual that dilutes the earnings-management content of total accruals, so adding it back sharpens the accrual leg. Retained-earnings deficit measures chronic cumulative failure rather than a capital-structure choice, so it is a distress channel distinct from leverage.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ReceivableBuildupPerSaleUnderDebt",
+      "expression": "WINSOR(MUL(RATIO(NEG(recch), sale), RATIO(lt, at)), 1)",
+      "hypothesis": "Revenue that arrives as receivables rather than cash signals aggressive recognition or lax credit terms, and when the firm is simultaneously debt-heavy this uncollected revenue cannot service liabilities, so the market underprices the coming write-off and return realization is low.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the receivable change by sales rather than assets ties the accrual directly to the revenue it purports to represent, which is the exact channel through which channel-stuffing operates. The continuous (unranked) product preserves the sign of the accrual, so cash-collecting levered firms score strongly negative and receivable-inflating levered firms strongly positive, testing whether magnitude information beats rank information.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualLeverageDeficitSumRank",
+      "expression": "SUMRANK(NEG(RATIO(ADD(recch, invch), at)), SUMRANK(RATIO(lt, at), NEG(RATIO(re, at))))",
+      "hypothesis": "Fragility is multidimensional: firms combining operating-asset buildup, a heavy liability stock, and a depleted retained-earnings base sit at the intersection of poor earnings quality and cumulative operating failure, and this overlap earns persistently low abnormal returns.",
+      "expected_sign": "negative",
+      "reasoning": "An additive rank composite is structurally different from the multiplicative signals above and is far more robust when any single accounting item is noisy or extreme, which should stabilize portfolio composition and the FF5 alpha t-stat. Comparing its evidence against Signal 1 tells us whether the interaction is genuinely multiplicative or merely additive in ranks.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualBuildupVsCashDebtCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(ADD(recch, ADD(invch, apalch)), at))), RANK(NEG(RATIO(ADD(ni, dpc), lt))))",
+      "hypothesis": "Distress that matters for accrual reversal is a flow concept, not a stock concept: firms whose cash earnings barely cover their liabilities cannot absorb an accrual reversal, so accrual buildup combined with weak cash debt-coverage predicts the worst returns.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the accrual leg identical to Signal 1 isolates the distress channel, testing coverage-based fragility (cash earnings over total liabilities) against balance-sheet leverage. If coverage dominates, it indicates the mechanism runs through debt-service capacity rather than capital structure, which would guide all later refinements.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentOperatingAssetBuildVsSolvencyTrend",
+      "expression": "MUL(RANK(TS_SUM(NEG(RATIO(ADD(recch, invch), at)), 3)), RANK(NEG(TREND(RATIO(re, at), 5))))",
+      "hypothesis": "A single year of accrual buildup is noisy, but a multi-year accumulation of receivables and inventory occurring while the solvency base is trending downward reveals a firm systematically borrowing earnings from the future while its equity cushion erodes, and this slow-burn deterioration is underweighted by investors focused on the latest quarter.",
+      "expected_sign": "negative",
+      "reasoning": "Cumulating three years of working-capital accruals captures persistence of the distortion rather than one-off timing, while the five-year trend in retained earnings over assets captures the direction of fragility instead of its level. This is a state-plus-direction mechanism genuinely distinct from the contemporaneous level interactions, at the cost of some coverage from the required history.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SloanAccrualsWeakCashCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "High balance-sheet accruals are most damaging for firms whose cash earnings barely cover total liabilities, because such firms cannot absorb the reversal and must fund it with external capital raised on punitive terms.",
+      "expected_sign": "negative",
+      "reasoning": "This unites the two channels that carried signal in generation 1 (accruals net of depreciation, and cash-earnings debt coverage) while replacing the coverage-destroying cash-flow-statement items with balance-sheet deltas, which should roughly double or triple usable observations and stabilize the long-short legs. If both the FMB t-stat and the alpha t-stat strengthen relative to AccrualBuildupVsCashDebtCoverage, the earlier weakness was a data-availability artifact rather than a mechanism failure.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SignedSloanAccrualsLeverageWeighted",
+      "expression": "WINSOR(MUL(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at), RANK(RATIO(lt, at))), 1)",
+      "hypothesis": "Leverage amplifies the price impact of accruals symmetrically: for a debt-heavy firm, positive accruals signal an imminent earnings reversal it cannot finance, while negative accruals signal genuine cash generation and deleveraging capacity that the market underappreciates.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the accrual construction identical to Signal 1, this isolates one design choice\u2014preserving the signed magnitude of accruals and using leverage only as a non-negative amplification weight, versus double-ranking both legs. Comparing the two tells us whether the accrual tail magnitude or merely its cross-sectional rank carries the interaction.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationUnderProvisionUnderLeverage",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Firms under debt pressure manage earnings through non-current accruals by stretching asset lives and cutting depreciation rates; a falling depreciation-to-assets ratio in a highly levered firm is a low-quality earnings boost that reverses through later impairments.",
+      "expected_sign": "negative",
+      "reasoning": "This targets a completely different accrual mechanism from working-capital buildup\u2014the long-lived-asset expense policy channel\u2014which is untested in the archive and requires only widely reported items, so coverage should be high. Leverage supplies the incentive: covenant-constrained firms are precisely those who benefit from suppressing a non-cash charge.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsPerUnitEquityCushion",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), ceq), 1)",
+      "hypothesis": "What matters is the size of the accrual relative to the loss-absorbing equity base, not relative to assets: a given dollar of soft earnings threatens solvency far more when book equity is thin, so accruals per unit of equity cushion is itself an accrual-distress interaction.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the asset denominator with book equity embeds the distress conditioning directly into the scaling rather than through a separate multiplicative leg, which avoids the noise of estimating two ranks and mechanically overweights thinly capitalized firms. Winsorization controls the explosive tail when equity approaches zero.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TaxDeferralUnderWeakCoverage",
+      "expression": "MUL(RANK(RATIO(DELTA(txp, 1), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A rising stock of unpaid income taxes is a hard-to-disguise sign of cash conservation: firms accruing tax liabilities instead of remitting cash are hoarding liquidity, and when this coincides with weak cash coverage of debt it flags genuine distress rather than ordinary tax timing.",
+      "expected_sign": "negative",
+      "reasoning": "Taxes payable is an involuntary, non-negotiable creditor, so deferring it is a far more informative liquidity-stress accrual than discretionary receivable or inventory buildup, and this channel is entirely absent from the archive. Pairing it with cash-earnings coverage separates real inability to pay from routine fiscal-calendar timing.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualInstabilityUnderLiabilityLoad",
+      "expression": "MUL(RANK(VOL(RATIO(SUB(DELTA(wcap, 1), dp), at), 5)), RANK(RATIO(lt, at)))",
+      "hypothesis": "Accrual quality is a second-moment concept: firms whose accruals swing erratically produce earnings that are an unreliable guide to debt-service capacity, and this information risk is priced only when the firm carries a heavy liability load that makes earnings credibility solvency-relevant.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-1 temporal attempt failed because it cumulated accrual *levels* and extrapolated a solvency *trend*, both of which are directional bets; measuring dispersion instead captures unreliability without taking a directional view. This tests whether the archive's directional accrual result can be complemented by an information-risk channel that is distinct from the level of accruals.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SloanAccrualsTwoChannelFragility",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), lt)), NEG(RATIO(re, at)))))",
+      "hypothesis": "Financial fragility has a flow dimension (cash earnings cannot cover liabilities) and a stock dimension (the retained-earnings base is depleted); accrual reversals are most punishing where both hold, because the firm has neither current cash flow nor accumulated equity to absorb them.",
+      "expected_sign": "negative",
+      "reasoning": "The two distress proxies that carried signal separately in generations 1 and 2 \u2014 cash-earnings coverage and retained-earnings deficit \u2014 are combined into one rank-summed fragility score before interacting with the best-performing accrual leg. Averaging two noisy fragility measures should reduce classification error at the distress margin, which is where the long-short portfolio composition was previously unstable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralAccrualCoverageInteraction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), IND_RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Both accrual intensity and debt-coverage capacity are strongly industry-determined (utilities and retailers are structurally levered and inventory-heavy), so the economically meaningful interaction is between a firm's accrual aggressiveness and its fragility *relative to industry peers*, not in absolute terms.",
+      "expected_sign": "negative",
+      "reasoning": "This isolates exactly one design choice against the generation-2 flagship \u2014 industry-relative versus pooled ranking \u2014 so the comparison is diagnostic rather than cosmetic. If the alpha and FMB t-stat both improve, a large part of the residual noise in the long-short spread is sector tilt rather than mispricing, which would direct all remaining refinements toward industry-neutral construction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationSuppressionVsCashCoverage",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Suppressing depreciation is an earnings-management lever pulled hardest by firms whose cash flow cannot service debt, because a non-cash charge can be stretched without any cash consequence while preserving reported coverage ratios for lenders.",
+      "expected_sign": "negative",
+      "reasoning": "Holding the depreciation-policy accrual leg fixed and swapping stock leverage for flow-based coverage tests whether the archive's largest alpha (\u22124.5%, t = \u22123.88) is driven by debt *load* or by debt-service *capacity*, which are economically different mechanisms. Cash coverage was the distress leg that worked best with working-capital accruals, so if it also dominates here the two accrual channels share a single conditioning variable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationLaggingSalesUnderDebt",
+      "expression": "MUL(RANK(NEG(SUB(GROWTH(dp, 1), GROWTH(sale, 1)))), RANK(RATIO(lt, at)))",
+      "hypothesis": "Genuine understated depreciation shows up as depreciation growing more slowly than the revenue base it supports; a levered firm whose depreciation expense stalls while sales expand is capitalizing costs and stretching asset lives, and the deferred charge reverses later.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-2 depreciation signal used a change in dp scaled by assets, so a falling ratio can arise mechanically from rapid asset growth, meaning the alpha may be an asset-growth effect in disguise. Benchmarking depreciation growth against sales growth purges the asset-base denominator and provides a clean test of whether the depreciation-policy story survives once the investment channel is removed.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsDuringLeverageDeterioration",
+      "expression": "MUL(RANK(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at)), RANK(DELTA(RATIO(lt, at), 1)))",
+      "hypothesis": "What matters is not the static level of indebtedness but the direction of travel: a firm posting high accruals while its liability ratio is actively rising is funding soft earnings with new debt, a combination that precedes covenant trouble and negative revisions.",
+      "expected_sign": "negative",
+      "reasoning": "Every archive signal conditions on a distress *level*, yet chronically levered stable firms (utilities) are not fragile in the relevant sense, whereas firms mid-deterioration are. Pairing the accrual level with the leverage change tests whether distress dynamics identify the vulnerable subset more sharply than distress levels, which would be a genuinely new conditioning dimension.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsGatedByPretaxLoss",
+      "expression": "MUL(WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at), 1), INDICATOR(NEG(pi), 0))",
+      "hypothesis": "Loss-making firms are the canonical fragile group: they face delisting, covenant, and financing thresholds, so their accruals are disproportionately discretionary, while for profitable firms accruals largely reflect ordinary business growth and carry little mispricing.",
+      "expected_sign": "negative",
+      "reasoning": "No archive signal has used a hard state gate, and a pretax-loss flag is a discrete, economically interpretable fragility event rather than a smooth ranking, so it tests whether the interaction is a threshold phenomenon. Keeping the accrual leg signed and winsorized inside the gate preserves the direction of the accrual, so the long leg holds loss firms deleveraging working capital and the short leg holds loss firms inflating it.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DualAccrualChannelVsCashCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(DELTA(RATIO(dp, at), 1)), RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), at))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Firms manage earnings on two margins simultaneously \u2014 inflating working-capital accruals and suppressing depreciation \u2014 and a firm doing both while unable to cover its liabilities from cash earnings is the purest case of unsustainable reported profit.",
+      "expected_sign": "negative",
+      "reasoning": "The two accrual legs that each worked with cash coverage are economically complementary (current versus non-current accruals) and their errors should be largely independent, so rank-summing them before the distress interaction should raise the signal-to-noise of the accrual dimension. This is a consolidation of the two best archive channels rather than a new mechanism, and it directly tests whether they are additive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralDepreciationCoverageInteraction",
+      "expression": "MUL(IND_RANK(NEG(DELTA(RATIO(dp, at), 1))), IND_RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Depreciation rates and debt-coverage capacity are heavily determined by asset intensity and industry norms, so a firm's depreciation suppression and fragility are only informative relative to peers facing the same accounting conventions and capital structure norms.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-relative ranking improved the alpha and Sharpe of the Sloan-accrual interaction in generation 3, and the depreciation channel should benefit even more because depreciation-to-assets is almost mechanically an industry characteristic. This isolates one design choice against the current leader, so the comparison is diagnostic.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationBelowOwnNormVsCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A one-year fall in the depreciation rate can be ordinary asset-mix churn, whereas a depreciation rate sitting below the firm's own three-year norm indicates a deliberate, sustained stretching of asset lives that must eventually reverse through impairment.",
+      "expected_sign": "negative",
+      "reasoning": "Replacing the first difference with a deviation from the firm's own recent average filters transitory noise while keeping the same economic content, which should improve slope precision without the directional-extrapolation failure that sank the generation-1 trend signal. If both statistics improve over the leader, the mechanism is a persistent policy state rather than a one-year event.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationSuppressionVsBalanceSheetSolvency",
+      "expression": "MUL(RANK(NEG(DELTA(RATIO(dp, at), 1))), RANK(NEG(RATIO(ADD(che, ceq), lt))))",
+      "hypothesis": "If the depreciation-suppression effect is genuinely about financial fragility, it should also appear when distress is measured by the stock of loss-absorbing resources (cash plus book equity) relative to liabilities, with no earnings term in the conditioning variable at all.",
+      "expected_sign": "negative",
+      "reasoning": "The leading distress leg, (ni + dp)/lt, contains net income, so its interaction with an earnings-management proxy could be a profitability interaction rather than a distress interaction \u2014 an identification problem the archive has not addressed. Swapping in a purely balance-sheet solvency ratio while holding the accrual leg fixed cleanly separates the two interpretations and tells us which conditioning family to refine in the remaining generations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsPerUnitLiabilityBurden",
+      "expression": "WINSOR(RATIO(SUB(SUB(DELTA(SUB(act, che), 1), DELTA(SUB(lct, ADD(dlc, txp)), 1)), dp), lt), 1)",
+      "hypothesis": "The economically relevant scale for an accrual is the claim it must ultimately service: a dollar of soft earnings is trivial for a debt-free firm and threatening for one whose liabilities dwarf its operations, so deflating accruals by total liabilities embeds the distress interaction in the denominator.",
+      "expected_sign": "negative",
+      "reasoning": "The equity-cushion deflator delivered the archive's second-best FMB slope (\u22122.50) but a weak alpha, plausibly because book equity can approach or cross zero and destabilize the sort; total liabilities is strictly positive and far better behaved, so this should retain the slope while producing a tradable portfolio. It also tests the deflator family against the multiplicative-rank family with a single parsimonious expression.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PayableStretchUnderWeakCoverage",
+      "expression": "MUL(RANK(RATIO(DELTA(SUB(lct, ADD(dlc, txp)), 1), at)), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "For a fragile firm, a jump in non-debt current liabilities is not conservative accounting but supplier-financing stress: it is stretching payables and accrued expenses because it cannot pay cash, and that hidden\u501f-from-suppliers funding precedes distress events.",
+      "expected_sign": "negative",
+      "reasoning": "Inside the Sloan accrual this term enters with a negative sign, so standard accrual logic labels payable growth as *good* earnings quality; this signal tests the opposite sign asymmetry for firms with weak debt coverage, where payable growth is a liquidity symptom rather than an accrual virtue. It is a genuinely new economic channel that also serves as a sign-decomposition check on why the aggregate Sloan leg underperforms the depreciation leg.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationShortfallVsBlendedFragility",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), lt)), NEG(RATIO(ADD(che, ceq), lt)))))",
+      "hypothesis": "Fragility that makes depreciation suppression dangerous has a flow component (cash earnings cannot service liabilities) and a stock component (little cash or equity to absorb a write-down), and firms scoring badly on both are the ones whose stretched asset lives will be forcibly corrected.",
+      "expected_sign": "negative",
+      "reasoning": "The generation-4 diagnostic showed the two distress legs carry complementary evidence \u2014 coverage produces the FMB slope, balance-sheet solvency produces the larger and more reliable alpha \u2014 so rank-summing them before the interaction should retain both forms of evidence rather than trading one for the other. This is the most direct consolidation of the archive's strongest result.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationShortfallLongMemory",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Asset-life stretching is a slow policy drift rather than a one-year event, so measuring the depreciation rate against a five-year norm should capture more of the cumulative deferred expense than a three-year benchmark.",
+      "expected_sign": "negative",
+      "reasoning": "Moving from a one-year difference to a three-year norm raised the FMB t-stat from \u22122.98 to \u22123.73 and the Sharpe from \u22120.26 to \u22120.40, so the horizon of the benchmark is clearly a live design parameter worth one more step. The cost is a longer history requirement, so coverage relative to 0.141 is the key diagnostic for whether the gain is real or a survivorship artifact.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PeerRelativeDepreciationShortfallVsCoverage",
+      "expression": "MUL(IND_RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "Depreciation policy is governed by industry asset composition, so a firm's shortfall is only evidence of manipulation when it is unusual relative to peers experiencing the same asset-mix shifts; fragility, by contrast, is comparable economy-wide.",
+      "expected_sign": "negative",
+      "reasoning": "Industry-neutralizing both legs previously helped the working-capital interaction's alpha but slightly hurt the depreciation version's FMB slope, suggesting the sector information in the *distress* leg is genuine while that in the accrual leg is noise. Applying IND_RANK asymmetrically tests exactly that asymmetry, which no prior signal has done.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "OperatingAssetGrowthOutrunningDepreciation",
+      "expression": "MUL(RANK(SUB(GROWTH(SUB(at, che), 1), GROWTH(dp, 1))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "When a firm's operating asset base grows materially faster than its depreciation charge, capitalized costs are accumulating on the balance sheet without a matching expense, and for a firm that cannot cover its liabilities from cash earnings those capitalized costs are impairment candidates rather than productive assets.",
+      "expected_sign": "negative",
+      "reasoning": "This reframes the depreciation channel as a matching failure between the asset base and its expense rather than as a deviation from the firm's own rate, which is a different economic statement and a different statistic. The generation-3 sales-benchmarked version lost its slope, but sales is a demand variable whereas operating assets are the actual depreciable base, so this is the economically correct benchmark for the same idea.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationShortfallVsInterestBearingCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Hard default risk comes from contractual debt with fixed maturities and covenants, not from payables and deferred items, so cash-earnings coverage of interest-bearing debt should identify the firms whose accounting choices are driven by financing constraints more precisely than coverage of total liabilities.",
+      "expected_sign": "negative",
+      "reasoning": "Total liabilities mixes trade credit and operating provisions with contractual borrowing, which blurs the incentive story that motivates the whole design; narrowing the denominator to `dltt + dlc` is a single, well-motivated change to the leading signal's distress leg. If the slope and alpha both improve, the mechanism is specifically covenant and refinancing pressure rather than general liability weight.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "StandardizedDepreciationShortfallVsCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(SUB(RATIO(dp, at), MA(RATIO(dp, at), 3)), VOL(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), lt))))",
+      "hypothesis": "A given drop in the depreciation rate is meaningful evidence of manipulation only for firms whose depreciation rate is normally stable; for firms with naturally volatile asset mixes the same drop is noise, so the shortfall should be measured in units of the firm's own historical volatility.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling the shortfall by its firm-specific standard deviation converts a raw deviation into a surprise measure, which should concentrate the short leg on genuine accounting decisions rather than on capital-intensity churn and thereby raise both the slope precision and the Sharpe ratio. This is the natural statistical sharpening of the leading signal and it also tests whether the second-moment information that failed as a standalone accrual-instability signal becomes useful as a normalizer.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LongMemoryDepreciationShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Firms whose depreciation rate has drifted persistently below their own five-year norm while cash earnings barely cover contractual debt are stretching asset lives to preserve covenant headroom, and the deferred expense is later forced out through impairments.",
+      "expected_sign": "negative",
+      "reasoning": "This joins the two independently validated improvements from generation 5 \u2014 the five-year norm (best FMB slope) and the interest-bearing debt denominator (best alpha and Sharpe) \u2014 which were each tested against the same baseline and should be close to orthogonal design choices. If both statistics improve simultaneously it establishes the consolidated specification for the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "PeerRelativeLongMemoryShortfallVsDebtCoverage",
+      "expression": "MUL(IND_RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Depreciation shortfalls are most diagnostic when they are unusual relative to industry peers experiencing the same asset-mix and technology shifts, while debt-service capacity remains comparable across the whole market.",
+      "expected_sign": "negative",
+      "reasoning": "Asymmetric industry-neutralization of only the accrual leg modestly improved the slope at the three-year horizon, so it is worth one test on top of the consolidated specification to see whether the sector component of a five-year drift is noise or signal. Pairing it with Signal 1 isolates exactly one design choice.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationBelowOwnPeakVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), TS_MAX(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "The cumulative amount of deferred depreciation expense is best measured against the highest rate the firm ever charged on a comparable asset base, since that peak reveals the depreciation intensity the assets genuinely require; the gap below the peak is the accumulated unrecognized charge.",
+      "expected_sign": "negative",
+      "reasoning": "A mean benchmark is contaminated by the firm's own recent suppression, mechanically shrinking the measured shortfall for serial manipulators, whereas a five-year maximum anchors on the firm's least-managed year and is monotone in cumulative stretching. This is a genuinely different statistic of the same economic state, not a window tweak, and it should sharpen the short leg.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationShortfallVsDebtFlowAndStock",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(SUB(ADD(dltt, dlc), che), at))))",
+      "hypothesis": "Refinancing pressure has a flow dimension (cash earnings relative to debt) and a stock dimension (net interest-bearing debt relative to assets), and combining them within the debt family identifies constrained firms more accurately than either alone.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier blend failed because it mixed in cash-plus-equity solvency, a skewed stock measure that destroyed the linear slope; net debt to assets is smoothly distributed and belongs to the same contractual-obligation channel that just proved dominant. This tests whether blending helps when both components come from the correct economic family.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationShortfallAtMaturityWall",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(RATIO(dlc, ADD(dltt, dlc))))",
+      "hypothesis": "The incentive to flatter reported earnings peaks when debt must be rolled imminently, so the share of borrowing that is current \u2014 a maturity wall \u2014 identifies the firms for which accounting choices are most consequential, independently of how profitable or levered they are.",
+      "expected_sign": "negative",
+      "reasoning": "Every distress leg tested so far measures the size or serviceability of debt, never its timing, yet refinancing risk is fundamentally a maturity-structure concept and is nearly uncorrelated with coverage ratios. Keeping the leg pure rather than blending it with coverage makes the test diagnostic: if it works, maturity structure is a new conditioning dimension for the final generations.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LowDepreciationLevelVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(RATIO(dp, at))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "If the effect is driven by firms that simply charge little depreciation relative to assets \u2014 asset-light or fully depreciated firms with weak debt coverage \u2014 then the level, not the within-firm deviation, should carry the return predictability.",
+      "expected_sign": "negative",
+      "reasoning": "This is the necessary control for the entire depreciation program: the archive has never tested whether the shortfall measures a *change in policy* or merely a cross-sectional characteristic that the deviation construction partly proxies. A weak result here would confirm the mechanism is genuine within-firm earnings management, while a strong result would mean the interaction should be rebuilt around a simpler and much higher-coverage level variable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallVsCoverageAndMaturityWall",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(dlc, ADD(dltt, dlc)))))",
+      "hypothesis": "A firm is truly refinancing-constrained when it both lacks cash earnings to service its debt and must roll a large share of that debt imminently, and it is exactly these firms whose sustained depreciation shortfall represents covenant-motivated earnings management.",
+      "expected_sign": "negative",
+      "reasoning": "Coverage and maturity share are the two distress legs that each worked independently, they measure serviceability versus timing so their errors should be largely uncorrelated, and both are bounded, smoothly distributed ratios \u2014 unlike the net-debt stock blend that sacrificed the FMB slope. This is the most promising consolidation available and should improve both forms of evidence rather than trading them off.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "SevenYearNormShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 7)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Because depreciation policy drifts over the multi-year life of an asset base, a seven-year norm should capture even more accumulated deferred expense than a five-year norm, provided enough firms have the required history.",
+      "expected_sign": "negative",
+      "reasoning": "Extending the window from one year to three to five monotonically improved the slope (\u22122.98, \u22123.73, \u22124.36) with no coverage loss, so the horizon has not yet been shown to saturate and one more step is the cheapest remaining test of the mechanism's timescale. Coverage relative to 0.124 is the decisive diagnostic: if it falls materially the gain would be a survivorship artifact and the five-year specification should stand.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ProportionalDepreciationShortfallVsDebtCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(MA(RATIO(dp, at), 5), RATIO(dp, at)), MA(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "A 0.5 percentage-point drop in the depreciation rate is trivial for a capital-intensive utility charging 10% of assets but represents a quarter of the expense for an asset-light firm charging 2%, so the economically comparable measure of stretching is the *proportional* shortfall relative to the firm's own normal rate.",
+      "expected_sign": "negative",
+      "reasoning": "The absolute deviation mechanically loads the short leg with heavy-asset industries, which is likely why industry-neutralizing the accrual leg was roughly break-even \u2014 the sector tilt is a scaling artifact rather than information. Normalizing by the firm's own norm removes the capital-intensity scale without discarding cross-industry information, and should raise the slope and Sharpe together.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "OrdinalDepreciationPositionVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(TS_RANK(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "What identifies a manipulator is that its current depreciation rate sits at the bottom of its own recent history, regardless of the size of the gap, since the ordinal position is immune to one-off asset sales, acquisitions, and restatements that distort the magnitude.",
+      "expected_sign": "negative",
+      "reasoning": "The five-year peak benchmark underperformed the mean benchmark on the slope (\u22122.77 versus \u22124.36), suggesting extreme-value anchors are noisy; an ordinal position statistic uses the entire history yet remains robust to those same outliers. Comparing it against the mean-deviation leader tells us whether the signal lives in the magnitude of the shortfall or merely in its ordering.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallUnderCoverageAndRevenueContraction",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), NEG(GROWTH(sale, 1)))))",
+      "hypothesis": "Shrinking revenue is the clearest evidence that an asset base has become economically impaired, so a firm that is simultaneously contracting, weakly covered, and charging less depreciation than its own norm is deferring an impairment that the market has not yet priced.",
+      "expected_sign": "negative",
+      "reasoning": "Every distress leg tested so far is financial; operating contraction is a real-side fragility dimension that is a standard bankruptcy predictor and is only weakly correlated with coverage ratios. It also directly addresses the economic premise of the depreciation channel \u2014 assets should be written down faster, not slower, when the business they serve is shrinking.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleProductShortfallCoverageMaturity",
+      "expression": "MUL(MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))))), RANK(RATIO(dlc, ADD(dltt, dlc))))",
+      "hypothesis": "The mispricing is concentrated in the joint tail where all three conditions hold at once \u2014 sustained depreciation suppression, weak debt-service capacity, and an imminent maturity wall \u2014 so a conjunctive score should isolate a smaller but far more extreme short leg.",
+      "expected_sign": "negative",
+      "reasoning": "Signal 1 aggregates the two distress channels additively, which lets a firm score highly on distress through one channel alone, whereas the triple product requires both, so the pair jointly identifies whether the interaction is conjunctive or compensatory. If the triple product delivers a larger alpha with a similar t-stat, the tails are where the economics lives and the final generation should concentrate there.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Firms whose cash earnings have failed to cover contractual debt for several consecutive years are genuinely constrained, whereas a single weak year is often transitory; chronic weak coverage should therefore identify the accounting-manipulation incentive far more precisely.",
+      "expected_sign": "negative",
+      "reasoning": "The accrual leg is already a multi-year state while the distress leg is a single noisy annual flow, an asymmetry that plausibly caps the interaction's precision; smoothing coverage over three years matches the two legs' information horizons. This is the highest-value untested refinement because it improves the conditioning variable's signal-to-noise without adding a new economic dimension, which generation 7 showed to be counterproductive.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallVsCoverageAndGrossDebtLoad",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc))), RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Debt-service capacity and the sheer size of the contractual debt burden are distinct constraints, and combining them should identify constrained firms better than either alone, provided the stock measure is not distorted by cash netting.",
+      "expected_sign": "negative",
+      "reasoning": "The net-debt version delivered the archive's largest alpha (\u22125.3%) but collapsed the slope, most likely because subtracting cash creates a heavily skewed, cash-rich-firm-driven tail; gross interest-bearing debt over assets is bounded, smoothly distributed, and captures the same burden concept. This is a targeted repair of a known failure mode rather than a new blend.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "RevenueDeflatedDepreciationShortfallVsCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, sale), MA(RATIO(dp, sale), 5)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Depreciation should track the intensity with which assets are consumed in generating revenue, so a fall in depreciation per dollar of sales relative to the firm's own norm is a more direct measure of unrecognized asset consumption than a fall relative to the book asset base.",
+      "expected_sign": "negative",
+      "reasoning": "The asset deflator is contaminated by acquisitions, write-ups, and asset growth, all of which move dp/at without any change in depreciation policy; sales is an independent scale variable that moves with actual asset utilization. It is the last untested deflator and directly addresses the measurement-error interpretation of the leading signal.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationDowntrendVsDebtCoverage",
+      "expression": "MUL(RANK(NEG(TREND(RATIO(dp, at), 5))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Asset-life stretching is a directional policy that shows up as a steadily declining depreciation rate, so the fitted slope of dp/at over five years measures the manipulation more faithfully than the gap between the latest value and a backward-looking average.",
+      "expected_sign": "negative",
+      "reasoning": "A deviation from a moving average is contaminated by the manipulated years inside the benchmark itself, mechanically shrinking the measured shortfall for firms that have been suppressing depreciation for years, whereas a trend coefficient accumulates rather than averages away that behavior. This is a different statistic of the same economic state and the generation-1 trend failure is not informative here because that signal extrapolated a *distress* trend, not an accounting-policy trend.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "CumulativeDeferredDepreciationVsDebtCoverage",
+      "expression": "MUL(RANK(TS_SUM(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), 3)), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "The economically relevant quantity is the accumulated stock of expense that has not yet been recognized, so summing three years of annual shortfalls measures the size of the impending write-down rather than this year's increment.",
+      "expected_sign": "negative",
+      "reasoning": "If the mechanism is deferral of a real charge, the reversal magnitude should scale with the cumulative deferral, which implies a stock construction should dominate a flow construction on portfolio alpha. Coverage is the key diagnostic since the nested windows require roughly seven years of data, and a large drop would indicate the apparent gain is a survivorship artifact.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DualDepreciationEvidenceVsDebtCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), SUB(GROWTH(SUB(at, che), 1), GROWTH(dp, 1)))), RANK(NEG(RATIO(ADD(ni, dp), ADD(dltt, dlc)))))",
+      "hypothesis": "Two independent symptoms of under-depreciation \u2014 a rate below the firm's own norm and an operating asset base growing faster than the depreciation charge \u2014 should corroborate each other, so firms exhibiting both are the most likely genuine manipulators.",
+      "expected_sign": "negative",
+      "reasoning": "Both accrual legs worked with this distress leg (FMB \u22124.36 and \u22122.06) and they use different information, since one is a within-firm rate comparison and the other a cross-item growth mismatch, so rank-summing should reduce classification error on the accrual dimension where the archive has only ever combined a depreciation leg with a working-capital leg. Unlike generation 7's blends, the added channel here is on the accrual side, which has never been strengthened successfully and is the remaining source of measurement noise.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LongNormShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 7)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Persistent asset-life stretching measured against a seven-year norm, combined with several consecutive years of inadequate cash coverage of contractual debt, identifies firms whose reported profits depend on deferring a real expense they cannot afford to recognize.",
+      "expected_sign": "negative",
+      "reasoning": "The seven-year norm produced the archive's strongest slope among accrual constructions and chronic coverage produced the strongest overall result on the distress side, and the two changes act on different legs so they should compound rather than conflict. This is the most direct consolidation of the two best independently validated refinements.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "DepreciationDowntrendVsChronicDebtCoverage",
+      "expression": "MUL(RANK(NEG(TREND(RATIO(dp, at), 5))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "A steadily declining depreciation rate is the signature of deliberate asset-life extension, and pairing that directional policy measure with chronically weak debt coverage should isolate the firms with both the motive and the demonstrated behaviour.",
+      "expected_sign": "negative",
+      "reasoning": "The trend construction generated the most statistically reliable FF5 alpha in the archive (t = \u22124.55) when paired with single-year coverage, so upgrading its distress leg to the chronic version that improved every other signal is the natural completion of that experiment. Its weaker slope was plausibly caused by noise in the annual coverage ratio rather than by the trend itself, which this specification directly tests.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallVsFiveYearChronicCoverage",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 5))))",
+      "hypothesis": "If chronic distress is what matters, extending the coverage-averaging window to five years should match the accrual leg's horizon exactly and capture entrenched rather than merely recent financial weakness.",
+      "expected_sign": "negative",
+      "reasoning": "Moving coverage from one year to a three-year average improved every statistic, so the persistence horizon of the distress leg is an open and unexhausted design parameter, exactly parallel to the norm-window question that produced the largest gains earlier. If five years overshoots, the deterioration will show that chronic distress becomes stale, which is itself the informative boundary of the mechanism.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "LevelAndTrendDepreciationEvidenceVsChronicCoverage",
+      "expression": "MUL(RANK(SUMRANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5))), NEG(TREND(RATIO(dp, at), 5)))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "A firm that is both below its own depreciation norm and on a five-year downward path is far more likely to be genuinely stretching asset lives than one displaying only a level gap or only a drift, so combining the two statistics should reduce misclassification on the accrual dimension.",
+      "expected_sign": "negative",
+      "reasoning": "Level deviation carries the strongest slope while the trend carries the strongest alpha t-stat, which implies they contain partly distinct information about the same policy state rather than being redundant transformations. Earlier attempts to strengthen the accrual leg failed because they added an economically different channel (working capital, asset growth); this one stays inside the depreciation mechanism, which is why it has a better chance of helping.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ShortfallVsChronicCoverageAndDebtLoad",
+      "expression": "MUL(RANK(NEG(SUB(RATIO(dp, at), MA(RATIO(dp, at), 5)))), RANK(SUMRANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3)), RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Chronic inability to service debt and a large contractual debt burden are complementary constraints, and once the flow component is smoothed the stock component should add tail information without the noise that previously destroyed the cross-sectional slope.",
+      "expected_sign": "negative",
+      "reasoning": "Stock-plus-flow blends have twice produced the archive's largest alphas (\u22125.3% and \u22124.4%) while halving the slope, and the most likely culprit is the noisy single-year flow measure being averaged with a persistent stock measure, creating an unstable composite ranking. Replacing the annual flow with the chronic three-year version aligns the persistence of the two components and is the last untested repair of a recurring failure mode.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    },
+    {
+      "name": "ProportionalShortfallVsChronicDebtCoverage",
+      "expression": "MUL(RANK(RATIO(SUB(MA(RATIO(dp, at), 5), RATIO(dp, at)), MA(RATIO(dp, at), 5))), RANK(NEG(MA(RATIO(ADD(ni, dp), ADD(dltt, dlc)), 3))))",
+      "hypothesis": "Expressing the shortfall as a fraction of the firm's own normal depreciation rate makes the accrual leg comparable across capital intensities, and combining that scale-free measure with chronic distress should give the cleanest specification of the mechanism.",
+      "expected_sign": "negative",
+      "reasoning": "The proportional shortfall matched the absolute version on alpha and Sharpe but was slightly weaker on the slope under single-year coverage; since the chronic coverage leg reduced noise in every specification it was applied to, this pairing determines whether the proportional scaling was genuinely inferior or merely obscured by a noisy conditioning variable. Together with Signal 1 it closes out the two remaining accrual-leg scaling questions in the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "distress",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_distress"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "LeverageRankedAccrualBurden",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(ib,oancf),at)),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "NetDebtGatedAccruals",
+      "metadata": {
+        "normalized_expression": "mul(ratio(sub(ib,oancf),at),indicator(ratio(sub(lt,che),at),0.5))",
+        "variables": [
+          "at",
+          "che",
+          "ib",
+          "lt",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "LeverageAmplifiedAccrualIntensity",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(sub(ib,oancf),at),ratio(lt,at)),1)",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualDistressTripleComposite",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(ib,oancf),at),sumrank(ratio(lt,at),neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf",
+          "re"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "AccrualInstabilityUnderDebtLoad",
+      "metadata": {
+        "normalized_expression": "mul(rank(vol(ratio(sub(ib,oancf),at),5)),rank(ratio(add(dltt,dlc),at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: accruals (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "WorkingCapitalAccrualsVsRefinancingSqueeze",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(delta(sub(act,che),1),delta(sub(lct,dlc),1)),at)),rank(sumrank(ratio(dlc,at),neg(ratio(che,lct)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "lct"
+        ],
+        "missing_theme": "accruals"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlowWCAccrualsTimesLeverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(ratio(add(recch,add(invch,apalch)),at))),rank(ratio(lt,at)))",
+        "variables": [
+          "apalch",
+          "at",
+          "invch",
+          "lt",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PreDepreciationAccrualsVsEquityDepletion",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(sub(ib,oancf),dp),at)),rank(neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "dp",
+          "ib",
+          "oancf",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ReceivableBuildupPerSaleUnderDebt",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(neg(recch),sale),ratio(lt,at)),1)",
+        "variables": [
+          "at",
+          "lt",
+          "recch",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualLeverageDeficitSumRank",
+      "metadata": {
+        "normalized_expression": "sumrank(neg(ratio(add(recch,invch),at)),sumrank(ratio(lt,at),neg(ratio(re,at))))",
+        "variables": [
+          "at",
+          "invch",
+          "lt",
+          "re",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualBuildupVsCashDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(ratio(add(recch,add(invch,apalch)),at))),rank(neg(ratio(add(ni,dpc),lt))))",
+        "variables": [
+          "apalch",
+          "at",
+          "dpc",
+          "invch",
+          "lt",
+          "ni",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentOperatingAssetBuildVsSolvencyTrend",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_sum(neg(ratio(add(recch,invch),at)),3)),rank(neg(trend(ratio(re,at),5))))",
+        "variables": [
+          "at",
+          "invch",
+          "re",
+          "recch"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SloanAccrualsWeakCashCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at)),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "ni",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SignedSloanAccrualsLeverageWeighted",
+      "metadata": {
+        "normalized_expression": "winsor(mul(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at),rank(ratio(lt,at))),1)",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationUnderProvisionUnderLeverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(delta(ratio(dp,at),1))),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "dp",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsPerUnitEquityCushion",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),ceq),1)",
+        "variables": [
+          "act",
+          "ceq",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TaxDeferralUnderWeakCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(delta(txp,1),at)),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualInstabilityUnderLiabilityLoad",
+      "metadata": {
+        "normalized_expression": "mul(rank(vol(ratio(sub(delta(wcap,1),dp),at),5)),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SloanAccrualsTwoChannelFragility",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at)),rank(sumrank(neg(ratio(add(ni,dp),lt)),neg(ratio(re,at)))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "ni",
+          "re",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralAccrualCoverageInteraction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at)),ind_rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "ni",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationSuppressionVsCashCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(delta(ratio(dp,at),1))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationLaggingSalesUnderDebt",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(growth(dp,1),growth(sale,1)))),rank(ratio(lt,at)))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsDuringLeverageDeterioration",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at)),rank(delta(ratio(lt,at),1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsGatedByPretaxLoss",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at),1),indicator(neg(pi),0))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "pi",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualAccrualChannelVsCashCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(sumrank(neg(delta(ratio(dp,at),1)),ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),at))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "ni",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralDepreciationCoverageInteraction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(delta(ratio(dp,at),1))),ind_rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationBelowOwnNormVsCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),3)))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationSuppressionVsBalanceSheetSolvency",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(delta(ratio(dp,at),1))),rank(neg(ratio(add(che,ceq),lt))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "dp",
+          "lt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsPerUnitLiabilityBurden",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sub(sub(delta(sub(act,che),1),delta(sub(lct,add(dlc,txp)),1)),dp),lt),1)",
+        "variables": [
+          "act",
+          "che",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayableStretchUnderWeakCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(delta(sub(lct,add(dlc,txp)),1),at)),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dp",
+          "lct",
+          "lt",
+          "ni",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationShortfallVsBlendedFragility",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),3)))),rank(sumrank(neg(ratio(add(ni,dp),lt)),neg(ratio(add(che,ceq),lt)))))",
+        "variables": [
+          "at",
+          "ceq",
+          "che",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationShortfallLongMemory",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeerRelativeDepreciationShortfallVsCoverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),3)))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OperatingAssetGrowthOutrunningDepreciation",
+      "metadata": {
+        "normalized_expression": "mul(rank(sub(growth(sub(at,che),1),growth(dp,1))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "che",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationShortfallVsInterestBearingCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),3)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StandardizedDepreciationShortfallVsCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(ratio(sub(ratio(dp,at),ma(ratio(dp,at),3)),vol(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),lt))))",
+        "variables": [
+          "at",
+          "dp",
+          "lt",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongMemoryDepreciationShortfallVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeerRelativeLongMemoryShortfallVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationBelowOwnPeakVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ts_max(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationShortfallVsDebtFlowAndStock",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(sumrank(neg(ratio(add(ni,dp),add(dltt,dlc))),ratio(sub(add(dltt,dlc),che),at))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationShortfallAtMaturityWall",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(ratio(dlc,add(dltt,dlc))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LowDepreciationLevelVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(ratio(dp,at))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallVsCoverageAndMaturityWall",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(sumrank(neg(ratio(add(ni,dp),add(dltt,dlc))),ratio(dlc,add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SevenYearNormShortfallVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),7)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProportionalDepreciationShortfallVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(ma(ratio(dp,at),5),ratio(dp,at)),ma(ratio(dp,at),5))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OrdinalDepreciationPositionVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(ts_rank(ratio(dp,at),5))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallUnderCoverageAndRevenueContraction",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(sumrank(neg(ratio(add(ni,dp),add(dltt,dlc))),neg(growth(sale,1)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleProductShortfallCoverageMaturity",
+      "metadata": {
+        "normalized_expression": "mul(mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc))))),rank(ratio(dlc,add(dltt,dlc))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallVsChronicDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallVsCoverageAndGrossDebtLoad",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(sumrank(neg(ratio(add(ni,dp),add(dltt,dlc))),ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RevenueDeflatedDepreciationShortfallVsCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,sale),ma(ratio(dp,sale),5)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "dlc",
+          "dltt",
+          "dp",
+          "ni",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationDowntrendVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(trend(ratio(dp,at),5))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CumulativeDeferredDepreciationVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_sum(neg(sub(ratio(dp,at),ma(ratio(dp,at),5))),3)),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualDepreciationEvidenceVsDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(sumrank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5))),sub(growth(sub(at,che),1),growth(dp,1)))),rank(neg(ratio(add(ni,dp),add(dltt,dlc)))))",
+        "variables": [
+          "at",
+          "che",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LongNormShortfallVsChronicDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),7)))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DepreciationDowntrendVsChronicDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(trend(ratio(dp,at),5))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallVsFiveYearChronicCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),5))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LevelAndTrendDepreciationEvidenceVsChronicCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(sumrank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5))),neg(trend(ratio(dp,at),5)))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShortfallVsChronicCoverageAndDebtLoad",
+      "metadata": {
+        "normalized_expression": "mul(rank(neg(sub(ratio(dp,at),ma(ratio(dp,at),5)))),rank(sumrank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3)),ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProportionalShortfallVsChronicDebtCoverage",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sub(ma(ratio(dp,at),5),ratio(dp,at)),ma(ratio(dp,at),5))),rank(neg(ma(ratio(add(ni,dp),add(dltt,dlc)),3))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "dp",
+          "ni"
+        ]
+      }
+    }
+  ]
+}

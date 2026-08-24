@@ -1,0 +1,2812 @@
+{
+  "pair": "value_quality",
+  "evaluated": [
+    {
+      "name": "ScreenedEarningsYield",
+      "expression": "MUL(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1), MUL(INDICATOR(SUB(oancf, ib), 0), INDICATOR(re, 0)))",
+      "hypothesis": "Value should be harvested only from firms passing hard quality screens: operating cash flow exceeding accounting income and a positive stock of retained earnings (evidence of a cumulative history of profitable operation rather than accumulated losses).",
+      "expected_sign": "positive",
+      "reasoning": "The discrete gate switches the valuation signal off entirely for firms failing either quality test, so exposure is concentrated in screened quality value rather than being a smooth blend. Negative retained earnings is a classic distress/immaturity marker that makes a low price a rational discount, while cash flow above income indicates conservative accounting. Winsorizing the yield prevents a few extreme small-cap multiples from dominating the cross-sectional slope.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.2087250123791586,
+      "ls_alpha": -0.017783035304706412,
+      "ls_talpha": -0.8883014975829128,
+      "ls_sharpe": -0.07475785243267728,
+      "coverage": 0.09075990546685851,
+      "error": null
+    },
+    {
+      "name": "SolvencyCoveredBookToMarket",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(oancf, lt)))",
+      "hypothesis": "High book-to-market is a mispricing signal when internal cash generation comfortably services the liability stack, and a distress signal when it does not; the balance-sheet quality dimension is solvency, not profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Industry-ranking book-to-market removes sector-level accounting composition so the valuation channel reflects within-industry cheapness, while cash flow to total liabilities measures the firm's capacity to avoid a debt-driven equity wipeout. The interaction rewards cheap firms whose leverage is well covered and penalizes cheap, cash-poor, heavily obligated firms that populate the value-trap region of the book-to-market distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.310546607041018,
+      "ls_alpha": -0.008866381199649942,
+      "ls_talpha": -0.6658613113289228,
+      "ls_sharpe": -0.025164306769659407,
+      "coverage": 0.09072580312309367,
+      "error": null
+    },
+    {
+      "name": "GrossProfitToEnterpriseValue",
+      "expression": "RATIO(SUB(revt, cogs), SUB(ADD(MUL(prcc_f, csho), ADD(dltt, dlc)), che))",
+      "hypothesis": "The cleanest measure of quality value is the price paid for the most persistent, least manipulable profit line: gross profit capitalized against the whole claim structure net of cash, so that leverage and cash hoards cannot make a distressed firm look cheap.",
+      "expected_sign": "positive",
+      "reasoning": "Using enterprise value in the denominator means a cheap-looking equity that is cheap only because of heavy debt is automatically penalized, which is exactly the trap the story targets, while netting cash prevents cash-rich quality firms from being scored as expensive. Gross profit (revt minus cogs) is the quality-exclusive numerator with near-universal coverage, repairing the 0.09 coverage problem created by the operating-cash-flow leg. As a single ratio it also avoids the unstable rank-product portfolio composition of the gen-0 entries.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.471279423424791,
+      "ls_alpha": 0.005911519452176255,
+      "ls_talpha": 0.5992160331649297,
+      "ls_sharpe": 0.48098650343201604,
+      "coverage": 0.14064136757724569,
+      "error": null
+    },
+    {
+      "name": "CashYieldImprovingMargin",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(TREND(RATIO(SUB(revt, cogs), at), 5)))",
+      "hypothesis": "Among cheap firms, a multi-year improvement in gross profitability distinguishes mispriced turnarounds from melting-ice-cube traps whose low multiple correctly extrapolates fundamental decay.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg is a depreciation-added cash earnings yield, which uses `dp` (quality-exclusive) to strip away non-cash charges without depending on the sparse cash-flow statement. The quality leg is the direction, not the level, of gross profitability, so the signal is not a restatement of RMW-style profitability sorts and can carry FF5 alpha. The rank product only rewards firms that are cheap and improving simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.229567005666132,
+      "ls_alpha": -0.0023865115162761963,
+      "ls_talpha": -0.2200067555086498,
+      "ls_sharpe": 0.27202004925891404,
+      "coverage": 0.11617724386199085,
+      "error": null
+    },
+    {
+      "name": "RetainedEarningsBackedValue",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(re, lt)))",
+      "hypothesis": "A high book-to-market is mispricing when the book equity was built from a cumulative history of retained profits and is a distress discount when the balance sheet is funded by liabilities against accumulated deficits.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings relative to total liabilities is a stock (not flow) measure of cumulative earnings quality and solvency, so it separates mature self-funded value firms from levered loss-makers whose book equity is fragile. This tests whether the trap dimension is better captured by cumulative history than by contemporaneous cash conversion, which failed in gen 0. Coverage should be high since `re`, `lt`, `ceq`, and price are broadly reported.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.257448967968914,
+      "ls_alpha": -0.020322601564337725,
+      "ls_talpha": -1.9850497275675554,
+      "ls_sharpe": 0.16705367051918452,
+      "coverage": 0.14099482469847543,
+      "error": null
+    },
+    {
+      "name": "CenteredValueSafetyInteraction",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(NEG(RATIO(lt, at)), 1)))",
+      "hypothesis": "The incremental payoff is the pure interaction between cheapness and balance-sheet safety: the value premium should be strong among low-liability firms and weak or reversed among liability-heavy firms, and this conditional effect is not spanned by the additive value and profitability factors.",
+      "expected_sign": "positive",
+      "reasoning": "Because both legs are cross-sectionally centered, the product has near-zero average loading on the level of value and the level of safety, which is precisely the design needed to survive FF5 (HML, CMA, RMW) adjustment where the gen-0 composites did not. Winsorizing before standardizing keeps small-cap multiple outliers from dictating the extreme deciles and stabilizes portfolio composition. It isolates the \"value works only when the balance sheet is not distressed\" claim as a testable interaction rather than a blend.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.7286667183207186,
+      "ls_alpha": -0.030872689103660332,
+      "ls_talpha": -2.5882816982066044,
+      "ls_sharpe": 0.10378703551982367,
+      "coverage": 0.1414880962699362,
+      "error": null
+    },
+    {
+      "name": "CheapDeficitTrapFlag",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), INDICATOR(NEG(re), 0))",
+      "hypothesis": "The value-trap side of the story is directly testable: firms that look cheapest on book-to-market while carrying an accumulated retained-earnings deficit earn low subsequent returns because their low price is a rational reflection of a history of value destruction.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the cheapness score on only for accumulated-deficit firms, so the long-short portfolio is essentially \"deepest-value loss-history firms versus everything else,\" a direct measurement of the trap leg rather than a blended quality-value score. If this prints a reliably negative alpha it tells us the archive's positive interactions should be built by *excluding* this group rather than by up-weighting profitable firms, which is diagnostically valuable regardless of magnitude. Coverage is high because it needs only price, book equity, and retained earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.2578558554608787,
+      "ls_alpha": NaN,
+      "ls_talpha": NaN,
+      "ls_sharpe": NaN,
+      "coverage": 0.14139548854367617,
+      "error": null
+    },
+    {
+      "name": "LiquidityCoveredCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness pays when the firm has enough net working capital relative to its liabilities to survive the period over which the mispricing corrects; without that buffer, a high cash earnings yield is compensation for near-term funding risk.",
+      "expected_sign": "positive",
+      "reasoning": "Net working capital scaled by total liabilities is a Graham-style survival test built entirely from quality-exclusive items (`act`, `lct`, `lt`), giving a liquidity-based rather than profitability-based definition of quality, so it is not a repackaging of RMW. Pairing it with a cash earnings yield tests whether the trap mechanism is about short-run solvency timing rather than accounting aggressiveness. This makes the batch informative: profitability level (1), profitability dynamics (2), cumulative history (3), leverage interaction (4), deficit traps (5), and liquidity buffers (6) would each teach a different lesson.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 4.79952305684132,
+      "ls_alpha": 0.03978901818848306,
+      "ls_talpha": 2.837933204069496,
+      "ls_sharpe": 0.4038193637963499,
+      "coverage": 0.12120344436767548,
+      "error": null
+    },
+    {
+      "name": "CashYieldEVLiquidityCover",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), SUB(ADD(MUL(prcc_f, csho), ADD(dltt, dlc)), che))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness should be measured against the full claim structure net of cash, so that leverage does not create fake cheapness; combined with working-capital coverage of liabilities this should sharpen the same quality-value mechanism that already worked.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice relative to the gen-1 winner \u2014 replacing market equity with net enterprise value in the denominator \u2014 while holding the resilience leg fixed, so a change in alpha is attributable to the valuation scaling. Economically, an EV denominator prevents highly levered firms from entering the long leg on optical equity cheapness, which is the trap channel the story targets. Coverage should be similar since all inputs are widely reported.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.1605663275629405,
+      "ls_alpha": 0.03629006916514202,
+      "ls_talpha": 2.518413893435204,
+      "ls_sharpe": 0.31090762385907544,
+      "coverage": 0.12013517942063369,
+      "error": null
+    },
+    {
+      "name": "AdditiveCashYieldResilience",
+      "expression": "SUMRANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "If the payoff to quality value is genuinely conditional, an additive blend of the same two channels should be weaker than their product, because additivity lets deep cheapness offset weak resilience and vice versa.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate structural control for the gen-1 winner: identical economic inputs, additive rather than multiplicative combination. If alpha collapses we learn the conditional (trap-exclusion) structure is doing the work; if it survives we learn the result is a two-factor composite and future effort should go to channel selection rather than interaction form. Either outcome redirects the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.624630204633986,
+      "ls_alpha": 0.03632007067263532,
+      "ls_talpha": 2.7350639924630555,
+      "ls_sharpe": 0.31395903886420456,
+      "coverage": 0.12120344436767548,
+      "error": null
+    },
+    {
+      "name": "BalanceSheetAccrualQualityValue",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(RATIO(SUB(DELTA(SUB(act, lct), 1), dp), at))))",
+      "hypothesis": "A high cash earnings yield is mispricing when the reported earnings are not inflated by working-capital accruals, and a trap when the balance sheet is quietly absorbing unsold inventory and uncollected receivables.",
+      "expected_sign": "positive",
+      "reasoning": "This rebuilds the accrual-quality channel that failed in gen 0 only because `oancf` cut coverage to 0.09, using the balance-sheet accrual definition (change in net working capital less depreciation) which has broad coverage. It tests an earnings-quality mechanism that is economically distinct from the static liquidity buffer and not obviously captured by RMW or CMA. Pairing it with the yield that already worked keeps the valuation leg constant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.481737794204583,
+      "ls_alpha": -0.0218179830399948,
+      "ls_talpha": -2.2798307701795224,
+      "ls_sharpe": 0.08403194535525124,
+      "coverage": 0.1112543306365138,
+      "error": null
+    },
+    {
+      "name": "ImprovingResilienceValue",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(DELTA(RATIO(SUB(act, lct), lt), 1)))",
+      "hypothesis": "What separates quality value from value traps may be the direction of balance-sheet resilience rather than its level: cheap firms whose working-capital coverage is strengthening are de-risking, while cheap firms whose coverage is eroding are sliding toward distress.",
+      "expected_sign": "positive",
+      "reasoning": "Holding the valuation leg fixed and swapping the level of coverage for its one-year change directly tests whether the gen-1 alpha came from a static safety characteristic (potentially a slow-moving factor exposure) or from dynamic information the market underreacts to. A change-based quality leg is also far less correlated with CMA and RMW, so surviving FF5 adjustment would be strong evidence for the underreaction interpretation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.432725083845869,
+      "ls_alpha": -0.022571107192256842,
+      "ls_talpha": -2.1130510222292465,
+      "ls_sharpe": 0.1264178324185049,
+      "coverage": 0.11070446258833591,
+      "error": null
+    },
+    {
+      "name": "StableMarginCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "Cheap firms with stable gross margins are mispriced; cheap firms with unstable margins are cheap because their operating cash flows carry genuine fundamental risk, so the discount is compensation rather than error.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment quality channel absent from the archive, distinguishing risk-based from mispricing-based explanations of the cheap-firm discount. Because the gross-margin level channel proved factor-redundant (GP/EV had no FF5 alpha), its volatility is a natural candidate to carry information the factors do not span. Five-year windows will trim coverage modestly, which the comparison with signal 3 will help interpret.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.7694963550270386,
+      "ls_alpha": -0.021752493949660785,
+      "ls_talpha": -2.0737231773352103,
+      "ls_sharpe": 0.03708271958086227,
+      "coverage": 0.1267558321714804,
+      "error": null
+    },
+    {
+      "name": "CashYieldDualQualityGate",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), SUMRANK(RATIO(SUB(act, lct), lt), NEG(RATIO(SUB(DELTA(SUB(act, lct), 1), dp), at))))",
+      "hypothesis": "Trap avoidance requires both solvency capacity and non-inflated earnings; a cheap firm that is liquid but accrual-heavy, or clean but illiquid, is only half-screened, so combining the two quality channels before conditioning on cheapness should improve both the cross-sectional slope and the FF5 alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This is the consolidation candidate: it keeps the multiplicative value-times-quality architecture that produced the only positive alpha so far, but strengthens the quality gate with two independent, high-coverage screens rather than one. Averaging two ranked quality channels also stabilizes portfolio composition, addressing the noisy extreme deciles that plagued the single-screen rank products. If it beats signal 2 and the gen-1 winner, the remaining generations should refine within this family.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.9480980513721667,
+      "ls_alpha": 0.033951150063332894,
+      "ls_talpha": 2.3247487943643796,
+      "ls_sharpe": 0.09254342862242061,
+      "coverage": 0.11082941852872687,
+      "error": null
+    },
+    {
+      "name": "NetCurrentAssetBackingYield",
+      "expression": "RATIO(SUB(act, lt), MUL(prcc_f, csho))",
+      "hypothesis": "The purest expression of quality value is liquidation backing per dollar of price: current assets net of all liabilities, so cheapness is measured against assets that are actually convertible to cash rather than against depreciated fixed assets or accounting book equity.",
+      "expected_sign": "positive",
+      "reasoning": "This collapses the winning two-leg structure into one Graham-style ratio in which the valuation and quality themes are inseparable \u2014 the numerator is a solvency-adjusted asset measure and the denominator is market price \u2014 so the trap group (cheap only because liabilities exceed liquid assets) is scored negatively by construction. It also tests whether the gen-1/gen-2 alpha needs an earnings leg at all, which is the sharpest remaining structural question. Coverage should match the archive's best since it uses only `act`, `lt`, price and shares.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 0.4763739706546548,
+      "ls_alpha": 0.058618138292143754,
+      "ls_talpha": 4.483459661135033,
+      "ls_sharpe": 0.2520969855739973,
+      "coverage": 0.1216021477150501,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralResilienceCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), IND_RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Working-capital coverage is strongly sector-determined, so ranking it within industry isolates firm-specific resilience and should raise the reliability of the alpha if the gen-1 result is a genuine firm-level trap screen rather than a static long-liquid-industry, short-capital-intensive-industry bet.",
+      "expected_sign": "positive",
+      "reasoning": "If alpha and t-statistic hold up after industry demeaning, the mechanism is firm-level financial resilience, which is the economically interesting claim; if they collapse, the earlier result was largely an industry tilt that FF5 happens not to span. Only the quality leg is neutralized, leaving the valuation leg identical to the winner so the comparison is clean. This directly addresses a plausible failure mode of the current best signal rather than restating it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.104929765757063,
+      "ls_alpha": 0.011174330657679267,
+      "ls_talpha": 1.0224805795904761,
+      "ls_sharpe": 0.23332242570587655,
+      "coverage": 0.12119988451635963,
+      "error": null
+    },
+    {
+      "name": "CashYieldLowLeverageDecomposition",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(RATIO(lt, at))))",
+      "hypothesis": "If the resilience leg works through the liability denominator rather than the working-capital numerator, then pairing cash yield with simple low total leverage should reproduce most of the alpha; if it does not, liquidity per se is the trap-separating variable.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate decomposition experiment: same valuation leg, quality leg stripped down to leverage alone. Gen 1 showed leverage interacted with book-to-market produced negative alpha, so contrasting it with the cash-yield pairing tells us whether the earlier failure came from the valuation leg or the quality leg. The answer determines which single characteristic the final consolidated signal should be built around.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.0501855091228283,
+      "ls_alpha": 0.019121716687948372,
+      "ls_talpha": 1.5485094688137355,
+      "ls_sharpe": 0.17016046764152407,
+      "coverage": 0.1378422926020305,
+      "error": null
+    },
+    {
+      "name": "SalesMultipleCashObligationCover",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(RATIO(ADD(ib, dp), lct)))",
+      "hypothesis": "Deep value measured on revenue is the most trap-prone valuation metric, and the decisive quality screen for such firms is whether internally generated cash covers the obligations coming due within a year.",
+      "expected_sign": "positive",
+      "reasoning": "This changes both legs to a genuinely different economic pairing \u2014 revenue-based cheapness (which does not require current profitability, so it captures depressed-margin firms) screened by a flow-to-near-term-obligation coverage ratio rather than a stock-based buffer. It tests whether the archive's success generalizes beyond earnings-yield cheapness, and whether a flow-based quality leg can work when it measures obligation coverage rather than accounting cleanliness. Both inputs are broadly reported, so coverage should not deteriorate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.8299316600133184,
+      "ls_alpha": -0.032856985609990466,
+      "ls_talpha": -3.5244583161531406,
+      "ls_sharpe": 0.1698366412437051,
+      "coverage": 0.12268676734132557,
+      "error": null
+    },
+    {
+      "name": "SmoothedCashYieldResilience",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Both legs of the winning signal are measured from a single fiscal year and therefore contain transitory noise; three-year averages should represent the firm's sustainable cash-generating power and its persistent resilience state, improving the precision of the alpha.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing is the standard remedy when a characteristic's extreme deciles are populated by one-off events (asset sales, temporary inventory swings), and it lowers portfolio turnover, which should raise the t-statistic even if the mean alpha is similar. Because the change-based quality legs all failed, the evidence points to slow-moving states being the informative object, which smoothing reinforces. This isolates the timing/measurement-window choice while holding the economics fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.1450032953302856,
+      "ls_alpha": 0.049524433480593134,
+      "ls_talpha": 3.119809085114745,
+      "ls_sharpe": 0.49745460423136134,
+      "coverage": 0.12190081408124469,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkQualityValue",
+      "expression": "MIN(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Trap separation is a conjunctive condition rather than a trade-off: a firm qualifies as quality value only if it is simultaneously cheap and resilient, so the score should be the weaker of the two ranks and no amount of cheapness should compensate for fragility.",
+      "expected_sign": "positive",
+      "reasoning": "Product and sum both allow one extreme leg to dominate, which is why they performed almost identically; MIN enforces a strict conjunction so the long decile contains only firms strong on both dimensions and the short decile contains firms failing at least one. This is the one structural variant that could actually change portfolio composition materially, making it a genuine test of the conditional story rather than an algebraic restatement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.217823049916937,
+      "ls_alpha": 0.04163207205660432,
+      "ls_talpha": 2.990700307527187,
+      "ls_sharpe": 0.3498082526598913,
+      "coverage": 0.12120344436767548,
+      "error": null
+    },
+    {
+      "name": "SmoothedCashYieldNetNetBacking",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lt), MUL(prcc_f, csho))))",
+      "hypothesis": "Quality value has two independent supports \u2014 sustainable cash earnings power and liquid asset backing net of every liability \u2014 and a firm that is cheap on both is mispriced, whereas a firm cheap on earnings alone may be a levered trap.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the archive's two strongest but structurally different sources of abnormal return: the smoothed cash earnings yield (best FMB slope) and net-current-asset backing per dollar of price (best FF5 alpha). Both legs are rank-transformed, which fixes the skewness that destroyed the raw net-net ratio's cross-sectional slope while preserving its portfolio-sorting power. The multiplicative form enforces the conjunction that defines quality value rather than letting extreme cheapness on one dimension carry a fragile firm into the long leg.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.589828122312388,
+      "ls_alpha": 0.04212638722214159,
+      "ls_talpha": 2.809955482541079,
+      "ls_sharpe": 0.4135654814436323,
+      "coverage": 0.12141615838180922,
+      "error": null
+    },
+    {
+      "name": "SmoothedNetNetBackingWinsor",
+      "expression": "WINSOR(RATIO(MA(SUB(act, lt), 3), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Liquid-asset backing relative to price is genuinely priced, but its predictive slope is masked by extreme tails and one-off balance-sheet years; a three-year average with tails trimmed should deliver both a coherent cross-sectional slope and a large alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the FMB/alpha disagreement of the gen-3 net-net ratio by attacking its two statistical pathologies \u2014 skewness (winsorizing) and single-year measurement noise (three-year averaging) \u2014 without changing the economics. If the FMB t-statistic rises while the alpha stays near 5%, we learn the channel is real and should anchor the final signal; if the slope stays flat, the alpha is a tail-driven portfolio effect and should be used only in rank-combined form as in signal 1. Either result is decision-relevant for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 0.4831855925599221,
+      "ls_alpha": 0.052660857808262664,
+      "ls_talpha": 4.174239575590539,
+      "ls_sharpe": 0.2156977757426054,
+      "coverage": 0.12213060506328487,
+      "error": null
+    },
+    {
+      "name": "TripleSupportQualityValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(act, lt), MUL(prcc_f, csho)), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Cheapness screened by two complementary resilience measures \u2014 asset backing relative to price and working-capital coverage of liabilities \u2014 separates quality value from traps more reliably than either screen alone, because the first is a market-price-relative cushion and the second a purely accounting-relative one.",
+      "expected_sign": "positive",
+      "reasoning": "All three channels have already shown positive alpha individually, and rank-averaging them should reduce the idiosyncratic noise that limits each one's t-statistic while stabilizing decile membership. Unlike the gen-2 dual gate, which diluted the FMB slope by adding a failed accrual channel, every component here has independent supporting evidence. This is the natural consolidation test for whether breadth of quality evidence beats depth.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.336162255045984,
+      "ls_alpha": 0.03977019864517679,
+      "ls_talpha": 2.826122974247381,
+      "ls_sharpe": 0.4335238526641051,
+      "coverage": 0.12138463564044717,
+      "error": null
+    },
+    {
+      "name": "FiveYearStateCashYieldResilience",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "If the mechanism is a persistent firm state rather than a recent realization, extending the averaging window from three to five years should further improve precision by removing more transitory variation from both the earnings and the resilience leg.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing improved every statistic versus the one-year winner, so the window length is a live design parameter worth pinning down before consolidating. A five-year window also lowers turnover further, which should raise the alpha t-statistic if the effect is slow-moving, but will cost some coverage \u2014 making the coverage/precision trade-off explicit. This isolates the measurement window while holding the economic channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.223340149494933,
+      "ls_alpha": 0.0454251598795635,
+      "ls_talpha": 2.9674470334105987,
+      "ls_sharpe": 0.48932196880880985,
+      "coverage": 0.12227341185230312,
+      "error": null
+    },
+    {
+      "name": "GrahamSafetyMarginYield",
+      "expression": "RATIO(ADD(SUB(act, lt), MA(ADD(ib, dp), 3)), MUL(prcc_f, csho))",
+      "hypothesis": "Total downside support per dollar of price is the sum of liquid assets net of all obligations plus normalized annual cash earnings; firms with a large combined margin of safety are mispriced, while cheap firms with negative net liquid assets and weak cash flow are correctly discounted.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the stock and flow supports inside a single economically interpretable ratio instead of combining ranks, so the two components trade off in dollar terms \u2014 a firm with a liability-heavy balance sheet must generate substantial cash earnings to qualify, which is exactly the trap-versus-quality distinction. It provides a genuinely different functional form from the rank products that dominate the archive and can be compared directly with signal 1 to see whether dollar-weighted or rank-weighted fusion is better. Inputs are all high-coverage annual items.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.595664354040726,
+      "ls_alpha": 0.0578140345441086,
+      "ls_talpha": 4.095468335368965,
+      "ls_sharpe": 0.2701839005594719,
+      "coverage": 0.12141615838180922,
+      "error": null
+    },
+    {
+      "name": "SolvencyThresholdGatedCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), INDICATOR(SUB(act, lt), 0))",
+      "hypothesis": "The liquid-asset-backing effect may operate through a threshold rather than a magnitude: only firms whose current assets exceed total liabilities are structurally safe, and cheapness should be harvested exclusively within that group.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing this discrete solvency gate with the continuous version in signal 1 tells us whether the net-net channel is a nonlinear safety condition or a smoothly priced cushion, which determines how the final signal should encode it. The gate also concentrates the long leg in an economically homogeneous group, potentially raising alpha reliability, at the cost of a coarser short leg. It repairs the gen-0 indicator-screen idea, which failed only because it depended on the low-coverage cash-flow statement and on retained earnings rather than on liquid solvency.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.7552625142768554,
+      "ls_alpha": 0.008922754348779142,
+      "ls_talpha": 0.29781754998444987,
+      "ls_sharpe": 0.3787215399153756,
+      "coverage": 0.12141615838180922,
+      "error": null
+    },
+    {
+      "name": "SmoothedWeakestLinkQualityValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Quality value is a conjunctive state: a firm must be both persistently cheap on normalized cash earnings and persistently resilient, and its score should be set by whichever condition it satisfies least.",
+      "expected_sign": "positive",
+      "reasoning": "The two independently confirmed design improvements in the archive are three-year smoothing (raised every statistic) and the weakest-link conjunction (\u03b1 4.2%, t 2.99 in unsmoothed form); this combines them for the first time. MIN changes decile membership more than product or sum, concentrating the long leg on firms that clear both hurdles and the short leg on firms failing at least one, which is the sharpest portfolio expression of trap exclusion.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.725368110494694,
+      "ls_alpha": 0.050063435025906045,
+      "ls_talpha": 3.4864051895567294,
+      "ls_sharpe": 0.39733462104846906,
+      "coverage": 0.12190081408124469,
+      "error": null
+    },
+    {
+      "name": "AssetScaledResilienceCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), at), 3)))",
+      "hypothesis": "The resilience leg may work because of its liquid-asset numerator rather than its liability denominator; scaling net working capital by total assets removes the embedded leverage information and isolates pure liquidity intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-3 showed that leverage alone paired with cash yield gave only \u03b1 1.9% (t 1.55) while working-capital-over-liabilities gave 4.0\u20135.0%, but those tests could not tell whether the liability denominator or the working-capital numerator carried the information. This decomposition holds the valuation leg and smoothing fixed and changes only the scaling, so a drop in alpha attributes the effect to the liability-relative framing and a hold attributes it to liquidity intensity. That answer determines the denominator used in the final consolidated signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 5.2760325345417804,
+      "ls_alpha": 0.04751763515759869,
+      "ls_talpha": 3.11889441749821,
+      "ls_sharpe": 0.5188553131073393,
+      "coverage": 0.12222764970567769,
+      "error": null
+    },
+    {
+      "name": "AveragedYieldTimingResilience",
+      "expression": "MUL(RANK(MA(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), 3)), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Averaging the yield itself, rather than the numerator only, embeds the firm's historical price alongside its historical earnings, so the signal partly measures how cheap the stock has been over several years rather than how cheap it is now.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a pure timing/measurement question against the current champion: normalized earnings over current price versus the average of past yields. If the current-price version dominates, the effect is about today's mispricing of a stable earnings stream; if the averaged-yield version wins, part of the payoff is slow price reversal, which would justify a different refinement path in the last generations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.881156221140148,
+      "ls_alpha": 0.04298781718457918,
+      "ls_talpha": 2.7470351205921144,
+      "ls_sharpe": 0.4130937513440651,
+      "coverage": 0.12215160302684355,
+      "error": null
+    },
+    {
+      "name": "CashCushionCoverCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3)))",
+      "hypothesis": "Not all working capital is equal quality: receivables and inventory can be stale or unsellable, whereas cash unambiguously covers obligations, so cash relative to current liabilities should be the sharper trap screen for cheap firms.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the broad working-capital buffer with its highest-quality component while keeping the winning valuation leg and smoothing, testing whether the resilience effect is driven by genuine liquidity or partly by inventory build-ups that are themselves a symptom of distress. It also connects to the failed accrual signals: if inventory/receivable-heavy buffers are low quality, the cash-only version should improve both the FMB slope and the alpha. All inputs are broadly reported so coverage should be stable near 0.12.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.815331849164734,
+      "ls_alpha": 0.05633593869245685,
+      "ls_talpha": 4.248873544037615,
+      "ls_sharpe": 0.4197180182541487,
+      "coverage": 0.12263089315328121,
+      "error": null
+    },
+    {
+      "name": "PayoutVerifiedSupportComposite",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(SUB(act, lct), lt), 3), RATIO(MA(dvc, 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Sustained cash dividends are a hard, non-manipulable verification that reported earnings are real, so cheap and resilient firms that also distribute cash are the least likely to be value traps.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a genuinely new quality-verification channel \u2014 realized cash distributions over three years \u2014 which no prior proposal has tested, and adds it to two channels with established positive alpha. Unlike accrual or margin-volatility screens, which failed, payout is an observed cash outflow that cannot be produced by accounting choices, and the three-year average distinguishes committed payers from one-off special dividends. Non-payers rank at the bottom of that channel, which is the economically intended treatment rather than a coverage patch.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.0407071474017116,
+      "ls_alpha": -0.01152836120720515,
+      "ls_talpha": -1.1615348257443596,
+      "ls_sharpe": 0.2207201406509781,
+      "coverage": 0.12184540422163284,
+      "error": null
+    },
+    {
+      "name": "ViableNetNetBacking",
+      "expression": "MUL(WINSOR(RATIO(SUB(act, lt), MUL(prcc_f, csho)), 1), INDICATOR(MA(ADD(ib, dp), 3), 0))",
+      "hypothesis": "Deep liquid-asset backing per dollar of price is genuinely mispriced only for firms that are not burning cash; the classic net-net trap is an asset-rich shell whose normalized cash earnings are negative and whose asset base is being consumed.",
+      "expected_sign": "positive",
+      "reasoning": "The net-net channel's alpha lives in the raw magnitude tail \u2014 ranking it removed the edge and winsorizing did not restore the FMB slope \u2014 so the correct repair is to preserve the level scale and delete the tail's economically bad members with a viability screen rather than to transform the variable. Requiring three-year average cash earnings above zero is exactly the earnings-quality condition the theme calls for, and it should raise the FMB slope by removing the negative-backing, negative-earnings observations that flatten it. If this lifts the FMB t-statistic while keeping alpha near 5%, it becomes the strongest dual-evidence candidate in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 0.8874123885916587,
+      "ls_alpha": 0.060521447169356465,
+      "ls_talpha": 4.497783825710461,
+      "ls_sharpe": 0.2408752912547714,
+      "coverage": 0.12141615838180922,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkCashCushionValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3)))",
+      "hypothesis": "A firm is quality value only if it is simultaneously cheap on normalized cash earnings and holds cash sufficient to meet obligations coming due; its score should be governed by the weaker of the two conditions rather than by their average.",
+      "expected_sign": "positive",
+      "reasoning": "This combines the two independently verified improvements of the last generation \u2014 the cash-cushion quality channel (best alpha and t-stat) and the MIN conjunction (best alpha precision at equal magnitude) \u2014 which have not yet been tested together. Because MIN concentrates the long decile on firms clearing both hurdles and the short decile on firms failing at least one, it should raise ls_talpha above 4.25 if trap exclusion is genuinely conjunctive. Coverage is unchanged from the gen-5 champion.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.78222017880513,
+      "ls_alpha": 0.0508625575599322,
+      "ls_talpha": 3.6899049506224553,
+      "ls_sharpe": 0.33637422525494753,
+      "coverage": 0.12263089315328121,
+      "error": null
+    },
+    {
+      "name": "CashToTotalObligationsValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "If the cash cushion works because cash pre-funds the entire liability stack rather than just the current portion, scaling cash by total liabilities should be at least as informative as scaling by current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single denominator choice against the gen-5 champion, distinguishing a near-term liquidity-timing story (current liabilities) from a whole-balance-sheet solvency story (total liabilities). The answer matters for the final signal because total liabilities also embed leverage, which on its own was weak (\u03b1 1.9%), so a drop here would confirm that the mechanism is specifically about imminent obligations. Both variants use identical high-coverage inputs.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.748711684252234,
+      "ls_alpha": 0.05590401443579169,
+      "ls_talpha": 3.8098841347969192,
+      "ls_sharpe": 0.4579142898149425,
+      "coverage": 0.137685349591845,
+      "error": null
+    },
+    {
+      "name": "DualLiquidityGateCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), SUMRANK(MA(RATIO(che, lct), 3), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Cash coverage of imminent obligations and working-capital coverage of all liabilities are complementary resilience measures \u2014 one captures immediate settlement capacity, the other structural buffer \u2014 so averaging them before conditioning on cheapness should give a more reliable trap screen than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "Both quality channels have delivered positive FF5 alpha with strong FMB slopes (5.6% and 5.0%), and they are economically distinct enough that rank-averaging should cancel idiosyncratic measurement noise while stabilizing decile membership. Unlike the gen-2 dual gate, which diluted the slope by including a failed accrual channel, every ingredient here is evidence-backed. This tests whether breadth within the liquidity dimension improves precision over the single best channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -0.5836010218405886,
+      "ls_alpha": 0.045396249790689486,
+      "ls_talpha": 3.4499280361072304,
+      "ls_sharpe": 0.05941877392951045,
+      "coverage": 0.12120060680503242,
+      "error": null
+    },
+    {
+      "name": "RolloverRiskScreenedCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(NEG(MA(RATIO(dlc, lt), 3))))",
+      "hypothesis": "The value trap is often a funding-structure problem: cheap firms that finance themselves with debt maturing inside a year must refinance at the worst possible moment, so reliance on short-term debt marks the cheapness as distress compensation rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a distinct distress mechanism \u2014 debt maturity structure \u2014 that the archive has never tested, and it is conceptually separate from both liquidity stocks and leverage levels, which is why it could add information rather than duplicate the cash cushion. If it works, it also explains why cash-to-current-liabilities beat broader buffers: what matters is the mismatch between imminent claims and liquid resources. Persistent reliance is captured with a three-year average, consistent with the archive's finding that states, not changes, are informative.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.8733285492595644,
+      "ls_alpha": -0.002524870681604261,
+      "ls_talpha": -0.21764673322315894,
+      "ls_sharpe": 0.22004030189476478,
+      "coverage": 0.13798221023635762,
+      "error": null
+    },
+    {
+      "name": "BoundedNetNetBackingValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "The economics behind the net-net result \u2014 liquid assets exceeding all liabilities \u2014 is real, but it should be measured against the firm's own asset base so that the variable is bounded and comparable across firms rather than exploding for microcaps whose price is a fraction of their working capital.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the archive's persistent FMB failure in the net-net strand (t\u22480.5\u20130.9 despite \u03b1 up to 6.1%) by replacing the price denominator, which creates the extreme right tail, with total assets, while keeping the solvency-adjusted liquid-asset numerator and pairing it with the valuation leg that reliably produces slopes. If both the FMB slope and a large alpha appear, we will have finally reconciled the archive's two disagreeing sources of evidence in a single specification. It is also a clean scaling contrast to signal 3's liability-scaled buffers.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.104333021981675,
+      "ls_alpha": 0.051555213034618866,
+      "ls_talpha": 3.1598952647847636,
+      "ls_sharpe": 0.4458608448639104,
+      "coverage": 0.12194043677415148,
+      "error": null
+    },
+    {
+      "name": "TripleConjunctionQualityValue",
+      "expression": "MIN(MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Trap exclusion requires clearing every hurdle: persistent cheapness, cash on hand against imminent claims, and a structural working-capital buffer; the firm's score should equal its weakest dimension across all three.",
+      "expected_sign": "positive",
+      "reasoning": "The evidence says conjunction improves precision (MIN raised t-alpha) and that the two liquidity channels are separately informative, so a triple weakest-link is the natural consolidation of everything learned. The risk is that MIN over three ranks compresses the cross-section and thins the extreme deciles, which is exactly why it should be tested against the two-way versions in signals 1 and 3 before the final generations commit. If it dominates, the last rounds can refine window length and scaling within this specification.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.093687296507324,
+      "ls_alpha": 0.045277192747964996,
+      "ls_talpha": 3.0305365812946645,
+      "ls_sharpe": 0.28169017624671167,
+      "coverage": 0.12120060680503242,
+      "error": null
+    },
+    {
+      "name": "AdditiveCashSolvencyValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "Persistent cash earnings cheapness and persistent cash coverage of total obligations are the two supports of quality value, and giving them equal, non-multiplicative weight should maximize breadth of the spread while keeping the trap group in the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "The champion multiplies these two ranked channels; the additive form was previously competitive for the working-capital version (\u03b1 3.6% vs 4.0%) and typically yields more evenly populated deciles and higher Sharpe. This isolates aggregation form for the best channel pair, which is the one remaining structural choice not yet tested on this specific pair. It also avoids the scale problem that destroyed the gen-6 dual gate, since SUMRANK is used here at the top level rather than inside a product.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.809025567934049,
+      "ls_alpha": 0.06797704780929154,
+      "ls_talpha": 4.716135961258663,
+      "ls_sharpe": 0.48839329779973595,
+      "coverage": 0.137685349591845,
+      "error": null
+    },
+    {
+      "name": "WeakestLinkCashSolvencyValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "If quality value is conjunctive, the firm's score should equal its weaker of persistent cheapness and persistent cash solvency, which concentrates the long leg on firms that clear both hurdles.",
+      "expected_sign": "positive",
+      "reasoning": "MIN raised alpha precision for both earlier channel pairs (t 3.12\u21923.49 for working capital, 4.25\u21923.69 for cash-to-current-liabilities with alpha intact), so applying it to the strongest channel pair tests whether the precision gain survives with the higher-coverage denominator. Comparing signals 1 and 2 directly measures the precision-versus-breadth trade-off on the best economics available. Coverage should match the champion at roughly 0.14.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.42293750815437,
+      "ls_alpha": 0.04981092398768167,
+      "ls_talpha": 3.511730773395632,
+      "ls_sharpe": 0.348725667145465,
+      "coverage": 0.137685349591845,
+      "error": null
+    },
+    {
+      "name": "FiveYearCashSolvencyValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 5)))",
+      "hypothesis": "Because both legs represent slow-moving firm states, extending the averaging window to five years should remove more transitory variation in earnings and cash holdings and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Five-year smoothing preserved essentially all of the alpha and FMB slope for the working-capital pair (\u03b1 4.5%, FMB 5.22), indicating the state interpretation holds at longer windows without a coverage penalty. Cash balances are more volatile year to year than working capital, so this is the channel where longer averaging has the most to gain in separating structural cash-richness from a single good year. This pins down the window parameter before final consolidation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.742767458519082,
+      "ls_alpha": 0.05610006940442301,
+      "ls_talpha": 3.671632550179123,
+      "ls_sharpe": 0.42256152709584566,
+      "coverage": 0.13789264644093288,
+      "error": null
+    },
+    {
+      "name": "NetCashPositionValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(che, lt), at), 3)))",
+      "hypothesis": "What separates quality value from traps is the firm's net financial position \u2014 cash minus every liability, scaled by the asset base \u2014 so that a cheap firm with net cash is mispriced while a cheap firm with net obligations is discounted for solvency risk.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded, asset-scaled version of the net-liquid-asset idea already delivered both a strong slope and a solid alpha (FMB 5.10, \u03b1 5.2%), and replacing total current assets with cash alone applies the gen-5/gen-6 lesson that cash is the higher-quality component of the buffer. This tests whether netting liabilities inside the numerator dominates the ratio form used by the champion, which is an economically different statement about how the market prices leverage against liquidity. Inputs are high coverage, so no sparsity risk.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.884956157937788,
+      "ls_alpha": 0.05634918438738973,
+      "ls_talpha": 3.475202668547096,
+      "ls_sharpe": 0.37624292329595094,
+      "coverage": 0.13768457571112416,
+      "error": null
+    },
+    {
+      "name": "CashFlowObligationCoverageValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "Solvency quality may be better measured by the flow that services obligations than by the stock of cash held against them: a cheap firm whose annual cash earnings are large relative to total liabilities can grow out of its debt, whereas one with thin coverage is a trap.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's very first promising signal used operating cash flow over total liabilities but was crippled by 0.09 coverage; rebuilding that flow-coverage channel from `ib+dp` restores coverage to about 0.14 and lets us test flow versus stock coverage head-to-head against the champion. If flow coverage matches or beats the cash stock, the mechanism is debt-servicing capacity rather than liquid reserves, which is a materially different economic conclusion. This is the deliberate repair of the gen-0 failure mode.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.2020800447737683,
+      "ls_alpha": -0.0018764168038395423,
+      "ls_talpha": -0.18496285482006516,
+      "ls_sharpe": 0.256832820629568,
+      "coverage": 0.1383929861229773,
+      "error": null
+    },
+    {
+      "name": "OwnHistoryCheapnessCashSolvency",
+      "expression": "MUL(TS_RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), 5), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "A firm is mispriced when it is cheap relative to its own five-year valuation history and simultaneously cash-solvent; cross-sectional cheapness confounds permanent business-model differences, whereas own-history cheapness isolates a genuine repricing of an unchanged, financially sound firm.",
+      "expected_sign": "positive",
+      "reasoning": "Every valuation leg tested so far has been cross-sectional, so this introduces a new mechanism \u2014 time-series cheapness within the firm \u2014 that is naturally orthogonal to HML and to size, and pairs it with the best-performing quality channel. Conditioning on cash solvency is essential because a stock cheap versus its own history is otherwise the classic deteriorating-fundamentals trap. If this works, it opens a distinct refinement path for the final two generations; if it fails, it confirms that the effect requires cross-sectional cheapness.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.19919293406482091,
+      "ls_alpha": 0.04799437838413073,
+      "ls_talpha": 3.3013677614484216,
+      "ls_sharpe": 0.16636519451580253,
+      "coverage": 0.12472810990674633,
+      "error": null
+    },
+    {
+      "name": "FiveYearAdditiveCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho)), MA(RATIO(che, lt), 5))",
+      "hypothesis": "Both legs describe persistent firm states, so lengthening the averaging window to five years within the winning additive structure should further purge transitory earnings and cash swings and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Five-year windows preserved or improved the FMB slope in every earlier comparison (5.74 versus 5.75 in multiplicative form) without any coverage loss, and the additive aggregation is now known to deliver the larger alpha. This combines the two separately verified design choices \u2014 additive rank-averaging and long-window state measurement \u2014 which have not yet been tested together on the best channel pair.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.73645083386718,
+      "ls_alpha": 0.07146743338620049,
+      "ls_talpha": 4.917785913795061,
+      "ls_sharpe": 0.4718748634441261,
+      "coverage": 0.13789264644093288,
+      "error": null
+    },
+    {
+      "name": "AdditiveCashAndAssetSupportValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "Cheapness screened by two complementary, bounded solvency measures \u2014 cash against all obligations and liquid assets net of all obligations relative to the asset base \u2014 should separate quality value from traps more reliably than a single solvency measure while keeping the cheapness leg at half weight.",
+      "expected_sign": "positive",
+      "reasoning": "Both quality channels independently produced strong slopes and mid-5% alphas (FMB 5.75 and 5.10), and adding breadth in additive form avoids the scale mismatch that destroyed the gen-6 gate where a composite sat inside a product. The nested SUMRANK also implicitly weights cheapness 50% and each solvency measure 25%, which is a mild tilt toward the valuation leg that the evidence supports. Coverage stays around 0.12\u20130.14.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.4637027580468756,
+      "ls_alpha": 0.0714637450438884,
+      "ls_talpha": 4.77295132546381,
+      "ls_sharpe": 0.4119466588709687,
+      "coverage": 0.12124100337866005,
+      "error": null
+    },
+    {
+      "name": "AdditiveNetCashPositionValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), MA(RATIO(SUB(che, lt), at), 3))",
+      "hypothesis": "The solvency leg may be better expressed as a net position \u2014 cash minus total liabilities per unit of assets \u2014 because it treats a firm with liabilities exceeding cash as unambiguously exposed rather than merely low-ranked on a ratio.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative version of this net framing produced \u03b1=5.6% with FMB 3.89, weaker on the slope than the ratio framing, so testing it in the additive structure that lifted alpha to 6.8% isolates whether the net formulation is genuinely inferior or was handicapped by the aggregation form. This is a clean framing contrast against signal 1 with identical inputs and coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.189075443670602,
+      "ls_alpha": 0.05823994948407128,
+      "ls_talpha": 3.7551121743906304,
+      "ls_sharpe": 0.3480030759819104,
+      "coverage": 0.13768457571112416,
+      "error": null
+    },
+    {
+      "name": "PureEarningsYieldCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "If the valuation leg's power comes from normalized profitability rather than from adding back depreciation, then a plain smoothed earnings yield paired with cash solvency should perform as well, and the depreciation add-back is unnecessary.",
+      "expected_sign": "positive",
+      "reasoning": "Every valuation leg in the archive has bundled `ib+dp`, so the contribution of the depreciation add-back has never been isolated; it matters for interpretation because the add-back tilts toward capital-intensive firms whose earnings understate cash generation. If alpha falls materially, the cash-flow interpretation of the valuation leg is confirmed and the final signal should retain `dp`; if not, the simpler and more transparent specification wins.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.743283249014817,
+      "ls_alpha": 0.0834471828138342,
+      "ls_talpha": 5.464615407354278,
+      "ls_sharpe": 0.4388412177502533,
+      "coverage": 0.1415846765838965,
+      "error": null
+    },
+    {
+      "name": "GrossProfitYieldCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(SUB(revt, cogs), 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "Gross profit is the most persistent and least manipulable profit line, so gross-profit-to-price should be a cleaner cheapness measure than bottom-line cash earnings once solvency is controlled for.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit scaled by enterprise value produced the archive's strongest early slope (FMB 4.47) but zero FF5 alpha alone, because profitability level is spanned by RMW; pairing it additively with cash solvency \u2014 which is demonstrably not spanned \u2014 tests whether the combination recovers alpha with an even stronger slope. This changes the valuation numerator rather than restating the champion, and it uses the theme's quality-exclusive `cogs` in a way no surviving signal does.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.491068965149208,
+      "ls_alpha": 0.054957291396794554,
+      "ls_talpha": 3.934323241812981,
+      "ls_sharpe": 0.5502706098135057,
+      "coverage": 0.14156424613286644,
+      "error": null
+    },
+    {
+      "name": "MarketLeverageScreenedCashYield",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), NEG(RATIO(lt, MUL(prcc_f, csho))))",
+      "hypothesis": "The trap dimension is best measured by liabilities relative to market value rather than to book assets, because the market's own valuation of equity reveals how close the firm is to insolvency; cheap firms whose obligations dwarf their market capitalization are distressed, not mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "Book leverage (`lt/at`) failed as a screen (\u03b1 1.9%, t 1.55), but market leverage is a forward-looking distance-to-default proxy that responds to price declines, which is exactly the state in which a cheap stock becomes a trap \u2014 this mechanism has never been tested in the archive. Because both legs share the market-value denominator, the signal is effectively cheapness of earnings net of the market-implied obligation burden, a tighter economic statement than an accounting screen. All inputs are high coverage, so the comparison against signal 1 will be clean.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.0681187355884294,
+      "ls_alpha": 0.04131818848070887,
+      "ls_talpha": 3.586444489482065,
+      "ls_sharpe": 0.22729248385543577,
+      "coverage": 0.13824269848699097,
+      "error": null
+    },
+    {
+      "name": "FiveYearPureEarningsCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 5), MUL(prcc_f, csho)), MA(RATIO(che, lt), 5))",
+      "hypothesis": "Normalized bottom-line earnings capitalized against price, combined with a long-run cash cushion against total obligations, is the cleanest statement of quality value: sustainable profit power at a low price with the balance sheet pre-funded.",
+      "expected_sign": "positive",
+      "reasoning": "The two best-performing design choices of the last two generations \u2014 dropping the depreciation add-back (\u03b1 8.3%, t 5.47) and five-year state measurement (\u03b1 7.1%, t 4.92) \u2014 have not been combined, and both act on the same economics of measuring a persistent state. Longer averaging of `ib` should also mitigate the slope weakness of the earnings-only leg, because single-year losses are the main source of skew in that channel. Coverage should remain at the family's best level near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.9076690784552617,
+      "ls_alpha": 0.08542230813303281,
+      "ls_talpha": 5.415773577930522,
+      "ls_sharpe": 0.4589512026971609,
+      "coverage": 0.14164266604591114,
+      "error": null
+    },
+    {
+      "name": "EarningsYieldDualSolvencySupport",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "Trap exclusion is most reliable when cheapness is screened by both the cash held against obligations and the liquid assets remaining after all obligations, since the first measures settlement capacity and the second the residual asset cushion.",
+      "expected_sign": "positive",
+      "reasoning": "The dual-solvency composite with the `ib+dp` yield produced \u03b1=7.1% with t=4.77 and the earnings-only yield produced the archive's largest alpha, so combining them is the natural consolidation of the two independent improvements. Both solvency channels are bounded, avoiding the tail pathology that flattened the FMB slope of price-scaled net-net measures. Half weight on cheapness keeps the valuation theme economically binding rather than letting two quality channels dominate.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.6028660222801383,
+      "ls_alpha": 0.08631836258603545,
+      "ls_talpha": 5.140131208963191,
+      "ls_sharpe": 0.4228734845373288,
+      "coverage": 0.1213434651860987,
+      "error": null
+    },
+    {
+      "name": "BalancedYieldPairCashSolvency",
+      "expression": "SUMRANK(MA(RATIO(che, lt), 3), SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "The earnings-only and depreciation-added yields capture different parts of the same cheapness concept \u2014 accounting profitability and cash generation net of capital consumption \u2014 so averaging them should retain the large alpha of the former and the strong cross-sectional slope of the latter.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a clear trade-off between these two numerators (\u03b1 8.3% with FMB 2.74 versus \u03b1 6.8% with FMB 4.81), and the objective explicitly requires strength on both forms of evidence rather than one. Blending the two valuation channels while holding cash solvency at half weight is the most direct way to test whether the trade-off is resolvable rather than fundamental. It also diversifies measurement error in the earnings numerator, which should stabilize decile composition.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.020299854606214,
+      "ls_alpha": 0.07697444752720206,
+      "ls_talpha": 5.229831039754489,
+      "ls_sharpe": 0.4652938494778681,
+      "coverage": 0.137685349591845,
+      "error": null
+    },
+    {
+      "name": "ProfitAndEarningsCheapnessCashSolvency",
+      "expression": "SUMRANK(MA(RATIO(che, lt), 3), SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), RATIO(MA(SUB(revt, cogs), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Gross profit and net income priced against market value are complementary cheapness measures \u2014 the former persistent and unaffected by capital structure or accruals, the latter capturing the profit actually available to shareholders \u2014 and combining them with cash solvency should raise risk-adjusted return without sacrificing alpha.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit version delivered the archive's best Sharpe (0.55) with FMB 4.49 but a smaller alpha (5.5%), while the earnings-only version maximized alpha; blending them targets the multi-metric objective directly. Using `cogs` in the valuation numerator also makes the interaction with the cash-solvency screen economically broader, spanning operating quality and financial quality. Coverage should stay near 0.14 since all inputs are widely reported.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 5.480920064319805,
+      "ls_alpha": 0.05755965492170215,
+      "ls_talpha": 4.2085289248602145,
+      "ls_sharpe": 0.6076875828937243,
+      "coverage": 0.1415630079237131,
+      "error": null
+    },
+    {
+      "name": "MaturityBackedEarningsCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(re, at), 3)))",
+      "hypothesis": "Cumulative retained earnings relative to assets marks a firm that has financed itself from a history of profits rather than from external claims, which is a stock-of-quality dimension distinct from current liquidity and should further separate mispriced value from accumulated-deficit traps.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings were tested only against book-to-market cheapness, where the valuation leg itself was the problem (\u03b1 \u22122.0%), so the channel has never been evaluated inside the additive cash-yield frame that works; this is a targeted repair of that early failure. Because it measures cumulative profitability rather than contemporaneous liquidity, it should be only weakly correlated with cash-to-liabilities and can add independent trap-screening information. If it improves on signal 2's dual-solvency composite, the maturity dimension matters beyond liquid resources.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.8640997241833124,
+      "ls_alpha": 0.05057141355736297,
+      "ls_talpha": 3.538569116172532,
+      "ls_sharpe": 0.49547703759749295,
+      "coverage": 0.14037030295676092,
+      "error": null
+    },
+    {
+      "name": "PersistentProfitGatedQualityValue",
+      "expression": "MUL(SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3)), INDICATOR(TS_MIN(ib, 3), 0))",
+      "hypothesis": "The defining feature of a value trap is a firm that has not been profitable in every recent year; requiring three consecutive years of positive earnings before crediting any cheapness should concentrate the long leg in genuinely mispriced firms and push chronic loss-makers into the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier indicator gates failed when applied to balance-sheet thresholds (net current assets, \u03b1 0.9%) or to low-coverage cash-flow items, but persistence of positive earnings is the theme's core earnings-quality condition and has never been tested; `TS_MIN(ib, 3) > 0` encodes it exactly. Because the composite it multiplies is a bounded average of ranks, non-qualifying firms fall to the bottom of the score, giving an economically coherent short leg of persistent loss-makers rather than an arbitrary group. This is the sharpest available test of whether the archive's alpha comes from avoiding chronically unprofitable cheap firms or from continuous liquidity ranking.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.532947237390235,
+      "ls_alpha": 0.066903782849898,
+      "ls_talpha": 5.001335088090423,
+      "ls_sharpe": 0.42775116624377385,
+      "coverage": 0.1415846765838965,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "CashBackedValueGate",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(oancf, ib), at), 3)))",
+      "hypothesis": "A low price relative to reported earnings only signals mispricing when those earnings are backed by cash rather than accruals; cheap firms with persistently negative accruals are quality value, cheap firms with large positive accruals are traps whose earnings will mean-revert.",
+      "expected_sign": "positive",
+      "reasoning": "The product of the two cross-sectional ranks is high only when a firm is simultaneously in the cheap tail of earnings yield and in the high tail of three-year average cash-backing of earnings, so the score cannot be earned by cheapness alone. Smoothing the accrual channel over three years removes one-off working-capital noise and isolates a persistent earnings-quality state. Value traps (cheap, accrual-heavy) receive a low product score despite their high earnings yield.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "StableEarningsYieldInteraction",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(NEG(VOL(RATIO(ib, at), 5))))",
+      "hypothesis": "Cheapness is informative when the earnings stream being capitalized is stable; when profitability is highly volatile, the low multiple is compensation for fundamental risk and distress probability rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Ranking the negative of five-year ROA volatility puts low-volatility (high-quality) firms in the top of the second channel, and multiplying by the earnings-yield rank rewards only cheap-and-stable firms. This directly separates the two competing interpretations of a high earnings yield: mispriced stable cash generators versus optically cheap volatile businesses. The mechanism is distinct from accrual quality because it uses second-moment rather than cash-conversion information.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ScreenedEarningsYield",
+      "expression": "MUL(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1), MUL(INDICATOR(SUB(oancf, ib), 0), INDICATOR(re, 0)))",
+      "hypothesis": "Value should be harvested only from firms passing hard quality screens: operating cash flow exceeding accounting income and a positive stock of retained earnings (evidence of a cumulative history of profitable operation rather than accumulated losses).",
+      "expected_sign": "positive",
+      "reasoning": "The discrete gate switches the valuation signal off entirely for firms failing either quality test, so exposure is concentrated in screened quality value rather than being a smooth blend. Negative retained earnings is a classic distress/immaturity marker that makes a low price a rational discount, while cash flow above income indicates conservative accounting. Winsorizing the yield prevents a few extreme small-cap multiples from dominating the cross-sectional slope.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SolvencyCoveredBookToMarket",
+      "expression": "MUL(IND_RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(oancf, lt)))",
+      "hypothesis": "High book-to-market is a mispricing signal when internal cash generation comfortably services the liability stack, and a distress signal when it does not; the balance-sheet quality dimension is solvency, not profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Industry-ranking book-to-market removes sector-level accounting composition so the valuation channel reflects within-industry cheapness, while cash flow to total liabilities measures the firm's capacity to avoid a debt-driven equity wipeout. The interaction rewards cheap firms whose leverage is well covered and penalizes cheap, cash-poor, heavily obligated firms that populate the value-trap region of the book-to-market distribution.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ImprovingQualityCheapEbitda",
+      "expression": "MUL(RANK(RATIO(ebitda, MUL(prcc_f, csho))), RANK(TREND(RATIO(ib, at), 5)))",
+      "hypothesis": "Among cheap firms, the market underreacts to a multi-year improvement in operating profitability; a low multiple attached to a deteriorating profitability path is instead a rational extrapolation of decline.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg uses an EBITDA multiple that is robust to capital-structure and depreciation differences, while the quality leg is the five-year slope of ROA, capturing the direction of fundamental quality rather than its level. The product isolates cheap firms whose fundamentals are healing, which is the economically sharpest version of \"mispriced value\" versus \"melting ice cube.\"",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueTimesQualityMinusLeverageSpread",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), SUB(RANK(RATIO(oancf, at)), RANK(RATIO(ADD(dltt, dlc), at))))",
+      "hypothesis": "Cheapness should be amplified when a firm's operating cash profitability rank exceeds its financial-leverage rank, and reversed in sign when leverage dominates profitability, because in that case the low price reflects a levered claim on weak cash flows.",
+      "expected_sign": "positive",
+      "reasoning": "The second factor is a signed quality-minus-distress spread that is positive for cash-generative, lightly levered firms and negative for levered, cash-poor firms, so multiplying by the earnings-yield rank produces a genuinely two-sided score: cheap quality firms are pushed long while cheap distressed firms are pushed short rather than merely to the middle. This differs from the multiplicative gates above because it lets the quality dimension flip the sign of the valuation exposure instead of only scaling it.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitToEnterpriseValue",
+      "expression": "RATIO(SUB(revt, cogs), SUB(ADD(MUL(prcc_f, csho), ADD(dltt, dlc)), che))",
+      "hypothesis": "The cleanest measure of quality value is the price paid for the most persistent, least manipulable profit line: gross profit capitalized against the whole claim structure net of cash, so that leverage and cash hoards cannot make a distressed firm look cheap.",
+      "expected_sign": "positive",
+      "reasoning": "Using enterprise value in the denominator means a cheap-looking equity that is cheap only because of heavy debt is automatically penalized, which is exactly the trap the story targets, while netting cash prevents cash-rich quality firms from being scored as expensive. Gross profit (revt minus cogs) is the quality-exclusive numerator with near-universal coverage, repairing the 0.09 coverage problem created by the operating-cash-flow leg. As a single ratio it also avoids the unstable rank-product portfolio composition of the gen-0 entries.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldImprovingMargin",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(TREND(RATIO(SUB(revt, cogs), at), 5)))",
+      "hypothesis": "Among cheap firms, a multi-year improvement in gross profitability distinguishes mispriced turnarounds from melting-ice-cube traps whose low multiple correctly extrapolates fundamental decay.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg is a depreciation-added cash earnings yield, which uses `dp` (quality-exclusive) to strip away non-cash charges without depending on the sparse cash-flow statement. The quality leg is the direction, not the level, of gross profitability, so the signal is not a restatement of RMW-style profitability sorts and can carry FF5 alpha. The rank product only rewards firms that are cheap and improving simultaneously.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RetainedEarningsBackedValue",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(re, lt)))",
+      "hypothesis": "A high book-to-market is mispricing when the book equity was built from a cumulative history of retained profits and is a distress discount when the balance sheet is funded by liabilities against accumulated deficits.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings relative to total liabilities is a stock (not flow) measure of cumulative earnings quality and solvency, so it separates mature self-funded value firms from levered loss-makers whose book equity is fragile. This tests whether the trap dimension is better captured by cumulative history than by contemporaneous cash conversion, which failed in gen 0. Coverage should be high since `re`, `lt`, `ceq`, and price are broadly reported.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CenteredValueSafetyInteraction",
+      "expression": "MUL(ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), ZSCORE(WINSOR(NEG(RATIO(lt, at)), 1)))",
+      "hypothesis": "The incremental payoff is the pure interaction between cheapness and balance-sheet safety: the value premium should be strong among low-liability firms and weak or reversed among liability-heavy firms, and this conditional effect is not spanned by the additive value and profitability factors.",
+      "expected_sign": "positive",
+      "reasoning": "Because both legs are cross-sectionally centered, the product has near-zero average loading on the level of value and the level of safety, which is precisely the design needed to survive FF5 (HML, CMA, RMW) adjustment where the gen-0 composites did not. Winsorizing before standardizing keeps small-cap multiple outliers from dictating the extreme deciles and stabilizes portfolio composition. It isolates the \"value works only when the balance sheet is not distressed\" claim as a testable interaction rather than a blend.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapDeficitTrapFlag",
+      "expression": "MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), INDICATOR(NEG(re), 0))",
+      "hypothesis": "The value-trap side of the story is directly testable: firms that look cheapest on book-to-market while carrying an accumulated retained-earnings deficit earn low subsequent returns because their low price is a rational reflection of a history of value destruction.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the cheapness score on only for accumulated-deficit firms, so the long-short portfolio is essentially \"deepest-value loss-history firms versus everything else,\" a direct measurement of the trap leg rather than a blended quality-value score. If this prints a reliably negative alpha it tells us the archive's positive interactions should be built by *excluding* this group rather than by up-weighting profitable firms, which is diagnostically valuable regardless of magnitude. Coverage is high because it needs only price, book equity, and retained earnings.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidityCoveredCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness pays when the firm has enough net working capital relative to its liabilities to survive the period over which the mispricing corrects; without that buffer, a high cash earnings yield is compensation for near-term funding risk.",
+      "expected_sign": "positive",
+      "reasoning": "Net working capital scaled by total liabilities is a Graham-style survival test built entirely from quality-exclusive items (`act`, `lct`, `lt`), giving a liquidity-based rather than profitability-based definition of quality, so it is not a repackaging of RMW. Pairing it with a cash earnings yield tests whether the trap mechanism is about short-run solvency timing rather than accounting aggressiveness. This makes the batch informative: profitability level (1), profitability dynamics (2), cumulative history (3), leverage interaction (4), deficit traps (5), and liquidity buffers (6) would each teach a different lesson.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldEVLiquidityCover",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), SUB(ADD(MUL(prcc_f, csho), ADD(dltt, dlc)), che))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Cheapness should be measured against the full claim structure net of cash, so that leverage does not create fake cheapness; combined with working-capital coverage of liabilities this should sharpen the same quality-value mechanism that already worked.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates one design choice relative to the gen-1 winner \u2014 replacing market equity with net enterprise value in the denominator \u2014 while holding the resilience leg fixed, so a change in alpha is attributable to the valuation scaling. Economically, an EV denominator prevents highly levered firms from entering the long leg on optical equity cheapness, which is the trap channel the story targets. Coverage should be similar since all inputs are widely reported.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveCashYieldResilience",
+      "expression": "SUMRANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), RATIO(SUB(act, lct), lt))",
+      "hypothesis": "If the payoff to quality value is genuinely conditional, an additive blend of the same two channels should be weaker than their product, because additivity lets deep cheapness offset weak resilience and vice versa.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate structural control for the gen-1 winner: identical economic inputs, additive rather than multiplicative combination. If alpha collapses we learn the conditional (trap-exclusion) structure is doing the work; if it survives we learn the result is a two-factor composite and future effort should go to channel selection rather than interaction form. Either outcome redirects the remaining generations.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "BalanceSheetAccrualQualityValue",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(RATIO(SUB(DELTA(SUB(act, lct), 1), dp), at))))",
+      "hypothesis": "A high cash earnings yield is mispricing when the reported earnings are not inflated by working-capital accruals, and a trap when the balance sheet is quietly absorbing unsold inventory and uncollected receivables.",
+      "expected_sign": "positive",
+      "reasoning": "This rebuilds the accrual-quality channel that failed in gen 0 only because `oancf` cut coverage to 0.09, using the balance-sheet accrual definition (change in net working capital less depreciation) which has broad coverage. It tests an earnings-quality mechanism that is economically distinct from the static liquidity buffer and not obviously captured by RMW or CMA. Pairing it with the yield that already worked keeps the valuation leg constant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ImprovingResilienceValue",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(DELTA(RATIO(SUB(act, lct), lt), 1)))",
+      "hypothesis": "What separates quality value from value traps may be the direction of balance-sheet resilience rather than its level: cheap firms whose working-capital coverage is strengthening are de-risking, while cheap firms whose coverage is eroding are sliding toward distress.",
+      "expected_sign": "positive",
+      "reasoning": "Holding the valuation leg fixed and swapping the level of coverage for its one-year change directly tests whether the gen-1 alpha came from a static safety characteristic (potentially a slow-moving factor exposure) or from dynamic information the market underreacts to. A change-based quality leg is also far less correlated with CMA and RMW, so surviving FF5 adjustment would be strong evidence for the underreaction interpretation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "StableMarginCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(VOL(RATIO(SUB(revt, cogs), at), 5))))",
+      "hypothesis": "Cheap firms with stable gross margins are mispriced; cheap firms with unstable margins are cheap because their operating cash flows carry genuine fundamental risk, so the discount is compensation rather than error.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment quality channel absent from the archive, distinguishing risk-based from mispricing-based explanations of the cheap-firm discount. Because the gross-margin level channel proved factor-redundant (GP/EV had no FF5 alpha), its volatility is a natural candidate to carry information the factors do not span. Five-year windows will trim coverage modestly, which the comparison with signal 3 will help interpret.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldDualQualityGate",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), SUMRANK(RATIO(SUB(act, lct), lt), NEG(RATIO(SUB(DELTA(SUB(act, lct), 1), dp), at))))",
+      "hypothesis": "Trap avoidance requires both solvency capacity and non-inflated earnings; a cheap firm that is liquid but accrual-heavy, or clean but illiquid, is only half-screened, so combining the two quality channels before conditioning on cheapness should improve both the cross-sectional slope and the FF5 alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This is the consolidation candidate: it keeps the multiplicative value-times-quality architecture that produced the only positive alpha so far, but strengthens the quality gate with two independent, high-coverage screens rather than one. Averaging two ranked quality channels also stabilizes portfolio composition, addressing the noisy extreme deciles that plagued the single-screen rank products. If it beats signal 2 and the gen-1 winner, the remaining generations should refine within this family.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCurrentAssetBackingYield",
+      "expression": "RATIO(SUB(act, lt), MUL(prcc_f, csho))",
+      "hypothesis": "The purest expression of quality value is liquidation backing per dollar of price: current assets net of all liabilities, so cheapness is measured against assets that are actually convertible to cash rather than against depreciated fixed assets or accounting book equity.",
+      "expected_sign": "positive",
+      "reasoning": "This collapses the winning two-leg structure into one Graham-style ratio in which the valuation and quality themes are inseparable \u2014 the numerator is a solvency-adjusted asset measure and the denominator is market price \u2014 so the trap group (cheap only because liabilities exceed liquid assets) is scored negatively by construction. It also tests whether the gen-1/gen-2 alpha needs an earnings leg at all, which is the sharpest remaining structural question. Coverage should match the archive's best since it uses only `act`, `lt`, price and shares.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralResilienceCashYield",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), IND_RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Working-capital coverage is strongly sector-determined, so ranking it within industry isolates firm-specific resilience and should raise the reliability of the alpha if the gen-1 result is a genuine firm-level trap screen rather than a static long-liquid-industry, short-capital-intensive-industry bet.",
+      "expected_sign": "positive",
+      "reasoning": "If alpha and t-statistic hold up after industry demeaning, the mechanism is firm-level financial resilience, which is the economically interesting claim; if they collapse, the earlier result was largely an industry tilt that FF5 happens not to span. Only the quality leg is neutralized, leaving the valuation leg identical to the winner so the comparison is clean. This directly addresses a plausible failure mode of the current best signal rather than restating it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldLowLeverageDecomposition",
+      "expression": "MUL(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(NEG(RATIO(lt, at))))",
+      "hypothesis": "If the resilience leg works through the liability denominator rather than the working-capital numerator, then pairing cash yield with simple low total leverage should reproduce most of the alpha; if it does not, liquidity per se is the trap-separating variable.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate decomposition experiment: same valuation leg, quality leg stripped down to leverage alone. Gen 1 showed leverage interacted with book-to-market produced negative alpha, so contrasting it with the cash-yield pairing tells us whether the earlier failure came from the valuation leg or the quality leg. The answer determines which single characteristic the final consolidated signal should be built around.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesMultipleCashObligationCover",
+      "expression": "MUL(RANK(RATIO(sale, MUL(prcc_f, csho))), RANK(RATIO(ADD(ib, dp), lct)))",
+      "hypothesis": "Deep value measured on revenue is the most trap-prone valuation metric, and the decisive quality screen for such firms is whether internally generated cash covers the obligations coming due within a year.",
+      "expected_sign": "positive",
+      "reasoning": "This changes both legs to a genuinely different economic pairing \u2014 revenue-based cheapness (which does not require current profitability, so it captures depressed-margin firms) screened by a flow-to-near-term-obligation coverage ratio rather than a stock-based buffer. It tests whether the archive's success generalizes beyond earnings-yield cheapness, and whether a flow-based quality leg can work when it measures obligation coverage rather than accounting cleanliness. Both inputs are broadly reported, so coverage should not deteriorate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedCashYieldResilience",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Both legs of the winning signal are measured from a single fiscal year and therefore contain transitory noise; three-year averages should represent the firm's sustainable cash-generating power and its persistent resilience state, improving the precision of the alpha.",
+      "expected_sign": "positive",
+      "reasoning": "Smoothing is the standard remedy when a characteristic's extreme deciles are populated by one-off events (asset sales, temporary inventory swings), and it lowers portfolio turnover, which should raise the t-statistic even if the mean alpha is similar. Because the change-based quality legs all failed, the evidence points to slow-moving states being the informative object, which smoothing reinforces. This isolates the timing/measurement-window choice while holding the economics fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkQualityValue",
+      "expression": "MIN(RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lct), lt)))",
+      "hypothesis": "Trap separation is a conjunctive condition rather than a trade-off: a firm qualifies as quality value only if it is simultaneously cheap and resilient, so the score should be the weaker of the two ranks and no amount of cheapness should compensate for fragility.",
+      "expected_sign": "positive",
+      "reasoning": "Product and sum both allow one extreme leg to dominate, which is why they performed almost identically; MIN enforces a strict conjunction so the long decile contains only firms strong on both dimensions and the short decile contains firms failing at least one. This is the one structural variant that could actually change portfolio composition materially, making it a genuine test of the conditional story rather than an algebraic restatement.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedCashYieldNetNetBacking",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(RATIO(SUB(act, lt), MUL(prcc_f, csho))))",
+      "hypothesis": "Quality value has two independent supports \u2014 sustainable cash earnings power and liquid asset backing net of every liability \u2014 and a firm that is cheap on both is mispriced, whereas a firm cheap on earnings alone may be a levered trap.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the archive's two strongest but structurally different sources of abnormal return: the smoothed cash earnings yield (best FMB slope) and net-current-asset backing per dollar of price (best FF5 alpha). Both legs are rank-transformed, which fixes the skewness that destroyed the raw net-net ratio's cross-sectional slope while preserving its portfolio-sorting power. The multiplicative form enforces the conjunction that defines quality value rather than letting extreme cheapness on one dimension carry a fragile firm into the long leg.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedNetNetBackingWinsor",
+      "expression": "WINSOR(RATIO(MA(SUB(act, lt), 3), MUL(prcc_f, csho)), 1)",
+      "hypothesis": "Liquid-asset backing relative to price is genuinely priced, but its predictive slope is masked by extreme tails and one-off balance-sheet years; a three-year average with tails trimmed should deliver both a coherent cross-sectional slope and a large alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This directly repairs the FMB/alpha disagreement of the gen-3 net-net ratio by attacking its two statistical pathologies \u2014 skewness (winsorizing) and single-year measurement noise (three-year averaging) \u2014 without changing the economics. If the FMB t-statistic rises while the alpha stays near 5%, we learn the channel is real and should anchor the final signal; if the slope stays flat, the alpha is a tail-driven portfolio effect and should be used only in rank-combined form as in signal 1. Either result is decision-relevant for the remaining generations.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleSupportQualityValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(act, lt), MUL(prcc_f, csho)), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Cheapness screened by two complementary resilience measures \u2014 asset backing relative to price and working-capital coverage of liabilities \u2014 separates quality value from traps more reliably than either screen alone, because the first is a market-price-relative cushion and the second a purely accounting-relative one.",
+      "expected_sign": "positive",
+      "reasoning": "All three channels have already shown positive alpha individually, and rank-averaging them should reduce the idiosyncratic noise that limits each one's t-statistic while stabilizing decile membership. Unlike the gen-2 dual gate, which diluted the FMB slope by adding a failed accrual channel, every component here has independent supporting evidence. This is the natural consolidation test for whether breadth of quality evidence beats depth.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearStateCashYieldResilience",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 5)))",
+      "hypothesis": "If the mechanism is a persistent firm state rather than a recent realization, extending the averaging window from three to five years should further improve precision by removing more transitory variation from both the earnings and the resilience leg.",
+      "expected_sign": "positive",
+      "reasoning": "Three-year smoothing improved every statistic versus the one-year winner, so the window length is a live design parameter worth pinning down before consolidating. A five-year window also lowers turnover further, which should raise the alpha t-statistic if the effect is slow-moving, but will cost some coverage \u2014 making the coverage/precision trade-off explicit. This isolates the measurement window while holding the economic channels fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "GrahamSafetyMarginYield",
+      "expression": "RATIO(ADD(SUB(act, lt), MA(ADD(ib, dp), 3)), MUL(prcc_f, csho))",
+      "hypothesis": "Total downside support per dollar of price is the sum of liquid assets net of all obligations plus normalized annual cash earnings; firms with a large combined margin of safety are mispriced, while cheap firms with negative net liquid assets and weak cash flow are correctly discounted.",
+      "expected_sign": "positive",
+      "reasoning": "This fuses the stock and flow supports inside a single economically interpretable ratio instead of combining ranks, so the two components trade off in dollar terms \u2014 a firm with a liability-heavy balance sheet must generate substantial cash earnings to qualify, which is exactly the trap-versus-quality distinction. It provides a genuinely different functional form from the rank products that dominate the archive and can be compared directly with signal 1 to see whether dollar-weighted or rank-weighted fusion is better. Inputs are all high-coverage annual items.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SolvencyThresholdGatedCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), INDICATOR(SUB(act, lt), 0))",
+      "hypothesis": "The liquid-asset-backing effect may operate through a threshold rather than a magnitude: only firms whose current assets exceed total liabilities are structurally safe, and cheapness should be harvested exclusively within that group.",
+      "expected_sign": "positive",
+      "reasoning": "Comparing this discrete solvency gate with the continuous version in signal 1 tells us whether the net-net channel is a nonlinear safety condition or a smoothly priced cushion, which determines how the final signal should encode it. The gate also concentrates the long leg in an economically homogeneous group, potentially raising alpha reliability, at the cost of a coarser short leg. It repairs the gen-0 indicator-screen idea, which failed only because it depended on the low-coverage cash-flow statement and on retained earnings rather than on liquid solvency.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedWeakestLinkQualityValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Quality value is a conjunctive state: a firm must be both persistently cheap on normalized cash earnings and persistently resilient, and its score should be set by whichever condition it satisfies least.",
+      "expected_sign": "positive",
+      "reasoning": "The two independently confirmed design improvements in the archive are three-year smoothing (raised every statistic) and the weakest-link conjunction (\u03b1 4.2%, t 2.99 in unsmoothed form); this combines them for the first time. MIN changes decile membership more than product or sum, concentrating the long leg on firms that clear both hurdles and the short leg on firms failing at least one, which is the sharpest portfolio expression of trap exclusion.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AssetScaledResilienceCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lct), at), 3)))",
+      "hypothesis": "The resilience leg may work because of its liquid-asset numerator rather than its liability denominator; scaling net working capital by total assets removes the embedded leverage information and isolates pure liquidity intensity.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-3 showed that leverage alone paired with cash yield gave only \u03b1 1.9% (t 1.55) while working-capital-over-liabilities gave 4.0\u20135.0%, but those tests could not tell whether the liability denominator or the working-capital numerator carried the information. This decomposition holds the valuation leg and smoothing fixed and changes only the scaling, so a drop in alpha attributes the effect to the liability-relative framing and a hold attributes it to liquidity intensity. That answer determines the denominator used in the final consolidated signal.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AveragedYieldTimingResilience",
+      "expression": "MUL(RANK(MA(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), 3)), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Averaging the yield itself, rather than the numerator only, embeds the firm's historical price alongside its historical earnings, so the signal partly measures how cheap the stock has been over several years rather than how cheap it is now.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a pure timing/measurement question against the current champion: normalized earnings over current price versus the average of past yields. If the current-price version dominates, the effect is about today's mispricing of a stable earnings stream; if the averaged-yield version wins, part of the payoff is slow price reversal, which would justify a different refinement path in the last generations.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashCushionCoverCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3)))",
+      "hypothesis": "Not all working capital is equal quality: receivables and inventory can be stale or unsellable, whereas cash unambiguously covers obligations, so cash relative to current liabilities should be the sharper trap screen for cheap firms.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the broad working-capital buffer with its highest-quality component while keeping the winning valuation leg and smoothing, testing whether the resilience effect is driven by genuine liquidity or partly by inventory build-ups that are themselves a symptom of distress. It also connects to the failed accrual signals: if inventory/receivable-heavy buffers are low quality, the cash-only version should improve both the FMB slope and the alpha. All inputs are broadly reported so coverage should be stable near 0.12.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutVerifiedSupportComposite",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(SUB(act, lct), lt), 3), RATIO(MA(dvc, 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Sustained cash dividends are a hard, non-manipulable verification that reported earnings are real, so cheap and resilient firms that also distribute cash are the least likely to be value traps.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a genuinely new quality-verification channel \u2014 realized cash distributions over three years \u2014 which no prior proposal has tested, and adds it to two channels with established positive alpha. Unlike accrual or margin-volatility screens, which failed, payout is an observed cash outflow that cannot be produced by accounting choices, and the three-year average distinguishes committed payers from one-off special dividends. Non-payers rank at the bottom of that channel, which is the economically intended treatment rather than a coverage patch.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ViableNetNetBacking",
+      "expression": "MUL(WINSOR(RATIO(SUB(act, lt), MUL(prcc_f, csho)), 1), INDICATOR(MA(ADD(ib, dp), 3), 0))",
+      "hypothesis": "Deep liquid-asset backing per dollar of price is genuinely mispriced only for firms that are not burning cash; the classic net-net trap is an asset-rich shell whose normalized cash earnings are negative and whose asset base is being consumed.",
+      "expected_sign": "positive",
+      "reasoning": "The net-net channel's alpha lives in the raw magnitude tail \u2014 ranking it removed the edge and winsorizing did not restore the FMB slope \u2014 so the correct repair is to preserve the level scale and delete the tail's economically bad members with a viability screen rather than to transform the variable. Requiring three-year average cash earnings above zero is exactly the earnings-quality condition the theme calls for, and it should raise the FMB slope by removing the negative-backing, negative-earnings observations that flatten it. If this lifts the FMB t-statistic while keeping alpha near 5%, it becomes the strongest dual-evidence candidate in the archive.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkCashCushionValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3)))",
+      "hypothesis": "A firm is quality value only if it is simultaneously cheap on normalized cash earnings and holds cash sufficient to meet obligations coming due; its score should be governed by the weaker of the two conditions rather than by their average.",
+      "expected_sign": "positive",
+      "reasoning": "This combines the two independently verified improvements of the last generation \u2014 the cash-cushion quality channel (best alpha and t-stat) and the MIN conjunction (best alpha precision at equal magnitude) \u2014 which have not yet been tested together. Because MIN concentrates the long decile on firms clearing both hurdles and the short decile on firms failing at least one, it should raise ls_talpha above 4.25 if trap exclusion is genuinely conjunctive. Coverage is unchanged from the gen-5 champion.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashToTotalObligationsValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "If the cash cushion works because cash pre-funds the entire liability stack rather than just the current portion, scaling cash by total liabilities should be at least as informative as scaling by current liabilities.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates a single denominator choice against the gen-5 champion, distinguishing a near-term liquidity-timing story (current liabilities) from a whole-balance-sheet solvency story (total liabilities). The answer matters for the final signal because total liabilities also embed leverage, which on its own was weak (\u03b1 1.9%), so a drop here would confirm that the mechanism is specifically about imminent obligations. Both variants use identical high-coverage inputs.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "DualLiquidityGateCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), SUMRANK(MA(RATIO(che, lct), 3), MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Cash coverage of imminent obligations and working-capital coverage of all liabilities are complementary resilience measures \u2014 one captures immediate settlement capacity, the other structural buffer \u2014 so averaging them before conditioning on cheapness should give a more reliable trap screen than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "Both quality channels have delivered positive FF5 alpha with strong FMB slopes (5.6% and 5.0%), and they are economically distinct enough that rank-averaging should cancel idiosyncratic measurement noise while stabilizing decile membership. Unlike the gen-2 dual gate, which diluted the slope by including a failed accrual channel, every ingredient here is evidence-backed. This tests whether breadth within the liquidity dimension improves precision over the single best channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "RolloverRiskScreenedCashYield",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(NEG(MA(RATIO(dlc, lt), 3))))",
+      "hypothesis": "The value trap is often a funding-structure problem: cheap firms that finance themselves with debt maturing inside a year must refinance at the worst possible moment, so reliance on short-term debt marks the cheapness as distress compensation rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a distinct distress mechanism \u2014 debt maturity structure \u2014 that the archive has never tested, and it is conceptually separate from both liquidity stocks and leverage levels, which is why it could add information rather than duplicate the cash cushion. If it works, it also explains why cash-to-current-liabilities beat broader buffers: what matters is the mismatch between imminent claims and liquid resources. Persistent reliance is captured with a three-year average, consistent with the archive's finding that states, not changes, are informative.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "BoundedNetNetBackingValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "The economics behind the net-net result \u2014 liquid assets exceeding all liabilities \u2014 is real, but it should be measured against the firm's own asset base so that the variable is bounded and comparable across firms rather than exploding for microcaps whose price is a fraction of their working capital.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the archive's persistent FMB failure in the net-net strand (t\u22480.5\u20130.9 despite \u03b1 up to 6.1%) by replacing the price denominator, which creates the extreme right tail, with total assets, while keeping the solvency-adjusted liquid-asset numerator and pairing it with the valuation leg that reliably produces slopes. If both the FMB slope and a large alpha appear, we will have finally reconciled the archive's two disagreeing sources of evidence in a single specification. It is also a clean scaling contrast to signal 3's liability-scaled buffers.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleConjunctionQualityValue",
+      "expression": "MIN(MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lct), 3))), RANK(MA(RATIO(SUB(act, lct), lt), 3)))",
+      "hypothesis": "Trap exclusion requires clearing every hurdle: persistent cheapness, cash on hand against imminent claims, and a structural working-capital buffer; the firm's score should equal its weakest dimension across all three.",
+      "expected_sign": "positive",
+      "reasoning": "The evidence says conjunction improves precision (MIN raised t-alpha) and that the two liquidity channels are separately informative, so a triple weakest-link is the natural consolidation of everything learned. The risk is that MIN over three ranks compresses the cross-section and thins the extreme deciles, which is exactly why it should be tested against the two-way versions in signals 1 and 3 before the final generations commit. If it dominates, the last rounds can refine window length and scaling within this specification.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveCashSolvencyValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "Persistent cash earnings cheapness and persistent cash coverage of total obligations are the two supports of quality value, and giving them equal, non-multiplicative weight should maximize breadth of the spread while keeping the trap group in the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "The champion multiplies these two ranked channels; the additive form was previously competitive for the working-capital version (\u03b1 3.6% vs 4.0%) and typically yields more evenly populated deciles and higher Sharpe. This isolates aggregation form for the best channel pair, which is the one remaining structural choice not yet tested on this specific pair. It also avoids the scale problem that destroyed the gen-6 dual gate, since SUMRANK is used here at the top level rather than inside a product.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "WeakestLinkCashSolvencyValue",
+      "expression": "MIN(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "If quality value is conjunctive, the firm's score should equal its weaker of persistent cheapness and persistent cash solvency, which concentrates the long leg on firms that clear both hurdles.",
+      "expected_sign": "positive",
+      "reasoning": "MIN raised alpha precision for both earlier channel pairs (t 3.12\u21923.49 for working capital, 4.25\u21923.69 for cash-to-current-liabilities with alpha intact), so applying it to the strongest channel pair tests whether the precision gain survives with the higher-coverage denominator. Comparing signals 1 and 2 directly measures the precision-versus-breadth trade-off on the best economics available. Coverage should match the champion at roughly 0.14.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearCashSolvencyValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho))), RANK(MA(RATIO(che, lt), 5)))",
+      "hypothesis": "Because both legs represent slow-moving firm states, extending the averaging window to five years should remove more transitory variation in earnings and cash holdings and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Five-year smoothing preserved essentially all of the alpha and FMB slope for the working-capital pair (\u03b1 4.5%, FMB 5.22), indicating the state interpretation holds at longer windows without a coverage penalty. Cash balances are more volatile year to year than working capital, so this is the channel where longer averaging has the most to gain in separating structural cash-richness from a single good year. This pins down the window parameter before final consolidation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "NetCashPositionValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(SUB(che, lt), at), 3)))",
+      "hypothesis": "What separates quality value from traps is the firm's net financial position \u2014 cash minus every liability, scaled by the asset base \u2014 so that a cheap firm with net cash is mispriced while a cheap firm with net obligations is discounted for solvency risk.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded, asset-scaled version of the net-liquid-asset idea already delivered both a strong slope and a solid alpha (FMB 5.10, \u03b1 5.2%), and replacing total current assets with cash alone applies the gen-5/gen-6 lesson that cash is the higher-quality component of the buffer. This tests whether netting liabilities inside the numerator dominates the ratio form used by the champion, which is an economically different statement about how the market prices leverage against liquidity. Inputs are high coverage, so no sparsity risk.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlowObligationCoverageValue",
+      "expression": "MUL(RANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))), RANK(MA(RATIO(ADD(ib, dp), lt), 3)))",
+      "hypothesis": "Solvency quality may be better measured by the flow that services obligations than by the stock of cash held against them: a cheap firm whose annual cash earnings are large relative to total liabilities can grow out of its debt, whereas one with thin coverage is a trap.",
+      "expected_sign": "positive",
+      "reasoning": "The archive's very first promising signal used operating cash flow over total liabilities but was crippled by 0.09 coverage; rebuilding that flow-coverage channel from `ib+dp` restores coverage to about 0.14 and lets us test flow versus stock coverage head-to-head against the champion. If flow coverage matches or beats the cash stock, the mechanism is debt-servicing capacity rather than liquid reserves, which is a materially different economic conclusion. This is the deliberate repair of the gen-0 failure mode.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "OwnHistoryCheapnessCashSolvency",
+      "expression": "MUL(TS_RANK(RATIO(ADD(ib, dp), MUL(prcc_f, csho)), 5), RANK(MA(RATIO(che, lt), 3)))",
+      "hypothesis": "A firm is mispriced when it is cheap relative to its own five-year valuation history and simultaneously cash-solvent; cross-sectional cheapness confounds permanent business-model differences, whereas own-history cheapness isolates a genuine repricing of an unchanged, financially sound firm.",
+      "expected_sign": "positive",
+      "reasoning": "Every valuation leg tested so far has been cross-sectional, so this introduces a new mechanism \u2014 time-series cheapness within the firm \u2014 that is naturally orthogonal to HML and to size, and pairs it with the best-performing quality channel. Conditioning on cash solvency is essential because a stock cheap versus its own history is otherwise the classic deteriorating-fundamentals trap. If this works, it opens a distinct refinement path for the final two generations; if it fails, it confirms that the effect requires cross-sectional cheapness.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearAdditiveCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 5), MUL(prcc_f, csho)), MA(RATIO(che, lt), 5))",
+      "hypothesis": "Both legs describe persistent firm states, so lengthening the averaging window to five years within the winning additive structure should further purge transitory earnings and cash swings and raise the reliability of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Five-year windows preserved or improved the FMB slope in every earlier comparison (5.74 versus 5.75 in multiplicative form) without any coverage loss, and the additive aggregation is now known to deliver the larger alpha. This combines the two separately verified design choices \u2014 additive rank-averaging and long-window state measurement \u2014 which have not yet been tested together on the best channel pair.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveCashAndAssetSupportValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "Cheapness screened by two complementary, bounded solvency measures \u2014 cash against all obligations and liquid assets net of all obligations relative to the asset base \u2014 should separate quality value from traps more reliably than a single solvency measure while keeping the cheapness leg at half weight.",
+      "expected_sign": "positive",
+      "reasoning": "Both quality channels independently produced strong slopes and mid-5% alphas (FMB 5.75 and 5.10), and adding breadth in additive form avoids the scale mismatch that destroyed the gen-6 gate where a composite sat inside a product. The nested SUMRANK also implicitly weights cheapness 50% and each solvency measure 25%, which is a mild tilt toward the valuation leg that the evidence supports. Coverage stays around 0.12\u20130.14.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveNetCashPositionValue",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), MA(RATIO(SUB(che, lt), at), 3))",
+      "hypothesis": "The solvency leg may be better expressed as a net position \u2014 cash minus total liabilities per unit of assets \u2014 because it treats a firm with liabilities exceeding cash as unambiguously exposed rather than merely low-ranked on a ratio.",
+      "expected_sign": "positive",
+      "reasoning": "The multiplicative version of this net framing produced \u03b1=5.6% with FMB 3.89, weaker on the slope than the ratio framing, so testing it in the additive structure that lifted alpha to 6.8% isolates whether the net formulation is genuinely inferior or was handicapped by the aggregation form. This is a clean framing contrast against signal 1 with identical inputs and coverage.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PureEarningsYieldCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "If the valuation leg's power comes from normalized profitability rather than from adding back depreciation, then a plain smoothed earnings yield paired with cash solvency should perform as well, and the depreciation add-back is unnecessary.",
+      "expected_sign": "positive",
+      "reasoning": "Every valuation leg in the archive has bundled `ib+dp`, so the contribution of the depreciation add-back has never been isolated; it matters for interpretation because the add-back tilts toward capital-intensive firms whose earnings understate cash generation. If alpha falls materially, the cash-flow interpretation of the valuation leg is confirmed and the final signal should retain `dp`; if not, the simpler and more transparent specification wins.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitYieldCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(SUB(revt, cogs), 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3))",
+      "hypothesis": "Gross profit is the most persistent and least manipulable profit line, so gross-profit-to-price should be a cleaner cheapness measure than bottom-line cash earnings once solvency is controlled for.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profit scaled by enterprise value produced the archive's strongest early slope (FMB 4.47) but zero FF5 alpha alone, because profitability level is spanned by RMW; pairing it additively with cash solvency \u2014 which is demonstrably not spanned \u2014 tests whether the combination recovers alpha with an even stronger slope. This changes the valuation numerator rather than restating the champion, and it uses the theme's quality-exclusive `cogs` in a way no surviving signal does.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "MarketLeverageScreenedCashYield",
+      "expression": "SUMRANK(RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho)), NEG(RATIO(lt, MUL(prcc_f, csho))))",
+      "hypothesis": "The trap dimension is best measured by liabilities relative to market value rather than to book assets, because the market's own valuation of equity reveals how close the firm is to insolvency; cheap firms whose obligations dwarf their market capitalization are distressed, not mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "Book leverage (`lt/at`) failed as a screen (\u03b1 1.9%, t 1.55), but market leverage is a forward-looking distance-to-default proxy that responds to price declines, which is exactly the state in which a cheap stock becomes a trap \u2014 this mechanism has never been tested in the archive. Because both legs share the market-value denominator, the signal is effectively cheapness of earnings net of the market-implied obligation burden, a tighter economic statement than an accounting screen. All inputs are high coverage, so the comparison against signal 1 will be clean.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "FiveYearPureEarningsCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 5), MUL(prcc_f, csho)), MA(RATIO(che, lt), 5))",
+      "hypothesis": "Normalized bottom-line earnings capitalized against price, combined with a long-run cash cushion against total obligations, is the cleanest statement of quality value: sustainable profit power at a low price with the balance sheet pre-funded.",
+      "expected_sign": "positive",
+      "reasoning": "The two best-performing design choices of the last two generations \u2014 dropping the depreciation add-back (\u03b1 8.3%, t 5.47) and five-year state measurement (\u03b1 7.1%, t 4.92) \u2014 have not been combined, and both act on the same economics of measuring a persistent state. Longer averaging of `ib` should also mitigate the slope weakness of the earnings-only leg, because single-year losses are the main source of skew in that channel. Coverage should remain at the family's best level near 0.14.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsYieldDualSolvencySupport",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(SUB(act, lt), at), 3)))",
+      "hypothesis": "Trap exclusion is most reliable when cheapness is screened by both the cash held against obligations and the liquid assets remaining after all obligations, since the first measures settlement capacity and the second the residual asset cushion.",
+      "expected_sign": "positive",
+      "reasoning": "The dual-solvency composite with the `ib+dp` yield produced \u03b1=7.1% with t=4.77 and the earnings-only yield produced the archive's largest alpha, so combining them is the natural consolidation of the two independent improvements. Both solvency channels are bounded, avoiding the tail pathology that flattened the FMB slope of price-scaled net-net measures. Half weight on cheapness keeps the valuation theme economically binding rather than letting two quality channels dominate.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "BalancedYieldPairCashSolvency",
+      "expression": "SUMRANK(MA(RATIO(che, lt), 3), SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), RATIO(MA(ADD(ib, dp), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "The earnings-only and depreciation-added yields capture different parts of the same cheapness concept \u2014 accounting profitability and cash generation net of capital consumption \u2014 so averaging them should retain the large alpha of the former and the strong cross-sectional slope of the latter.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a clear trade-off between these two numerators (\u03b1 8.3% with FMB 2.74 versus \u03b1 6.8% with FMB 4.81), and the objective explicitly requires strength on both forms of evidence rather than one. Blending the two valuation channels while holding cash solvency at half weight is the most direct way to test whether the trade-off is resolvable rather than fundamental. It also diversifies measurement error in the earnings numerator, which should stabilize decile composition.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "ProfitAndEarningsCheapnessCashSolvency",
+      "expression": "SUMRANK(MA(RATIO(che, lt), 3), SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), RATIO(MA(SUB(revt, cogs), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Gross profit and net income priced against market value are complementary cheapness measures \u2014 the former persistent and unaffected by capital structure or accruals, the latter capturing the profit actually available to shareholders \u2014 and combining them with cash solvency should raise risk-adjusted return without sacrificing alpha.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profit version delivered the archive's best Sharpe (0.55) with FMB 4.49 but a smaller alpha (5.5%), while the earnings-only version maximized alpha; blending them targets the multi-metric objective directly. Using `cogs` in the valuation numerator also makes the interaction with the cash-solvency screen economically broader, spanning operating quality and financial quality. Coverage should stay near 0.14 since all inputs are widely reported.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "MaturityBackedEarningsCashSolvency",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(MA(RATIO(che, lt), 3), MA(RATIO(re, at), 3)))",
+      "hypothesis": "Cumulative retained earnings relative to assets marks a firm that has financed itself from a history of profits rather than from external claims, which is a stock-of-quality dimension distinct from current liquidity and should further separate mispriced value from accumulated-deficit traps.",
+      "expected_sign": "positive",
+      "reasoning": "Retained earnings were tested only against book-to-market cheapness, where the valuation leg itself was the problem (\u03b1 \u22122.0%), so the channel has never been evaluated inside the additive cash-yield frame that works; this is a targeted repair of that early failure. Because it measures cumulative profitability rather than contemporaneous liquidity, it should be only weakly correlated with cash-to-liabilities and can add independent trap-screening information. If it improves on signal 2's dual-solvency composite, the maturity dimension matters beyond liquid resources.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentProfitGatedQualityValue",
+      "expression": "MUL(SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), MA(RATIO(che, lt), 3)), INDICATOR(TS_MIN(ib, 3), 0))",
+      "hypothesis": "The defining feature of a value trap is a firm that has not been profitable in every recent year; requiring three consecutive years of positive earnings before crediting any cheapness should concentrate the long leg in genuinely mispriced firms and push chronic loss-makers into the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier indicator gates failed when applied to balance-sheet thresholds (net current assets, \u03b1 0.9%) or to low-coverage cash-flow items, but persistence of positive earnings is the theme's core earnings-quality condition and has never been tested; `TS_MIN(ib, 3) > 0` encodes it exactly. Because the composite it multiplies is a bounded average of ranks, non-qualifying firms fall to the bottom of the score, giving an economically coherent short leg of persistent loss-makers rather than an arbitrary group. This is the sharpest available test of whether the archive's alpha comes from avoiding chronically unprofitable cheap firms or from continuous liquidity ranking.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "quality",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_quality"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "CashBackedValueGate",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),rank(ma(ratio(sub(oancf,ib),at),3)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "StableEarningsYieldInteraction",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),rank(neg(vol(ratio(ib,at),5))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ScreenedEarningsYield",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(ib,mul(prcc_f,csho)),1),mul(indicator(sub(oancf,ib),0),indicator(re,0)))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SolvencyCoveredBookToMarket",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(ceq,mul(prcc_f,csho))),rank(ratio(oancf,lt)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lt",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "ImprovingQualityCheapEbitda",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,mul(prcc_f,csho))),rank(trend(ratio(ib,at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "ebitda",
+          "ib",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: quality (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "ValueTimesQualityMinusLeverageSpread",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),sub(rank(ratio(oancf,at)),rank(ratio(add(dltt,dlc),at))))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf",
+          "prcc_f"
+        ],
+        "missing_theme": "quality"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitToEnterpriseValue",
+      "metadata": {
+        "normalized_expression": "ratio(sub(revt,cogs),sub(add(mul(prcc_f,csho),add(dltt,dlc)),che))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldImprovingMargin",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(trend(ratio(sub(revt,cogs),at),5)))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "dp",
+          "ib",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RetainedEarningsBackedValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),rank(ratio(re,lt)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lt",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CenteredValueSafetyInteraction",
+      "metadata": {
+        "normalized_expression": "mul(zscore(winsor(ratio(ceq,mul(prcc_f,csho)),1)),zscore(winsor(neg(ratio(lt,at)),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapDeficitTrapFlag",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ceq,mul(prcc_f,csho))),indicator(neg(re),0))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidityCoveredCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldEVLiquidityCover",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),sub(add(mul(prcc_f,csho),add(dltt,dlc)),che))),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveCashYieldResilience",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,dp),mul(prcc_f,csho)),ratio(sub(act,lct),lt))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalanceSheetAccrualQualityValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(neg(ratio(sub(delta(sub(act,lct),1),dp),at))))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ImprovingResilienceValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(delta(ratio(sub(act,lct),lt),1)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableMarginCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(neg(vol(ratio(sub(revt,cogs),at),5))))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "dp",
+          "ib",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldDualQualityGate",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),sumrank(ratio(sub(act,lct),lt),neg(ratio(sub(delta(sub(act,lct),1),dp),at))))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCurrentAssetBackingYield",
+      "metadata": {
+        "normalized_expression": "ratio(sub(act,lt),mul(prcc_f,csho))",
+        "variables": [
+          "act",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralResilienceCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),ind_rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldLowLeverageDecomposition",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(neg(ratio(lt,at))))",
+        "variables": [
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SalesMultipleCashObligationCover",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(sale,mul(prcc_f,csho))),rank(ratio(add(ib,dp),lct)))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedCashYieldResilience",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkQualityValue",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(add(ib,dp),mul(prcc_f,csho))),rank(ratio(sub(act,lct),lt)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedCashYieldNetNetBacking",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ratio(sub(act,lt),mul(prcc_f,csho))))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedNetNetBackingWinsor",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ma(sub(act,lt),3),mul(prcc_f,csho)),1)",
+        "variables": [
+          "act",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleSupportQualityValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),sumrank(ratio(sub(act,lt),mul(prcc_f,csho)),ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearStateCashYieldResilience",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),5),mul(prcc_f,csho))),rank(ma(ratio(sub(act,lct),lt),5)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrahamSafetyMarginYield",
+      "metadata": {
+        "normalized_expression": "ratio(add(sub(act,lt),ma(add(ib,dp),3)),mul(prcc_f,csho))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SolvencyThresholdGatedCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),indicator(sub(act,lt),0))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedWeakestLinkQualityValue",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AssetScaledResilienceCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(sub(act,lct),at),3)))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AveragedYieldTimingResilience",
+      "metadata": {
+        "normalized_expression": "mul(rank(ma(ratio(add(ib,dp),mul(prcc_f,csho)),3)),rank(ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashCushionCoverCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(che,lct),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutVerifiedSupportComposite",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),sumrank(ma(ratio(sub(act,lct),lt),3),ratio(ma(dvc,3),mul(prcc_f,csho))))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "dvc",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ViableNetNetBacking",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(act,lt),mul(prcc_f,csho)),1),indicator(ma(add(ib,dp),3),0))",
+        "variables": [
+          "act",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkCashCushionValue",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(che,lct),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashToTotalObligationsValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(che,lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualLiquidityGateCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),sumrank(ma(ratio(che,lct),3),ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RolloverRiskScreenedCashYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(neg(ma(ratio(dlc,lt),3))))",
+        "variables": [
+          "csho",
+          "dlc",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BoundedNetNetBackingValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(sub(act,lt),at),3)))",
+        "variables": [
+          "act",
+          "at",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleConjunctionQualityValue",
+      "metadata": {
+        "normalized_expression": "min(min(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(che,lct),3))),rank(ma(ratio(sub(act,lct),lt),3)))",
+        "variables": [
+          "act",
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lct",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveCashSolvencyValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),ma(ratio(che,lt),3))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WeakestLinkCashSolvencyValue",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(che,lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearCashSolvencyValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),5),mul(prcc_f,csho))),rank(ma(ratio(che,lt),5)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetCashPositionValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(sub(che,lt),at),3)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlowObligationCoverageValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho))),rank(ma(ratio(add(ib,dp),lt),3)))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OwnHistoryCheapnessCashSolvency",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(add(ib,dp),mul(prcc_f,csho)),5),rank(ma(ratio(che,lt),3)))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearAdditiveCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),5),mul(prcc_f,csho)),ma(ratio(che,lt),5))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveCashAndAssetSupportValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),sumrank(ma(ratio(che,lt),3),ma(ratio(sub(act,lt),at),3)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveNetCashPositionValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),ma(ratio(sub(che,lt),at),3))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PureEarningsYieldCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),ma(ratio(che,lt),3))",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitYieldCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(sub(revt,cogs),3),mul(prcc_f,csho)),ma(ratio(che,lt),3))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "lt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarketLeverageScreenedCashYield",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(add(ib,dp),3),mul(prcc_f,csho)),neg(ratio(lt,mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FiveYearPureEarningsCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,5),mul(prcc_f,csho)),ma(ratio(che,lt),5))",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsYieldDualSolvencySupport",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sumrank(ma(ratio(che,lt),3),ma(ratio(sub(act,lt),at),3)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalancedYieldPairCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(che,lt),3),sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),ratio(ma(add(ib,dp),3),mul(prcc_f,csho))))",
+        "variables": [
+          "che",
+          "csho",
+          "dp",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProfitAndEarningsCheapnessCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(che,lt),3),sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),ratio(ma(sub(revt,cogs),3),mul(prcc_f,csho))))",
+        "variables": [
+          "che",
+          "cogs",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MaturityBackedEarningsCashSolvency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sumrank(ma(ratio(che,lt),3),ma(ratio(re,at),3)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f",
+          "re"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentProfitGatedQualityValue",
+      "metadata": {
+        "normalized_expression": "mul(sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),ma(ratio(che,lt),3)),indicator(ts_min(ib,3),0))",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,3343 @@
+{
+  "pair": "value_intangible",
+  "evaluated": [
+    {
+      "name": "ProductiveRDCapitalValue",
+      "expression": "MUL(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Firms that look cheap after capitalizing accumulated R&D and also generate strong sales from their expanded economic asset base are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Standard book-to-market can understate value when internally generated R&D capital is omitted from book equity. The interaction favors firms where the R&D adjustment is not merely large, but is accompanied by productive sales generation, reducing the risk of buying unproductive \u201cintangible value.\u201d",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.259208838468584,
+      "ls_alpha": -0.013737727835388973,
+      "ls_talpha": -1.285742960774767,
+      "ls_sharpe": 0.3395512399894107,
+      "coverage": 0.14133610609636404,
+      "error": null
+    },
+    {
+      "name": "CashYieldRDResponse",
+      "expression": "MUL(RATIO(oancf, MUL(prcc_f, csho)), RATIO(MA(DELTA(sale, 1), 3), MA(xrd, 3)))",
+      "hypothesis": "Firms with high operating cash-flow yield and strong recent sales response per dollar of R&D should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow yield captures traditional value, but it can miss whether intangible investment is economically productive. The incremental sales-to-R&D component favors cheap firms whose R&D spending is already translating into revenue growth rather than distant or speculative optionality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.0075456763811308,
+      "ls_alpha": 0.0002185821987257695,
+      "ls_talpha": 0.013446833857828865,
+      "ls_sharpe": 0.17719948684197465,
+      "coverage": 0.03784792645367818,
+      "error": null
+    },
+    {
+      "name": "AdCapitalSalesYield",
+      "expression": "WINSOR(RATIO(sale, ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xad, 0), 3))), 1)",
+      "hypothesis": "Firms with high sales relative to the sum of market equity value and accumulated observable advertising investment should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids simply multiplying advertising-capitalized book-to-market by gross profitability; it forms a single valuation ratio that asks whether brand spending has translated into revenue scale at a cheap price. COALESCE is applied only to xad, treating non-disclosure as no separately observable advertising capital rather than dropping firms into a sparse consumer-only subsample.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.122870709173516,
+      "ls_alpha": -0.02325362185801192,
+      "ls_talpha": -2.0355072637246683,
+      "ls_sharpe": 0.3100842805608431,
+      "coverage": 0.1425271085257304,
+      "error": null
+    },
+    {
+      "name": "IntangibleBurdenEVYield",
+      "expression": "WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), COALESCE(intan, COALESCE(gdwl, 0)))), 1)",
+      "hypothesis": "Firms with high EBITDA relative to enterprise value plus separately reported intangible capital should outperform, because their operating earnings adequately support both market valuation and acquired intangible burden.",
+      "expected_sign": "positive",
+      "reasoning": "The expression does not add intangibles to total assets, so it avoids the accounting double-counting problem. Goodwill is used only as a fallback when total reported intangibles are unavailable, and the signal differs from plain EBITDA/EV by penalizing firms whose cheapness is accompanied by large recognized intangible capital that earnings do not justify.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.073580031092086,
+      "ls_alpha": -0.014522459046537792,
+      "ls_talpha": -1.2434983679206169,
+      "ls_sharpe": 0.2476834426949469,
+      "coverage": 0.13997067095252128,
+      "error": null
+    },
+    {
+      "name": "RankedRDExpectationPremium",
+      "expression": "MUL(RANK(RATIO(MUL(prcc_f, csho), sale)), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), sale)))",
+      "hypothesis": "Firms that are both expensive on price-to-sales and carry large accumulated R&D relative to current sales should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Ranking the two legs separately prevents the expression from collapsing into market-cap times R&D stock divided by sales squared, reducing scale contamination and right-tail skew. The high signal identifies cases where the market pays a rich revenue multiple for R&D investment that has not yet produced proportional sales scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -1.6350722488675846,
+      "ls_alpha": 0.033501411015753976,
+      "ls_talpha": 2.8292051313054896,
+      "ls_sharpe": -0.21739141411177518,
+      "coverage": 0.1402394655228916,
+      "error": null
+    },
+    {
+      "name": "RDAmplifiedBookValue",
+      "expression": "ADD(RANK(RATIO(ceq, MUL(prcc_f, csho))), MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), sale))))",
+      "hypothesis": "Book-to-market should be especially informative when a firm has persistent R&D intensity, but traditional high book-to-market firms without R&D should not be mechanically assigned to the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "The signal keeps the baseline book-to-market ranking and adds a continuous R&D-intensity amplifier, rather than using a hard indicator that forces all low-R&D firms to zero. High scores require conventional cheapness, with extra weight when accounting is more likely to understate book value because accumulated R&D has been expensed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.832069149175719,
+      "ls_alpha": -0.011408359693093085,
+      "ls_talpha": -1.322629273991942,
+      "ls_sharpe": 0.20082293721476693,
+      "coverage": 0.13904970130267857,
+      "error": null
+    },
+    {
+      "name": "PreRDCashKnowledgeYield",
+      "expression": "WINSOR(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xrd, 0), 5))), 1)",
+      "hypothesis": "Firms with high operating cash generation before expensed R&D relative to market value plus accumulated R&D capital should earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "If R&D is an investment rather than a period expense, reported operating cash flow understates the cash-generating capacity of intangible-investing firms. This ratio asks whether the market price plus hidden knowledge capital is low relative to cash flow before current knowledge reinvestment.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.746879936387228,
+      "ls_alpha": -0.016143848263554004,
+      "ls_talpha": -1.1003220659412547,
+      "ls_sharpe": 0.1269421893097608,
+      "coverage": 0.09091292748139178,
+      "error": null
+    },
+    {
+      "name": "MatureRDCheapness",
+      "expression": "MUL(RANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho))), RANK(NEG(DELTA(RATIO(COALESCE(xrd, 0), sale), 1))))",
+      "hypothesis": "R&D-adjusted cheap firms should perform best when R&D intensity is declining, indicating that prior intangible investment is maturing into sales scale rather than requiring ever-higher spending.",
+      "expected_sign": "positive",
+      "reasoning": "A high R&D-adjusted book-to-market signal can include firms that are cheap because they are still funding speculative intangible projects. Conditioning on falling R&D-to-sales intensity favors firms where intangible investment is becoming more self-sustaining and less likely to be a continuing valuation drag.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.22988228050868,
+      "ls_alpha": 0.0016847300356773124,
+      "ls_talpha": 0.211782597967858,
+      "ls_sharpe": 0.2626516421079005,
+      "coverage": 0.12700698226141566,
+      "error": null
+    },
+    {
+      "name": "PersistentPreRDEarningsValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(TS_COUNT(xrd, 5))))",
+      "hypothesis": "Firms with high earnings yield after adding back expensed R&D should outperform, especially when they have a persistent R&D program rather than one-off or missing intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the archived book-value-plus-turnover construction and instead tests whether accounting-expensed R&D makes earnings yield too pessimistic. The base earnings-yield leg remains available for non-R&D firms, while persistent R&D reporting amplifies the signal where intangible accounting distortion is most economically relevant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 5.650085196652196,
+      "ls_alpha": 0.04588696366737149,
+      "ls_talpha": 3.0709892941696895,
+      "ls_sharpe": 0.5190452350443355,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "CommercializingKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(sale, MUL(prcc_f, csho)), 1)), RANK(WINSOR(DELTA(RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1), 1)))",
+      "hypothesis": "Cheap sales-yield firms with improving sales productivity on an asset base that includes accumulated R&D should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids combining R&D-to-market with gross profitability and instead focuses on commercialization progress. The signal should favor firms where the market price is low relative to sales and where prior knowledge investment is becoming more productive, which may help long-short evidence by avoiding stagnant cheap R&D firms.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.5365977433220155,
+      "ls_alpha": -0.0260906612161471,
+      "ls_talpha": -2.552286198553723,
+      "ls_sharpe": 0.2498372487842484,
+      "coverage": 0.13021755541192329,
+      "error": null
+    },
+    {
+      "name": "AcquisitionIntangibleOverpayRisk",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), at), 1)), RANK(RATIO(COALESCE(gdwl, 0), at)))",
+      "hypothesis": "Firms with rich market valuation relative to assets and high goodwill intensity should earn lower returns because the market may be overvaluing acquired intangible assets.",
+      "expected_sign": "negative",
+      "reasoning": "This treats goodwill as an asset-composition and acquisition-overpayment risk, not as an extra claim added to market value. The interaction is strongest when investors pay a high valuation multiple for firms whose balance sheets contain a large amount of acquisition-related intangible capital that may later disappoint or be impaired.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.381202104139196,
+      "ls_alpha": 0.0035884353319600142,
+      "ls_talpha": 0.35863104494284476,
+      "ls_sharpe": -0.24332327325721215,
+      "coverage": 0.14308548926183748,
+      "error": null
+    },
+    {
+      "name": "ExpensiveRDEarningsBurden",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), sale), 1)), RANK(WINSOR(RATIO(COALESCE(xrd, 0), ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "Expensive price-to-sales firms whose pre-R&D earnings capacity is heavily consumed by R&D spending should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces sparse advertising changes with a broader R&D burden measure that is not a near-constant tie mass and does not mechanically collapse into price-to-sales. The signal targets firms where high valuation embeds optimistic expectations for intangible investment even though current profitability is heavily dependent on treating R&D as a future payoff.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.6073510763570389,
+      "ls_alpha": 0.032712535046449914,
+      "ls_talpha": 2.792253904510603,
+      "ls_sharpe": -0.22539918429041894,
+      "coverage": 0.14022553566991655,
+      "error": null
+    },
+    {
+      "name": "CashYieldKnowledgeGrowthEfficiency",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(MA(DELTA(sale, 1), 3), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Cheap cash-flow-yield firms should outperform when recent sales growth is efficient relative to an asset base that includes accumulated R&D investment.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the low-coverage and small-denominator problem in earlier sales-response-per-R&D formulations by scaling sales growth by total assets plus accumulated R&D rather than by R&D alone. The value leg requires current cash-flow cheapness, while the intangible productivity leg asks whether knowledge investment is translating into incremental commercial scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.8241098069897546,
+      "ls_alpha": 0.006418671238466378,
+      "ls_talpha": 0.39247415805643565,
+      "ls_sharpe": 0.19970418735959636,
+      "coverage": 0.084034830410747,
+      "error": null
+    },
+    {
+      "name": "StableRDProgramValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(TS_COUNT(xrd, 5)), RANK(WINSOR(NEG(VOL(RATIO(COALESCE(xrd, 0), sale), 5)), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings yield is most reliable when the firm has a persistent and stable R&D program rather than sporadic intangible spending.",
+      "expected_sign": "positive",
+      "reasoning": "Persistent R&D reporting indicates that the addback is economically meaningful, while low volatility in R&D intensity suggests a disciplined, repeatable investment process. This should reduce exposure to one-off R&D spikes or speculative firms whose apparent adjusted earnings yield is unstable.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.6520564317920816,
+      "ls_alpha": -0.00870097610395535,
+      "ls_talpha": -0.7734063537095611,
+      "ls_sharpe": 0.23431618818823274,
+      "coverage": 0.1290207746731747,
+      "error": null
+    },
+    {
+      "name": "InternalKnowledgeBookValueQuality",
+      "expression": "MUL(RANK(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), RANK(WINSOR(SUB(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at), RATIO(COALESCE(gdwl, 0), at)), 1)))",
+      "hypothesis": "High book-to-market firms should outperform more reliably when their intangible profile reflects internally generated knowledge capital rather than goodwill-heavy acquired intangibles.",
+      "expected_sign": "positive",
+      "reasoning": "Standard book value is understated for internally generated R&D capital but can be inflated or noisy when book equity contains acquisition goodwill. This interaction rewards conventional cheapness only when the intangible composition suggests omitted internal knowledge assets rather than potential goodwill overpayment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.744115914604896,
+      "ls_alpha": 0.025335810279552364,
+      "ls_talpha": 2.741410153834024,
+      "ls_sharpe": 0.3473523165663893,
+      "coverage": 0.14189355817560612,
+      "error": null
+    },
+    {
+      "name": "GoodwillProductivityPremiumRisk",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), at), 1)), SUMRANK(RATIO(COALESCE(gdwl, 0), at), WINSOR(NEG(DELTA(RATIO(sale, at), 1)), 1)))",
+      "hypothesis": "Expensive firms with high goodwill intensity and deteriorating asset productivity should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill represents acquired intangible value that may already be capitalized optimistically by the market, especially when the firm trades at a high asset multiple. If sales productivity is also weakening, the acquired intangible base is less likely to justify the premium valuation and may signal future disappointment or impairment risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.2922853541104955,
+      "ls_alpha": -0.016841994872311708,
+      "ls_talpha": -1.5135570289744706,
+      "ls_sharpe": -0.32699794919826053,
+      "coverage": 0.13021409874470355,
+      "error": null
+    },
+    {
+      "name": "AdjustedBookPreRDEarningPower",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Firms that are cheap on R&D-adjusted book value and generate strong pre-R&D earnings on that adjusted equity base should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the problematic negative reported-earnings leg with an economic productivity test, so the signal is not mechanically selecting high R&D-to-market firms or loading on loss firms. High scores require both valuation cheapness after capitalizing hidden R&D assets and evidence that the adjusted knowledge-equity base is earning a return.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 4.881203809534064,
+      "ls_alpha": 0.004530727773999885,
+      "ls_talpha": 0.4150973642631249,
+      "ls_sharpe": 0.27221947288693754,
+      "coverage": 0.1416947740144474,
+      "error": null
+    },
+    {
+      "name": "SelfFundedKnowledgeCashValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(oancf, ADD(ABS(oancf), COALESCE(xrd, 0))), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at), 1)))))",
+      "hypothesis": "Cash-flow value should be strongest when the firm has meaningful accumulated R&D capital and can fund current R&D from internal operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the copied EBITDA/EV persistence structure and tests a different mechanism: whether intangible investment is financially self-sustaining rather than dependent on optimistic external financing. The baseline cash-flow yield remains present for broad coverage, while the intangible amplifier rewards firms with real knowledge-capital intensity and operating cash capacity to support it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.7385576255449633,
+      "ls_alpha": -0.010722665064050162,
+      "ls_talpha": -0.7847689755394983,
+      "ls_sharpe": 0.18247132712890582,
+      "coverage": 0.09089182633373699,
+      "error": null
+    },
+    {
+      "name": "ReportedYieldHiddenCapitalResilience",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "Firms with high reported earnings yield despite a large hidden R&D-capital share should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "R&D expensing depresses reported income, so a firm that still looks cheap on reported earnings while carrying substantial hidden knowledge capital may have especially resilient economics. The interaction avoids simply adding back R&D and instead identifies firms whose conventional earnings yield is strong even under conservative accounting treatment.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.4927171855291963,
+      "ls_alpha": 0.020206948972550758,
+      "ls_talpha": 1.611684036117283,
+      "ls_sharpe": 0.3302595257267192,
+      "coverage": 0.1416947740144474,
+      "error": null
+    },
+    {
+      "name": "CashBackedPreRDEarningsYield",
+      "expression": "WINSOR(MIN(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), RATIO(oancf, MUL(prcc_f, csho))), 1)",
+      "hypothesis": "Firms should outperform when they are cheap on earnings after treating R&D as investment and also have strong actual operating cash-flow yield.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the inconsistent accrual construction by not subtracting adjusted earnings from unadjusted cash flow. The MIN structure is a cash-backing bottleneck: high R&D-to-market alone is insufficient unless current operating cash flow also supports the valuation.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.7855559268023804,
+      "ls_alpha": 0.012324296006149937,
+      "ls_talpha": 0.659407316745917,
+      "ls_sharpe": 0.280839960624584,
+      "coverage": 0.09090983195850844,
+      "error": null
+    },
+    {
+      "name": "MarketBookGapKnowledgeCover",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(SUB(MUL(prcc_f, csho), ceq)), TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Firms with high reported earnings yield should outperform when accumulated R&D capital explains a large share of the market-to-book gap.",
+      "expected_sign": "positive",
+      "reasoning": "This does not simply reconstruct intangible-adjusted book-to-market. It asks whether the apparent book/market wedge is plausibly covered by omitted internal knowledge capital, making conventional valuation signals less noisy for R&D-intensive firms.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.30786788297789,
+      "ls_alpha": 0.043123824854464976,
+      "ls_talpha": 3.7497924359455257,
+      "ls_sharpe": 0.4218177550581134,
+      "coverage": 0.1416963217758891,
+      "error": null
+    },
+    {
+      "name": "PriorKnowledgeCashPayoffValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(DELTA(oancf, 1), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings yield should be more valuable when prior accumulated knowledge investment is beginning to produce improving cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the earlier R&D-intensity-decline splice with a direct payoff measure: change in operating cash flow relative to the lagged knowledge-adjusted asset base. It favors firms where intangible investment is not merely shrinking, but is translating into observable cash-flow improvement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.2209676409674026,
+      "ls_alpha": 0.04281179923469241,
+      "ls_talpha": 1.953315694450029,
+      "ls_sharpe": 0.49890533348894833,
+      "coverage": 0.08100756380698135,
+      "error": null
+    },
+    {
+      "name": "PayoutSupportedKnowledgeYield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms with high combined dividend-plus-R&D yield should outperform when those shareholder distributions and intangible investments are supported by pre-R&D earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This rewards dividends rather than subtracting them, avoiding the prior penalty on high-quality payout firms. It also uses current payout-plus-knowledge-investment yield instead of a stale R&D-stock amplifier, while the earnings-support leg helps avoid speculative high-R&D firms with weak fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.782726413755882,
+      "ls_alpha": 0.05153044409829688,
+      "ls_talpha": 3.1516890155339863,
+      "ls_sharpe": 0.46329891067856116,
+      "coverage": 0.14286663579398512,
+      "error": null
+    },
+    {
+      "name": "GoodwillCleanBookValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(RATIO(COALESCE(gdwl, 0), ADD(ABS(ceq), COALESCE(gdwl, 0)))), 1)))",
+      "hypothesis": "High book-to-market firms should outperform more reliably when book equity is not dominated by goodwill.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the goodwill mechanism from another expensive-goodwill short into a book-value integrity test. The signal favors cheap firms whose book value is less likely to be inflated by acquisition accounting, avoiding the unstable high-valuation, low-profitability triple interaction criticized earlier.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.589977484670308,
+      "ls_alpha": 0.009492845477604329,
+      "ls_talpha": 1.0309350559807287,
+      "ls_sharpe": 0.31755270410940284,
+      "coverage": 0.14189773713149864,
+      "error": null
+    },
+    {
+      "name": "CashConvertedPreRDValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(oancf, ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform most when those adjusted earnings are supported by operating cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the R&D addback reflects real economic earnings power rather than merely a large accounting adjustment. Unlike an accrual subtraction that mechanically penalizes R&D, the cash-conversion leg directly asks whether operating cash flow can support the earnings base after recognizing R&D as investment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 1.711392777695652,
+      "ls_alpha": -0.04133410558998958,
+      "ls_talpha": -2.23974006669753,
+      "ls_sharpe": -0.06860162689131674,
+      "coverage": 0.0909018351910598,
+      "error": null
+    },
+    {
+      "name": "ValueWithRDCommitment",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more strongly when current R&D intensity is high relative to the firm\u2019s own recent history.",
+      "expected_sign": "positive",
+      "reasoning": "A cheap firm that continues to commit to R&D despite conservative expensing may have more resilient long-run investment opportunities than a value firm harvesting current earnings by cutting intangible investment. Using the firm\u2019s own historical R&D-intensity rank reduces reliance on the cross-sectional R&D-to-market anomaly and focuses on commitment relative to the firm\u2019s normal policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.297069166501627,
+      "ls_alpha": -0.0034506339589840743,
+      "ls_talpha": -0.3082381881018481,
+      "ls_sharpe": 0.22931721625519694,
+      "coverage": 0.12858260340903743,
+      "error": null
+    },
+    {
+      "name": "BookGrowthHiddenReinvestmentValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(DELTA(ceq, 1)), TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform when their reinvestment is mainly hidden through expensed R&D rather than visible in book-equity growth.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior inconsistent market-book-gap decomposition and does not bolt on a goodwill adjustment. The conditioning leg asks whether internal knowledge investment is large relative to measured book-equity expansion, directly targeting the accounting understatement channel while retaining ordinary earnings-yield value firms through the additive structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.3129973552998893,
+      "ls_alpha": 0.01912033533121556,
+      "ls_talpha": 1.5721121217880856,
+      "ls_sharpe": 0.32090726101621964,
+      "coverage": 0.12905250378272895,
+      "error": null
+    },
+    {
+      "name": "RDEnabledCostEfficiencyValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(DELTA(RATIO(cogs, revt), 1)), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform when product cost intensity is falling, suggesting R&D is improving operating efficiency rather than merely producing sales growth.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the weak sales-yield leg and replaces the gross-profit-dollar change with a margin-improvement mechanism. The signal tests whether the R&D addback is supported by a concrete operating payoff through lower cost of goods sold relative to revenue.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.6367788853973515,
+      "ls_alpha": 0.021886372885019732,
+      "ls_talpha": 2.0220107589573204,
+      "ls_sharpe": 0.3265683421694512,
+      "coverage": 0.12801374948717503,
+      "error": null
+    },
+    {
+      "name": "LiquidKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(che, ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when they have balance-sheet liquidity to sustain intangible investment without relying heavily on external financing.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the repeated expensive-plus-goodwill short thesis and instead tests a financing-capacity mechanism for intangible value. A high score requires both valuation support and a cash cushion relative to the operating asset base plus recent knowledge investment needs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.392596366091649,
+      "ls_alpha": 0.06576455002012772,
+      "ls_talpha": 4.694536049425706,
+      "ls_sharpe": 0.41133206183261506,
+      "coverage": 0.14179584283658858,
+      "error": null
+    },
+    {
+      "name": "OperatingFundedInnovationPayout",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ebitda, ADD(ABS(ebitda), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms with high combined dividend-plus-R&D yield should outperform when those cash distributions and innovation outlays are supported by operating earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This drops the sparse advertising add-on rather than treating missing advertising as zero, so it is not a cosmetic extension driven by a self-selected reporting subset. The support leg uses operating earnings capacity, distinguishing firms that can fund both shareholder payout and intangible investment from firms with high apparent yields caused by weak fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.9676189941376947,
+      "ls_alpha": -0.053710328367057004,
+      "ls_talpha": -2.6559155064824647,
+      "ls_sharpe": 0.12522162021142305,
+      "coverage": 0.1417777856197691,
+      "error": null
+    },
+    {
+      "name": "NetLiquidKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(che, ADD(dltt, dlc)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield and have net liquidity relative to their knowledge-adjusted asset base should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Prior evidence favored liquidity-conditioned intangible value, but gross cash alone may overstate financial flexibility when debt claims are large. This signal tests whether cheap intangible-intensive firms are most mispriced when they can sustain R&D without debt-overhang pressure or external financing dependence.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.812744056438401,
+      "ls_alpha": 0.06678076529950105,
+      "ls_talpha": 4.785636424022483,
+      "ls_sharpe": 0.3576117347538257,
+      "coverage": 0.14065287260396211,
+      "error": null
+    },
+    {
+      "name": "StableAdjustedKnowledgeReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(VOL(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings yield should be more reliable when the firm\u2019s R&D-adjusted return on assets is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D can make speculative firms look cheap if adjusted profitability is erratic. Low volatility in adjusted return on a knowledge-inclusive asset base identifies firms where intangible investment appears to support durable earning power rather than one-off accounting noise.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.8984927075178892,
+      "ls_alpha": 0.020494349590241788,
+      "ls_talpha": 1.650098224061352,
+      "ls_sharpe": 0.24358629775025056,
+      "coverage": 0.13096099682440626,
+      "error": null
+    },
+    {
+      "name": "DurableKnowledgeDemandValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(VOL(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform when revenue productivity on a knowledge-adjusted asset base is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic COGS/revenue smoothing change with a demand-durability mechanism. The signal asks whether R&D-adjusted cheapness is supported by persistent revenue generation from the asset base, rather than by a one-period margin fluctuation or a mechanical R&D addback.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.218402260678244,
+      "ls_alpha": 0.04408294912382113,
+      "ls_talpha": 3.465042502670959,
+      "ls_sharpe": 0.3092277286360505,
+      "coverage": 0.13063101408504185,
+      "error": null
+    },
+    {
+      "name": "KnowledgeDeleveragingValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(DELTA(RATIO(ADD(dltt, dlc), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when leverage is falling relative to the asset base that includes prior accumulated knowledge investment.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids double-counting the same pre-R&D earnings variable in both legs. The mechanism is financial payoff from intangible investment: if prior knowledge capital is becoming self-sustaining, the firm should need less debt support, making the valuation discount more credible.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.8854228802815,
+      "ls_alpha": 0.018471413808475876,
+      "ls_talpha": 1.4146726219656014,
+      "ls_sharpe": 0.30485666939515604,
+      "coverage": 0.11857746071368724,
+      "error": null
+    },
+    {
+      "name": "BalancedDividendInnovationYield",
+      "expression": "MUL(RANK(WINSOR(RATIO(MIN(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms that are cheap because they simultaneously return cash to shareholders and invest meaningfully in R&D should outperform when those uses of funds are supported by earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a recombination of payout yield and liquidity; it uses the bottleneck between dividends and R&D to identify firms doing both, rather than firms with only one large component. The support leg helps avoid distressed or speculative firms where dividend-plus-R&D intensity is high only because earnings are weak.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.530572031438696,
+      "ls_alpha": -0.004263661357728979,
+      "ls_talpha": -0.38688059822801274,
+      "ls_sharpe": 0.16707018931961354,
+      "coverage": 0.14286663579398512,
+      "error": null
+    },
+    {
+      "name": "ProductiveRecognizedIntangibleValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(DELTA(RATIO(SUB(revt, cogs), at), 1), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when they have meaningful recognized intangible assets and improving gross-profit productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids assigning the highest score to firms with zero or missing recognized intangibles; firms without recognized intangibles receive only the baseline earnings-yield component. The amplifier is strongest when recognized intangible intensity is economically material and gross profit relative to assets is improving, indicating that recorded intangible assets are productive rather than merely absent.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.553817678024011,
+      "ls_alpha": -0.008298916343186594,
+      "ls_talpha": -0.680720528474767,
+      "ls_sharpe": 0.2340612527365174,
+      "coverage": 0.1301834014761104,
+      "error": null
+    },
+    {
+      "name": "PeakKnowledgeProductivityValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), TS_MAX(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when current revenue productivity on knowledge-adjusted assets is close to the firm\u2019s own historical peak.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the intangible asset base is currently being used effectively relative to the firm\u2019s own history, rather than relying only on cross-sectional R&D intensity. High scores identify firms that are cheap while their knowledge-adjusted asset productivity remains strong, reducing exposure to stagnant value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.290484312475457,
+      "ls_alpha": 0.03236162559429133,
+      "ls_talpha": 2.6452612311332615,
+      "ls_sharpe": 0.43243225735025764,
+      "coverage": 0.14084567208754634,
+      "error": null
+    },
+    {
+      "name": "KnowledgeEconomicOwnerYield",
+      "expression": "WINSOR(RATIO(ADD(ADD(ib, COALESCE(dvc, 0)), COALESCE(xrd, 0)), ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xrd, 0), 5))), 1)",
+      "hypothesis": "Firms with high earnings-plus-distribution yield after treating current R&D as investment, scaled by market value plus accumulated R&D capital, should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces asset-to-market cheapness with an income-and-owner-yield measure, avoiding the asset-to-market/EV anomaly family that produced weak FF5 evidence. The numerator asks whether current earnings, payout, and knowledge reinvestment are large relative to the price investors pay for both equity and hidden R&D capital.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.3933284459366164,
+      "ls_alpha": 0.00047723906245309734,
+      "ls_talpha": 0.036841906442445324,
+      "ls_sharpe": 0.17228019609958847,
+      "coverage": 0.14288397072213183,
+      "error": null
+    },
+    {
+      "name": "CashBackedRDCommitmentValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(MIN(che, TS_SUM(COALESCE(xrd, 0), 3)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when cash balances can cover a meaningful recent R&D commitment.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another market-to-book-gap coverage variant and instead tests a cash-runway mechanism for intangible investment. The MIN structure requires both cash and actual recent R&D capital, so firms with no R&D do not receive an artificial maximum intangible-support score, while the additive form preserves ordinary value firms.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.358969795690518,
+      "ls_alpha": 0.022409125822706294,
+      "ls_talpha": 1.7260575322277592,
+      "ls_sharpe": 0.3130254295048592,
+      "coverage": 0.14179584283658858,
+      "error": null
+    },
+    {
+      "name": "BrandDisclosureEarningsValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_COUNT(xad, 5))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when they persistently disclose advertising investment, indicating a durable brand-building channel that standard accounting expenses.",
+      "expected_sign": "positive",
+      "reasoning": "This uses advertising reporting persistence rather than COALESCEing sparse advertising amounts to zero, avoiding a near-constant tied spend leg. The mechanism is not a margin-trend duplicate: it tests whether conventional cheapness is more informative when reported earnings remain strong despite recurring brand investment being expensed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.6578841201809875,
+      "ls_alpha": 0.015180867481247654,
+      "ls_talpha": 1.1005711385484973,
+      "ls_sharpe": 0.36154698308829497,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "SustainableInnovationValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(NEG(RATIO(COALESCE(xrd, 0), ADD(ABS(ib), COALESCE(xrd, 0)))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when R&D is persistent but not an excessive burden relative to earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the concern that raw R&D intensity can be harmful when it overwhelms earnings. The amplifier rewards a sustained R&D program while penalizing firms where current R&D consumes too much of the earnings base, making the accounting-understatement story more economically credible.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 2.26022495916511,
+      "ls_alpha": -0.010415284547464699,
+      "ls_talpha": -0.8682051094986324,
+      "ls_sharpe": 0.21216014560758217,
+      "coverage": 0.1428647784802551,
+      "error": null
+    },
+    {
+      "name": "KnowledgeSurplusLowDebtValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(TS_SUM(COALESCE(xrd, 0), 5), ADD(COALESCE(dltt, 0), COALESCE(dlc, 0))), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when accumulated hidden knowledge capital exceeds debt claims relative to the knowledge-adjusted asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a sign flip of leverage-change; it tests a level financing-mix mechanism. The signal favors firms where intangible capital appears internally financed and less exposed to debt-overhang risk, while the additive structure keeps the core valuation leg from becoming a pure low-leverage screen.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 5.979599886811862,
+      "ls_alpha": 0.055211118251333915,
+      "ls_talpha": 3.537585096501083,
+      "ls_sharpe": 0.4403998029410188,
+      "coverage": 0.14287716057178848,
+      "error": null
+    },
+    {
+      "name": "NearPeakCostEfficiencyValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_MIN(RATIO(cogs, revt), 5), RATIO(cogs, revt)), 1)))",
+      "hypothesis": "Firms cheap on pre-R&D earnings yield should outperform when current cost intensity is close to the firm\u2019s own historical best level.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than using another one-period margin change, this tests whether the firm\u2019s operating cost structure remains near its own efficient frontier. For intangible-intensive firms, near-peak cost efficiency makes the R&D addback more credible because knowledge investment appears to support durable product economics.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.937800399122718,
+      "ls_alpha": 0.007202819745541178,
+      "ls_talpha": 0.7094665635938542,
+      "ls_sharpe": 0.30912996874572307,
+      "coverage": 0.14002556489165258,
+      "error": null
+    },
+    {
+      "name": "CashRunwayAdjustedPreRDYield",
+      "expression": "WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(SUB(MUL(prcc_f, csho), MIN(che, TS_SUM(COALESCE(xrd, 0), 3))), TS_SUM(COALESCE(xrd, 0), 3))), 1)",
+      "hypothesis": "Firms with high pre-R&D earnings relative to a cash-runway-adjusted knowledge-capital valuation should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This is not another net-cash liquidity rank; cash enters by reducing the effective price only to the extent it can cover recent accumulated R&D commitments. The denominator penalizes uncovered hidden knowledge capital while recognizing that cash-backed R&D capital is less financially fragile.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.755315331717038,
+      "ls_alpha": 0.028756615523584397,
+      "ls_talpha": 1.9577013880284373,
+      "ls_sharpe": 0.40382249954164473,
+      "coverage": 0.14180017656862526,
+      "error": null
+    },
+    {
+      "name": "ExpensedInvestmentShareValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(COALESCE(xrd, 0), ADD(ABS(DELTA(at, 1)), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when current reinvestment is primarily expensed through R&D rather than capitalized into reported asset growth.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded conditioning ratio avoids being dominated by negative asset growth and instead measures the share of observable investment that accounting sends through the income statement. The additive structure preserves ordinary value firms while amplifying those where low book-asset growth may understate true reinvestment.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.3635886403732442,
+      "ls_alpha": 0.019846254556593432,
+      "ls_talpha": 1.6320060367668214,
+      "ls_sharpe": 0.3021042719849811,
+      "coverage": 0.1306958652894479,
+      "error": null
+    },
+    {
+      "name": "AcquiredIntangibleProductivityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(RATIO(RATIO(revt, at), TS_MAX(RATIO(revt, at), 5)), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when recognized intangible assets are economically material and current asset productivity remains close to the firm\u2019s own historical peak.",
+      "expected_sign": "positive",
+      "reasoning": "This does not reward firms merely for having no recognized intangibles; the recognized-intangible materiality leg must be high for the productivity amplifier to matter. The mechanism asks whether acquired or recognized intangible assets are currently supporting revenue productivity, rather than simply separating internal from acquired intangibles.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.540682904281104,
+      "ls_alpha": -0.01421148447964484,
+      "ls_talpha": -1.1530509853851845,
+      "ls_sharpe": 0.19387208251358234,
+      "coverage": 0.14084195746008632,
+      "error": null
+    },
+    {
+      "name": "RDLongHorizonFinancingValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(NEG(RATIO(COALESCE(dlc, 0), at)), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when they have persistent R&D programs and low short-term debt pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the previously criticized leverage-change construct and instead tests financing horizon risk. Persistent R&D is more valuable when near-term debt claims are low, because intangible projects are less likely to be disrupted by rollover constraints.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.91956289399914,
+      "ls_alpha": 0.06610800448953874,
+      "ls_talpha": 4.199777430375312,
+      "ls_sharpe": 0.5273347552588847,
+      "coverage": 0.14287344594432846,
+      "error": null
+    },
+    {
+      "name": "DividendYieldWithPersistentRD",
+      "expression": "MUL(RANK(WINSOR(RATIO(COALESCE(dvc, 0), MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "High dividend-yield firms should outperform when they also maintain persistent R&D programs that are supported by pre-R&D earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This no longer combines payout yield with a debt-change anomaly. It focuses on firms delivering direct cash distributions while still funding recurring intangible investment, with the support leg helping avoid cases where dividends or R&D are unsustainably high relative to earnings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.3936006742531393,
+      "ls_alpha": 0.004047865332501899,
+      "ls_talpha": 0.4132164227287857,
+      "ls_sharpe": 0.24099574093352763,
+      "coverage": 0.1428647784802551,
+      "error": null
+    },
+    {
+      "name": "PeakAdjustedReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_RANK(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)))",
+      "hypothesis": "High reported earnings-yield firms should outperform when R&D-adjusted return on knowledge-inclusive assets is high relative to the firm\u2019s own history.",
+      "expected_sign": "positive",
+      "reasoning": "Reported earnings yield is more credible when the firm\u2019s current profitability, after treating R&D as investment, is near its own historical high rather than cyclically depressed. The time-series rank avoids a pure cross-sectional profitability sort and tests whether value is paired with firm-specific knowledge-asset productivity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.025342488642695,
+      "ls_alpha": -0.009465240863270667,
+      "ls_talpha": -0.8552184320921162,
+      "ls_sharpe": 0.11446744962352966,
+      "coverage": 0.13095913951067625,
+      "error": null
+    },
+    {
+      "name": "GrossProfitCoveredRDPersistence",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(SUB(revt, cogs), ADD(ABS(SUB(revt, cogs)), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "High earnings-yield firms should outperform when they have persistent R&D activity that is supported by gross profit capacity.",
+      "expected_sign": "positive",
+      "reasoning": "R&D persistence alone can identify speculative spenders, while gross profitability alone is a known quality effect. The interaction asks whether recurring knowledge investment is economically supportable from product-level surplus, making the value signal less exposed to firms whose R&D burden overwhelms fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.9304302499550721,
+      "ls_alpha": -0.026229578891108208,
+      "ls_talpha": -2.436485682266201,
+      "ls_sharpe": 0.05323853267881993,
+      "coverage": 0.14199710341605395,
+      "error": null
+    },
+    {
+      "name": "RDMaintenanceAffordabilityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ebitda, ADD(ABS(ebitda), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when operating earnings can comfortably support current R&D spending.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the short-debt variant with an operating-affordability mechanism rather than another liquidity or rollover-risk screen. The conditioner asks whether R&D is economically maintainable from operating earnings, reducing the chance that the R&D addback is simply capitalizing unsustainable spending.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.6970506990745977,
+      "ls_alpha": -0.00518545378141891,
+      "ls_talpha": -0.4063833836797757,
+      "ls_sharpe": 0.21756575703247488,
+      "coverage": 0.14177530920146242,
+      "error": null
+    },
+    {
+      "name": "TrueHarvestingKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(LAG(TS_SUM(COALESCE(xrd, 0), 5), 1), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)), RANK(NEG(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5)))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when they have a meaningful prior R&D stock but current R&D intensity is low relative to their own history, indicating a harvesting phase.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the criticized stock-minus-current-flow construction by separately requiring high lagged knowledge capital and low current R&D intensity relative to the firm\u2019s own past. The signal targets firms monetizing prior intangible investment rather than firms that remain dependent on heavy current R&D spending.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.192573025244904,
+      "ls_alpha": 0.01503630452694658,
+      "ls_talpha": 1.7032598791112727,
+      "ls_sharpe": 0.22359222256413674,
+      "coverage": 0.128304419085921,
+      "error": null
+    },
+    {
+      "name": "KnowledgeCapitalGrossReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "High reported earnings-yield firms should outperform when gross profit is strong relative to a capital base that includes both book equity and accumulated hidden R&D capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the time-series earnings-yield dislocation wrapper with a direct productivity test on the hidden-capital-adjusted equity base. It avoids merely ranking the hidden R&D share and instead asks whether the combined book-plus-knowledge capital base is producing product-level surplus.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.993176510956996,
+      "ls_alpha": -0.0011147890182820266,
+      "ls_talpha": -0.10239987064117177,
+      "ls_sharpe": 0.4034585644074496,
+      "coverage": 0.14132233101953315,
+      "error": null
+    },
+    {
+      "name": "BrandMarginSupportedValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xad, 5), WINSOR(RATIO(SUB(revt, cogs), revt), 1))))",
+      "hypothesis": "High earnings-yield firms should outperform more when they persistently disclose advertising investment and maintain strong gross margins, suggesting brand spending supports pricing power.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids bolting together the already-tested peak-productivity and short-debt legs. It also avoids COALESCEing sparse advertising amounts to zero; advertising enters through disclosure persistence, while the margin leg tests whether the brand investment appears economically productive.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 2.9450312168058272,
+      "ls_alpha": 0.038431765086724703,
+      "ls_talpha": 2.801215574509545,
+      "ls_sharpe": 0.3257625643124479,
+      "coverage": 0.14021016123959595,
+      "error": null
+    },
+    {
+      "name": "HarvestPhaseGrossPayoffValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), SUMRANK(WINSOR(NEG(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5)), 1), WINSOR(RATIO(SUB(revt, cogs), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when current R&D intensity is low relative to their own history while gross profit remains strong on the prior knowledge-adjusted asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This seeks a true harvesting phase: prior intangible investment is producing gross profit without requiring unusually high current R&D intensity. It avoids using R&D-stock level alone by combining within-firm R&D-intensity moderation with realized product-level payoff.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.3042696806010308,
+      "ls_alpha": 0.0007387754307575114,
+      "ls_talpha": 0.10077469659528697,
+      "ls_sharpe": 0.1936405400964649,
+      "coverage": 0.12828837395897566,
+      "error": null
+    },
+    {
+      "name": "ConservativeCashRDValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(SUB(oancf, ib), ADD(ABS(ib), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when they have persistent R&D activity and operating cash flow exceeds accounting earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the cash-balance adequacy family and instead tests whether reported earnings are conservative and cash-backed for persistent R&D firms. The mechanism is that expensed intangible investment can depress accounting income, but the value signal is more credible when operating cash flow indicates real economic support.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 1.678018510917097,
+      "ls_alpha": -0.003527843637261826,
+      "ls_talpha": -0.28358799993732653,
+      "ls_sharpe": 0.14660074721145958,
+      "coverage": 0.0909018351910598,
+      "error": null
+    },
+    {
+      "name": "SalesFundedRDPersistenceValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(sale, ADD(sale, COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when persistent R&D is modest relative to the revenue base that must fund it.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the low-debt conditioner with an operating funding-capacity mechanism. Persistent R&D indicates recurring expensed intangible investment, while sales coverage helps distinguish sustainable knowledge programs from firms whose R&D burden is too large for current commercial scale.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.384377999465079,
+      "ls_alpha": -0.009862054173437917,
+      "ls_talpha": -0.8513635378795152,
+      "ls_sharpe": 0.233962712247972,
+      "coverage": 0.14191935419963397,
+      "error": null
+    },
+    {
+      "name": "BrandDemandProductivityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xad, 5), TS_RANK(RATIO(revt, at), 5))))",
+      "hypothesis": "High earnings-yield firms should outperform more when persistent advertising disclosure is paired with revenue productivity that is high relative to the firm\u2019s own history.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids simply swapping gross-margin level for gross-margin volatility. Advertising enters through reporting persistence rather than COALESCE\u2019d spend amounts, while the own-history revenue-productivity rank tests whether brand investment is supporting demand generation rather than just stable margins.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.941996284839484,
+      "ls_alpha": 0.027520858559828738,
+      "ls_talpha": 2.174841232459894,
+      "ls_sharpe": 0.43133563951971887,
+      "coverage": 0.1306204893072385,
+      "error": null
+    },
+    {
+      "name": "RecognizedIntangibleEarningsCover",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(RATIO(ib, ADD(ABS(ib), COALESCE(intan, COALESCE(gdwl, 0)))), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when recognized intangible assets are economically material and supported by current earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the repeated acquired-intangible short-overpayment thesis. Firms with no recognized intangibles do not receive the amplifier; the extra score applies when recognized intangible balances are meaningful and earnings cover suggests they are productive rather than merely accounting artifacts.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 2.5074747633557934,
+      "ls_alpha": -0.010500899113389485,
+      "ls_talpha": -0.8392389490317096,
+      "ls_sharpe": 0.20023346613969104,
+      "coverage": 0.1428582778822001,
+      "error": null
+    },
+    {
+      "name": "AcceleratingUnproductiveRDGlamour",
+      "expression": "MUL(RANK(WINSOR(NEG(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho))), 1)), SUMRANK(WINSOR(ACCEL(RATIO(COALESCE(xrd, 0), sale)), 1), WINSOR(NEG(RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), 1)))",
+      "hypothesis": "Firms that are expensive even after adding back R&D, while R&D intensity is accelerating and knowledge-adjusted sales productivity is weak, should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the dividend-plus-R&D bottleneck family and targets a different failure mode: speculative intangible escalation without realized productivity. The signal is not based on R&D level alone; high scores require rich valuation, accelerating R&D burden, and weak sales generation from the knowledge-adjusted asset base.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.083953189040207,
+      "ls_alpha": -0.0036672084221804147,
+      "ls_talpha": -0.4211153470411227,
+      "ls_sharpe": -0.2720380517944285,
+      "coverage": 0.1170925899785955,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "ProductiveRDCapitalValue",
+      "expression": "MUL(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))))",
+      "hypothesis": "Firms that look cheap after capitalizing accumulated R&D and also generate strong sales from their expanded economic asset base are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Standard book-to-market can understate value when internally generated R&D capital is omitted from book equity. The interaction favors firms where the R&D adjustment is not merely large, but is accompanied by productive sales generation, reducing the risk of buying unproductive \u201cintangible value.\u201d",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldRDResponse",
+      "expression": "MUL(RATIO(oancf, MUL(prcc_f, csho)), RATIO(MA(DELTA(sale, 1), 3), MA(xrd, 3)))",
+      "hypothesis": "Firms with high operating cash-flow yield and strong recent sales response per dollar of R&D should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-flow yield captures traditional value, but it can miss whether intangible investment is economically productive. The incremental sales-to-R&D component favors cheap firms whose R&D spending is already translating into revenue growth rather than distant or speculative optionality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AdCapitalSalesYield",
+      "expression": "WINSOR(RATIO(sale, ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xad, 0), 3))), 1)",
+      "hypothesis": "Firms with high sales relative to the sum of market equity value and accumulated observable advertising investment should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids simply multiplying advertising-capitalized book-to-market by gross profitability; it forms a single valuation ratio that asks whether brand spending has translated into revenue scale at a cheap price. COALESCE is applied only to xad, treating non-disclosure as no separately observable advertising capital rather than dropping firms into a sparse consumer-only subsample.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleBurdenEVYield",
+      "expression": "WINSOR(RATIO(ebitda, ADD(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), COALESCE(intan, COALESCE(gdwl, 0)))), 1)",
+      "hypothesis": "Firms with high EBITDA relative to enterprise value plus separately reported intangible capital should outperform, because their operating earnings adequately support both market valuation and acquired intangible burden.",
+      "expected_sign": "positive",
+      "reasoning": "The expression does not add intangibles to total assets, so it avoids the accounting double-counting problem. Goodwill is used only as a fallback when total reported intangibles are unavailable, and the signal differs from plain EBITDA/EV by penalizing firms whose cheapness is accompanied by large recognized intangible capital that earnings do not justify.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RankedRDExpectationPremium",
+      "expression": "MUL(RANK(RATIO(MUL(prcc_f, csho), sale)), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), sale)))",
+      "hypothesis": "Firms that are both expensive on price-to-sales and carry large accumulated R&D relative to current sales should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Ranking the two legs separately prevents the expression from collapsing into market-cap times R&D stock divided by sales squared, reducing scale contamination and right-tail skew. The high signal identifies cases where the market pays a rich revenue multiple for R&D investment that has not yet produced proportional sales scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDAmplifiedBookValue",
+      "expression": "ADD(RANK(RATIO(ceq, MUL(prcc_f, csho))), MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), RANK(RATIO(TS_SUM(COALESCE(xrd, 0), 5), sale))))",
+      "hypothesis": "Book-to-market should be especially informative when a firm has persistent R&D intensity, but traditional high book-to-market firms without R&D should not be mechanically assigned to the short leg.",
+      "expected_sign": "positive",
+      "reasoning": "The signal keeps the baseline book-to-market ranking and adds a continuous R&D-intensity amplifier, rather than using a hard indicator that forces all low-R&D firms to zero. High scores require conventional cheapness, with extra weight when accounting is more likely to understate book value because accumulated R&D has been expensed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PreRDCashKnowledgeYield",
+      "expression": "WINSOR(RATIO(ADD(oancf, COALESCE(xrd, 0)), ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xrd, 0), 5))), 1)",
+      "hypothesis": "Firms with high operating cash generation before expensed R&D relative to market value plus accumulated R&D capital should earn higher returns.",
+      "expected_sign": "positive",
+      "reasoning": "If R&D is an investment rather than a period expense, reported operating cash flow understates the cash-generating capacity of intangible-investing firms. This ratio asks whether the market price plus hidden knowledge capital is low relative to cash flow before current knowledge reinvestment.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "MatureRDCheapness",
+      "expression": "MUL(RANK(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho))), RANK(NEG(DELTA(RATIO(COALESCE(xrd, 0), sale), 1))))",
+      "hypothesis": "R&D-adjusted cheap firms should perform best when R&D intensity is declining, indicating that prior intangible investment is maturing into sales scale rather than requiring ever-higher spending.",
+      "expected_sign": "positive",
+      "reasoning": "A high R&D-adjusted book-to-market signal can include firms that are cheap because they are still funding speculative intangible projects. Conditioning on falling R&D-to-sales intensity favors firms where intangible investment is becoming more self-sustaining and less likely to be a continuing valuation drag.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentPreRDEarningsValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(TS_COUNT(xrd, 5))))",
+      "hypothesis": "Firms with high earnings yield after adding back expensed R&D should outperform, especially when they have a persistent R&D program rather than one-off or missing intangible investment.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the archived book-value-plus-turnover construction and instead tests whether accounting-expensed R&D makes earnings yield too pessimistic. The base earnings-yield leg remains available for non-R&D firms, while persistent R&D reporting amplifies the signal where intangible accounting distortion is most economically relevant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CommercializingKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(sale, MUL(prcc_f, csho)), 1)), RANK(WINSOR(DELTA(RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1), 1)))",
+      "hypothesis": "Cheap sales-yield firms with improving sales productivity on an asset base that includes accumulated R&D should earn higher subsequent returns.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids combining R&D-to-market with gross profitability and instead focuses on commercialization progress. The signal should favor firms where the market price is low relative to sales and where prior knowledge investment is becoming more productive, which may help long-short evidence by avoiding stagnant cheap R&D firms.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquisitionIntangibleOverpayRisk",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), at), 1)), RANK(RATIO(COALESCE(gdwl, 0), at)))",
+      "hypothesis": "Firms with rich market valuation relative to assets and high goodwill intensity should earn lower returns because the market may be overvaluing acquired intangible assets.",
+      "expected_sign": "negative",
+      "reasoning": "This treats goodwill as an asset-composition and acquisition-overpayment risk, not as an extra claim added to market value. The interaction is strongest when investors pay a high valuation multiple for firms whose balance sheets contain a large amount of acquisition-related intangible capital that may later disappoint or be impaired.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ExpensiveRDEarningsBurden",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), sale), 1)), RANK(WINSOR(RATIO(COALESCE(xrd, 0), ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "Expensive price-to-sales firms whose pre-R&D earnings capacity is heavily consumed by R&D spending should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This replaces sparse advertising changes with a broader R&D burden measure that is not a near-constant tie mass and does not mechanically collapse into price-to-sales. The signal targets firms where high valuation embeds optimistic expectations for intangible investment even though current profitability is heavily dependent on treating R&D as a future payoff.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYieldKnowledgeGrowthEfficiency",
+      "expression": "MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(MA(DELTA(sale, 1), 3), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Cheap cash-flow-yield firms should outperform when recent sales growth is efficient relative to an asset base that includes accumulated R&D investment.",
+      "expected_sign": "positive",
+      "reasoning": "This repairs the low-coverage and small-denominator problem in earlier sales-response-per-R&D formulations by scaling sales growth by total assets plus accumulated R&D rather than by R&D alone. The value leg requires current cash-flow cheapness, while the intangible productivity leg asks whether knowledge investment is translating into incremental commercial scale.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "StableRDProgramValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(TS_COUNT(xrd, 5)), RANK(WINSOR(NEG(VOL(RATIO(COALESCE(xrd, 0), sale), 5)), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings yield is most reliable when the firm has a persistent and stable R&D program rather than sporadic intangible spending.",
+      "expected_sign": "positive",
+      "reasoning": "Persistent R&D reporting indicates that the addback is economically meaningful, while low volatility in R&D intensity suggests a disciplined, repeatable investment process. This should reduce exposure to one-off R&D spikes or speculative firms whose apparent adjusted earnings yield is unstable.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "InternalKnowledgeBookValueQuality",
+      "expression": "MUL(RANK(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), RANK(WINSOR(SUB(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at), RATIO(COALESCE(gdwl, 0), at)), 1)))",
+      "hypothesis": "High book-to-market firms should outperform more reliably when their intangible profile reflects internally generated knowledge capital rather than goodwill-heavy acquired intangibles.",
+      "expected_sign": "positive",
+      "reasoning": "Standard book value is understated for internally generated R&D capital but can be inflated or noisy when book equity contains acquisition goodwill. This interaction rewards conventional cheapness only when the intangible composition suggests omitted internal knowledge assets rather than potential goodwill overpayment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "GoodwillProductivityPremiumRisk",
+      "expression": "MUL(RANK(WINSOR(RATIO(MUL(prcc_f, csho), at), 1)), SUMRANK(RATIO(COALESCE(gdwl, 0), at), WINSOR(NEG(DELTA(RATIO(sale, at), 1)), 1)))",
+      "hypothesis": "Expensive firms with high goodwill intensity and deteriorating asset productivity should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "Goodwill represents acquired intangible value that may already be capitalized optimistically by the market, especially when the firm trades at a high asset multiple. If sales productivity is also weakening, the acquired intangible base is less likely to justify the premium valuation and may signal future disappointment or impairment risk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AdjustedBookPreRDEarningPower",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Firms that are cheap on R&D-adjusted book value and generate strong pre-R&D earnings on that adjusted equity base should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the problematic negative reported-earnings leg with an economic productivity test, so the signal is not mechanically selecting high R&D-to-market firms or loading on loss firms. High scores require both valuation cheapness after capitalizing hidden R&D assets and evidence that the adjusted knowledge-equity base is earning a return.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SelfFundedKnowledgeCashValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(oancf, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(oancf, ADD(ABS(oancf), COALESCE(xrd, 0))), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), at), 1)))))",
+      "hypothesis": "Cash-flow value should be strongest when the firm has meaningful accumulated R&D capital and can fund current R&D from internal operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the copied EBITDA/EV persistence structure and tests a different mechanism: whether intangible investment is financially self-sustaining rather than dependent on optimistic external financing. The baseline cash-flow yield remains present for broad coverage, while the intangible amplifier rewards firms with real knowledge-capital intensity and operating cash capacity to support it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ReportedYieldHiddenCapitalResilience",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ceq, TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "Firms with high reported earnings yield despite a large hidden R&D-capital share should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "R&D expensing depresses reported income, so a firm that still looks cheap on reported earnings while carrying substantial hidden knowledge capital may have especially resilient economics. The interaction avoids simply adding back R&D and instead identifies firms whose conventional earnings yield is strong even under conservative accounting treatment.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedPreRDEarningsYield",
+      "expression": "WINSOR(MIN(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), RATIO(oancf, MUL(prcc_f, csho))), 1)",
+      "hypothesis": "Firms should outperform when they are cheap on earnings after treating R&D as investment and also have strong actual operating cash-flow yield.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the inconsistent accrual construction by not subtracting adjusted earnings from unadjusted cash flow. The MIN structure is a cash-backing bottleneck: high R&D-to-market alone is insufficient unless current operating cash flow also supports the valuation.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "MarketBookGapKnowledgeCover",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(SUB(MUL(prcc_f, csho), ceq)), TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "Firms with high reported earnings yield should outperform when accumulated R&D capital explains a large share of the market-to-book gap.",
+      "expected_sign": "positive",
+      "reasoning": "This does not simply reconstruct intangible-adjusted book-to-market. It asks whether the apparent book/market wedge is plausibly covered by omitted internal knowledge capital, making conventional valuation signals less noisy for R&D-intensive firms.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PriorKnowledgeCashPayoffValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(DELTA(oancf, 1), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings yield should be more valuable when prior accumulated knowledge investment is beginning to produce improving cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the earlier R&D-intensity-decline splice with a direct payoff measure: change in operating cash flow relative to the lagged knowledge-adjusted asset base. It favors firms where intangible investment is not merely shrinking, but is translating into observable cash-flow improvement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutSupportedKnowledgeYield",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms with high combined dividend-plus-R&D yield should outperform when those shareholder distributions and intangible investments are supported by pre-R&D earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This rewards dividends rather than subtracting them, avoiding the prior penalty on high-quality payout firms. It also uses current payout-plus-knowledge-investment yield instead of a stale R&D-stock amplifier, while the earnings-support leg helps avoid speculative high-R&D firms with weak fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "GoodwillCleanBookValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(RATIO(COALESCE(gdwl, 0), ADD(ABS(ceq), COALESCE(gdwl, 0)))), 1)))",
+      "hypothesis": "High book-to-market firms should outperform more reliably when book equity is not dominated by goodwill.",
+      "expected_sign": "positive",
+      "reasoning": "This changes the goodwill mechanism from another expensive-goodwill short into a book-value integrity test. The signal favors cheap firms whose book value is less likely to be inflated by acquisition accounting, avoiding the unstable high-valuation, low-profitability triple interaction criticized earlier.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashConvertedPreRDValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(oancf, ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform most when those adjusted earnings are supported by operating cash generation.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the R&D addback reflects real economic earnings power rather than merely a large accounting adjustment. Unlike an accrual subtraction that mechanically penalizes R&D, the cash-conversion leg directly asks whether operating cash flow can support the earnings base after recognizing R&D as investment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueWithRDCommitment",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more strongly when current R&D intensity is high relative to the firm\u2019s own recent history.",
+      "expected_sign": "positive",
+      "reasoning": "A cheap firm that continues to commit to R&D despite conservative expensing may have more resilient long-run investment opportunities than a value firm harvesting current earnings by cutting intangible investment. Using the firm\u2019s own historical R&D-intensity rank reduces reliance on the cross-sectional R&D-to-market anomaly and focuses on commitment relative to the firm\u2019s normal policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BookGrowthHiddenReinvestmentValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_SUM(COALESCE(xrd, 0), 5), ADD(ABS(DELTA(ceq, 1)), TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform when their reinvestment is mainly hidden through expensed R&D rather than visible in book-equity growth.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the prior inconsistent market-book-gap decomposition and does not bolt on a goodwill adjustment. The conditioning leg asks whether internal knowledge investment is large relative to measured book-equity expansion, directly targeting the accounting understatement channel while retaining ordinary earnings-yield value firms through the additive structure.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDEnabledCostEfficiencyValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(DELTA(RATIO(cogs, revt), 1)), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform when product cost intensity is falling, suggesting R&D is improving operating efficiency rather than merely producing sales growth.",
+      "expected_sign": "positive",
+      "reasoning": "This removes the weak sales-yield leg and replaces the gross-profit-dollar change with a margin-improvement mechanism. The signal tests whether the R&D addback is supported by a concrete operating payoff through lower cost of goods sold relative to revenue.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "LiquidKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(che, ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when they have balance-sheet liquidity to sustain intangible investment without relying heavily on external financing.",
+      "expected_sign": "positive",
+      "reasoning": "This moves away from the repeated expensive-plus-goodwill short thesis and instead tests a financing-capacity mechanism for intangible value. A high score requires both valuation support and a cash cushion relative to the operating asset base plus recent knowledge investment needs.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "OperatingFundedInnovationPayout",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ebitda, ADD(ABS(ebitda), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms with high combined dividend-plus-R&D yield should outperform when those cash distributions and innovation outlays are supported by operating earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This drops the sparse advertising add-on rather than treating missing advertising as zero, so it is not a cosmetic extension driven by a self-selected reporting subset. The support leg uses operating earnings capacity, distinguishing firms that can fund both shareholder payout and intangible investment from firms with high apparent yields caused by weak fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "NetLiquidKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(che, ADD(dltt, dlc)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield and have net liquidity relative to their knowledge-adjusted asset base should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "Prior evidence favored liquidity-conditioned intangible value, but gross cash alone may overstate financial flexibility when debt claims are large. This signal tests whether cheap intangible-intensive firms are most mispriced when they can sustain R&D without debt-overhang pressure or external financing dependence.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "StableAdjustedKnowledgeReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(VOL(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings yield should be more reliable when the firm\u2019s R&D-adjusted return on assets is stable through time.",
+      "expected_sign": "positive",
+      "reasoning": "Adding back R&D can make speculative firms look cheap if adjusted profitability is erratic. Low volatility in adjusted return on a knowledge-inclusive asset base identifies firms where intangible investment appears to support durable earning power rather than one-off accounting noise.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DurableKnowledgeDemandValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(VOL(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Firms that are cheap on pre-R&D earnings yield should outperform when revenue productivity on a knowledge-adjusted asset base is stable.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the cosmetic COGS/revenue smoothing change with a demand-durability mechanism. The signal asks whether R&D-adjusted cheapness is supported by persistent revenue generation from the asset base, rather than by a one-period margin fluctuation or a mechanical R&D addback.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeDeleveragingValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(NEG(DELTA(RATIO(ADD(dltt, dlc), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when leverage is falling relative to the asset base that includes prior accumulated knowledge investment.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids double-counting the same pre-R&D earnings variable in both legs. The mechanism is financial payoff from intangible investment: if prior knowledge capital is becoming self-sustaining, the firm should need less debt support, making the valuation discount more credible.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BalancedDividendInnovationYield",
+      "expression": "MUL(RANK(WINSOR(RATIO(MIN(COALESCE(dvc, 0), COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), ADD(COALESCE(dvc, 0), COALESCE(xrd, 0)))), 1)))",
+      "hypothesis": "Firms that are cheap because they simultaneously return cash to shareholders and invest meaningfully in R&D should outperform when those uses of funds are supported by earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a recombination of payout yield and liquidity; it uses the bottleneck between dividends and R&D to identify firms doing both, rather than firms with only one large component. The support leg helps avoid distressed or speculative firms where dividend-plus-R&D intensity is high only because earnings are weak.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ProductiveRecognizedIntangibleValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(DELTA(RATIO(SUB(revt, cogs), at), 1), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when they have meaningful recognized intangible assets and improving gross-profit productivity.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids assigning the highest score to firms with zero or missing recognized intangibles; firms without recognized intangibles receive only the baseline earnings-yield component. The amplifier is strongest when recognized intangible intensity is economically material and gross profit relative to assets is improving, indicating that recorded intangible assets are productive rather than merely absent.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PeakKnowledgeProductivityValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), TS_MAX(RATIO(revt, ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when current revenue productivity on knowledge-adjusted assets is close to the firm\u2019s own historical peak.",
+      "expected_sign": "positive",
+      "reasoning": "This tests whether the intangible asset base is currently being used effectively relative to the firm\u2019s own history, rather than relying only on cross-sectional R&D intensity. High scores identify firms that are cheap while their knowledge-adjusted asset productivity remains strong, reducing exposure to stagnant value traps.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeEconomicOwnerYield",
+      "expression": "WINSOR(RATIO(ADD(ADD(ib, COALESCE(dvc, 0)), COALESCE(xrd, 0)), ADD(MUL(prcc_f, csho), TS_SUM(COALESCE(xrd, 0), 5))), 1)",
+      "hypothesis": "Firms with high earnings-plus-distribution yield after treating current R&D as investment, scaled by market value plus accumulated R&D capital, should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces asset-to-market cheapness with an income-and-owner-yield measure, avoiding the asset-to-market/EV anomaly family that produced weak FF5 evidence. The numerator asks whether current earnings, payout, and knowledge reinvestment are large relative to the price investors pay for both equity and hidden R&D capital.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashBackedRDCommitmentValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(MIN(che, TS_SUM(COALESCE(xrd, 0), 3)), ADD(at, TS_SUM(COALESCE(xrd, 0), 3))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when cash balances can cover a meaningful recent R&D commitment.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids another market-to-book-gap coverage variant and instead tests a cash-runway mechanism for intangible investment. The MIN structure requires both cash and actual recent R&D capital, so firms with no R&D do not receive an artificial maximum intangible-support score, while the additive form preserves ordinary value firms.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandDisclosureEarningsValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_COUNT(xad, 5))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when they persistently disclose advertising investment, indicating a durable brand-building channel that standard accounting expenses.",
+      "expected_sign": "positive",
+      "reasoning": "This uses advertising reporting persistence rather than COALESCEing sparse advertising amounts to zero, avoiding a near-constant tied spend leg. The mechanism is not a margin-trend duplicate: it tests whether conventional cheapness is more informative when reported earnings remain strong despite recurring brand investment being expensed.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SustainableInnovationValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(NEG(RATIO(COALESCE(xrd, 0), ADD(ABS(ib), COALESCE(xrd, 0)))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when R&D is persistent but not an excessive burden relative to earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This addresses the concern that raw R&D intensity can be harmful when it overwhelms earnings. The amplifier rewards a sustained R&D program while penalizing firms where current R&D consumes too much of the earnings base, making the accounting-understatement story more economically credible.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeSurplusLowDebtValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(TS_SUM(COALESCE(xrd, 0), 5), ADD(COALESCE(dltt, 0), COALESCE(dlc, 0))), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when accumulated hidden knowledge capital exceeds debt claims relative to the knowledge-adjusted asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This is not a sign flip of leverage-change; it tests a level financing-mix mechanism. The signal favors firms where intangible capital appears internally financed and less exposed to debt-overhang risk, while the additive structure keeps the core valuation leg from becoming a pure low-leverage screen.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "NearPeakCostEfficiencyValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(TS_MIN(RATIO(cogs, revt), 5), RATIO(cogs, revt)), 1)))",
+      "hypothesis": "Firms cheap on pre-R&D earnings yield should outperform when current cost intensity is close to the firm\u2019s own historical best level.",
+      "expected_sign": "positive",
+      "reasoning": "Rather than using another one-period margin change, this tests whether the firm\u2019s operating cost structure remains near its own efficient frontier. For intangible-intensive firms, near-peak cost efficiency makes the R&D addback more credible because knowledge investment appears to support durable product economics.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashRunwayAdjustedPreRDYield",
+      "expression": "WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(SUB(MUL(prcc_f, csho), MIN(che, TS_SUM(COALESCE(xrd, 0), 3))), TS_SUM(COALESCE(xrd, 0), 3))), 1)",
+      "hypothesis": "Firms with high pre-R&D earnings relative to a cash-runway-adjusted knowledge-capital valuation should outperform.",
+      "expected_sign": "positive",
+      "reasoning": "This is not another net-cash liquidity rank; cash enters by reducing the effective price only to the extent it can cover recent accumulated R&D commitments. The denominator penalizes uncovered hidden knowledge capital while recognizing that cash-backed R&D capital is less financially fragile.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ExpensedInvestmentShareValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(COALESCE(xrd, 0), ADD(ABS(DELTA(at, 1)), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when current reinvestment is primarily expensed through R&D rather than capitalized into reported asset growth.",
+      "expected_sign": "positive",
+      "reasoning": "The bounded conditioning ratio avoids being dominated by negative asset growth and instead measures the share of observable investment that accounting sends through the income statement. The additive structure preserves ordinary value firms while amplifying those where low book-asset growth may understate true reinvestment.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AcquiredIntangibleProductivityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(RATIO(RATIO(revt, at), TS_MAX(RATIO(revt, at), 5)), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when recognized intangible assets are economically material and current asset productivity remains close to the firm\u2019s own historical peak.",
+      "expected_sign": "positive",
+      "reasoning": "This does not reward firms merely for having no recognized intangibles; the recognized-intangible materiality leg must be high for the productivity amplifier to matter. The mechanism asks whether acquired or recognized intangible assets are currently supporting revenue productivity, rather than simply separating internal from acquired intangibles.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDLongHorizonFinancingValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(NEG(RATIO(COALESCE(dlc, 0), at)), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when they have persistent R&D programs and low short-term debt pressure.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the previously criticized leverage-change construct and instead tests financing horizon risk. Persistent R&D is more valuable when near-term debt claims are low, because intangible projects are less likely to be disrupted by rollover constraints.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DividendYieldWithPersistentRD",
+      "expression": "MUL(RANK(WINSOR(RATIO(COALESCE(dvc, 0), MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(ABS(ib), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "High dividend-yield firms should outperform when they also maintain persistent R&D programs that are supported by pre-R&D earnings capacity.",
+      "expected_sign": "positive",
+      "reasoning": "This no longer combines payout yield with a debt-change anomaly. It focuses on firms delivering direct cash distributions while still funding recurring intangible investment, with the support leg helping avoid cases where dividends or R&D are unsustainably high relative to earnings.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PeakAdjustedReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(TS_RANK(RATIO(ADD(ib, COALESCE(xrd, 0)), ADD(at, TS_SUM(COALESCE(xrd, 0), 5))), 5)))",
+      "hypothesis": "High reported earnings-yield firms should outperform when R&D-adjusted return on knowledge-inclusive assets is high relative to the firm\u2019s own history.",
+      "expected_sign": "positive",
+      "reasoning": "Reported earnings yield is more credible when the firm\u2019s current profitability, after treating R&D as investment, is near its own historical high rather than cyclically depressed. The time-series rank avoids a pure cross-sectional profitability sort and tests whether value is paired with firm-specific knowledge-asset productivity.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "GrossProfitCoveredRDPersistence",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(SUB(revt, cogs), ADD(ABS(SUB(revt, cogs)), COALESCE(xrd, 0))), 1)))",
+      "hypothesis": "High earnings-yield firms should outperform when they have persistent R&D activity that is supported by gross profit capacity.",
+      "expected_sign": "positive",
+      "reasoning": "R&D persistence alone can identify speculative spenders, while gross profitability alone is a known quality effect. The interaction asks whether recurring knowledge investment is economically supportable from product-level surplus, making the value signal less exposed to firms whose R&D burden overwhelms fundamentals.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDMaintenanceAffordabilityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(ebitda, ADD(ABS(ebitda), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform more when operating earnings can comfortably support current R&D spending.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the short-debt variant with an operating-affordability mechanism rather than another liquidity or rollover-risk screen. The conditioner asks whether R&D is economically maintainable from operating earnings, reducing the chance that the R&D addback is simply capitalizing unsustainable spending.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "TrueHarvestingKnowledgeValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(LAG(TS_SUM(COALESCE(xrd, 0), 5), 1), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)), RANK(NEG(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5)))))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when they have a meaningful prior R&D stock but current R&D intensity is low relative to their own history, indicating a harvesting phase.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids the criticized stock-minus-current-flow construction by separately requiring high lagged knowledge capital and low current R&D intensity relative to the firm\u2019s own past. The signal targets firms monetizing prior intangible investment rather than firms that remain dependent on heavy current R&D spending.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeCapitalGrossReturnValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), RANK(WINSOR(RATIO(SUB(revt, cogs), ADD(ABS(ceq), TS_SUM(COALESCE(xrd, 0), 5))), 1)))",
+      "hypothesis": "High reported earnings-yield firms should outperform when gross profit is strong relative to a capital base that includes both book equity and accumulated hidden R&D capital.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the time-series earnings-yield dislocation wrapper with a direct productivity test on the hidden-capital-adjusted equity base. It avoids merely ranking the hidden R&D share and instead asks whether the combined book-plus-knowledge capital base is producing product-level surplus.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandMarginSupportedValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xad, 5), WINSOR(RATIO(SUB(revt, cogs), revt), 1))))",
+      "hypothesis": "High earnings-yield firms should outperform more when they persistently disclose advertising investment and maintain strong gross margins, suggesting brand spending supports pricing power.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids bolting together the already-tested peak-productivity and short-debt legs. It also avoids COALESCEing sparse advertising amounts to zero; advertising enters through disclosure persistence, while the margin leg tests whether the brand investment appears economically productive.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "HarvestPhaseGrossPayoffValue",
+      "expression": "MUL(RANK(WINSOR(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho)), 1)), SUMRANK(WINSOR(NEG(TS_RANK(RATIO(COALESCE(xrd, 0), sale), 5)), 1), WINSOR(RATIO(SUB(revt, cogs), ADD(at, LAG(TS_SUM(COALESCE(xrd, 0), 5), 1))), 1)))",
+      "hypothesis": "Cheap pre-R&D earnings firms should outperform when current R&D intensity is low relative to their own history while gross profit remains strong on the prior knowledge-adjusted asset base.",
+      "expected_sign": "positive",
+      "reasoning": "This seeks a true harvesting phase: prior intangible investment is producing gross profit without requiring unusually high current R&D intensity. It avoids using R&D-stock level alone by combining within-firm R&D-intensity moderation with realized product-level payoff.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ConservativeCashRDValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(SUB(oancf, ib), ADD(ABS(ib), COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when they have persistent R&D activity and operating cash flow exceeds accounting earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This abandons the cash-balance adequacy family and instead tests whether reported earnings are conservative and cash-backed for persistent R&D firms. The mechanism is that expensed intangible investment can depress accounting income, but the value signal is more credible when operating cash flow indicates real economic support.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SalesFundedRDPersistenceValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xrd, 5), WINSOR(RATIO(sale, ADD(sale, COALESCE(xrd, 0))), 1))))",
+      "hypothesis": "High reported earnings-yield firms should outperform more when persistent R&D is modest relative to the revenue base that must fund it.",
+      "expected_sign": "positive",
+      "reasoning": "This replaces the low-debt conditioner with an operating funding-capacity mechanism. Persistent R&D indicates recurring expensed intangible investment, while sales coverage helps distinguish sustainable knowledge programs from firms whose R&D burden is too large for current commercial scale.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandDemandProductivityValue",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), SUMRANK(TS_COUNT(xad, 5), TS_RANK(RATIO(revt, at), 5))))",
+      "hypothesis": "High earnings-yield firms should outperform more when persistent advertising disclosure is paired with revenue productivity that is high relative to the firm\u2019s own history.",
+      "expected_sign": "positive",
+      "reasoning": "This avoids simply swapping gross-margin level for gross-margin volatility. Advertising enters through reporting persistence rather than COALESCE\u2019d spend amounts, while the own-history revenue-productivity rank tests whether brand investment is supporting demand generation rather than just stable margins.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RecognizedIntangibleEarningsCover",
+      "expression": "ADD(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(ib, MUL(prcc_f, csho)), 1)), MUL(RANK(WINSOR(RATIO(COALESCE(intan, COALESCE(gdwl, 0)), at), 1)), RANK(WINSOR(RATIO(ib, ADD(ABS(ib), COALESCE(intan, COALESCE(gdwl, 0)))), 1)))))",
+      "hypothesis": "High earnings-yield firms should outperform more when recognized intangible assets are economically material and supported by current earnings.",
+      "expected_sign": "positive",
+      "reasoning": "This shifts away from the repeated acquired-intangible short-overpayment thesis. Firms with no recognized intangibles do not receive the amplifier; the extra score applies when recognized intangible balances are meaningful and earnings cover suggests they are productive rather than merely accounting artifacts.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AcceleratingUnproductiveRDGlamour",
+      "expression": "MUL(RANK(WINSOR(NEG(RATIO(ADD(ib, COALESCE(xrd, 0)), MUL(prcc_f, csho))), 1)), SUMRANK(WINSOR(ACCEL(RATIO(COALESCE(xrd, 0), sale)), 1), WINSOR(NEG(RATIO(sale, ADD(at, TS_SUM(COALESCE(xrd, 0), 5)))), 1)))",
+      "hypothesis": "Firms that are expensive even after adding back R&D, while R&D intensity is accelerating and knowledge-adjusted sales productivity is weak, should earn lower subsequent returns.",
+      "expected_sign": "negative",
+      "reasoning": "This abandons the dividend-plus-R&D bottleneck family and targets a different failure mode: speculative intangible escalation without realized productivity. The signal is not based on R&D level alone; high scores require rich valuation, accelerating R&D burden, and weak sales generation from the knowledge-adjusted asset base.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [
+    {
+      "generation": 0,
+      "target_name": "ProductiveRDCapitalValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Economically coherent and internally consistent, but it is close to a mechanical crossing of two well-documented anomalies (R&D-capitalized book-to-market \u00e0 la Park/Eisfeldt and asset turnover), so the marginal information beyond published intangible-value plus productivity screens is likely small."
+    },
+    {
+      "generation": 0,
+      "target_name": "BrandGrossProfitValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially advertising-capitalized book-to-market times Novy-Marx gross profitability \u2014 two published anomalies multiplied \u2014 and the un-COALESCEd xad will restrict coverage to a small, consumer-tilted subsample, so any apparent alpha risks being a sparse-coverage artifact."
+    },
+    {
+      "generation": 0,
+      "target_name": "EVYieldIntangibleTurnover",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The denominator ADD(at, ADD(intan, gdwl)) double-counts intangibles and goodwill (both are already inside at, and gdwl is inside intan), so the expression does not compute the \"intangible-inclusive asset base\" the hypothesis describes, and the remaining content is just the known EBITDA/EV yield times turnover."
+    },
+    {
+      "generation": 0,
+      "target_name": "OverpricedRDIntensity",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The sign logic is internally consistent, but the product reduces to mktcap \u00d7 R&D-stock / sales\u00b2, so the signal is dominated by 1/sales\u00b2 scaling and extreme right-tail skew, making it largely a rediscovery of the price-to-sales value effect with a size/scale contaminant rather than a clean interaction."
+    },
+    {
+      "generation": 0,
+      "target_name": "RDIntensiveBookCheapness",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The INDICATOR masks rather than interacts \u2014 every low-R&D firm, including genuine high-BM value stocks, is forced to zero and pooled into the short leg, so the portfolio sort mixes \"expensive R&D firms\" with \"all non-R&D firms\" and does not test the stated conditional hypothesis."
+    },
+    {
+      "generation": 0,
+      "target_name": "CashYieldRDResponse",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The \"sales response per R&D dollar\" leg is a genuinely novel productivity conditioner on cash-flow yield rather than a repackaged published anomaly, though the ratio can be negative and explodes for small MA(xrd), so winsorization or a log/rank transform of the second leg is needed before the result can be trusted."
+    },
+    {
+      "generation": 1,
+      "target_name": "IndustryNeutralRDCheapProductivity",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is largely a mechanical re-specification of the archived ProductiveRDCapitalValue (same two legs, MUL swapped for SUMRANK plus industry demeaning), and industry-neutralizing is unlikely to explain or reverse that signal's negative FF5 alpha since the value leg is intangible-adjusted book-to-market whose alpha problem comes from factor loadings rather than sector tilts."
+    },
+    {
+      "generation": 1,
+      "target_name": "PreRDCashKnowledgeYield",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "The construction is internally consistent (R&D is a genuine operating cash outflow, so adding it back does yield pre-investment cash generation, and both numerator and denominator are treated symmetrically for knowledge capital), and it is a substantively different cut from the archived expensed-R&D and EBITDA/EV variants rather than a cosmetic tweak."
+    },
+    {
+      "generation": 1,
+      "target_name": "MatureRDCheapness",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The conditional logic is coherent and the expression matches the stated hypothesis with the correct natural sign, though the COALESCE(xrd,0) treatment collapses all non-R&D firms into a single tied middle rank on the conditioning leg, diluting the interaction into plain intangible-adjusted book-to-market for most of the cross-section."
+    },
+    {
+      "generation": 1,
+      "target_name": "KnowledgeMarginDiscount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the product of two canonical published anomalies \u2014 R&D-to-market capitalization (Chan-Lakonishok-Sougiannis) and gross profitability (Novy-Marx) \u2014 so a positive result would be hard to distinguish from a mechanical blend of known factors rather than a new interaction."
+    },
+    {
+      "generation": 1,
+      "target_name": "RecognizedIntangibleCashYield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This duplicates the archived IntangibleBurdenEVYield's denominator construction (market value plus reported intangibles) with EBITDA swapped for oancf and net debt dropped, and the denominator is economically incoherent since `intan` is an asset already reflected in market equity, not an additional claim, leaving the signal close to plain cash-flow-to-price."
+    },
+    {
+      "generation": 1,
+      "target_name": "AdIntensityExpectationRisk",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because `xad` is missing for most firms, COALESCE to zero makes DELTA(xad/sale) exactly zero for the large majority, so the second rank leg is a near-constant tie mass and the product degenerates into a rank of price-to-sales \u2014 i.e., a repackaging of the value anomaly (and of the archived RankedRDExpectationPremium structure whose alpha ran opposite to the expected sign)."
+    },
+    {
+      "generation": 2,
+      "target_name": "HiddenRDEarningsDiscount",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Since (ib+xrd)/ME and \u2212ib/ME differ only by xrd/ME, the product of their ranks mechanically selects high R&D-to-market firms, making this a thinly disguised rediscovery of the well-published R&D-to-market anomaly (Chan-Lakonishok-Sougiannis) rather than a new accounting-distortion interaction, and the second leg also loads on loss firms."
+    },
+    {
+      "generation": 2,
+      "target_name": "PersistentPreRDEnterpriseYield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The conditional structure is copied verbatim from the archive's strongest signal with only the valuation lens swapped (ib/ME \u2192 EBITDA/EV), which is a robustness check rather than a substantively different mechanism, and the archive's IntangibleBurdenEVYield already showed the EBITDA/EV lens delivers positive FMB slopes with negative FF5 alpha."
+    },
+    {
+      "generation": 2,
+      "target_name": "CashYieldKnowledgeGrowthEfficiency",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Rescaling the sales-response leg by assets-plus-R&D-capital is a legitimate diagnostic fix for the earlier signal's tiny-denominator and 3.8% coverage problem, though the second leg is close to asset-scaled sales growth (a documented negative predictor) and the closely related CommercializingKnowledgeValue already produced a significantly negative FF5 alpha, so the positive sign is not well secured."
+    },
+    {
+      "generation": 2,
+      "target_name": "StableRDProgramValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding R&D-intensity stability is a genuinely new conditioning dimension, but the switch to a pure triple-rank product reverts to the mechanical zeroing-out of non-R&D value firms that the archive's additive design was built to avoid, and the 5-year VOL requirement will further thin coverage."
+    },
+    {
+      "generation": 2,
+      "target_name": "InternalKnowledgeBookValueQuality",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Conditioning book-to-market on internally generated versus acquired intangible composition is an economically coherent and not-yet-tested distinction in this archive, though the difference term will be dominated by R&D/assets and the multiplicative form may leave the extreme deciles sparsely populated since high-B/M firms rarely carry heavy R&D."
+    },
+    {
+      "generation": 2,
+      "target_name": "GoodwillProductivityPremiumRisk",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Adding a fundamental-deterioration leg is a substantive rather than cosmetic response to AcquisitionIntangibleOverpayRisk's sign disagreement between FMB and FF5 alpha, but declining sales-to-assets is largely the asset-growth anomaly in disguise, so a negative result may reflect known effects rather than the goodwill-overpayment channel."
+    },
+    {
+      "generation": 3,
+      "target_name": "RDAccrualQualityValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The accrual leg is internally inconsistent with its own hypothesis \u2014 adding xrd to ib but not to oancf makes SUB(ADD(ib,xrd), oancf) equal accruals *plus* R&D spend, so the NEG term mechanically penalizes R&D-intensive firms rather than measuring whether \"R&D-adjusted earnings are cash-backed,\" and the underlying value\u00d7accrual-quality interaction is close to the published Sloan-accruals/value combination."
+    },
+    {
+      "generation": 3,
+      "target_name": "InternalAdjustedBookToMarket",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the published intangible-adjusted book-to-market (Eisfeldt\u2013Kim\u2013Papanikolaou \"Intangible Value,\" Lev\u2013Sougiannis capitalization) with goodwill stripped out, and the archive already tested the same economic content in InternalKnowledgeBookValueQuality, so it is a direct rediscovery rather than a new cross-theme signal."
+    },
+    {
+      "generation": 3,
+      "target_name": "MaturingPreRDEarningsValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a mechanical splice of two archived signals \u2014 the exact additive structure and value leg of PersistentPreRDEarningsValue with the NEG(DELTA(xrd/sale)) amplifier already tested (and found alpha-neutral) in MatureRDCheapness \u2014 i.e., a cosmetic variant rather than a substantive new mechanism."
+    },
+    {
+      "generation": 3,
+      "target_name": "KnowledgeRetainedYield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "The numerator change is a real modification, but subtracting dividends economically penalizes exactly the higher-quality, higher-payout value firms that typically drive earnings-yield premia, and the R&D-stock amplifier is a re-run of the component that already failed in SelfFundedKnowledgeCashValue, so the hypothesis's \"retained reinvestment\" logic is not well matched to the expected sign."
+    },
+    {
+      "generation": 3,
+      "target_name": "GoodwillCashShortfallPremium",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a third pass at the same expensive-plus-goodwill short-leg idea already tested twice in the archive (AcquisitionIntangibleOverpayRisk, GoodwillProductivityPremiumRisk), with only the third leg swapped from productivity decline to low cash-flow-to-assets, and the triple rank multiplication concentrates the extremes into an unstable, essentially low-profitability/high-valuation portfolio already spanned by known profitability-value effects."
+    },
+    {
+      "generation": 3,
+      "target_name": "ReportedYieldHiddenCapitalResilience",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Deliberately *not* adding back R&D and instead conditioning conventional earnings yield on the hidden-capital share of adjusted book equity is a substantively different test from the archive's add-back family, the additive structure keeps ordinary value firms in the long leg, and the sign direction follows naturally from the expression \u2014 though the reviewer should watch that the amplifier does not simply proxy for R&D intensity's own return effect."
+    },
+    {
+      "generation": 4,
+      "target_name": "InternalGapReportedYield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially the archived MarketBookGapKnowledgeCover (fmb 5.31, alpha 0.043) with the goodwill-share subtraction from InternalKnowledgeBookValueQuality/GoodwillCleanBookValue bolted on and the additive-conditional wrapper from ReportedYieldHiddenCapitalResilience \u2014 a recombination of three already-tested archive elements rather than a new mechanism, and the two gap-share terms have inconsistent denominators so their difference is not a clean decomposition of the market-book gap."
+    },
+    {
+      "generation": 4,
+      "target_name": "CashConvertedPreRDValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The cash-conversion leg (oancf scaled by the pre-R&D earnings base) is a substantively different quality screen from the archived MIN-based CashBackedPreRDEarningsYield and is internally consistent with the stated hypothesis, though the |ib|+xrd denominator can blow up near zero and the oancf requirement will likely cut coverage to ~0.09, which is exactly where prior cash-flow variants lost their alpha."
+    },
+    {
+      "generation": 4,
+      "target_name": "PriorKnowledgeGrossPayoffValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a two-leg swap of the archived PriorKnowledgeCashPayoffValue (\u0394oancf \u2192 \u0394gross profit) crossed with the sales-to-price leg of CommercializingKnowledgeValue, and that specific sales-yield leg already produced a reliably *negative* FF5 alpha (\u22120.026, t=\u22122.55), so the proposal recombines the weakest tested ingredient with a near-standard gross-profitability-change variable."
+    },
+    {
+      "generation": 4,
+      "target_name": "GoodwillSurgePremiumRisk",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Structurally identical to the already-failed GoodwillProductivityPremiumRisk (fmb \u22121.29) with both legs cosmetically swapped, and the \u0394goodwill component is close to a direct rediscovery of the asset-growth/acquirer-underperformance anomaly rather than a novel cross-theme interaction."
+    },
+    {
+      "generation": 4,
+      "target_name": "BrandKnowledgePayoutSupport",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "With xad COALESCE'd to zero for the large majority of firms, this is numerically almost the same signal as the archived PayoutSupportedKnowledgeYield (fmb 5.78, alpha 0.052) and therefore a cosmetic extension whose incremental information comes from a sparse, self-selected advertising-reporting subsample."
+    },
+    {
+      "generation": 4,
+      "target_name": "ValueWithRDCommitment",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning earnings yield on *within-firm* time-series R&D intensity rank is a genuinely new dimension in this archive (which has only used TS_COUNT, VOL, and one-year DELTA of xrd/sale), but the hypothesized direction directly contradicts the archived MatureRDCheapness result favoring *declining* intensity, and TS_RANK of an all-zero COALESCE'd series will lump non-R&D firms into an arbitrary conditioning bucket."
+    },
+    {
+      "generation": 5,
+      "target_name": "NetLiquidKnowledgeValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Substituting net cash for gross cash in the archive's strongest signal (LiquidKnowledgeValue, ls_talpha 4.695) is an economically defensible test of debt overhang versus raw liquidity, but it is a single-term swap on an already-tested construction and much of its variation will simply reload on the well-known low-leverage/cash-holdings tilt, so the incremental information content is modest."
+    },
+    {
+      "generation": 5,
+      "target_name": "SmoothedRDEnabledCostEfficiency",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic smoothing variant of RDEnabledCostEfficiencyValue (DELTA\u2192TREND on the identical COGS/revenue conditioner with an identical value leg), exactly the kind of parameter tweak the objective warns against rather than a substantively different mechanism."
+    },
+    {
+      "generation": 5,
+      "target_name": "EarningsPayoffOnPriorKnowledge",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Beyond being a one-variable respecification of PriorKnowledgeCashPayoffValue (oancf\u2192ib+xrd), the change induces mechanical overlap because the same ib+xrd quantity now drives both legs \u2014 firms with rising pre-R&D earnings mechanically tend toward higher pre-R&D earnings yield \u2014 so the \"interaction\" partly double-counts a single earnings-growth effect already spanned by the profitability-change literature."
+    },
+    {
+      "generation": 5,
+      "target_name": "LiquidPayoutKnowledgeYield",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a direct recombination of two already-evaluated archive components (PayoutSupportedKnowledgeYield's dividend-plus-R&D yield leg and LiquidKnowledgeValue's che/knowledge-asset leg) with no new construct, and cash-rich high-payout firms are close to a plain quality/payout screen already spanned by prior tests."
+    },
+    {
+      "generation": 5,
+      "target_name": "StableAdjustedKnowledgeReturnValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Conditioning R&D-adjusted earnings yield on the stability of R&D-adjusted ROA is a coherent and internally consistent test that differs meaningfully from StableRDProgramValue (which stabilized R&D intensity, not profitability), though it sits close to the well-documented earnings-volatility/quality-value interaction and the 5-year VOL requirement will thin coverage."
+    },
+    {
+      "generation": 5,
+      "target_name": "RecognizedIntangibleSalesCoverValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The hypothesis claims to identify \"productive\" recognized intangibles, but sale/(sale+intan) is just a monotone transform of low intangible intensity that assigns the maximum score of 1.0 to the large mass of firms with zero or missing intan, producing severe rank ties and reducing the signal to a value \u00d7 no-goodwill tilt already covered by GoodwillCleanBookValue and InternalKnowledgeBookValueQuality."
+    },
+    {
+      "generation": 6,
+      "target_name": "KnowledgeReplacementValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is essentially assets-to-market / intangible-adjusted enterprise-value cheapness, a well-published anomaly family (Peters\u2013Taylor intangible capital, asset-to-market value) and a close cousin of the archive's ProductiveRDCapitalValue and IntangibleBurdenEVYield, both of which already produced negative FF5 alphas despite positive FMB slopes."
+    },
+    {
+      "generation": 6,
+      "target_name": "CashCoveredBookGapValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archive's MarketBookGapKnowledgeCover (identical structure with `che` added to both numerator and the covering term), effectively splicing in the cash leg from LiquidKnowledgeValue rather than testing a new mechanism."
+    },
+    {
+      "generation": 6,
+      "target_name": "OperatingScalabilityKnowledgeValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Pre-R&D earnings yield times a one-year margin-change term is a near-duplicate of the archive's RDEnabledCostEfficiencyValue (which uses the negative change in COGS/revenue, i.e. the gross-margin analogue of the same trend), and the margin-trend leg alone is the known profitability-trend anomaly."
+    },
+    {
+      "generation": 6,
+      "target_name": "ConservativeInnovationRetentionValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is the same \"earnings yield amplified by R&D intensity\" conditional already tested twice in the archive (RDAmplifiedBookValue, ValueWithRDCommitment, and the payout-scaled PayoutSupportedKnowledgeYield) with only a different denominator normalization, and it sits in direct tension with ExpensiveRDEarningsBurden's finding that high R&D-to-earnings burden predicts negatively."
+    },
+    {
+      "generation": 6,
+      "target_name": "DebtFundedKnowledgeGlamour",
+      "verdict": "flag",
+      "score": 1,
+      "rationale": "This is a sign-flipped restatement of the archive's KnowledgeDeleveragingValue (both legs negated, same conditioning story and same knowledge-adjusted leverage-change construct), so it cannot deliver independent evidence."
+    },
+    {
+      "generation": 6,
+      "target_name": "PeakKnowledgeProductivityValue",
+      "verdict": "accept",
+      "score": 4,
+      "rationale": "Proximity-of-current-asset-productivity-to-own-five-year-peak is a genuinely distinct conditioning variable from the archive's volatility-based (DurableKnowledgeDemandValue) and change-based (CommercializingKnowledgeValue) productivity legs, the bounded [0,1] construction is well-behaved for a positive revenue/asset ratio, and the value-trap-avoidance rationale coherently matches the expected positive sign."
+    },
+    {
+      "generation": 7,
+      "target_name": "RDRolloverLiquidityValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archived NetLiquidKnowledgeValue (identical value leg, liquidity leg changed only from che\u2212(dltt+dlc) to che\u2212dlc\u2212xrd, which also mixes a one-year flow into a stock-based net-cash measure), so it is very unlikely to represent a distinct mechanism from the already-tested t=4.79 result."
+    },
+    {
+      "generation": 7,
+      "target_name": "HiddenInvestmentLowAssetGrowthValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The conditioning term is dominated in magnitude and variance by \u2212GROWTH(at,1), so the signal is effectively value \u00d7 low asset growth \u2014 a direct rediscovery of the asset-growth anomaly already spanned by FF5's CMA \u2014 and it duplicates the archived BookGrowthHiddenReinvestmentValue's hidden-reinvestment mechanism."
+    },
+    {
+      "generation": 7,
+      "target_name": "OrganicIntangibleEarningsValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The internal-versus-acquired intangible composition mechanism is already tested in the archive (InternalKnowledgeBookValueQuality, GoodwillCleanBookValue), and this differs only by swapping the value leg from B/M to E/P and gdwl for intan, which is a leg-swap rather than a new economic hypothesis."
+    },
+    {
+      "generation": 7,
+      "target_name": "NearPeakCostEfficiencyValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "A level-relative-to-own-history cost-efficiency conditioner is a substantively different construct from the archived one-period \u0394(cogs/revt) version and the sign convention is internally consistent (TS_MIN/current \u2208 (0,1], higher = nearer the firm's own efficient frontier), though it is close in spirit to PeakKnowledgeProductivityValue and its incremental information is uncertain."
+    },
+    {
+      "generation": 7,
+      "target_name": "InnovationDebtSubstitutionValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The conditioning leg is the archived KnowledgeDeleveragingValue's \u0394leverage term with a small, slowly-varying xrd/at level added, so the cross-sectional ranking will be largely driven by the same deleveraging variable already evaluated (fmb t=4.89, ls_talpha only 1.42) rather than by any genuine R&D-versus-debt substitution."
+    },
+    {
+      "generation": 7,
+      "target_name": "DeleveredInnovationPayoutYield",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "This is a mechanical recombination of two already-archived legs (PayoutSupportedKnowledgeYield's dividend-plus-R&D yield and KnowledgeDeleveragingValue's knowledge-adjusted leverage change), and the second leg is largely the well-known net-debt-issuance/financing anomaly, so novelty is thin even though the pairing is coherent and untested."
+    },
+    {
+      "generation": 8,
+      "target_name": "ShortDebtKnowledgeSurplusValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic variant of the archived KnowledgeSurplusLowDebtValue (identical structure, merely dropping `dltt` from the debt term), and the short-term-debt leg is already covered by RDLongHorizonFinancingValue, so it adds no new mechanism."
+    },
+    {
+      "generation": 8,
+      "target_name": "PeakAdjustedReturnValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "The expression matches the hypothesis and the own-history rank of R&D-adjusted ROA is a genuinely different conditioner from the archived volatility- and revenue-productivity-based variants, though the incremental economic content over PeakKnowledgeProductivityValue is modest."
+    },
+    {
+      "generation": 8,
+      "target_name": "HarvestingHiddenKnowledgeValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Because the five-year R&D stock is several times current R&D, `LAG(TS_SUM(xrd,5),1) - xrd` is numerically dominated by the R&D-capital level, so the signal is effectively R&D-capital intensity interacted with pre-R&D earnings yield (already tested in ReportedYieldHiddenCapitalResilience) rather than the claimed \"harvesting phase\" indicator."
+    },
+    {
+      "generation": 8,
+      "target_name": "HiddenCapitalValueDislocation",
+      "verdict": "flag",
+      "score": 3,
+      "rationale": "Structurally this is ReportedYieldHiddenCapitalResilience with one interaction leg swapped from cross-sectional to time-series rank of the same earnings yield \u2014 a defensible but largely cosmetic modification of an already-evaluated, mediocre signal."
+    },
+    {
+      "generation": 8,
+      "target_name": "GrossProfitCoveredRDPersistence",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "Using gross profit rather than net income as the coverage base for persistent R&D is a coherent and materially different affordability measure from the archived SustainableInnovationValue, and the multiplicative form and sign are internally consistent, though it remains an incremental refinement of a previously weak family."
+    },
+    {
+      "generation": 8,
+      "target_name": "OperatingFinancingKnowledgeValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This simply bolts together the conditioning legs of two already-tested archive signals (PeakKnowledgeProductivityValue's peak-productivity term and RDLongHorizonFinancingValue's short-debt term) onto the same pre-R&D earnings yield, which is a high-overfitting-risk recombination rather than a new mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "RunwayFundedPreRDValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "This is a cosmetic re-scaling of the already-archived LiquidKnowledgeValue/NetLiquidKnowledgeValue/CashBackedRDCommitmentValue family (identical pre-R&D earnings-yield leg times a cash-adequacy leg, with only the denominator swapped from knowledge-adjusted assets to |ib|+dlc+xrd), so it adds no new economic mechanism."
+    },
+    {
+      "generation": 9,
+      "target_name": "ReportedValuePersistentRDLowDebt",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Near-identical to the archived RDLongHorizonFinancingValue (same conditional structure, same TS_COUNT(xrd,5) persistence term, debt intensity broadened from dlc/at to total debt/at and ib substituted for ib+xrd), which is exactly the kind of variant the objective asks to avoid."
+    },
+    {
+      "generation": 9,
+      "target_name": "BrandMarginStabilityValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Structurally identical to the archived BrandMarginSupportedValue with the gross-margin level simply replaced by gross-margin volatility, a one-term substitution that has already been explored in the archive's other VOL-conditioned value signals."
+    },
+    {
+      "generation": 9,
+      "target_name": "AcquiredIntangibleMarginDecayShort",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "Although the sign convention is internally coherent, this re-treads the archive's already-failed goodwill/intangible-overpayment short family (AcquisitionIntangibleOverpayRisk, GoodwillProductivityPremiumRisk) with only proxy substitutions, and the margin-deterioration leg is close to published goodwill/intangible-impairment and profitability-trend anomalies."
+    },
+    {
+      "generation": 9,
+      "target_name": "BalancedInnovationPayoutValue",
+      "verdict": "flag",
+      "score": 2,
+      "rationale": "The MIN(dvc,xrd) bottleneck plus earnings-support scaling is essentially the archived BalancedDividendInnovationYield/PayoutSupportedKnowledgeYield construct rewritten in conditional ADD form, and that mechanism already delivered essentially zero FF5 alpha."
+    },
+    {
+      "generation": 9,
+      "target_name": "HarvestPhaseGrossPayoffValue",
+      "verdict": "accept",
+      "score": 3,
+      "rationale": "It is the only proposal that meaningfully changes the mechanism rather than a scaling term\u2014pairing within-firm R&D-intensity moderation with realized gross profit on the lagged knowledge-inclusive asset base\u2014but it remains adjacent to TrueHarvestingKnowledgeValue and the SUMRANK risks letting a Novy-Marx-style gross-profitability leg dominate the harvesting condition, so a diagnostic on each leg's standalone contribution is warranted."
+    }
+  ],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 2 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 4 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 5 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProductiveRDCapitalValue",
+      "metadata": {
+        "normalized_expression": "mul(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),ratio(sale,add(at,ts_sum(coalesce(xrd,0),5))))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldRDResponse",
+      "metadata": {
+        "normalized_expression": "mul(ratio(oancf,mul(prcc_f,csho)),ratio(ma(delta(sale,1),3),ma(xrd,3)))",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdCapitalSalesYield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(sale,add(mul(prcc_f,csho),ts_sum(coalesce(xad,0),3))),1)",
+        "variables": [
+          "csho",
+          "prcc_f",
+          "sale",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleBurdenEVYield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(ebitda,add(add(mul(prcc_f,csho),sub(add(dltt,dlc),che)),coalesce(intan,coalesce(gdwl,0)))),1)",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "gdwl",
+          "intan",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankedRDExpectationPremium",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(mul(prcc_f,csho),sale)),rank(ratio(ts_sum(coalesce(xrd,0),5),sale)))",
+        "variables": [
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDAmplifiedBookValue",
+      "metadata": {
+        "normalized_expression": "add(rank(ratio(ceq,mul(prcc_f,csho))),mul(rank(ratio(ceq,mul(prcc_f,csho))),rank(ratio(ts_sum(coalesce(xrd,0),5),sale))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PreRDCashKnowledgeYield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(oancf,coalesce(xrd,0)),add(mul(prcc_f,csho),ts_sum(coalesce(xrd,0),5))),1)",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MatureRDCheapness",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho))),rank(neg(delta(ratio(coalesce(xrd,0),sale),1))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentPreRDEarningsValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(ts_count(xrd,5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CommercializingKnowledgeValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(sale,mul(prcc_f,csho)),1)),rank(winsor(delta(ratio(sale,add(at,ts_sum(coalesce(xrd,0),5))),1),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquisitionIntangibleOverpayRisk",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(mul(prcc_f,csho),at),1)),rank(ratio(coalesce(gdwl,0),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ExpensiveRDEarningsBurden",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(mul(prcc_f,csho),sale),1)),rank(winsor(ratio(coalesce(xrd,0),add(abs(ib),coalesce(xrd,0))),1)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYieldKnowledgeGrowthEfficiency",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),rank(winsor(ratio(ma(delta(sale,1),3),add(at,ts_sum(coalesce(xrd,0),5))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableRDProgramValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(ts_count(xrd,5)),rank(winsor(neg(vol(ratio(coalesce(xrd,0),sale),5)),1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "InternalKnowledgeBookValueQuality",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ceq,mul(prcc_f,csho)),1)),rank(winsor(sub(ratio(ts_sum(coalesce(xrd,0),5),at),ratio(coalesce(gdwl,0),at)),1)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "gdwl",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GoodwillProductivityPremiumRisk",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(mul(prcc_f,csho),at),1)),sumrank(ratio(coalesce(gdwl,0),at),winsor(neg(delta(ratio(sale,at),1)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "prcc_f",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdjustedBookPreRDEarningPower",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ceq,ts_sum(coalesce(xrd,0),5)),mul(prcc_f,csho)),1)),rank(winsor(ratio(add(ib,coalesce(xrd,0)),add(ceq,ts_sum(coalesce(xrd,0),5))),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SelfFundedKnowledgeCashValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(oancf,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(oancf,add(abs(oancf),coalesce(xrd,0))),1)),rank(winsor(ratio(ts_sum(coalesce(xrd,0),5),at),1)))))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ReportedYieldHiddenCapitalResilience",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(ts_sum(coalesce(xrd,0),5),add(ceq,ts_sum(coalesce(xrd,0),5))),1))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedPreRDEarningsYield",
+      "metadata": {
+        "normalized_expression": "winsor(min(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),ratio(oancf,mul(prcc_f,csho))),1)",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "MarketBookGapKnowledgeCover",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(ts_sum(coalesce(xrd,0),5),add(abs(sub(mul(prcc_f,csho),ceq)),ts_sum(coalesce(xrd,0),5))),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PriorKnowledgeCashPayoffValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(delta(oancf,1),add(at,lag(ts_sum(coalesce(xrd,0),5),1))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutSupportedKnowledgeYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(coalesce(dvc,0),coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(add(ib,coalesce(xrd,0)),add(abs(ib),add(coalesce(dvc,0),coalesce(xrd,0)))),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GoodwillCleanBookValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ceq,mul(prcc_f,csho)),1)),rank(winsor(neg(ratio(coalesce(gdwl,0),add(abs(ceq),coalesce(gdwl,0)))),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "gdwl",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashConvertedPreRDValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(oancf,add(abs(ib),coalesce(xrd,0))),1)))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ValueWithRDCommitment",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(ts_rank(ratio(coalesce(xrd,0),sale),5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BookGrowthHiddenReinvestmentValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(ts_sum(coalesce(xrd,0),5),add(abs(delta(ceq,1)),ts_sum(coalesce(xrd,0),5))),1))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDEnabledCostEfficiencyValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(neg(delta(ratio(cogs,revt),1)),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LiquidKnowledgeValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(che,add(at,ts_sum(coalesce(xrd,0),3))),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OperatingFundedInnovationPayout",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(coalesce(dvc,0),coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(ebitda,add(abs(ebitda),add(coalesce(dvc,0),coalesce(xrd,0)))),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "ebitda",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NetLiquidKnowledgeValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(sub(che,add(dltt,dlc)),add(at,ts_sum(coalesce(xrd,0),3))),1)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableAdjustedKnowledgeReturnValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(neg(vol(ratio(add(ib,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),5)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DurableKnowledgeDemandValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(neg(vol(ratio(revt,add(at,ts_sum(coalesce(xrd,0),5))),5)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeDeleveragingValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(neg(delta(ratio(add(dltt,dlc),add(at,lag(ts_sum(coalesce(xrd,0),5),1))),1)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalancedDividendInnovationYield",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(min(coalesce(dvc,0),coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(add(ib,coalesce(xrd,0)),add(abs(ib),add(coalesce(dvc,0),coalesce(xrd,0)))),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ProductiveRecognizedIntangibleValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(coalesce(intan,coalesce(gdwl,0)),at),1)),rank(winsor(delta(ratio(sub(revt,cogs),at),1),1)))))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "intan",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeakKnowledgeProductivityValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(ratio(revt,add(at,ts_sum(coalesce(xrd,0),5))),ts_max(ratio(revt,add(at,ts_sum(coalesce(xrd,0),5))),5)),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeEconomicOwnerYield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(add(ib,coalesce(dvc,0)),coalesce(xrd,0)),add(mul(prcc_f,csho),ts_sum(coalesce(xrd,0),5))),1)",
+        "variables": [
+          "csho",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashBackedRDCommitmentValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(min(che,ts_sum(coalesce(xrd,0),3)),add(at,ts_sum(coalesce(xrd,0),3))),1))))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandDisclosureEarningsValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(ts_count(xad,5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SustainableInnovationValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(neg(ratio(coalesce(xrd,0),add(abs(ib),coalesce(xrd,0)))),1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeSurplusLowDebtValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(sub(ts_sum(coalesce(xrd,0),5),add(coalesce(dltt,0),coalesce(dlc,0))),add(at,ts_sum(coalesce(xrd,0),5))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "dltt",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "NearPeakCostEfficiencyValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(ts_min(ratio(cogs,revt),5),ratio(cogs,revt)),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashRunwayAdjustedPreRDYield",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(add(ib,coalesce(xrd,0)),add(sub(mul(prcc_f,csho),min(che,ts_sum(coalesce(xrd,0),3))),ts_sum(coalesce(xrd,0),3))),1)",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ExpensedInvestmentShareValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(coalesce(xrd,0),add(abs(delta(at,1)),coalesce(xrd,0))),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcquiredIntangibleProductivityValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(coalesce(intan,coalesce(gdwl,0)),at),1)),rank(winsor(ratio(ratio(revt,at),ts_max(ratio(revt,at),5)),1)))))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "intan",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDLongHorizonFinancingValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(neg(ratio(coalesce(dlc,0),at)),1))))",
+        "variables": [
+          "at",
+          "csho",
+          "dlc",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DividendYieldWithPersistentRD",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(coalesce(dvc,0),mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(ratio(add(ib,coalesce(xrd,0)),add(abs(ib),coalesce(xrd,0))),1)))",
+        "variables": [
+          "csho",
+          "dvc",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PeakAdjustedReturnValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(ts_rank(ratio(add(ib,coalesce(xrd,0)),add(at,ts_sum(coalesce(xrd,0),5))),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "GrossProfitCoveredRDPersistence",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(ratio(sub(revt,cogs),add(abs(sub(revt,cogs)),coalesce(xrd,0))),1)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDMaintenanceAffordabilityValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),rank(winsor(ratio(ebitda,add(abs(ebitda),coalesce(xrd,0))),1))))",
+        "variables": [
+          "csho",
+          "ebitda",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TrueHarvestingKnowledgeValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(lag(ts_sum(coalesce(xrd,0),5),1),add(at,lag(ts_sum(coalesce(xrd,0),5),1))),1)),rank(neg(ts_rank(ratio(coalesce(xrd,0),sale),5)))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeCapitalGrossReturnValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),rank(winsor(ratio(sub(revt,cogs),add(abs(ceq),ts_sum(coalesce(xrd,0),5))),1)))",
+        "variables": [
+          "ceq",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandMarginSupportedValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xad,5),winsor(ratio(sub(revt,cogs),revt),1))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "HarvestPhaseGrossPayoffValue",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho)),1)),sumrank(winsor(neg(ts_rank(ratio(coalesce(xrd,0),sale),5)),1),winsor(ratio(sub(revt,cogs),add(at,lag(ts_sum(coalesce(xrd,0),5),1))),1)))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConservativeCashRDValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(ratio(sub(oancf,ib),add(abs(ib),coalesce(xrd,0))),1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SalesFundedRDPersistenceValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xrd,5),winsor(ratio(sale,add(sale,coalesce(xrd,0))),1))))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandDemandProductivityValue",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),sumrank(ts_count(xad,5),ts_rank(ratio(revt,at),5))))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RecognizedIntangibleEarningsCover",
+      "metadata": {
+        "normalized_expression": "add(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(ib,mul(prcc_f,csho)),1)),mul(rank(winsor(ratio(coalesce(intan,coalesce(gdwl,0)),at),1)),rank(winsor(ratio(ib,add(abs(ib),coalesce(intan,coalesce(gdwl,0)))),1)))))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "intan",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AcceleratingUnproductiveRDGlamour",
+      "metadata": {
+        "normalized_expression": "mul(rank(winsor(neg(ratio(add(ib,coalesce(xrd,0)),mul(prcc_f,csho))),1)),sumrank(winsor(accel(ratio(coalesce(xrd,0),sale)),1),winsor(neg(ratio(sale,add(at,ts_sum(coalesce(xrd,0),5)))),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    }
+  ]
+}

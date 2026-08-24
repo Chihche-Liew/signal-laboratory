@@ -1,0 +1,2882 @@
+{
+  "pair": "value_intangible",
+  "evaluated": [
+    {
+      "name": "KnowledgeCapital_BM",
+      "expression": "COALESCE(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho)), RATIO(ceq, MUL(prcc_f, csho)))",
+      "hypothesis": "Expensed R&D creates off-balance-sheet knowledge capital, so reported book equity understates replacement value for research-intensive firms; adding a five-year R&D stock back to book equity produces a less noisy value ratio that better predicts returns.",
+      "expected_sign": "positive",
+      "reasoning": "The interaction is a direct restatement of the valuation denominator using an intangibles-theme input, so cheapness is measured against intangible-inclusive capital rather than tangible-only capital. The COALESCE fallback is economically justified because firms that never report R&D have no knowledge-capital adjustment, and plain B/M is the correct limiting case, preserving coverage without fabricating intangibles.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 4.589939891651018,
+      "ls_alpha": 0.0034725550777618634,
+      "ls_talpha": 0.4152844950600898,
+      "ls_sharpe": 0.3111604616090873,
+      "coverage": 0.1418997492213728,
+      "error": null
+    },
+    {
+      "name": "RDInclusive_Yield_x_IntanTurnover",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(revt, intan))",
+      "hypothesis": "Firms are cheap on true economic earnings when R&D-adjusted profits are high relative to price, and this cheapness is only informative when recognized intangibles actually generate sales; combining pre-R&D earnings yield with intangible asset turnover isolates cheap, productive intangible franchises.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to income undoes the conservative expensing that depresses earnings yields for innovators, while revenue-per-dollar-of-intangibles screens out firms whose intangible balances (often goodwill from overpaid deals) are unproductive. Ranked aggregation gives each channel equal weight and avoids scale outliers in the intangible denominator.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 5.203985515334721,
+      "ls_alpha": 0.02321999465994636,
+      "ls_talpha": 2.364088941297212,
+      "ls_sharpe": 0.22397183673079107,
+      "coverage": 0.04014537194564757,
+      "error": null
+    },
+    {
+      "name": "ValueTilt_Conditional_RDIntensity",
+      "expression": "MUL(IND_ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), IND_RANK(RATIO(xrd, at)))",
+      "hypothesis": "The value premium is largest where accounting conservatism is most severe, so within-industry cheapness should be amplified for R&D-intensive firms and muted for firms whose book value already captures their assets.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D-intensity rank acts as a multiplicative intensity weight on the standardized book-to-market signal, so the payoff comes from cheap-and-intangible-heavy firms rather than from either theme alone. Industry standardization on both legs prevents the signal from degenerating into a pure sector bet on pharma or software.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.5777021762427859,
+      "ls_alpha": -0.020986094292039237,
+      "ls_talpha": -2.0236645334956305,
+      "ls_sharpe": -0.02136943989378325,
+      "coverage": 0.06771353123217495,
+      "error": null
+    },
+    {
+      "name": "IntangibleCapital_Yield",
+      "expression": "RATIO(ADD(intan, TS_SUM(xrd, 5)), MUL(prcc_f, csho))",
+      "hypothesis": "Market value per dollar of total intangible capital (recognized intangibles plus internally generated R&D stock) measures how cheaply investors can buy intangible capacity; firms with high intangible capital per unit of price are systematically underpriced because intangibles are hard to value.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately drops tangible book equity so the signal is a pure valuation ratio on the intangible base, distinguishing it from intangible-adjusted B/M and avoiding contamination from asset-heavy cheap firms. Combining purchased and internally developed intangibles treats economically equivalent capital symmetrically regardless of whether acquisition accounting recognized it.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.8853377181004416,
+      "ls_alpha": -0.017436388424241667,
+      "ls_talpha": -1.7435354734063422,
+      "ls_sharpe": 0.1238265326764109,
+      "coverage": 0.06478588887320491,
+      "error": null
+    },
+    {
+      "name": "CheapEV_x_RisingRDIntensity",
+      "expression": "MUL(RANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), RANK(GROWTH(MA(RATIO(xrd, sale), 3), 1)))",
+      "hypothesis": "Firms trading at low enterprise-value multiples while accelerating intangible investment are misclassified as declining businesses; the market discounts current EBITDA and penalizes the earnings drag from rising R&D, so subsequent returns are abnormally high.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV is a capital-structure-neutral cheapness metric, and growth in smoothed R&D-to-sales captures a change in intangible investment policy rather than a static intensity level, which is what makes reported earnings temporarily understate future profitability. The multiplicative rank form requires both conditions jointly, targeting the mispricing rather than either the value or the investment effect in isolation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 2.6980686148229,
+      "ls_alpha": 0.003922338001884837,
+      "ls_talpha": 0.3650493195006341,
+      "ls_sharpe": 0.2333383767895325,
+      "coverage": 0.050730254484999925,
+      "error": null
+    },
+    {
+      "name": "IntangibleValuationDistortionGap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho))), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The gap between a firm's intangible-adjusted value rank and its unadjusted value rank measures how much conventional accounting distorts its apparent cheapness; firms that look expensive on reported book but cheap once knowledge capital is capitalized are the ones investors misprice.",
+      "expected_sign": "positive",
+      "reasoning": "Differencing two industry ranks purges the common value-factor exposure and isolates the incremental information created by the intangible adjustment, making it an explicit measure of accounting-driven mismeasurement rather than a value proxy. Firms with large positive gaps are exactly the high-R&D \"growth-looking\" names whose true book value is understated, so the signal should earn returns beyond standard B/M.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.9950881924445152,
+      "ls_alpha": 0.008721728518523264,
+      "ls_talpha": 1.0217452714206268,
+      "ls_sharpe": 0.1832088225984119,
+      "coverage": 0.07160176593389449,
+      "error": null
+    },
+    {
+      "name": "RDStock_GrossProfitability_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), TS_SUM(xrd, 5)))",
+      "hypothesis": "Cheapness measured on pre-R&D earnings is only informative when the accumulated R&D stock actually produces gross profit; gross profit per dollar of cumulative R&D spending identifies innovators whose knowledge capital is real rather than sunk, and cheap-plus-productive innovators are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This retains the mechanism of the gen-0 winner (R&D-inclusive earnings yield \u00d7 intangible productivity) but replaces the balance-sheet `intan` denominator, which required a second sparse field and imported purchased goodwill, with the firm's own five-year R&D stock, so productivity is measured on internally generated knowledge capital and coverage is limited by `xrd` alone. If the alpha survives with materially better coverage, we learn the winner's edge came from intangible productivity rather than from the narrow `intan`-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.2968615972225503,
+      "ls_alpha": -0.041846984372488155,
+      "ls_talpha": -3.2734455503994084,
+      "ls_sharpe": 0.027764758724786315,
+      "coverage": 0.05670389136117983,
+      "error": null
+    },
+    {
+      "name": "OrganicBook_ExGoodwill_BM",
+      "expression": "RATIO(ADD(SUB(ceq, gdwl), TS_SUM(xrd, 5)), MUL(prcc_f, csho))",
+      "hypothesis": "Book value should be raised by internally generated knowledge capital and lowered by goodwill, which is a record of prices paid rather than productive capital; the resulting \"organic\" book-to-market is a cleaner cheapness measure than either raw or naively intangible-inclusive book value.",
+      "expected_sign": "positive",
+      "reasoning": "This directly diagnoses why IntangibleCapital_Yield had a positive FMB slope but a negative FF5 alpha \u2014 its long leg loaded on goodwill-heavy serial acquirers whose intangible balances are stale purchase-price allocations. Subtracting goodwill while adding the R&D stock makes the two intangible components enter with opposite, economically motivated signs, which no gen-0 signal tested.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.391254456023688,
+      "ls_alpha": -0.018651575297734983,
+      "ls_talpha": -2.058058794611694,
+      "ls_sharpe": -0.16012907976924376,
+      "coverage": 0.045476275087149284,
+      "error": null
+    },
+    {
+      "name": "AdditiveValue_RDIntensity",
+      "expression": "SUMRANK(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho)), RATIO(xrd, at))",
+      "hypothesis": "Intangible-adjusted cheapness and intangible intensity are complementary but should be combined additively in rank space: high adjusted book-to-market identifies mispricing, and high R&D intensity identifies where accounting conservatism makes that mispricing most likely to persist.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate structural contrast with ValueTilt_Conditional_RDIntensity, which used the same two economic ingredients in multiplicative signed\u00d7rank form and produced a significant negative FF5 alpha; if the additive rank version turns positive, the gen-0 failure was an operator-structure artifact, not evidence against the mechanism. Keeping both legs rank-based also removes the outlier sensitivity of raw book-to-market levels.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.4540659741174675,
+      "ls_alpha": -0.00017590801901681916,
+      "ls_talpha": -0.020266433749975703,
+      "ls_sharpe": 0.11528909814936766,
+      "coverage": 0.06774980044195812,
+      "error": null
+    },
+    {
+      "name": "ImprovingIntangibleProductivity_SP",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), TREND(RATIO(SUB(revt, cogs), ADD(intan, xrd)), 5))",
+      "hypothesis": "Cheap firms whose gross profit per dollar of intangible capital is on a multi-year improving trend are re-rating businesses whose intangible investment is beginning to pay off, while cheap firms with deteriorating intangible productivity are genuine value traps.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a dynamic productivity channel absent from the archive: the level of intangible turnover was the gen-0 winner's second leg, but the *direction of change* in intangible productivity should carry independent information about whether depressed valuation is temporary. Sales-to-price is used as the cheapness leg because revenue is undistorted by intangible expensing and amortization.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.193928735602497,
+      "ls_alpha": -0.014391307700350579,
+      "ls_talpha": -1.7065044929806734,
+      "ls_sharpe": 0.08344984914971493,
+      "coverage": 0.046619193727727715,
+      "error": null
+    },
+    {
+      "name": "AmortizationDrag_CashValue",
+      "expression": "SUMRANK(RATIO(SUB(oancf, ib), MUL(prcc_f, csho)), RATIO(intan, at))",
+      "hypothesis": "For intangible-heavy firms, amortization and expensing drive a large wedge between cash flow and reported earnings; if investors anchor on earnings, firms with a big cash-minus-earnings yield and a large intangible asset base are systematically undervalued.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the accounting-distortion channel in the *income statement* rather than the balance sheet, which no gen-0 signal did, and it tests whether recognized intangibles (`intan`) can ever be a constructive conditioner once the valuation leg is cash-based rather than a price-to-intangible-capital ratio. Comparing its outcome with Signal 1 tells us whether the useful intangible variable is purchased intangibles or R&D flow.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.2961716053965016,
+      "ls_alpha": -0.02510702967258199,
+      "ls_talpha": -2.1209346292279907,
+      "ls_sharpe": -0.028539049528944135,
+      "coverage": 0.08322153336519658,
+      "error": null
+    },
+    {
+      "name": "KnowledgeStockGrowth_In_CheapFirms",
+      "expression": "MUL(IND_ZSCORE(GROWTH(TS_SUM(xrd, 3), 1)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "Accelerating knowledge-capital accumulation is rewarded most in already-cheap firms, where the market has priced in decline and gives no credit for new intangible investment; expensive firms already have growth expectations embedded, so identical R&D growth carries no news.",
+      "expected_sign": "positive",
+      "reasoning": "The signed leg is now the informative intangible-investment variable and the bounded [0,1] leg is the valuation conditioner, which repairs the perverse orientation that made the gen-0 multiplicative conditional signal short expensive high-R&D firms indiscriminately. Growth in a three-year R&D stock rather than single-year R&D avoids treating lumpy one-off spending spikes as a change in innovation policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.1218086527830007,
+      "ls_alpha": -0.007738630521097696,
+      "ls_talpha": -0.9093804554244413,
+      "ls_sharpe": -0.16227416624380864,
+      "coverage": 0.05186032670561247,
+      "error": null
+    },
+    {
+      "name": "RDIntensity_Per_GrossProfit_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), SUB(revt, cogs)))",
+      "hypothesis": "Firms cheap on R&D-inclusive earnings that also carry a large accumulated R&D stock relative to current gross profit own hidden knowledge capital whose payoff is not yet in the income statement; their reported profitability understates economic profitability and returns are abnormally high.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact orientation flip of the intangible leg in RDStock_GrossProfitability_Cheapness, which produced a highly reliable \u22124.2% alpha (t=\u22123.27); if the mechanism is real rather than a sign error, inverting only the intangible leg while keeping the cheapness leg long-value should convert that reliability into positive alpha. Testing it isolates whether internally generated R&D must enter as *intensity* (numerator) while purchased intangibles enter as *turnover* (denominator).",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 5.779469259868555,
+      "ls_alpha": 0.03424118989007077,
+      "ls_talpha": 3.0462408508618246,
+      "ls_sharpe": 0.3836743368193538,
+      "coverage": 0.06632622105995656,
+      "error": null
+    },
+    {
+      "name": "EVCheap_x_IntangibleTurnover",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(revt, intan))",
+      "hypothesis": "The alpha in the intangible-turnover composite comes from buying cheap operating businesses that do not depend on capitalized purchase-price intangibles; measuring cheapness on enterprise value rather than equity price removes leverage contamination and should sharpen the same effect.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner paired an equity-level earnings yield with revt/intan, but intangible-heavy firms are typically levered acquirers, so part of the equity-yield leg may be a leverage artifact rather than cheapness. Substituting EBITDA/EV isolates operating cheapness while holding the productive-intangible leg fixed, which tells us whether the effect is a valuation-metric artifact or an operating-value phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.6464463965569722,
+      "ls_alpha": -0.007480550906579197,
+      "ls_talpha": -0.7384926379516163,
+      "ls_sharpe": 0.0905022508973541,
+      "coverage": 0.07998593807138193,
+      "error": null
+    },
+    {
+      "name": "EarningsYield_x_IntanTurnover_WideCoverage",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(revt, intan))",
+      "hypothesis": "If the productive-intangible channel is what generates abnormal returns, a plain earnings yield combined with intangible turnover should retain the alpha while roughly doubling usable observations, because the signal no longer requires firms to report R&D.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner's 0.040 coverage is the main reliability concern in the archive, and its R&D add-back is exactly the component that restricts the sample. Dropping the add-back is a targeted design test: if alpha and t-stat survive at higher coverage, the effect is about intangible productivity, not about the subset of R&D reporters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.3240519478220363,
+      "ls_alpha": -0.00041777567910617755,
+      "ls_talpha": -0.04044821015735673,
+      "ls_sharpe": 0.0940722064172769,
+      "coverage": 0.08073495142505492,
+      "error": null
+    },
+    {
+      "name": "Glamour_Goodwill_ValueTrap",
+      "expression": "SUMRANK(RATIO(gdwl, at), RATIO(MUL(prcc_f, csho), revt))",
+      "hypothesis": "Firms that are simultaneously expensive relative to sales and heavily capitalized in acquisition goodwill have paid for growth twice \u2014 once in the acquisition price and once in their own market multiple \u2014 and subsequently underperform as goodwill fails to generate revenue and is written down.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's repeated negative alphas on goodwill-inclusive long legs suggest the exploitable side of this interaction is the *short* side, so I state it as an explicit negative-sign mechanism rather than fighting it with more book-value repairs. Using price-to-sales as the expensiveness leg keeps the valuation measure immune to the earnings distortions that goodwill amortization and impairment create.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.9958270884687976,
+      "ls_alpha": 0.0038750570125393093,
+      "ls_talpha": 0.2609596072457417,
+      "ls_sharpe": -0.15659901354390462,
+      "coverage": 0.08199297192484566,
+      "error": null
+    },
+    {
+      "name": "OwnHistory_IntangibleAdjusted_Cheapness",
+      "expression": "MUL(IND_ZSCORE(NEG(TS_RANK(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(xrd, 5))), 5))), IND_RANK(RATIO(xrd, sale)))",
+      "hypothesis": "A firm trading near the low end of its own five-year history of price-to-intangible-adjusted-book is temporarily depressed relative to its own fundamentals, and this within-firm cheapness is most informative for R&D-intensive firms whose intangible capital the market repeatedly misprices.",
+      "expected_sign": "positive",
+      "reasoning": "Every cross-sectional book-based construction so far has been absorbed or penalized by HML and CMA, so I switch to a time-series cheapness state that is mechanically far less correlated with the static value factor while still using intangible-adjusted book. The signed leg is the own-history valuation state and the bounded [0,1] leg is R&D intensity, the orientation that avoids the perverse product structure seen in gen 0.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 0.4621300491566898,
+      "ls_alpha": -0.01776738688770267,
+      "ls_talpha": -1.9567477936847013,
+      "ls_sharpe": -0.237541668133301,
+      "coverage": 0.05893860092271346,
+      "error": null
+    },
+    {
+      "name": "BrandCapital_Productive_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xad), MUL(prcc_f, csho)), RATIO(revt, MA(xad, 3)))",
+      "hypothesis": "Advertising builds brand capital that is fully expensed; firms cheap on advertising-adjusted earnings whose sustained advertising spend converts efficiently into revenue hold understated brand assets and are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Advertising is an entirely unexplored intangible channel in the archive and is economically distinct from R&D: its payoff horizon is shorter and its productivity is directly measurable as revenue per advertising dollar. Smoothing advertising over three years distinguishes firms with a durable brand-building policy from those with one-off campaign spikes, which is what makes the expensed spend a genuine asset.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.654913576677566,
+      "ls_alpha": -0.013679529415667076,
+      "ls_talpha": -1.2822960839594826,
+      "ls_sharpe": -0.08600368456827301,
+      "coverage": 0.051508056201487996,
+      "error": null
+    },
+    {
+      "name": "KnowledgeStock_Per_Sales_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "The winning interaction reflects hidden knowledge capital that is large relative to the firm's operating scale; scaling the five-year R&D stock by smoothed revenue rather than gross profit measures the same intangible intensity without letting low-margin firms load into the long leg.",
+      "expected_sign": "positive",
+      "reasoning": "In the current best signal the intangible leg is R&D stock divided by gross profit, so a firm can rank high either by spending heavily on R&D or by having thin margins \u2014 this test separates genuine intangible intensity from low profitability. If alpha holds or improves with revenue scaling, the mechanism is intangible intensity; if it weakens, part of the gen-2 alpha was a distressed-margin bet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.4842102381757347,
+      "ls_alpha": 0.04252412052000471,
+      "ls_talpha": 3.8313109212429057,
+      "ls_sharpe": 0.33582332295747824,
+      "coverage": 0.06648693028965014,
+      "error": null
+    },
+    {
+      "name": "CheapKnowledge_Productive_Triple",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs)), RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Cheap, R&D-intensive firms earn abnormal returns only when their existing operations are genuinely profitable; adding gross profitability screens out the R&D-burning shells that make the intangible-intensity leg noisy and should raise both the alpha and its reliability.",
+      "expected_sign": "positive",
+      "reasoning": "The best signal buys firms whose R&D stock dwarfs current gross profit, a group that mixes underpriced innovators with cash-burning speculative names; gross-profits-to-assets is the standard discriminator between the two. This is a substantive quality overlay on the winning mechanism rather than a rescaling, and it directly targets the long leg's composition instability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 6.96543520460396,
+      "ls_alpha": 0.03415905022922697,
+      "ls_talpha": 2.8818986687338906,
+      "ls_sharpe": 0.3606147211896598,
+      "coverage": 0.0663256019553799,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutral_CheapKnowledgeIntensity",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), IND_ZSCORE(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs))))",
+      "hypothesis": "R&D intensity is largely an industry attribute, so a raw cross-sectional sort mostly buys pharma, biotech and software; if the mispricing is firm-specific, standardizing both legs within industry should preserve or strengthen abnormal returns while removing the sector concentration.",
+      "expected_sign": "positive",
+      "reasoning": "The winning signal's long leg is almost certainly sector-clustered, which threatens the stability of the FF5 alpha even though the t-stat is currently 3.05. Industry standardization is the cleanest diagnostic of whether we have discovered a durable firm-level mispricing or a persistent industry tilt.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 5.842466199865409,
+      "ls_alpha": 0.008009186633648226,
+      "ls_talpha": 0.7004820776267108,
+      "ls_sharpe": 0.2007942144018583,
+      "coverage": 0.06400488844973738,
+      "error": null
+    },
+    {
+      "name": "Internal_vs_Purchased_IntangibleYield",
+      "expression": "SUB(IND_RANK(RATIO(TS_SUM(xrd, 5), MUL(prcc_f, csho))), IND_RANK(RATIO(gdwl, MUL(prcc_f, csho))))",
+      "hypothesis": "A dollar of market value backed by internally generated R&D is systematically underpriced while a dollar backed by acquisition goodwill is overpriced; the spread between these two intangible yields is the purest expression of the accounting-conservatism mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows internal R&D legs producing positive alpha and goodwill-laden intangible legs producing negative alpha, so differencing the two yields should combine both sides of the asymmetry into one signal while cancelling their common exposure to a generic cheapness factor. This is a distinct mechanism: the composition of intangible capital rather than its total amount or its productivity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 1.2583691620814406,
+      "ls_alpha": 0.009191667657228255,
+      "ls_talpha": 0.9140571178435509,
+      "ls_sharpe": 0.1434562348512573,
+      "coverage": 0.045476533047389564,
+      "error": null
+    },
+    {
+      "name": "CheapYield_Times_KnowledgeIntensity",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), IND_RANK(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs))))",
+      "hypothesis": "The value effect is not merely additive with intangible intensity but conditional on it: cheapness should predict returns strongly among knowledge-intensive firms and weakly among firms with little intangible capital, because only in the former does accounting conservatism create the mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Every ingredient here is identical to the current best signal, so the only thing being tested is additive rank aggregation versus multiplicative conditioning \u2014 the design choice that failed in gen 0 but with an intangible leg we now know was oriented backwards. A positive result would tell us the interaction is genuinely conditional, which matters for interpreting the mechanism rather than just fitting it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 4.837390204110172,
+      "ls_alpha": -0.0008639161640932678,
+      "ls_talpha": -0.07693281104665489,
+      "ls_sharpe": 0.17360329295012022,
+      "coverage": 0.06612743689879787,
+      "error": null
+    },
+    {
+      "name": "StableRD_Commitment_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), NEG(VOL(RATIO(xrd, revt), 5)))",
+      "hypothesis": "Only a stable, sustained R&D program produces durable knowledge capital that accounting fails to record; erratic R&D spending is closer to a discretionary expense, so cheap firms with steady R&D intensity should be more underpriced than equally cheap firms with volatile R&D policy.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has tested R&D levels, stocks, and growth, but never the *reliability* of the investment policy, and gen-1's failure of R&D-stock growth in cheap firms suggests investors do not reward lumpy spending changes. Low volatility of R&D-to-revenue identifies committed innovators whose intangible capital is most likely real and mismeasured, a mechanism orthogonal to intensity level.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.179041652875459,
+      "ls_alpha": -0.039283139298275635,
+      "ls_talpha": -3.1714973080635103,
+      "ls_sharpe": 0.07459817954474177,
+      "coverage": 0.059465768469746834,
+      "error": null
+    },
+    {
+      "name": "CheapKnowledge_SalesScaled_Productive",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), MA(revt, 3)), RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Cheap firms with large knowledge stocks relative to operating scale are underpriced, but only the profitable ones convert that hidden capital into returns; combining revenue-scaled intangible intensity with gross profitability should deliver both the strongest cross-sectional slope and the largest reliable alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two best-performing gen-3 results: revenue scaling gave the highest alpha (4.3%, t=3.83) and the gross-profitability overlay gave the highest FMB t-stat (6.97), and they address different weaknesses of the raw winner. Because both legs are ranked and equally weighted, the combination should stabilize the long leg's composition rather than merely re-fit it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 6.647598884062196,
+      "ls_alpha": 0.04030254758112409,
+      "ls_talpha": 3.413201011806767,
+      "ls_sharpe": 0.3263660104642467,
+      "coverage": 0.06648197745303679,
+      "error": null
+    },
+    {
+      "name": "CheapValue_UnstableRD_Flip",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), VOL(RATIO(xrd, revt), 5))",
+      "hypothesis": "Volatile R&D-to-revenue marks firms whose innovation spending is being actively ramped or restructured, so their reported fundamentals are least informative about future profitability; combined with cheapness, this maximal-uncertainty group is the most mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "The stability version of exactly this signal produced a reliable \u22123.9% alpha (t=\u22123.17), so the data say cheap firms with *unstable* rather than steady R&D policy earn the abnormal returns, and I state that as the hypothesis instead of a stability story the evidence rejects. Testing the flip also reveals whether R&D volatility contains information beyond the intensity level, since scale effects make the two correlated.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.4009773818951974,
+      "ls_alpha": 0.026258016842741386,
+      "ls_talpha": 2.8555594793420687,
+      "ls_sharpe": 0.21166294866579774,
+      "coverage": 0.059465768469746834,
+      "error": null
+    },
+    {
+      "name": "CashFlow_RDInclusive_KnowledgeIntensity",
+      "expression": "SUMRANK(RATIO(ADD(oancf, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "For R&D-intensive firms reported net income is frequently negative or distorted by write-offs, so operating cash flow plus R&D is a cleaner measure of the distributable economics being purchased, and cheapness measured this way should predict returns more precisely.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal in the archive uses `ib + xrd` in the numerator, but that leg is exactly where loss-making innovators get ranked as expensive despite healthy cash generation, plausibly polluting the short leg. Substituting cash flow while holding the intangible leg at its best-performing form isolates the value-leg measurement choice.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.8148985340768493,
+      "ls_alpha": 0.041287805196774115,
+      "ls_talpha": 3.1994504658264624,
+      "ls_sharpe": 0.43621312242295746,
+      "coverage": 0.047183404365265094,
+      "error": null
+    },
+    {
+      "name": "BroadCheapness_KnowledgeIntensity",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(sale, MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "A cheapness measure averaging R&D-inclusive earnings yield with sales-to-price is less sensitive to transitory earnings than either alone, so pairing it with knowledge intensity should raise the reliability of the interaction without changing its economics.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-to-price is immune to intangible expensing and to loss years, which is precisely the measurement problem that afflicts earnings yields for research-intensive firms, so a two-ratio value leg should reduce turnover-driven noise in the sorted portfolios. This tests whether the alpha's t-stat is limited by valuation-leg noise rather than by the intangible signal itself.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 5.589048437122375,
+      "ls_alpha": 0.023866616679683563,
+      "ls_talpha": 2.058006994985229,
+      "ls_sharpe": 0.40234087152275044,
+      "coverage": 0.06648693028965014,
+      "error": null
+    },
+    {
+      "name": "KnowledgeCredited_EV_Multiple",
+      "expression": "RATIO(ebitda, SUB(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), TS_SUM(xrd, 5)))",
+      "hypothesis": "If investors were correctly crediting a firm's knowledge capital, enterprise value net of the R&D stock would represent the price paid for the visible operating business; firms where this residual price is low relative to EBITDA are getting their intangible capital for free.",
+      "expected_sign": "positive",
+      "reasoning": "This is a structurally different interaction \u2014 intangibles enter the valuation *denominator* as a credit rather than as a separate rank channel \u2014 and it directly prices the operating business net of hidden assets, which no archive signal has done. It also avoids the goodwill contamination that sank balance-sheet intangible-to-price ratios, since only internally generated R&D is credited.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.3461944884312116,
+      "ls_alpha": -0.011885465397012736,
+      "ls_talpha": -0.9856311926702911,
+      "ls_sharpe": 0.24211140041489346,
+      "coverage": 0.07134638529601867,
+      "error": null
+    },
+    {
+      "name": "AssetScaled_KnowledgeStock_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), at))",
+      "hypothesis": "Knowledge intensity measured against the tangible asset base identifies asset-light innovators whose balance sheets most understate economic capital; if the interaction works with an asset scaler as well as a revenue scaler, the mechanism is intangible intensity per se rather than a margin or revenue-scale artifact.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-1's AdditiveValue_RDIntensity paired asset-scaled R&D *flow* with an adjusted book-to-market value leg and produced zero alpha, leaving unresolved whether the failure came from the scaler, the flow-versus-stock choice, or the value leg. Holding the value leg at its best form and using the five-year stock isolates the scaler question, which determines how we should build the intangible leg in the consolidation phase.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 4.79188400396666,
+      "ls_alpha": 0.03639239904670171,
+      "ls_talpha": 3.0635190219831028,
+      "ls_sharpe": 0.36958061338026105,
+      "coverage": 0.06790034603818472,
+      "error": null
+    },
+    {
+      "name": "DualYield_KnowledgeIntensity",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(ADD(oancf, xrd), MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "Accruals and write-offs make a single R&D-inclusive earnings yield noisy for innovators, so averaging the accrual-based and cash-based versions of the same cheapness concept measures the true price of economic profits more precisely and should improve both alpha reliability and Sharpe.",
+      "expected_sign": "positive",
+      "reasoning": "The earnings-yield version delivered the highest alpha (4.3%, t=3.83) and the cash-flow version the highest Sharpe (0.436), and their difference is pure measurement noise in the same economic quantity, unlike the sales-to-price leg which diluted the signal. Combining them should retain the strong FMB slope of the accrual leg while inheriting the smoother spread of the cash leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.764759246066196,
+      "ls_alpha": 0.04061215037442803,
+      "ls_talpha": 2.70137219458234,
+      "ls_sharpe": 0.38493095072603156,
+      "coverage": 0.047183404365265094,
+      "error": null
+    },
+    {
+      "name": "CheapKnowledge_Quality_Instability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), SUMRANK(RATIO(SUB(revt, cogs), at), VOL(RATIO(xrd, revt), 5)))",
+      "hypothesis": "Three distinct frictions reinforce each other: conservatism understates book profits for R&D-intensive firms, gross profitability separates real franchises from cash burners, and unstable R&D intensity marks firms whose fundamentals are hardest for investors to extrapolate \u2014 the joint extreme should be the most mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "Each of the three add-on channels has already produced independent positive alpha (profitability overlay 4.0% at t=3.41, R&D-volatility leg 2.6% at t=2.86), so stacking them tests whether their information is complementary rather than redundant. Equal-weighted nested ranks keep any single noisy channel from dominating the sort.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.4789702904894644,
+      "ls_alpha": 0.025113858863569413,
+      "ls_talpha": 2.3513436589467895,
+      "ls_sharpe": 0.06893992014115935,
+      "coverage": 0.059417426720718626,
+      "error": null
+    },
+    {
+      "name": "WithinIndustryCheap_RawKnowledgeTilt",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "The exploitable mispricing is being cheap relative to industry peers while operating in a knowledge-intensive business; neutralizing cheapness by industry removes the sector-level value trap without discarding the cross-industry intangible-intensity tilt that carries the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Neutralizing both legs killed the alpha (0.8%, t=0.70) while leaving a 5.8 FMB t-stat, which is ambiguous about which leg's industry variation matters; this one-sided version resolves the attribution. If alpha survives, we gain a cleaner, less sector-concentrated portfolio at no cost, which addresses the main stability concern with the champion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.045710423220105,
+      "ls_alpha": 0.028750530631741926,
+      "ls_talpha": 3.28597808989828,
+      "ls_sharpe": 0.13378666640605014,
+      "coverage": 0.06628659836704977,
+      "error": null
+    },
+    {
+      "name": "KnowledgeToPrice_Profitable",
+      "expression": "SUMRANK(RATIO(TS_SUM(xrd, 5), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The cleanest statement of the mechanism is knowledge capital per dollar of market value, screened for operating profitability: investors pay too little for accumulated R&D when the firm demonstrably earns gross profits on its asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal bundles an earnings yield with an intangible-intensity leg, leaving open whether the earnings yield is essential or merely correlated with the R&D-to-price ratio embedded in `ib + xrd`. Dropping it entirely is the decisive parsimony test, and the profitability screen is what protects this construction from the goodwill-and-junk contamination that sank the earlier intangible-to-price ratio.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 6.633580634269988,
+      "ls_alpha": 0.026356921299010135,
+      "ls_talpha": 2.147670474776143,
+      "ls_sharpe": 0.2587374289336795,
+      "coverage": 0.07173631799522381,
+      "error": null
+    },
+    {
+      "name": "FundedInnovation_CheapKnowledge",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), RATIO(ADD(che, oancf), xrd))",
+      "hypothesis": "Hidden knowledge capital is only worth paying for when the firm can finance its research program internally; cheap R&D-intensive firms whose cash balances and operating cash flow comfortably cover current R&D face no risk of a dilutive raise or a forced program cut, so their intangible capital survives to produce profits.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a financing-sustainability channel absent from the archive, and it is the natural economic discriminator inside the champion's long leg, which currently mixes self-funding innovators with firms burning toward equity issuance. It differs from the gross-profitability overlay because it measures liquidity and internal funding capacity rather than margin quality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.579951401301064,
+      "ls_alpha": 0.014238671059661652,
+      "ls_talpha": 0.8201467666064974,
+      "ls_sharpe": 0.14728840019854564,
+      "coverage": 0.03886103950134841,
+      "error": null
+    },
+    {
+      "name": "CheapKnowledge_RevenueRealization",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), GROWTH(MA(revt, 3), 1))",
+      "hypothesis": "Accumulated R&D becomes valuable only once it shows up in the top line; cheap, knowledge-intensive firms whose smoothed revenue is already growing are in the realization phase of their intangible investment, and the market is slow to re-rate them.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier attempts at dynamic intangible-productivity channels failed, but they used trend-in-productivity ratios with noisy `intan` denominators and weak value legs; smoothed revenue growth is a direct, robust measure of whether the knowledge stock is converting into sales. This tests the timing dimension of the mechanism \u2014 whether the payoff concentrates in firms where the intangible investment is beginning to pay off rather than in perpetual spenders.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 1.3359697666171848,
+      "ls_alpha": 0.030214911379995206,
+      "ls_talpha": 3.40920681507523,
+      "ls_sharpe": 0.08246736618893656,
+      "coverage": 0.06080881266473341,
+      "error": null
+    },
+    {
+      "name": "SmoothedProfit_KnowledgeIntensity",
+      "expression": "SUMRANK(RATIO(ADD(MA(ib, 3), xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "For R&D-intensive firms single-year net income is dominated by transitory items and loss years, so a three-year average of income plus current R&D is a more reliable measure of the economic earnings being purchased, sharpening the same cheapness-times-intangible-intensity interaction.",
+      "expected_sign": "positive",
+      "reasoning": "The champion's intangible leg is already smoothed over five years while its value leg is a single noisy annual figure, an asymmetry that plausibly caps the alpha t-stat at 3.8 and depresses Sharpe. Smoothing earnings should reduce portfolio turnover and misclassification in both tails without altering the economic content of the signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.4984875802817816,
+      "ls_alpha": 0.035494711326941514,
+      "ls_talpha": 3.1583786180673847,
+      "ls_sharpe": 0.26387114169441706,
+      "coverage": 0.06648940670795682,
+      "error": null
+    },
+    {
+      "name": "DualScaled_KnowledgeIntensity_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), MA(revt, 3)), RATIO(TS_SUM(xrd, 5), at)))",
+      "hypothesis": "Revenue and total assets are both imperfect proxies for the operating scale against which hidden knowledge capital should be measured; averaging the two scalers measures intangible intensity with less scaler-specific noise and should give a more stable long leg.",
+      "expected_sign": "positive",
+      "reasoning": "Revenue scaling (4.3% alpha) and asset scaling (3.6% alpha, higher coverage and Sharpe 0.37) both work, and their errors are different \u2014 revenue scaling favors low-margin firms, asset scaling favors asset-light ones \u2014 so the average should be more robust than either. This is a measurement refinement of the surviving leg, not an additional economic channel of the kind that diluted gen-5 results.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.095796053287158,
+      "ls_alpha": 0.04119040099564346,
+      "ls_talpha": 3.6194078647438874,
+      "ls_sharpe": 0.3572430563621091,
+      "coverage": 0.06648507297592013,
+      "error": null
+    },
+    {
+      "name": "ZeroRD_Convention_FullUniverse",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "Firms that do not report R&D genuinely have no knowledge capital, so treating unreported R&D as zero is the economically correct convention; it extends the signal to the full valuation universe and places non-innovators at the bottom of the intangible-intensity ranking where the mechanism says they belong.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage of roughly 0.066 versus the ~0.14 attainable with valuation data alone is the archive's biggest reliability caveat, and the missing observations are non-reporters rather than randomly missing data. If alpha and t-stat survive at doubled coverage the result is far more credible; if they collapse, we learn the effect lives strictly within the R&D-reporting cross-section, which is itself important.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.438835699288685,
+      "ls_alpha": 0.056415132829895714,
+      "ls_talpha": 4.4872508675426985,
+      "ls_sharpe": 0.4412022762738546,
+      "coverage": 0.14069713858119393,
+      "error": null
+    },
+    {
+      "name": "CashYield_AssetScaled_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(oancf, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), at))",
+      "hypothesis": "Cash flow plus R&D is the cleanest measure of what a buyer receives from an innovator, and knowledge capital measured against the tangible asset base identifies the firms whose balance sheets most understate economic capital; the pairing should deliver the mechanism's highest risk-adjusted return.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow value leg produced the best Sharpe in the archive (0.436) and the asset-scaled intangible leg had the best combination of coverage and Sharpe among scalers, so this crosses the two most portfolio-efficient components. It also isolates whether the cash-flow leg's low FMB t-stat (2.8) is a leg property or an artifact of its sales-scaled partner.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.88155805545964,
+      "ls_alpha": 0.03877767471966635,
+      "ls_talpha": 2.7092508059944946,
+      "ls_sharpe": 0.5037212598785804,
+      "coverage": 0.04853093706843252,
+      "error": null
+    },
+    {
+      "name": "KnowledgeInclusive_NetAssetValue",
+      "expression": "SUMRANK(RATIO(ADD(TS_SUM(xrd, 5), SUB(che, ADD(dltt, dlc))), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Once accumulated R&D is treated as an asset, some profitable firms trade below the sum of their knowledge capital and net cash, making the operating business effectively free; such intangible-inclusive net-asset bargains should earn large abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is a distinct economic channel \u2014 a liquidation-style floor value for innovators \u2014 rather than an earnings-multiple interaction, and it uses net cash to exclude the leveraged intangible-heavy acquirers whose presence produced negative alphas in earlier balance-sheet constructions. The gross-profitability screen guards against the R&D-burning shells that would otherwise dominate a knowledge-to-price sort, a pairing that already produced a 6.6 FMB t-stat.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.5476199871177285,
+      "ls_alpha": 0.033755305325505205,
+      "ls_talpha": 3.015241858859197,
+      "ls_sharpe": 0.1506594055680399,
+      "coverage": 0.07145049804899511,
+      "error": null
+    },
+    {
+      "name": "BuiltNotBought_Intangibles_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), ADD(intan, TS_SUM(xrd, 5))))",
+      "hypothesis": "Among cheap firms, those whose intangible capital is internally built rather than acquired hold assets that accounting never recorded at all, whereas acquirers already carry their intangibles at inflated purchase prices; the internally built share of total intangible capital should therefore predict returns.",
+      "expected_sign": "positive",
+      "reasoning": "The archive consistently shows internal R&D earning positive alpha and purchased intangibles earning negative alpha, but the one signal that differenced the two yields lacked a cheapness leg and was weak (t=0.91); expressing composition as a bounded share inside the winning frame is a cleaner test of the build-versus-buy asymmetry. It also distinguishes the mechanism from pure intensity, since a firm can be R&D-intensive yet mostly acquired.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.524215299976896,
+      "ls_alpha": 0.03819354218276169,
+      "ls_talpha": 3.5604667780788057,
+      "ls_sharpe": 0.3478069279319175,
+      "coverage": 0.057302204342482045,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_DualScaled_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), at)))",
+      "hypothesis": "Measuring hidden knowledge capital against both revenue and total assets removes scaler-specific distortions (thin margins on one side, asset-light business models on the other), so combining them within the full-universe convention should give the most stable ranking of intangible intensity and the most reliable alpha.",
+      "expected_sign": "positive",
+      "reasoning": "Dual scaling improved the R&D-reporter version (4.1% at t=3.62 versus 4.3% at t=3.83 for revenue alone, with the highest FMB slope of the two-leg family), and its benefit should be larger in the full universe where the zero-R&D mass makes the intangible ranking coarser. This is a measurement refinement of the leg we know matters, not an added channel of the type that diluted earlier stacks.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.670206883651196,
+      "ls_alpha": 0.0543826408056394,
+      "ls_talpha": 4.34138248436749,
+      "ls_sharpe": 0.4195414433896258,
+      "coverage": 0.14069404305831057,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_Knowledge_GrossProfitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Cheap, knowledge-intensive firms deliver abnormal returns only when the underlying business earns gross profits; adding profitability across the full universe should raise cross-sectional precision by separating underpriced innovators from cash-burning shells and distressed non-innovators alike.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profitability overlay produced the archive's strongest FMB slopes (6.6\u20137.0) while preserving 4.0% alpha in the narrow sample, and the full universe now contains many unprofitable non-R&D firms in the short leg that this screen will order more sensibly. If the FMB t-stat rises without sacrificing the 5.6% alpha, this becomes the best joint cross-sectional and portfolio evidence in the run.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.391189444954583,
+      "ls_alpha": 0.05908675363675561,
+      "ls_talpha": 4.447804044677114,
+      "ls_sharpe": 0.42178099934334234,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_CashPreferred_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "Operating cash flow plus R&D is the cleanest measure of the economic returns a buyer receives, and using reported earnings only when the cash flow statement is unavailable keeps that superior measure without sacrificing universe breadth.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-based value legs delivered the two highest Sharpe ratios in the archive (0.436 and 0.504) but always at roughly a third less coverage, so the fallback convention is exactly what is needed to combine measurement quality with breadth. This tests whether the full-universe alpha of 5.6% can be delivered with materially better risk-adjusted efficiency.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 5.798962206928606,
+      "ls_alpha": 0.05191750058502224,
+      "ls_talpha": 4.337870757252789,
+      "ls_sharpe": 0.4588221581740895,
+      "coverage": 0.14069837679034725,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_NetInternalIntangibleIntensity",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Only internally built intangibles are truly off the balance sheet; goodwill is already capitalized at an inflated price, so intangible intensity should be measured net of goodwill, penalizing serial acquirers and rewarding organic innovators within the same cheapness sort.",
+      "expected_sign": "positive",
+      "reasoning": "The archive repeatedly shows internal R&D earning positive alpha while goodwill-laden constructions earn negative alpha, and the bounded build-versus-buy share worked (3.8%, t=3.56) but cost coverage because it required `intan`; netting goodwill out of the same revenue-scaled intensity keeps full-universe coverage while sharpening the composition contrast. Both goodwill and R&D use the economically justified zero convention for non-reporters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.436987905845112,
+      "ls_alpha": 0.05705225953437434,
+      "ls_talpha": 4.922878322566266,
+      "ls_sharpe": 0.48529517068585953,
+      "coverage": 0.14069713858119393,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_EBITDA_EV_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(ebitda, COALESCE(xrd, SUB(at, at))), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "EBITDA plus R&D measured against enterprise value strips out both intangible amortization and capital-structure effects, giving a cheapness measure that is undistorted for firms carrying purchased intangibles and for leveraged acquirers, which should improve the short leg of the interaction.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier EV-based tests failed, but they were paired with the discredited `revt/intan` turnover leg rather than with knowledge intensity, so the valuation-metric question remains genuinely open within the winning frame. Because amortization of purchased intangibles depresses net income precisely for the acquirers we want to short, an amortization-free numerator could strengthen rather than dilute the spread.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 6.099145102754594,
+      "ls_alpha": 0.0480432488324066,
+      "ls_talpha": 3.657989384290264,
+      "ls_sharpe": 0.45103596698440457,
+      "coverage": 0.1381654135990035,
+      "error": null
+    },
+    {
+      "name": "PlainYield_FullUniverse_KnowledgeTilt",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "If the interaction is driven by intangible intensity rather than by mechanically adding R&D back to earnings, an unadjusted earnings yield combined with full-universe knowledge intensity should retain most of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "In the R&D-reporter sample the add-back was essential (dropping it took alpha from 2.3% to 0.0% when paired with intangible turnover), but that comparison used a leg we now know was uninformative, so the add-back's contribution to the 5.6% full-universe alpha is unmeasured. This attribution test determines whether the final recommended signal needs the R&D add-back at all, which matters for interpreting the mechanism as conservatism correction versus intangible-intensity tilt.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 4.602027481625696,
+      "ls_alpha": 0.05420835583370675,
+      "ls_talpha": 4.437406815552067,
+      "ls_sharpe": 0.4403429882319297,
+      "coverage": 0.14069713858119393,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_NetKnowledge_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The mispricing is strongest for cheap firms whose intangible capital is internally built rather than acquired and whose operations are genuinely profitable; combining the goodwill-netted intensity leg with gross profitability should deliver both the largest alpha and the strongest cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "These are the two refinements that each improved the full-universe base on different metrics \u2014 goodwill netting on reliability and Sharpe (t=4.92, 0.485), profitability on alpha and FMB slope (5.9%, fmb 6.39) \u2014 and they address distinct sources of long-leg contamination (overpaid acquirers versus unprofitable shells). Their information should be complementary rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 6.672435698641708,
+      "ls_alpha": 0.05821040746074428,
+      "ls_talpha": 4.707609606281569,
+      "ls_sharpe": 0.4452472635276077,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_CashYield_NetKnowledge",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Cash-based cheapness avoids the amortization and write-off distortions that goodwill-heavy firms create in earnings, so pairing it with a goodwill-netted intangible-intensity leg attacks the same accounting distortion from both the income-statement and balance-sheet sides.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-preferred value leg produced the second-highest FMB slope (5.80) and Sharpe 0.459, while goodwill netting produced the highest alpha t-stat, and the two are economically aligned because acquisition accounting depresses earnings but not cash flow. This tests whether combining them removes the residual noise that keeps the base signal's FMB slope near 4.4.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.336454565630534,
+      "ls_alpha": 0.051403612761791145,
+      "ls_talpha": 4.476421851116931,
+      "ls_sharpe": 0.4763033763963594,
+      "coverage": 0.14069837679034725,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_NetKnowledge_DualScaled",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at)))",
+      "hypothesis": "Net internally generated intangible capital should be measured against both revenue and assets, because the two scalers misclassify different firms; averaging them gives the most robust ranking of the accounting-conservatism gap across the full universe.",
+      "expected_sign": "positive",
+      "reasoning": "Dual scaling and goodwill netting are orthogonal design choices that each held or improved the base result, and dual scaling matters more in the full universe where the mass of zero-R&D firms makes any single scaler's ordering coarse. This isolates whether measurement robustness or the profitability screen is the better use of the second rank slot.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.512759897569108,
+      "ls_alpha": 0.05793224132710535,
+      "ls_talpha": 5.025190858887273,
+      "ls_sharpe": 0.4981322215742011,
+      "coverage": 0.14069404305831057,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_TotalIntangibleSpendStock",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Advertising builds brand capital that accounting expenses exactly as it does R&D, so the economically correct hidden-asset stock is cumulative R&D plus cumulative advertising net of goodwill; including advertising should extend the mechanism to consumer-facing firms currently ranked as non-innovators.",
+      "expected_sign": "positive",
+      "reasoning": "Every signal so far measures intangible capital only through R&D, which mechanically assigns zero hidden capital to brand-intensive retailers and consumer firms that spend heavily on advertising \u2014 a large part of the full universe now included by the zero convention. The earlier standalone advertising signal failed, but it used an advertising-turnover leg and a narrow sample, whereas here advertising simply completes the intangible stock inside the winning frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.723458043244714,
+      "ls_alpha": 0.05297032692111597,
+      "ls_talpha": 4.217042699805405,
+      "ls_sharpe": 0.5149333574102193,
+      "coverage": 0.14069713858119393,
+      "error": null
+    },
+    {
+      "name": "FullUniverse_CashNetKnowledge_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The fully specified mechanism is cash-based cheapness, internally built intangible intensity, and demonstrated operating profitability acting together; each element removes a distinct source of misclassification, so the joint signal should be the most reliable expression of the value-times-intangibles interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This is the maximal combination of the three components that improved on the full-universe base, and the archive shows that three-channel stacking only diluted results when the added channel was weakly evidenced (revenue growth, internal funding) \u2014 here all three are individually strong at 0.141 coverage. It is the natural candidate for the final recommended signal if it dominates on both alpha t-stat and FMB slope.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 7.666817625949073,
+      "ls_alpha": 0.05599878495675081,
+      "ls_talpha": 4.57345329512849,
+      "ls_sharpe": 0.5198238840218139,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CheapAndKnowledgeIntensive",
+      "expression": "MIN(RANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho))), RANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))))",
+      "hypothesis": "The mispricing requires both conditions simultaneously \u2014 a firm must be cheap *and* intangible-intensive \u2014 so a conjunctive aggregator that scores a firm by its weaker rank should isolate the interaction more cleanly than an additive average, which lets an extreme on one dimension substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal uses additive rank aggregation, which by construction admits firms that are merely very cheap or merely very research-intensive, so the current long leg is not a pure interaction portfolio. Taking the minimum of the two ranks is a structurally different aggregator that enforces the joint condition and, unlike the multiplicative signed forms that failed earlier, keeps both inputs monotone and bounded.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 5.7749005386488985,
+      "ls_alpha": 0.05116761325920735,
+      "ls_talpha": 4.097275022764101,
+      "ls_sharpe": 0.4934596117161869,
+      "coverage": 0.14069713858119393,
+      "error": null
+    },
+    {
+      "name": "Final_CashNetKnowledgeDual_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The complete mechanism is cash-based cheapness, internally built intangible capital measured robustly against both revenue and assets, and demonstrated gross profitability; each element removes a distinct misclassification (accrual noise, overpaid acquirers, unprofitable shells), so the joint signal should be the strongest available expression of the value-times-intangibles interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This assembles the three refinements that each beat the full-universe base on a different metric \u2014 cash-preferred yield (fmb 7.67 in combination), dual scaling (alpha t=5.03), and gross profitability (alpha 5.9%) \u2014 all at unchanged 0.141 coverage. If it dominates on both FMB slope and alpha t-stat it is the natural final recommendation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 7.650065954140944,
+      "ls_alpha": 0.05645670559529785,
+      "ls_talpha": 4.549825279326105,
+      "ls_sharpe": 0.536381340974849,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "Final_TotalIntangibleCapital_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Brand capital built through advertising is expensed exactly as R&D is, so the economically complete hidden-asset stock is cumulative R&D plus advertising net of goodwill; adding brand capital should extend the mispricing to consumer-facing firms and improve risk-adjusted performance.",
+      "expected_sign": "positive",
+      "reasoning": "Including advertising in the intangible stock produced the archive's highest Sharpe (0.515) in its simpler form, indicating the added firms are genuinely mispriced rather than noise. Pairing that broader stock with the cash yield and profitability screen tests whether the best-Sharpe and best-slope refinements are complementary.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 7.276048481816193,
+      "ls_alpha": 0.053662390448540556,
+      "ls_talpha": 4.238671868753796,
+      "ls_sharpe": 0.5283402715900118,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "Final_AccrualYield_NetKnowledgeDual_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "If the abnormal return comes from intangible intensity and profitability rather than from the choice between cash and accrual cheapness, the earnings-based version of the maximal signal should perform comparably, making the simpler and more widely available value leg preferable.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-based and earnings-based value legs have traded places across generations (cash better on Sharpe and FMB slope, earnings better on raw alpha), and this pair with Signal 1 cleanly isolates that one design choice at identical coverage. Establishing which leg the final signal needs matters for interpretation and implementability, not just for fit.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 6.674650645294462,
+      "ls_alpha": 0.05804071441002792,
+      "ls_talpha": 4.72997821182077,
+      "ls_sharpe": 0.45421436390301123,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "SymmetricIntangibleSpend_Yield_Intensity",
+      "expression": "SUMRANK(RATIO(ADD(ib, ADD(COALESCE(xrd, SUB(at, at)), COALESCE(xad, SUB(at, at)))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), at)))",
+      "hypothesis": "Accounting conservatism applies identically to R&D and advertising, so both should be added back to earnings *and* capitalized in the intangible stock; treating total intangible spending symmetrically in both legs is the internally consistent statement of the conservatism-correction story.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior signal adds back only R&D to earnings while sometimes capitalizing advertising, an inconsistency that mismeasures cheapness precisely for brand-intensive firms. This is the one remaining substantive measurement question about the mechanism's economic content, and it is testable at full coverage thanks to the zero-spend convention.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.778118367902242,
+      "ls_alpha": 0.04300021667479146,
+      "ls_talpha": 3.528507841383867,
+      "ls_sharpe": 0.4617749820602941,
+      "coverage": 0.14069404305831057,
+      "error": null
+    },
+    {
+      "name": "Conjunctive_CheapQuality_AND_NetKnowledge",
+      "expression": "MIN(RANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))), RANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))))",
+      "hypothesis": "A true interaction portfolio requires firms to be jointly cheap-and-profitable *and* intangible-intensive; scoring each firm by its weaker of the two ranks enforces that conjunction and should produce a purer interaction spread than an additive average, which lets one extreme substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "The conjunctive MIN aggregator already worked well on its first test (5.1% alpha, t=4.10, Sharpe 0.493) despite using the plainest legs, so pairing it with the strongest cheapness-quality composite is the right final test of whether the interaction is conjunctive in nature. This distinguishes the economics of the finding \u2014 a joint condition \u2014 from the additive rank convenience used throughout.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 8.08063853281568,
+      "ls_alpha": 0.05633879739433301,
+      "ls_talpha": 4.650940808993852,
+      "ls_sharpe": 0.5789613983828149,
+      "coverage": 0.14066747315356187,
+      "error": null
+    },
+    {
+      "name": "Final_CashNetKnowledgeDual_CashProfitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(oancf, at))",
+      "hypothesis": "Quality should be measured in cash as well: firms generating operating cash flow on their asset base are the ones whose hidden intangible capital is economically productive, and cash profitability is harder to manipulate than gross margin for intangible-heavy firms whose cost structure sits below the gross-profit line.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profitability was the quality screen that lifted FMB slopes above 6.5, but for R&D-intensive firms most intangible spending is expensed *below* gross profit, so gross margin may overstate quality exactly where the mechanism operates. Swapping in cash profitability while holding everything else at the Signal 1 specification isolates the quality-measurement choice and could improve both slope and Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.847071538023885,
+      "ls_alpha": 0.06429121592202425,
+      "ls_talpha": 4.900918548298484,
+      "ls_sharpe": 0.7581214417284985,
+      "coverage": 0.08919780143582734,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "KnowledgeCapital_BM",
+      "expression": "COALESCE(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho)), RATIO(ceq, MUL(prcc_f, csho)))",
+      "hypothesis": "Expensed R&D creates off-balance-sheet knowledge capital, so reported book equity understates replacement value for research-intensive firms; adding a five-year R&D stock back to book equity produces a less noisy value ratio that better predicts returns.",
+      "expected_sign": "positive",
+      "reasoning": "The interaction is a direct restatement of the valuation denominator using an intangibles-theme input, so cheapness is measured against intangible-inclusive capital rather than tangible-only capital. The COALESCE fallback is economically justified because firms that never report R&D have no knowledge-capital adjustment, and plain B/M is the correct limiting case, preserving coverage without fabricating intangibles.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDInclusive_Yield_x_IntanTurnover",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(revt, intan))",
+      "hypothesis": "Firms are cheap on true economic earnings when R&D-adjusted profits are high relative to price, and this cheapness is only informative when recognized intangibles actually generate sales; combining pre-R&D earnings yield with intangible asset turnover isolates cheap, productive intangible franchises.",
+      "expected_sign": "positive",
+      "reasoning": "Adding R&D back to income undoes the conservative expensing that depresses earnings yields for innovators, while revenue-per-dollar-of-intangibles screens out firms whose intangible balances (often goodwill from overpaid deals) are unproductive. Ranked aggregation gives each channel equal weight and avoids scale outliers in the intangible denominator.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ValueTilt_Conditional_RDIntensity",
+      "expression": "MUL(IND_ZSCORE(WINSOR(RATIO(ceq, MUL(prcc_f, csho)), 1)), IND_RANK(RATIO(xrd, at)))",
+      "hypothesis": "The value premium is largest where accounting conservatism is most severe, so within-industry cheapness should be amplified for R&D-intensive firms and muted for firms whose book value already captures their assets.",
+      "expected_sign": "positive",
+      "reasoning": "The R&D-intensity rank acts as a multiplicative intensity weight on the standardized book-to-market signal, so the payoff comes from cheap-and-intangible-heavy firms rather than from either theme alone. Industry standardization on both legs prevents the signal from degenerating into a pure sector bet on pharma or software.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleCapital_Yield",
+      "expression": "RATIO(ADD(intan, TS_SUM(xrd, 5)), MUL(prcc_f, csho))",
+      "hypothesis": "Market value per dollar of total intangible capital (recognized intangibles plus internally generated R&D stock) measures how cheaply investors can buy intangible capacity; firms with high intangible capital per unit of price are systematically underpriced because intangibles are hard to value.",
+      "expected_sign": "positive",
+      "reasoning": "This deliberately drops tangible book equity so the signal is a pure valuation ratio on the intangible base, distinguishing it from intangible-adjusted B/M and avoiding contamination from asset-heavy cheap firms. Combining purchased and internally developed intangibles treats economically equivalent capital symmetrically regardless of whether acquisition accounting recognized it.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapEV_x_RisingRDIntensity",
+      "expression": "MUL(RANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), RANK(GROWTH(MA(RATIO(xrd, sale), 3), 1)))",
+      "hypothesis": "Firms trading at low enterprise-value multiples while accelerating intangible investment are misclassified as declining businesses; the market discounts current EBITDA and penalizes the earnings drag from rising R&D, so subsequent returns are abnormally high.",
+      "expected_sign": "positive",
+      "reasoning": "EBITDA/EV is a capital-structure-neutral cheapness metric, and growth in smoothed R&D-to-sales captures a change in intangible investment policy rather than a static intensity level, which is what makes reported earnings temporarily understate future profitability. The multiplicative rank form requires both conditions jointly, targeting the mispricing rather than either the value or the investment effect in isolation.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IntangibleValuationDistortionGap",
+      "expression": "SUB(IND_RANK(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho))), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "The gap between a firm's intangible-adjusted value rank and its unadjusted value rank measures how much conventional accounting distorts its apparent cheapness; firms that look expensive on reported book but cheap once knowledge capital is capitalized are the ones investors misprice.",
+      "expected_sign": "positive",
+      "reasoning": "Differencing two industry ranks purges the common value-factor exposure and isolates the incremental information created by the intangible adjustment, making it an explicit measure of accounting-driven mismeasurement rather than a value proxy. Firms with large positive gaps are exactly the high-R&D \"growth-looking\" names whose true book value is understated, so the signal should earn returns beyond standard B/M.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDStock_GrossProfitability_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), TS_SUM(xrd, 5)))",
+      "hypothesis": "Cheapness measured on pre-R&D earnings is only informative when the accumulated R&D stock actually produces gross profit; gross profit per dollar of cumulative R&D spending identifies innovators whose knowledge capital is real rather than sunk, and cheap-plus-productive innovators are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "This retains the mechanism of the gen-0 winner (R&D-inclusive earnings yield \u00d7 intangible productivity) but replaces the balance-sheet `intan` denominator, which required a second sparse field and imported purchased goodwill, with the firm's own five-year R&D stock, so productivity is measured on internally generated knowledge capital and coverage is limited by `xrd` alone. If the alpha survives with materially better coverage, we learn the winner's edge came from intangible productivity rather than from the narrow `intan`-reporting subsample.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "OrganicBook_ExGoodwill_BM",
+      "expression": "RATIO(ADD(SUB(ceq, gdwl), TS_SUM(xrd, 5)), MUL(prcc_f, csho))",
+      "hypothesis": "Book value should be raised by internally generated knowledge capital and lowered by goodwill, which is a record of prices paid rather than productive capital; the resulting \"organic\" book-to-market is a cleaner cheapness measure than either raw or naively intangible-inclusive book value.",
+      "expected_sign": "positive",
+      "reasoning": "This directly diagnoses why IntangibleCapital_Yield had a positive FMB slope but a negative FF5 alpha \u2014 its long leg loaded on goodwill-heavy serial acquirers whose intangible balances are stale purchase-price allocations. Subtracting goodwill while adding the R&D stock makes the two intangible components enter with opposite, economically motivated signs, which no gen-0 signal tested.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AdditiveValue_RDIntensity",
+      "expression": "SUMRANK(RATIO(ADD(ceq, TS_SUM(xrd, 5)), MUL(prcc_f, csho)), RATIO(xrd, at))",
+      "hypothesis": "Intangible-adjusted cheapness and intangible intensity are complementary but should be combined additively in rank space: high adjusted book-to-market identifies mispricing, and high R&D intensity identifies where accounting conservatism makes that mispricing most likely to persist.",
+      "expected_sign": "positive",
+      "reasoning": "This is a deliberate structural contrast with ValueTilt_Conditional_RDIntensity, which used the same two economic ingredients in multiplicative signed\u00d7rank form and produced a significant negative FF5 alpha; if the additive rank version turns positive, the gen-0 failure was an operator-structure artifact, not evidence against the mechanism. Keeping both legs rank-based also removes the outlier sensitivity of raw book-to-market levels.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ImprovingIntangibleProductivity_SP",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), TREND(RATIO(SUB(revt, cogs), ADD(intan, xrd)), 5))",
+      "hypothesis": "Cheap firms whose gross profit per dollar of intangible capital is on a multi-year improving trend are re-rating businesses whose intangible investment is beginning to pay off, while cheap firms with deteriorating intangible productivity are genuine value traps.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a dynamic productivity channel absent from the archive: the level of intangible turnover was the gen-0 winner's second leg, but the *direction of change* in intangible productivity should carry independent information about whether depressed valuation is temporary. Sales-to-price is used as the cheapness leg because revenue is undistorted by intangible expensing and amortization.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AmortizationDrag_CashValue",
+      "expression": "SUMRANK(RATIO(SUB(oancf, ib), MUL(prcc_f, csho)), RATIO(intan, at))",
+      "hypothesis": "For intangible-heavy firms, amortization and expensing drive a large wedge between cash flow and reported earnings; if investors anchor on earnings, firms with a big cash-minus-earnings yield and a large intangible asset base are systematically undervalued.",
+      "expected_sign": "positive",
+      "reasoning": "This isolates the accounting-distortion channel in the *income statement* rather than the balance sheet, which no gen-0 signal did, and it tests whether recognized intangibles (`intan`) can ever be a constructive conditioner once the valuation leg is cash-based rather than a price-to-intangible-capital ratio. Comparing its outcome with Signal 1 tells us whether the useful intangible variable is purchased intangibles or R&D flow.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeStockGrowth_In_CheapFirms",
+      "expression": "MUL(IND_ZSCORE(GROWTH(TS_SUM(xrd, 3), 1)), IND_RANK(RATIO(ceq, MUL(prcc_f, csho))))",
+      "hypothesis": "Accelerating knowledge-capital accumulation is rewarded most in already-cheap firms, where the market has priced in decline and gives no credit for new intangible investment; expensive firms already have growth expectations embedded, so identical R&D growth carries no news.",
+      "expected_sign": "positive",
+      "reasoning": "The signed leg is now the informative intangible-investment variable and the bounded [0,1] leg is the valuation conditioner, which repairs the perverse orientation that made the gen-0 multiplicative conditional signal short expensive high-R&D firms indiscriminately. Growth in a three-year R&D stock rather than single-year R&D avoids treating lumpy one-off spending spikes as a change in innovation policy.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "RDIntensity_Per_GrossProfit_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), SUB(revt, cogs)))",
+      "hypothesis": "Firms cheap on R&D-inclusive earnings that also carry a large accumulated R&D stock relative to current gross profit own hidden knowledge capital whose payoff is not yet in the income statement; their reported profitability understates economic profitability and returns are abnormally high.",
+      "expected_sign": "positive",
+      "reasoning": "This is the exact orientation flip of the intangible leg in RDStock_GrossProfitability_Cheapness, which produced a highly reliable \u22124.2% alpha (t=\u22123.27); if the mechanism is real rather than a sign error, inverting only the intangible leg while keeping the cheapness leg long-value should convert that reliability into positive alpha. Testing it isolates whether internally generated R&D must enter as *intensity* (numerator) while purchased intangibles enter as *turnover* (denominator).",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "EVCheap_x_IntangibleTurnover",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(revt, intan))",
+      "hypothesis": "The alpha in the intangible-turnover composite comes from buying cheap operating businesses that do not depend on capitalized purchase-price intangibles; measuring cheapness on enterprise value rather than equity price removes leverage contamination and should sharpen the same effect.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner paired an equity-level earnings yield with revt/intan, but intangible-heavy firms are typically levered acquirers, so part of the equity-yield leg may be a leverage artifact rather than cheapness. Substituting EBITDA/EV isolates operating cheapness while holding the productive-intangible leg fixed, which tells us whether the effect is a valuation-metric artifact or an operating-value phenomenon.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "EarningsYield_x_IntanTurnover_WideCoverage",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(revt, intan))",
+      "hypothesis": "If the productive-intangible channel is what generates abnormal returns, a plain earnings yield combined with intangible turnover should retain the alpha while roughly doubling usable observations, because the signal no longer requires firms to report R&D.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 winner's 0.040 coverage is the main reliability concern in the archive, and its R&D add-back is exactly the component that restricts the sample. Dropping the add-back is a targeted design test: if alpha and t-stat survive at higher coverage, the effect is about intangible productivity, not about the subset of R&D reporters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Glamour_Goodwill_ValueTrap",
+      "expression": "SUMRANK(RATIO(gdwl, at), RATIO(MUL(prcc_f, csho), revt))",
+      "hypothesis": "Firms that are simultaneously expensive relative to sales and heavily capitalized in acquisition goodwill have paid for growth twice \u2014 once in the acquisition price and once in their own market multiple \u2014 and subsequently underperform as goodwill fails to generate revenue and is written down.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's repeated negative alphas on goodwill-inclusive long legs suggest the exploitable side of this interaction is the *short* side, so I state it as an explicit negative-sign mechanism rather than fighting it with more book-value repairs. Using price-to-sales as the expensiveness leg keeps the valuation measure immune to the earnings distortions that goodwill amortization and impairment create.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "OwnHistory_IntangibleAdjusted_Cheapness",
+      "expression": "MUL(IND_ZSCORE(NEG(TS_RANK(RATIO(MUL(prcc_f, csho), ADD(ceq, TS_SUM(xrd, 5))), 5))), IND_RANK(RATIO(xrd, sale)))",
+      "hypothesis": "A firm trading near the low end of its own five-year history of price-to-intangible-adjusted-book is temporarily depressed relative to its own fundamentals, and this within-firm cheapness is most informative for R&D-intensive firms whose intangible capital the market repeatedly misprices.",
+      "expected_sign": "positive",
+      "reasoning": "Every cross-sectional book-based construction so far has been absorbed or penalized by HML and CMA, so I switch to a time-series cheapness state that is mechanically far less correlated with the static value factor while still using intangible-adjusted book. The signed leg is the own-history valuation state and the bounded [0,1] leg is R&D intensity, the orientation that avoids the perverse product structure seen in gen 0.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BrandCapital_Productive_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xad), MUL(prcc_f, csho)), RATIO(revt, MA(xad, 3)))",
+      "hypothesis": "Advertising builds brand capital that is fully expensed; firms cheap on advertising-adjusted earnings whose sustained advertising spend converts efficiently into revenue hold understated brand assets and are underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "Advertising is an entirely unexplored intangible channel in the archive and is economically distinct from R&D: its payoff horizon is shorter and its productivity is directly measurable as revenue per advertising dollar. Smoothing advertising over three years distinguishes firms with a durable brand-building policy from those with one-off campaign spikes, which is what makes the expensed spend a genuine asset.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeStock_Per_Sales_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "The winning interaction reflects hidden knowledge capital that is large relative to the firm's operating scale; scaling the five-year R&D stock by smoothed revenue rather than gross profit measures the same intangible intensity without letting low-margin firms load into the long leg.",
+      "expected_sign": "positive",
+      "reasoning": "In the current best signal the intangible leg is R&D stock divided by gross profit, so a firm can rank high either by spending heavily on R&D or by having thin margins \u2014 this test separates genuine intangible intensity from low profitability. If alpha holds or improves with revenue scaling, the mechanism is intangible intensity; if it weakens, part of the gen-2 alpha was a distressed-margin bet.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapKnowledge_Productive_Triple",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs)), RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Cheap, R&D-intensive firms earn abnormal returns only when their existing operations are genuinely profitable; adding gross profitability screens out the R&D-burning shells that make the intangible-intensity leg noisy and should raise both the alpha and its reliability.",
+      "expected_sign": "positive",
+      "reasoning": "The best signal buys firms whose R&D stock dwarfs current gross profit, a group that mixes underpriced innovators with cash-burning speculative names; gross-profits-to-assets is the standard discriminator between the two. This is a substantive quality overlay on the winning mechanism rather than a rescaling, and it directly targets the long leg's composition instability.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutral_CheapKnowledgeIntensity",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), IND_ZSCORE(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs))))",
+      "hypothesis": "R&D intensity is largely an industry attribute, so a raw cross-sectional sort mostly buys pharma, biotech and software; if the mispricing is firm-specific, standardizing both legs within industry should preserve or strengthen abnormal returns while removing the sector concentration.",
+      "expected_sign": "positive",
+      "reasoning": "The winning signal's long leg is almost certainly sector-clustered, which threatens the stability of the FF5 alpha even though the t-stat is currently 3.05. Industry standardization is the cleanest diagnostic of whether we have discovered a durable firm-level mispricing or a persistent industry tilt.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Internal_vs_Purchased_IntangibleYield",
+      "expression": "SUB(IND_RANK(RATIO(TS_SUM(xrd, 5), MUL(prcc_f, csho))), IND_RANK(RATIO(gdwl, MUL(prcc_f, csho))))",
+      "hypothesis": "A dollar of market value backed by internally generated R&D is systematically underpriced while a dollar backed by acquisition goodwill is overpriced; the spread between these two intangible yields is the purest expression of the accounting-conservatism mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows internal R&D legs producing positive alpha and goodwill-laden intangible legs producing negative alpha, so differencing the two yields should combine both sides of the asymmetry into one signal while cancelling their common exposure to a generic cheapness factor. This is a distinct mechanism: the composition of intangible capital rather than its total amount or its productivity.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapYield_Times_KnowledgeIntensity",
+      "expression": "MUL(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), IND_RANK(RATIO(TS_SUM(xrd, 5), SUB(revt, cogs))))",
+      "hypothesis": "The value effect is not merely additive with intangible intensity but conditional on it: cheapness should predict returns strongly among knowledge-intensive firms and weakly among firms with little intangible capital, because only in the former does accounting conservatism create the mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "Every ingredient here is identical to the current best signal, so the only thing being tested is additive rank aggregation versus multiplicative conditioning \u2014 the design choice that failed in gen 0 but with an intangible leg we now know was oriented backwards. A positive result would tell us the interaction is genuinely conditional, which matters for interpreting the mechanism rather than just fitting it.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "StableRD_Commitment_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), NEG(VOL(RATIO(xrd, revt), 5)))",
+      "hypothesis": "Only a stable, sustained R&D program produces durable knowledge capital that accounting fails to record; erratic R&D spending is closer to a discretionary expense, so cheap firms with steady R&D intensity should be more underpriced than equally cheap firms with volatile R&D policy.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has tested R&D levels, stocks, and growth, but never the *reliability* of the investment policy, and gen-1's failure of R&D-stock growth in cheap firms suggests investors do not reward lumpy spending changes. Low volatility of R&D-to-revenue identifies committed innovators whose intangible capital is most likely real and mismeasured, a mechanism orthogonal to intensity level.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapKnowledge_SalesScaled_Productive",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), MA(revt, 3)), RATIO(SUB(revt, cogs), at)))",
+      "hypothesis": "Cheap firms with large knowledge stocks relative to operating scale are underpriced, but only the profitable ones convert that hidden capital into returns; combining revenue-scaled intangible intensity with gross profitability should deliver both the strongest cross-sectional slope and the largest reliable alpha.",
+      "expected_sign": "positive",
+      "reasoning": "This unites the two best-performing gen-3 results: revenue scaling gave the highest alpha (4.3%, t=3.83) and the gross-profitability overlay gave the highest FMB t-stat (6.97), and they address different weaknesses of the raw winner. Because both legs are ranked and equally weighted, the combination should stabilize the long leg's composition rather than merely re-fit it.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapValue_UnstableRD_Flip",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), VOL(RATIO(xrd, revt), 5))",
+      "hypothesis": "Volatile R&D-to-revenue marks firms whose innovation spending is being actively ramped or restructured, so their reported fundamentals are least informative about future profitability; combined with cheapness, this maximal-uncertainty group is the most mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "The stability version of exactly this signal produced a reliable \u22123.9% alpha (t=\u22123.17), so the data say cheap firms with *unstable* rather than steady R&D policy earn the abnormal returns, and I state that as the hypothesis instead of a stability story the evidence rejects. Testing the flip also reveals whether R&D volatility contains information beyond the intensity level, since scale effects make the two correlated.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashFlow_RDInclusive_KnowledgeIntensity",
+      "expression": "SUMRANK(RATIO(ADD(oancf, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "For R&D-intensive firms reported net income is frequently negative or distorted by write-offs, so operating cash flow plus R&D is a cleaner measure of the distributable economics being purchased, and cheapness measured this way should predict returns more precisely.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong signal in the archive uses `ib + xrd` in the numerator, but that leg is exactly where loss-making innovators get ranked as expensive despite healthy cash generation, plausibly polluting the short leg. Substituting cash flow while holding the intangible leg at its best-performing form isolates the value-leg measurement choice.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BroadCheapness_KnowledgeIntensity",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(sale, MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "A cheapness measure averaging R&D-inclusive earnings yield with sales-to-price is less sensitive to transitory earnings than either alone, so pairing it with knowledge intensity should raise the reliability of the interaction without changing its economics.",
+      "expected_sign": "positive",
+      "reasoning": "Sales-to-price is immune to intangible expensing and to loss years, which is precisely the measurement problem that afflicts earnings yields for research-intensive firms, so a two-ratio value leg should reduce turnover-driven noise in the sorted portfolios. This tests whether the alpha's t-stat is limited by valuation-leg noise rather than by the intangible signal itself.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeCredited_EV_Multiple",
+      "expression": "RATIO(ebitda, SUB(ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)), TS_SUM(xrd, 5)))",
+      "hypothesis": "If investors were correctly crediting a firm's knowledge capital, enterprise value net of the R&D stock would represent the price paid for the visible operating business; firms where this residual price is low relative to EBITDA are getting their intangible capital for free.",
+      "expected_sign": "positive",
+      "reasoning": "This is a structurally different interaction \u2014 intangibles enter the valuation *denominator* as a credit rather than as a separate rank channel \u2014 and it directly prices the operating business net of hidden assets, which no archive signal has done. It also avoids the goodwill contamination that sank balance-sheet intangible-to-price ratios, since only internally generated R&D is credited.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "AssetScaled_KnowledgeStock_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), at))",
+      "hypothesis": "Knowledge intensity measured against the tangible asset base identifies asset-light innovators whose balance sheets most understate economic capital; if the interaction works with an asset scaler as well as a revenue scaler, the mechanism is intangible intensity per se rather than a margin or revenue-scale artifact.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-1's AdditiveValue_RDIntensity paired asset-scaled R&D *flow* with an adjusted book-to-market value leg and produced zero alpha, leaving unresolved whether the failure came from the scaler, the flow-versus-stock choice, or the value leg. Holding the value leg at its best form and using the five-year stock isolates the scaler question, which determines how we should build the intangible leg in the consolidation phase.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DualYield_KnowledgeIntensity",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(ADD(oancf, xrd), MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "Accruals and write-offs make a single R&D-inclusive earnings yield noisy for innovators, so averaging the accrual-based and cash-based versions of the same cheapness concept measures the true price of economic profits more precisely and should improve both alpha reliability and Sharpe.",
+      "expected_sign": "positive",
+      "reasoning": "The earnings-yield version delivered the highest alpha (4.3%, t=3.83) and the cash-flow version the highest Sharpe (0.436), and their difference is pure measurement noise in the same economic quantity, unlike the sales-to-price leg which diluted the signal. Combining them should retain the strong FMB slope of the accrual leg while inheriting the smoother spread of the cash leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapKnowledge_Quality_Instability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), SUMRANK(RATIO(SUB(revt, cogs), at), VOL(RATIO(xrd, revt), 5)))",
+      "hypothesis": "Three distinct frictions reinforce each other: conservatism understates book profits for R&D-intensive firms, gross profitability separates real franchises from cash burners, and unstable R&D intensity marks firms whose fundamentals are hardest for investors to extrapolate \u2014 the joint extreme should be the most mispriced.",
+      "expected_sign": "positive",
+      "reasoning": "Each of the three add-on channels has already produced independent positive alpha (profitability overlay 4.0% at t=3.41, R&D-volatility leg 2.6% at t=2.86), so stacking them tests whether their information is complementary rather than redundant. Equal-weighted nested ranks keep any single noisy channel from dominating the sort.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "WithinIndustryCheap_RawKnowledgeTilt",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(ib, xrd), MUL(prcc_f, csho))), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "The exploitable mispricing is being cheap relative to industry peers while operating in a knowledge-intensive business; neutralizing cheapness by industry removes the sector-level value trap without discarding the cross-industry intangible-intensity tilt that carries the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Neutralizing both legs killed the alpha (0.8%, t=0.70) while leaving a 5.8 FMB t-stat, which is ambiguous about which leg's industry variation matters; this one-sided version resolves the attribution. If alpha survives, we gain a cleaner, less sector-concentrated portfolio at no cost, which addresses the main stability concern with the champion.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeToPrice_Profitable",
+      "expression": "SUMRANK(RATIO(TS_SUM(xrd, 5), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The cleanest statement of the mechanism is knowledge capital per dollar of market value, screened for operating profitability: investors pay too little for accumulated R&D when the firm demonstrably earns gross profits on its asset base.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal bundles an earnings yield with an intangible-intensity leg, leaving open whether the earnings yield is essential or merely correlated with the R&D-to-price ratio embedded in `ib + xrd`. Dropping it entirely is the decisive parsimony test, and the profitability screen is what protects this construction from the goodwill-and-junk contamination that sank the earlier intangible-to-price ratio.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FundedInnovation_CheapKnowledge",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), RATIO(ADD(che, oancf), xrd))",
+      "hypothesis": "Hidden knowledge capital is only worth paying for when the firm can finance its research program internally; cheap R&D-intensive firms whose cash balances and operating cash flow comfortably cover current R&D face no risk of a dilutive raise or a forced program cut, so their intangible capital survives to produce profits.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a financing-sustainability channel absent from the archive, and it is the natural economic discriminator inside the champion's long leg, which currently mixes self-funding innovators with firms burning toward equity issuance. It differs from the gross-profitability overlay because it measures liquidity and internal funding capacity rather than margin quality.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CheapKnowledge_RevenueRealization",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3))), GROWTH(MA(revt, 3), 1))",
+      "hypothesis": "Accumulated R&D becomes valuable only once it shows up in the top line; cheap, knowledge-intensive firms whose smoothed revenue is already growing are in the realization phase of their intangible investment, and the market is slow to re-rate them.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier attempts at dynamic intangible-productivity channels failed, but they used trend-in-productivity ratios with noisy `intan` denominators and weak value legs; smoothed revenue growth is a direct, robust measure of whether the knowledge stock is converting into sales. This tests the timing dimension of the mechanism \u2014 whether the payoff concentrates in firms where the intangible investment is beginning to pay off rather than in perpetual spenders.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SmoothedProfit_KnowledgeIntensity",
+      "expression": "SUMRANK(RATIO(ADD(MA(ib, 3), xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), MA(revt, 3)))",
+      "hypothesis": "For R&D-intensive firms single-year net income is dominated by transitory items and loss years, so a three-year average of income plus current R&D is a more reliable measure of the economic earnings being purchased, sharpening the same cheapness-times-intangible-intensity interaction.",
+      "expected_sign": "positive",
+      "reasoning": "The champion's intangible leg is already smoothed over five years while its value leg is a single noisy annual figure, an asymmetry that plausibly caps the alpha t-stat at 3.8 and depresses Sharpe. Smoothing earnings should reduce portfolio turnover and misclassification in both tails without altering the economic content of the signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "DualScaled_KnowledgeIntensity_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), SUMRANK(RATIO(TS_SUM(xrd, 5), MA(revt, 3)), RATIO(TS_SUM(xrd, 5), at)))",
+      "hypothesis": "Revenue and total assets are both imperfect proxies for the operating scale against which hidden knowledge capital should be measured; averaging the two scalers measures intangible intensity with less scaler-specific noise and should give a more stable long leg.",
+      "expected_sign": "positive",
+      "reasoning": "Revenue scaling (4.3% alpha) and asset scaling (3.6% alpha, higher coverage and Sharpe 0.37) both work, and their errors are different \u2014 revenue scaling favors low-margin firms, asset scaling favors asset-light ones \u2014 so the average should be more robust than either. This is a measurement refinement of the surviving leg, not an additional economic channel of the kind that diluted gen-5 results.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "ZeroRD_Convention_FullUniverse",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "Firms that do not report R&D genuinely have no knowledge capital, so treating unreported R&D as zero is the economically correct convention; it extends the signal to the full valuation universe and places non-innovators at the bottom of the intangible-intensity ranking where the mechanism says they belong.",
+      "expected_sign": "positive",
+      "reasoning": "Coverage of roughly 0.066 versus the ~0.14 attainable with valuation data alone is the archive's biggest reliability caveat, and the missing observations are non-reporters rather than randomly missing data. If alpha and t-stat survive at doubled coverage the result is far more credible; if they collapse, we learn the effect lives strictly within the R&D-reporting cross-section, which is itself important.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "CashYield_AssetScaled_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(oancf, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), at))",
+      "hypothesis": "Cash flow plus R&D is the cleanest measure of what a buyer receives from an innovator, and knowledge capital measured against the tangible asset base identifies the firms whose balance sheets most understate economic capital; the pairing should deliver the mechanism's highest risk-adjusted return.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-flow value leg produced the best Sharpe in the archive (0.436) and the asset-scaled intangible leg had the best combination of coverage and Sharpe among scalers, so this crosses the two most portfolio-efficient components. It also isolates whether the cash-flow leg's low FMB t-stat (2.8) is a leg property or an artifact of its sales-scaled partner.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "KnowledgeInclusive_NetAssetValue",
+      "expression": "SUMRANK(RATIO(ADD(TS_SUM(xrd, 5), SUB(che, ADD(dltt, dlc))), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Once accumulated R&D is treated as an asset, some profitable firms trade below the sum of their knowledge capital and net cash, making the operating business effectively free; such intangible-inclusive net-asset bargains should earn large abnormal returns.",
+      "expected_sign": "positive",
+      "reasoning": "This is a distinct economic channel \u2014 a liquidation-style floor value for innovators \u2014 rather than an earnings-multiple interaction, and it uses net cash to exclude the leveraged intangible-heavy acquirers whose presence produced negative alphas in earlier balance-sheet constructions. The gross-profitability screen guards against the R&D-burning shells that would otherwise dominate a knowledge-to-price sort, a pairing that already produced a 6.6 FMB t-stat.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "BuiltNotBought_Intangibles_Cheapness",
+      "expression": "SUMRANK(RATIO(ADD(ib, xrd), MUL(prcc_f, csho)), RATIO(TS_SUM(xrd, 5), ADD(intan, TS_SUM(xrd, 5))))",
+      "hypothesis": "Among cheap firms, those whose intangible capital is internally built rather than acquired hold assets that accounting never recorded at all, whereas acquirers already carry their intangibles at inflated purchase prices; the internally built share of total intangible capital should therefore predict returns.",
+      "expected_sign": "positive",
+      "reasoning": "The archive consistently shows internal R&D earning positive alpha and purchased intangibles earning negative alpha, but the one signal that differenced the two yields lacked a cheapness leg and was weak (t=0.91); expressing composition as a bounded share inside the winning frame is a cleaner test of the build-versus-buy asymmetry. It also distinguishes the mechanism from pure intensity, since a firm can be R&D-intensive yet mostly acquired.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_DualScaled_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), at)))",
+      "hypothesis": "Measuring hidden knowledge capital against both revenue and total assets removes scaler-specific distortions (thin margins on one side, asset-light business models on the other), so combining them within the full-universe convention should give the most stable ranking of intangible intensity and the most reliable alpha.",
+      "expected_sign": "positive",
+      "reasoning": "Dual scaling improved the R&D-reporter version (4.1% at t=3.62 versus 4.3% at t=3.83 for revenue alone, with the highest FMB slope of the two-leg family), and its benefit should be larger in the full universe where the zero-R&D mass makes the intangible ranking coarser. This is a measurement refinement of the leg we know matters, not an added channel of the type that diluted earlier stacks.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_Knowledge_GrossProfitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Cheap, knowledge-intensive firms deliver abnormal returns only when the underlying business earns gross profits; adding profitability across the full universe should raise cross-sectional precision by separating underpriced innovators from cash-burning shells and distressed non-innovators alike.",
+      "expected_sign": "positive",
+      "reasoning": "The gross-profitability overlay produced the archive's strongest FMB slopes (6.6\u20137.0) while preserving 4.0% alpha in the narrow sample, and the full universe now contains many unprofitable non-R&D firms in the short leg that this screen will order more sensibly. If the FMB t-stat rises without sacrificing the 5.6% alpha, this becomes the best joint cross-sectional and portfolio evidence in the run.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_CashPreferred_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "Operating cash flow plus R&D is the cleanest measure of the economic returns a buyer receives, and using reported earnings only when the cash flow statement is unavailable keeps that superior measure without sacrificing universe breadth.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-based value legs delivered the two highest Sharpe ratios in the archive (0.436 and 0.504) but always at roughly a third less coverage, so the fallback convention is exactly what is needed to combine measurement quality with breadth. This tests whether the full-universe alpha of 5.6% can be delivered with materially better risk-adjusted efficiency.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_NetInternalIntangibleIntensity",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Only internally built intangibles are truly off the balance sheet; goodwill is already capitalized at an inflated price, so intangible intensity should be measured net of goodwill, penalizing serial acquirers and rewarding organic innovators within the same cheapness sort.",
+      "expected_sign": "positive",
+      "reasoning": "The archive repeatedly shows internal R&D earning positive alpha while goodwill-laden constructions earn negative alpha, and the bounded build-versus-buy share worked (3.8%, t=3.56) but cost coverage because it required `intan`; netting goodwill out of the same revenue-scaled intensity keeps full-universe coverage while sharpening the composition contrast. Both goodwill and R&D use the economically justified zero convention for non-reporters.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_EBITDA_EV_Knowledge",
+      "expression": "SUMRANK(RATIO(ADD(ebitda, COALESCE(xrd, SUB(at, at))), ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "EBITDA plus R&D measured against enterprise value strips out both intangible amortization and capital-structure effects, giving a cheapness measure that is undistorted for firms carrying purchased intangibles and for leveraged acquirers, which should improve the short leg of the interaction.",
+      "expected_sign": "positive",
+      "reasoning": "Earlier EV-based tests failed, but they were paired with the discredited `revt/intan` turnover leg rather than with knowledge intensity, so the valuation-metric question remains genuinely open within the winning frame. Because amortization of purchased intangibles depresses net income precisely for the acquirers we want to short, an amortization-free numerator could strengthen rather than dilute the spread.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "PlainYield_FullUniverse_KnowledgeTilt",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), MA(revt, 3)))",
+      "hypothesis": "If the interaction is driven by intangible intensity rather than by mechanically adding R&D back to earnings, an unadjusted earnings yield combined with full-universe knowledge intensity should retain most of the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "In the R&D-reporter sample the add-back was essential (dropping it took alpha from 2.3% to 0.0% when paired with intangible turnover), but that comparison used a leg we now know was uninformative, so the add-back's contribution to the 5.6% full-universe alpha is unmeasured. This attribution test determines whether the final recommended signal needs the R&D add-back at all, which matters for interpreting the mechanism as conservatism correction versus intangible-intensity tilt.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_NetKnowledge_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The mispricing is strongest for cheap firms whose intangible capital is internally built rather than acquired and whose operations are genuinely profitable; combining the goodwill-netted intensity leg with gross profitability should deliver both the largest alpha and the strongest cross-sectional slope.",
+      "expected_sign": "positive",
+      "reasoning": "These are the two refinements that each improved the full-universe base on different metrics \u2014 goodwill netting on reliability and Sharpe (t=4.92, 0.485), profitability on alpha and FMB slope (5.9%, fmb 6.39) \u2014 and they address distinct sources of long-leg contamination (overpaid acquirers versus unprofitable shells). Their information should be complementary rather than redundant.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_CashYield_NetKnowledge",
+      "expression": "SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Cash-based cheapness avoids the amortization and write-off distortions that goodwill-heavy firms create in earnings, so pairing it with a goodwill-netted intangible-intensity leg attacks the same accounting distortion from both the income-statement and balance-sheet sides.",
+      "expected_sign": "positive",
+      "reasoning": "The cash-preferred value leg produced the second-highest FMB slope (5.80) and Sharpe 0.459, while goodwill netting produced the highest alpha t-stat, and the two are economically aligned because acquisition accounting depresses earnings but not cash flow. This tests whether combining them removes the residual noise that keeps the base signal's FMB slope near 4.4.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_NetKnowledge_DualScaled",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at)))",
+      "hypothesis": "Net internally generated intangible capital should be measured against both revenue and assets, because the two scalers misclassify different firms; averaging them gives the most robust ranking of the accounting-conservatism gap across the full universe.",
+      "expected_sign": "positive",
+      "reasoning": "Dual scaling and goodwill netting are orthogonal design choices that each held or improved the base result, and dual scaling matters more in the full universe where the mass of zero-R&D firms makes any single scaler's ordering coarse. This isolates whether measurement robustness or the profitability screen is the better use of the second rank slot.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_TotalIntangibleSpendStock",
+      "expression": "SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)))",
+      "hypothesis": "Advertising builds brand capital that accounting expenses exactly as it does R&D, so the economically correct hidden-asset stock is cumulative R&D plus cumulative advertising net of goodwill; including advertising should extend the mechanism to consumer-facing firms currently ranked as non-innovators.",
+      "expected_sign": "positive",
+      "reasoning": "Every signal so far measures intangible capital only through R&D, which mechanically assigns zero hidden capital to brand-intensive retailers and consumer firms that spend heavily on advertising \u2014 a large part of the full universe now included by the zero convention. The earlier standalone advertising signal failed, but it used an advertising-turnover leg and a narrow sample, whereas here advertising simply completes the intangible stock inside the winning frame.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "FullUniverse_CashNetKnowledge_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The fully specified mechanism is cash-based cheapness, internally built intangible intensity, and demonstrated operating profitability acting together; each element removes a distinct source of misclassification, so the joint signal should be the most reliable expression of the value-times-intangibles interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This is the maximal combination of the three components that improved on the full-universe base, and the archive shows that three-channel stacking only diluted results when the added channel was weakly evidenced (revenue growth, internal funding) \u2014 here all three are individually strong at 0.141 coverage. It is the natural candidate for the final recommended signal if it dominates on both alpha t-stat and FMB slope.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CheapAndKnowledgeIntensive",
+      "expression": "MIN(RANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho))), RANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))))",
+      "hypothesis": "The mispricing requires both conditions simultaneously \u2014 a firm must be cheap *and* intangible-intensive \u2014 so a conjunctive aggregator that scores a firm by its weaker rank should isolate the interaction more cleanly than an additive average, which lets an extreme on one dimension substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong archive signal uses additive rank aggregation, which by construction admits firms that are merely very cheap or merely very research-intensive, so the current long leg is not a pure interaction portfolio. Taking the minimum of the two ranks is a structurally different aggregator that enforces the joint condition and, unlike the multiplicative signed forms that failed earlier, keeps both inputs monotone and bounded.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Final_CashNetKnowledgeDual_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "The complete mechanism is cash-based cheapness, internally built intangible capital measured robustly against both revenue and assets, and demonstrated gross profitability; each element removes a distinct misclassification (accrual noise, overpaid acquirers, unprofitable shells), so the joint signal should be the strongest available expression of the value-times-intangibles interaction.",
+      "expected_sign": "positive",
+      "reasoning": "This assembles the three refinements that each beat the full-universe base on a different metric \u2014 cash-preferred yield (fmb 7.67 in combination), dual scaling (alpha t=5.03), and gross profitability (alpha 5.9%) \u2014 all at unchanged 0.141 coverage. If it dominates on both FMB slope and alpha t-stat it is the natural final recommendation.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Final_TotalIntangibleCapital_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "Brand capital built through advertising is expensed exactly as R&D is, so the economically complete hidden-asset stock is cumulative R&D plus advertising net of goodwill; adding brand capital should extend the mispricing to consumer-facing firms and improve risk-adjusted performance.",
+      "expected_sign": "positive",
+      "reasoning": "Including advertising in the intangible stock produced the archive's highest Sharpe (0.515) in its simpler form, indicating the added firms are genuinely mispriced rather than noise. Pairing that broader stock with the cash yield and profitability screen tests whether the best-Sharpe and best-slope refinements are complementary.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Final_AccrualYield_NetKnowledgeDual_Profitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(ib, COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(SUB(revt, cogs), at))",
+      "hypothesis": "If the abnormal return comes from intangible intensity and profitability rather than from the choice between cash and accrual cheapness, the earnings-based version of the maximal signal should perform comparably, making the simpler and more widely available value leg preferable.",
+      "expected_sign": "positive",
+      "reasoning": "Cash-based and earnings-based value legs have traded places across generations (cash better on Sharpe and FMB slope, earnings better on raw alpha), and this pair with Signal 1 cleanly isolates that one design choice at identical coverage. Establishing which leg the final signal needs matters for interpretation and implementability, not just for fit.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "SymmetricIntangibleSpend_Yield_Intensity",
+      "expression": "SUMRANK(RATIO(ADD(ib, ADD(COALESCE(xrd, SUB(at, at)), COALESCE(xad, SUB(at, at)))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(ADD(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(TS_SUM(xad, 5), SUB(at, at))), COALESCE(gdwl, SUB(at, at))), at)))",
+      "hypothesis": "Accounting conservatism applies identically to R&D and advertising, so both should be added back to earnings *and* capitalized in the intangible stock; treating total intangible spending symmetrically in both legs is the internally consistent statement of the conservatism-correction story.",
+      "expected_sign": "positive",
+      "reasoning": "Every prior signal adds back only R&D to earnings while sometimes capitalizing advertising, an inconsistency that mismeasures cheapness precisely for brand-intensive firms. This is the one remaining substantive measurement question about the mechanism's economic content, and it is testable at full coverage thanks to the zero-spend convention.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Conjunctive_CheapQuality_AND_NetKnowledge",
+      "expression": "MIN(RANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), RATIO(SUB(revt, cogs), at))), RANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3))))",
+      "hypothesis": "A true interaction portfolio requires firms to be jointly cheap-and-profitable *and* intangible-intensive; scoring each firm by its weaker of the two ranks enforces that conjunction and should produce a purer interaction spread than an additive average, which lets one extreme substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "The conjunctive MIN aggregator already worked well on its first test (5.1% alpha, t=4.10, Sharpe 0.493) despite using the plainest legs, so pairing it with the strongest cheapness-quality composite is the right final test of whether the interaction is conjunctive in nature. This distinguishes the economics of the finding \u2014 a joint condition \u2014 from the additive rank convenience used throughout.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    },
+    {
+      "name": "Final_CashNetKnowledgeDual_CashProfitability",
+      "expression": "SUMRANK(SUMRANK(RATIO(ADD(COALESCE(oancf, ib), COALESCE(xrd, SUB(at, at))), MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), MA(revt, 3)), RATIO(SUB(COALESCE(TS_SUM(xrd, 5), SUB(at, at)), COALESCE(gdwl, SUB(at, at))), at))), RATIO(oancf, at))",
+      "hypothesis": "Quality should be measured in cash as well: firms generating operating cash flow on their asset base are the ones whose hidden intangible capital is economically productive, and cash profitability is harder to manipulate than gross margin for intangible-heavy firms whose cost structure sits below the gross-profit line.",
+      "expected_sign": "positive",
+      "reasoning": "Gross profitability was the quality screen that lifted FMB slopes above 6.5, but for R&D-intensive firms most intangible spending is expensed *below* gross profit, so gross margin may overstate quality exactly where the mechanism operates. Swapping in cash profitability while holding everything else at the Signal 1 specification isolates the quality-measurement choice and could improve both slope and Sharpe.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "intangibles",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_intangible"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeCapital_BM",
+      "metadata": {
+        "normalized_expression": "coalesce(ratio(add(ceq,ts_sum(xrd,5)),mul(prcc_f,csho)),ratio(ceq,mul(prcc_f,csho)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDInclusive_Yield_x_IntanTurnover",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(revt,intan))",
+        "variables": [
+          "csho",
+          "ib",
+          "intan",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ValueTilt_Conditional_RDIntensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(winsor(ratio(ceq,mul(prcc_f,csho)),1)),ind_rank(ratio(xrd,at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleCapital_Yield",
+      "metadata": {
+        "normalized_expression": "ratio(add(intan,ts_sum(xrd,5)),mul(prcc_f,csho))",
+        "variables": [
+          "csho",
+          "intan",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapEV_x_RisingRDIntensity",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),rank(growth(ma(ratio(xrd,sale),3),1)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IntangibleValuationDistortionGap",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(add(ceq,ts_sum(xrd,5)),mul(prcc_f,csho))),ind_rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDStock_GrossProfitability_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(sub(revt,cogs),ts_sum(xrd,5)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OrganicBook_ExGoodwill_BM",
+      "metadata": {
+        "normalized_expression": "ratio(add(sub(ceq,gdwl),ts_sum(xrd,5)),mul(prcc_f,csho))",
+        "variables": [
+          "ceq",
+          "csho",
+          "gdwl",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AdditiveValue_RDIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ceq,ts_sum(xrd,5)),mul(prcc_f,csho)),ratio(xrd,at))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ImprovingIntangibleProductivity_SP",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sale,mul(prcc_f,csho)),trend(ratio(sub(revt,cogs),add(intan,xrd)),5))",
+        "variables": [
+          "cogs",
+          "csho",
+          "intan",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AmortizationDrag_CashValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(oancf,ib),mul(prcc_f,csho)),ratio(intan,at))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "intan",
+          "oancf",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeStockGrowth_In_CheapFirms",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(growth(ts_sum(xrd,3),1)),ind_rank(ratio(ceq,mul(prcc_f,csho))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RDIntensity_Per_GrossProfit_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),sub(revt,cogs)))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EVCheap_x_IntangibleTurnover",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),ratio(revt,intan))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "intan",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EarningsYield_x_IntanTurnover_WideCoverage",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(revt,intan))",
+        "variables": [
+          "csho",
+          "ib",
+          "intan",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Glamour_Goodwill_ValueTrap",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(gdwl,at),ratio(mul(prcc_f,csho),revt))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "prcc_f",
+          "revt"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "OwnHistory_IntangibleAdjusted_Cheapness",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(neg(ts_rank(ratio(mul(prcc_f,csho),add(ceq,ts_sum(xrd,5))),5))),ind_rank(ratio(xrd,sale)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BrandCapital_Productive_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xad),mul(prcc_f,csho)),ratio(revt,ma(xad,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xad"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeStock_Per_Sales_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapKnowledge_Productive_Triple",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),sumrank(ratio(ts_sum(xrd,5),sub(revt,cogs)),ratio(sub(revt,cogs),at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutral_CheapKnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(ib,xrd),mul(prcc_f,csho))),ind_zscore(ratio(ts_sum(xrd,5),sub(revt,cogs))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Internal_vs_Purchased_IntangibleYield",
+      "metadata": {
+        "normalized_expression": "sub(ind_rank(ratio(ts_sum(xrd,5),mul(prcc_f,csho))),ind_rank(ratio(gdwl,mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "gdwl",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapYield_Times_KnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "mul(ind_zscore(ratio(add(ib,xrd),mul(prcc_f,csho))),ind_rank(ratio(ts_sum(xrd,5),sub(revt,cogs))))",
+        "variables": [
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StableRD_Commitment_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),neg(vol(ratio(xrd,revt),5)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapKnowledge_SalesScaled_Productive",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),sumrank(ratio(ts_sum(xrd,5),ma(revt,3)),ratio(sub(revt,cogs),at)))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapValue_UnstableRD_Flip",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),vol(ratio(xrd,revt),5))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashFlow_RDInclusive_KnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(oancf,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BroadCheapness_KnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(sale,mul(prcc_f,csho))),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "sale",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeCredited_EV_Multiple",
+      "metadata": {
+        "normalized_expression": "ratio(ebitda,sub(add(mul(prcc_f,csho),sub(add(dltt,dlc),che)),ts_sum(xrd,5)))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AssetScaled_KnowledgeStock_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),at))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualYield_KnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(add(oancf,xrd),mul(prcc_f,csho))),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapKnowledge_Quality_Instability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3))),sumrank(ratio(sub(revt,cogs),at),vol(ratio(xrd,revt),5)))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WithinIndustryCheap_RawKnowledgeTilt",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(ib,xrd),mul(prcc_f,csho))),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeToPrice_Profitable",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ts_sum(xrd,5),mul(prcc_f,csho)),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FundedInnovation_CheapKnowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3))),ratio(add(che,oancf),xrd))",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CheapKnowledge_RevenueRealization",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3))),growth(ma(revt,3),1))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SmoothedProfit_KnowledgeIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ma(ib,3),xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),ma(revt,3)))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualScaled_KnowledgeIntensity_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),sumrank(ratio(ts_sum(xrd,5),ma(revt,3)),ratio(ts_sum(xrd,5),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ZeroRD_Convention_FullUniverse",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashYield_AssetScaled_Knowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(oancf,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),at))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "KnowledgeInclusive_NetAssetValue",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ts_sum(xrd,5),sub(che,add(dltt,dlc))),mul(prcc_f,csho)),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "che",
+          "cogs",
+          "csho",
+          "dlc",
+          "dltt",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BuiltNotBought_Intangibles_Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,xrd),mul(prcc_f,csho)),ratio(ts_sum(xrd,5),add(intan,ts_sum(xrd,5))))",
+        "variables": [
+          "csho",
+          "ib",
+          "intan",
+          "prcc_f",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_DualScaled_Knowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),sumrank(ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3)),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_Knowledge_GrossProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_CashPreferred_Knowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_NetInternalIntangibleIntensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_EBITDA_EV_Knowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ebitda,coalesce(xrd,sub(at,at))),add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PlainYield_FullUniverse_KnowledgeTilt",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(coalesce(ts_sum(xrd,5),sub(at,at)),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_NetKnowledge_Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_CashYield_NetKnowledge",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_NetKnowledge_DualScaled",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),sumrank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_TotalIntangibleSpendStock",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(add(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(ts_sum(xad,5),sub(at,at))),coalesce(gdwl,sub(at,at))),ma(revt,3)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FullUniverse_CashNetKnowledge_Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CheapAndKnowledgeIntensive",
+      "metadata": {
+        "normalized_expression": "min(rank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho))),rank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3))))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Final_CashNetKnowledgeDual_Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),sumrank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),at))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Final_TotalIntangibleCapital_Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(add(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(ts_sum(xad,5),sub(at,at))),coalesce(gdwl,sub(at,at))),ma(revt,3))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Final_AccrualYield_NetKnowledgeDual_Profitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(ib,coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),sumrank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),at))),ratio(sub(revt,cogs),at))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SymmetricIntangibleSpend_Yield_Intensity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(add(ib,add(coalesce(xrd,sub(at,at)),coalesce(xad,sub(at,at)))),mul(prcc_f,csho)),sumrank(ratio(sub(add(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(ts_sum(xad,5),sub(at,at))),coalesce(gdwl,sub(at,at))),ma(revt,3)),ratio(sub(add(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(ts_sum(xad,5),sub(at,at))),coalesce(gdwl,sub(at,at))),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "prcc_f",
+          "revt",
+          "xad",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Conjunctive_CheapQuality_AND_NetKnowledge",
+      "metadata": {
+        "normalized_expression": "min(rank(sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),ratio(sub(revt,cogs),at))),rank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3))))",
+        "variables": [
+          "at",
+          "cogs",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Final_CashNetKnowledgeDual_CashProfitability",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(add(coalesce(oancf,ib),coalesce(xrd,sub(at,at))),mul(prcc_f,csho)),sumrank(ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),ma(revt,3)),ratio(sub(coalesce(ts_sum(xrd,5),sub(at,at)),coalesce(gdwl,sub(at,at))),at))),ratio(oancf,at))",
+        "variables": [
+          "at",
+          "csho",
+          "gdwl",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "revt",
+          "xrd"
+        ]
+      }
+    }
+  ]
+}

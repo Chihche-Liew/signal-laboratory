@@ -1,0 +1,2861 @@
+{
+  "pair": "accrual_finance",
+  "evaluated": [
+    {
+      "name": "AccrualIssuanceComposite",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))",
+      "hypothesis": "Firms that simultaneously report accrual-heavy earnings and raise net external capital (equity plus debt, net of repurchases and repayments) are the most likely to be overvalued and to disappoint, because both the accounting and the financing channel signal that reported profits are not self-funding.",
+      "expected_sign": "negative",
+      "reasoning": "Total accruals (ib minus oancf) measure the non-cash share of earnings, while net external financing measures cash raised from outside claimants; requiring both to be high isolates firms whose growth is funded by capital markets rather than operations. Rank-summing the two channels keeps coverage broad while ensuring the score peaks only when both accounting quality and financing behavior are unfavorable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.7218541631745428,
+      "ls_alpha": -0.024043993756640483,
+      "ls_talpha": -1.8803416361712526,
+      "ls_sharpe": -0.39050785681968364,
+      "coverage": 0.07904691120471972,
+      "error": null
+    },
+    {
+      "name": "AccrualsConditionalOnNetIssuance",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), INDICATOR(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 0.02))",
+      "hypothesis": "The accrual anomaly is concentrated in firms that are actively tapping external capital markets; among self-funded firms high accruals carry much weaker negative information because there is no incentive or opportunity to inflate earnings ahead of a capital raise.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the accrual exposure on only when net external financing exceeds 2% of assets, so the signal is a state-dependent version of accruals rather than an average of two effects. Non-issuers are neutralized to zero, which sharpens the long-short spread if the mispricing is driven by issuance-window earnings management.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.3859832504508038,
+      "ls_alpha": 0.0036166891631799272,
+      "ls_talpha": 0.4015663519726177,
+      "ls_sharpe": 0.22720041667841248,
+      "coverage": 0.07904691120471972,
+      "error": null
+    },
+    {
+      "name": "LeverageAmplifiedAccruals",
+      "expression": "WINSOR(RATIO(MUL(SUB(ib, oancf), lt), MUL(at, at)), 1)",
+      "hypothesis": "A given amount of accrual-based earnings is more dangerous when the balance sheet is already financed with heavy outside liabilities, since low-quality earnings plus a thin equity cushion raises the probability of covenant pressure, forced deleveraging, and future write-offs.",
+      "expected_sign": "negative",
+      "reasoning": "The expression multiplies scaled accruals by the liability-to-asset financing structure, producing a genuine amplitude interaction: the score is extreme only when soft earnings coincide with high creditor claims. Winsorizing controls the tail leverage of the product without changing the economic ordering.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -3.3348745255854295,
+      "ls_alpha": -0.030548002079965293,
+      "ls_talpha": -2.2906408880968576,
+      "ls_sharpe": -0.3887249151565822,
+      "coverage": 0.09092309111485876,
+      "error": null
+    },
+    {
+      "name": "ShareIssuedWorkingCapitalBuildup",
+      "expression": "MUL(RANK(DELTA(RATIO(SUB(SUB(act, che), SUB(SUB(lct, dlc), txp)), at), 1)), RANK(GROWTH(csho, 1)))",
+      "hypothesis": "Working-capital expansion (receivables and inventory growth net of operating liabilities) that is accompanied by share-count growth indicates that soft revenue recognition is being financed by diluting existing shareholders, a combination that precedes negative earnings surprises.",
+      "expected_sign": "negative",
+      "reasoning": "The first rank isolates the non-cash operating accrual buildup after netting out debt-like current items, while the second rank captures equity dilution measured directly from share count rather than cash-flow-statement issuance, giving an independent financing read. The product is high only when the working-capital build is externally equity-funded, which is the overvaluation case.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.7507885943149493,
+      "ls_alpha": 0.014326795886774744,
+      "ls_talpha": 1.581144691801187,
+      "ls_sharpe": -0.0950542827082735,
+      "coverage": 0.10639002597762803,
+      "error": null
+    },
+    {
+      "name": "PersistentAccrualFinancingPair",
+      "expression": "MUL(RANK(TS_SUM(RATIO(SUB(ib, oancf), at), 3)), RANK(TS_SUM(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Repeated, multi-year reliance on both accrual-based earnings and external capital identifies chronically cash-deficient firms whose business model is sustained by financing rather than one-off accounting noise, and this persistent combination should be more strongly mispriced than a single-year event.",
+      "expected_sign": "negative",
+      "reasoning": "Three-year cumulative sums filter transitory accrual reversals and lumpy single financing events, so only firms that repeatedly close a cash gap with outside money score high on both channels. The multiplicative rank structure enforces the joint condition and targets the \"serial external funder with soft earnings\" archetype.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -2.6345440276648575,
+      "ls_alpha": -0.02020425972220543,
+      "ls_talpha": -1.5547546318352732,
+      "ls_sharpe": -0.3707424360151389,
+      "coverage": 0.08512713725218275,
+      "error": null
+    },
+    {
+      "name": "AccrualEscalationWithFinancingStress",
+      "expression": "SUMRANK(DELTA(RATIO(SUB(ib, oancf), at), 1), SUMRANK(RATIO(DELTA(dlc, 1), at), NEG(DELTA(RATIO(dvt, at), 1))))",
+      "hypothesis": "Deteriorating accounting quality that coincides with a shift toward short-term borrowing and a retrenchment in dividends reflects genuine balance-sheet stress being masked by accruals, and such firms should underperform as the funding constraint becomes visible.",
+      "expected_sign": "negative",
+      "reasoning": "The signal combines a change-in-accruals channel (accounting deterioration) with two distinct financing-stress channels: rising current debt, which is the cheapest but riskiest funding margin, and falling total payout, which signals cash preservation. Because all three are changes rather than levels, the score identifies firms transitioning into stress rather than statically levered firms.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": -0.7749449260716222,
+      "ls_alpha": -0.002488134113686115,
+      "ls_talpha": -0.20913331970566543,
+      "ls_sharpe": 0.048088525820605486,
+      "coverage": 0.08087249582517148,
+      "error": null
+    },
+    {
+      "name": "BalanceSheetAccrualNetFinancing",
+      "expression": "SUMRANK(RATIO(SUB(DELTA(wcap, 1), dp), at), RATIO(ADD(DELTA(dltt, 1), SUB(DELTA(ceq, 1), ib)), at))",
+      "hypothesis": "Firms whose working-capital accruals (net of depreciation) are high at the same time that they are raising net debt and net equity are financing non-cash earnings growth from outside capital, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both legs are built purely from balance-sheet items, with net equity issuance measured as the clean-surplus residual DELTA(ceq) minus earnings, so the signal avoids the cash-flow-statement items that capped prior coverage near 0.08. If the accrual-financing mechanism is real rather than a sample artifact, this construction should reproduce or strengthen the gen-0 composite's FMB slope on a much larger firm-month sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -3.3151570330792817,
+      "ls_alpha": 0.018825521055175275,
+      "ls_talpha": 2.2961787177950344,
+      "ls_sharpe": -0.07117085991954004,
+      "coverage": 0.11096680815269926,
+      "error": null
+    },
+    {
+      "name": "AccrualsAmplifiedByGrossIssuance",
+      "expression": "WINSOR(RATIO(MUL(SUB(ib, oancf), ADD(sstk, dltis)), MUL(at, at)), 1)",
+      "hypothesis": "The pricing error in accruals scales with how much fresh outside capital the firm is actually raising: gross equity plus long-term debt issuance measures the firm's dependence on external investors who must be convinced by reported earnings.",
+      "expected_sign": "negative",
+      "reasoning": "This keeps the multiplicative amplitude structure that produced the best gen-0 alpha but replaces the leverage stock (lt/at, which is confounded with static distress/value exposure) by a strictly non-negative issuance flow, so the sign ambiguity of signed-times-signed products is avoided while the financing channel becomes an action rather than a state. Comparing it to LeverageAmplifiedAccruals isolates whether the amplifier is balance-sheet pressure or capital-market dependence.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.544465503049866,
+      "ls_alpha": -0.01010648383300165,
+      "ls_talpha": -0.7811540630842196,
+      "ls_sharpe": 0.03111813756830605,
+      "coverage": 0.08651295125500752,
+      "error": null
+    },
+    {
+      "name": "RankWeightedFinancingAccruals",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual mispricing is monotonically increasing in external-financing dependence rather than switching on at a threshold: heavy net issuers should show the full accrual effect, self-funded and repurchasing firms almost none.",
+      "expected_sign": "negative",
+      "reasoning": "This directly repairs the gen-0 indicator failure by replacing the 0/1 switch with a smooth non-negative weight in [0,1], so non-issuers are shrunk toward neutral instead of being lumped into a single artificial zero bin with opposite-signed accrual firms. It also preserves the sign of accruals, which the indicator version destroyed for negative-accrual issuers.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.12153177987992722,
+      "ls_alpha": -0.020666009221609112,
+      "ls_talpha": -1.4152660468404323,
+      "ls_sharpe": -0.05423076978983276,
+      "coverage": 0.07904691120471972,
+      "error": null
+    },
+    {
+      "name": "IndustryNeutralAccrualFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual and issuance intensity are strongly industry-determined (biotech and utilities issue and accrue for structural reasons), so within-industry deviations isolate the firm-specific earnings-management/overvaluation component that is actually mispriced.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 composite had a strong FMB slope (\u22123.72) but weak FF5 alpha (t=\u22121.88), a pattern consistent with the extreme portfolios loading on a few financing-heavy industries whose common return variation is absorbed by factor exposure and residual volatility. Industry-standardizing each leg before ranking should stabilize portfolio composition and lift ls_talpha without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -4.198579883342476,
+      "ls_alpha": -0.03664317307375513,
+      "ls_talpha": -2.9827969680698883,
+      "ls_sharpe": -0.4698389921441549,
+      "coverage": 0.07899774398292261,
+      "error": null
+    },
+    {
+      "name": "DebtFundedAccrualCashDrain",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), SUMRANK(RATIO(DELTA(dltt, 1), at), NEG(RATIO(DELTA(che, 1), at))))",
+      "hypothesis": "Balance-sheet pressure is clearest when soft earnings coincide with new long-term borrowing *and* a decline in cash holdings: the firm is consuming liquidity and adding fixed claims while reporting non-cash profits.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the failed gen-0 stress signal, which used only second-order changes in accruals and dividends, this keeps the accrual level (the leg with proven cross-sectional power) and adds two first-order funding-pressure channels that jointly identify firms whose reported earnings are not replenishing the cash buffer. It tests whether the liquidity-drain dimension adds information beyond issuance volume.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -2.1261240417728726,
+      "ls_alpha": -0.038425184091309406,
+      "ls_talpha": -2.9090354618710035,
+      "ls_sharpe": -0.35788649282539026,
+      "coverage": 0.08381045659375266,
+      "error": null
+    },
+    {
+      "name": "RevenueQualityAccrualsWithEquityIssuance",
+      "expression": "SUMRANK(RATIO(NEG(ADD(recch, invch)), at), RATIO(SUB(sstk, prstkc), at))",
+      "hypothesis": "Within total accruals, receivable and inventory buildups are the components most amenable to revenue-recognition management, and their information content should be strongest when the firm is simultaneously selling equity into the market.",
+      "expected_sign": "negative",
+      "reasoning": "Total accruals mix depreciation and tax timing items that carry little manipulation content, so isolating the receivable/inventory channel (sign-flipped, since cash-flow-statement changes enter as cash uses) should sharpen the accounting-quality leg, while net equity issuance is the financing action most tied to overvaluation rather than to distress. This tests whether accrual composition, not accrual magnitude, is what interacts with financing.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -1.8539986946214155,
+      "ls_alpha": 0.010035181343833993,
+      "ls_talpha": 0.82997338842158,
+      "ls_sharpe": -0.15572508007193675,
+      "coverage": 0.0704037985780406,
+      "error": null
+    },
+    {
+      "name": "IndNeutralAccrualDebtCashDrain",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(DELTA(dltt, 1), at)), IND_ZSCORE(NEG(RATIO(DELTA(che, 1), at)))))",
+      "hypothesis": "Soft earnings combined with new long-term borrowing and a falling cash buffer identifies firms whose reported profits are neither cash-generating nor self-financing, and the mispricing is firm-specific rather than industry-driven.",
+      "expected_sign": "negative",
+      "reasoning": "This merges the two strongest gen-1 results \u2014 industry neutralization (best fmb and talpha) and the debt-funded cash-drain channel (largest alpha) \u2014 which were previously tested separately, so it directly asks whether their information is additive. If the liquidity-drain leg is not simply a noisy proxy for issuance, industry-standardizing all three legs should raise both fmb_tstat and ls_talpha above either parent.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.991994843060354,
+      "ls_alpha": -0.019283480671384533,
+      "ls_talpha": -1.5149257779193535,
+      "ls_sharpe": -0.1562674690399069,
+      "coverage": 0.08375257031583414,
+      "error": null
+    },
+    {
+      "name": "ConjunctiveAccrualIssuance",
+      "expression": "MIN(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "The overvaluation story is genuinely conjunctive: only firms that are simultaneously accrual-aggressive and net external financiers should be shorted, while a firm extreme on one dimension alone carries little information.",
+      "expected_sign": "negative",
+      "reasoning": "Additive SUMRANK lets one extreme leg dominate, so a highly accrual-heavy firm that repurchases stock still enters the short book; MIN enforces the \"both, or neither\" logic while staying monotone in each input, avoiding the sign pathology of products and the bin-collapse of the failed indicator version. Comparing it to the additive industry-neutral composite isolates whether the true structure is interaction or two-factor addition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.285010654573597,
+      "ls_alpha": -0.010645260995683083,
+      "ls_talpha": -0.7986872313886352,
+      "ls_sharpe": -0.26342449454096306,
+      "coverage": 0.07899774398292261,
+      "error": null
+    },
+    {
+      "name": "IndNeutralAccrualIssuanceLeverage",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), IND_ZSCORE(RATIO(lt, at))))",
+      "hypothesis": "Financing pressure has both a flow dimension (capital currently being raised) and a stock dimension (existing outside claims); accrual mispricing should be strongest where both are elevated because the firm has little slack to absorb an accrual reversal.",
+      "expected_sign": "negative",
+      "reasoning": "The leverage-amplified accrual signal produced a reliable alpha (\u22123.1%, t=\u22122.29) and the issuance composite a strong slope, but the two financing dimensions have never been used together within industry. Adding the leverage stock as a third industry-standardized leg tests whether balance-sheet capacity is incremental to issuance activity, and rank aggregation avoids the product form that already failed.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -2.0744763372245867,
+      "ls_alpha": -0.04003533724994838,
+      "ls_talpha": -2.6416845562943267,
+      "ls_sharpe": -0.25641892593338883,
+      "coverage": 0.07887314918686805,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithoutPayoutDiscipline",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(NEG(RATIO(ADD(prstkc, dvt), at))))",
+      "hypothesis": "Cash returned to shareholders is a credible signal that reported earnings are real; accrual-heavy firms that distribute nothing are the ones whose earnings quality claim is unverified, so the financing leg's power may come from the absence of payout rather than the presence of issuance.",
+      "expected_sign": "negative",
+      "reasoning": "All prior financing legs mixed issuance and payout inside a single net-financing number, which conflates two economically different verification channels. Replacing the net-financing leg with a pure negative-payout leg isolates which half of the financing variable drives the interaction, and a strong result would reorient later generations toward payout-based conditioning.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -1.8645623556425939,
+      "ls_alpha": -0.012117874274326573,
+      "ls_talpha": -0.9711503590287809,
+      "ls_sharpe": -0.17936730542673776,
+      "coverage": 0.08470227673644388,
+      "error": null
+    },
+    {
+      "name": "PersistentIndNeutralAccrualFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(SUB(ib, oancf), at), 3)), IND_ZSCORE(MA(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Chronic dependence on accruals and outside capital, rather than a single fiscal year's realization, identifies structurally cash-deficient firms whose valuations are most likely to be corrected.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 persistence test used three-year sums inside a rank product, which conflated the persistence idea with the failed multiplicative form; here persistence is implemented as three-year averages inside the aggregation structure that actually worked. Smoothing should reduce reporting noise and portfolio turnover, so if the mechanism is a chronic state we expect higher ls_talpha and Sharpe than the one-year industry-neutral composite.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.2432967068311296,
+      "ls_alpha": -0.016689166995317452,
+      "ls_talpha": -1.3773987250347894,
+      "ls_sharpe": -0.30753507051112977,
+      "coverage": 0.08507487450750231,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithShortMaturityDebtReliance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(dlc, ADD(dlc, dltt))))",
+      "hypothesis": "Beyond how much a firm borrows, the maturity mix matters: accrual-heavy firms funded disproportionately with short-term debt face imminent rollover decisions, giving lenders a near-term option to withdraw exactly when accruals reverse.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg tested so far measures volume (issuance, net financing, total liabilities); maturity structure is an untested and economically distinct dimension of financing fragility that requires no cash-flow-statement items. Pairing it with the proven accrual leg inside the industry-neutral rank frame keeps the comparison clean, so a strong result would identify rollover risk, not issuance appetite, as the amplifying mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": -3.8835495434211436,
+      "ls_alpha": -0.01878689876863281,
+      "ls_talpha": -1.5523159377002744,
+      "ls_sharpe": -0.22888447024943878,
+      "coverage": 0.07810380856626112,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithNetEquityIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(sstk, prstkc), at)))",
+      "hypothesis": "The accrual-financing interaction is an equity-market-timing phenomenon: managers inflate accruals when they intend to sell equity and avoid issuance (or repurchase) when the stock is cheap, so net equity issuance should be the dominant financing leg.",
+      "expected_sign": "negative",
+      "reasoning": "The winning composite bundles equity and debt flows into one number, which hides whether the mispricing comes from overvaluation (equity channel) or funding pressure (debt channel). Isolating net equity issuance against the proven accrual leg in the proven aggregation frame gives a decisive read on the overvaluation interpretation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.9454461641902143,
+      "ls_alpha": -0.023362809018713033,
+      "ls_talpha": -2.084810915872766,
+      "ls_sharpe": -0.298935841625182,
+      "coverage": 0.08320698440764487,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithNetDebtIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(dltis, dltr), at)))",
+      "hypothesis": "If the interaction reflects balance-sheet pressure rather than equity overvaluation, then net long-term debt issuance is the financing action that matters, because creditors ratify soft earnings with fixed claims the firm must service in cash.",
+      "expected_sign": "negative",
+      "reasoning": "This is the exact counterpart to Signal 1, holding the accrual leg and aggregation fixed so the comparison identifies the operative economic channel rather than a formula variant. Given that the leverage stock helped alpha and payout did not, debt-side financing is a live hypothesis worth separating.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.3675491230437697,
+      "ls_alpha": -0.018443823710018778,
+      "ls_talpha": -1.3067258011386171,
+      "ls_sharpe": -0.25472907499013403,
+      "coverage": 0.08626892086770395,
+      "error": null
+    },
+    {
+      "name": "AccrualsVsFinancingFragilityIndex",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(dlc, ADD(dlc, dltt))))",
+      "hypothesis": "Financing vulnerability has a volume dimension (net capital currently raised) and a maturity dimension (reliance on short-term debt that must be rolled); combining them into one index, then interacting with accruals, should dominate either single financing measure.",
+      "expected_sign": "negative",
+      "reasoning": "The two best FMB slopes in the archive came from accruals paired with net financing (\u22124.20) and accruals paired with short-maturity reliance (\u22123.88), and nesting the two financing measures inside the inner SUMRANK keeps the accrual leg at full 50% weight instead of down-weighting it to one third as the failed three-leg versions did. This directly repairs the dilution failure mode observed in generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.9400874178900884,
+      "ls_alpha": -0.02466253877676454,
+      "ls_talpha": -1.867028507016121,
+      "ls_sharpe": -0.44362047764706725,
+      "coverage": 0.06754518637936913,
+      "error": null
+    },
+    {
+      "name": "AccrualEscalationAtIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(DELTA(RATIO(SUB(ib, oancf), at), 1)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Earnings management is an event, not a level: the informative case is a firm whose accruals *jumped* in the same year it raised outside capital, because that is the pattern consistent with dressing up reported earnings for investors.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 change-based signal failed, but it used second-order changes, no industry neutralization, and a stress-oriented financing leg; here only the accrual leg is differenced while everything proven is held fixed. If the accrual level leg beats it, we learn the anomaly is about accrual *stock* overstatement rather than a discretionary spike, which sharpens later refinements.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -2.574112727170088,
+      "ls_alpha": -0.004169866342997042,
+      "ls_talpha": -0.3337244040573696,
+      "ls_sharpe": -0.07462031400882257,
+      "coverage": 0.07045714475573023,
+      "error": null
+    },
+    {
+      "name": "AccrualsAfterPriorYearFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(LAG(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 1)))",
+      "hypothesis": "If the mechanism is post-financing disappointment, the relevant financing already happened: firms that raised capital last year and still report accrual-heavy earnings are the ones facing an imminent reversal with the proceeds already spent.",
+      "expected_sign": "negative",
+      "reasoning": "Contemporaneous pairing cannot distinguish \"manipulating to issue\" from \"issuing then disappointing,\" and the three-year smoothing test showed timing matters materially. Lagging only the financing leg by one year isolates the drift interpretation and, if it holds up, also implies the signal is tradable further from the financing event with less stale-accrual overlap.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.7117674810969628,
+      "ls_alpha": -0.015451445154620956,
+      "ls_talpha": -1.5850823633551305,
+      "ls_sharpe": -0.2133991731194634,
+      "coverage": 0.07246149582269505,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithShareCountDilution",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(GROWTH(csho, 1)))",
+      "hypothesis": "Share-count growth captures all forms of equity dilution \u2014 secondary offerings, stock-financed acquisitions, and option exercise \u2014 so it should identify accrual-heavy firms paying with overvalued paper even when cash-flow-statement issuance is small.",
+      "expected_sign": "negative",
+      "reasoning": "Dilution via csho was only tested once, inside the failed rank-product with a weak working-capital accrual leg, so its standalone interaction value is unknown; stock-financed acquisitions are exactly where accrual inflation and overvaluation coincide most strongly. Pairing it with the proven accrual leg in the winning frame tests the \"overvalued paper\" channel that cash issuance proceeds miss.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": -3.3584372779599874,
+      "ls_alpha": -0.011053504962100981,
+      "ls_talpha": -0.9563760041897927,
+      "ls_sharpe": -0.23352378142465988,
+      "coverage": 0.084083894448448,
+      "error": null
+    },
+    {
+      "name": "WorkingCapitalAccrualLegWithNetFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Within the cash-flow accrual measure, it is the working-capital buildup rather than the depreciation offset that reflects discretionary earnings quality, so adding depreciation back should sharpen the accounting-quality leg of the interaction.",
+      "expected_sign": "negative",
+      "reasoning": "The measure ib \u2212 oancf nets working-capital accruals against depreciation, mixing a discretionary manipulation channel with a mechanical capital-intensity channel that is largely industry-determined; adding dpc back isolates the discretionary part while keeping the same cash-flow-statement sample and the proven financing leg. This is the accrual-composition test that failed when attempted with balance-sheet items (wcap, recch/invch), so doing it inside the cash-flow definition tells us whether those failures were measurement artifacts or genuine evidence against the working-capital channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.8079931098668403,
+      "ls_alpha": -0.0334225432516668,
+      "ls_talpha": -2.675468199492991,
+      "ls_sharpe": -0.33391240111825404,
+      "coverage": 0.07783893499154303,
+      "error": null
+    },
+    {
+      "name": "FirmRelativeAccrualIssuanceSpike",
+      "expression": "SUMRANK(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5))",
+      "hypothesis": "What is mispriced is an abnormal event for the firm \u2014 accruals and external financing both at multi-year highs relative to the firm's own history \u2014 not the permanent characteristic of being an accrual-heavy, capital-hungry company.",
+      "expected_sign": "negative",
+      "reasoning": "All prior signals rank firms against peers, so their extreme portfolios are populated by structurally similar companies whose common return variation FF5 partly absorbs; within-firm percentile ranks strip out firm-level type and leave the deviation, which is the quantity a surprise-based mispricing story predicts. If this frame works, it should raise ls_talpha and Sharpe even with a somewhat smaller cross-sectional slope.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -1.8658937610308008,
+      "ls_alpha": -0.0304058555515085,
+      "ls_talpha": -1.9975997290267822,
+      "ls_sharpe": -0.49173673926787753,
+      "coverage": 0.06941374717585129,
+      "error": null
+    },
+    {
+      "name": "IndNeutralAccrualsWithIssuanceSpike",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5))",
+      "hypothesis": "Accrual aggressiveness is best judged against industry peers (accounting norms are industry-specific), whereas financing is best judged against the firm's own funding history (an issuance spike is the event that signals opportunism).",
+      "expected_sign": "negative",
+      "reasoning": "This hybrid separates the two normalization questions that Signal 2 bundles, so the pair identifies which leg actually benefits from a within-firm frame. It preserves the accrual leg that has generated every strong result while making the financing leg event-like rather than type-like.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.288725398187429,
+      "ls_alpha": -0.03711514809834799,
+      "ls_talpha": -2.6947259518798345,
+      "ls_sharpe": -0.5283362378124968,
+      "coverage": 0.07152210781169645,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithUnstableExternalFunding",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(VOL(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Erratic reliance on outside capital indicates an opaque, funding-fragile firm whose reported earnings quality cannot be verified from cash generation; accrual-heavy firms with volatile financing should therefore underperform more than accrual-heavy firms with steady financing policies.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg so far measures the level or direction of financing, never its instability, yet second-moment funding risk is a distinct economic mechanism (rollover and access risk) that does not require the firm to be a net issuer this year. It also tests whether the anomaly needs a directional financing signal at all, which would be informative even if the result is null.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -2.3757310027924023,
+      "ls_alpha": -0.01854047786778622,
+      "ls_talpha": -1.6379199416026426,
+      "ls_sharpe": -0.22928651247164855,
+      "coverage": 0.07340263796332755,
+      "error": null
+    },
+    {
+      "name": "IssuanceBeyondInternalEarningsWithAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), ib), at)))",
+      "hypothesis": "Financing is most suspicious when it far exceeds what the firm's reported earnings could fund: raising outside capital well in excess of internal profits is the signature of opportunistic issuance into a favorable valuation.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling financing only by assets ignores whether the firm actually needed the money, so subtracting earnings creates an internal-funds-relative financing measure that separates opportunistic raisers from firms plugging a genuine profit shortfall. Because the accrual leg uses cash flow and this leg uses earnings, the two legs remain economically distinct rather than mechanically redundant.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.405251272693766,
+      "ls_alpha": -0.028762502061005477,
+      "ls_talpha": -2.3454695132167145,
+      "ls_sharpe": -0.4174960322319575,
+      "coverage": 0.07899774398292261,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithCumulativeThreeYearFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(TS_SUM(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "The stock of recently raised outside capital, accumulated over three years, measures how much of the firm's current balance sheet was funded by investors rather than operations, and current accrual aggressiveness on top of that stock signals the coming correction.",
+      "expected_sign": "negative",
+      "reasoning": "When both legs were smoothed in generation 2 the signal weakened, but that test confounded stale accruals with accumulated financing; accumulating only the financing leg keeps the accrual information fresh while capturing multi-year external funding intensity. This isolates whether the earlier smoothing failure came from the accrual leg's staleness, as I suspect, rather than from persistence per se.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": -3.618887974206923,
+      "ls_alpha": -0.017833723242680233,
+      "ls_talpha": -1.6819991026841343,
+      "ls_sharpe": -0.3746843415971494,
+      "coverage": 0.08496591210200863,
+      "error": null
+    },
+    {
+      "name": "DualFrameFinancingAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "Accrual-heavy firms are most mispriced when they are both structurally dependent on outside capital (high versus industry peers) and raising unusually much versus their own funding history, because the first identifies the vulnerable business model and the second identifies the opportunistic event.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's two frontier signals differ only in how the financing leg is normalized, and each dominates a different metric, which implies the two frames carry complementary information rather than substituting for each other. Averaging them inside the financing leg keeps the accrual leg at full 50% weight, so this should recover the strong FMB slope of the cross-sectional version while retaining the superior Sharpe of the event version.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.7491804871507246,
+      "ls_alpha": -0.0346225967876994,
+      "ls_talpha": -2.3501430378272588,
+      "ls_sharpe": -0.41547158631767916,
+      "coverage": 0.07152025049796645,
+      "error": null
+    },
+    {
+      "name": "WCAccrualsWithIssuanceBeyondEarnings",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_ZSCORE(RATIO(SUB(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), ib), at)))",
+      "hypothesis": "The sharpest version of the story is a working-capital-driven earnings overstatement funded by capital raised well in excess of what the firm actually earned \u2014 discretionary accounting on the asset side, opportunistic financing on the liability side.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 4 validated each leg refinement separately against the same benchmark \u2014 depreciation add-back on the accrual side and internal-funds-relative scaling on the financing side \u2014 but never jointly, so this tests whether their improvements are additive or overlapping. Both refinements sharpen the economic content rather than the statistics, so if they are independent the composite should exceed the gen-1 benchmark on both slope and alpha.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -2.8897083676916377,
+      "ls_alpha": -0.03040370856014341,
+      "ls_talpha": -2.483536374166355,
+      "ls_sharpe": -0.3742799919302685,
+      "coverage": 0.07783893499154303,
+      "error": null
+    },
+    {
+      "name": "IndRankAccrualFinancing",
+      "expression": "SUMRANK(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "The economic content of the interaction is ordinal \u2014 being an accrual-aggressive, capital-raising firm relative to peers \u2014 so within-industry percentile ranks should represent it more robustly than z-scores, which are distorted by the extreme scaled ratios of small, low-asset firms.",
+      "expected_sign": "negative",
+      "reasoning": "IND_ZSCORE standardizes by an industry standard deviation that is itself dominated by a handful of extreme observations, which can make the tails of the sorted portfolio unstable and depress ls_talpha relative to the underlying slope. This is a deliberate single-choice isolation of the standardization operator on the archive's best signal, and its outcome tells later generations whether outlier control or economic content is the binding constraint on portfolio evidence.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -4.231816924513049,
+      "ls_alpha": -0.026111871492118747,
+      "ls_talpha": -2.02676993633629,
+      "ls_sharpe": -0.37501720707172403,
+      "coverage": 0.07904691120471972,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithPayoutBeyondEarnings",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), ib), at)))",
+      "hypothesis": "Distributing more cash to shareholders than the firm earned, while earnings are already accrual-inflated, indicates a payout being sustained by outside capital or balance-sheet depletion rather than by real profits.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier payout test measured only the *absence* of distributions and was weak, but over-distribution relative to reported earnings is the economically opposite and much more informative condition, since it forces the firm back to the capital markets. This keeps the proven accrual leg fixed so the test cleanly evaluates a payout-sustainability channel that the issuance-volume legs cannot capture.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.3502056114777314,
+      "ls_alpha": -0.03352077513469659,
+      "ls_talpha": -3.0594614525383435,
+      "ls_sharpe": -0.3248085004224322,
+      "coverage": 0.08472038554531144,
+      "error": null
+    },
+    {
+      "name": "SymmetricDualFrameAccrualFinancing",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), TS_RANK(RATIO(SUB(ib, oancf), at), 5)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "Both accounting aggressiveness and financing dependence should be judged simultaneously against peers and against the firm's own history, so that the signal fires on firms that are both structurally low-quality and currently deviating from their own norm on both dimensions.",
+      "expected_sign": "negative",
+      "reasoning": "Own-history normalization of the accrual leg was only tested in isolation, where it weakened the slope (fmb \u22121.87) but delivered a strong Sharpe (\u22120.49), suggesting it adds event information while discarding level information; combining rather than substituting the frames should retain both. Paired with Signal 1, this determines whether the accrual leg benefits from dual framing or whether only the financing leg does.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": -3.0687016787523045,
+      "ls_alpha": -0.027332445031157303,
+      "ls_talpha": -1.9119658812488218,
+      "ls_sharpe": -0.4375235597887365,
+      "coverage": 0.06937366015451199,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithFundingAndOverdistribution",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), ib), at)))",
+      "hypothesis": "Accrual-heavy firms are most overvalued when they simultaneously take in outside capital and distribute more than they earn, because the two flows together prove that reported profits are not funding either investment or the payout.",
+      "expected_sign": "negative",
+      "reasoning": "The net-financing leg gave the best cross-sectional slope while the payout-overreach leg gave the best FF5 reliability (t=\u22123.06), and these are economically distinct verification failures that have never been combined. Nesting them inside the financing leg preserves the accrual leg at 50% weight, which was the fix that prevented the third-leg dilution seen in generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -2.9412981907163624,
+      "ls_alpha": -0.031129823677150274,
+      "ls_talpha": -2.3140345893267984,
+      "ls_sharpe": -0.45256321277555256,
+      "coverage": 0.0789146807855529,
+      "error": null
+    },
+    {
+      "name": "CashDeficitFinancingDiagnostic",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(oancf, at))), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "If the mechanism is that externally funded firms with weak cash generation are overpriced, then operating cash flow weakness alone, interacted with external financing, should carry the signal, and the earnings-minus-cash-flow accrual construction adds nothing.",
+      "expected_sign": "negative",
+      "reasoning": "My best recent legs all subtract earnings and pair with an accrual measure that subtracts cash flow, so the archive cannot distinguish \"aggressive accruals\" from \"negative operating cash flow\" as the operative accounting-quality variable. This is a deliberately stripped-down diagnostic: if it matches the winner, later generations should build on cash-flow deficits; if it is clearly weaker, the accrual gap is doing real work and I can drop the earnings-subtraction variants.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.396051123544055,
+      "ls_alpha": -0.029002848907251057,
+      "ls_talpha": -2.310412797345716,
+      "ls_sharpe": -0.40614992456510196,
+      "coverage": 0.0790002204012293,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithPayoutBeyondCashFlow",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Payout sustainability should be judged against cash actually generated, not against accrual-based earnings, so distributions in excess of operating cash flow identify the firms that must return to the capital markets or deplete the balance sheet.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-5 payout-overreach leg benchmarked distributions against ib and produced the archive's most reliable alpha; benchmarking against oancf is the economically correct coverage test and isolates whether that leg worked because of the payout information or because subtracting earnings loaded on low profitability. Keeping the accrual leg unchanged makes the comparison a single-choice experiment.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -4.736976894156436,
+      "ls_alpha": -0.036687951121025214,
+      "ls_talpha": -2.829112511206479,
+      "ls_sharpe": -0.3219507119331692,
+      "coverage": 0.08471971484868672,
+      "error": null
+    },
+    {
+      "name": "EquityCushionAmplifiedAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(lt, ceq)))",
+      "hypothesis": "What amplifies accrual mispricing is how little equity capital stands behind the outside claims: with a thin equity cushion, an accrual reversal transfers value to creditors and forces distressed financing.",
+      "expected_sign": "negative",
+      "reasoning": "Leverage measured as lt/at raised the alpha to \u22124.0% when added as a third leg but diluted the accrual weight; the debt-to-equity form is a sharper measure of cushion depletion and here it is used as a full 50% leg rather than a diluting third. This tests the balance-sheet-pressure interpretation against the market-timing interpretation with no issuance flow present at all.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 0.04796877771115251,
+      "ls_alpha": -0.019614778507129726,
+      "ls_talpha": -1.537226611959405,
+      "ls_sharpe": -0.07958011810519465,
+      "coverage": 0.09085292592950298,
+      "error": null
+    },
+    {
+      "name": "AccrualsPayoutOverreachIssuanceSpike",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(SUB(ADD(dvt, prstkc), ib), at), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "The most fragile configuration is an accrual-heavy firm distributing beyond its earnings while raising an unusual amount of capital relative to its own funding history \u2014 over-distribution and opportunistic replacement funding at the same time.",
+      "expected_sign": "negative",
+      "reasoning": "The two highest-reliability portfolio legs in the archive are payout overreach (t=\u22123.06) and own-history issuance spikes (Sharpe \u22120.53), and each addresses a different weakness of the other: payout overreach is level-based and type-driven, the spike is event-based and firm-relative. Combining them inside the financing leg tests whether the archive's portfolio evidence can be pushed materially past t=\u22123 without sacrificing the slope.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -3.1780752231711857,
+      "ls_alpha": -0.033341320304902985,
+      "ls_talpha": -2.0189541647491818,
+      "ls_sharpe": -0.3028804150717453,
+      "coverage": 0.07145813367210736,
+      "error": null
+    },
+    {
+      "name": "DebtFundedDividendsWithAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(MIN(DELTA(dltt, 1), dvc), at)))",
+      "hypothesis": "Borrowing while paying dividends is a specific and costly signal of managerial commitment to an unsustainable payout; when reported earnings are also accrual-inflated, the dividend is effectively being funded by creditors and the equity is overpriced.",
+      "expected_sign": "negative",
+      "reasoning": "MIN(DELTA(dltt), dvc) captures the overlap of the two flows, so the leg only becomes large when a firm genuinely increased long-term debt *and* paid a substantial dividend, which no prior leg isolates \u2014 issuance volumes and payout levels were always measured separately. This is a distinct economic mechanism (creditor-financed distributions) rather than a restatement of financing intensity.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": -1.166056496929003,
+      "ls_alpha": -0.01909752616990312,
+      "ls_talpha": -1.6047277294067614,
+      "ls_sharpe": -0.22048791435948797,
+      "coverage": 0.08367327333797249,
+      "error": null
+    },
+    {
+      "name": "AccrualsFundingAndPayoutCoverageGap",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Accrual-heavy firms that both take in outside capital and distribute more cash than operations generate are the clearest cases of value being maintained by capital-market support rather than by cash earnings.",
+      "expected_sign": "negative",
+      "reasoning": "The two strongest financing legs in the archive \u2014 net external financing (best Sharpe, \u22120.47) and payout beyond operating cash flow (best slope, \u22124.74) \u2014 measure inflow dependence and outflow overreach respectively, so they should be complementary rather than redundant. Nesting them keeps the accrual leg at 50% weight, the structure that avoided the third-leg dilution failures of generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.269317901102175,
+      "ls_alpha": -0.03485921682709134,
+      "ls_talpha": -2.6223888993257503,
+      "ls_sharpe": -0.5439090219571172,
+      "coverage": 0.0789146807855529,
+      "error": null
+    },
+    {
+      "name": "DualFramePayoutCoverageAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), oancf), at)), TS_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 5)))",
+      "hypothesis": "A payout-coverage shortfall is most alarming when the firm is both worse than its peers and worse than its own recent history, since the latter signals a newly binding cash constraint rather than a permanent capital-intensive policy.",
+      "expected_sign": "negative",
+      "reasoning": "Dual framing of the financing leg previously converted a weak-Sharpe signal into the archive's best-diversified spread, and the current leader's main deficiency is exactly its Sharpe (\u22120.32). This applies that proven fix to the new best leg while leaving the accrual leg untouched, so the effect of the frame is cleanly identified.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.2846168022221223,
+      "ls_alpha": -0.017259942414790133,
+      "ls_talpha": -1.412618780122179,
+      "ls_sharpe": -0.20276760697124055,
+      "coverage": 0.0750462058382387,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithCapitalMarketChurn",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(ADD(sstk, dltis), ADD(prstkc, dltr)), at)))",
+      "hypothesis": "Firms continuously transacting with capital markets in both directions are habitually dependent on external validation and face recurring incentives to present favorable earnings, so gross financing turnover should amplify accrual mispricing even when net flows are near zero.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg tested so far is directional (net issuance, payout, maturity, trend), and the one gross-flow attempt was crippled by the multiplicative form that failed for unrelated reasons; as a ranked leg, gross churn is an untested and economically distinct measure of capital-market engagement. If it works, it also broadens the mechanism from market timing to opacity and repeated-issuer effects.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.522640858092059,
+      "ls_alpha": -0.03464851846332774,
+      "ls_talpha": -2.575618630460866,
+      "ls_sharpe": -0.38392468779523947,
+      "coverage": 0.07899774398292261,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithLeveringUpTrend",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(TREND(RATIO(lt, at), 5)))",
+      "hypothesis": "What matters about capital structure is the direction of travel: a firm that has been steadily adding outside claims over five years while reporting accrual-heavy earnings is progressively exhausting its financing capacity.",
+      "expected_sign": "negative",
+      "reasoning": "The leverage *level* leg failed completely on the cross-section (fmb 0.05) because leverage is a persistent firm characteristic priced by value and profitability factors, whereas a multi-year levering-up trend is a financing action with no such static confound. This is a direct repair of that failure mode rather than a new mechanism, and it tests whether the alpha that leverage once contributed survives when the static component is removed.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -0.4955016582136091,
+      "ls_alpha": 0.007496521645607303,
+      "ls_talpha": 0.7488085556992943,
+      "ls_sharpe": 0.20775846233091289,
+      "coverage": 0.07788722514852318,
+      "error": null
+    },
+    {
+      "name": "ConjunctiveAccrualPayoutStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "The short side requires both conditions simultaneously \u2014 inflated accruals and distributions exceeding cash generation \u2014 so a multiplicative rank interaction should concentrate the mispricing in the extreme portfolio better than an additive average.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier conjunction test used MIN on z-scores and produced a good slope but a weak spread because MIN discards all information once one leg is low; a product of within-industry percentile ranks stays smooth and monotone in both legs while still requiring joint extremity. Applying it to the now-best leg pair tests whether the interaction is genuinely multiplicative, which is the central economic claim of this theme pairing.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -4.442746955926861,
+      "ls_alpha": -0.04716944456750621,
+      "ls_talpha": -3.733689891450597,
+      "ls_sharpe": -0.4466063318130732,
+      "coverage": 0.08477213236951132,
+      "error": null
+    },
+    {
+      "name": "AccrualsWithCleanSurplusEquityIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(DELTA(ceq, 1), ib), at)))",
+      "hypothesis": "The change in book equity net of earnings captures all equity financing \u2014 cash offerings, stock-financed acquisitions, option exercise, and dividends \u2014 so it should identify accrual-heavy firms funding themselves with equity more completely than cash-flow-statement issuance does.",
+      "expected_sign": "negative",
+      "reasoning": "This clean-surplus measure has only appeared inside the gen-1 balance-sheet composite whose accrual leg was defective, so its interaction value has never been tested against the proven accrual leg. Because it nets dividends automatically, it unifies the issuance and payout channels that Signal 1 combines manually, giving a parsimonious alternative to that construction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": -3.512248688957981,
+      "ls_alpha": -0.01382016427277084,
+      "ls_talpha": -1.2374589845498634,
+      "ls_sharpe": -0.29512879872109476,
+      "coverage": 0.08407708429810463,
+      "error": null
+    },
+    {
+      "name": "ConjunctiveAccrualNetFinancing",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual-heavy firms that are simultaneously heavy net users of external capital are the joint-extreme cases the overvaluation story predicts, and this conjunction should be priced at least as strongly as the payout-coverage version.",
+      "expected_sign": "negative",
+      "reasoning": "The rank-product form transformed the payout-coverage pair into the archive's best signal, but it has never been applied to the original and most theme-canonical financing leg, whose additive version produced the best slope of generations 0\u20135. This isolates the functional form from the choice of financing channel, which is the single most useful comparison available before the final round.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -3.804054505035798,
+      "ls_alpha": -0.019944974008860784,
+      "ls_talpha": -1.5030352031616971,
+      "ls_sharpe": -0.35953128809108686,
+      "coverage": 0.07904577617966249,
+      "error": null
+    },
+    {
+      "name": "DualChannelAccrualConjunction",
+      "expression": "SUMRANK(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at))), MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))))",
+      "hypothesis": "Accrual aggressiveness interacts separately with over-distribution and with external funding dependence, so averaging the two interaction terms should retain full interaction strength while diversifying the portfolio across two distinct financing red flags.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the issuance leg additively to the payout leg previously produced the best Sharpe in the archive (\u22120.54), which says the two channels are imperfectly correlated sources of the same economic signal. Averaging the two *products* rather than the two levels preserves the conjunctive structure that generated the \u22123.73 alpha t-stat while capturing that diversification benefit.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.252862449236289,
+      "ls_alpha": -0.033580172756324925,
+      "ls_talpha": -2.5001222602166324,
+      "ls_sharpe": -0.3545967099728194,
+      "coverage": 0.07896137158904333,
+      "error": null
+    },
+    {
+      "name": "TripleConjunctionAccrualFinancingStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), MUL(IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))))",
+      "hypothesis": "The most extreme case is a firm that is accrual-aggressive, distributing beyond its operating cash flow, and simultaneously raising outside capital \u2014 recycling investor money while reporting non-cash profits.",
+      "expected_sign": "negative",
+      "reasoning": "If the mechanism is genuinely conjunctive, adding a third bounded rank should further concentrate the short leg on the pathological cases, whereas if it merely narrows the sample it will show up as a weaker slope with an unstable spread. Paired with Signal 2 this determines whether extra channels are best combined multiplicatively (stricter conjunction) or additively (diversification).",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.151454710779168,
+      "ls_alpha": -0.03851040908704791,
+      "ls_talpha": -3.081894326439165,
+      "ls_sharpe": -0.44648502683283076,
+      "coverage": 0.07896023656398611,
+      "error": null
+    },
+    {
+      "name": "AccrualsTimesFinancingStressIndex",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(ADD(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), oancf), at))))",
+      "hypothesis": "Total dependence on outside claimholders \u2014 capital taken in plus distributions not covered by operations \u2014 is one economic quantity, and accrual aggressiveness should be multiplied by that single composite rather than by each component separately.",
+      "expected_sign": "negative",
+      "reasoning": "Summing the two financing ratios before ranking gives the firm's overall external-claim burden in comparable asset-scaled units, so the interaction remains a clean two-way product with only one financing dimension to rank. Compared with Signals 2 and 3 it distinguishes \"one financing construct\" from \"two interacting channels,\" which is the key remaining specification choice for the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -4.076046493391683,
+      "ls_alpha": -0.04011018410854535,
+      "ls_talpha": -2.9955676716705177,
+      "ls_sharpe": -0.46779045469611547,
+      "coverage": 0.07896023656398611,
+      "error": null
+    },
+    {
+      "name": "ConjunctiveAccrualCapitalChurn",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(ADD(sstk, dltis), ADD(prstkc, dltr)), at)))",
+      "hypothesis": "Gross capital-market activity, regardless of net direction, marks firms habitually reliant on investor validation; combined multiplicatively with accrual aggressiveness this identifies opaque, frequently financed firms whose earnings claims are least verifiable.",
+      "expected_sign": "negative",
+      "reasoning": "Gross churn was the strongest untested channel from generation 7 in additive form (alpha \u22123.5%, t=\u22122.58) and is economically distinct from net financing because it fires for firms that both raise and return capital. Testing it inside the now-validated rank-product form tells us whether the interaction rewards direction of financing or intensity of capital-market engagement.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": -2.0794657860751,
+      "ls_alpha": -0.02535368694060363,
+      "ls_talpha": -2.038735332569424,
+      "ls_sharpe": -0.3358887339343655,
+      "coverage": 0.07904577617966249,
+      "error": null
+    },
+    {
+      "name": "RoundTripCapitalWithAccruals",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(MIN(ADD(sstk, dltis), ADD(dvt, prstkc)), at)))",
+      "hypothesis": "Simultaneously raising new capital and handing cash back to shareholders is economically wasteful unless management is exploiting a favorable share price or defending a payout it cannot fund, so round-tripped capital combined with accrual-heavy earnings should mark overvaluation.",
+      "expected_sign": "negative",
+      "reasoning": "MIN of gross inflows and gross outflows measures the amount of capital that genuinely passed through the firm in both directions, a construction no prior signal implements \u2014 net financing cancels it out and gross churn adds it up without requiring both sides to be present. The earlier debt-funded-dividend attempt used the same overlap logic but only for one narrow flow pair and in the weaker additive form, so this repairs that failure while testing a distinct mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 0.2616832717132324,
+      "ls_alpha": -0.019388608044798736,
+      "ls_talpha": -1.2856740824050568,
+      "ls_sharpe": -0.07064596912413693,
+      "coverage": 0.08055303786361044,
+      "error": null
+    },
+    {
+      "name": "TotalClaimServicingGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(ADD(dvt, prstkc), dltr), oancf), at)))",
+      "hypothesis": "The relevant shortfall is cash owed to *all* claimholders \u2014 dividends, repurchases and debt repayments \u2014 minus cash generated by operations; accrual-heavy firms facing that combined servicing gap must refinance or shrink.",
+      "expected_sign": "negative",
+      "reasoning": "The champion counts only shareholder distributions, yet scheduled debt repayment is an equally non-discretionary cash outflow, and creditor claims are precisely where balance-sheet pressure becomes binding. Because dltr enters as an outflow rather than as part of a netted issuance term, this extends the winning gap concept without reintroducing the capital-raising channel that diluted alpha in generation 8.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.6010289692297537,
+      "ls_alpha": -0.04084187951482069,
+      "ls_talpha": -3.641833816977955,
+      "ls_sharpe": -0.4040559671738283,
+      "coverage": 0.0830074779578134,
+      "error": null
+    },
+    {
+      "name": "PayoutGapAgainstCashBuffer",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), che)))",
+      "hypothesis": "A distribution shortfall only threatens the firm if it is large relative to the liquidity available to absorb it, so scaling the gap by cash holdings identifies firms whose over-distribution must be resolved imminently.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling by assets treats a cash-rich and a cash-poor firm with the same gap identically, whereas the economic mechanism is a runway calculation; the within-industry rank transformation makes the small-denominator instability of this ratio harmless. This is the sharpest available test of whether the champion works through genuine funding pressure rather than through a generic asset-scaled cash-flow deficit.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -2.7337691811679536,
+      "ls_alpha": -0.012644435991781246,
+      "ls_talpha": -1.0659916588164229,
+      "ls_sharpe": -0.16013759545795253,
+      "coverage": 0.08432039239673542,
+      "error": null
+    },
+    {
+      "name": "ChronicOverdistributionConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(TS_SUM(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 3)))",
+      "hypothesis": "Firms that have distributed more than their operating cash flow for several consecutive years are structurally, not temporarily, over-committed, and pairing that chronic state with current accrual aggressiveness should be more reliably priced than a single-year gap.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier smoothing tests failed only when they staled the *accrual* leg, whereas accumulating just the financing leg previously preserved the slope; here the accrual leg stays current while the payout gap becomes a three-year cumulative state. If over-distribution is a persistent policy rather than a noisy annual event, this should raise ls_talpha and Sharpe relative to the champion at unchanged coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.246021574346494,
+      "ls_alpha": -0.04888142307964888,
+      "ls_talpha": -3.711835103036856,
+      "ls_sharpe": -0.43234218227882537,
+      "coverage": 0.08765107183511676,
+      "error": null
+    },
+    {
+      "name": "DiscretionaryAccrualPayoutGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Within the accrual leg, the working-capital component is the discretionary part of earnings quality, so removing the mechanical depreciation offset should strengthen the interaction with payout overreach.",
+      "expected_sign": "negative",
+      "reasoning": "The depreciation add-back was validated as an accrual-leg improvement in the additive frame (fmb \u22123.81, alpha \u22123.3%) but has never been tested inside the multiplicative rank form that produced the champion, and the two legs' interaction may depend on which accrual concept is used. This isolates the accrual definition while holding the financing leg and functional form fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.489583060398195,
+      "ls_alpha": -0.047254123172174464,
+      "ls_talpha": -3.8426219784559343,
+      "ls_sharpe": -0.43706519343553646,
+      "coverage": 0.08354749192481264,
+      "error": null
+    },
+    {
+      "name": "DualFrameConjunctiveAccrualPayoutStress",
+      "expression": "SUMRANK(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at))), MUL(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 5)))",
+      "hypothesis": "The joint condition is most informative when a firm is extreme both against its industry peers and against its own five-year history, since the peer frame identifies bad types and the own-history frame identifies deterioration.",
+      "expected_sign": "negative",
+      "reasoning": "Own-history framing repeatedly delivered the archive's best Sharpe ratios (\u22120.49 to \u22120.53) while cross-sectional framing delivered the slopes, and averaging two *products* rather than replacing the frame preserves the conjunctive structure that generates the alpha. This targets the champion's one remaining soft spot, portfolio efficiency, without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -3.0597419076330703,
+      "ls_alpha": -0.027274134528304884,
+      "ls_talpha": -2.0256935548838304,
+      "ls_sharpe": -0.305765229577086,
+      "coverage": 0.07508938838246135,
+      "error": null
+    },
+    {
+      "name": "StickyDividendGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(dvc, oancf), at)))",
+      "hypothesis": "Dividends are a sticky commitment while repurchases are discretionary, so a shortfall driven by dividends the firm cannot cover from operations is a stronger signal of forced future financing or a coming cut than one driven by buybacks.",
+      "expected_sign": "negative",
+      "reasoning": "The champion's gap lumps sticky and flexible distributions together, so it cannot say whether the mispricing comes from commitment rigidity or from managers buying back stock they should not; isolating common dividends answers that and, if it wins, points to a dividend-cut-risk interpretation of the whole theme pairing. Coverage should be comparable since dvc is broadly reported and treated as zero-or-reported alongside oancf.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": -4.780752957656706,
+      "ls_alpha": -0.051494096665660107,
+      "ls_talpha": -3.732486220863129,
+      "ls_sharpe": -0.5030166953342043,
+      "coverage": 0.0909948040616562,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "AccrualIssuanceComposite",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))",
+      "hypothesis": "Firms that simultaneously report accrual-heavy earnings and raise net external capital (equity plus debt, net of repurchases and repayments) are the most likely to be overvalued and to disappoint, because both the accounting and the financing channel signal that reported profits are not self-funding.",
+      "expected_sign": "negative",
+      "reasoning": "Total accruals (ib minus oancf) measure the non-cash share of earnings, while net external financing measures cash raised from outside claimants; requiring both to be high isolates firms whose growth is funded by capital markets rather than operations. Rank-summing the two channels keeps coverage broad while ensuring the score peaks only when both accounting quality and financing behavior are unfavorable.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsConditionalOnNetIssuance",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), INDICATOR(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 0.02))",
+      "hypothesis": "The accrual anomaly is concentrated in firms that are actively tapping external capital markets; among self-funded firms high accruals carry much weaker negative information because there is no incentive or opportunity to inflate earnings ahead of a capital raise.",
+      "expected_sign": "negative",
+      "reasoning": "The indicator switches the accrual exposure on only when net external financing exceeds 2% of assets, so the signal is a state-dependent version of accruals rather than an average of two effects. Non-issuers are neutralized to zero, which sharpens the long-short spread if the mispricing is driven by issuance-window earnings management.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "LeverageAmplifiedAccruals",
+      "expression": "WINSOR(RATIO(MUL(SUB(ib, oancf), lt), MUL(at, at)), 1)",
+      "hypothesis": "A given amount of accrual-based earnings is more dangerous when the balance sheet is already financed with heavy outside liabilities, since low-quality earnings plus a thin equity cushion raises the probability of covenant pressure, forced deleveraging, and future write-offs.",
+      "expected_sign": "negative",
+      "reasoning": "The expression multiplies scaled accruals by the liability-to-asset financing structure, producing a genuine amplitude interaction: the score is extreme only when soft earnings coincide with high creditor claims. Winsorizing controls the tail leverage of the product without changing the economic ordering.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ShareIssuedWorkingCapitalBuildup",
+      "expression": "MUL(RANK(DELTA(RATIO(SUB(SUB(act, che), SUB(SUB(lct, dlc), txp)), at), 1)), RANK(GROWTH(csho, 1)))",
+      "hypothesis": "Working-capital expansion (receivables and inventory growth net of operating liabilities) that is accompanied by share-count growth indicates that soft revenue recognition is being financed by diluting existing shareholders, a combination that precedes negative earnings surprises.",
+      "expected_sign": "negative",
+      "reasoning": "The first rank isolates the non-cash operating accrual buildup after netting out debt-like current items, while the second rank captures equity dilution measured directly from share count rather than cash-flow-statement issuance, giving an independent financing read. The product is high only when the working-capital build is externally equity-funded, which is the overvaluation case.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentAccrualFinancingPair",
+      "expression": "MUL(RANK(TS_SUM(RATIO(SUB(ib, oancf), at), 3)), RANK(TS_SUM(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Repeated, multi-year reliance on both accrual-based earnings and external capital identifies chronically cash-deficient firms whose business model is sustained by financing rather than one-off accounting noise, and this persistent combination should be more strongly mispriced than a single-year event.",
+      "expected_sign": "negative",
+      "reasoning": "Three-year cumulative sums filter transitory accrual reversals and lumpy single financing events, so only firms that repeatedly close a cash gap with outside money score high on both channels. The multiplicative rank structure enforces the joint condition and targets the \"serial external funder with soft earnings\" archetype.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualEscalationWithFinancingStress",
+      "expression": "SUMRANK(DELTA(RATIO(SUB(ib, oancf), at), 1), SUMRANK(RATIO(DELTA(dlc, 1), at), NEG(DELTA(RATIO(dvt, at), 1))))",
+      "hypothesis": "Deteriorating accounting quality that coincides with a shift toward short-term borrowing and a retrenchment in dividends reflects genuine balance-sheet stress being masked by accruals, and such firms should underperform as the funding constraint becomes visible.",
+      "expected_sign": "negative",
+      "reasoning": "The signal combines a change-in-accruals channel (accounting deterioration) with two distinct financing-stress channels: rising current debt, which is the cheapest but riskiest funding margin, and falling total payout, which signals cash preservation. Because all three are changes rather than levels, the score identifies firms transitioning into stress rather than statically levered firms.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "BalanceSheetAccrualNetFinancing",
+      "expression": "SUMRANK(RATIO(SUB(DELTA(wcap, 1), dp), at), RATIO(ADD(DELTA(dltt, 1), SUB(DELTA(ceq, 1), ib)), at))",
+      "hypothesis": "Firms whose working-capital accruals (net of depreciation) are high at the same time that they are raising net debt and net equity are financing non-cash earnings growth from outside capital, and should subsequently underperform.",
+      "expected_sign": "negative",
+      "reasoning": "Both legs are built purely from balance-sheet items, with net equity issuance measured as the clean-surplus residual DELTA(ceq) minus earnings, so the signal avoids the cash-flow-statement items that capped prior coverage near 0.08. If the accrual-financing mechanism is real rather than a sample artifact, this construction should reproduce or strengthen the gen-0 composite's FMB slope on a much larger firm-month sample.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsAmplifiedByGrossIssuance",
+      "expression": "WINSOR(RATIO(MUL(SUB(ib, oancf), ADD(sstk, dltis)), MUL(at, at)), 1)",
+      "hypothesis": "The pricing error in accruals scales with how much fresh outside capital the firm is actually raising: gross equity plus long-term debt issuance measures the firm's dependence on external investors who must be convinced by reported earnings.",
+      "expected_sign": "negative",
+      "reasoning": "This keeps the multiplicative amplitude structure that produced the best gen-0 alpha but replaces the leverage stock (lt/at, which is confounded with static distress/value exposure) by a strictly non-negative issuance flow, so the sign ambiguity of signed-times-signed products is avoided while the financing channel becomes an action rather than a state. Comparing it to LeverageAmplifiedAccruals isolates whether the amplifier is balance-sheet pressure or capital-market dependence.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RankWeightedFinancingAccruals",
+      "expression": "MUL(WINSOR(RATIO(SUB(ib, oancf), at), 1), RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual mispricing is monotonically increasing in external-financing dependence rather than switching on at a threshold: heavy net issuers should show the full accrual effect, self-funded and repurchasing firms almost none.",
+      "expected_sign": "negative",
+      "reasoning": "This directly repairs the gen-0 indicator failure by replacing the 0/1 switch with a smooth non-negative weight in [0,1], so non-issuers are shrunk toward neutral instead of being lumped into a single artificial zero bin with opposite-signed accrual firms. It also preserves the sign of accruals, which the indicator version destroyed for negative-accrual issuers.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndustryNeutralAccrualFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual and issuance intensity are strongly industry-determined (biotech and utilities issue and accrue for structural reasons), so within-industry deviations isolate the firm-specific earnings-management/overvaluation component that is actually mispriced.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 composite had a strong FMB slope (\u22123.72) but weak FF5 alpha (t=\u22121.88), a pattern consistent with the extreme portfolios loading on a few financing-heavy industries whose common return variation is absorbed by factor exposure and residual volatility. Industry-standardizing each leg before ranking should stabilize portfolio composition and lift ls_talpha without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtFundedAccrualCashDrain",
+      "expression": "SUMRANK(RATIO(SUB(ib, oancf), at), SUMRANK(RATIO(DELTA(dltt, 1), at), NEG(RATIO(DELTA(che, 1), at))))",
+      "hypothesis": "Balance-sheet pressure is clearest when soft earnings coincide with new long-term borrowing *and* a decline in cash holdings: the firm is consuming liquidity and adding fixed claims while reporting non-cash profits.",
+      "expected_sign": "negative",
+      "reasoning": "Unlike the failed gen-0 stress signal, which used only second-order changes in accruals and dividends, this keeps the accrual level (the leg with proven cross-sectional power) and adds two first-order funding-pressure channels that jointly identify firms whose reported earnings are not replenishing the cash buffer. It tests whether the liquidity-drain dimension adds information beyond issuance volume.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RevenueQualityAccrualsWithEquityIssuance",
+      "expression": "SUMRANK(RATIO(NEG(ADD(recch, invch)), at), RATIO(SUB(sstk, prstkc), at))",
+      "hypothesis": "Within total accruals, receivable and inventory buildups are the components most amenable to revenue-recognition management, and their information content should be strongest when the firm is simultaneously selling equity into the market.",
+      "expected_sign": "negative",
+      "reasoning": "Total accruals mix depreciation and tax timing items that carry little manipulation content, so isolating the receivable/inventory channel (sign-flipped, since cash-flow-statement changes enter as cash uses) should sharpen the accounting-quality leg, while net equity issuance is the financing action most tied to overvaluation rather than to distress. This tests whether accrual composition, not accrual magnitude, is what interacts with financing.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutralAccrualDebtCashDrain",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(DELTA(dltt, 1), at)), IND_ZSCORE(NEG(RATIO(DELTA(che, 1), at)))))",
+      "hypothesis": "Soft earnings combined with new long-term borrowing and a falling cash buffer identifies firms whose reported profits are neither cash-generating nor self-financing, and the mispricing is firm-specific rather than industry-driven.",
+      "expected_sign": "negative",
+      "reasoning": "This merges the two strongest gen-1 results \u2014 industry neutralization (best fmb and talpha) and the debt-funded cash-drain channel (largest alpha) \u2014 which were previously tested separately, so it directly asks whether their information is additive. If the liquidity-drain leg is not simply a noisy proxy for issuance, industry-standardizing all three legs should raise both fmb_tstat and ls_talpha above either parent.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctiveAccrualIssuance",
+      "expression": "MIN(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "The overvaluation story is genuinely conjunctive: only firms that are simultaneously accrual-aggressive and net external financiers should be shorted, while a firm extreme on one dimension alone carries little information.",
+      "expected_sign": "negative",
+      "reasoning": "Additive SUMRANK lets one extreme leg dominate, so a highly accrual-heavy firm that repurchases stock still enters the short book; MIN enforces the \"both, or neither\" logic while staying monotone in each input, avoiding the sign pathology of products and the bin-collapse of the failed indicator version. Comparing it to the additive industry-neutral composite isolates whether the true structure is interaction or two-factor addition.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutralAccrualIssuanceLeverage",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), IND_ZSCORE(RATIO(lt, at))))",
+      "hypothesis": "Financing pressure has both a flow dimension (capital currently being raised) and a stock dimension (existing outside claims); accrual mispricing should be strongest where both are elevated because the firm has little slack to absorb an accrual reversal.",
+      "expected_sign": "negative",
+      "reasoning": "The leverage-amplified accrual signal produced a reliable alpha (\u22123.1%, t=\u22122.29) and the issuance composite a strong slope, but the two financing dimensions have never been used together within industry. Adding the leverage stock as a third industry-standardized leg tests whether balance-sheet capacity is incremental to issuance activity, and rank aggregation avoids the product form that already failed.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithoutPayoutDiscipline",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(NEG(RATIO(ADD(prstkc, dvt), at))))",
+      "hypothesis": "Cash returned to shareholders is a credible signal that reported earnings are real; accrual-heavy firms that distribute nothing are the ones whose earnings quality claim is unverified, so the financing leg's power may come from the absence of payout rather than the presence of issuance.",
+      "expected_sign": "negative",
+      "reasoning": "All prior financing legs mixed issuance and payout inside a single net-financing number, which conflates two economically different verification channels. Replacing the net-financing leg with a pure negative-payout leg isolates which half of the financing variable drives the interaction, and a strong result would reorient later generations toward payout-based conditioning.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "PersistentIndNeutralAccrualFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(MA(RATIO(SUB(ib, oancf), at), 3)), IND_ZSCORE(MA(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Chronic dependence on accruals and outside capital, rather than a single fiscal year's realization, identifies structurally cash-deficient firms whose valuations are most likely to be corrected.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 persistence test used three-year sums inside a rank product, which conflated the persistence idea with the failed multiplicative form; here persistence is implemented as three-year averages inside the aggregation structure that actually worked. Smoothing should reduce reporting noise and portfolio turnover, so if the mechanism is a chronic state we expect higher ls_talpha and Sharpe than the one-year industry-neutral composite.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithShortMaturityDebtReliance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(dlc, ADD(dlc, dltt))))",
+      "hypothesis": "Beyond how much a firm borrows, the maturity mix matters: accrual-heavy firms funded disproportionately with short-term debt face imminent rollover decisions, giving lenders a near-term option to withdraw exactly when accruals reverse.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg tested so far measures volume (issuance, net financing, total liabilities); maturity structure is an untested and economically distinct dimension of financing fragility that requires no cash-flow-statement items. Pairing it with the proven accrual leg inside the industry-neutral rank frame keeps the comparison clean, so a strong result would identify rollover risk, not issuance appetite, as the amplifying mechanism.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithNetEquityIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(sstk, prstkc), at)))",
+      "hypothesis": "The accrual-financing interaction is an equity-market-timing phenomenon: managers inflate accruals when they intend to sell equity and avoid issuance (or repurchase) when the stock is cheap, so net equity issuance should be the dominant financing leg.",
+      "expected_sign": "negative",
+      "reasoning": "The winning composite bundles equity and debt flows into one number, which hides whether the mispricing comes from overvaluation (equity channel) or funding pressure (debt channel). Isolating net equity issuance against the proven accrual leg in the proven aggregation frame gives a decisive read on the overvaluation interpretation.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithNetDebtIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(dltis, dltr), at)))",
+      "hypothesis": "If the interaction reflects balance-sheet pressure rather than equity overvaluation, then net long-term debt issuance is the financing action that matters, because creditors ratify soft earnings with fixed claims the firm must service in cash.",
+      "expected_sign": "negative",
+      "reasoning": "This is the exact counterpart to Signal 1, holding the accrual leg and aggregation fixed so the comparison identifies the operative economic channel rather than a formula variant. Given that the leverage stock helped alpha and payout did not, debt-side financing is a live hypothesis worth separating.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsVsFinancingFragilityIndex",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(dlc, ADD(dlc, dltt))))",
+      "hypothesis": "Financing vulnerability has a volume dimension (net capital currently raised) and a maturity dimension (reliance on short-term debt that must be rolled); combining them into one index, then interacting with accruals, should dominate either single financing measure.",
+      "expected_sign": "negative",
+      "reasoning": "The two best FMB slopes in the archive came from accruals paired with net financing (\u22124.20) and accruals paired with short-maturity reliance (\u22123.88), and nesting the two financing measures inside the inner SUMRANK keeps the accrual leg at full 50% weight instead of down-weighting it to one third as the failed three-leg versions did. This directly repairs the dilution failure mode observed in generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualEscalationAtIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(DELTA(RATIO(SUB(ib, oancf), at), 1)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Earnings management is an event, not a level: the informative case is a firm whose accruals *jumped* in the same year it raised outside capital, because that is the pattern consistent with dressing up reported earnings for investors.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-0 change-based signal failed, but it used second-order changes, no industry neutralization, and a stress-oriented financing leg; here only the accrual leg is differenced while everything proven is held fixed. If the accrual level leg beats it, we learn the anomaly is about accrual *stock* overstatement rather than a discretionary spike, which sharpens later refinements.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsAfterPriorYearFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(LAG(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 1)))",
+      "hypothesis": "If the mechanism is post-financing disappointment, the relevant financing already happened: firms that raised capital last year and still report accrual-heavy earnings are the ones facing an imminent reversal with the proceeds already spent.",
+      "expected_sign": "negative",
+      "reasoning": "Contemporaneous pairing cannot distinguish \"manipulating to issue\" from \"issuing then disappointing,\" and the three-year smoothing test showed timing matters materially. Lagging only the financing leg by one year isolates the drift interpretation and, if it holds up, also implies the signal is tradable further from the financing event with less stale-accrual overlap.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithShareCountDilution",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(GROWTH(csho, 1)))",
+      "hypothesis": "Share-count growth captures all forms of equity dilution \u2014 secondary offerings, stock-financed acquisitions, and option exercise \u2014 so it should identify accrual-heavy firms paying with overvalued paper even when cash-flow-statement issuance is small.",
+      "expected_sign": "negative",
+      "reasoning": "Dilution via csho was only tested once, inside the failed rank-product with a weak working-capital accrual leg, so its standalone interaction value is unknown; stock-financed acquisitions are exactly where accrual inflation and overvaluation coincide most strongly. Pairing it with the proven accrual leg in the winning frame tests the \"overvalued paper\" channel that cash issuance proceeds miss.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "WorkingCapitalAccrualLegWithNetFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Within the cash-flow accrual measure, it is the working-capital buildup rather than the depreciation offset that reflects discretionary earnings quality, so adding depreciation back should sharpen the accounting-quality leg of the interaction.",
+      "expected_sign": "negative",
+      "reasoning": "The measure ib \u2212 oancf nets working-capital accruals against depreciation, mixing a discretionary manipulation channel with a mechanical capital-intensity channel that is largely industry-determined; adding dpc back isolates the discretionary part while keeping the same cash-flow-statement sample and the proven financing leg. This is the accrual-composition test that failed when attempted with balance-sheet items (wcap, recch/invch), so doing it inside the cash-flow definition tells us whether those failures were measurement artifacts or genuine evidence against the working-capital channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "FirmRelativeAccrualIssuanceSpike",
+      "expression": "SUMRANK(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5))",
+      "hypothesis": "What is mispriced is an abnormal event for the firm \u2014 accruals and external financing both at multi-year highs relative to the firm's own history \u2014 not the permanent characteristic of being an accrual-heavy, capital-hungry company.",
+      "expected_sign": "negative",
+      "reasoning": "All prior signals rank firms against peers, so their extreme portfolios are populated by structurally similar companies whose common return variation FF5 partly absorbs; within-firm percentile ranks strip out firm-level type and leave the deviation, which is the quantity a surprise-based mispricing story predicts. If this frame works, it should raise ls_talpha and Sharpe even with a somewhat smaller cross-sectional slope.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndNeutralAccrualsWithIssuanceSpike",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5))",
+      "hypothesis": "Accrual aggressiveness is best judged against industry peers (accounting norms are industry-specific), whereas financing is best judged against the firm's own funding history (an issuance spike is the event that signals opportunism).",
+      "expected_sign": "negative",
+      "reasoning": "This hybrid separates the two normalization questions that Signal 2 bundles, so the pair identifies which leg actually benefits from a within-firm frame. It preserves the accrual leg that has generated every strong result while making the financing leg event-like rather than type-like.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithUnstableExternalFunding",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(VOL(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "Erratic reliance on outside capital indicates an opaque, funding-fragile firm whose reported earnings quality cannot be verified from cash generation; accrual-heavy firms with volatile financing should therefore underperform more than accrual-heavy firms with steady financing policies.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg so far measures the level or direction of financing, never its instability, yet second-moment funding risk is a distinct economic mechanism (rollover and access risk) that does not require the firm to be a net issuer this year. It also tests whether the anomaly needs a directional financing signal at all, which would be informative even if the result is null.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IssuanceBeyondInternalEarningsWithAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), ib), at)))",
+      "hypothesis": "Financing is most suspicious when it far exceeds what the firm's reported earnings could fund: raising outside capital well in excess of internal profits is the signature of opportunistic issuance into a favorable valuation.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling financing only by assets ignores whether the firm actually needed the money, so subtracting earnings creates an internal-funds-relative financing measure that separates opportunistic raisers from firms plugging a genuine profit shortfall. Because the accrual leg uses cash flow and this leg uses earnings, the two legs remain economically distinct rather than mechanically redundant.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithCumulativeThreeYearFinancing",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(TS_SUM(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 3)))",
+      "hypothesis": "The stock of recently raised outside capital, accumulated over three years, measures how much of the firm's current balance sheet was funded by investors rather than operations, and current accrual aggressiveness on top of that stock signals the coming correction.",
+      "expected_sign": "negative",
+      "reasoning": "When both legs were smoothed in generation 2 the signal weakened, but that test confounded stale accruals with accumulated financing; accumulating only the financing leg keeps the accrual information fresh while capturing multi-year external funding intensity. This isolates whether the earlier smoothing failure came from the accrual leg's staleness, as I suspect, rather than from persistence per se.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualFrameFinancingAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "Accrual-heavy firms are most mispriced when they are both structurally dependent on outside capital (high versus industry peers) and raising unusually much versus their own funding history, because the first identifies the vulnerable business model and the second identifies the opportunistic event.",
+      "expected_sign": "negative",
+      "reasoning": "The archive's two frontier signals differ only in how the financing leg is normalized, and each dominates a different metric, which implies the two frames carry complementary information rather than substituting for each other. Averaging them inside the financing leg keeps the accrual leg at full 50% weight, so this should recover the strong FMB slope of the cross-sectional version while retaining the superior Sharpe of the event version.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "WCAccrualsWithIssuanceBeyondEarnings",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_ZSCORE(RATIO(SUB(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), ib), at)))",
+      "hypothesis": "The sharpest version of the story is a working-capital-driven earnings overstatement funded by capital raised well in excess of what the firm actually earned \u2014 discretionary accounting on the asset side, opportunistic financing on the liability side.",
+      "expected_sign": "negative",
+      "reasoning": "Generation 4 validated each leg refinement separately against the same benchmark \u2014 depreciation add-back on the accrual side and internal-funds-relative scaling on the financing side \u2014 but never jointly, so this tests whether their improvements are additive or overlapping. Both refinements sharpen the economic content rather than the statistics, so if they are independent the composite should exceed the gen-1 benchmark on both slope and alpha.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "IndRankAccrualFinancing",
+      "expression": "SUMRANK(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "The economic content of the interaction is ordinal \u2014 being an accrual-aggressive, capital-raising firm relative to peers \u2014 so within-industry percentile ranks should represent it more robustly than z-scores, which are distorted by the extreme scaled ratios of small, low-asset firms.",
+      "expected_sign": "negative",
+      "reasoning": "IND_ZSCORE standardizes by an industry standard deviation that is itself dominated by a handful of extreme observations, which can make the tails of the sorted portfolio unstable and depress ls_talpha relative to the underlying slope. This is a deliberate single-choice isolation of the standardization operator on the archive's best signal, and its outcome tells later generations whether outlier control or economic content is the binding constraint on portfolio evidence.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "WCAccrualsFundedByShortTermDebt",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_ZSCORE(RATIO(DELTA(dlc, 1), at)))",
+      "hypothesis": "Working-capital accruals financed by an increase in current debt represent the most fragile funding structure: long-duration, illiquid receivables and inventory financed with claims that come due within a year.",
+      "expected_sign": "negative",
+      "reasoning": "The financing legs tested so far are either total volumes or maturity *shares*; the actual flow of new short-term borrowing has only appeared inside a failed multi-leg construction, and it is the funding source that must be rolled precisely when accruals reverse. Pairing it with the depreciation-adjusted accrual leg matches the asset and liability sides of the same economic mismatch.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithPayoutBeyondEarnings",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), ib), at)))",
+      "hypothesis": "Distributing more cash to shareholders than the firm earned, while earnings are already accrual-inflated, indicates a payout being sustained by outside capital or balance-sheet depletion rather than by real profits.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier payout test measured only the *absence* of distributions and was weak, but over-distribution relative to reported earnings is the economically opposite and much more informative condition, since it forces the firm back to the capital markets. This keeps the proven accrual leg fixed so the test cleanly evaluates a payout-sustainability channel that the issuance-volume legs cannot capture.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "SymmetricDualFrameAccrualFinancing",
+      "expression": "SUMRANK(SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), TS_RANK(RATIO(SUB(ib, oancf), at), 5)), SUMRANK(IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "Both accounting aggressiveness and financing dependence should be judged simultaneously against peers and against the firm's own history, so that the signal fires on firms that are both structurally low-quality and currently deviating from their own norm on both dimensions.",
+      "expected_sign": "negative",
+      "reasoning": "Own-history normalization of the accrual leg was only tested in isolation, where it weakened the slope (fmb \u22121.87) but delivered a strong Sharpe (\u22120.49), suggesting it adds event information while discarding level information; combining rather than substituting the frames should retain both. Paired with Signal 1, this determines whether the accrual leg benefits from dual framing or whether only the financing leg does.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithFundingAndOverdistribution",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), ib), at)))",
+      "hypothesis": "Accrual-heavy firms are most overvalued when they simultaneously take in outside capital and distribute more than they earn, because the two flows together prove that reported profits are not funding either investment or the payout.",
+      "expected_sign": "negative",
+      "reasoning": "The net-financing leg gave the best cross-sectional slope while the payout-overreach leg gave the best FF5 reliability (t=\u22123.06), and these are economically distinct verification failures that have never been combined. Nesting them inside the financing leg preserves the accrual leg at 50% weight, which was the fix that prevented the third-leg dilution seen in generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "CashDeficitFinancingDiagnostic",
+      "expression": "SUMRANK(IND_ZSCORE(NEG(RATIO(oancf, at))), IND_ZSCORE(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "If the mechanism is that externally funded firms with weak cash generation are overpriced, then operating cash flow weakness alone, interacted with external financing, should carry the signal, and the earnings-minus-cash-flow accrual construction adds nothing.",
+      "expected_sign": "negative",
+      "reasoning": "My best recent legs all subtract earnings and pair with an accrual measure that subtracts cash flow, so the archive cannot distinguish \"aggressive accruals\" from \"negative operating cash flow\" as the operative accounting-quality variable. This is a deliberately stripped-down diagnostic: if it matches the winner, later generations should build on cash-flow deficits; if it is clearly weaker, the accrual gap is doing real work and I can drop the earnings-subtraction variants.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithPayoutBeyondCashFlow",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Payout sustainability should be judged against cash actually generated, not against accrual-based earnings, so distributions in excess of operating cash flow identify the firms that must return to the capital markets or deplete the balance sheet.",
+      "expected_sign": "negative",
+      "reasoning": "The gen-5 payout-overreach leg benchmarked distributions against ib and produced the archive's most reliable alpha; benchmarking against oancf is the economically correct coverage test and isolates whether that leg worked because of the payout information or because subtracting earnings loaded on low profitability. Keeping the accrual leg unchanged makes the comparison a single-choice experiment.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "EquityCushionAmplifiedAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(lt, ceq)))",
+      "hypothesis": "What amplifies accrual mispricing is how little equity capital stands behind the outside claims: with a thin equity cushion, an accrual reversal transfers value to creditors and forces distressed financing.",
+      "expected_sign": "negative",
+      "reasoning": "Leverage measured as lt/at raised the alpha to \u22124.0% when added as a third leg but diluted the accrual weight; the debt-to-equity form is a sharper measure of cushion depletion and here it is used as a full 50% leg rather than a diluting third. This tests the balance-sheet-pressure interpretation against the market-timing interpretation with no issuance flow present at all.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsPayoutOverreachIssuanceSpike",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(SUB(ADD(dvt, prstkc), ib), at), TS_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), 5)))",
+      "hypothesis": "The most fragile configuration is an accrual-heavy firm distributing beyond its earnings while raising an unusual amount of capital relative to its own funding history \u2014 over-distribution and opportunistic replacement funding at the same time.",
+      "expected_sign": "negative",
+      "reasoning": "The two highest-reliability portfolio legs in the archive are payout overreach (t=\u22123.06) and own-history issuance spikes (Sharpe \u22120.53), and each addresses a different weakness of the other: payout overreach is level-based and type-driven, the spike is event-based and firm-relative. Combining them inside the financing leg tests whether the archive's portfolio evidence can be pushed materially past t=\u22123 without sacrificing the slope.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DebtFundedDividendsWithAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(MIN(DELTA(dltt, 1), dvc), at)))",
+      "hypothesis": "Borrowing while paying dividends is a specific and costly signal of managerial commitment to an unsustainable payout; when reported earnings are also accrual-inflated, the dividend is effectively being funded by creditors and the equity is overpriced.",
+      "expected_sign": "negative",
+      "reasoning": "MIN(DELTA(dltt), dvc) captures the overlap of the two flows, so the leg only becomes large when a firm genuinely increased long-term debt *and* paid a substantial dividend, which no prior leg isolates \u2014 issuance volumes and payout levels were always measured separately. This is a distinct economic mechanism (creditor-financed distributions) rather than a restatement of financing intensity.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsFundingAndPayoutCoverageGap",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Accrual-heavy firms that both take in outside capital and distribute more cash than operations generate are the clearest cases of value being maintained by capital-market support rather than by cash earnings.",
+      "expected_sign": "negative",
+      "reasoning": "The two strongest financing legs in the archive \u2014 net external financing (best Sharpe, \u22120.47) and payout beyond operating cash flow (best slope, \u22124.74) \u2014 measure inflow dependence and outflow overreach respectively, so they should be complementary rather than redundant. Nesting them keeps the accrual leg at 50% weight, the structure that avoided the third-leg dilution failures of generation 2.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualFramePayoutCoverageAccruals",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), SUMRANK(IND_ZSCORE(RATIO(SUB(ADD(dvt, prstkc), oancf), at)), TS_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 5)))",
+      "hypothesis": "A payout-coverage shortfall is most alarming when the firm is both worse than its peers and worse than its own recent history, since the latter signals a newly binding cash constraint rather than a permanent capital-intensive policy.",
+      "expected_sign": "negative",
+      "reasoning": "Dual framing of the financing leg previously converted a weak-Sharpe signal into the archive's best-diversified spread, and the current leader's main deficiency is exactly its Sharpe (\u22120.32). This applies that proven fix to the new best leg while leaving the accrual leg untouched, so the effect of the frame is cleanly identified.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithCapitalMarketChurn",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(ADD(ADD(sstk, dltis), ADD(prstkc, dltr)), at)))",
+      "hypothesis": "Firms continuously transacting with capital markets in both directions are habitually dependent on external validation and face recurring incentives to present favorable earnings, so gross financing turnover should amplify accrual mispricing even when net flows are near zero.",
+      "expected_sign": "negative",
+      "reasoning": "Every financing leg tested so far is directional (net issuance, payout, maturity, trend), and the one gross-flow attempt was crippled by the multiplicative form that failed for unrelated reasons; as a ranked leg, gross churn is an untested and economically distinct measure of capital-market engagement. If it works, it also broadens the mechanism from market timing to opacity and repeated-issuer effects.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithLeveringUpTrend",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(TREND(RATIO(lt, at), 5)))",
+      "hypothesis": "What matters about capital structure is the direction of travel: a firm that has been steadily adding outside claims over five years while reporting accrual-heavy earnings is progressively exhausting its financing capacity.",
+      "expected_sign": "negative",
+      "reasoning": "The leverage *level* leg failed completely on the cross-section (fmb 0.05) because leverage is a persistent firm characteristic priced by value and profitability factors, whereas a multi-year levering-up trend is a financing action with no such static confound. This is a direct repair of that failure mode rather than a new mechanism, and it tests whether the alpha that leverage once contributed survives when the static component is removed.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctiveAccrualPayoutStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "The short side requires both conditions simultaneously \u2014 inflated accruals and distributions exceeding cash generation \u2014 so a multiplicative rank interaction should concentrate the mispricing in the extreme portfolio better than an additive average.",
+      "expected_sign": "negative",
+      "reasoning": "The earlier conjunction test used MIN on z-scores and produced a good slope but a weak spread because MIN discards all information once one leg is low; a product of within-industry percentile ranks stays smooth and monotone in both legs while still requiring joint extremity. Applying it to the now-best leg pair tests whether the interaction is genuinely multiplicative, which is the central economic claim of this theme pairing.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsWithCleanSurplusEquityIssuance",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(SUB(ib, oancf), at)), IND_ZSCORE(RATIO(SUB(DELTA(ceq, 1), ib), at)))",
+      "hypothesis": "The change in book equity net of earnings captures all equity financing \u2014 cash offerings, stock-financed acquisitions, option exercise, and dividends \u2014 so it should identify accrual-heavy firms funding themselves with equity more completely than cash-flow-statement issuance does.",
+      "expected_sign": "negative",
+      "reasoning": "This clean-surplus measure has only appeared inside the gen-1 balance-sheet composite whose accrual leg was defective, so its interaction value has never been tested against the proven accrual leg. Because it nets dividends automatically, it unifies the issuance and payout channels that Signal 1 combines manually, giving a parsimonious alternative to that construction.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctiveAccrualNetFinancing",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Accrual-heavy firms that are simultaneously heavy net users of external capital are the joint-extreme cases the overvaluation story predicts, and this conjunction should be priced at least as strongly as the payout-coverage version.",
+      "expected_sign": "negative",
+      "reasoning": "The rank-product form transformed the payout-coverage pair into the archive's best signal, but it has never been applied to the original and most theme-canonical financing leg, whose additive version produced the best slope of generations 0\u20135. This isolates the functional form from the choice of financing channel, which is the single most useful comparison available before the final round.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualChannelAccrualConjunction",
+      "expression": "SUMRANK(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at))), MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))))",
+      "hypothesis": "Accrual aggressiveness interacts separately with over-distribution and with external funding dependence, so averaging the two interaction terms should retain full interaction strength while diversifying the portfolio across two distinct financing red flags.",
+      "expected_sign": "negative",
+      "reasoning": "Adding the issuance leg additively to the payout leg previously produced the best Sharpe in the archive (\u22120.54), which says the two channels are imperfectly correlated sources of the same economic signal. Averaging the two *products* rather than the two levels preserves the conjunctive structure that generated the \u22123.73 alpha t-stat while capturing that diversification benefit.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TripleConjunctionAccrualFinancingStress",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), MUL(IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)), IND_RANK(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at))))",
+      "hypothesis": "The most extreme case is a firm that is accrual-aggressive, distributing beyond its operating cash flow, and simultaneously raising outside capital \u2014 recycling investor money while reporting non-cash profits.",
+      "expected_sign": "negative",
+      "reasoning": "If the mechanism is genuinely conjunctive, adding a third bounded rank should further concentrate the short leg on the pathological cases, whereas if it merely narrows the sample it will show up as a weaker slope with an unstable spread. Paired with Signal 2 this determines whether extra channels are best combined multiplicatively (stricter conjunction) or additively (diversification).",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "AccrualsTimesFinancingStressIndex",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(ADD(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at), RATIO(SUB(ADD(dvt, prstkc), oancf), at))))",
+      "hypothesis": "Total dependence on outside claimholders \u2014 capital taken in plus distributions not covered by operations \u2014 is one economic quantity, and accrual aggressiveness should be multiplied by that single composite rather than by each component separately.",
+      "expected_sign": "negative",
+      "reasoning": "Summing the two financing ratios before ranking gives the firm's overall external-claim burden in comparable asset-scaled units, so the interaction remains a clean two-way product with only one financing dimension to rank. Compared with Signals 2 and 3 it distinguishes \"one financing construct\" from \"two interacting channels,\" which is the key remaining specification choice for the final generation.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ConjunctiveAccrualCapitalChurn",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(ADD(ADD(sstk, dltis), ADD(prstkc, dltr)), at)))",
+      "hypothesis": "Gross capital-market activity, regardless of net direction, marks firms habitually reliant on investor validation; combined multiplicatively with accrual aggressiveness this identifies opaque, frequently financed firms whose earnings claims are least verifiable.",
+      "expected_sign": "negative",
+      "reasoning": "Gross churn was the strongest untested channel from generation 7 in additive form (alpha \u22123.5%, t=\u22122.58) and is economically distinct from net financing because it fires for firms that both raise and return capital. Testing it inside the now-validated rank-product form tells us whether the interaction rewards direction of financing or intensity of capital-market engagement.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "RoundTripCapitalWithAccruals",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(MIN(ADD(sstk, dltis), ADD(dvt, prstkc)), at)))",
+      "hypothesis": "Simultaneously raising new capital and handing cash back to shareholders is economically wasteful unless management is exploiting a favorable share price or defending a payout it cannot fund, so round-tripped capital combined with accrual-heavy earnings should mark overvaluation.",
+      "expected_sign": "negative",
+      "reasoning": "MIN of gross inflows and gross outflows measures the amount of capital that genuinely passed through the firm in both directions, a construction no prior signal implements \u2014 net financing cancels it out and gross churn adds it up without requiring both sides to be present. The earlier debt-funded-dividend attempt used the same overlap logic but only for one narrow flow pair and in the weaker additive form, so this repairs that failure while testing a distinct mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "TotalClaimServicingGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(ADD(dvt, prstkc), dltr), oancf), at)))",
+      "hypothesis": "The relevant shortfall is cash owed to *all* claimholders \u2014 dividends, repurchases and debt repayments \u2014 minus cash generated by operations; accrual-heavy firms facing that combined servicing gap must refinance or shrink.",
+      "expected_sign": "negative",
+      "reasoning": "The champion counts only shareholder distributions, yet scheduled debt repayment is an equally non-discretionary cash outflow, and creditor claims are precisely where balance-sheet pressure becomes binding. Because dltr enters as an outflow rather than as part of a netted issuance term, this extends the winning gap concept without reintroducing the capital-raising channel that diluted alpha in generation 8.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "PayoutGapAgainstCashBuffer",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), che)))",
+      "hypothesis": "A distribution shortfall only threatens the firm if it is large relative to the liquidity available to absorb it, so scaling the gap by cash holdings identifies firms whose over-distribution must be resolved imminently.",
+      "expected_sign": "negative",
+      "reasoning": "Scaling by assets treats a cash-rich and a cash-poor firm with the same gap identically, whereas the economic mechanism is a runway calculation; the within-industry rank transformation makes the small-denominator instability of this ratio harmless. This is the sharpest available test of whether the champion works through genuine funding pressure rather than through a generic asset-scaled cash-flow deficit.",
+      "interaction_type": "ratio",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "ChronicOverdistributionConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(TS_SUM(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 3)))",
+      "hypothesis": "Firms that have distributed more than their operating cash flow for several consecutive years are structurally, not temporarily, over-committed, and pairing that chronic state with current accrual aggressiveness should be more reliably priced than a single-year gap.",
+      "expected_sign": "negative",
+      "reasoning": "Earlier smoothing tests failed only when they staled the *accrual* leg, whereas accumulating just the financing leg previously preserved the slope; here the accrual leg stays current while the payout gap becomes a three-year cumulative state. If over-distribution is a persistent policy rather than a noisy annual event, this should raise ls_talpha and Sharpe relative to the champion at unchanged coverage.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DiscretionaryAccrualPayoutGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(ADD(SUB(ib, oancf), dpc), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at)))",
+      "hypothesis": "Within the accrual leg, the working-capital component is the discretionary part of earnings quality, so removing the mechanical depreciation offset should strengthen the interaction with payout overreach.",
+      "expected_sign": "negative",
+      "reasoning": "The depreciation add-back was validated as an accrual-leg improvement in the additive frame (fmb \u22123.81, alpha \u22123.3%) but has never been tested inside the multiplicative rank form that produced the champion, and the two legs' interaction may depend on which accrual concept is used. This isolates the accrual definition while holding the financing leg and functional form fixed.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "DualFrameConjunctiveAccrualPayoutStress",
+      "expression": "SUMRANK(MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at))), MUL(TS_RANK(RATIO(SUB(ib, oancf), at), 5), TS_RANK(RATIO(SUB(ADD(dvt, prstkc), oancf), at), 5)))",
+      "hypothesis": "The joint condition is most informative when a firm is extreme both against its industry peers and against its own five-year history, since the peer frame identifies bad types and the own-history frame identifies deterioration.",
+      "expected_sign": "negative",
+      "reasoning": "Own-history framing repeatedly delivered the archive's best Sharpe ratios (\u22120.49 to \u22120.53) while cross-sectional framing delivered the slopes, and averaging two *products* rather than replacing the frame preserves the conjunctive structure that generates the alpha. This targets the champion's one remaining soft spot, portfolio efficiency, without changing the economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "StickyDividendGapConjunction",
+      "expression": "MUL(IND_RANK(RATIO(SUB(ib, oancf), at)), IND_RANK(RATIO(SUB(dvc, oancf), at)))",
+      "hypothesis": "Dividends are a sticky commitment while repurchases are discretionary, so a shortfall driven by dividends the firm cannot cover from operations is a stronger signal of forced future financing or a coming cut than one driven by buybacks.",
+      "expected_sign": "negative",
+      "reasoning": "The champion's gap lumps sticky and flexible distributions together, so it cannot say whether the mispricing comes from commitment rigidity or from managers buying back stock they should not; isolating common dividends answers that and, if it wins, points to a dividend-cut-risk interpretation of the whole theme pairing. Coverage should be comparable since dvc is broadly reported and treated as zero-or-reported alongside oancf.",
+      "interaction_type": "conditional",
+      "theme_a": "accruals",
+      "theme_b": "financing",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:accrual_finance"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualIssuanceComposite",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(ib,oancf),at),ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsConditionalOnNetIssuance",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(ib,oancf),at),1),indicator(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),0.02))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "LeverageAmplifiedAccruals",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(mul(sub(ib,oancf),lt),mul(at,at)),1)",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ShareIssuedWorkingCapitalBuildup",
+      "metadata": {
+        "normalized_expression": "mul(rank(delta(ratio(sub(sub(act,che),sub(sub(lct,dlc),txp)),at),1)),rank(growth(csho,1)))",
+        "variables": [
+          "act",
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "lct",
+          "txp"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentAccrualFinancingPair",
+      "metadata": {
+        "normalized_expression": "mul(rank(ts_sum(ratio(sub(ib,oancf),at),3)),rank(ts_sum(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),3)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualEscalationWithFinancingStress",
+      "metadata": {
+        "normalized_expression": "sumrank(delta(ratio(sub(ib,oancf),at),1),sumrank(ratio(delta(dlc,1),at),neg(delta(ratio(dvt,at),1))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dvt",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "BalanceSheetAccrualNetFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(delta(wcap,1),dp),at),ratio(add(delta(dltt,1),sub(delta(ceq,1),ib)),at))",
+        "variables": [
+          "at",
+          "ceq",
+          "dltt",
+          "dp",
+          "ib",
+          "wcap"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsAmplifiedByGrossIssuance",
+      "metadata": {
+        "normalized_expression": "winsor(ratio(mul(sub(ib,oancf),add(sstk,dltis)),mul(at,at)),1)",
+        "variables": [
+          "at",
+          "dltis",
+          "ib",
+          "oancf",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RankWeightedFinancingAccruals",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(ib,oancf),at),1),rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndustryNeutralAccrualFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtFundedAccrualCashDrain",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sub(ib,oancf),at),sumrank(ratio(delta(dltt,1),at),neg(ratio(delta(che,1),at))))",
+        "variables": [
+          "at",
+          "che",
+          "dltt",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RevenueQualityAccrualsWithEquityIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(neg(add(recch,invch)),at),ratio(sub(sstk,prstkc),at))",
+        "variables": [
+          "at",
+          "invch",
+          "prstkc",
+          "recch",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutralAccrualDebtCashDrain",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ind_zscore(ratio(delta(dltt,1),at)),ind_zscore(neg(ratio(delta(che,1),at)))))",
+        "variables": [
+          "at",
+          "che",
+          "dltt",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctiveAccrualIssuance",
+      "metadata": {
+        "normalized_expression": "min(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutralAccrualIssuanceLeverage",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)),ind_zscore(ratio(lt,at))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "lt",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithoutPayoutDiscipline",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(neg(ratio(add(prstkc,dvt),at))))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PersistentIndNeutralAccrualFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ma(ratio(sub(ib,oancf),at),3)),ind_zscore(ma(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),3)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithShortMaturityDebtReliance",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(dlc,add(dlc,dltt))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltt",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithNetEquityIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(sstk,prstkc),at)))",
+        "variables": [
+          "at",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithNetDebtIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(dltis,dltr),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsVsFinancingFragilityIndex",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),ratio(dlc,add(dlc,dltt))))",
+        "variables": [
+          "at",
+          "dlc",
+          "dltis",
+          "dltr",
+          "dltt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualEscalationAtIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(delta(ratio(sub(ib,oancf),at),1)),ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsAfterPriorYearFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(lag(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),1)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithShareCountDilution",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(growth(csho,1)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WorkingCapitalAccrualLegWithNetFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(sub(ib,oancf),dpc),at)),ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dpc",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "FirmRelativeAccrualIssuanceSpike",
+      "metadata": {
+        "normalized_expression": "sumrank(ts_rank(ratio(sub(ib,oancf),at),5),ts_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),5))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndNeutralAccrualsWithIssuanceSpike",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ts_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),5))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithUnstableExternalFunding",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(vol(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),3)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IssuanceBeyondInternalEarningsWithAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(add(sub(sstk,prstkc),sub(dltis,dltr)),ib),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithCumulativeThreeYearFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ts_sum(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),3)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualFrameFinancingAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)),ts_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),5)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "WCAccrualsWithIssuanceBeyondEarnings",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(sub(ib,oancf),dpc),at)),ind_zscore(ratio(sub(add(sub(sstk,prstkc),sub(dltis,dltr)),ib),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dpc",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "IndRankAccrualFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: financing (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "WCAccrualsFundedByShortTermDebt",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(add(sub(ib,oancf),dpc),at)),ind_zscore(ratio(delta(dlc,1),at)))",
+        "variables": [
+          "at",
+          "dlc",
+          "dpc",
+          "ib",
+          "oancf"
+        ],
+        "missing_theme": "financing"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithPayoutBeyondEarnings",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(add(dvt,prstkc),ib),at)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "SymmetricDualFrameAccrualFinancing",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ts_rank(ratio(sub(ib,oancf),at),5)),sumrank(ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)),ts_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),5)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithFundingAndOverdistribution",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),ratio(sub(add(dvt,prstkc),ib),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "CashDeficitFinancingDiagnostic",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(neg(ratio(oancf,at))),ind_zscore(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithPayoutBeyondCashFlow",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(add(dvt,prstkc),oancf),at)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "EquityCushionAmplifiedAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(lt,ceq)))",
+        "variables": [
+          "at",
+          "ceq",
+          "ib",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsPayoutOverreachIssuanceSpike",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ratio(sub(add(dvt,prstkc),ib),at),ts_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),5)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DebtFundedDividendsWithAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(min(delta(dltt,1),dvc),at)))",
+        "variables": [
+          "at",
+          "dltt",
+          "dvc",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsFundingAndPayoutCoverageGap",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),ratio(sub(add(dvt,prstkc),oancf),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualFramePayoutCoverageAccruals",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),sumrank(ind_zscore(ratio(sub(add(dvt,prstkc),oancf),at)),ts_rank(ratio(sub(add(dvt,prstkc),oancf),at),5)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithCapitalMarketChurn",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(add(add(sstk,dltis),add(prstkc,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithLeveringUpTrend",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(trend(ratio(lt,at),5)))",
+        "variables": [
+          "at",
+          "ib",
+          "lt",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctiveAccrualPayoutStress",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(add(dvt,prstkc),oancf),at)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsWithCleanSurplusEquityIssuance",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(sub(ib,oancf),at)),ind_zscore(ratio(sub(delta(ceq,1),ib),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "ib",
+          "oancf"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctiveAccrualNetFinancing",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualChannelAccrualConjunction",
+      "metadata": {
+        "normalized_expression": "sumrank(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(add(dvt,prstkc),oancf),at))),mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TripleConjunctionAccrualFinancingStress",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),mul(ind_rank(ratio(sub(add(dvt,prstkc),oancf),at)),ind_rank(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "AccrualsTimesFinancingStressIndex",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(add(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at),ratio(sub(add(dvt,prstkc),oancf),at))))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ConjunctiveAccrualCapitalChurn",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(add(add(sstk,dltis),add(prstkc,dltr)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dltr",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "RoundTripCapitalWithAccruals",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(min(add(sstk,dltis),add(dvt,prstkc)),at)))",
+        "variables": [
+          "at",
+          "dltis",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "TotalClaimServicingGapConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(add(add(dvt,prstkc),dltr),oancf),at)))",
+        "variables": [
+          "at",
+          "dltr",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "PayoutGapAgainstCashBuffer",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(add(dvt,prstkc),oancf),che)))",
+        "variables": [
+          "at",
+          "che",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "ChronicOverdistributionConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ts_sum(ratio(sub(add(dvt,prstkc),oancf),at),3)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DiscretionaryAccrualPayoutGapConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(add(sub(ib,oancf),dpc),at)),ind_rank(ratio(sub(add(dvt,prstkc),oancf),at)))",
+        "variables": [
+          "at",
+          "dpc",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "DualFrameConjunctiveAccrualPayoutStress",
+      "metadata": {
+        "normalized_expression": "sumrank(mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(add(dvt,prstkc),oancf),at))),mul(ts_rank(ratio(sub(ib,oancf),at),5),ts_rank(ratio(sub(add(dvt,prstkc),oancf),at),5)))",
+        "variables": [
+          "at",
+          "dvt",
+          "ib",
+          "oancf",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "StickyDividendGapConjunction",
+      "metadata": {
+        "normalized_expression": "mul(ind_rank(ratio(sub(ib,oancf),at)),ind_rank(ratio(sub(dvc,oancf),at)))",
+        "variables": [
+          "at",
+          "dvc",
+          "ib",
+          "oancf"
+        ]
+      }
+    }
+  ]
+}

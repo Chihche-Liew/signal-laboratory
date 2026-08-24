@@ -1,0 +1,2829 @@
+{
+  "pair": "value_finance",
+  "evaluated": [
+    {
+      "name": "Cheap Buyback Yield Composite",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(prstkc, sstk), MUL(prcc_f, csho)))",
+      "hypothesis": "Firms that are cheap on book-to-market AND are net repurchasers of their own equity are more likely to be genuinely mispriced rather than distressed, because insiders are willing to spend cash at the prevailing price; expensive net issuers are the mirror case.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market alone confounds cheapness with risk, and buyback yield alone confounds signalling with excess cash; requiring both raises the posterior probability of undervaluation. Ranking both channels on the same market-value scale makes them comparable and keeps the composite monotone in both themes, so the long leg is cheap repurchasers and the short leg is expensive issuers.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.3552978964024063,
+      "ls_alpha": -0.011696417223742768,
+      "ls_talpha": -1.2209254626349053,
+      "ls_sharpe": 0.359818699390969,
+      "coverage": 0.118571682404305,
+      "error": null
+    },
+    {
+      "name": "Valuation Weighted Net External Finance",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Total net external financing (equity plus debt) net of retirements identifies firms raising capital at favorable prices; combining it with valuation isolates expensive capital raisers (overvalued) from cheap capital retirers (undervalued).",
+      "expected_sign": "positive",
+      "reasoning": "Managers exploit windows when their securities are richly priced, so aggregate external issuance interacts with the level of valuation rather than acting independently. Using all four financing flows (sstk, prstkc, dltis, dltr) avoids mechanically rewarding firms that merely substitute debt for equity, and the NEG orients high values toward capital retirement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.893803589993552,
+      "ls_alpha": -0.01688615469294916,
+      "ls_talpha": -1.7366776871717935,
+      "ls_sharpe": 0.2755310754402519,
+      "coverage": 0.1129131181656014,
+      "error": null
+    },
+    {
+      "name": "Financing Market Timing Quality",
+      "expression": "SUB(MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(RATIO(prstkc, MUL(prcc_f, csho)), 1)), MUL(RANK(NEG(RATIO(ceq, MUL(prcc_f, csho)))), WINSOR(RATIO(sstk, MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "The informational content of a financing action depends on the price at which it is executed: repurchasing while cheap and issuing while expensive are both value-accretive and reveal management's private information, while the opposite actions reveal nothing or destroy value.",
+      "expected_sign": "positive",
+      "reasoning": "This builds an explicitly asymmetric interaction in which gross repurchase intensity is weighted by cheapness rank and gross issuance intensity is weighted by expensiveness rank, then differenced, so magnitude and price-context both matter. Unlike an additive composite, a large buyback by an expensive firm contributes almost nothing, which is the economically correct discount.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.058130387539313,
+      "ls_alpha": -0.02576698178011398,
+      "ls_talpha": -2.5559879134394947,
+      "ls_sharpe": 0.2287832760367243,
+      "coverage": 0.118571682404305,
+      "error": null
+    },
+    {
+      "name": "Persistent Repurchase Confirmed Cheapness",
+      "expression": "SUMRANK(MA(RATIO(ceq, MUL(prcc_f, csho)), 3), SUMRANK(TS_SUM(INDICATOR(RATIO(SUB(prstkc, sstk), at), 0), 3), TS_SUM(RATIO(SUB(prstkc, sstk), MUL(prcc_f, csho)), 3)))",
+      "hypothesis": "Repeated, multi-year net repurchases by a persistently cheap firm are a far stronger undervaluation signal than a single opportunistic buyback, because sustained cash commitment is hard to fake and cannot be explained by one-off cash windfalls or option-offset mechanics.",
+      "expected_sign": "positive",
+      "reasoning": "Persistence filters transitory buybacks that merely neutralize dilution, while smoothing book-to-market over three years filters transitory price dislocations, so the interaction targets chronic mispricing rather than noise. Combining a count of repurchase years with the cumulative repurchase yield captures both frequency and size of the commitment alongside stable cheapness.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 3.338127854690827,
+      "ls_alpha": -0.01791405658875164,
+      "ls_talpha": -1.7921684091895567,
+      "ls_sharpe": 0.33214764011695624,
+      "coverage": 0.12330055793704449,
+      "error": null
+    },
+    {
+      "name": "Double Gated Cash Flow Yield",
+      "expression": "SUB(MUL(RANK(RATIO(oancf, MUL(prcc_f, csho))), INDICATOR(RATIO(SUB(prstkc, sstk), at), 0)), MUL(RANK(NEG(RATIO(oancf, MUL(prcc_f, csho)))), INDICATOR(RATIO(SUB(sstk, prstkc), at), 0)))",
+      "hypothesis": "Mispricing is concentrated where valuation and financing behavior agree, so returns should be predictable only in two gated corners: high cash-flow-yield firms that are net repurchasers (undervalued) and low cash-flow-yield firms that are net issuers (overvalued), with all disagreeing firms uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "The two indicator gates create a genuinely conditional signal in which cheapness is rewarded only for repurchasers and expensiveness is punished only for issuers, while conflicting cases collapse to zero rather than polluting the extremes. Operating cash flow to market value is used instead of book-to-market because it is a hard-cash valuation anchor that is directly comparable to the cash being spent on the repurchase.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 0,
+      "fmb_tstat": 1.810965901954857,
+      "ls_alpha": -0.02505910459239591,
+      "ls_talpha": -1.972431516000744,
+      "ls_sharpe": 0.07986702837013228,
+      "coverage": 0.08308249279568641,
+      "error": null
+    },
+    {
+      "name": "Total Net Payout Value Composite Zerofill",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), MUL(prcc_f, csho)))",
+      "hypothesis": "Cheap firms distributing cash through the full payout channel (dividends plus repurchases net of issuance) are undervalued, and a non-reporting firm genuinely paid out nothing, so treating missing financing flows as zero is the economically correct convention rather than a coverage patch.",
+      "expected_sign": "positive",
+      "reasoning": "Every gen-0 signal had coverage near 0.12 because a firm missing prstkc or sstk was dropped entirely, which biases portfolios toward large, actively-financing firms and can destabilize the extreme deciles that drive the FF5 alpha. This proposal holds the economic channel fixed and changes only the missing-data convention and the inclusion of dividends, so it isolates whether the negative FF5 alphas were a composition artifact or a genuine factor-spanning problem.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 2.665747097480517,
+      "ls_alpha": -0.04206051135975337,
+      "ls_talpha": -4.303362112645247,
+      "ls_sharpe": 0.09367428022259314,
+      "coverage": 0.1418997492213728,
+      "error": null
+    },
+    {
+      "name": "Own History Buyback Timing",
+      "expression": "MUL(TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5), TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5))",
+      "hypothesis": "What reveals private information is not the cross-sectional level of cheapness but whether a firm is repurchasing unusually aggressively at a point when its own valuation is unusually depressed relative to its own five-year history.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 diagnosis is factor spanning: positive raw spreads (Sharpe ~0.3) turned into negative FF5 alphas because static book-to-market and issuance levels load mechanically on HML and CMA. Measuring both themes as within-firm time-series ranks strips out the permanent cross-sectional style tilt, leaving the timing interaction that FF5 cannot span, which should convert the reliable cross-sectional slope into a positive abnormal-return spread.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 0.9585396865830459,
+      "ls_alpha": 0.01904513139503117,
+      "ls_talpha": 1.395613149870843,
+      "ls_sharpe": 0.15545702603128547,
+      "coverage": 0.12901840143896412,
+      "error": null
+    },
+    {
+      "name": "Drawdown Buyback Conviction",
+      "expression": "MUL(WINSOR(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), MUL(prcc_f, csho)), 1), RANK(NEG(RATIO(prcc_f, TS_MAX(prcc_f, 5)))))",
+      "hypothesis": "Repurchasing after a large drawdown from the firm's own five-year price peak is the strongest form of management-confirmed undervaluation, whereas selling equity into a depressed price signals financing distress and predicts poor returns.",
+      "expected_sign": "positive",
+      "reasoning": "Distance-from-own-peak is a price-based cheapness measure that is nearly orthogonal to accounting book-to-market and therefore carries much less HML exposure than the gen-0 constructions, addressing the factor-spanning failure from a different angle. The multiplicative form makes the sign of the financing flow decisive: identical drawdowns are scored positively for repurchasers and negatively for issuers, which is exactly the asymmetry the economic story requires.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": -0.09680449291648578,
+      "ls_alpha": -0.013918519264331655,
+      "ls_talpha": -1.448538136955164,
+      "ls_sharpe": 0.2764693112702736,
+      "coverage": 0.14487578492141912,
+      "error": null
+    },
+    {
+      "name": "Payout Surprise Among Cheap Firms",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), DELTA(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), at), 1))",
+      "hypothesis": "A newly initiated or sharply increased net payout at a cheap firm is news about management's assessment of intrinsic value, while a persistent payout level is already known and already priced into value-factor exposures.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of issuance and repurchase are largely captured by CMA and HML, but the first difference is a surprise component that factor portfolios rebalanced on levels cannot absorb, so this design targets positive FF5 alpha rather than raw spread. It also directly contrasts with Signal 1: comparing the two isolates whether the payout channel predicts through its state or through its change.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.465288676302498,
+      "ls_alpha": -0.011959240328002248,
+      "ls_talpha": -1.5335331919377684,
+      "ls_sharpe": 0.17324963339287733,
+      "coverage": 0.12978794842776328,
+      "error": null
+    },
+    {
+      "name": "Cash Funded Buyback Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), WINSOR(RATIO(MIN(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), oancf), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Only repurchases genuinely funded by internally generated cash carry an undervaluation signal; buybacks financed by borrowing or asset sales are balance-sheet engineering and should be credited only up to the firm's operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN operator caps the credited repurchase at operating cash flow and pushes firms with negative cash flow into the short leg even if they repurchase, which removes the leverage-driven buybacks that likely diluted the gen-0 spreads. Pairing it with earnings yield rather than book-to-market gives a valuation anchor with different factor loadings, so a positive alpha here would point to funding quality as the active ingredient.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 1.4096269713455956,
+      "ls_alpha": -0.018425531207930237,
+      "ls_talpha": -1.3452587265338642,
+      "ls_sharpe": 0.12785809262503134,
+      "coverage": 0.09090983195850844,
+      "error": null
+    },
+    {
+      "name": "Enterprise Multiple Capital Retirement",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(SUB(COALESCE(sstk, 0), COALESCE(prstkc, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at)))",
+      "hypothesis": "If management is retiring total invested capital (both debt and equity) while the whole enterprise trades at a low multiple of operating earnings, the mispricing is at the enterprise level and not merely an artifact of leverage; expensive enterprises simultaneously tapping debt and equity markets are overvalued.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market and equity-only payout mismatch the units of the interaction because leverage contaminates both, whereas EBITDA-to-enterprise-value and total net capital flows are measured on the same enterprise base. This consistency should sharpen the interaction and reduce the pure HML tilt that produced negative FF5 alphas, while the che and debt terms make the cheapness measure sensitive to net cash rather than accounting equity.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 1,
+      "fmb_tstat": 3.723163583118579,
+      "ls_alpha": -0.02279903957540985,
+      "ls_talpha": -2.15384862907225,
+      "ls_sharpe": 0.24476571662750884,
+      "coverage": 0.13996571811590794,
+      "error": null
+    },
+    {
+      "name": "Own History Timing Additive",
+      "expression": "SUMRANK(TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5), TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5))",
+      "hypothesis": "A firm repurchasing at an unusually high rate while its own valuation sits at an unusually depressed point in its five-year history reveals management-confirmed undervaluation; the informative content is the within-firm coincidence, not the cross-sectional style level.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a sharp split: every static value-plus-payout composite delivered positive FMB slopes but negative FF5 alphas (down to -0.042 with t=-4.3), while the only positive alpha came from the purely within-firm TS_RANK design, whose weakness was a flat FMB slope (0.96). Replacing the multiplicative combination with SUMRANK spreads the signal monotonically across the whole cross-section instead of concentrating mass near zero for any firm with one low rank, which should restore cross-sectional slope power while retaining the low HML and CMA exposure that produced the positive alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.0730186711533642,
+      "ls_alpha": 0.018492881162855794,
+      "ls_talpha": 1.4236210948693442,
+      "ls_sharpe": 0.18457978370621966,
+      "coverage": 0.12901840143896412,
+      "error": null
+    },
+    {
+      "name": "Abnormal Payout At Abnormal Cheapness",
+      "expression": "SUMRANK(SUB(RATIO(ceq, MUL(prcc_f, csho)), MA(RATIO(ceq, MUL(prcc_f, csho)), 5)), SUB(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), MA(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5)))",
+      "hypothesis": "Deviations of valuation and of net repurchase intensity from each firm's own five-year norm identify a genuine new mispricing episode, whereas permanently cheap perpetual repurchasers are simply value and low-investment factor exposures.",
+      "expected_sign": "positive",
+      "reasoning": "This is the continuous-magnitude counterpart to the discrete TS_RANK design, so it keeps the factor-orthogonality that generated the only positive alpha in the archive while restoring the magnitude information that ordinal ranks discard. Comparing it with Signal 1 isolates whether the within-firm channel is best expressed ordinally or as a level deviation, which is the key measurement question in the surviving direction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 1.5646170626059013,
+      "ls_alpha": 0.02144247848227308,
+      "ls_talpha": 1.479291967064048,
+      "ls_sharpe": 0.1303542347087169,
+      "coverage": 0.14189355817560612,
+      "error": null
+    },
+    {
+      "name": "Equity Tilt Of External Finance",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(SUB(COALESCE(sstk, 0), COALESCE(prstkc, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at)))",
+      "hypothesis": "Holding total external finance fixed, a firm's choice to lean on equity rather than debt is the market-timing decision: expensive firms tilt toward equity because their shares are dear, while cheap firms with confident managers prefer debt and retire equity.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's total-net-financing composite loaded heavily on CMA because gross external finance is mechanically tied to asset growth; differencing equity flows against debt flows nets out the scale of financing and leaves only the security-choice component, which FF5 does not price. This changes the economic channel from how much capital is raised to which security is used, so a positive alpha here would identify pecking-order inversion rather than investment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.838183172983598,
+      "ls_alpha": -0.01469252904167171,
+      "ls_talpha": -1.8218117452277762,
+      "ls_sharpe": 0.24583720379433652,
+      "coverage": 0.14189355817560612,
+      "error": null
+    },
+    {
+      "name": "Issuance Dependence Withdrawal",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(TREND(RATIO(COALESCE(sstk, 0), at), 5)))",
+      "hypothesis": "A cheap firm whose reliance on equity issuance has been trending down over five years is transitioning from external-capital dependence to self-funding, a regime change that the market underappreciates; a cheap firm with a rising issuance trend is instead financing chronic cash burn.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of issuance are largely absorbed by CMA and by the value factor, but the multi-year slope of issuance intensity is a state-transition variable that no static factor portfolio tracks. This tests deceleration of financing dependence rather than the one-year surprise tested in gen 1, which had a strong FMB slope but a still-negative alpha, so the longer trend window targets the abnormal-return side of the objective.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.856763592470374,
+      "ls_alpha": 0.003638441947736464,
+      "ls_talpha": 0.4597597246425859,
+      "ls_sharpe": 0.2313756209768559,
+      "coverage": 0.11936991457182315,
+      "error": null
+    },
+    {
+      "name": "Cheapness With Stable Self Funding",
+      "expression": "SUMRANK(RATIO(ebitda, MUL(prcc_f, csho)), NEG(VOL(RATIO(ADD(COALESCE(sstk, 0), COALESCE(dltis, 0)), at), 5)))",
+      "hypothesis": "Erratic, lumpy trips to capital markets signal opportunistic financing and weak internal cash generation, so a cheap firm that raises outside capital only rarely and smoothly is being discounted for financing risk it does not bear, while an expensive firm with volatile gross issuance is timing windows.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment financing channel that is economically distinct from the level and change channels already tested and is not represented in any FF5 factor, giving it a real chance of positive abnormal returns rather than a repackaged value tilt. Pairing it with an EBITDA-to-market cheapness anchor keeps the valuation leg cash-based and less collinear with book-to-market, which is where the archive's alpha damage originated.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 2.4003211651583256,
+      "ls_alpha": -0.02606305227384314,
+      "ls_talpha": -2.426493611492214,
+      "ls_sharpe": 0.12430439561396633,
+      "coverage": 0.13010456882668126,
+      "error": null
+    },
+    {
+      "name": "Industry Neutral Cheap Payout",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), MUL(prcc_f, csho))))",
+      "hypothesis": "The undervaluation signal in cheap-and-repurchasing firms is meaningful only relative to industry peers, because both book-to-market levels and payout norms are largely industry attributes that carry factor risk rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 zero-filled total-payout composite had the strongest cross-sectional slope family but the worst FF5 alpha (-0.042, t=-4.3), a pattern consistent with the long leg being a concentrated bet on cheap, high-payout industries that HML, RMW and CMA already span. Industry-demeaning both legs holds the economic story fixed while stripping the industry component of the factor loadings, so this cleanly diagnoses whether the negative alphas are an industry-tilt artifact or intrinsic to the payout-value channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 2,
+      "fmb_tstat": 3.6231664374407764,
+      "ls_alpha": -0.013501624611407186,
+      "ls_talpha": -1.1039933948351472,
+      "ls_sharpe": 0.010820942851592307,
+      "coverage": 0.14174063934516895,
+      "error": null
+    },
+    {
+      "name": "Cross Sectional Cheapness With Own History Payout",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5))",
+      "hypothesis": "Cheapness is best measured against other firms, but financing behavior is best measured against the firm's own history, because a serial repurchaser buying back at its normal rate conveys no news while the same firm stepping to an unusual repurchase rate does.",
+      "expected_sign": "positive",
+      "reasoning": "The archive splits cleanly: fully cross-sectional composites earn FMB t of 2.7 to 3.9 but negative FF5 alphas, while fully within-firm designs earn positive alphas near +0.02 with FMB t near 1. The one signal that achieved both a 2.86 FMB slope and a non-negative alpha (Issuance Dependence Withdrawal) was exactly this hybrid structure, so this proposal generalizes that structure to the on-story net-payout variable.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.3414762189951057,
+      "ls_alpha": 0.0005968939808540779,
+      "ls_talpha": 0.07969059316947442,
+      "ls_sharpe": 0.3020008652425444,
+      "coverage": 0.13010668410065154,
+      "error": null
+    },
+    {
+      "name": "Own History Cheapness With Cross Sectional Payout",
+      "expression": "SUMRANK(TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), MUL(prcc_f, csho)))",
+      "hypothesis": "If instead the mispricing news lies in a firm trading cheap relative to its own recent history, then the valuation leg should be time-series and the payout leg cross-sectional, since payout yield is comparable across firms once scaled by market value.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate mirror image of Signal 1 and exists to attribute the alpha-versus-slope tradeoff to a specific leg rather than to the general idea of time-series normalization. Evaluated as a pair, the two signals identify whether HML spanning enters through the valuation level or through the payout level, which determines where the remaining generations should focus.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 2.4703188947037926,
+      "ls_alpha": -0.0008196398738240795,
+      "ls_talpha": -0.06896579741241873,
+      "ls_sharpe": 0.24049714979061254,
+      "coverage": 0.12902428293244247,
+      "error": null
+    },
+    {
+      "name": "Rising Net Payout In Cheap Firms",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), TREND(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), at), 5))",
+      "hypothesis": "A cheap firm on a multi-year upward trajectory of total net distributions is progressively converting from capital consumer to capital returner, and that regime shift is repriced only gradually.",
+      "expected_sign": "positive",
+      "reasoning": "Issuance Dependence Withdrawal showed that a five-year financing trend preserves the cross-sectional slope while eliminating the negative alpha, but it used only gross equity issuance and therefore ignored repurchases and dividends. Substituting the complete net payout flow keeps the successful trend structure while aligning the financing leg with the economic story, which should raise both the slope and the alpha relative to that signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.4563710237281686,
+      "ls_alpha": 0.0049579539919038735,
+      "ls_talpha": 0.6340465746614588,
+      "ls_sharpe": 0.25571640017121416,
+      "coverage": 0.11936991457182315,
+      "error": null
+    },
+    {
+      "name": "Levered Recapitalization Value",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(MIN(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at))",
+      "hypothesis": "The strongest management conviction is revealed when a cheap firm borrows in order to retire equity, because levering up to buy stock is an unhedged bet on the share price, whereas the mirror case of issuing equity to repay debt signals balance-sheet repair under duress.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 1 tested the opposite convention by capping repurchases at operating cash flow and it was weak (FMB 1.41, alpha negative), which suggests that internally funded buybacks are routine cash disposal rather than information. The MIN operator here scores a firm highly only when both equity retirement and debt raising are simultaneously large, isolating deliberate capital-structure swaps rather than cash sweeping, and its short leg captures distressed equity-for-debt substitution.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.168060996155519,
+      "ls_alpha": -0.020667931041474696,
+      "ls_talpha": -2.3727949658952885,
+      "ls_sharpe": 0.17095448112947279,
+      "coverage": 0.14189355817560612,
+      "error": null
+    },
+    {
+      "name": "Buyback Tilted Payout Among Cheap Firms",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "Dividends are sticky habit payments that carry no valuation opinion, whereas repurchases are discretionary and price-sensitive, so among comparably cheap firms the payout mix tilted toward repurchases identifies management that thinks the stock is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "All prior payout constructions lumped dividends and repurchases together, and the one that added dividends produced the worst alpha in the archive (-0.042, t=-4.3), consistent with the dividend component being a pure high-payout value tilt that FF5 spans through RMW and HML. Differencing repurchases against dividends removes that spanned component and leaves only the discretionary, opinionated part of payout.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.3273140327178816,
+      "ls_alpha": 0.029184655390341922,
+      "ls_talpha": 2.6141982222193807,
+      "ls_sharpe": 0.5553925205299854,
+      "coverage": 0.14287344594432846,
+      "error": null
+    },
+    {
+      "name": "Cheap Balance Sheet Deleveraging",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(GROWTH(lt, 1)))",
+      "hypothesis": "Shrinking total liabilities is a balance-sheet measure of net capital retirement that captures financing behavior for the many firms that never report cash-flow-statement repurchase or issuance items, and cheap firms shrinking their claims base are undervalued while cheap firms expanding liabilities are financing distress.",
+      "expected_sign": "positive",
+      "reasoning": "Every signal in the archive is stuck near 0.13 coverage because prstkc, sstk, dltis and dltr are reported by a narrow subset of firms, which concentrates the portfolios in large established payers and plausibly contributes to the unstable extreme deciles behind the negative alphas. Liabilities are reported nearly universally, so this tests whether the interaction survives on a much broader, more representative cross-section using a different data source for the financing theme.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 3,
+      "fmb_tstat": 3.561516060526116,
+      "ls_alpha": -0.02595361783281476,
+      "ls_talpha": -2.9374905624263183,
+      "ls_sharpe": 0.21028968322267125,
+      "coverage": 0.1293148493470923,
+      "error": null
+    },
+    {
+      "name": "Payout Tilt With Book To Market",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "The discretionary payout tilt (repurchases in excess of dividends) is the informative financing signal, and it should add value on top of any reasonable cheapness anchor, including book-to-market.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 3's Buyback Tilted Payout signal is the archive's only strong result on both criteria (FMB 3.33, alpha +0.029 with t=2.61, Sharpe 0.555), but it changed two things at once: the valuation anchor moved from book-to-market to earnings yield and the payout leg subtracted dividends. This proposal holds the new payout leg fixed and reverts the valuation anchor, which attributes the alpha gain either to the payout composition idea or to the earnings-yield anchor.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.8701428647611866,
+      "ls_alpha": 0.004415377774000924,
+      "ls_talpha": 0.48098913338201144,
+      "ls_sharpe": 0.4081343346982717,
+      "coverage": 0.14189355817560612,
+      "error": null
+    },
+    {
+      "name": "Issuance Netted Discretionary Payout",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "Equity issuance is the direct opposite of a repurchase, so netting it against repurchases inside the discretionary payout leg should sharpen the overvaluation short leg without diluting the undervaluation long leg.",
+      "expected_sign": "positive",
+      "reasoning": "The winning gen-3 design used gross repurchases only, whereas every issuance-inclusive design in the archive delivered negative FF5 alphas, which raises the possibility that sstk carries a growth and investment exposure that FF5 spans and prices. Adding sstk back to the otherwise identical winner is the decisive test of whether issuance information is helpful or is precisely the component that destroys abnormal returns.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.450416467501532,
+      "ls_alpha": 0.007850379027845265,
+      "ls_talpha": 0.6767394467743472,
+      "ls_sharpe": 0.46621788556076765,
+      "coverage": 0.14287344594432846,
+      "error": null
+    },
+    {
+      "name": "Persistent Discretionary Payout Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), TS_SUM(SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)), 3))",
+      "hypothesis": "A multi-year record of choosing repurchases over dividends identifies a stable management philosophy of buying stock when it is cheap, which is a more reliable undervaluation signal than a single year's payout mix.",
+      "expected_sign": "positive",
+      "reasoning": "Annual payout mix is lumpy, and lumpiness in the sort variable causes portfolio churn that inflates spread volatility and depresses the alpha t-stat even when the mean alpha is real. Cumulating three years of the winning leg smooths the state without changing the economic channel, so it targets the reliability side of the objective directly rather than the magnitude side.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.415213900882312,
+      "ls_alpha": 0.030623753640857045,
+      "ls_talpha": 2.7100860720452915,
+      "ls_sharpe": 0.5450411101904173,
+      "coverage": 0.14287777967636514,
+      "error": null
+    },
+    {
+      "name": "Shift From Dividends To Buybacks",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(DELTA(RATIO(COALESCE(prstkc, 0), at), 1), DELTA(RATIO(COALESCE(dvt, 0), at), 1)))",
+      "hypothesis": "An active reallocation of payout away from dividends and toward repurchases is a fresh statement that management views the current share price as attractive, and this change is news whereas the standing mix is already known.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows that payout levels are largely factor-spanned while trends and changes in financing behavior were the only constructions that avoided negative alphas, so applying the change operator to the newly successful composition variable tests whether the winner works through its level or its innovation. Comparing this with Signal 3 separates persistence from surprise within the same economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.767867723103941,
+      "ls_alpha": 0.012908088868794536,
+      "ls_talpha": 1.4211211947999902,
+      "ls_sharpe": 0.3473141579651206,
+      "coverage": 0.13072145494528353,
+      "error": null
+    },
+    {
+      "name": "Cash Yield With Buyback Tilt And Issuance Discipline",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), SUMRANK(SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)), NEG(RATIO(COALESCE(sstk, 0), at))))",
+      "hypothesis": "Undervaluation is most convincing when a firm is cheap on hard operating cash flow, chooses repurchases over dividends, and simultaneously refrains from tapping the equity market, since these three conditions are jointly hard to satisfy for an overvalued or capital-hungry firm.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the two designs that produced positive alphas, ranking the issuance-discipline channel separately rather than netting it inside the payout leg, so the short leg is populated by expensive equity issuers without letting large sstk values swamp the payout-tilt information. Cash-flow yield replaces earnings yield to reduce accrual noise in the valuation anchor while keeping the same cheapness concept.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 2.036747321410965,
+      "ls_alpha": -0.0073158138293490695,
+      "ls_talpha": -0.5799757640111538,
+      "ls_sharpe": 0.24432556668568606,
+      "coverage": 0.09090611733104842,
+      "error": null
+    },
+    {
+      "name": "Scale Free Payout Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))))",
+      "hypothesis": "What matters is the composition of a firm's payout, not its size: conditional on returning cash at all, a firm that returns it through repurchases rather than dividends is expressing a view that its shares are cheap.",
+      "expected_sign": "positive",
+      "reasoning": "Payout magnitude is the component that loads on the value and profitability factors and produced the archive's worst alpha (-0.042), whereas a bounded mix ratio between minus one and plus one is mechanically free of payout scale and therefore of that factor tilt. Restricting attention to firms that actually distribute cash also makes the interaction economically well posed, since a non-payer expresses no valuation opinion at all.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 4,
+      "fmb_tstat": 3.9310917019782194,
+      "ls_alpha": 0.040157259138487486,
+      "ls_talpha": 3.14704930785901,
+      "ls_sharpe": 0.457391059414944,
+      "coverage": 0.09396599010918529,
+      "error": null
+    },
+    {
+      "name": "Persistent Scale Free Payout Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "A firm's three-year cumulative choice between repurchases and dividends is its revealed policy toward its own share price, and combining that stable composition with earnings-yield cheapness identifies management-confirmed undervaluation.",
+      "expected_sign": "positive",
+      "reasoning": "The two strongest archive results are the scale-free mix ratio (alpha 0.040, t=3.15, but coverage only 0.094) and three-year persistence of the same payout tilt (alpha 0.031, t=2.71, coverage 0.143), so this merges them: cumulating flows before forming the ratio both smooths lumpy annual buyback programs and admits any firm that distributed cash at some point in three years. That should raise the alpha t-stat and coverage simultaneously rather than trading one against the other.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.141075315434378,
+      "ls_alpha": 0.042847650128119835,
+      "ls_talpha": 3.418831056667648,
+      "ls_sharpe": 0.5439343754158676,
+      "coverage": 0.106090018218184,
+      "error": null
+    },
+    {
+      "name": "Dilution Adjusted Payout Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0)), COALESCE(sstk, 0))))",
+      "hypothesis": "Equity issuance should enter the payout-composition signal as a scaling penalty rather than as a sign-flipping flow: a firm buying back stock while simultaneously selling stock is expressing a much weaker valuation opinion than a pure repurchaser.",
+      "expected_sign": "positive",
+      "reasoning": "Netting sstk inside the numerator collapsed the alpha from 0.029 to 0.008 in gen 4, which suggests gross issuance carries a growth exposure FF5 already prices, yet ignoring issuance entirely also excludes non-paying issuers from the signal and caps coverage near 0.094. Placing sstk only in the denominator keeps the mix bounded, shrinks the score of firms that recycle equity, and extends coverage to issuers without letting large issuance values dominate the sort.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.2057273686163863,
+      "ls_alpha": 0.03207681672084343,
+      "ls_talpha": 2.7137516596700437,
+      "ls_sharpe": 0.488317709046464,
+      "coverage": 0.12795803007527487,
+      "error": null
+    },
+    {
+      "name": "Cash Flow Yield With Payout Mix",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))))",
+      "hypothesis": "The cheapness leg of the interaction is best measured by cash actually generated relative to price, because repurchase decisions are cash decisions and accrual-based earnings can misstate the funds management sees.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows the valuation anchor matters a lot for the alpha: with the identical payout-tilt leg, earnings yield produced alpha 0.029 while book-to-market produced only 0.004, so the anchor choice is worth one clean test rather than assumption. This isolates the anchor while holding the best financing leg fixed, and the gen-4 cash-flow attempt is not informative on this point because it also bundled a separate issuance channel.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.5373626161927785,
+      "ls_alpha": 0.03800700737903019,
+      "ls_talpha": 2.026165182358523,
+      "ls_sharpe": 0.5134835416412095,
+      "coverage": 0.05578839046843103,
+      "error": null
+    },
+    {
+      "name": "Joint Corner Cheap Repurchaser",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0)))))",
+      "hypothesis": "The mispricing is concentrated in the joint corner where a firm is both among the cheapest on earnings yield and among the most repurchase-tilted in its payout, so a multiplicative combination should isolate that corner more sharply than an additive rank sum.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets a very high rank on one leg substitute for a low rank on the other, which puts firms into the long portfolio that satisfy only one theme and dilutes the interaction the task targets. The product requires both conditions and therefore tests whether the alpha of 0.040 can be increased by concentrating the extreme portfolios, at the acceptable cost of a possibly flatter cross-sectional slope.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 3.6364372809214442,
+      "ls_alpha": 0.04285875951183195,
+      "ls_talpha": 3.3075250852028444,
+      "ls_sharpe": 0.4906290912436467,
+      "coverage": 0.09396599010918529,
+      "error": null
+    },
+    {
+      "name": "Liquidity Sacrificed For Own Stock",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(COALESCE(prstkc, 0), ADD(che, COALESCE(prstkc, 0))))",
+      "hypothesis": "Spending a large fraction of available liquid resources on one's own shares is a costly, hard-to-fake signal: management gives up financial flexibility precisely because it believes the stock is worth more than the cash.",
+      "expected_sign": "positive",
+      "reasoning": "Every financing metric tested so far normalizes by assets or market value, which measures how big the buyback is rather than how much it cost the firm in flexibility; scaling by the cash pool it was drawn from converts the same flow into a costly-signal intensity bounded between zero and one. This is a distinct mechanism from the dividend contrast and uses cash holdings, a valuation-side variable, as the normalizer, so it also diversifies the batch away from the payout-mix family.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 2.6781057974345344,
+      "ls_alpha": -0.009624408430571142,
+      "ls_talpha": -0.8287741851609441,
+      "ls_sharpe": 0.25875134801076877,
+      "coverage": 0.14137485172445388,
+      "error": null
+    },
+    {
+      "name": "Dual Anchor Cheapness With Persistent Mix",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "Cheapness measured jointly at the equity level (earnings yield) and the enterprise level (EBITDA to enterprise value) is more robust than either alone, and pairing this sturdier valuation anchor with persistent repurchase-tilted payout should stabilize the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Single-anchor versions of this family swing widely in alpha depending on the anchor, which indicates anchor-specific noise rather than a fragile mechanism; averaging two economically distinct cheapness measures reduces that measurement error while leaving the interaction intact. Because the enterprise multiple accounts for leverage and net cash, this also prevents the long leg from filling with cheap-looking but heavily indebted firms, a plausible source of the earlier negative alphas.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 5,
+      "fmb_tstat": 4.346525279037911,
+      "ls_alpha": 0.03346481861649168,
+      "ls_talpha": 2.892099748853234,
+      "ls_sharpe": 0.5231544509000199,
+      "coverage": 0.103754962123182,
+      "error": null
+    },
+    {
+      "name": "Joint Corner Persistent Mix",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "Undervaluation is revealed most sharply where cheapness and a multi-year repurchase-tilted payout policy coincide, so the signal should require both conditions jointly rather than allowing one to substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "Two independent design choices each lifted alpha to 0.043: three-year cumulation of the payout mix (t=3.42, FMB 4.14) and multiplicative rather than additive combination of the legs (t=3.31). They have not been tested together, and because they improve different things \u2014 measurement stability of the financing leg versus concentration of the extreme portfolios \u2014 combining them is the natural consolidation step rather than a cosmetic variant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.7211042760737536,
+      "ls_alpha": 0.039283014647701446,
+      "ls_talpha": 3.019119462661413,
+      "ls_sharpe": 0.5116371941197374,
+      "coverage": 0.106090018218184,
+      "error": null
+    },
+    {
+      "name": "Persistent Dilution Adjusted Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), TS_SUM(COALESCE(sstk, 0), 3))))",
+      "hypothesis": "Three years of equity sales belong in the scale of the payout-composition measure, so that a firm which repurchases while continually selling stock is scored as a weak signal and firms that only issue are included in the cross-section rather than dropped.",
+      "expected_sign": "positive",
+      "reasoning": "The pure mix has the best alpha but only 0.094 to 0.106 coverage because non-payers have a zero denominator, while the one-year dilution-adjusted version raised coverage to 0.128 and still earned alpha 0.032 with t=2.71. Cumulating all three flows over three years should combine that coverage gain with the persistence gain, which is the main unresolved tradeoff in the leading family.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.4767284747272647,
+      "ls_alpha": 0.03934544223102533,
+      "ls_talpha": 3.3489928783402045,
+      "ls_sharpe": 0.5657321739601179,
+      "coverage": 0.13593524413769875,
+      "error": null
+    },
+    {
+      "name": "Five Year Payout Mix Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 5), TS_SUM(COALESCE(dvt, 0), 5)), ADD(TS_SUM(COALESCE(prstkc, 0), 5), TS_SUM(COALESCE(dvt, 0), 5))))",
+      "hypothesis": "If the payout mix reflects a durable managerial philosophy rather than a transient decision, a longer measurement window should identify it more accurately and produce a more reliable abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Moving from one year to three years raised both the FMB slope and the alpha t-stat, so the window length is an active parameter whose optimum has not been located, and a five-year window distinguishes durable policy from a three-year cycle. If performance deteriorates, that pins the mechanism to recent policy rather than to firm identity, which is itself decisive information for the final generations.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.235503254057809,
+      "ls_alpha": 0.04028145046173337,
+      "ls_talpha": 3.1648567877326776,
+      "ls_sharpe": 0.5177953651124648,
+      "coverage": 0.1116694918472182,
+      "error": null
+    },
+    {
+      "name": "Verified Share Retirement Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))), NEG(GROWTH(csho, 1))))",
+      "hypothesis": "Repurchase dollars only signal undervaluation when they actually shrink the share base; buybacks that merely absorb option and equity grants leave shares outstanding flat and convey no valuation opinion.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has never verified the repurchase flow against the outcome it is supposed to produce, and a large share of reported prstkc is known to offset dilution rather than retire equity. Adding realized share-count shrinkage as a confirming channel should purge false positives from the long leg and raise the alpha t-stat without changing the economic story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.248462605652996,
+      "ls_alpha": 0.019061883192145898,
+      "ls_talpha": 1.7864040252106874,
+      "ls_sharpe": 0.4240407550688128,
+      "coverage": 0.10062213818909435,
+      "error": null
+    },
+    {
+      "name": "Payout Frequency Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "How often a firm chooses to repurchase versus how often it commits to a dividend captures the same discretionary-versus-habit distinction as the dollar mix, but as a pure frequency it is immune to the dollar outliers and zero-denominator gaps that constrain the ratio version.",
+      "expected_sign": "positive",
+      "reasoning": "The leading family's weakness is coverage near 0.10 driven by ratio construction, and a count of active years is defined for every firm with five years of history, including non-payers who score zero. If this frequency measure retains most of the alpha at substantially higher coverage, it shows the signal lives in the qualitative payout choice rather than in the dollar amounts, which is a materially different measurement claim.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 3.774850780805158,
+      "ls_alpha": 0.05062664288631776,
+      "ls_talpha": 3.7368578376229444,
+      "ls_sharpe": 0.49014876245594696,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "Sales Yield With Persistent Mix",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "If the interaction is genuinely about price being low relative to fundamentals, it should survive when cheapness is measured by sales to price, a valuation anchor that does not embed profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Earnings yield outperformed book-to-market as the anchor by a wide alpha margin, but earnings yield also proxies profitability, so part of the gain may come from screening out loss-makers rather than from cheapness itself. Sales to price is positive for nearly all firms and is profitability-neutral, so this test separates the cheapness channel from the quality channel inside the winning design and may also improve coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 6,
+      "fmb_tstat": 4.059097229691728,
+      "ls_alpha": -0.004641614233429136,
+      "ls_talpha": -0.5384456162659897,
+      "ls_sharpe": 0.38971203559906653,
+      "coverage": 0.10596062536166026,
+      "error": null
+    },
+    {
+      "name": "Buyback Versus Issuance Frequency",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), at), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(sstk, 0), at), 0.01), 5)))",
+      "hypothesis": "The cleanest financing contrast for the story is how often a firm materially buys its own stock versus how often it materially sells stock, since these are the two opposite expressions of management's view of price, with dividends being a separate habit variable.",
+      "expected_sign": "positive",
+      "reasoning": "The frequency-based composition signal is the archive leader (alpha 0.051, t=3.74, coverage 0.143), which shows the qualitative act matters more than the dollar amount, but it contrasted buybacks against dividends rather than against issuance. Using a one-percent-of-assets materiality screen keeps trivial option-related flows out of both counts, so this tests whether the natural economic opposite of a repurchase is a share sale rather than a dividend.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.7973269560268115,
+      "ls_alpha": -0.01394058807584548,
+      "ls_talpha": -1.1418972457901055,
+      "ls_sharpe": 0.283711966689787,
+      "coverage": 0.1428790178855185,
+      "error": null
+    },
+    {
+      "name": "Material Payout Frequency Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Only economically meaningful repurchases and dividends express a valuation opinion, so counting years in which each channel exceeded one percent of market value should sharpen the composition contrast relative to counting any nonzero amount.",
+      "expected_sign": "positive",
+      "reasoning": "The winning frequency signal treated a token buyback identical to a 10 percent repurchase program, which loads the long leg with firms that merely mop up option exercises. Scaling by market value inside the indicator makes the threshold a yield concept consistent with the valuation leg, and this isolates materiality as the single design change relative to the archive leader.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.185725967826629,
+      "ls_alpha": 0.05138382614202175,
+      "ls_talpha": 4.326554026035246,
+      "ls_sharpe": 0.4190508448526773,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "Frequency And Dollar Mix Consensus",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "Frequency and dollar intensity of the repurchase-versus-dividend choice are noisy measures of the same latent policy, so averaging them should measure that policy more accurately than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The two best financing legs in the archive are the five-year frequency contrast (alpha 0.051) and the three-year dollar mix ratio (alpha 0.043), and they are constructed from different information: one from the decision to act, the other from the size of the action. Combining them by rank keeps the valuation leg at half weight while reducing measurement error in the financing leg, which should improve the alpha t-stat and Sharpe together.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 3.982629250620974,
+      "ls_alpha": 0.04655460870618163,
+      "ls_talpha": 3.652352984417816,
+      "ls_sharpe": 0.5065122414365428,
+      "coverage": 0.106090018218184,
+      "error": null
+    },
+    {
+      "name": "Earnings And Cash Anchor With Payout Frequency",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(oancf, MUL(prcc_f, csho))), SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "The valuation leg must be a profit or cash based yield rather than a pure price ratio, and averaging earnings yield with operating cash flow yield measures that concept with less accrual noise while keeping the anchor inside the earnings family.",
+      "expected_sign": "positive",
+      "reasoning": "Substituting sales to price for earnings yield destroyed the alpha entirely (-0.005 versus 0.043 with an otherwise identical financing leg), which proves the anchor must embed profitability, not just price level. Combining two profit-based yields by rank tests whether that anchor can be measured more robustly, whereas the earlier enterprise-multiple dual anchor diluted performance by importing leverage into the valuation leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.858859542400037,
+      "ls_alpha": 0.03039356842563204,
+      "ls_talpha": 1.7036396279735087,
+      "ls_sharpe": 0.3861632448582236,
+      "coverage": 0.09090983195850844,
+      "error": null
+    },
+    {
+      "name": "Industry Relative Payout Choice",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), IND_ZSCORE(SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5))))",
+      "hypothesis": "Dividend habits are largely industry conventions, so a firm choosing buybacks over dividends is informative only relative to what its industry peers customarily do.",
+      "expected_sign": "positive",
+      "reasoning": "In raw form the payout-composition contrast may partly sort utilities and staples into the short leg and technology into the long leg, which is an industry bet rather than a valuation signal, and industry-demeaning removes exactly that component while preserving the firm-specific choice. Because the earlier industry-neutral test was applied to payout levels rather than composition, this is a genuinely different question and would tell us whether the leading mechanism is firm-level or sectoral.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.951279797238349,
+      "ls_alpha": 0.020311313541637302,
+      "ls_talpha": 1.6322231405336642,
+      "ls_sharpe": 0.325555260839081,
+      "coverage": 0.14271015711223212,
+      "error": null
+    },
+    {
+      "name": "Repurchase Frequency Only",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5))",
+      "hypothesis": "If repeated repurchase activity is itself the undervaluation signal, then counting repurchase years alone should carry most of the abnormal return, and the dividend subtraction serves only to demote habitual payers.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong recent result contains a dividend contrast, so we cannot tell whether the alpha comes from repurchase persistence or from actively shorting dividend payers, a distinction that matters for interpretation and for factor exposure since high dividend yield is close to value and profitability. This decomposition is deliberately minimal and its comparison with the archive leader attributes the 0.051 alpha to one leg or the other.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 7,
+      "fmb_tstat": 2.7069383886123344,
+      "ls_alpha": -0.016431621561395236,
+      "ls_talpha": -1.401910330798274,
+      "ls_sharpe": 0.2251759961512871,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "Material Frequency And Mix Consensus",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "How often a firm runs a material repurchase rather than paying a material dividend and how much of its cumulative payout dollars went to repurchases are complementary readings of the same discretionary-payout philosophy, and averaging them measures that philosophy with least error.",
+      "expected_sign": "positive",
+      "reasoning": "The materiality-screened frequency contrast has the archive's most reliable alpha (0.051 with t=4.33) but the weakest slope of the leaders (FMB 3.19), while the dollar mix ratio has the strongest slopes (FMB above 4) and slightly lower alpha, so their errors appear to be partly offsetting. Combining them addresses the one remaining disagreement between the cross-sectional and portfolio evidence in the leading family rather than re-testing either element.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.7328329576790926,
+      "ls_alpha": 0.05499617087136421,
+      "ls_talpha": 4.299850965060216,
+      "ls_sharpe": 0.5763457228476062,
+      "coverage": 0.106090018218184,
+      "error": null
+    },
+    {
+      "name": "Asymmetric Threshold Payout Contrast",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.02), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "The two payout channels should be screened asymmetrically because a repurchase only conveys a price opinion when it is large, whereas paying any dividend at all is already a binding commitment that removes flexibility.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 7 showed materiality helps, and gen 7 also showed the dividend leg is indispensable since repurchase frequency alone earned alpha of -0.016 while the buyback-versus-issuance contrast earned -0.014. Raising the repurchase bar to two percent of market value while keeping the dividend indicator binary matches each screen to the economics of that channel, which should sharpen both portfolio legs simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.139552229851313,
+      "ls_alpha": 0.04946221335739171,
+      "ls_talpha": 4.06795363249114,
+      "ls_sharpe": 0.40797910101146956,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "Three Year Buyback Minus Dividend Yield",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(TS_SUM(COALESCE(prstkc, 0), 3), MUL(prcc_f, csho)), RATIO(TS_SUM(COALESCE(dvt, 0), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Expressed as yields on market value, cumulative repurchases minus cumulative dividends measure the discretionary payout tilt in the same units as the valuation leg, so the interaction is dimensionally consistent and economically interpretable as a price-sensitive distribution rate.",
+      "expected_sign": "positive",
+      "reasoning": "The discretionary tilt has only ever been scaled by assets or converted into a bounded mix ratio, and asset scaling mixes a size and capital-intensity dimension into a signal that is fundamentally about price. Market-value scaling also keeps every payer in the sample, so this tests whether the strong alpha of the bounded mix can be attained at the higher coverage of a yield construction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.0610310016565734,
+      "ls_alpha": 0.021335254608737905,
+      "ls_talpha": 2.0237211580625023,
+      "ls_sharpe": 0.49603850309817027,
+      "coverage": 0.14288335161755517,
+      "error": null
+    },
+    {
+      "name": "Dividend Burden Versus Buyback Activity",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), NEG(RATIO(COALESCE(dvt, 0), oancf))))",
+      "hypothesis": "The short leg works because dividends pre-commit cash flow, so the right measure of the dividend handicap is the share of operating cash flow already pledged to shareholders as dividends, not merely whether a dividend exists.",
+      "expected_sign": "positive",
+      "reasoning": "The archive established that shorting habitual dividend payers is the essential ingredient, but it has never measured how binding that habit is relative to the firm's cash generation, which is the economic content of the constraint. Replacing the dividend count with a payout-ratio burden while keeping the material repurchase count as the long-side channel tests a genuinely different formulation of the same mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 1.8667056583432067,
+      "ls_alpha": 0.039799690955890026,
+      "ls_talpha": 2.5558765109316224,
+      "ls_sharpe": 0.5940105409950655,
+      "coverage": 0.09089270339855393,
+      "error": null
+    },
+    {
+      "name": "Dual Value Anchor With Material Frequency",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(ceq, MUL(prcc_f, csho))), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Combining earnings yield with book-to-market gives a broader cheapness reading that should strengthen the cross-sectional slope, and pairing it with the material payout-composition contrast should retain the abnormal return that book-to-market alone could not deliver.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market produced the strongest FMB slopes but near-zero alphas, while earnings yield produced the alphas, which suggests the two anchors carry complementary information: one about price relative to accounting capital, one about price relative to profits. Averaging them by rank directly targets the residual weakness of the leading signal, whose FMB slope of 3.19 is below the best in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 4.018440221622602,
+      "ls_alpha": 0.03024577674938852,
+      "ls_talpha": 2.725685096008272,
+      "ls_sharpe": 0.521050963445345,
+      "coverage": 0.1416963217758891,
+      "error": null
+    },
+    {
+      "name": "Smoothed Earnings Yield With Payout Contrast",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Cheapness should be judged against normalized rather than single-year earnings, because a temporarily depressed or inflated profit figure misclassifies firms whose price is actually reasonable, and management's payout behavior is set with reference to normal earning power.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg has repeatedly proven decisive in this family, yet it has always used one year of income, which is the noisiest available version of the concept and mechanically induces annual reshuffling of the long portfolio. A three-year average of income keeps the profitability content that sales-to-price lacked while making the anchor more stable, which should raise the alpha t-stat and the spread Sharpe together.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 8,
+      "fmb_tstat": 3.5549359219069645,
+      "ls_alpha": 0.05722211003196637,
+      "ls_talpha": 4.615579930044102,
+      "ls_sharpe": 0.47601948845606523,
+      "coverage": 0.14298390451921578,
+      "error": null
+    },
+    {
+      "name": "Normalized Earnings With Frequency Mix Consensus",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "A firm priced cheaply against normalized earning power, which repeatedly runs material repurchase programs rather than paying material dividends and commits most of its cumulative payout dollars to buybacks, is the sharpest available case of management-confirmed undervaluation.",
+      "expected_sign": "positive",
+      "reasoning": "The two best archive results are separately driven by the smoothed earnings anchor (alpha 0.057, t=4.62) and by averaging the frequency contrast with the dollar mix ratio (alpha 0.055, t=4.30, Sharpe 0.576), and each improves a different component of the signal. Joining them is the natural final consolidation: normalized earnings stabilize the valuation leg while the two payout channels reduce measurement error in the financing leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.922019632762159,
+      "ls_alpha": 0.05600999072243395,
+      "ls_talpha": 4.442994540997091,
+      "ls_sharpe": 0.6208972183264524,
+      "coverage": 0.10614248733105668,
+      "error": null
+    },
+    {
+      "name": "Normalized Earnings With Asymmetric Payout Contrast",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.02), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "Repurchases only signal a price opinion when they are large, while any dividend at all is a binding commitment, and cheapness should be judged against normalized earnings; combining these three judgments should deliver both a strong cross-sectional slope and a large abnormal return at full coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The asymmetric-threshold contrast produced the best slope among the leaders (FMB 4.14, alpha 0.049 with t=4.07) at coverage 0.143, and independently the smoothed anchor lifted alpha to 0.057 while holding coverage at 0.143. Because neither change touches the other leg, combining them tests whether the archive's cross-sectional and portfolio evidence can be maximized simultaneously without the coverage loss that the mix-ratio route imposes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 4.678603632282873,
+      "ls_alpha": 0.05409506985396401,
+      "ls_talpha": 4.304557767257297,
+      "ls_sharpe": 0.4508827841067402,
+      "coverage": 0.14298390451921578,
+      "error": null
+    },
+    {
+      "name": "Dilution Aware Consensus With Normalized Earnings",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), TS_SUM(COALESCE(sstk, 0), 3)))))",
+      "hypothesis": "Three years of equity sales should discount the credited payout tilt, so a firm that repurchases while continuously issuing is scored as a weaker signal, and issuers remain in the cross-section instead of being dropped.",
+      "expected_sign": "positive",
+      "reasoning": "The dilution-adjusted mix delivered the archive's second-highest Sharpe (0.566) at coverage 0.136 versus 0.106 for the undiluted mix, which is the cheapest available fix for the consensus design's main weakness. This differs from Signal 1 only in the denominator of the dollar channel, so together they isolate whether issuance belongs in the scale of the payout tilt when the frequency channel is already present.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.619957274414502,
+      "ls_alpha": 0.05363229363898056,
+      "ls_talpha": 4.395349690215884,
+      "ls_sharpe": 0.5639138615907598,
+      "coverage": 0.1360258397740846,
+      "error": null
+    },
+    {
+      "name": "Buyback Frequency Versus Dividend Yield",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), NEG(RATIO(MA(COALESCE(dvt, 0), 3), MUL(prcc_f, csho)))))",
+      "hypothesis": "The short side of the mechanism is driven by the size of the dividend commitment relative to price, not merely by its existence, so a smoothed dividend yield is the economically right handicap to set against repurchase activity.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend-burden variant scaled by operating cash flow earned alpha 0.040 with the best Sharpe in the archive (0.594) but a weak slope (FMB 1.87) and only 0.091 coverage, which points to the cash-flow denominator rather than the idea as the problem. Scaling the smoothed dividend by market value keeps coverage near 0.14, makes the handicap dimensionally consistent with the valuation leg, and tests intensity against the pure count used by the leaders.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.632745025758268,
+      "ls_alpha": 0.037026717053101274,
+      "ls_talpha": 3.0052543738971274,
+      "ls_sharpe": 0.6478436278882144,
+      "coverage": 0.14298390451921578,
+      "error": null
+    },
+    {
+      "name": "Joint Corner Normalized Cheap Repurchaser",
+      "expression": "MUL(RANK(RATIO(MA(ib, 3), MUL(prcc_f, csho))), RANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5))))",
+      "hypothesis": "The abnormal return is concentrated where normalized cheapness and repurchase-tilted payout coincide, so requiring both conditions multiplicatively should produce cleaner extreme portfolios than allowing one leg to compensate for the other.",
+      "expected_sign": "positive",
+      "reasoning": "With the one-year mix ratio, the multiplicative form matched or slightly beat the additive form on alpha (0.043 versus 0.040), but it has never been tested with either the frequency contrast or the smoothed anchor, which are the two elements that have since driven alpha to 0.057. This isolates portfolio-construction structure at the end of the search, telling us whether the final signal should be a rank sum or a joint gate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.310635040694234,
+      "ls_alpha": 0.053832257758504025,
+      "ls_talpha": 4.284895326307906,
+      "ls_sharpe": 0.5378121257506454,
+      "coverage": 0.14298390451921578,
+      "error": null
+    },
+    {
+      "name": "Deep Normalized Earnings With Payout Frequency",
+      "expression": "SUMRANK(RATIO(MA(ib, 5), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "If normalized earning power is the right valuation anchor, a five-year average should measure it better than a three-year average and align the valuation window with the five-year window over which payout behavior is measured.",
+      "expected_sign": "positive",
+      "reasoning": "Moving from one-year to three-year earnings raised alpha from 0.051 to 0.057 and the t-stat from 4.33 to 4.62 with no coverage cost, so the smoothing window is an active parameter whose optimum has not been located. Matching the earnings window to the payout-frequency window also makes the interaction internally consistent, and a decline in performance would establish three years as the preferred specification for the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer",
+      "generation": 9,
+      "fmb_tstat": 3.691498086652946,
+      "ls_alpha": 0.05590949717744287,
+      "ls_talpha": 4.4955358495198,
+      "ls_sharpe": 0.4899643798062755,
+      "coverage": 0.1429876191466758,
+      "error": null
+    }
+  ],
+  "considered": [
+    {
+      "name": "Cheap Buyback Yield Composite",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(prstkc, sstk), MUL(prcc_f, csho)))",
+      "hypothesis": "Firms that are cheap on book-to-market AND are net repurchasers of their own equity are more likely to be genuinely mispriced rather than distressed, because insiders are willing to spend cash at the prevailing price; expensive net issuers are the mirror case.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market alone confounds cheapness with risk, and buyback yield alone confounds signalling with excess cash; requiring both raises the posterior probability of undervaluation. Ranking both channels on the same market-value scale makes them comparable and keeps the composite monotone in both themes, so the long leg is cheap repurchasers and the short leg is expensive issuers.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Valuation Weighted Net External Finance",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(ADD(SUB(sstk, prstkc), SUB(dltis, dltr)), at)))",
+      "hypothesis": "Total net external financing (equity plus debt) net of retirements identifies firms raising capital at favorable prices; combining it with valuation isolates expensive capital raisers (overvalued) from cheap capital retirers (undervalued).",
+      "expected_sign": "positive",
+      "reasoning": "Managers exploit windows when their securities are richly priced, so aggregate external issuance interacts with the level of valuation rather than acting independently. Using all four financing flows (sstk, prstkc, dltis, dltr) avoids mechanically rewarding firms that merely substitute debt for equity, and the NEG orients high values toward capital retirement.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Financing Market Timing Quality",
+      "expression": "SUB(MUL(RANK(RATIO(ceq, MUL(prcc_f, csho))), WINSOR(RATIO(prstkc, MUL(prcc_f, csho)), 1)), MUL(RANK(NEG(RATIO(ceq, MUL(prcc_f, csho)))), WINSOR(RATIO(sstk, MUL(prcc_f, csho)), 1)))",
+      "hypothesis": "The informational content of a financing action depends on the price at which it is executed: repurchasing while cheap and issuing while expensive are both value-accretive and reveal management's private information, while the opposite actions reveal nothing or destroy value.",
+      "expected_sign": "positive",
+      "reasoning": "This builds an explicitly asymmetric interaction in which gross repurchase intensity is weighted by cheapness rank and gross issuance intensity is weighted by expensiveness rank, then differenced, so magnitude and price-context both matter. Unlike an additive composite, a large buyback by an expensive firm contributes almost nothing, which is the economically correct discount.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Repurchase Confirmed Cheapness",
+      "expression": "SUMRANK(MA(RATIO(ceq, MUL(prcc_f, csho)), 3), SUMRANK(TS_SUM(INDICATOR(RATIO(SUB(prstkc, sstk), at), 0), 3), TS_SUM(RATIO(SUB(prstkc, sstk), MUL(prcc_f, csho)), 3)))",
+      "hypothesis": "Repeated, multi-year net repurchases by a persistently cheap firm are a far stronger undervaluation signal than a single opportunistic buyback, because sustained cash commitment is hard to fake and cannot be explained by one-off cash windfalls or option-offset mechanics.",
+      "expected_sign": "positive",
+      "reasoning": "Persistence filters transitory buybacks that merely neutralize dilution, while smoothing book-to-market over three years filters transitory price dislocations, so the interaction targets chronic mispricing rather than noise. Combining a count of repurchase years with the cumulative repurchase yield captures both frequency and size of the commitment alongside stable cheapness.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Share Count Shrinkage Value",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(GROWTH(csho, 1)))",
+      "hypothesis": "Change in shares outstanding is a comprehensive dilution measure that captures SEOs, option grants, and stock-financed acquisitions that cash-flow-statement repurchases miss; cheap firms shrinking their share base are undervalued, expensive firms diluting shareholders are overvalued.",
+      "expected_sign": "positive",
+      "reasoning": "Composite issuance based on share counts captures the full equity supply decision, and its return predictability is known to concentrate in the tails of valuation because equity-financed expansion is most attractive to management when the stock is rich. Pairing it with book-to-market makes the interaction explicit while avoiding the accounting noise in prstkc and sstk.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Double Gated Cash Flow Yield",
+      "expression": "SUB(MUL(RANK(RATIO(oancf, MUL(prcc_f, csho))), INDICATOR(RATIO(SUB(prstkc, sstk), at), 0)), MUL(RANK(NEG(RATIO(oancf, MUL(prcc_f, csho)))), INDICATOR(RATIO(SUB(sstk, prstkc), at), 0)))",
+      "hypothesis": "Mispricing is concentrated where valuation and financing behavior agree, so returns should be predictable only in two gated corners: high cash-flow-yield firms that are net repurchasers (undervalued) and low cash-flow-yield firms that are net issuers (overvalued), with all disagreeing firms uninformative.",
+      "expected_sign": "positive",
+      "reasoning": "The two indicator gates create a genuinely conditional signal in which cheapness is rewarded only for repurchasers and expensiveness is punished only for issuers, while conflicting cases collapse to zero rather than polluting the extremes. Operating cash flow to market value is used instead of book-to-market because it is a hard-cash valuation anchor that is directly comparable to the cash being spent on the repurchase.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Total Net Payout Value Composite Zerofill",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), MUL(prcc_f, csho)))",
+      "hypothesis": "Cheap firms distributing cash through the full payout channel (dividends plus repurchases net of issuance) are undervalued, and a non-reporting firm genuinely paid out nothing, so treating missing financing flows as zero is the economically correct convention rather than a coverage patch.",
+      "expected_sign": "positive",
+      "reasoning": "Every gen-0 signal had coverage near 0.12 because a firm missing prstkc or sstk was dropped entirely, which biases portfolios toward large, actively-financing firms and can destabilize the extreme deciles that drive the FF5 alpha. This proposal holds the economic channel fixed and changes only the missing-data convention and the inclusion of dividends, so it isolates whether the negative FF5 alphas were a composition artifact or a genuine factor-spanning problem.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Own History Buyback Timing",
+      "expression": "MUL(TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5), TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5))",
+      "hypothesis": "What reveals private information is not the cross-sectional level of cheapness but whether a firm is repurchasing unusually aggressively at a point when its own valuation is unusually depressed relative to its own five-year history.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-0 diagnosis is factor spanning: positive raw spreads (Sharpe ~0.3) turned into negative FF5 alphas because static book-to-market and issuance levels load mechanically on HML and CMA. Measuring both themes as within-firm time-series ranks strips out the permanent cross-sectional style tilt, leaving the timing interaction that FF5 cannot span, which should convert the reliable cross-sectional slope into a positive abnormal-return spread.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Drawdown Buyback Conviction",
+      "expression": "MUL(WINSOR(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), MUL(prcc_f, csho)), 1), RANK(NEG(RATIO(prcc_f, TS_MAX(prcc_f, 5)))))",
+      "hypothesis": "Repurchasing after a large drawdown from the firm's own five-year price peak is the strongest form of management-confirmed undervaluation, whereas selling equity into a depressed price signals financing distress and predicts poor returns.",
+      "expected_sign": "positive",
+      "reasoning": "Distance-from-own-peak is a price-based cheapness measure that is nearly orthogonal to accounting book-to-market and therefore carries much less HML exposure than the gen-0 constructions, addressing the factor-spanning failure from a different angle. The multiplicative form makes the sign of the financing flow decisive: identical drawdowns are scored positively for repurchasers and negatively for issuers, which is exactly the asymmetry the economic story requires.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout Surprise Among Cheap Firms",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), DELTA(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), at), 1))",
+      "hypothesis": "A newly initiated or sharply increased net payout at a cheap firm is news about management's assessment of intrinsic value, while a persistent payout level is already known and already priced into value-factor exposures.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of issuance and repurchase are largely captured by CMA and HML, but the first difference is a surprise component that factor portfolios rebalanced on levels cannot absorb, so this design targets positive FF5 alpha rather than raw spread. It also directly contrasts with Signal 1: comparing the two isolates whether the payout channel predicts through its state or through its change.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Funded Buyback Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), WINSOR(RATIO(MIN(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), oancf), MUL(prcc_f, csho)), 1))",
+      "hypothesis": "Only repurchases genuinely funded by internally generated cash carry an undervaluation signal; buybacks financed by borrowing or asset sales are balance-sheet engineering and should be credited only up to the firm's operating cash flow.",
+      "expected_sign": "positive",
+      "reasoning": "The MIN operator caps the credited repurchase at operating cash flow and pushes firms with negative cash flow into the short leg even if they repurchase, which removes the leverage-driven buybacks that likely diluted the gen-0 spreads. Pairing it with earnings yield rather than book-to-market gives a valuation anchor with different factor loadings, so a positive alpha here would point to funding quality as the active ingredient.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Enterprise Multiple Capital Retirement",
+      "expression": "SUMRANK(RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che))), NEG(RATIO(ADD(SUB(COALESCE(sstk, 0), COALESCE(prstkc, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at)))",
+      "hypothesis": "If management is retiring total invested capital (both debt and equity) while the whole enterprise trades at a low multiple of operating earnings, the mispricing is at the enterprise level and not merely an artifact of leverage; expensive enterprises simultaneously tapping debt and equity markets are overvalued.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market and equity-only payout mismatch the units of the interaction because leverage contaminates both, whereas EBITDA-to-enterprise-value and total net capital flows are measured on the same enterprise base. This consistency should sharpen the interaction and reduce the pure HML tilt that produced negative FF5 alphas, while the che and debt terms make the cheapness measure sensitive to net cash rather than accounting equity.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Own History Timing Additive",
+      "expression": "SUMRANK(TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5), TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5))",
+      "hypothesis": "A firm repurchasing at an unusually high rate while its own valuation sits at an unusually depressed point in its five-year history reveals management-confirmed undervaluation; the informative content is the within-firm coincidence, not the cross-sectional style level.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows a sharp split: every static value-plus-payout composite delivered positive FMB slopes but negative FF5 alphas (down to -0.042 with t=-4.3), while the only positive alpha came from the purely within-firm TS_RANK design, whose weakness was a flat FMB slope (0.96). Replacing the multiplicative combination with SUMRANK spreads the signal monotonically across the whole cross-section instead of concentrating mass near zero for any firm with one low rank, which should restore cross-sectional slope power while retaining the low HML and CMA exposure that produced the positive alpha.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Abnormal Payout At Abnormal Cheapness",
+      "expression": "SUMRANK(SUB(RATIO(ceq, MUL(prcc_f, csho)), MA(RATIO(ceq, MUL(prcc_f, csho)), 5)), SUB(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), MA(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5)))",
+      "hypothesis": "Deviations of valuation and of net repurchase intensity from each firm's own five-year norm identify a genuine new mispricing episode, whereas permanently cheap perpetual repurchasers are simply value and low-investment factor exposures.",
+      "expected_sign": "positive",
+      "reasoning": "This is the continuous-magnitude counterpart to the discrete TS_RANK design, so it keeps the factor-orthogonality that generated the only positive alpha in the archive while restoring the magnitude information that ordinal ranks discard. Comparing it with Signal 1 isolates whether the within-firm channel is best expressed ordinally or as a level deviation, which is the key measurement question in the surviving direction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Equity Tilt Of External Finance",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(RATIO(SUB(SUB(COALESCE(sstk, 0), COALESCE(prstkc, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at)))",
+      "hypothesis": "Holding total external finance fixed, a firm's choice to lean on equity rather than debt is the market-timing decision: expensive firms tilt toward equity because their shares are dear, while cheap firms with confident managers prefer debt and retire equity.",
+      "expected_sign": "positive",
+      "reasoning": "Gen-0's total-net-financing composite loaded heavily on CMA because gross external finance is mechanically tied to asset growth; differencing equity flows against debt flows nets out the scale of financing and leaves only the security-choice component, which FF5 does not price. This changes the economic channel from how much capital is raised to which security is used, so a positive alpha here would identify pecking-order inversion rather than investment.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Issuance Dependence Withdrawal",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(TREND(RATIO(COALESCE(sstk, 0), at), 5)))",
+      "hypothesis": "A cheap firm whose reliance on equity issuance has been trending down over five years is transitioning from external-capital dependence to self-funding, a regime change that the market underappreciates; a cheap firm with a rising issuance trend is instead financing chronic cash burn.",
+      "expected_sign": "positive",
+      "reasoning": "Levels of issuance are largely absorbed by CMA and by the value factor, but the multi-year slope of issuance intensity is a state-transition variable that no static factor portfolio tracks. This tests deceleration of financing dependence rather than the one-year surprise tested in gen 1, which had a strong FMB slope but a still-negative alpha, so the longer trend window targets the abnormal-return side of the objective.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheapness With Stable Self Funding",
+      "expression": "SUMRANK(RATIO(ebitda, MUL(prcc_f, csho)), NEG(VOL(RATIO(ADD(COALESCE(sstk, 0), COALESCE(dltis, 0)), at), 5)))",
+      "hypothesis": "Erratic, lumpy trips to capital markets signal opportunistic financing and weak internal cash generation, so a cheap firm that raises outside capital only rarely and smoothly is being discounted for financing risk it does not bear, while an expensive firm with volatile gross issuance is timing windows.",
+      "expected_sign": "positive",
+      "reasoning": "This introduces a second-moment financing channel that is economically distinct from the level and change channels already tested and is not represented in any FF5 factor, giving it a real chance of positive abnormal returns rather than a repackaged value tilt. Pairing it with an EBITDA-to-market cheapness anchor keeps the valuation leg cash-based and less collinear with book-to-market, which is where the archive's alpha damage originated.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Neutral Cheap Payout",
+      "expression": "SUMRANK(IND_ZSCORE(RATIO(ceq, MUL(prcc_f, csho))), IND_ZSCORE(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), MUL(prcc_f, csho))))",
+      "hypothesis": "The undervaluation signal in cheap-and-repurchasing firms is meaningful only relative to industry peers, because both book-to-market levels and payout norms are largely industry attributes that carry factor risk rather than mispricing.",
+      "expected_sign": "positive",
+      "reasoning": "The gen-1 zero-filled total-payout composite had the strongest cross-sectional slope family but the worst FF5 alpha (-0.042, t=-4.3), a pattern consistent with the long leg being a concentrated bet on cheap, high-payout industries that HML, RMW and CMA already span. Industry-demeaning both legs holds the economic story fixed while stripping the industry component of the factor loadings, so this cleanly diagnoses whether the negative alphas are an industry-tilt artifact or intrinsic to the payout-value channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cross Sectional Cheapness With Own History Payout",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), TS_RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), 5))",
+      "hypothesis": "Cheapness is best measured against other firms, but financing behavior is best measured against the firm's own history, because a serial repurchaser buying back at its normal rate conveys no news while the same firm stepping to an unusual repurchase rate does.",
+      "expected_sign": "positive",
+      "reasoning": "The archive splits cleanly: fully cross-sectional composites earn FMB t of 2.7 to 3.9 but negative FF5 alphas, while fully within-firm designs earn positive alphas near +0.02 with FMB t near 1. The one signal that achieved both a 2.86 FMB slope and a non-negative alpha (Issuance Dependence Withdrawal) was exactly this hybrid structure, so this proposal generalizes that structure to the on-story net-payout variable.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Own History Cheapness With Cross Sectional Payout",
+      "expression": "SUMRANK(TS_RANK(RATIO(ceq, MUL(prcc_f, csho)), 5), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), MUL(prcc_f, csho)))",
+      "hypothesis": "If instead the mispricing news lies in a firm trading cheap relative to its own recent history, then the valuation leg should be time-series and the payout leg cross-sectional, since payout yield is comparable across firms once scaled by market value.",
+      "expected_sign": "positive",
+      "reasoning": "This is the deliberate mirror image of Signal 1 and exists to attribute the alpha-versus-slope tradeoff to a specific leg rather than to the general idea of time-series normalization. Evaluated as a pair, the two signals identify whether HML spanning enters through the valuation level or through the payout level, which determines where the remaining generations should focus.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Rising Net Payout In Cheap Firms",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), TREND(RATIO(SUB(ADD(COALESCE(dvt, 0), COALESCE(prstkc, 0)), COALESCE(sstk, 0)), at), 5))",
+      "hypothesis": "A cheap firm on a multi-year upward trajectory of total net distributions is progressively converting from capital consumer to capital returner, and that regime shift is repriced only gradually.",
+      "expected_sign": "positive",
+      "reasoning": "Issuance Dependence Withdrawal showed that a five-year financing trend preserves the cross-sectional slope while eliminating the negative alpha, but it used only gross equity issuance and therefore ignored repurchases and dividends. Substituting the complete net payout flow keeps the successful trend structure while aligning the financing leg with the economic story, which should raise both the slope and the alpha relative to that signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Levered Recapitalization Value",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), RATIO(MIN(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), SUB(COALESCE(dltis, 0), COALESCE(dltr, 0))), at))",
+      "hypothesis": "The strongest management conviction is revealed when a cheap firm borrows in order to retire equity, because levering up to buy stock is an unhedged bet on the share price, whereas the mirror case of issuing equity to repay debt signals balance-sheet repair under duress.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 1 tested the opposite convention by capping repurchases at operating cash flow and it was weak (FMB 1.41, alpha negative), which suggests that internally funded buybacks are routine cash disposal rather than information. The MIN operator here scores a firm highly only when both equity retirement and debt raising are simultaneously large, isolating deliberate capital-structure swaps rather than cash sweeping, and its short leg captures distressed equity-for-debt substitution.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Buyback Tilted Payout Among Cheap Firms",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "Dividends are sticky habit payments that carry no valuation opinion, whereas repurchases are discretionary and price-sensitive, so among comparably cheap firms the payout mix tilted toward repurchases identifies management that thinks the stock is underpriced.",
+      "expected_sign": "positive",
+      "reasoning": "All prior payout constructions lumped dividends and repurchases together, and the one that added dividends produced the worst alpha in the archive (-0.042, t=-4.3), consistent with the dividend component being a pure high-payout value tilt that FF5 spans through RMW and HML. Differencing repurchases against dividends removes that spanned component and leaves only the discretionary, opinionated part of payout.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cheap Balance Sheet Deleveraging",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), NEG(GROWTH(lt, 1)))",
+      "hypothesis": "Shrinking total liabilities is a balance-sheet measure of net capital retirement that captures financing behavior for the many firms that never report cash-flow-statement repurchase or issuance items, and cheap firms shrinking their claims base are undervalued while cheap firms expanding liabilities are financing distress.",
+      "expected_sign": "positive",
+      "reasoning": "Every signal in the archive is stuck near 0.13 coverage because prstkc, sstk, dltis and dltr are reported by a narrow subset of firms, which concentrates the portfolios in large established payers and plausibly contributes to the unstable extreme deciles behind the negative alphas. Liabilities are reported nearly universally, so this tests whether the interaction survives on a much broader, more representative cross-section using a different data source for the financing theme.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout Tilt With Book To Market",
+      "expression": "SUMRANK(RATIO(ceq, MUL(prcc_f, csho)), SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "The discretionary payout tilt (repurchases in excess of dividends) is the informative financing signal, and it should add value on top of any reasonable cheapness anchor, including book-to-market.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 3's Buyback Tilted Payout signal is the archive's only strong result on both criteria (FMB 3.33, alpha +0.029 with t=2.61, Sharpe 0.555), but it changed two things at once: the valuation anchor moved from book-to-market to earnings yield and the payout leg subtracted dividends. This proposal holds the new payout leg fixed and reverts the valuation anchor, which attributes the alpha gain either to the payout composition idea or to the earnings-yield anchor.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Issuance Netted Discretionary Payout",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(sstk, 0)), at), RATIO(COALESCE(dvt, 0), at)))",
+      "hypothesis": "Equity issuance is the direct opposite of a repurchase, so netting it against repurchases inside the discretionary payout leg should sharpen the overvaluation short leg without diluting the undervaluation long leg.",
+      "expected_sign": "positive",
+      "reasoning": "The winning gen-3 design used gross repurchases only, whereas every issuance-inclusive design in the archive delivered negative FF5 alphas, which raises the possibility that sstk carries a growth and investment exposure that FF5 spans and prices. Adding sstk back to the otherwise identical winner is the decisive test of whether issuance information is helpful or is precisely the component that destroys abnormal returns.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Discretionary Payout Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), TS_SUM(SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)), 3))",
+      "hypothesis": "A multi-year record of choosing repurchases over dividends identifies a stable management philosophy of buying stock when it is cheap, which is a more reliable undervaluation signal than a single year's payout mix.",
+      "expected_sign": "positive",
+      "reasoning": "Annual payout mix is lumpy, and lumpiness in the sort variable causes portfolio churn that inflates spread volatility and depresses the alpha t-stat even when the mean alpha is real. Cumulating three years of the winning leg smooths the state without changing the economic channel, so it targets the reliability side of the objective directly rather than the magnitude side.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Shift From Dividends To Buybacks",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(DELTA(RATIO(COALESCE(prstkc, 0), at), 1), DELTA(RATIO(COALESCE(dvt, 0), at), 1)))",
+      "hypothesis": "An active reallocation of payout away from dividends and toward repurchases is a fresh statement that management views the current share price as attractive, and this change is news whereas the standing mix is already known.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows that payout levels are largely factor-spanned while trends and changes in financing behavior were the only constructions that avoided negative alphas, so applying the change operator to the newly successful composition variable tests whether the winner works through its level or its innovation. Comparing this with Signal 3 separates persistence from surprise within the same economic channel.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Yield With Buyback Tilt And Issuance Discipline",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), SUMRANK(SUB(RATIO(COALESCE(prstkc, 0), at), RATIO(COALESCE(dvt, 0), at)), NEG(RATIO(COALESCE(sstk, 0), at))))",
+      "hypothesis": "Undervaluation is most convincing when a firm is cheap on hard operating cash flow, chooses repurchases over dividends, and simultaneously refrains from tapping the equity market, since these three conditions are jointly hard to satisfy for an overvalued or capital-hungry firm.",
+      "expected_sign": "positive",
+      "reasoning": "This consolidates the two designs that produced positive alphas, ranking the issuance-discipline channel separately rather than netting it inside the payout leg, so the short leg is populated by expensive equity issuers without letting large sstk values swamp the payout-tilt information. Cash-flow yield replaces earnings yield to reduce accrual noise in the valuation anchor while keeping the same cheapness concept.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Scale Free Payout Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))))",
+      "hypothesis": "What matters is the composition of a firm's payout, not its size: conditional on returning cash at all, a firm that returns it through repurchases rather than dividends is expressing a view that its shares are cheap.",
+      "expected_sign": "positive",
+      "reasoning": "Payout magnitude is the component that loads on the value and profitability factors and produced the archive's worst alpha (-0.042), whereas a bounded mix ratio between minus one and plus one is mechanically free of payout scale and therefore of that factor tilt. Restricting attention to firms that actually distribute cash also makes the interaction economically well posed, since a non-payer expresses no valuation opinion at all.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Scale Free Payout Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "A firm's three-year cumulative choice between repurchases and dividends is its revealed policy toward its own share price, and combining that stable composition with earnings-yield cheapness identifies management-confirmed undervaluation.",
+      "expected_sign": "positive",
+      "reasoning": "The two strongest archive results are the scale-free mix ratio (alpha 0.040, t=3.15, but coverage only 0.094) and three-year persistence of the same payout tilt (alpha 0.031, t=2.71, coverage 0.143), so this merges them: cumulating flows before forming the ratio both smooths lumpy annual buyback programs and admits any firm that distributed cash at some point in three years. That should raise the alpha t-stat and coverage simultaneously rather than trading one against the other.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Dilution Adjusted Payout Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0)), COALESCE(sstk, 0))))",
+      "hypothesis": "Equity issuance should enter the payout-composition signal as a scaling penalty rather than as a sign-flipping flow: a firm buying back stock while simultaneously selling stock is expressing a much weaker valuation opinion than a pure repurchaser.",
+      "expected_sign": "positive",
+      "reasoning": "Netting sstk inside the numerator collapsed the alpha from 0.029 to 0.008 in gen 4, which suggests gross issuance carries a growth exposure FF5 already prices, yet ignoring issuance entirely also excludes non-paying issuers from the signal and caps coverage near 0.094. Placing sstk only in the denominator keeps the mix bounded, shrinks the score of firms that recycle equity, and extends coverage to issuers without letting large issuance values dominate the sort.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Cash Flow Yield With Payout Mix",
+      "expression": "SUMRANK(RATIO(oancf, MUL(prcc_f, csho)), RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0))))",
+      "hypothesis": "The cheapness leg of the interaction is best measured by cash actually generated relative to price, because repurchase decisions are cash decisions and accrual-based earnings can misstate the funds management sees.",
+      "expected_sign": "positive",
+      "reasoning": "The archive shows the valuation anchor matters a lot for the alpha: with the identical payout-tilt leg, earnings yield produced alpha 0.029 while book-to-market produced only 0.004, so the anchor choice is worth one clean test rather than assumption. This isolates the anchor while holding the best financing leg fixed, and the gen-4 cash-flow attempt is not informative on this point because it also bundled a separate issuance channel.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Joint Corner Cheap Repurchaser",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(RATIO(SUB(COALESCE(prstkc, 0), COALESCE(dvt, 0)), ADD(COALESCE(prstkc, 0), COALESCE(dvt, 0)))))",
+      "hypothesis": "The mispricing is concentrated in the joint corner where a firm is both among the cheapest on earnings yield and among the most repurchase-tilted in its payout, so a multiplicative combination should isolate that corner more sharply than an additive rank sum.",
+      "expected_sign": "positive",
+      "reasoning": "SUMRANK lets a very high rank on one leg substitute for a low rank on the other, which puts firms into the long portfolio that satisfy only one theme and dilutes the interaction the task targets. The product requires both conditions and therefore tests whether the alpha of 0.040 can be increased by concentrating the extreme portfolios, at the acceptable cost of a possibly flatter cross-sectional slope.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Liquidity Sacrificed For Own Stock",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(COALESCE(prstkc, 0), ADD(che, COALESCE(prstkc, 0))))",
+      "hypothesis": "Spending a large fraction of available liquid resources on one's own shares is a costly, hard-to-fake signal: management gives up financial flexibility precisely because it believes the stock is worth more than the cash.",
+      "expected_sign": "positive",
+      "reasoning": "Every financing metric tested so far normalizes by assets or market value, which measures how big the buyback is rather than how much it cost the firm in flexibility; scaling by the cash pool it was drawn from converts the same flow into a costly-signal intensity bounded between zero and one. This is a distinct mechanism from the dividend contrast and uses cash holdings, a valuation-side variable, as the normalizer, so it also diversifies the batch away from the payout-mix family.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Anchor Cheapness With Persistent Mix",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(ebitda, ADD(MUL(prcc_f, csho), SUB(ADD(dltt, dlc), che)))), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "Cheapness measured jointly at the equity level (earnings yield) and the enterprise level (EBITDA to enterprise value) is more robust than either alone, and pairing this sturdier valuation anchor with persistent repurchase-tilted payout should stabilize the abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Single-anchor versions of this family swing widely in alpha depending on the anchor, which indicates anchor-specific noise rather than a fragile mechanism; averaging two economically distinct cheapness measures reduces that measurement error while leaving the interaction intact. Because the enterprise multiple accounts for leverage and net cash, this also prevents the long leg from filling with cheap-looking but heavily indebted firms, a plausible source of the earlier negative alphas.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Joint Corner Persistent Mix",
+      "expression": "MUL(RANK(RATIO(ib, MUL(prcc_f, csho))), RANK(RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "Undervaluation is revealed most sharply where cheapness and a multi-year repurchase-tilted payout policy coincide, so the signal should require both conditions jointly rather than allowing one to substitute for the other.",
+      "expected_sign": "positive",
+      "reasoning": "Two independent design choices each lifted alpha to 0.043: three-year cumulation of the payout mix (t=3.42, FMB 4.14) and multiplicative rather than additive combination of the legs (t=3.31). They have not been tested together, and because they improve different things \u2014 measurement stability of the financing leg versus concentration of the extreme portfolios \u2014 combining them is the natural consolidation step rather than a cosmetic variant.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Persistent Dilution Adjusted Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), TS_SUM(COALESCE(sstk, 0), 3))))",
+      "hypothesis": "Three years of equity sales belong in the scale of the payout-composition measure, so that a firm which repurchases while continually selling stock is scored as a weak signal and firms that only issue are included in the cross-section rather than dropped.",
+      "expected_sign": "positive",
+      "reasoning": "The pure mix has the best alpha but only 0.094 to 0.106 coverage because non-payers have a zero denominator, while the one-year dilution-adjusted version raised coverage to 0.128 and still earned alpha 0.032 with t=2.71. Cumulating all three flows over three years should combine that coverage gain with the persistence gain, which is the main unresolved tradeoff in the leading family.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Five Year Payout Mix Cheapness",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 5), TS_SUM(COALESCE(dvt, 0), 5)), ADD(TS_SUM(COALESCE(prstkc, 0), 5), TS_SUM(COALESCE(dvt, 0), 5))))",
+      "hypothesis": "If the payout mix reflects a durable managerial philosophy rather than a transient decision, a longer measurement window should identify it more accurately and produce a more reliable abnormal return.",
+      "expected_sign": "positive",
+      "reasoning": "Moving from one year to three years raised both the FMB slope and the alpha t-stat, so the window length is an active parameter whose optimum has not been located, and a five-year window distinguishes durable policy from a three-year cycle. If performance deteriorates, that pins the mechanism to recent policy rather than to firm identity, which is itself decisive information for the final generations.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Verified Share Retirement Mix",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))), NEG(GROWTH(csho, 1))))",
+      "hypothesis": "Repurchase dollars only signal undervaluation when they actually shrink the share base; buybacks that merely absorb option and equity grants leave shares outstanding flat and convey no valuation opinion.",
+      "expected_sign": "positive",
+      "reasoning": "The archive has never verified the repurchase flow against the outcome it is supposed to produce, and a large share of reported prstkc is known to offset dilution rather than retire equity. Adding realized share-count shrinkage as a confirming channel should purge false positives from the long leg and raise the alpha t-stat without changing the economic story.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Payout Frequency Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "How often a firm chooses to repurchase versus how often it commits to a dividend captures the same discretionary-versus-habit distinction as the dollar mix, but as a pure frequency it is immune to the dollar outliers and zero-denominator gaps that constrain the ratio version.",
+      "expected_sign": "positive",
+      "reasoning": "The leading family's weakness is coverage near 0.10 driven by ratio construction, and a count of active years is defined for every firm with five years of history, including non-payers who score zero. If this frequency measure retains most of the alpha at substantially higher coverage, it shows the signal lives in the qualitative payout choice rather than in the dollar amounts, which is a materially different measurement claim.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Sales Yield With Persistent Mix",
+      "expression": "SUMRANK(RATIO(sale, MUL(prcc_f, csho)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3))))",
+      "hypothesis": "If the interaction is genuinely about price being low relative to fundamentals, it should survive when cheapness is measured by sales to price, a valuation anchor that does not embed profitability.",
+      "expected_sign": "positive",
+      "reasoning": "Earnings yield outperformed book-to-market as the anchor by a wide alpha margin, but earnings yield also proxies profitability, so part of the gain may come from screening out loss-makers rather than from cheapness itself. Sales to price is positive for nearly all firms and is profitability-neutral, so this test separates the cheapness channel from the quality channel inside the winning design and may also improve coverage.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Buyback Versus Issuance Frequency",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), at), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(sstk, 0), at), 0.01), 5)))",
+      "hypothesis": "The cleanest financing contrast for the story is how often a firm materially buys its own stock versus how often it materially sells stock, since these are the two opposite expressions of management's view of price, with dividends being a separate habit variable.",
+      "expected_sign": "positive",
+      "reasoning": "The frequency-based composition signal is the archive leader (alpha 0.051, t=3.74, coverage 0.143), which shows the qualitative act matters more than the dollar amount, but it contrasted buybacks against dividends rather than against issuance. Using a one-percent-of-assets materiality screen keeps trivial option-related flows out of both counts, so this tests whether the natural economic opposite of a repurchase is a share sale rather than a dividend.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Material Payout Frequency Composition",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Only economically meaningful repurchases and dividends express a valuation opinion, so counting years in which each channel exceeded one percent of market value should sharpen the composition contrast relative to counting any nonzero amount.",
+      "expected_sign": "positive",
+      "reasoning": "The winning frequency signal treated a token buyback identical to a 10 percent repurchase program, which loads the long leg with firms that merely mop up option exercises. Scaling by market value inside the indicator makes the threshold a yield concept consistent with the valuation leg, and this isolates materiality as the single design change relative to the archive leader.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Frequency And Dollar Mix Consensus",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "Frequency and dollar intensity of the repurchase-versus-dividend choice are noisy measures of the same latent policy, so averaging them should measure that policy more accurately than either alone.",
+      "expected_sign": "positive",
+      "reasoning": "The two best financing legs in the archive are the five-year frequency contrast (alpha 0.051) and the three-year dollar mix ratio (alpha 0.043), and they are constructed from different information: one from the decision to act, the other from the size of the action. Combining them by rank keeps the valuation leg at half weight while reducing measurement error in the financing leg, which should improve the alpha t-stat and Sharpe together.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Earnings And Cash Anchor With Payout Frequency",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(oancf, MUL(prcc_f, csho))), SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "The valuation leg must be a profit or cash based yield rather than a pure price ratio, and averaging earnings yield with operating cash flow yield measures that concept with less accrual noise while keeping the anchor inside the earnings family.",
+      "expected_sign": "positive",
+      "reasoning": "Substituting sales to price for earnings yield destroyed the alpha entirely (-0.005 versus 0.043 with an otherwise identical financing leg), which proves the anchor must embed profitability, not just price level. Combining two profit-based yields by rank tests whether that anchor can be measured more robustly, whereas the earlier enterprise-multiple dual anchor diluted performance by importing leverage into the valuation leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Industry Relative Payout Choice",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), IND_ZSCORE(SUB(TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5))))",
+      "hypothesis": "Dividend habits are largely industry conventions, so a firm choosing buybacks over dividends is informative only relative to what its industry peers customarily do.",
+      "expected_sign": "positive",
+      "reasoning": "In raw form the payout-composition contrast may partly sort utilities and staples into the short leg and technology into the long leg, which is an industry bet rather than a valuation signal, and industry-demeaning removes exactly that component while preserving the firm-specific choice. Because the earlier industry-neutral test was applied to payout levels rather than composition, this is a genuinely different question and would tell us whether the leading mechanism is firm-level or sectoral.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Repurchase Frequency Only",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), TS_SUM(INDICATOR(COALESCE(prstkc, 0), 0), 5))",
+      "hypothesis": "If repeated repurchase activity is itself the undervaluation signal, then counting repurchase years alone should carry most of the abnormal return, and the dividend subtraction serves only to demote habitual payers.",
+      "expected_sign": "positive",
+      "reasoning": "Every strong recent result contains a dividend contrast, so we cannot tell whether the alpha comes from repurchase persistence or from actively shorting dividend payers, a distinction that matters for interpretation and for factor exposure since high dividend yield is close to value and profitability. This decomposition is deliberately minimal and its comparison with the archive leader attributes the 0.051 alpha to one leg or the other.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Material Frequency And Mix Consensus",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "How often a firm runs a material repurchase rather than paying a material dividend and how much of its cumulative payout dollars went to repurchases are complementary readings of the same discretionary-payout philosophy, and averaging them measures that philosophy with least error.",
+      "expected_sign": "positive",
+      "reasoning": "The materiality-screened frequency contrast has the archive's most reliable alpha (0.051 with t=4.33) but the weakest slope of the leaders (FMB 3.19), while the dollar mix ratio has the strongest slopes (FMB above 4) and slightly lower alpha, so their errors appear to be partly offsetting. Combining them addresses the one remaining disagreement between the cross-sectional and portfolio evidence in the leading family rather than re-testing either element.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Asymmetric Threshold Payout Contrast",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.02), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "The two payout channels should be screened asymmetrically because a repurchase only conveys a price opinion when it is large, whereas paying any dividend at all is already a binding commitment that removes flexibility.",
+      "expected_sign": "positive",
+      "reasoning": "Gen 7 showed materiality helps, and gen 7 also showed the dividend leg is indispensable since repurchase frequency alone earned alpha of -0.016 while the buyback-versus-issuance contrast earned -0.014. Raising the repurchase bar to two percent of market value while keeping the dividend indicator binary matches each screen to the economics of that channel, which should sharpen both portfolio legs simultaneously.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Three Year Buyback Minus Dividend Yield",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUB(RATIO(TS_SUM(COALESCE(prstkc, 0), 3), MUL(prcc_f, csho)), RATIO(TS_SUM(COALESCE(dvt, 0), 3), MUL(prcc_f, csho))))",
+      "hypothesis": "Expressed as yields on market value, cumulative repurchases minus cumulative dividends measure the discretionary payout tilt in the same units as the valuation leg, so the interaction is dimensionally consistent and economically interpretable as a price-sensitive distribution rate.",
+      "expected_sign": "positive",
+      "reasoning": "The discretionary tilt has only ever been scaled by assets or converted into a bounded mix ratio, and asset scaling mixes a size and capital-intensity dimension into a signal that is fundamentally about price. Market-value scaling also keeps every payer in the sample, so this tests whether the strong alpha of the bounded mix can be attained at the higher coverage of a yield construction.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Dividend Burden Versus Buyback Activity",
+      "expression": "SUMRANK(RATIO(ib, MUL(prcc_f, csho)), SUMRANK(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), NEG(RATIO(COALESCE(dvt, 0), oancf))))",
+      "hypothesis": "The short leg works because dividends pre-commit cash flow, so the right measure of the dividend handicap is the share of operating cash flow already pledged to shareholders as dividends, not merely whether a dividend exists.",
+      "expected_sign": "positive",
+      "reasoning": "The archive established that shorting habitual dividend payers is the essential ingredient, but it has never measured how binding that habit is relative to the firm's cash generation, which is the economic content of the constraint. Replacing the dividend count with a payout-ratio burden while keeping the material repurchase count as the long-side channel tests a genuinely different formulation of the same mechanism.",
+      "interaction_type": "novel",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Dual Value Anchor With Material Frequency",
+      "expression": "SUMRANK(SUMRANK(RATIO(ib, MUL(prcc_f, csho)), RATIO(ceq, MUL(prcc_f, csho))), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Combining earnings yield with book-to-market gives a broader cheapness reading that should strengthen the cross-sectional slope, and pairing it with the material payout-composition contrast should retain the abnormal return that book-to-market alone could not deliver.",
+      "expected_sign": "positive",
+      "reasoning": "Book-to-market produced the strongest FMB slopes but near-zero alphas, while earnings yield produced the alphas, which suggests the two anchors carry complementary information: one about price relative to accounting capital, one about price relative to profits. Averaging them by rank directly targets the residual weakness of the leading signal, whose FMB slope of 3.19 is below the best in the archive.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Smoothed Earnings Yield With Payout Contrast",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "Cheapness should be judged against normalized rather than single-year earnings, because a temporarily depressed or inflated profit figure misclassifies firms whose price is actually reasonable, and management's payout behavior is set with reference to normal earning power.",
+      "expected_sign": "positive",
+      "reasoning": "The valuation leg has repeatedly proven decisive in this family, yet it has always used one year of income, which is the noisiest available version of the concept and mechanically induces annual reshuffling of the long portfolio. A three-year average of income keeps the profitability content that sales-to-price lacked while making the anchor more stable, which should raise the alpha t-stat and the spread Sharpe together.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Normalized Earnings With Frequency Mix Consensus",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)))))",
+      "hypothesis": "A firm priced cheaply against normalized earning power, which repeatedly runs material repurchase programs rather than paying material dividends and commits most of its cumulative payout dollars to buybacks, is the sharpest available case of management-confirmed undervaluation.",
+      "expected_sign": "positive",
+      "reasoning": "The two best archive results are separately driven by the smoothed earnings anchor (alpha 0.057, t=4.62) and by averaging the frequency contrast with the dollar mix ratio (alpha 0.055, t=4.30, Sharpe 0.576), and each improves a different component of the signal. Joining them is the natural final consolidation: normalized earnings stabilize the valuation leg while the two payout channels reduce measurement error in the financing leg.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Normalized Earnings With Asymmetric Payout Contrast",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.02), 5), TS_SUM(INDICATOR(COALESCE(dvt, 0), 0), 5)))",
+      "hypothesis": "Repurchases only signal a price opinion when they are large, while any dividend at all is a binding commitment, and cheapness should be judged against normalized earnings; combining these three judgments should deliver both a strong cross-sectional slope and a large abnormal return at full coverage.",
+      "expected_sign": "positive",
+      "reasoning": "The asymmetric-threshold contrast produced the best slope among the leaders (FMB 4.14, alpha 0.049 with t=4.07) at coverage 0.143, and independently the smoothed anchor lifted alpha to 0.057 while holding coverage at 0.143. Because neither change touches the other leg, combining them tests whether the archive's cross-sectional and portfolio evidence can be maximized simultaneously without the coverage loss that the mix-ratio route imposes.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Dilution Aware Consensus With Normalized Earnings",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)), RATIO(SUB(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), ADD(ADD(TS_SUM(COALESCE(prstkc, 0), 3), TS_SUM(COALESCE(dvt, 0), 3)), TS_SUM(COALESCE(sstk, 0), 3)))))",
+      "hypothesis": "Three years of equity sales should discount the credited payout tilt, so a firm that repurchases while continuously issuing is scored as a weaker signal, and issuers remain in the cross-section instead of being dropped.",
+      "expected_sign": "positive",
+      "reasoning": "The dilution-adjusted mix delivered the archive's second-highest Sharpe (0.566) at coverage 0.136 versus 0.106 for the undiluted mix, which is the cheapest available fix for the consensus design's main weakness. This differs from Signal 1 only in the denominator of the dollar channel, so together they isolate whether issuance belongs in the scale of the payout tilt when the frequency channel is already present.",
+      "interaction_type": "ratio",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Buyback Frequency Versus Dividend Yield",
+      "expression": "SUMRANK(RATIO(MA(ib, 3), MUL(prcc_f, csho)), SUMRANK(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), NEG(RATIO(MA(COALESCE(dvt, 0), 3), MUL(prcc_f, csho)))))",
+      "hypothesis": "The short side of the mechanism is driven by the size of the dividend commitment relative to price, not merely by its existence, so a smoothed dividend yield is the economically right handicap to set against repurchase activity.",
+      "expected_sign": "positive",
+      "reasoning": "The dividend-burden variant scaled by operating cash flow earned alpha 0.040 with the best Sharpe in the archive (0.594) but a weak slope (FMB 1.87) and only 0.091 coverage, which points to the cash-flow denominator rather than the idea as the problem. Scaling the smoothed dividend by market value keeps coverage near 0.14, makes the handicap dimensionally consistent with the valuation leg, and tests intensity against the pure count used by the leaders.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Joint Corner Normalized Cheap Repurchaser",
+      "expression": "MUL(RANK(RATIO(MA(ib, 3), MUL(prcc_f, csho))), RANK(SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5))))",
+      "hypothesis": "The abnormal return is concentrated where normalized cheapness and repurchase-tilted payout coincide, so requiring both conditions multiplicatively should produce cleaner extreme portfolios than allowing one leg to compensate for the other.",
+      "expected_sign": "positive",
+      "reasoning": "With the one-year mix ratio, the multiplicative form matched or slightly beat the additive form on alpha (0.043 versus 0.040), but it has never been tested with either the frequency contrast or the smoothed anchor, which are the two elements that have since driven alpha to 0.057. This isolates portfolio-construction structure at the end of the search, telling us whether the final signal should be a rank sum or a joint gate.",
+      "interaction_type": "conditional",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    },
+    {
+      "name": "Deep Normalized Earnings With Payout Frequency",
+      "expression": "SUMRANK(RATIO(MA(ib, 5), MUL(prcc_f, csho)), SUB(TS_SUM(INDICATOR(RATIO(COALESCE(prstkc, 0), MUL(prcc_f, csho)), 0.01), 5), TS_SUM(INDICATOR(RATIO(COALESCE(dvt, 0), MUL(prcc_f, csho)), 0.01), 5)))",
+      "hypothesis": "If normalized earning power is the right valuation anchor, a five-year average should measure it better than a three-year average and align the valuation window with the five-year window over which payout behavior is measured.",
+      "expected_sign": "positive",
+      "reasoning": "Moving from one-year to three-year earnings raised alpha from 0.051 to 0.057 and the t-stat from 4.33 to 4.62 with no coverage cost, so the smoothing window is an active parameter whose optimum has not been located. Matching the earnings window to the payout-frequency window also makes the interaction internally consistent, and a decline in performance would establish three years as the preferred specification for the final signal.",
+      "interaction_type": "composite",
+      "theme_a": "valuation",
+      "theme_b": "financing",
+      "author": "proposer"
+    }
+  ],
+  "critic_notes": [],
+  "moderator_decisions": [],
+  "parse_diagnostics": [
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 0,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 1,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 2,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 3,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 4,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 5,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 6,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 7,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 8,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "parsed_proposals",
+      "message": "parsed 6 proposals",
+      "generation": 9,
+      "metadata": {
+        "task_id": "cross_theme:value_finance"
+      }
+    }
+  ],
+  "validation_diagnostics": [
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap Buyback Yield Composite",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(sub(prstkc,sstk),mul(prcc_f,csho)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Valuation Weighted Net External Finance",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(add(sub(sstk,prstkc),sub(dltis,dltr)),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dltis",
+          "dltr",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Financing Market Timing Quality",
+      "metadata": {
+        "normalized_expression": "sub(mul(rank(ratio(ceq,mul(prcc_f,csho))),winsor(ratio(prstkc,mul(prcc_f,csho)),1)),mul(rank(neg(ratio(ceq,mul(prcc_f,csho)))),winsor(ratio(sstk,mul(prcc_f,csho)),1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Repurchase Confirmed Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ma(ratio(ceq,mul(prcc_f,csho)),3),sumrank(ts_sum(indicator(ratio(sub(prstkc,sstk),at),0),3),ts_sum(ratio(sub(prstkc,sstk),mul(prcc_f,csho)),3)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "error",
+      "code": "missing_required_theme",
+      "message": "proposal expression does not use any variable exclusive to required theme: financing (variables shared across the paired themes, e.g. common denominators like 'at', do not count as evidence for either theme)",
+      "proposal_name": "Share Count Shrinkage Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(growth(csho,1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f"
+        ],
+        "missing_theme": "financing"
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Double Gated Cash Flow Yield",
+      "metadata": {
+        "normalized_expression": "sub(mul(rank(ratio(oancf,mul(prcc_f,csho))),indicator(ratio(sub(prstkc,sstk),at),0)),mul(rank(neg(ratio(oancf,mul(prcc_f,csho)))),indicator(ratio(sub(sstk,prstkc),at),0)))",
+        "variables": [
+          "at",
+          "csho",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Total Net Payout Value Composite Zerofill",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(sub(add(coalesce(dvt,0),coalesce(prstkc,0)),coalesce(sstk,0)),mul(prcc_f,csho)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Own History Buyback Timing",
+      "metadata": {
+        "normalized_expression": "mul(ts_rank(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),5),ts_rank(ratio(ceq,mul(prcc_f,csho)),5))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Drawdown Buyback Conviction",
+      "metadata": {
+        "normalized_expression": "mul(winsor(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),mul(prcc_f,csho)),1),rank(neg(ratio(prcc_f,ts_max(prcc_f,5)))))",
+        "variables": [
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout Surprise Among Cheap Firms",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),delta(ratio(sub(add(coalesce(dvt,0),coalesce(prstkc,0)),coalesce(sstk,0)),at),1))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Funded Buyback Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),winsor(ratio(min(sub(coalesce(prstkc,0),coalesce(sstk,0)),oancf),mul(prcc_f,csho)),1))",
+        "variables": [
+          "csho",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Enterprise Multiple Capital Retirement",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che))),neg(ratio(add(sub(coalesce(sstk,0),coalesce(prstkc,0)),sub(coalesce(dltis,0),coalesce(dltr,0))),at)))",
+        "variables": [
+          "at",
+          "che",
+          "csho",
+          "dlc",
+          "dltis",
+          "dltr",
+          "dltt",
+          "ebitda",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Own History Timing Additive",
+      "metadata": {
+        "normalized_expression": "sumrank(ts_rank(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),5),ts_rank(ratio(ceq,mul(prcc_f,csho)),5))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Abnormal Payout At Abnormal Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(sub(ratio(ceq,mul(prcc_f,csho)),ma(ratio(ceq,mul(prcc_f,csho)),5)),sub(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),ma(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),5)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Equity Tilt Of External Finance",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(ratio(sub(sub(coalesce(sstk,0),coalesce(prstkc,0)),sub(coalesce(dltis,0),coalesce(dltr,0))),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dltis",
+          "dltr",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Issuance Dependence Withdrawal",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(trend(ratio(coalesce(sstk,0),at),5)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheapness With Stable Self Funding",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ebitda,mul(prcc_f,csho)),neg(vol(ratio(add(coalesce(sstk,0),coalesce(dltis,0)),at),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "dltis",
+          "ebitda",
+          "prcc_f",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Neutral Cheap Payout",
+      "metadata": {
+        "normalized_expression": "sumrank(ind_zscore(ratio(ceq,mul(prcc_f,csho))),ind_zscore(ratio(sub(add(coalesce(dvt,0),coalesce(prstkc,0)),coalesce(sstk,0)),mul(prcc_f,csho))))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cross Sectional Cheapness With Own History Payout",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ts_rank(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),5))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Own History Cheapness With Cross Sectional Payout",
+      "metadata": {
+        "normalized_expression": "sumrank(ts_rank(ratio(ceq,mul(prcc_f,csho)),5),ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),mul(prcc_f,csho)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Rising Net Payout In Cheap Firms",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),trend(ratio(sub(add(coalesce(dvt,0),coalesce(prstkc,0)),coalesce(sstk,0)),at),5))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Levered Recapitalization Value",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),ratio(min(sub(coalesce(prstkc,0),coalesce(sstk,0)),sub(coalesce(dltis,0),coalesce(dltr,0))),at))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dltis",
+          "dltr",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Buyback Tilted Payout Among Cheap Firms",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ratio(coalesce(prstkc,0),at),ratio(coalesce(dvt,0),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cheap Balance Sheet Deleveraging",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),neg(growth(lt,1)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "lt",
+          "prcc_f"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout Tilt With Book To Market",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ceq,mul(prcc_f,csho)),sub(ratio(coalesce(prstkc,0),at),ratio(coalesce(dvt,0),at)))",
+        "variables": [
+          "at",
+          "ceq",
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Issuance Netted Discretionary Payout",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ratio(sub(coalesce(prstkc,0),coalesce(sstk,0)),at),ratio(coalesce(dvt,0),at)))",
+        "variables": [
+          "at",
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Discretionary Payout Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ts_sum(sub(ratio(coalesce(prstkc,0),at),ratio(coalesce(dvt,0),at)),3))",
+        "variables": [
+          "at",
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Shift From Dividends To Buybacks",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(delta(ratio(coalesce(prstkc,0),at),1),delta(ratio(coalesce(dvt,0),at),1)))",
+        "variables": [
+          "at",
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Yield With Buyback Tilt And Issuance Discipline",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oancf,mul(prcc_f,csho)),sumrank(sub(ratio(coalesce(prstkc,0),at),ratio(coalesce(dvt,0),at)),neg(ratio(coalesce(sstk,0),at))))",
+        "variables": [
+          "at",
+          "csho",
+          "dvt",
+          "oancf",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Scale Free Payout Composition",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(sub(coalesce(prstkc,0),coalesce(dvt,0)),add(coalesce(prstkc,0),coalesce(dvt,0))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Scale Free Payout Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dilution Adjusted Payout Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(sub(coalesce(prstkc,0),coalesce(dvt,0)),add(add(coalesce(prstkc,0),coalesce(dvt,0)),coalesce(sstk,0))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Cash Flow Yield With Payout Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(oancf,mul(prcc_f,csho)),ratio(sub(coalesce(prstkc,0),coalesce(dvt,0)),add(coalesce(prstkc,0),coalesce(dvt,0))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "oancf",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Joint Corner Cheap Repurchaser",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),rank(ratio(sub(coalesce(prstkc,0),coalesce(dvt,0)),add(coalesce(prstkc,0),coalesce(dvt,0)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Liquidity Sacrificed For Own Stock",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(coalesce(prstkc,0),add(che,coalesce(prstkc,0))))",
+        "variables": [
+          "che",
+          "csho",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Anchor Cheapness With Persistent Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(ib,mul(prcc_f,csho)),ratio(ebitda,add(mul(prcc_f,csho),sub(add(dltt,dlc),che)))),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3))))",
+        "variables": [
+          "che",
+          "csho",
+          "dlc",
+          "dltt",
+          "dvt",
+          "ebitda",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Joint Corner Persistent Mix",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ib,mul(prcc_f,csho))),rank(ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Persistent Dilution Adjusted Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),ts_sum(coalesce(sstk,0),3))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Five Year Payout Mix Cheapness",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ratio(sub(ts_sum(coalesce(prstkc,0),5),ts_sum(coalesce(dvt,0),5)),add(ts_sum(coalesce(prstkc,0),5),ts_sum(coalesce(dvt,0),5))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Verified Share Retirement Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sumrank(ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3))),neg(growth(csho,1))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Payout Frequency Composition",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ts_sum(indicator(coalesce(prstkc,0),0),5),ts_sum(indicator(coalesce(dvt,0),0),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Sales Yield With Persistent Mix",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(sale,mul(prcc_f,csho)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "prcc_f",
+          "prstkc",
+          "sale"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Buyback Versus Issuance Frequency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),at),0.01),5),ts_sum(indicator(ratio(coalesce(sstk,0),at),0.01),5)))",
+        "variables": [
+          "at",
+          "csho",
+          "ib",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Material Payout Frequency Composition",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Frequency And Dollar Mix Consensus",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sumrank(sub(ts_sum(indicator(coalesce(prstkc,0),0),5),ts_sum(indicator(coalesce(dvt,0),0),5)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Earnings And Cash Anchor With Payout Frequency",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(ib,mul(prcc_f,csho)),ratio(oancf,mul(prcc_f,csho))),sub(ts_sum(indicator(coalesce(prstkc,0),0),5),ts_sum(indicator(coalesce(dvt,0),0),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Industry Relative Payout Choice",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ind_zscore(sub(ts_sum(indicator(coalesce(prstkc,0),0),5),ts_sum(indicator(coalesce(dvt,0),0),5))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Repurchase Frequency Only",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),ts_sum(indicator(coalesce(prstkc,0),0),5))",
+        "variables": [
+          "csho",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Material Frequency And Mix Consensus",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sumrank(sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Asymmetric Threshold Payout Contrast",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.02),5),ts_sum(indicator(coalesce(dvt,0),0),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Three Year Buyback Minus Dividend Yield",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sub(ratio(ts_sum(coalesce(prstkc,0),3),mul(prcc_f,csho)),ratio(ts_sum(coalesce(dvt,0),3),mul(prcc_f,csho))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dividend Burden Versus Buyback Activity",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ib,mul(prcc_f,csho)),sumrank(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),neg(ratio(coalesce(dvt,0),oancf))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "oancf",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dual Value Anchor With Material Frequency",
+      "metadata": {
+        "normalized_expression": "sumrank(sumrank(ratio(ib,mul(prcc_f,csho)),ratio(ceq,mul(prcc_f,csho))),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)))",
+        "variables": [
+          "ceq",
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Smoothed Earnings Yield With Payout Contrast",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Normalized Earnings With Frequency Mix Consensus",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sumrank(sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Normalized Earnings With Asymmetric Payout Contrast",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.02),5),ts_sum(indicator(coalesce(dvt,0),0),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Dilution Aware Consensus With Normalized Earnings",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sumrank(sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)),ratio(sub(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),add(add(ts_sum(coalesce(prstkc,0),3),ts_sum(coalesce(dvt,0),3)),ts_sum(coalesce(sstk,0),3)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc",
+          "sstk"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Buyback Frequency Versus Dividend Yield",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,3),mul(prcc_f,csho)),sumrank(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),neg(ratio(ma(coalesce(dvt,0),3),mul(prcc_f,csho)))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Joint Corner Normalized Cheap Repurchaser",
+      "metadata": {
+        "normalized_expression": "mul(rank(ratio(ma(ib,3),mul(prcc_f,csho))),rank(sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5))))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    },
+    {
+      "severity": "info",
+      "code": "accepted",
+      "message": "proposal accepted for evaluation",
+      "proposal_name": "Deep Normalized Earnings With Payout Frequency",
+      "metadata": {
+        "normalized_expression": "sumrank(ratio(ma(ib,5),mul(prcc_f,csho)),sub(ts_sum(indicator(ratio(coalesce(prstkc,0),mul(prcc_f,csho)),0.01),5),ts_sum(indicator(ratio(coalesce(dvt,0),mul(prcc_f,csho)),0.01),5)))",
+        "variables": [
+          "csho",
+          "dvt",
+          "ib",
+          "prcc_f",
+          "prstkc"
+        ]
+      }
+    }
+  ]
+}
