@@ -64,6 +64,7 @@ path and different final hypotheses. That is a reported finding, not a reproduct
 - experiment runners in `scripts/`;
 - the four frozen run configurations in `paper/configs/`, which produced the six formal runs;
 - the completed run artifacts for those six runs in `paper/data/` (~105 MB);
+- per-survivor trajectory bundles for all eleven survivors in `paper/data/trajectories/`;
 - adjudicated mechanism and critique labels in `paper/generated/`;
 - the scripts and released figures in `paper/scripts/` and `paper/figures/`;
 - the agent-native research artifact in `paper/ara/`.

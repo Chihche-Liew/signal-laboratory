@@ -26,7 +26,8 @@ Each run is a separate testing family; totals across runs are descriptive only.
 | `paper/data/formal/posthoc/<run>/subsample/` | seven-window stability gate | C05 | E05 |
 | `paper/data/formal/posthoc/<run>/multi_model_alpha/` | FF5 / FF6 / HXZ q alpha gate | C05 | E05 |
 | `paper/data/formal/posthoc/<run>/spanning/` | conditional tests against published predictors; `fmb_t_univariate`, `fmb_t_conditional`, `n_valid_months`, `n_controls`, `skipped_controls`, `direction_consistent` | C05, C06, C09 | E05, E06, E09 |
-| `paper/data/signal_catalog.json` | the 11 complete-protocol survivors with per-gate evidence | C05, C09 | E05, E09 |
+| `paper/data/signal_catalog.json` | the 11 complete-protocol survivors with per-gate evidence, and `trajectory_rel` into the bundles below | C05, C09 | E05, E09 |
+| `paper/data/trajectories/<code>/<signal_id>_<name>/` | per-survivor bundle: the producing generation's prompts, responses, full proposal batch, critic notes, run manifest, selection and post-hoc extracts | C08, C09 | E08 |
 
 ## Adjudicated labels
 

@@ -1,0 +1,68 @@
+[
+  {
+    "name": "NetLiquidCurrentAssetProfit",
+    "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(SUB(che, dlc), act)))",
+    "hypothesis": "Only cash that was earned rather than borrowed certifies profitability; netting short-term debt out of the cash balance removes firms whose liquidity is a drawn credit line and keeps firms whose current assets are self-funded settled profits.",
+    "expected_sign": "positive",
+    "reasoning": "The critic's main objection to the cash leg is that che is confounded by financing, and this is the direct diagnostic: if the gen-2 alpha survives or strengthens after subtracting dlc, the mechanism is earned liquidity, whereas if it collapses the earlier result was a debt-capacity effect. Coverage is unaffected because dlc is a standard balance-sheet item.",
+    "interaction_type": "conditional",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  },
+  {
+    "name": "ConservativeDepreciationCashProfit",
+    "expression": "MIN(IND_RANK(RATIO(oibdp, at)), IND_RANK(RATIO(dpc, SUB(at, che))))",
+    "hypothesis": "Among firms with strong pre-depreciation operating profitability, those charging heavy depreciation against their operating asset base are reporting conservatively \u2014 their bottom-line earnings understate cash earning power \u2014 and investors who anchor on reported income underprice them.",
+    "expected_sign": "positive",
+    "reasoning": "Every archive signal has used working-capital accruals; long-term (depreciation) accruals are the other half of total accruals and carry the opposite quality interpretation, since aggressive depreciation depresses rather than inflates income. The risk is that dpc is a cash-flow-statement item with reduced coverage, so this slot is an explicit test of whether the long-term-accrual channel is worth the sample cost.",
+    "interaction_type": "novel",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  },
+  {
+    "name": "ProfitGatedLiquidityState",
+    "expression": "MUL(IND_ZSCORE(RATIO(che, act)), INDICATOR(oiadp, 0))",
+    "hypothesis": "Liquidity certifies earnings only when there are earnings to certify: among profitable firms, a cash-dominated current asset base means the reported profits have actually been collected, whereas for loss-making firms the same cash balance carries no information about earnings quality and is merely a burn buffer.",
+    "expected_sign": "positive",
+    "reasoning": "Rather than re-scaling the gen-2 winner, this switches the accrual-composition signal on and off with the profitability state, which is the sharpest possible test of whether the archive's best result is a genuine profitability\u00d7accrual interaction or a standalone cash-holdings effect. If the alpha survives with loss firms parked at zero, the interaction is real; if it collapses, the earlier result was liquidity alone and the whole channel needs rethinking.",
+    "interaction_type": "conditional",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  },
+  {
+    "name": "ConservatismAdjustedProfitLeanClaims",
+    "expression": "MIN(IND_RANK(RATIO(ADD(oiadp, COALESCE(xrd, 0)), at)), IND_RANK(NEG(RATIO(SUB(act, che), sale))))",
+    "hypothesis": "Immediate expensing of R&D is the largest conservative accrual in the accounts, so adding it back reveals true economic profitability; firms whose conservatively-understated profits are also generated with a lean receivable-and-inventory base have earnings that are both understated and already converted, the most underpriced combination.",
+    "expected_sign": "positive",
+    "reasoning": "This introduces the intangible-conservatism channel, which no archive signal has touched, and pairs it with operating-cycle leanness measured against sales rather than assets, so it is neither a Novy-Marx rediscovery nor a neighbor of GP/(act\u2212che). COALESCE(xrd, 0) is the economically correct convention because a firm that reports no R&D genuinely has no R&D expensing distortion.",
+    "interaction_type": "composite",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  },
+  {
+    "name": "ProfitWithObligationCoveringCash",
+    "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(RATIO(che, lct)))",
+    "hypothesis": "What matters is not the share of current assets held in cash but whether cash covers the claims others hold against the firm; profitable firms whose cash exceeds their current obligations never have to liquidate receivables or inventory at a discount, so their reported profits are not exposed to forced accrual reversal.",
+    "expected_sign": "positive",
+    "reasoning": "Together with the accepted net-of-debt variant this discriminates among three distinct economic readings of the cash leg \u2014 asset realization (che/act), earned versus borrowed liquidity ((che\u2212dlc)/act), and obligation coverage (che/lct) \u2014 so whichever wins identifies the true mechanism rather than just re-fitting the winner. All inputs are standard balance-sheet items, so coverage stays at the top of the archive.",
+    "interaction_type": "conditional",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  },
+  {
+    "name": "ProfitWithClaimsAtOwnHistoryLow",
+    "expression": "MIN(IND_RANK(RATIO(SUB(revt, cogs), at)), IND_RANK(NEG(TS_RANK(RATIO(SUB(act, che), sale), 5))))",
+    "hypothesis": "Working-capital intensity is a business-model constant, so the informative question is not whether a firm carries more claims than its peers but whether it is carrying more claims than it historically needed for the same sales; profitable firms operating at their own five-year low in claim intensity have genuinely tightened collections and inventory rather than merely belonging to a lean industry.",
+    "expected_sign": "positive",
+    "reasoning": "This replaces the low-information smoothing of an already-persistent profitability leg with a firm-specific benchmark on the accrual leg, which removes the mechanical retailer-versus-manufacturer tilt that cross-sectional claim ranks impose. It is a level-in-own-history state, not a first difference, so it should avoid the portfolio instability that killed the alpha of every flow-based leg in the archive while still isolating operational tightening.",
+    "interaction_type": "novel",
+    "theme_a": "profitability",
+    "theme_b": "accruals",
+    "author": "proposer"
+  }
+]

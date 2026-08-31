@@ -12,6 +12,7 @@ source files.
 - `configs/`: the primary configuration and three comparison configurations;
 - `data/formal/`: selected completed-run artifacts used by the result scripts;
 - `data/signal_catalog.json`: the frozen complete-protocol signal catalog;
+- `data/trajectories/`: per-survivor trajectory bundles, one per catalog record;
 - `generated/`: adjudicated mechanism and critique labels used by Sections 5
   and 7;
 - `scripts/`: all scripts that generate the paper's figures and table blocks;

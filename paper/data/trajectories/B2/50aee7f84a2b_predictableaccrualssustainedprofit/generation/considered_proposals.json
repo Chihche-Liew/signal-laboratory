@@ -1,0 +1,68 @@
+[
+  {
+    "name": "PredictableAccrualsSustainedProfit",
+    "expression": "MUL(IND_RANK(NEG(WINSOR(VOL(RATIO(DELTA(SUB(wcap, che), 1), at), 5), 1))), IND_RANK(WINSOR(MA(RATIO(SUB(revt, cogs), at), 3), 1)))",
+    "hypothesis": "Earnings quality depends on how *predictable* a firm's accruals are, not only on their level: a firm whose working-capital requirement varies little from year to year while it sustains high gross profitability has an operating cycle that maps reliably into cash, so its reported income requires little estimation and rarely reverses.",
+    "expected_sign": "positive",
+    "reasoning": "Every accrual leg in the archive measures magnitude \u2014 level, flow, cumulative flow, acceleration, or firm-history position \u2014 and none measures the second moment, yet accrual volatility is the core of the accounting literature's own definition of accrual quality. Pairing it with sustained gross profitability rather than a trend distinguishes stable, cash-converting business models from firms that are merely quiet because they are stagnant.",
+    "interaction_type": "novel",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  },
+  {
+    "name": "RisingDepreciationCleanAccruals",
+    "expression": "MUL(IND_RANK(NEG(WINSOR(TS_SUM(RATIO(DELTA(SUB(wcap, che), 1), at), 3), 1))), IND_RANK(WINSOR(DELTA(RATIO(dpc, at), 1), 1)))",
+    "hypothesis": "A firm that increases its depreciation charge per dollar of assets while refusing to absorb cash into working capital is shifting toward conservative recognition on both the fixed-asset and operating-cycle sides, which understates current earnings relative to cash flow and produces positive future surprises.",
+    "expected_sign": "positive",
+    "reasoning": "The conservatism result held up (alpha +2.6%, t = +2.68), but the critic correctly warned that the *level* of depreciation intensity is close to the inverse of asset turnover, which the archive finds predicts negatively; taking the annual change removes the capital-intensity level and isolates a deliberate shift in recognition policy. This is a targeted repair that keeps a validated mechanism while stripping out the confound that could otherwise fight the hypothesized sign.",
+    "interaction_type": "conditional",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  },
+  {
+    "name": "TurnoverFreeTwoSidedQuality",
+    "expression": "SUMRANK(MUL(IND_RANK(WINSOR(DELTA(RATIO(che, sale), 1), 1)), IND_RANK(WINSOR(TREND(RATIO(SUB(revt, cogs), at), 5), 1))), NEG(MUL(IND_RANK(WINSOR(RATIO(SUB(wcap, che), sale), 1)), IND_RANK(NEG(WINSOR(TS_MIN(RATIO(ni, at), 5), 1))))))",
+    "hypothesis": "The accrual-quality interaction should survive without any reference to asset turnover: cash accumulation alongside margin improvement identifies genuine performance on one side, and soft-asset bloat in firms with no profitability floor identifies impairment risk on the other.",
+    "expected_sign": "positive",
+    "reasoning": "Asset turnover appears in nearly every strong archive signal, which raises the concern that the results are a repackaged Soliman-style turnover effect rather than an accruals-times-quality interaction. Removing turnover entirely from both corners is the cleanest robustness test available, and a materially positive result would establish the mechanism as genuinely about cash backing rather than about asset productivity.",
+    "interaction_type": "composite",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  },
+  {
+    "name": "RareAccrualYearsSustainedProfit",
+    "expression": "MUL(IND_RANK(NEG(MA(INDICATOR(DELTA(SUB(wcap, che), 1), 0), 5))), IND_RANK(WINSOR(MA(RATIO(SUB(revt, cogs), at), 3), 1)))",
+    "hypothesis": "What distinguishes cash-backed performance is the *frequency* with which a firm needs to absorb cash into working capital, not the size of any one year's absorption: a firm that has increased non-cash working capital in only one or two of the past five years while sustaining high gross profitability funds its profits from operations as a matter of policy rather than by chance.",
+    "expected_sign": "positive",
+    "reasoning": "The archive has measured the accrual leg only by magnitude \u2014 level, flow, cumulative flow, acceleration, volatility, firm-history position \u2014 and never by the count of accruing years, which is the accrual-side analogue of the loss-frequency conditioner that produced a \u22123.8% alpha with t = \u22124.24. A frequency measure is robust to the single large outlier years that dominate magnitude measures, and pairing it with a three-year average gross profitability level (rather than a trend) tests policy consistency on both sides of the interaction.",
+    "interaction_type": "novel",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  },
+  {
+    "name": "TaxConfirmedCleanAccruals",
+    "expression": "MUL(IND_RANK(NEG(WINSOR(TS_SUM(RATIO(DELTA(SUB(wcap, che), 1), at), 3), 1))), IND_RANK(WINSOR(RATIO(DELTA(txp, 1), sale), 1)))",
+    "hypothesis": "Tax authorities are an adversarial third party who do not accept accrual discretion, so a rising tax obligation per dollar of sales is independent confirmation that taxable income genuinely grew; combined with three years of growth that did not absorb working capital, it means reported earnings have been validated by an outside party with the power to audit them.",
+    "expected_sign": "positive",
+    "reasoning": "This repairs a proposal that failed validation last round for lacking a quality-exclusive variable by deflating the tax accrual with sales rather than assets, and it introduces the only validator in the archive drawn from a reporting system outside the financial statements themselves. The archive's single tax test was a standalone rank difference (fmb +0.81, correct sign but weak); conditioning it on the clean-accrual state asks the sharper question of whether tax confirmation adds information precisely where accrual evidence is already favorable.",
+    "interaction_type": "conditional",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  },
+  {
+    "name": "AccrualNoiseBeyondBusinessNoise",
+    "expression": "MUL(IND_RANK(WINSOR(RATIO(VOL(RATIO(DELTA(SUB(wcap, che), 1), at), 5), VOL(RATIO(sale, at), 5)), 1)), IND_RANK(NEG(WINSOR(TS_MIN(RATIO(ni, at), 5), 1))))",
+    "hypothesis": "Working capital should fluctuate roughly in proportion to the volatility of the business it supports; accrual swings far larger than the firm's own revenue volatility indicate estimation error or discretion rather than operating necessity, and such unexplained accrual noise is dangerous in firms with no profitability floor to absorb the eventual correction.",
+    "expected_sign": "negative",
+    "reasoning": "The critic is right that raw accrual volatility scales mechanically with accrual magnitude, so this version normalizes it by the volatility of sales per asset, isolating the component of accrual instability that the underlying business does not explain. Keeping the design to two conjuncts avoids the dilution seen when a third condition was stacked onto the best short corner, and the ratio construction makes the accrual-quality concept genuinely new rather than a rescaled version of the level.",
+    "interaction_type": "ratio",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "author": "proposer"
+  }
+]

@@ -1,0 +1,158 @@
+{
+  "run": {
+    "name": "baseline",
+    "output_root": "paper/data/formal/baseline_r2",
+    "tags": []
+  },
+  "mode": {
+    "type": "default",
+    "seed_prompt": null,
+    "guidance_scope": "none"
+  },
+  "task": {
+    "type": "cross_theme",
+    "pair": "accrual_quality",
+    "theme_a": "accruals",
+    "theme_b": "quality",
+    "objective_override": null
+  },
+  "llm": {
+    "provider": "anthropic",
+    "model": "claude-opus-4-8",
+    "reasoning_effort": "high",
+    "max_tokens": null,
+    "temperature": 1.0,
+    "thinking": {},
+    "extra": {}
+  },
+  "proposer": {
+    "type": "proposer_critic",
+    "n_proposals": 6,
+    "extra": {
+      "llms": {
+        "proposer": {
+          "provider": "anthropic",
+          "model": "claude-opus-5",
+          "max_tokens": null
+        },
+        "critic": {
+          "provider": "anthropic",
+          "model": "claude-opus-5",
+          "max_tokens": null
+        }
+      }
+    }
+  },
+  "loop": {
+    "n_generations": 10,
+    "proposals_per_generation": 6,
+    "validation": {
+      "reject_duplicates": true,
+      "reject_invalid_expression": true,
+      "reject_single_theme": true
+    }
+  },
+  "evaluator": {
+    "sample_filters": [
+      "exclude_financials",
+      "exclude_microcap"
+    ],
+    "success_threshold": 1.96,
+    "alpha_factor_model": 5
+  },
+  "budget": {
+    "max_tokens_in": null,
+    "max_tokens_out": null,
+    "max_wall_seconds": null
+  },
+  "posthoc": {
+    "enabled": false,
+    "suites": []
+  },
+  "task_contract": {
+    "task_id": "cross_theme:accrual_quality",
+    "task_type": "cross_theme",
+    "objective": {
+      "title": "Accruals x Quality signal discovery",
+      "description": "Discover symbolic equity-return signals that use both themes (accruals and quality) for Accruals x Quality. The signal should capture an interaction beyond an isolated single-theme effect. Economic story: Low accruals combined with persistent, stable earnings should identify genuinely cash-backed reported performance. The task is to distinguish durable cash earnings from accounting noise."
+    },
+    "constraints": [
+      {
+        "kind": "must_use_theme",
+        "value": "accruals"
+      },
+      {
+        "kind": "must_use_theme",
+        "value": "quality"
+      },
+      {
+        "kind": "exclude_financials",
+        "value": "true"
+      },
+      {
+        "kind": "exclude_microcap",
+        "value": "true"
+      }
+    ],
+    "output_schema": {
+      "required_fields": [
+        "name",
+        "expression",
+        "hypothesis",
+        "expected_sign",
+        "reasoning",
+        "interaction_type"
+      ],
+      "allowed_expected_signs": [
+        "positive",
+        "negative"
+      ],
+      "allowed_interaction_types": [
+        "composite",
+        "conditional",
+        "ratio",
+        "novel"
+      ]
+    },
+    "evaluation_protocol": {
+      "evaluator_type": "signal_agent",
+      "primary_metric": "fmb_tstat",
+      "success_threshold": 1.96,
+      "require_expected_sign_match": true,
+      "alpha_factor_model": 5
+    },
+    "success_criteria": {
+      "min_abs_tstat": 1.96,
+      "require_expected_sign_match": true,
+      "min_coverage": 0.0
+    },
+    "novelty_policy": {
+      "reject_exact_expression_duplicates": true,
+      "reject_normalized_expression_duplicates": true
+    },
+    "metadata": {
+      "pair_name": "accrual_quality",
+      "theme_a": "accruals",
+      "theme_b": "quality",
+      "reference_library": "canonical_single_theme_reference",
+      "interaction_label": "Accruals x Quality",
+      "economic_story": "Low accruals combined with persistent, stable earnings should identify genuinely cash-backed reported performance. The task is to distinguish durable cash earnings from accounting noise.",
+      "example_interactions": [
+        "Cash-quality composite",
+        "Persistent cash earnings",
+        "Smoothed accruals",
+        "Cash earnings persistence"
+      ],
+      "exclude_financials": true,
+      "exclude_microcap": true,
+      "sample_filters": [
+        "exclude_financials",
+        "exclude_microcap"
+      ],
+      "mode": "default",
+      "seed_prompt": null,
+      "guidance_scope": "none"
+    }
+  },
+  "output_dir": "paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_accrual_quality"
+}
