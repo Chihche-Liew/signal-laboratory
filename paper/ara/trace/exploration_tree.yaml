@@ -1,0 +1,410 @@
+# Exploration graph — LLM-Guided Hypothesis Discovery in Asset Pricing
+# All scope, contract, and caveat information is in `metadata` below, as fields.
+
+metadata:
+  runs_covered: [B1, B2, B3, A1]
+  total_evaluated_all_runs: 9656
+  lineages: 4
+  terminal_survivors_traced: 5
+  complete_protocol_survivors_total: 11
+  authoritative_population: paper/data/formal/<run>/<pair>/archive.json
+  node_types: [question, decision, experiment, dead_end, pivot]
+  verbatim_fields: [critic_rationales, agent_reasoning]
+
+  scope: >
+    This graph does not enumerate the search. The six runs evaluated 9,656 hypotheses across
+    168 pair-runs; that population is the authoritative record. This file traces four lineages
+    terminating in complete-protocol survivors, selected ex post for survival and legibility.
+    See claims.md C08.
+
+  verbatim_contract: >
+    Fields listed in verbatim_fields hold the complete text of the corresponding record — no
+    truncation, no paraphrase. They record what the agent asserted at that moment. They are not
+    independently verified defects, and nothing here endorses the agent's diagnosis.
+
+  selection_caveat: >
+    Lineage A (S1, S2) and Lineage B (S4) account for three of the five traced survivors, and
+    all three are among the four whose Chen-Zimmermann conditional estimate rests on 24-28
+    monthly cross sections against a truncated control set — for S2, 8 controls. See claims.md
+    C09. These are legible trajectories, not the best-evidenced survivors.
+
+  selection_caveat_second_order: >
+    Every dead end recorded here was subsequently repaired within its own lineage. This file
+    contains no abandoned line of inquiry, no unproductive pair-run, and none of the 438
+    horse-race records that failed the post-search gates. The failure modes shown are the
+    recoverable ones, and their lessons were selected because the agent went on to fix them.
+    Do not generalize from them to how the search fails.
+
+  invariants:
+    - every source path resolves
+    - every quoted rationale equals its source entry after whitespace normalization
+    - every dead_end cites an entry whose verdict is flag
+    - every survivor expression matches paper/data/signal_catalog.json byte-for-byte; N31 is a
+      non-survivor diagnostic node and is checked against its archive.json record instead
+    - every t-statistic is the catalog value rounded to 2 decimals
+
+tree:
+  - id: N00
+    type: question
+    title: "Can LLM agents run the asset-pricing discovery loop inside a frozen environment while the full search denominator stays observable?"
+    description: >
+      Humans fix the symbolic language (66 Compustat variables, 32 operators), the sample, the
+      evaluation pipeline, and the significance protocol. Agents choose economic ideas but
+      cannot alter how those ideas are tested. Every proposal, critique, revision, and
+      evaluation is written to the archive before the next generation reads it.
+    source: paper/configs/baseline.yaml
+    children:
+
+      # ================================================================
+      # LINEAGE A — B1 / profitability x investment — build versus buy
+      # ================================================================
+      - id: N01
+        type: question
+        title: "Does the internal-versus-purchased composition of growth spending predict returns beyond profitability?"
+        description: >
+          Accounting expenses internally developed knowledge but capitalizes purchased
+          intangibles, so two firms with identical growth budgets can report very different
+          balance sheets depending on how they bought their growth.
+        source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest
+        children:
+
+          - id: N02
+            type: dead_end
+            title: "cash_generation_per_dollar_of_purchased_goodwill"
+            generation: 4
+            failure_mode: "Construct does not measure the stated object; confounded with a known anomaly"
+            critic_rationales:
+              "cash_generation_per_dollar_of_purchased_goodwill": >
+                The COALESCE-to-zero plus MAX(.,dp) construction means the majority of firms with
+                little or no goodwill are scored purely by oancf/dp, so the signal is a mixture of
+                a cash-flow-to-depreciation profitability ratio (which will dominate the long leg)
+                and a goodwill-intensity ratio, making the computed quantity inconsistent with the
+                stated stale-acquisition-premium hypothesis and confounded with the known
+                goodwill-to-assets anomaly.
+            lesson: >
+              A zero-inflated numerator over a floored denominator silently reassigns most of
+              the cross-section to the denominator's own ratio. Check what the expression
+              computes for the modal firm, not the intended one.
+            source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_004/critic_notes.json
+
+          - id: N03
+            type: dead_end
+            title: "build_versus_buy_growth_with_cash_generation"
+            generation: 5
+            failure_mode: "The contrast the hypothesis names is not identified for most firms"
+            critic_rationales:
+              "build_versus_buy_growth_with_cash_generation": >
+                The "mix" is not actually measured: firms with zero R&D score identically whether
+                they are serial acquirers or pure non-investors, so for the bulk of the
+                cross-section the second leg collapses to R&D/depreciation — i.e. the
+                well-documented R&D-intensity anomaly stacked on a cash-profitability rank —
+                rather than a build-versus-buy contrast.
+            lesson: >
+              A ratio intended as a composition measure must be undefined, not zero, for firms
+              that do neither thing. Scoring non-participants identically to one pole destroys
+              the contrast.
+            source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_005/critic_notes.json
+
+          - id: N04
+            type: dead_end
+            title: "buy_to_build_spending_ratio"
+            generation: 8
+            failure_mode: "MAX() denominator collapses to the wrong branch for most firms"
+            critic_rationales:
+              "buy_to_build_spending_ratio": >
+                Because cumulative depreciation exceeds cumulative R&D for the large majority of
+                firms, MAX(xrd5, dp5) collapses to dp5 and the signal becomes acquisitions per
+                dollar of capital consumption — a near-rediscovery of the already-tested
+                acquisitive_share_of_investment_program — so the stated "build-versus-buy tilt"
+                mechanism does not match what the expression computes.
+            lesson: >
+              This is the third variant in the same lineage killed by the same defect: a
+              protective MAX/floor in the denominator quietly becomes the denominator. The
+              repair is to make the denominator the sum of the two channels being compared, so
+              the statistic is a bounded share by construction.
+            source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_008/critic_notes.json
+
+          - id: N05
+            type: decision
+            title: "Replace the floored denominator with the sum of the two growth channels"
+            generation: 8
+            choice: "Denominator = 5y acquisitions + 5y R&D, making the statistic a bounded share in [0,1]"
+            alternatives:
+              - "Keep MAX(xrd5, dp5) and add a separate R&D-intensity control"
+              - "Extend the accumulation window again"
+              - "Abandon the build-versus-buy mechanism"
+            agent_reasoning: >
+              The denominator is now the sum of the two growth-spending channels themselves, so
+              the statistic is a genuine bounded share in [0,1] and can never collapse onto
+              depreciation — the flaw that turned the previous version into acquisitions per
+              dollar of capital consumption. Firms with neither research nor acquisitions over
+              five years are legitimately undefined and drop out, which is the economically
+              correct treatment since they have no growth program to source, and the
+              cash-profitability rank keeps the sort populated across the share distribution.
+            change_dimension: construct_measurement
+            source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_008/raw_responses.jsonl
+            children:
+
+              - id: N06
+                type: experiment
+                title: "S1 — purchased_share_of_growth_spending"
+                generation: 8
+                origin: "critic-triggered revision"
+                expression: "SUB(RANK(MA(RATIO(oancf, at), 3)), RANK(RATIO(TS_SUM(COALESCE(aqc, SUB(at, at)), 5), ADD(TS_SUM(COALESCE(aqc, SUB(at, at)), 5), TS_SUM(COALESCE(xrd, SUB(at, at)), 5)))))"
+                result: >
+                  Clears all seven cumulative gates. Full-sample sign-oriented t = 5.12;
+                  conditional t = 2.47 against selected Chen-Zimmermann controls, on 27 valid
+                  months.
+                evidence: [C05, C08, "paper/data/signal_catalog.json#dd345b4b63e1"]
+                caveat: "Short common sample (27 months) — see claims.md C09."
+                source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_008/raw_responses.jsonl
+
+              - id: N07
+                type: experiment
+                title: "S2 — knowledge_capital_built_versus_bought"
+                generation: 9
+                origin: "initial proposal accepted by critic"
+                expression: "SUMRANK(MA(RATIO(oancf, at), 3), WINSOR(SUB(RATIO(TS_SUM(COALESCE(xrd, SUB(at, at)), 5), at), RATIO(COALESCE(intan, SUB(at, at)), at)), 1))"
+                predecessor: N06
+                result: >
+                  Same mechanism expressed through a different financial-statement contrast:
+                  five-year cumulative R&D (largely expensed as incurred) against intangible
+                  assets recognized on the balance sheet. Clears all seven gates; t = 4.30,
+                  conditional t = 2.40 on 24 valid months.
+                evidence: [C08, C09, "paper/data/signal_catalog.json#a452cd8bedc5"]
+                caveat: >
+                  Short common sample (24 months), 8 controls after coverage dropping — see
+                  claims.md C09. S1 and S2 are alternative implementations of one mechanism, not
+                  independent discoveries. Neither quantity is a pure measure of internally
+                  developed or acquired capability; the expression exploits their different
+                  reporting footprints and does not estimate a stock of knowledge capital.
+                change_dimension: representational_extension
+                source: paper/data/formal/baseline_r1/2026-08-03T05-56-18_baseline_profit_invest/generations/gen_009/raw_responses.jsonl
+
+      # ================================================================
+      # LINEAGE B — B2 / investment x intangibles — conditional reformulation
+      # ================================================================
+      - id: N10
+        type: question
+        title: "Does a shift from physical investment toward R&D predict returns?"
+        description: >
+          The pattern is ambiguous by construction. It can reflect a deliberate tilt toward
+          knowledge-based investment, or a constrained firm cutting capex under distress. Both
+          produce the same accounting signature.
+        source: paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_invest_intangible
+        children:
+
+          - id: N11
+            type: dead_end
+            title: "Three-Year Hard-For-Soft Reallocation"
+            generation: 7
+            failure_mode: "Parameter tweak of the archive champion; does not address the ambiguity"
+            critic_rationales:
+              "Three-Year Hard-For-Soft Reallocation": >
+                This is a pure differencing-window parameter tweak of the archive's existing
+                champion (Capex Ramp Funded By Research Cuts) with the same numerator logic and
+                identical deflator, so it is a cosmetic variant rather than a substantively
+                different construction, and the three-year difference of a single-year flow
+                variable also mixes level drift with reallocation.
+            lesson: "Changing the window does not resolve an identification problem in the construct."
+            source: paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_invest_intangible/generations/gen_007/critic_notes.json
+
+          - id: N12
+            type: dead_end
+            title: "Reallocation Without Pricing Power"
+            generation: 7
+            failure_mode: "Alpha attributable to the appended gate, not the proposed interaction"
+            critic_rationales:
+              "Reallocation Without Pricing Power": >
+                The three-year low-gross-margin gate has already been paired with four different
+                investment legs in the archive, each time delivering roughly the same -4 to -5%
+                alpha with a near-zero Fama-MacBeth slope, which strongly suggests the alpha comes
+                from the gate itself (a restatement of the gross profitability anomaly) rather
+                than from the interaction being proposed here.
+            lesson: >
+              When one component has produced the same alpha across four different partners, the
+              archive has already identified it as the active leg. Appending a mechanical gate
+              is not conditioning.
+            source: paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_invest_intangible/generations/gen_007/critic_notes.json
+
+          - id: N13
+            type: pivot
+            title: "Change the question from whether to when the reallocation is informative"
+            generation: 7
+            from: "Does an R&D-over-capex tilt predict returns?"
+            to: "When is that accounting pattern informative rather than a distress artifact?"
+            agent_reasoning: >
+              Rather than blending two correlated scaling measures under an unchanged gate, this
+              addresses a specific unresolved question about the archive's champion: its long
+              tail pools deliberate soft-tilting firms with distressed firms that simply cannot
+              fund capex, and requiring contemporaneous gross-profit growth separates them. It
+              is the first construct to use the reallocation measure as the active long-side
+              leg, and it makes a falsifiable prediction — that the champion's long side is
+              stronger once distress cases are screened out.
+            change_dimension: economic_conditioning
+            source: paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_invest_intangible/generations/gen_007/raw_responses.jsonl
+            children:
+              - id: N14
+                type: experiment
+                title: "S4 — Funded Research Tilt With Profit Delivery"
+                generation: 7
+                origin: "critic-triggered revision"
+                expression: "MUL(RANK(NEG(RATIO(SUB(DELTA(capx, 1), DELTA(COALESCE(xrd, 0), 1)), MA(sale, 3)))), RANK(GROWTH(SUB(sale, cogs), 1)))"
+                result: "Clears all seven gates. t = 5.15; conditional t = 3.23 on 24 valid months."
+                evidence: [C05, C08, "paper/data/signal_catalog.json#2e763f95e0f3"]
+                caveat: >
+                  Short common sample (24 months) — see claims.md C09. Gross-profit growth
+                  supplies a separate operating-performance condition; it does not establish
+                  successful innovation.
+                source: paper/data/formal/baseline_r2/2026-08-05T21-09-11_baseline_invest_intangible/generations/gen_007/raw_responses.jsonl
+
+      # ================================================================
+      # LINEAGE C — B3 / profitability x accruals — weakest-link structure
+      # ================================================================
+      - id: N20
+        type: question
+        title: "Is there profitability-times-accrual content beyond the archive's liquidity-profit winner?"
+        description: >
+          By generation 3 the task archive already holds a strong liquidity-times-profitability
+          signal. The open question is whether the task contains a distinct channel, or whether
+          the remaining search is re-parameterization of that one result.
+        source: paper/data/formal/baseline_r3/2026-08-06T00-53-27_baseline_profit_accrual
+        children:
+
+          - id: N21
+            type: dead_end
+            title: "Generation 3 saturation — four of six proposals flagged as variants or rediscoveries"
+            generation: 3
+            failure_mode: "Search concentrated on re-parameterizations of the generation-2 winner"
+            critic_rationales:
+              ContinuousLiquidProfitProduct: >
+                This is a cosmetic re-parameterization of the gen-2 winner
+                LiquidCurrentAssetProfit (rank-MIN → raw product) with no new economic content,
+                and the unwinsorized raw product will be dominated by gp/at outliers and by loss
+                firms whose negative profitability is amplified by the liquidity multiplier.
+              CashExcludedGrossProfitability: >
+                Gross profit scaled by non-cash assets is essentially the published Novy-Marx
+                gross profitability anomaly with a standard cash-exclusion tweak, and it is also
+                a near neighbor of the archive's GrossProfitPerWorkingCapitalDollar, so it is
+                both a rediscovery and largely redundant with existing results.
+              ProfitPlusCashPerAccrualClaim: >
+                The numerator deliberately adds a flow (annual gross profit) to a stock (cash
+                balance), so the ratio has no coherent unit and its cross-sectional variation
+                will be driven mechanically by whichever term happens to dominate rather than by
+                any "realized vs unrealized" mixture, and it substantially overlaps
+                GrossProfitPerWorkingCapitalDollar.
+              DurableProfitLiquidBase: >
+                Gross profitability is already extremely persistent, so a three-year moving
+                average of the same leg is a low-information smoothing variant of the gen-2
+                winner that trades coverage and staleness for little expected incremental
+                signal.
+            lesson: >
+              Four of the six generation-3 proposals were flagged. Once a generation's winner is
+              in the archive, the default proposer move is to re-scale it. Escaping requires
+              opening a channel no archive signal has touched, not another transform of the same
+              inputs.
+            source: paper/data/formal/baseline_r3/2026-08-06T00-53-27_baseline_profit_accrual/generations/gen_003/critic_notes.json
+
+          - id: N22
+            type: decision
+            title: "Open the R&D-conservatism channel and make the two legs jointly necessary"
+            generation: 3
+            choice: "Add back R&D expense to operating income, then combine with lean noncash current assets under MIN so the weaker leg determines the score"
+            alternatives:
+              - "Another re-scaling of the generation-2 winner"
+              - "Additive combination (SUMRANK), letting strength on one leg offset weakness on the other"
+              - "Conditional gate on profitability state"
+            agent_reasoning: >
+              This introduces the intangible-conservatism channel, which no archive signal has
+              touched, and pairs it with operating-cycle leanness measured against sales rather
+              than assets, so it is neither a Novy-Marx rediscovery nor a neighbor of
+              GP/(act−che).
+            change_dimension: functional_form
+            source: paper/data/formal/baseline_r3/2026-08-06T00-53-27_baseline_profit_accrual/generations/gen_003/raw_responses.jsonl
+            children:
+              - id: N23
+                type: experiment
+                title: "S6 — ConservatismAdjustedProfitLeanClaims"
+                generation: 3
+                origin: "critic-triggered revision"
+                expression: "MIN(IND_RANK(RATIO(ADD(oiadp, COALESCE(xrd, 0)), at)), IND_RANK(NEG(RATIO(SUB(act, che), sale))))"
+                result: >
+                  Clears all seven gates. t = 4.71; conditional t = 2.93 on 587 valid months.
+                  Rank correlation 0.55 with its closest published comparator (an R&D-adjusted
+                  operating-profitability predictor), yet the full conjunction retains
+                  conditional content.
+                evidence: [C05, C06, C08, "paper/data/signal_catalog.json#dadff9c5d4c2"]
+                caveat: >
+                  The first component is R&D-expense-adjusted profitability, not economic
+                  profitability: the expression builds no R&D capital stock and specifies no
+                  amortization schedule. The result does not isolate which component or operator
+                  produces the conditional content. The research move is making familiar
+                  characteristics jointly necessary rather than additive.
+                source: paper/data/formal/baseline_r3/2026-08-06T00-53-27_baseline_profit_accrual/generations/gen_003/raw_responses.jsonl
+
+      # ================================================================
+      # LINEAGE D — A1 / quality x distress — archive-only, no critic
+      # ================================================================
+      - id: N30
+        type: question
+        title: "In a configuration without a critic, is a change in a variable's role still visible in the record?"
+        description: >
+          A1 is a configuration in which critique and revision were both removed, so the only
+          recorded feedback reaching generation g+1 is the archived empirical outcome of
+          generation g. It also makes fewer model calls and consumes substantially fewer output
+          tokens, so it differs from B1-B3 in search topology AND compute together.
+          Included to show that an auditable revision appears in the record under this
+          configuration too. Not a control and not a counterfactual: one unrandomized run with
+          two factors changed at once identifies nothing, so this lineage supports no comparison
+          against the configurations that retain critique. See claims.md C03.
+        source: paper/data/formal/ablation_no_critique/2026-08-03T22-42-21_ablation_no_critique_quality_distress
+        children:
+
+          - id: N31
+            type: experiment
+            role: diagnostic
+            title: "AccrualGapUnderRolloverStress"
+            origin: "single-agent proposal (no critic in this configuration)"
+            note: >
+              Not a survivor and not in signal_catalog.json; it is the archived result the next
+              generation responded to. Its numbers are checked against archive.json.
+            generation: 4
+            expression: "MUL(IND_RANK(RATIO(SUB(pi, oancf), revt)), IND_RANK(NEG(RATIO(SUB(che, dlc), at))))"
+            result: >
+              Nearly flat Fama-MacBeth slope (t = 0.195) alongside a large long-short alpha in
+              the declared negative direction (-6.98%, t_alpha = -4.63). The two estimators
+              disagree sharply.
+            source: paper/data/formal/ablation_no_critique/2026-08-03T22-42-21_ablation_no_critique_quality_distress/archive.json
+            children:
+
+              - id: N32
+                type: pivot
+                title: "Reassign the accrual measure from stand-alone predictor to binding condition"
+                generation: 5
+                from: "Accrual gap as a continuous cross-sectional sort"
+                to: "Accrual gap as one of three constraints, combined under MIN"
+                agent_reasoning: >
+                  The accrual gap generated the largest absolute alpha in the archive but only at
+                  the extremes, so embedding it as a binding constraint alongside the trough and
+                  rollover legs uses it where it is informative rather than as a standalone
+                  continuous sort. This directly tests whether earnings credibility adds
+                  incremental information to coverage and liquidity.
+                change_dimension: functional_role
+                source: paper/data/formal/ablation_no_critique/2026-08-03T22-42-21_ablation_no_critique_quality_distress/generations/gen_005/raw_responses.jsonl
+                caveat: >
+                  The recorded rationale reads the disparity as tail-informativeness. The
+                  disparity could equally reflect weighting, outliers, or the two estimators.
+                  The record documents the proposal's response, not a validated diagnosis.
+                children:
+                  - id: N33
+                    type: experiment
+                    title: "S10 — TroughCoverageCleanAccrualRollover"
+                    generation: 5
+                    origin: "single-agent proposal (no critic in this configuration)"
+                    expression: "MIN(IND_RANK(TS_MIN(RATIO(SUB(oancf, dp), lt), 5)), MIN(IND_RANK(RATIO(SUB(che, dlc), at)), IND_RANK(NEG(RATIO(SUB(pi, oancf), revt)))))"
+                    result: "Clears all seven gates. t = 5.51; conditional t = 3.17 on 437 valid months."
+                    evidence: [C05, C08, "paper/data/signal_catalog.json#83a2f6eb3413"]
+                    caveat: >
+                      One trajectory from one run. It does not establish frequency and does not
+                      isolate the archive as the operative input. Lineage scope: see N30.
+                    source: paper/data/formal/ablation_no_critique/2026-08-03T22-42-21_ablation_no_critique_quality_distress/generations/gen_005/raw_responses.jsonl

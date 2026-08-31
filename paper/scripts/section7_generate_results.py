@@ -292,7 +292,7 @@ Shares for the first four rows use only notes that make an explicit novelty comp
 
 
 def replace_table_block(block: str) -> None:
-    text = TABLES_PATH.read_text()
+    text = TABLES_PATH.read_text() if TABLES_PATH.exists() else ""
     begin = "% BEGIN SECTION7 TABLES"
     end = "% END SECTION7 TABLES"
     if begin in text:

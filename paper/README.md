@@ -6,6 +6,9 @@ source files.
 
 ## Contents
 
+- `ara/`: the agent-native research artifact — the paper's claims, evidence
+  bindings, and exploration graph in machine-readable form. Start at
+  `ara/PAPER.md`;
 - `configs/`: the primary configuration and three comparison configurations;
 - `data/formal/`: selected completed-run artifacts used by the result scripts;
 - `data/signal_catalog.json`: the frozen complete-protocol signal catalog;

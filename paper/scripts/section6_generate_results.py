@@ -295,7 +295,7 @@ def write_tables(block: str) -> None:
     begin = "% BEGIN SECTION6 TABLES"
     end = "% END SECTION6 TABLES"
     tagged = begin + "\n" + block + "\n" + end
-    current = path.read_text()
+    current = path.read_text() if path.exists() else ""
     if begin in current and end in current:
         prefix, rest = current.split(begin, 1)
         _, suffix = rest.split(end, 1)
